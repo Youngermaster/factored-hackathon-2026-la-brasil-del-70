@@ -1,6 +1,6 @@
 # Architecture overview
 
-This page shows the monorepo components and the direction of their dependencies as of phase 02. The domain model and the ports are described in [domain-model.md](domain-model.md) and [ports-and-adapters.md](ports-and-adapters.md). Phase 17 replaces it with the final context, container, and component views.
+This page shows the monorepo components and the direction of their dependencies as of phase 02b. The domain model and the ports are described in [domain-model.md](domain-model.md) and [ports-and-adapters.md](ports-and-adapters.md); the four workflows in [workflow-registry.md](workflow-registry.md); and the credit separation in [credit-separation.md](credit-separation.md). Phase 17 replaces it with the final context, container, and component views.
 
 ## Components and dependency direction
 

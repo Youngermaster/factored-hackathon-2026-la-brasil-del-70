@@ -60,8 +60,10 @@ Role rules every repository adapter implements identically:
 | Execution records | Append and read own | Refused | Read all |
 | Handoffs | Add and read own | Read, list, claim, resolve | Refused |
 | Audit log | Append | Append | Append and list |
+| Credit profiles | Read own | Refused | Refused |
+| Credit applications | Create, read, list own; withdraw only | `get` of an application a handoff's credit review references (review methods in phase 13) | Refused |
 
-The read side of each customer-data repository is its own Protocol (`CustomerReader`, `ProductReader`, `TransactionReader`, `HistoricalComplaintReader`), so read-only backends implement it without a unit of work.
+The read side of each customer-data repository is its own Protocol (`CustomerReader`, `ProductReader`, `TransactionReader`, `HistoricalComplaintReader`, `CreditProfileReader`), so read-only backends implement it without a unit of work. The credit catalog is public information and is not customer-scoped.
 
 ## Ports, adapters, and phases
 
@@ -71,6 +73,8 @@ The read side of each customer-data repository is its own Protocol (`CustomerRea
 | `ProductReader`, `ProductRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
 | `TransactionReader`, `TransactionRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
 | `HistoricalComplaintReader`, `HistoricalComplaintRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
+| `CreditProfileReader` | async | memory | DuckDB reader (03), PostgreSQL (05) |
+| `CreditApplicationRepository` | async | memory | PostgreSQL (05) |
 | `CaseRepository` | async | memory | PostgreSQL (05) |
 | `ConversationRepository` | async | memory | PostgreSQL (05) |
 | `ExecutionRecordRepository` | async | memory | PostgreSQL, append-only at the database level (05) |
@@ -84,7 +88,10 @@ The read side of each customer-data repository is its own Protocol (`CustomerRea
 | `IdGenerator` | sync | `RandomIdGenerator`; `SequentialIdGenerator` (testing) | none |
 | `LLMClient` | async | `FakeLLM` (testing) | `LiteLLMClient`, `CassetteLLM`, and the decorator stack (08) |
 | `PromptRegistry` | sync | none | filesystem registry (08) |
-| `PolicyRepository` | sync | none | filesystem policy pack (06), bound lookup (07) |
+| `PolicyRepository` | sync | none | filesystem policy pack (06), bound lookup per workflow and state (07) |
+| `CreditProductCatalog` | sync | memory (fixture entries) | filesystem catalog under `policies/credit/` (06) |
+| `EligibilityPolicy` | sync | `FakeEligibilityPolicy` (testing) | synthetic eligibility service over `ELG` rules in `bank_agent/policy/eligibility` (06) |
+| `RiskEstimator` | sync | `FakeRiskEstimator` (testing) | score-band baseline (09 part B), learned estimators through `ModelRegistry` (10) |
 | `Retriever` | sync | none | BM25, dense, hybrid (07) |
 | `IntentRouter` | sync | `FakeIntentRouter` (testing) | `router:keyword@1` (09), `router:tfidf` and `router:embeddings` (10) |
 | `TransactionResolver` | sync | `FakeTransactionResolver` (testing) | `resolver:rules@1` (09), `resolver:lgbm` (10) |
@@ -97,7 +104,7 @@ Async ports may perform I/O. Sync ports run in process on data loaded at startup
 
 ## Contract suites
 
-Every adapter runs the shared suite for its port in `services/api/tests/contracts/`: one parameterized class per port. Backends are listed in `services/api/tests/bank_agent_contracts.py`: `READ_BACKENDS` for the reader suites and `WRITE_BACKENDS` for the writer, unit of work, audit, and session store suites. The memory backend is marked `unit`; database backends added in phases 03 and 05 are marked `integration`. The model and determinism suites parameterize over the test doubles and the system adapters, and phases 09 and 10 add their implementations to the same lists.
+Every adapter runs the shared suite for its port in `services/api/tests/contracts/`: one parameterized class per port. Backends are listed in `services/api/tests/bank_agent_contracts.py`: `READ_BACKENDS` for the reader suites and `WRITE_BACKENDS` for the writer, unit of work, audit, and session store suites. The memory backend is marked `unit`; database backends added in phases 03 and 05 are marked `integration`. The model and determinism suites parameterize over the test doubles and the system adapters, and phases 09 and 10 add their implementations to the same lists. The credit suites (`test_credit_profile_contract.py`, `test_credit_application_contract.py`, `test_credit_catalog_contract.py`, `test_credit_model_ports_contract.py`) follow the same pattern: phases 03 and 05 add database backends, phase 06 the catalog and the synthetic eligibility service, and phases 09 and 10 the estimators.
 
 The suites check, for every adapter: domain objects are returned; another customer's record behaves like a missing one; roles are enforced; ordering and limits are deterministic; idempotent writes return the stored result; append-only records reject changes; optimistic versions reject stale writes; session rotation retires the old token digest; trust state is append-only; and a unit of work applies writes only on commit, rolls back otherwise, and refuses a conflicting commit.
 

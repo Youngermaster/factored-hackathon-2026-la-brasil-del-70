@@ -23,8 +23,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [architecture/overview.md](architecture/overview.md) | Monorepo components and their dependency direction |
-| [architecture/domain-model.md](architecture/domain-model.md) | Domain class diagram, case lifecycle, trust tiers, personal data, error taxonomy |
+| [architecture/domain-model.md](architecture/domain-model.md) | Domain class diagrams, case and credit application lifecycles, trust tiers, personal and internal data, error taxonomy |
 | [architecture/ports-and-adapters.md](architecture/ports-and-adapters.md) | Ports, adapters present and planned, isolation rules, contract suites |
+| [architecture/workflow-registry.md](architecture/workflow-registry.md) | The four workflows, the intents each owns, and what each answers, confirms, and escalates |
+| [architecture/credit-separation.md](architecture/credit-separation.md) | Conversation handling, risk estimates, and the synthetic eligibility service kept apart |
 | [../contracts/README.md](../contracts/README.md) | JSON Schema contracts and their versioning rules |
 | [adr/README.md](adr/README.md) | Index of architecture decision records |
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
@@ -33,6 +35,8 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0004](adr/0004-money-and-currency-handling.md) | Money and currency handling |
 | [adr/0005](adr/0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier |
 | [adr/0006](adr/0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field |
+| [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
+| [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
 
 ## Packages and apps
 

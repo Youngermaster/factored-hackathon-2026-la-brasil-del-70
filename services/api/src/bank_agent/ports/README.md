@@ -13,6 +13,8 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `repositories/transactions.py` | `TransactionReader`, `TransactionRepository`, `TransactionQuery` | async | Read-only transactions, newest first |
 | `repositories/complaints.py` | `HistoricalComplaintReader`, `HistoricalComplaintRepository` | async | Intake-time complaint history |
 | `repositories/cases.py` | `CaseRepository` | async | Dispute cases with idempotent creation and optimistic versions |
+| `repositories/credit_profiles.py` | `CreditProfileReader` | async | The bound customer's credit profile (customer role only) |
+| `repositories/credit_applications.py` | `CreditApplicationRepository` | async | Credit application intakes for human review, idempotent, with optimistic versions |
 | `repositories/conversations.py` | `ConversationRepository` | async | Conversations and turns |
 | `repositories/execution_records.py` | `ExecutionRecordRepository` | async | Append-only execution records |
 | `repositories/handoffs.py` | `HandoffRepository`, `HandoffQuery` | async | Handoffs and the agent inbox lifecycle |
@@ -23,9 +25,11 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `determinism.py` | `Clock`, `IdGenerator` | sync | Time and identifiers |
 | `llm.py` | `LLMClient` | async | Structured and text generation from versioned prompts |
 | `prompts.py` | `PromptRegistry` | sync | Prompt files by id and version |
-| `policy.py` | `PolicyRepository` | sync | Clauses, bindings, action matrix, pack version |
+| `policy.py` | `PolicyRepository` | sync | Clauses, bindings per workflow and state, action matrix, pack version |
+| `credit_catalog.py` | `CreditProductCatalog` | sync | The synthetic credit catalog (public, not customer-scoped) |
+| `eligibility.py` | `EligibilityPolicy`, `EligibilityRequest` | sync | The synthetic eligibility service: indicative outcomes from `ELG` rules, never an approval |
 | `retrieval.py` | `Retriever` | sync | Open retrieval over clauses |
-| `models.py` | `IntentRouter`, `TransactionResolver`, `LanguageDetector`, `ModelRegistry` | sync | Replaceable learned or rule-based components |
+| `models.py` | `IntentRouter`, `TransactionResolver`, `LanguageDetector`, `ModelRegistry`, `RiskEstimator` | sync | Replaceable learned or rule-based components; the risk estimator is predictive only and internal |
 | `telemetry.py` | `Telemetry`, `Span`, `Counter`, `Histogram` | sync | Spans and metrics without importing OpenTelemetry |
 | `health.py` | `ReadinessCheck` | async | One dependency checked by `/health/ready` |
 

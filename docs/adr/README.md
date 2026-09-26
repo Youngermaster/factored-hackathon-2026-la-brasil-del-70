@@ -2,6 +2,8 @@
 
 Each record captures one choice between real alternatives, in the [MADR](https://adr.github.io/madr/) format: context, options, decision, and consequences. Records are numbered in order and never rewritten; a later record supersedes an earlier one and both link to each other.
 
+Numbers 0007 to 0019 are reserved for the phases that already name them, so the table lists records by number, not by date.
+
 | Number | Title | Status | Date |
 |---|---|---|---|
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted | 2026-09-26 |
@@ -10,6 +12,8 @@ Each record captures one choice between real alternatives, in the [MADR](https:/
 | [0004](0004-money-and-currency-handling.md) | Money and currency handling | Accepted | 2026-09-26 |
 | [0005](0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier | Accepted | 2026-09-26 |
 | [0006](0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field | Accepted | 2026-09-26 |
+| [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
+| [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |
 
 ## Adding a record
 
