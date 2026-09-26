@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FMN5QUHTRGTOVO3R14NP,2025-08-19 23:23:54,2025-08-19,PRD-AUH9G8MO202D,CLI-ZJCPKZZRXUR8,Deposit,,1605417.9,COP,401.35,ATM,SUC-7P0XNXTG,,,Colombia,Medellín,Declined,54,False,26.4,,

@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-C4QTJ9ER7V6EJ23I61HX,2026-02-18 01:35:24,2026-02-17,PRD-LXTGL6WOIY5S,CLI-IA17OMLTE32I,Deposit,,15066805.39,COP,3766.7,Web,,,,Colombia,Bogotá,Approved,00,False,19.36,,
+TRX-GDYUTPCU1T3F68YQR8XX,2026-02-17 09:00:57,2026-02-17,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Purchase,Food,130203.86,ARS,372.01,ATM,SUC-7TH4CVFK,Restaurante El Buen Sabor,Food,Argentina,Córdoba,Approved,00,False,14.2,,

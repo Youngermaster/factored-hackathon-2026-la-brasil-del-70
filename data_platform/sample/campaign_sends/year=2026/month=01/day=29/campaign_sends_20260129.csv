@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-HA28IADZHMGZ0W6JHKLH,2026-01-29 14:18:20,2026-01-29,CMP-KTY6BSPN9COB,CLI-P22FY6SYK6NO,Email,template_CMP-KTY6BSPN9COB_3,¡Oferta especial en Seguro!,Sent,True,False,,False,,,False,,,,,,0.0062

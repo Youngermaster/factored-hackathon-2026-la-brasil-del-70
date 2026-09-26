@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-4OCRR6HGXZCGTIXPYZRG,2026-03-11 11:53:27,2026-03-10,INT-JFF34LBGYFDGOS3G,CLI-1PQOJNHN9ASF,AGT-JI2PI1E2KY,NPS,Web,7,Passive,¿El agente resolvió su consulta satisfactoriamente?,3.0,,,,,Aceptable.,Neutral,19.63,26.85

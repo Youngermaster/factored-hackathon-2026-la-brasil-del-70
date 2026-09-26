@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-PTPJUJTMEH76URJK,2026-05-15 05:57:26,2026-05-14,CLI-IZX582QFYSNH,AGT-IB1X9BWBN2,Inbound Call,Phone,Transaccional,Transaccional,289.0,94.0,True,False,Neutral,0.05,argentine,argentine,False,,False,True

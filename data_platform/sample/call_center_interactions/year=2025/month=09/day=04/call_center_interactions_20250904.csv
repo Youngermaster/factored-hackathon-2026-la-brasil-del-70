@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-U5XVO9TYKTKWRFTT,2025-09-04 20:11:18,2025-09-04,CLI-BH1ZBAHAHTEN,AGT-RM928J5EOG,Inbound Call,Phone,Producto,Producto,366.0,54.0,True,False,Neutral,0.03,mexican,mexican,False,"PRD-D1GWZQEELKJ6,PRD-HHOXZLVH9SQL",False,True

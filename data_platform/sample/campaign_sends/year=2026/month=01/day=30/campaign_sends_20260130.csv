@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-NL162B7ZRL9N40M5COYQ,2026-01-31 01:04:15,2026-01-30,CMP-EDPT912AYY3Q,CLI-LY690HP4ON5N,Email,template_CMP-EDPT912AYY3Q_2,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0041

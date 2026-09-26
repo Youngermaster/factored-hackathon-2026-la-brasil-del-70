@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8EE1VADZ4LEBMQGL0HS0,2025-08-03 18:15:57,2025-08-03,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Withdrawal,,63473.43,ARS,181.35,ATM,SUC-UVQ9U0YO,,,Argentina,Córdoba,Approved,00,False,0.62,,
+TRX-S4M62UF4WEOXTMG1YHGV,2025-08-03 10:50:47,2025-08-03,PRD-YKE9XTBUECW9,CLI-ZJCPKZZRXUR8,Purchase,Entertainment,1590948.55,COP,397.74,POS,,Cine Premium,Entertainment,Colombia,Medellín,Approved,00,False,20.83,3.7941044,-74.6193056
+TRX-VILKFH4C0YI2I1TBC0FF,2025-08-04 02:07:35,2025-08-03,PRD-80A6GGEE741P,CLI-4QR1L5H7FKTD,Withdrawal,,447.94,USD,,POS,,,,Colombia,Medellín,Approved,00,False,,,

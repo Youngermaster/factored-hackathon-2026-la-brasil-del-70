@@ -1,0 +1,11 @@
+interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-0EL2438OS97WKX8A,2026-04-02 13:02:15,2026-04-02,CLI-K0GJBJFDKIBO,AGT-ZGD5FBXG7L,Inbound Call,Phone,Transaccional,Transaccional,249.0,128.0,True,False,Neutral,0.23,colombian,colombian,False,,False,True
+INT-0JOW6MIH9V3TJ3G7,2026-06-15 09:30:40,2026-06-15,CLI-END66G0XIF95,AGT-C0S7V2IHHG,Inbound Call,Phone,Queja,Queja,356.0,57.0,False,True,Negativo,-0.64,mexican,colombian,False,"PRD-FR54OM3VPGB5,PRD-X81KDFHIGAZB,PRD-QC0HVXIG9D12",False,True
+INT-0TFM3DDFC0B3CE0K,2025-10-04 21:48:12,2025-10-04,CLI-J9EWXIOYWJ7R,AGT-T0RCZNZEMA,Inbound Call,Phone,Producto,Producto,248.0,122.0,False,True,Neutral,0.2,mexican,mexican,False,,True,True
+INT-0UW5V4C1D2PJ1Z17,2026-02-06 04:33:00,2026-02-05,CLI-VHBEU7EEMIV1,AGT-R6BH0F3DT7,Chat,App,Comercial,Comercial,,,True,False,Muy Negativo,-0.83,argentine,argentine,False,,True,False
+INT-1497IA9C366555PQ,2026-06-07 19:29:32,2026-06-07,CLI-NSTPTDK3BPGH,AGT-E46F2FQTOO,Inbound Call,Phone,Técnico,Técnico,324.0,114.0,True,False,Negativo,-0.61,argentine,mexican,False,,False,True
+INT-157XXDX72VAAIRD7,2026-01-20 01:51:14,2026-01-19,CLI-IMCRTKL094T5,AGT-F19RDFACNQ,Email,Email,Transaccional,Transaccional,,,True,False,Neutral,0.13,mexican,mexican,False,,False,False
+INT-1Q5U9V0V80P07971,2026-04-13 16:22:38,2026-04-13,CLI-YC4WNTUC93XN,AGT-HKU44IP108,Inbound Call,Phone,Comercial,Comercial,349.0,128.0,True,False,Positivo,0.66,,,False,,False,True
+INT-2GMPVLDZJHFJ9GTT,2026-04-04 15:08:25,2026-04-04,CLI-7HT38ZKBZB3M,AGT-785O4C5VDM,Outbound Call,Phone,Producto,Producto,227.0,,False,True,Negativo,-0.45,,,False,"PRD-WZ5MFLYL7ED1,PRD-77H2UWBCW1T6,PRD-A2AZFMG67NSU",False,True
+INT-2TQZD3H5ZDBDAZBH,2025-12-15 20:23:53,2025-12-15,CLI-7A9F4VIGPO6R,AGT-K11V6ZB5VS,Inbound Call,Phone,Transaccional,Transaccional,202.0,39.0,False,True,Neutral,-0.28,,,False,"PRD-9OFN4CQW9XDK,PRD-7SN4IBC85JA3",False,True
+INT-46ZLHTOMCGOYNMET,2025-10-11 00:37:36,2025-10-10,CLI-ZJCPKZZRXUR8,AGT-9Q63425XXI,Inbound Call,Phone,Producto,Producto,321.0,207.0,False,True,Neutral,0.1,,,False,,True,True

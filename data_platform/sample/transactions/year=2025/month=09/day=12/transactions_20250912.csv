@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0EIV5ACECXRNZQ72FOWS,2025-09-12 21:36:33,2025-09-12,PRD-FJB80FBRBO6Y,CLI-QZGUG3KBZ2ZG,Purchase,Entertainment,270.14,USD,,ATM,SUC-JYU0POJ9,Teatro Nacional,Entertainment,México,Tijuana,Approved,00,False,,0.6306797,-0.400473
+TRX-HDJS8ARN568ZCDEURD3Q,2025-09-12 20:34:54,2025-09-12,PRD-FQ1L1Y6064V2,CLI-C0RXL4J0SXGR,Withdrawal,,125.97,USD,,ATM,SUC-T4RE29NP,,,México,,Approved,00,False,14.93,,
+TRX-QYXKTPKWXSPH4OWTYS2R,2025-09-12 23:00:39,2025-09-12,PRD-W0SEEA2Y41Q1,CLI-AKACM6D5362F,Transfer,,2448.89,USD,,POS,,,,México,Ciudad de México,Approved,00,False,19.59,,
+TRX-ZMSJOOVADXK4HLLFJCVG,2025-09-12 22:16:27,2025-09-12,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Purchase,Entertainment,278.6,USD,,Transfer,,Teatro Nacional,Entertainment,Colombia,Medellín,Approved,00,False,17.88,,

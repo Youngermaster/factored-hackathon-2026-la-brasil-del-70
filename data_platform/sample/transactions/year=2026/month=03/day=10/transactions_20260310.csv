@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-D2JDL1C5OLEYUR3ZGTYW,2026-03-10 12:50:00,2026-03-10,PRD-7N3R25GSYY9B,CLI-ODH9G3RG7J9J,Purchase,Other,1654896.58,COP,413.72,App,,Centro Comercial,Other,Colombia,Cali,Approved,00,False,9.08,,
+TRX-DBH3P6Y077FC76UY8OLG,2026-03-10 08:09:29,2026-03-10,PRD-6V0NRAE5BWYB,CLI-5L6EGAWYR2Q2,Withdrawal,,64770.62,ARS,185.06,ATM,SUC-KHBP7W0V,,,Argentina,Córdoba,Approved,00,False,16.84,-34.1050034,-59.0535617
+TRX-G6NUPB8XJAMCVHPAJ0TS,2026-03-11 00:55:23,2026-03-10,PRD-VX09B0EAAI90,CLI-IMCRTKL094T5,Transfer,,5327.46,USD,,POS,,,,México,Querétaro,Approved,00,False,1.05,,
+TRX-KCMUBADL5VGJ1S7RX4FY,2026-03-10 19:36:42,2026-03-10,PRD-LRKH4MK5OK2V,CLI-N9ZXVIIXZ6JN,Purchase,Food,25835.07,ARS,73.81,ATM,SUC-UUF77WSC,Tienda Don José,Food,Argentina,Córdoba,Approved,00,False,10.38,,

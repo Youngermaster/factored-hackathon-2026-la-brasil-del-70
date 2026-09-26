@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-EV4JFSZV2S84SZMU,2025-12-21 13:25:40,2025-12-21,CLI-R53C8RPXD32P,AGT-9XK11HDKY2,Inbound Call,Phone,Queja,Queja,360.0,70.0,False,True,Positivo,0.47,colombian,colombian,False,,False,True

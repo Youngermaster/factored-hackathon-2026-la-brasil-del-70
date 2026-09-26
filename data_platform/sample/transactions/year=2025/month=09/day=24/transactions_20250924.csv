@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5EJ0XY8RB0QNICYNP7OD,2025-09-25 05:50:32,2025-09-24,PRD-ENIMR71PNJWG,CLI-4QR1L5H7FKTD,Withdrawal,,1758999.51,COP,439.75,POS,,,,Colombia,,Approved,00,False,3.56,,
+TRX-6FE0ZNFE3J25SCEC1ES6,2025-09-24 15:04:23,2025-09-24,PRD-IRPW2E27DXWK,CLI-NOC612SZ8VKJ,Purchase,Transport,1624917.97,COP,406.23,ATM,SUC-4B1UVBW3,Uber,Transport,Colombia,Cali,Approved,00,False,9.97,5.2556003,-74.4728587
+TRX-QRRLGWB2ZLJUNARSZ1PU,2025-09-25 04:03:52,2025-09-24,PRD-H4DCLYJJ62SW,CLI-5L6EGAWYR2Q2,Purchase,Food,48188.36,ARS,,ATM,SUC-4JYR8GOV,Restaurante El Buen Sabor,Food,Argentina,Córdoba,Approved,00,False,19.6,,

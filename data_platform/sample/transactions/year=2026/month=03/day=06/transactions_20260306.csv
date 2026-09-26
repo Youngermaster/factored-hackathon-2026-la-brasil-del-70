@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1WK1DWU32UQ1OXEIKPPI,2026-03-06 08:50:13,2026-03-06,PRD-U9SPV3HRCHVD,CLI-3XGV18QB96P9,Deposit,,134.3,USD,,ATM,SUC-NZJH5BG1,,,México,Monterrey,Approved,00,False,8.17,,-0.366191
+TRX-D209CH9QPU8VPNWJKNCY,2026-03-06 13:48:47,2026-03-06,PRD-BGC7KENP311C,CLI-9MNRLM8SP9QI,Payment,Health,70.79,USD,,Web,,,,México,Ciudad de México,Approved,00,False,1.08,,
+TRX-GNU4YC1MRZNAVNHQPUIN,2026-03-06 09:36:22,2026-03-06,PRD-6522F5GP0394,CLI-END66G0XIF95,Purchase,Food,454.74,USD,,ATM,SUC-AXDYB0RQ,Super Ahorro,Food,México,Ciudad de México,Approved,00,False,,,

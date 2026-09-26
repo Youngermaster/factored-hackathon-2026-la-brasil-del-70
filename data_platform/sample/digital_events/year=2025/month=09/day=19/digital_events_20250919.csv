@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-9GQGDDJWJYEWI030JVVC,2025-09-19 12:04:36,2025-09-19,CLI-KKSHE4CEJ1IT,SES-SAZOE9ZXR8Y966S9KPVYE5177W56,Login,Authentication,iOS App,iOS,,4.0.8,/login,Iniciar Sesión,login,login_form,,,,198.51.100.191,Colombia,Cali,True,https://www.instagram.com,facebook,social,new_users

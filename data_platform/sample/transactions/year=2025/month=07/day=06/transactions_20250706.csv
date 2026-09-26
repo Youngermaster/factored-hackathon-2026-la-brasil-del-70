@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9KK9Y6TRYYAIK6HTFBWE,2025-07-07 05:33:47,2025-07-06,PRD-GAXFHHF40562,CLI-7HIH47RP95JX,Adjustment,,162185.78,ARS,463.39,POS,,,,Argentina,Rosario,Approved,00,False,11.5,,

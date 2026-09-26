@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-3J07BW7E6AJO91YF4B5R,2025-07-11 07:57:26,2025-07-11,CMP-4Z5J0NFQM5EO,CLI-JRCTRZ2GTFG8,Email,,,Sent,True,True,2025-07-13 08:46:09,True,2025-07-13 09:12:50,2.0,True,2025-07-14 04:23:15,442.07,Tablet,Colombia,,0.004

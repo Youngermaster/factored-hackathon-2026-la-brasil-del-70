@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-6GUOPDSWUP6L7ITTBLQV,2026-03-25 11:24:11,2026-03-25,PRD-SQ6SP8PDHFUQ,CLI-SZHLZ1F4MOTC,Purchase,Services,327.48,USD,,POS,,Empresa Telefónica,Services,México,Puebla,Approved,00,False,6.96,-0.5248699,0.5930383
+TRX-CKQO8ELEGBVHU2G9VQL0,2026-03-26 00:09:21,2026-03-25,PRD-DCO6NUOXQ046,CLI-P22FY6SYK6NO,Withdrawal,,96116.79,ARS,274.62,Branch,SUC-4JYR8GOV,,,Colombia,Bogotá,Approved,00,False,12.47,,
+TRX-FUF9I54SWJ3K62NTNEN5,2026-03-25 19:41:29,2026-03-25,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Withdrawal,,105.49,USD,,App,,,,México,Querétaro,Approved,00,False,,,

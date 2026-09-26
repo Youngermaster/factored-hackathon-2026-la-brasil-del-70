@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-QTFV4XWBUAI34GN4MGPY,2026-04-14 04:21:28,2026-04-13,INT-1Q5U9V0V80P07971,CLI-YC4WNTUC93XN,AGT-HKU44IP108,CSAT,App,4,,¿Qué tan satisfecho está con el servicio recibido?,2.0,,,,,"Excelente atención, muy amable el agente.",Positive,21.77,37.81

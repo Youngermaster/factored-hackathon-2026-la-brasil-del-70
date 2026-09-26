@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FBXDMP240C4VCQ4UVI7W,2025-12-18 06:18:40,2025-12-18,PRD-KRZVMYL7PDFC,CLI-FY5RJI3Q5D6U,Withdrawal,,93.91,USD,,ATM,SUC-NOBD5N9U,,,México,,Approved,00,False,4.12,,
+TRX-HFCKY1QVYQWAON3WXKMG,2025-12-18 15:18:27,2025-12-18,PRD-KA2VRTUQG3JR,CLI-K0GJBJFDKIBO,Withdrawal,,1882618.44,COP,470.65,POS,,,,Colombia,Bogotá,Declined,54,False,29.74,,

@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-84ET2S6NELWBP7E7BPTJ,2025-09-20 05:58:35,2025-09-19,PRD-H1DSUO9VXK9H,CLI-S21M6QBBQ32X,Payment,Food,485361.59,ARS,1386.75,App,,,,Argentina,Rosario,Approved,00,False,27.52,,
+TRX-R6LF4KD05ULCU54O0EX6,2025-09-19 07:48:39,2025-09-19,PRD-Z0IFEVYNNN8T,CLI-7P0ZUEV7Y4EH,Transfer,,786.43,USD,,ATM,SUC-FGQWMFNS,,,México,Puebla,Approved,00,False,5.92,,
+TRX-VLCWG2SPAE17A148ZNLR,2025-09-19 06:10:51,2025-09-19,PRD-DIDXZB6DYPSB,CLI-CTY661KC9RAS,Transfer,,29548724.51,COP,7387.18,Transfer,,,,Colombia,Medellín,Approved,00,False,1.34,,
+TRX-ZVRRA8ETWBBJRW2LQTCG,2025-09-19 09:27:52,2025-09-19,PRD-K3DB9XORNLET,CLI-7P0ZUEV7Y4EH,Transfer,,9665.34,USD,,ATM,SUC-QZU3WHKF,,,México,Puebla,Approved,00,False,13.96,,

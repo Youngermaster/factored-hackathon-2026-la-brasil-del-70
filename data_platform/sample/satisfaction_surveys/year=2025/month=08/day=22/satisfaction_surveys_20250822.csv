@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-J65KTHQL0J0LB6RRU67C,2025-08-23 02:58:27,2025-08-22,INT-4OFP8H2FLIQUP3EA,CLI-C9F3EFNAUCRP,AGT-Q4SXP4EG6L,CES,SMS,3,,¿Qué tan satisfecho está con el servicio recibido?,5.0,,,,,,,19.0,31.95

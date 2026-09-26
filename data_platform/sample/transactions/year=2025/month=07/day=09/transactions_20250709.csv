@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0676D4RTLQDJDCZMC3WE,2025-07-09 13:23:47,2025-07-09,PRD-JS286WK7GODM,CLI-TP8JBA2IK7EJ,Withdrawal,,408.08,USD,,Web,,,,México,Guadalajara,Approved,00,False,,,
+TRX-1YR4KR435PTDBVQ5JO8Y,2025-07-09 10:21:20,2025-07-09,PRD-9FETOE2N31SC,CLI-U8JZASBAZZ8W,Deposit,,430.26,USD,,POS,,,,México,,Approved,00,False,9.29,,
+TRX-LSU6C59WSFLO7KT0FWMF,2025-07-09 14:31:03,2025-07-09,PRD-MVDXKLB9BFHS,CLI-5N42HUM8D4H6,Withdrawal,,158359.37,ARS,452.46,Branch,SUC-ZSZKWMJL,,,Argentina,Rosario,Approved,00,False,25.22,,
+TRX-THGGERD24GTYVNRWK9V7,2025-07-09 14:42:53,2025-07-09,PRD-BRNTPHAHNIOT,CLI-6VCS2LIRSE4Y,Deposit,,3686079.27,COP,921.52,ATM,SUC-GHHYX8OE,,,Colombia,Medellín,Approved,00,False,3.05,,
+TRX-WKJEGPW8I1E9TZOZZHT4,2025-07-09 06:11:07,2025-07-09,PRD-C5C8XA6Z0A3X,CLI-3XGV18QB96P9,Purchase,,184.1,USD,,App,,Mercado Central,Food,México,Monterrey,Approved,00,False,17.86,,
+TRX-XANW3TDCMSA3G59FVICL,2025-07-09 23:23:29,2025-07-09,PRD-U339B1ZJK4LR,CLI-IX877AHQ2942,Transfer,,1418.16,USD,,POS,,,,México,Puebla,Approved,00,False,28.55,,

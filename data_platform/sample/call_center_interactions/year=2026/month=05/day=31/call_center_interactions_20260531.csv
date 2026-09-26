@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-DN68KKCL22KXB2ZY,2026-06-01 02:50:22,2026-05-31,CLI-CTY661KC9RAS,AGT-Z32DMC1N4A,Inbound Call,Phone,Transaccional,Transaccional,342.0,166.0,True,False,Neutral,-0.22,,,True,,False,True

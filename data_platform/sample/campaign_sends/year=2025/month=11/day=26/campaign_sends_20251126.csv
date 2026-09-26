@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-R7SDGISH5RUBRL4Y17K4,2025-11-26 10:25:19,2025-11-26,CMP-OZ3ECV86GFA8,CLI-6VCS2LIRSE4Y,Email,,¡Oferta especial en Tarjeta Crédito!,Sent,True,True,2025-11-27 10:21:42,False,,,False,,,Mobile,Colombia,,0.0099
+SND-TJXA6YJYCZT6KGULFLGL,2025-11-27 02:04:24,2025-11-26,CMP-H33FQD42YKOE,CLI-KDRMF6UI68X1,SMS,template_CMP-H33FQD42YKOE_1,,Sent,True,False,,False,,,False,,,,,,0.0723

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-4QXO3CJYKAIXC1QAX9AK,2025-11-10 12:18:00,2025-11-10,PRD-DIDXZB6DYPSB,CLI-CTY661KC9RAS,Transfer,,33513978.59,COP,8378.49,POS,,,,Colombia,Medellín,Declined,,False,21.82,,

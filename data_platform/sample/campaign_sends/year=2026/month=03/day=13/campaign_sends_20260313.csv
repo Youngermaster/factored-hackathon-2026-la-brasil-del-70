@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-XXO2MKL2JJG6N5J0USFT,2026-03-14 01:08:00,2026-03-13,CMP-IZC4KIMH6LPZ,CLI-7HT38ZKBZB3M,SMS,template_CMP-IZC4KIMH6LPZ_1,,Blocked,False,,,False,,,False,,,,,User blocked sender,0.1212

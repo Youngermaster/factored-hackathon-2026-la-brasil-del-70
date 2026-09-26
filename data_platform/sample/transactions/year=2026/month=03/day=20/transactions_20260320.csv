@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-HDT3IEV2DA7FBIF6C6HY,2026-03-20 18:50:42,2026-03-20,PRD-LRKH4MK5OK2V,CLI-N9ZXVIIXZ6JN,Purchase,Other,80356.34,ARS,229.59,POS,,Tienda General,Other,Argentina,Córdoba,Approved,00,False,21.68,,

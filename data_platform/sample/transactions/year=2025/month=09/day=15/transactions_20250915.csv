@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-SQFJHJ4D5VSO62GZS2GW,2025-09-15 08:41:21,2025-09-15,PRD-DOKA3EN20VKO,CLI-IZX582QFYSNH,Deposit,,216143.13,ARS,617.55,App,,,,Argentina,Córdoba,Approved,00,False,,,

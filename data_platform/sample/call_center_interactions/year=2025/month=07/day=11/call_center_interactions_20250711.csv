@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-M11WYLHZI7PQA0FP,2025-07-12 01:52:05,2025-07-11,CLI-C9F3EFNAUCRP,AGT-FDD67YH842,Inbound Call,Phone,Comercial,Comercial,550.0,127.0,True,True,Neutral,0.1,colombian,colombian,False,PRD-850ZT4OH7Q6W,True,True

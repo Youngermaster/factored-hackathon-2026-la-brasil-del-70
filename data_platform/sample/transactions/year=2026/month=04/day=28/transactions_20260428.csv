@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5RYDBJXPBVPAZO4J4CD7,2026-04-29 05:59:39,2026-04-28,PRD-FU9DT1YQGFNS,CLI-1AS0INHPK43M,Purchase,Food,250.12,USD,,Web,,Restaurante El Buen Sabor,Food,México,Querétaro,Approved,00,False,15.53,,
+TRX-EP10K5OLLB9TVHG7N609,2026-04-28 19:29:36,2026-04-28,PRD-D8GGMVJTCKGQ,CLI-IMCRTKL094T5,Transfer,,1499.87,USD,,POS,,,,México,Querétaro,Approved,00,False,26.54,,
+TRX-VPMWB9YFSIIXL49P5ZCV,2026-04-28 18:38:12,2026-04-28,PRD-OSQT4EJGX3F3,CLI-3XGV18QB96P9,Withdrawal,,207.32,USD,,POS,,,,México,Monterrey,Approved,00,False,3.65,,

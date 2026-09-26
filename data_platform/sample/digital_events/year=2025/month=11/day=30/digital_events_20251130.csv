@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-1NBGBR2PGVKQ1PNHYT0G,2025-12-01 01:23:12,2025-11-30,CLI-SZHLZ1F4MOTC,SES-EZKNPWUENV3IYJRS41MKB30QENKB,Click,Product,iOS App,iOS,,4.0.1,/products/savings,Cuenta de Ahorro,view_product,savings_product,,,,203.0.113.206,México,Puebla,True,,,,
+EVT-ZLR5UXXZO7TI03ZUTSLR,2025-12-01 01:21:39,2025-11-30,CLI-SZHLZ1F4MOTC,SES-EZKNPWUENV3IYJRS41MKB30QENKB,Click,Navigation,iOS App,iOS,,4.0.1,/products,Productos,view_products,products_page,,,,192.0.2.77,México,Puebla,True,,,,

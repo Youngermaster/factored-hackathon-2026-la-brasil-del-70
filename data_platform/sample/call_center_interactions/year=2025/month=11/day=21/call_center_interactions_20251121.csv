@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-BOCU281HMS1HEW5N,2025-11-21 21:58:15,2025-11-21,CLI-JHN3W46AKAVA,AGT-CVMX70X6Z4,Inbound Call,Phone,Técnico,Técnico,484.0,83.0,True,False,Neutral,-0.01,colombian,argentine,False,PRD-OT1PPLMU7NTS,False,True

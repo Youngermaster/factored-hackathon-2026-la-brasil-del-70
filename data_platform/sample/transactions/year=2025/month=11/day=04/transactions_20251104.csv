@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3FDL4ZJW4LCZBNPJTNFC,2025-11-04 11:52:28,2025-11-04,PRD-VGQSGACCL7UK,CLI-IMCRTKL094T5,Deposit,,2349.41,USD,,ATM,SUC-KKZOCIP3,,,México,,Approved,00,False,,,
+TRX-GOJPNT1P6NVBOBUC2I1A,2025-11-04 08:22:15,2025-11-04,PRD-U9SPV3HRCHVD,CLI-3XGV18QB96P9,Withdrawal,,164.81,USD,,App,,,,México,Monterrey,Approved,00,False,18.42,,
+TRX-NSLDNE954UE4NNL4P1RT,2025-11-04 18:34:11,2025-11-04,PRD-K8H3IGZDDBD5,CLI-IZX582QFYSNH,Deposit,,388561.18,ARS,1110.17,ATM,SUC-0N077NAM,,,Argentina,Córdoba,Approved,00,False,26.72,,

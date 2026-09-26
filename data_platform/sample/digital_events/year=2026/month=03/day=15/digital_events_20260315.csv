@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-R8Y3ZPUS6U31M629D9D0,2026-03-15 12:40:03,2026-03-15,CLI-AKACM6D5362F,SES-UJJNS2LL41UJ9EH27AKBHN2M2MI9,PageView,Product,Android App,Android,,2.9.3,/products/credit-card,Tarjeta de Crédito,view_product,cc_product,,,145.0,203.0.113.124,México,Ciudad de México,True,,,,

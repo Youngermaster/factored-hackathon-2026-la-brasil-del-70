@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-DEYQEDCXM88776J3L66P,2025-09-18 10:35:34,2025-09-18,PRD-D7JD396B6UQP,CLI-END66G0XIF95,Withdrawal,,323.97,USD,,Web,,,,México,Ciudad de México,Approved,00,False,15.61,,
+TRX-HKZHBKYG4WZ7G167NAXL,2025-09-19 04:56:52,2025-09-18,PRD-LCYDS0GGEJY1,CLI-3XGV18QB96P9,Deposit,,3583.88,USD,,ATM,SUC-SFEFYC6O,,,México,Monterrey,Approved,00,False,20.04,-0.5691249,-0.2798637
+TRX-M2700KG3NA3WRKAQZZYD,2025-09-19 05:50:23,2025-09-18,PRD-3AITDB3MSAZP,CLI-1DC1593XLI10,Deposit,,2057.66,USD,,POS,,,,México,,Approved,00,False,13.65,,
+TRX-PCR9M3LSB35U7QT0FTOK,2025-09-18 21:16:09,2025-09-18,PRD-EG3OR9572TN1,CLI-898HYDPSE4K6,Withdrawal,,281.98,USD,,Web,,,,México,Guadalajara,Approved,00,False,1.67,,
+TRX-SQTAA7LDTQHN0X2AQ1X7,2025-09-18 10:22:07,2025-09-18,PRD-HLYKD4IMAN2I,CLI-KKSHE4CEJ1IT,Purchase,Entertainment,402492.61,COP,100.62,App,,Conciertos Live,Entertainment,Colombia,Cali,Approved,00,False,25.05,,

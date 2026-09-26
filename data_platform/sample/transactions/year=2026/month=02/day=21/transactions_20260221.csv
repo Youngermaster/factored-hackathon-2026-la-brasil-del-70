@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-7H4CJ3YEWGIX4YHP50UB,2026-02-21 06:53:00,2026-02-21,PRD-U0YYWRU0JEEI,CLI-9MNRLM8SP9QI,Withdrawal,,82.06,USD,,POS,,,,México,Ciudad de México,Approved,00,False,12.89,,
+TRX-9F3WUOJ8KN3BZRFFSHW5,2026-02-22 04:18:53,2026-02-21,PRD-HVNGK4YXZUS5,CLI-7P0ZUEV7Y4EH,Withdrawal,,334.84,USD,,POS,,,,México,Puebla,Approved,00,False,10.06,0.0405885,0.2953996
+TRX-JHUSB95FFPIFE3S922CK,2026-02-21 20:58:51,2026-02-21,PRD-H4DCLYJJ62SW,CLI-5L6EGAWYR2Q2,Purchase,Other,157246.44,ARS,449.28,POS,,Boutique Moda,Other,Argentina,Córdoba,Approved,00,False,0.23,-35.1035621,-59.1398625

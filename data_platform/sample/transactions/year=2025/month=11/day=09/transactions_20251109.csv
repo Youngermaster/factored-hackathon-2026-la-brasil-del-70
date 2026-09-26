@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-AFPUHVD236J08C1NPU1B,2025-11-09 10:39:50,2025-11-09,PRD-W23AA9WQQYUM,CLI-1PQOJNHN9ASF,Withdrawal,,152.61,USD,,Web,,,,México,Tijuana,Pending,14,False,28.15,,

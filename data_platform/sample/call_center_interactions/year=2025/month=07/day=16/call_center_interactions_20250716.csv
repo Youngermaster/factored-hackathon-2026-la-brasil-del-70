@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-D698EB805VJ5LNYH,2025-07-17 02:26:36,2025-07-16,CLI-TJIM7P52K5F7,AGT-XFI8BBQDEY,Inbound Call,Phone,Transaccional,Transaccional,262.0,26.0,True,False,Neutral,-0.25,mexican,mexican,False,,False,True

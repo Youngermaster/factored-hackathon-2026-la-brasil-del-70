@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-D8ZOC95O2VWEYV7Y5IDK,2026-03-09 12:09:49,2026-03-09,PRD-I0RKLACMCQSD,CLI-KDRMF6UI68X1,Payment,Food,335.4,USD,,POS,,,,México,Monterrey,Approved,00,False,26.63,0.2411902,-0.3283997
+TRX-ITZMW4IKFE4YWGJMX260,2026-03-09 18:53:44,2026-03-09,PRD-H1DSUO9VXK9H,CLI-S21M6QBBQ32X,Withdrawal,,46824.11,ARS,133.78,Web,,,,Argentina,Rosario,Approved,00,False,5.87,,
+TRX-JRSP1J2GOCXXL28AENJY,2026-03-09 22:08:40,2026-03-09,PRD-6D7E5ILZ8XI5,CLI-TJIM7P52K5F7,Purchase,Entertainment,253.01,USD,,ATM,SUC-RF3372LI,Teatro Nacional,Entertainment,México,Guadalajara,Approved,00,False,3.84,0.6783298,0.7602902

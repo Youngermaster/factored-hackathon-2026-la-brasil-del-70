@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-IM4Y5ALFELUD0CS7MWXH,2025-09-12 05:11:43,2025-09-11,PRD-DD31UBZ7Z3KG,CLI-3LBRN1SGWSLJ,Purchase,Services,63.51,USD,,Web,,Cable TV,Services,México,Monterrey,Approved,00,False,16.03,,
+TRX-L1RIOX9MSD2ETJKSSPP5,2025-09-11 08:03:06,2025-09-11,PRD-1JMI57ZE86FN,CLI-NOC612SZ8VKJ,Deposit,,15619021.6,COP,3904.76,ATM,SUC-AXEH5GB0,,,Colombia,Cali,Approved,00,False,,,
+TRX-LPSWVUPKPTO9M1Y2HM0N,2025-09-11 12:55:03,2025-09-11,PRD-GFAT7F4QBKJS,CLI-KDRMF6UI68X1,Transfer,,2882.65,USD,,POS,,,,México,Monterrey,Approved,00,False,25.86,,
+TRX-YBL3ZVAJRNHTKIBDGKMC,2025-09-12 02:17:41,2025-09-11,PRD-KA2VRTUQG3JR,CLI-K0GJBJFDKIBO,Deposit,,6938579.73,COP,1734.64,POS,,,,Colombia,,Approved,00,False,,,

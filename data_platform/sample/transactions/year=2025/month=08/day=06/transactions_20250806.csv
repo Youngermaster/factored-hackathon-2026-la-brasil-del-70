@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-24GX2S0YTJOS9BPNW5NV,2025-08-06 08:32:32,2025-08-06,PRD-FQ1L1Y6064V2,CLI-C0RXL4J0SXGR,Withdrawal,,437.69,USD,,POS,,,,México,Tijuana,Approved,00,False,,,
+TRX-7GS4XN3RIGSFW09HE6MD,2025-08-06 22:26:56,2025-08-06,PRD-9NHF15DY0HLK,CLI-J9EWXIOYWJ7R,Purchase,Other,226.33,USD,,ATM,,Centro Comercial,Other,México,Puebla,Approved,00,False,5.08,-0.86787,0.9704473
+TRX-JW745MNQO3AARSHATSPV,2025-08-06 21:37:09,2025-08-06,PRD-MEKDSNHCH6H5,CLI-TJIM7P52K5F7,Transfer,,9913.39,USD,,App,,,,México,Guadalajara,Approved,00,False,17.78,,

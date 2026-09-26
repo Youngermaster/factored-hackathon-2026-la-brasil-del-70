@@ -1,0 +1,4 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-7CH5TGZ3PXGQO191LMMG,INT-ARY08ZHTSX3SHTQN,2025-09-24,CLI-JRCTRZ2GTFG8,AGT-34TVYJH4ZG,"Cliente: Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+
+Agente: Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.","Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.","Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.",es,,0.98,"servicio, banco, cuenta","{""account_numbers"": 2, ""dates"": 1, ""amounts"": 1, ""products"": ""Cuenta Ahorro""}",consulta_general,Producto,Google STT,High,211.0

@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-P5F35PVU0K4O33BMNXYS,2025-11-20 12:46:32,2025-11-20,PRD-2TS623577SIL,CLI-DMSDCHOBUHLX,Withdrawal,,210.38,USD,,ATM,SUC-CUMTPAM3,,,México,Querétaro,Approved,,False,3.93,-0.5866619,0.5883501
+TRX-WW5S5M220144VBI0MO9W,2025-11-20 16:15:29,2025-11-20,PRD-P6L336LQ1NDM,CLI-ZJCPKZZRXUR8,Purchase,Food,85348.37,COP,21.34,POS,,Mercado Central,,Colombia,Medellín,Approved,00,False,16.95,5.6011921,-74.1718492

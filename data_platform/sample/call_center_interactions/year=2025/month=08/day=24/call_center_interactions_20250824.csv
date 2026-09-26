@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-QB2W6BFKRMUOUSSB,2025-08-24 21:40:20,2025-08-24,CLI-VHBEU7EEMIV1,AGT-VEXQ0NMZLH,Inbound Call,Phone,Transaccional,Transaccional,178.0,152.0,True,False,Neutral,-0.19,argentine,argentine,True,"PRD-BYIKS8DDP2PO,PRD-H4TU9T08F4W6",False,True

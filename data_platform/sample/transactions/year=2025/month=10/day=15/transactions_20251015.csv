@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-6HCJWLC57DZ6MRY9NN30,2025-10-15 13:25:51,2025-10-15,PRD-D7JD396B6UQP,CLI-END66G0XIF95,Transfer,,8301.43,USD,,App,,,,Argentina,Mendoza,Approved,00,False,11.33,,

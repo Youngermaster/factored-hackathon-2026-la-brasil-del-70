@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-R2KGV94J62EDRCRB,2025-08-02 01:38:55,2025-08-01,CLI-NOC612SZ8VKJ,AGT-PLUMVDKU8D,Inbound Call,Phone,Queja,Queja,781.0,48.0,True,True,Positivo,0.41,colombian,colombian,False,,False,True

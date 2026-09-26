@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-IKXARVGPL7D6JVXNYJAA,2026-02-27 20:52:54,2026-02-27,CMP-523WCPI68FFI,CLI-9MNRLM8SP9QI,Email,template_CMP-523WCPI68FFI_2,¡Oferta especial en Tarjeta Crédito!,Sent,True,True,2026-03-05 21:10:18,False,,,False,,,Mobile,México,,0.0032

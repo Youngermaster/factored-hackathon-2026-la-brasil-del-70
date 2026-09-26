@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-C1XJ9CD604W0ZJGGXA95,2025-08-20 01:14:37,2025-08-19,CMP-UCRYER19ZHCX,CLI-AKACM6D5362F,Email,template_CMP-UCRYER19ZHCX_5,¡Oferta especial en Préstamo Personal!,Sent,True,False,,False,,,False,,,,,,0.0097

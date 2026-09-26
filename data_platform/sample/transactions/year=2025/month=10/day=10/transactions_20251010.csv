@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CZMMIZ88SKS66BSKLW1N,2025-10-10 15:49:10,2025-10-10,PRD-KAS76D9EAK3G,CLI-7P0ZUEV7Y4EH,Payment,Food,535.73,USD,,POS,,,,México,Puebla,Approved,00,False,5.79,,
+TRX-Q5ASDTXP7QRMK6VK4RJ8,2025-10-10 11:07:26,2025-10-10,PRD-HPBG1LZ6SHYR,CLI-AMN80XXN1DT6,Transfer,,9638.14,USD,,POS,,,,México,Querétaro,Approved,00,False,3.62,,
+TRX-VKSG32PCHQ1FD1EW0PLQ,2025-10-10 16:58:38,2025-10-10,PRD-SF9H3ORL0QFL,CLI-AKACM6D5362F,Transfer,,7501.94,USD,,POS,,,,México,Ciudad de México,Approved,00,False,11.46,,
+TRX-ZB4ZWQLNCK6BSN0AGAS3,2025-10-10 21:44:19,2025-10-10,PRD-X5FSZQXZPPAJ,CLI-EJXBYCD0J96O,Payment,Services,685.67,USD,,ATM,,,,México,Puebla,Approved,00,False,4.4,0.8561929,

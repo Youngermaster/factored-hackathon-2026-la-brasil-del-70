@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-B5QIQTXF8CS6JTIH1250,2025-09-27 05:27:51,2025-09-26,CMP-QWHHVF2N0VIQ,CLI-UHMB1J1GBKG4,SMS,template_CMP-QWHHVF2N0VIQ_5,,Sent,True,True,2025-09-29 18:52:57,False,,,False,,,Mobile,Colombia,,

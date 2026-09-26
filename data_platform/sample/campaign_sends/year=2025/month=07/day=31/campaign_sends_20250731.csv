@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-18R2VGDOR3B2W1K55Y6W,2025-07-31 18:59:52,2025-07-31,CMP-8PAOSSK1JN2N,CLI-M78UJJ6XFNOT,WhatsApp,template_CMP-8PAOSSK1JN2N_1,,Sent,True,,,False,,,False,,,,,,0.026

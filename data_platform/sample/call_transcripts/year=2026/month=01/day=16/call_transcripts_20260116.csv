@@ -1,0 +1,8 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-ER6G0BMJ4BTP02XS52WX,INT-PZUSJRRJGYQ13Y7C,2026-01-16,CLI-DMSDCHOBUHLX,AGT-PX17SVBBET,"Cliente: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
+
+Agente: Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}.
+
+Cliente: Entiendo, muchas gracias.
+
+Agente: Claro, estoy para servirle.","Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito. Entiendo, muchas gracias.","Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}. Claro, estoy para servirle.",es,mexican,,"cuenta, servicio, banco","{""account_numbers"": 0, ""dates"": 1, ""amounts"": 0, ""products"": ""Cuenta Ahorro""}",consulta_general,Retención,AWS Transcribe,High,424.0

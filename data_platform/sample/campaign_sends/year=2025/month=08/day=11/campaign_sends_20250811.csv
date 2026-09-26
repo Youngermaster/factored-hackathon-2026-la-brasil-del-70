@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-WWIE7M8OXTIUTKQ5T283,2025-08-11 14:43:31,2025-08-11,CMP-QWHHVF2N0VIQ,CLI-SZ2W0R1BX8S0,SMS,template_CMP-QWHHVF2N0VIQ_3,,Sent,True,False,,False,,,False,,,,,,0.0713

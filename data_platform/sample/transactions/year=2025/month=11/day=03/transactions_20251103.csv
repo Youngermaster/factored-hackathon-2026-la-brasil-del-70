@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-HCJ17VVBHUMO4A9FHKAT,2025-11-03 10:09:31,2025-11-03,PRD-KW6U7QA6AVNU,CLI-VHBEU7EEMIV1,Payment,Health,137054.58,ARS,,Branch,SUC-C1OF9350,,,Argentina,Buenos Aires,Approved,00,False,19.81,,

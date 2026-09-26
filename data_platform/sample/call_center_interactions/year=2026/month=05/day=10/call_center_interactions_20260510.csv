@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-UN584JILG8XOT2DL,2026-05-10 22:55:43,2026-05-10,CLI-P2CRX7C6QTWG,AGT-HKU44IP108,Inbound Call,Phone,Comercial,Comercial,628.0,109.0,False,True,Neutral,0.14,mexican,mexican,False,"PRD-EG8P73DPFTJ4,PRD-W8T6OKA94C97",False,True

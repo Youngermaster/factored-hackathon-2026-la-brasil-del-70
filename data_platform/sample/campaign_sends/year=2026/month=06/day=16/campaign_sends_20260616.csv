@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-8872YUDD88VT5F5MOUK7,2026-06-17 04:46:54,2026-06-16,CMP-6OKFRSIF57LV,CLI-VU58CMFRCIP7,Email,template_CMP-6OKFRSIF57LV_2,¡Oferta especial en Inversión!,Sent,True,False,,False,,,False,,,,,,0.0038

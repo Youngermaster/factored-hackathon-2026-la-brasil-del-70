@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1I4JG9K7KHLP8PIX1VAW,2025-09-09 23:51:15,2025-09-09,PRD-AUH9G8MO202D,CLI-ZJCPKZZRXUR8,Transfer,,1100484.77,COP,275.12,Web,,,,Colombia,Medellín,Approved,00,False,,,
+TRX-FY8XIH77ZNLQ6QSH1XCU,2025-09-09 09:28:57,2025-09-09,PRD-KSTY237L1T0W,CLI-VZJTC6LU907T,Purchase,Entertainment,272.58,USD,,ATM,SUC-HFPBAT4U,,Entertainment,México,Guadalajara,Approved,00,False,29.08,,
+TRX-JH92PC7JF0KMF9OJ7ZR9,2025-09-09 22:23:25,2025-09-09,PRD-A4CEFW8538C1,CLI-AKACM6D5362F,Deposit,,1641.87,USD,,POS,,,,México,Ciudad de México,Approved,00,False,,,
+TRX-LZIAAURZ5OJ14NJTVPOQ,2025-09-09 12:07:13,2025-09-09,PRD-1NUA24WIW2XO,CLI-Q6CL8Y1VMVSB,Purchase,Food,135.66,USD,,ATM,SUC-I7CB5PA8,Super Ahorro,Food,Colombia,Barranquilla,Approved,00,False,7.6,,

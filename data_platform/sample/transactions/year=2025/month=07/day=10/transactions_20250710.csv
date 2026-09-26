@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-423ZBH8KW90CL68GRNJT,2025-07-10 11:27:40,2025-07-10,PRD-W0SEEA2Y41Q1,CLI-AKACM6D5362F,Deposit,,325.3,USD,,Web,,,,México,,Approved,00,False,,,
+TRX-PSWDBI5ENF9T9DROUYOM,2025-07-11 01:51:35,2025-07-10,PRD-FJB80FBRBO6Y,CLI-QZGUG3KBZ2ZG,Purchase,Health,90.57,USD,,ATM,SUC-JRR5Z8WK,Clínica Médica,Health,México,,Approved,00,False,7.79,,
+TRX-ZER44KDWIXOP8KPRAC29,2025-07-10 19:15:10,2025-07-10,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Payment,Services,599013.48,ARS,,ATM,SUC-39R34AY6,,,Argentina,Rosario,Approved,00,False,3.99,,

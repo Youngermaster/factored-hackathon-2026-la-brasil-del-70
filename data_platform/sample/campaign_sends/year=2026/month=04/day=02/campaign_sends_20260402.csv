@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-30065HOGQP3HUADSNNR6,2026-04-02 09:30:50,2026-04-02,CMP-0SCQMRQB1JT6,CLI-3XGV18QB96P9,SMS,template_CMP-0SCQMRQB1JT6_2,,Sent,True,False,,False,,,False,,,,,,
+SND-S5BF60GPC8QFJ5I9QVR3,2026-04-02 23:56:06,2026-04-02,CMP-YD17D0BT6OM8,CLI-KPSJJBMAOLO1,Email,template_CMP-YD17D0BT6OM8_4,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0017

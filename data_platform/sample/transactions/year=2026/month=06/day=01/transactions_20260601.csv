@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-01Z3FVAVD6QZ3TAEVVJS,2026-06-02 01:33:38,2026-06-01,PRD-EG3OR9572TN1,CLI-898HYDPSE4K6,Purchase,Transport,269.24,USD,,ATM,SUC-FGQWMFNS,Taxi Seguro,Transport,México,Guadalajara,Approved,00,False,28.72,0.1667712,0.9121641
+TRX-FRLH8925HVCR79WNHGWT,2026-06-01 08:57:40,2026-06-01,PRD-Y20OAK5VTXKM,CLI-DMSDCHOBUHLX,Withdrawal,,73.72,USD,,Transfer,,,,México,Querétaro,Approved,00,False,22.23,,
+TRX-NMDH920IP1361VQ60YKQ,2026-06-01 12:31:25,2026-06-01,PRD-A4CEFW8538C1,CLI-AKACM6D5362F,Payment,Entertainment,902.73,USD,,POS,,,,México,Ciudad de México,Approved,00,False,,0.3035178,-0.507286

@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-BPYPIACNB32KPJATU2G2,2025-12-12 06:37:47,2025-12-12,PRD-KTS7M76I4ESO,CLI-Q6CL8Y1VMVSB,Transfer,,38406692.42,COP,9601.67,ATM,SUC-A4SSWF0H,,,Colombia,Barranquilla,Approved,00,False,18.81,,
+TRX-R9DNP1KHUQG3P540F3ZG,2025-12-12 12:50:39,2025-12-12,PRD-4Q97UDZVE4MS,CLI-UHMB1J1GBKG4,Purchase,Food,1931212.92,COP,482.8,ATM,SUC-H24HUACK,Tienda Don José,Food,Colombia,Cali,Approved,00,False,16.02,,
+TRX-VOZO4LEC9JXAL8VNWRSM,2025-12-12 14:28:23,2025-12-12,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Transfer,,2120.32,USD,,App,,,,México,Guadalajara,Approved,00,False,,,

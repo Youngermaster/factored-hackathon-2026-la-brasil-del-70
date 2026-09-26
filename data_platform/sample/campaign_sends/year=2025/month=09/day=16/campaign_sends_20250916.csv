@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-29IJVQLVX2MEKCJGT3GK,2025-09-16 18:05:33,2025-09-16,CMP-VKP18A283AMD,CLI-UWPSMKLGJ4HM,Email,template_CMP-VKP18A283AMD_4,¡Oferta especial en Cuenta Ahorro!,Sent,True,False,,False,,,False,,,,,,0.005

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-FMPX117AUSDVLOFJ9G6I,2026-01-21 23:24:47,2026-01-21,CMP-523WCPI68FFI,CLI-TRFWX6YMZG7G,Email,,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0064

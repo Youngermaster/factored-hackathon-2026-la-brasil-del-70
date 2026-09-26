@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-2QZTZSFD0VA84YA48MFH,2026-02-02 21:12:28,2026-02-02,CLI-P22FY6SYK6NO,SES-86V265B72PWILIK89PQCBP5R2C9T,Login,Authentication,Android App,Android,,,/logout,Cerrar Sesión,,logout_btn,,,,192.0.2.174,Argentina,Mendoza,True,,,,
+EVT-JBPM5ZWT4M6X86QLHN7M,2026-02-02 21:13:29,2026-02-02,CLI-P22FY6SYK6NO,SES-86V265B72PWILIK89PQCBP5R2C9T,Logout,Authentication,Android App,Android,,3.9.8,/login,Iniciar Sesión,,login_form,,,,198.51.100.46,Argentina,Mendoza,True,,,,

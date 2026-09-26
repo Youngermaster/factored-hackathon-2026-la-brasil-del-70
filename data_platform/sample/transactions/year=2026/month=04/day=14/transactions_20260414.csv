@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5USTV6SZSSVC5NHZRZ3B,2026-04-14 16:28:49,2026-04-14,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Withdrawal,,626919.09,COP,156.73,ATM,SUC-HAC1OZ8F,,,Colombia,Bogotá,Approved,00,False,25.24,,

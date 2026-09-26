@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9AIZKVFPO5VLMEVTGPIZ,2026-06-14 11:31:13,2026-06-14,PRD-YWV4A7OL3R5I,CLI-AKACM6D5362F,Withdrawal,,164.5,USD,,ATM,SUC-JJT8C9XQ,,,Brazil,Salvador,Approved,00,False,,-0.0134638,0.2816731
+TRX-EAFVHSB9STUQHS40MW31,2026-06-15 00:51:01,2026-06-14,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Purchase,Services,261.15,USD,,POS,,Empresa Telefónica,Services,Colombia,Cali,Approved,00,False,3.59,,
+TRX-GZ2ADNI3SR4ZKHDQ7DOX,2026-06-15 05:06:29,2026-06-14,PRD-MTQSJIKIC9MK,CLI-TRFWX6YMZG7G,Transfer,,35108389.79,COP,8777.1,ATM,,,,Colombia,,Approved,00,False,,,
+TRX-TAWDMBLWSYMPVQYSLNR6,2026-06-14 17:19:01,2026-06-14,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Payment,Services,1978.57,USD,,ATM,SUC-SKR8GS10,,,México,Guadalajara,Approved,,False,24.3,-0.595334,-0.9840794

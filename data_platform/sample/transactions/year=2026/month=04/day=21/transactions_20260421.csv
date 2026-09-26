@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9AGQ3Y9BPH2F6Y5LKJOL,2026-04-21 21:21:13,2026-04-21,PRD-HVNGK4YXZUS5,CLI-7P0ZUEV7Y4EH,Payment,,761.61,USD,,ATM,SUC-8GXP9TIM,,,México,Puebla,Approved,00,False,25.9,,

@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-605SMLLM00NXZFQ6G2V6,2026-06-08 21:08:15,2026-06-08,PRD-73R0SSM38Y1K,CLI-YC4WNTUC93XN,Withdrawal,,20389.81,ARS,58.26,ATM,SUC-10TO2Y3U,,,Argentina,Buenos Aires,Approved,00,False,29.35,,
+TRX-COBFLANLJCDW3H1O8158,2026-06-08 12:35:32,2026-06-08,PRD-R0IP9I97ABLL,CLI-NOC612SZ8VKJ,Withdrawal,,153137.55,COP,38.28,POS,,,,Colombia,Cali,Approved,00,False,23.74,,
+TRX-I6G6D9PY4T2REZVR5HYO,2026-06-08 22:22:30,2026-06-08,PRD-CUEBWSK3Y08V,CLI-VHBEU7EEMIV1,Withdrawal,,16747.89,ARS,47.85,POS,,,,Argentina,Buenos Aires,Approved,00,False,,,
+TRX-Q10DVYDVG657J5X8UH65,2026-06-08 12:20:12,2026-06-08,PRD-YQQ674NN35JQ,CLI-ZJCPKZZRXUR8,Purchase,Other,967001.57,COP,241.75,ATM,SUC-H2ROE7C8,Centro Comercial,Other,Colombia,Medellín,Approved,,False,17.5,,

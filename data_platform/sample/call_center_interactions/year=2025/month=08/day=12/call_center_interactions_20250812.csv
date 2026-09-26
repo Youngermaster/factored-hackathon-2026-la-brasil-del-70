@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-729TDY7YCH5ZCOAZ,2025-08-12 11:20:36,2025-08-12,CLI-VZJTC6LU907T,AGT-ZVS0XWYET1,Inbound Call,Phone,Transaccional,Transaccional,130.0,195.0,True,True,Neutral,-0.2,,,False,,False,True

@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-LJL81564LD9VF97HH01O,2025-07-08 06:10:46,2025-07-08,CLI-IZX582QFYSNH,SES-7BTJFTA3JXAKU55M9C8W1WUAS77R,Logout,Authentication,Desktop Web,Linux,Safari,,/logout,Cerrar Sesión,logout,,,,,192.0.2.124,Argentina,Córdoba,False,,,,

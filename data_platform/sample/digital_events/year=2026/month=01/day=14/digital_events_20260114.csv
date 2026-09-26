@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-CYRWU8WKQZ53ZQBUY2Q2,2026-01-14 10:47:56,2026-01-14,CLI-1DC1593XLI10,SES-O3LWSTSCH5HIKSXJ8OJAOVCWLNZO,Logout,Authentication,Android App,Android,,3.1.2,/logout,,logout,logout_btn,,,,192.0.2.116,México,Monterrey,True,,,,

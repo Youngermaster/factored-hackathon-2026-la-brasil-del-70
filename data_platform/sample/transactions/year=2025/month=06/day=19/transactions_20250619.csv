@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-EUARCKVZH96KKYLOLMDS,2025-06-19 11:52:52,2025-06-19,PRD-1JMI57ZE86FN,CLI-NOC612SZ8VKJ,Transfer,,38927264.49,COP,9731.82,App,,,,Colombia,,Approved,00,False,14.42,,
+TRX-RG0PACW68D2VSQV9A4NA,2025-06-19 12:43:39,2025-06-19,PRD-PNC66PY0CYPP,CLI-CTY661KC9RAS,Transfer,,27381212.36,COP,6845.3,ATM,SUC-6NKYKKQR,,,Colombia,Medellín,Approved,00,False,20.69,3.7470155,-74.5316328

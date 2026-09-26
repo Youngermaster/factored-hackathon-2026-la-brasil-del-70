@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-B75QH24Q41A4Y829YC0P,2025-11-14 20:35:23,2025-11-14,PRD-9FETOE2N31SC,CLI-U8JZASBAZZ8W,Withdrawal,,88.52,USD,,Web,,,,México,Tijuana,Approved,00,False,14.76,,
+TRX-EC18BY8LZLVG5K1U7VIK,2025-11-14 16:11:30,2025-11-14,PRD-9HIQLRR3F9Y1,CLI-CGS8YGQUFDAN,Transfer,,18219664.38,COP,4554.92,POS,,,,Colombia,Barranquilla,Approved,00,False,19.21,5.3523327,-74.6022355
+TRX-P1SK0FWOP9P2EIO0GQ5I,2025-11-14 18:08:11,2025-11-14,PRD-18FMCIAXL72C,CLI-OTYTZE2FLKFL,Purchase,Other,87.2,USD,,POS,,Centro Comercial,Other,México,Tijuana,Approved,00,False,,,
+TRX-XSL0ZK98LK7EMD1B7VTH,2025-11-14 17:52:02,2025-11-14,PRD-C5JJU5E2LIF9,CLI-P2CRX7C6QTWG,Transfer,,2781.2,USD,,POS,,,,México,Puebla,Approved,00,False,24.56,,
+TRX-YG2A3W651EWURSLGCRUW,2025-11-14 22:47:21,2025-11-14,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Transfer,,3018567.13,ARS,8624.48,ATM,SUC-571XLYQB,,,Argentina,Córdoba,Approved,00,False,11.98,,

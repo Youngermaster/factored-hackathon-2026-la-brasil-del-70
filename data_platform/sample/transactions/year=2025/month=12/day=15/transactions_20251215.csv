@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9TJLWLKQ94QGEZOV5EAD,2025-12-15 09:12:03,2025-12-15,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Purchase,Services,71212.18,ARS,203.46,ATM,SUC-115U74JL,Servicios Públicos,Services,Argentina,Rosario,Approved,00,False,4.15,-35.4738763,-57.4300018
+TRX-D9YCQV5C70852W5M64NM,2025-12-15 11:52:09,2025-12-15,PRD-SJZANIHFDNPM,CLI-9MNRLM8SP9QI,Withdrawal,,93.36,USD,,POS,,,,Colombia,Cali,Approved,00,False,10.77,,

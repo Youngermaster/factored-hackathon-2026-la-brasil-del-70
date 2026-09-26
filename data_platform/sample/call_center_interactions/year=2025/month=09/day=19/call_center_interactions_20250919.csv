@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-GO4J632IBA3QRFYK,2025-09-19 18:43:20,2025-09-19,CLI-J9EWXIOYWJ7R,AGT-PX17SVBBET,Video,Web,Transaccional,Transaccional,402.0,,True,False,Neutral,0.01,mexican,mexican,True,,False,True
+INT-VAEQ1PYY92P25XUY,2025-09-20 02:19:04,2025-09-19,CLI-OTYTZE2FLKFL,AGT-VM8IH2LFKP,Inbound Call,Phone,Retención,Retención,520.0,137.0,False,True,Muy Negativo,-0.97,mexican,mexican,False,,False,True

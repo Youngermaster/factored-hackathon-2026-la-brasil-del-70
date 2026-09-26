@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-NY47QTBFVIH8AOERBUKZ,2026-01-22 20:02:27,2026-01-22,CLI-1DC1593XLI10,SES-CLNMFUSW80C4FQA3U9731XN0PFPJ,FormSubmit,Transaction,iOS App,iOS,,1.6.1,,Transferir,initiate_transfer,transfer_form,,4924.25,,198.51.100.250,México,Monterrey,True,,,,

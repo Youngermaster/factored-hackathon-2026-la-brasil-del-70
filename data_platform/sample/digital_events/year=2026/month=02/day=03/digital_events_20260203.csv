@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-KNW6YNHKRMKWAODNL210,2026-02-03 17:02:42,2026-02-03,CLI-NOC612SZ8VKJ,SES-Q28NXY4WBPY6A82CQL9GMRJ35WKL,Logout,Authentication,iOS App,iOS,,4.3.7,/login,Iniciar Sesión,login,login_form,,,,198.51.100.67,Colombia,Cali,True,,,,

@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-WWK3SZ7SGEZ8SR0UTAIY,2026-03-10 11:40:11,2026-03-10,CLI-IX877AHQ2942,SES-7FC4REQXSS94I1U7I8V1UL50RNDR,Click,Navigation,Desktop Web,Windows,Chrome,,/home,Inicio,view_home,home_page,,,,192.0.2.102,México,Puebla,False,,,,

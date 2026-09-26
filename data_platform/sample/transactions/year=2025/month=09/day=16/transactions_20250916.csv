@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-O4V9VCRBU5TPSEH6LUT6,2025-09-16 12:53:35,2025-09-16,PRD-9NHF15DY0HLK,CLI-J9EWXIOYWJ7R,Purchase,Services,483.9,USD,,ATM,SUC-6RHR3MME,Internet Plus,Services,México,Puebla,Pending,54,False,29.21,,
+TRX-SDT73DS1BQ6OT2DTGTXY,2025-09-16 18:09:10,2025-09-16,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Withdrawal,,447.6,USD,,ATM,SUC-SUAMAVYV,,,México,Querétaro,Approved,00,False,5.16,0.1068197,0.6954897

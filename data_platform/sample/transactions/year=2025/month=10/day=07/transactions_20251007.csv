@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-QCGO5X07YMNW9Z6DJDHN,2025-10-08 00:35:32,2025-10-07,PRD-FZL0CHC2XU4Z,CLI-SZ2W0R1BX8S0,Deposit,,10047412.2,COP,2511.85,ATM,SUC-01J639PQ,,,Colombia,Bogotá,Approved,00,False,10.48,3.7688858,-74.6275989
+TRX-ZQJVULGVT0BMCFPXJE9A,2025-10-08 04:36:12,2025-10-07,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Purchase,Services,44824.9,ARS,128.07,Web,,Servicios Públicos,Services,Argentina,Córdoba,Approved,00,False,11.54,,

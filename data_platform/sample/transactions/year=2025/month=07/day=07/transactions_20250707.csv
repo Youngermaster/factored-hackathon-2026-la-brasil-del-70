@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0F250ZY9O5GD0JVOVVYY,2025-07-07 06:40:55,2025-07-07,PRD-DLLCBU9CNNTF,CLI-OTYTZE2FLKFL,Payment,Food,1651.66,USD,,POS,,,,México,Tijuana,Approved,00,False,,,

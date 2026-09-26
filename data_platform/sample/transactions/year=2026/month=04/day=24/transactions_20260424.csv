@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0PQ58RAFIYEXF73U6UR0,2026-04-25 05:46:43,2026-04-24,PRD-R0IP9I97ABLL,CLI-NOC612SZ8VKJ,Deposit,,17961008.34,COP,4490.25,Web,,,,Colombia,Cali,Approved,00,False,18.42,,
+TRX-D697KUA6TF3JJL43BZMC,2026-04-25 01:04:11,2026-04-24,PRD-90JNLYT1FQAP,CLI-1AS0INHPK43M,Purchase,Services,203.33,USD,,POS,,Empresa Telefónica,Services,México,Querétaro,Approved,00,False,16.2,0.8448841,0.8045375
+TRX-KY9NOLHKTDLEKIGV4BOX,2026-04-24 12:17:06,2026-04-24,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Deposit,,1109.16,USD,,POS,,,,México,Querétaro,Approved,00,False,,,
+TRX-P2A8O069WJ2I6JHBQKAQ,2026-04-25 01:17:28,2026-04-24,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Purchase,Health,304.9,USD,,Web,,Clínica Médica,Health,Colombia,Cali,Approved,00,False,15.81,,
+TRX-V8PWWF3YITKBRR2YENHH,2026-04-24 12:52:56,2026-04-24,PRD-IRPW2E27DXWK,CLI-NOC612SZ8VKJ,Withdrawal,,749581.4,COP,187.4,POS,,,,Colombia,Cali,Approved,00,False,6.42,,
+TRX-W99V2D9ZKUN88L91L3L7,2026-04-24 15:47:59,2026-04-24,PRD-OB1ZSVSO4LSD,CLI-RKIFX1G2SP3M,Purchase,Transport,354.28,USD,,POS,,Gasolinera Express,Transport,México,Ciudad de México,Approved,00,False,3.11,,

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-QZ6NAFKHHHB8TLXZTHML,2025-10-24 22:15:26,2025-10-24,CMP-QWHHVF2N0VIQ,CLI-NSTPTDK3BPGH,SMS,template_CMP-QWHHVF2N0VIQ_4,,Sent,True,True,2025-10-25 22:51:23,False,,,False,,,Desktop,Argentina,,0.0946

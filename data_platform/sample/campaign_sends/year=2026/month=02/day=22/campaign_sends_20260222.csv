@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-TICO03UB7OOQUIM6XQER,2026-02-22 07:55:43,2026-02-22,CMP-0SCQMRQB1JT6,CLI-R53C8RPXD32P,SMS,template_CMP-0SCQMRQB1JT6_5,,Sent,True,True,2026-02-26 11:46:11,True,2026-02-26 11:50:34,4.0,False,,,Desktop,Colombia,,0.0725

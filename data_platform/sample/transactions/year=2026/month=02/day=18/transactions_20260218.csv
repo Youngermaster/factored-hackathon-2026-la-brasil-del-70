@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-H5Z9WEJHHUOC7EC347N0,2026-02-19 00:02:00,2026-02-18,PRD-DIDXZB6DYPSB,CLI-CTY661KC9RAS,Transfer,,8671679.12,COP,2167.92,ATM,SUC-OGCB7RT2,,,Colombia,Medellín,Approved,00,False,0.58,4.1251782,-73.8698623
+TRX-NICOL6V70DHQXD0C7R31,2026-02-19 03:03:57,2026-02-18,PRD-SC8CNIZ2051Z,CLI-EJXBYCD0J96O,Transfer,,5727.65,USD,,ATM,SUC-I8M9CS2Y,,,México,Puebla,Approved,00,False,20.77,-0.4940263,-0.5042044
+TRX-QGRBV9NN84HS2379OHUI,2026-02-18 10:12:38,2026-02-18,PRD-80A6GGEE741P,CLI-4QR1L5H7FKTD,Deposit,,1219.51,USD,,POS,,,,Colombia,Medellín,Approved,00,False,11.94,4.5785068,-74.6053371
+TRX-TXRKQ2XK7VRBSZJVGOQK,2026-02-18 12:21:06,2026-02-18,PRD-DCO6NUOXQ046,CLI-P22FY6SYK6NO,Purchase,Services,119774.11,ARS,342.21,POS,,Servicios Públicos,Services,Argentina,Mendoza,Approved,00,False,26.72,,

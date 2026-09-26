@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-APAWEO4NXVLDHCK4UN54,2025-06-20 00:09:42,2025-06-19,CMP-5S6E6XSEOQ85,CLI-N9ZXVIIXZ6JN,SMS,template_CMP-5S6E6XSEOQ85_3,,Sent,True,True,2025-06-20 23:26:29,False,,,False,,,Mobile,Argentina,,0.0715

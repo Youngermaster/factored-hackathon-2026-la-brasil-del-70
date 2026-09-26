@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-4IU89U1DD17IBJ39ZVN4,2025-10-01 17:25:03,2025-09-30,INT-8DZU56NEI9YTRUCC,CLI-AKACM6D5362F,AGT-5ANM4NA6WN,CSAT,SMS,4,,,,¿El tiempo de espera fue aceptable?,5.0,,,,,19.08,25.53

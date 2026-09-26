@@ -1,0 +1,11 @@
+survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-0HYS310B3LTCZT6Z3GCG,2026-04-10 03:56:34,2026-04-09,INT-VDARVTHGQJ40K1TX,CLI-6VCS2LIRSE4Y,AGT-WTHHY9FLGT,CSAT,Email,3,,¿Cómo calificaría la atención brindada?,1.0,¿El tiempo de espera fue aceptable?,,,,El agente no fue muy claro en sus explicaciones.,Negative,18.35,31.79
+SRV-17ZNMOOSHKXA6NV83AZO,2026-01-16 07:24:03,2026-01-15,INT-WNUBK9O7YY0K6RF8,CLI-FKPNY8NAT22F,AGT-R1TFEUGKSY,CSAT,SMS,4,,¿El agente resolvió su consulta satisfactoriamente?,1.0,,,,,,,21.45,25.1
+SRV-1UXTY69MNBHTQ27L1IAT,2025-07-19 07:49:05,2025-07-18,INT-JVUP8O45QCV9GUX9,CLI-IZX582QFYSNH,AGT-JPMUUWJV12,CSAT,App,3,,,,,,,,,,22.28,35.61
+SRV-38FFMQI5XBREXWLU7EJF,2025-09-21 08:19:29,2025-09-20,INT-KAVBNDGUCJIMOGNF,CLI-Q6CL8Y1VMVSB,AGT-9PZ6W3LDGU,CSAT,Email,3,,,,¿El tiempo de espera fue aceptable?,1.0,,,,,6.13,17.21
+SRV-3B82PVB76GP6PHY39918,2025-12-14 09:44:27,2025-12-13,INT-P9SCRL9VFRV1ONO0,CLI-ODH9G3RG7J9J,AGT-PE3Z64L6KA,CES,SMS,3,,,,,,,,El agente no fue muy claro en sus explicaciones.,Negative,7.21,29.58
+SRV-4IU89U1DD17IBJ39ZVN4,2025-10-01 17:25:03,2025-09-30,INT-8DZU56NEI9YTRUCC,CLI-AKACM6D5362F,AGT-5ANM4NA6WN,CSAT,SMS,4,,,,¿El tiempo de espera fue aceptable?,5.0,,,,,19.08,25.53
+SRV-4OCRR6HGXZCGTIXPYZRG,2026-03-11 11:53:27,2026-03-10,INT-JFF34LBGYFDGOS3G,CLI-1PQOJNHN9ASF,AGT-JI2PI1E2KY,NPS,Web,7,Passive,¿El agente resolvió su consulta satisfactoriamente?,3.0,,,,,Aceptable.,Neutral,19.63,26.85
+SRV-59ISW1SE1FL14NL5PS9A,2026-03-04 21:04:59,2026-03-04,INT-JZO5CMS903PAEW2J,CLI-KPSJJBMAOLO1,AGT-HVHI1T24CL,NPS,Web,7,Passive,¿El agente resolvió su consulta satisfactoriamente?,3.0,¿El tiempo de espera fue aceptable?,5.0,,,,,10.83,39.17
+SRV-5SJSZX1NC27XBCBKFNAG,2025-08-25 21:55:43,2025-08-25,INT-UMPL8QW75NVGKAN0,CLI-H6OV6I0CT5IX,AGT-GF86DSKF59,CSAT,SMS,3,,¿Cómo calificaría la atención brindada?,3.0,,,,,,,20.96,19.55
+SRV-64UK7FRY1AVRLLC6EIWQ,2026-01-18 18:51:35,2026-01-18,INT-WNFUNEK70DI2K6MU,CLI-P22FY6SYK6NO,AGT-G4VQ2XMN69,CSAT,Email,3,,,,,,¿Volvería a contactarnos por este canal?,4.0,Tardaron mucho en atenderme.,Negative,11.97,31.36

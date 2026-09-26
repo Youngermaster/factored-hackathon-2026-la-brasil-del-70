@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-RAD92XU01N32LFHK,2026-02-19 08:47:25,2026-02-19,CLI-TRFWX6YMZG7G,AGT-BHMTTUAA05,Inbound Call,Phone,Transaccional,Transaccional,191.0,159.0,True,False,Neutral,-0.2,,,False,,False,True

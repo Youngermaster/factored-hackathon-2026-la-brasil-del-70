@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-SGM4WQAGR3BWHULT0ZUY,2026-03-30 14:13:05,2026-03-30,CLI-5N42HUM8D4H6,SES-3TIPT9022UCN5HAJSH8TPEG3JYLM,Login,Authentication,iOS App,iOS,,2.5.3,/logout,Cerrar Sesión,logout,logout_btn,,,,198.51.100.76,Argentina,Rosario,True,,,,

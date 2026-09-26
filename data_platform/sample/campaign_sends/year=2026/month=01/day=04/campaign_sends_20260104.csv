@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-SB487R2MP2HLS2LHXG4W,2026-01-04 22:30:49,2026-01-04,CMP-L08OUL0RTKR6,CLI-898HYDPSE4K6,Push,template_CMP-L08OUL0RTKR6_4,,Sent,True,False,,False,,,False,,,,,,0.0008

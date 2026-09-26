@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-AL2GWJCIW9GUJ93693G0,2025-07-31 23:36:53,2025-07-31,CLI-IX877AHQ2942,SES-SO4G2ESON4VFDC43U3UESE2YGWM2,Click,Navigation,iOS App,iOS,,5.9.0,/help,Ayuda,view_help,help_page,,,,192.0.2.64,México,Puebla,True,,,,

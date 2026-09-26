@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8T7DEDNW6Y8YECE6L2JN,2026-02-21 01:41:04,2026-02-20,PRD-5ZMDTA6SDJEP,CLI-AKACM6D5362F,Withdrawal,,385.41,USD,,POS,,,,México,Ciudad de México,Approved,00,False,3.64,,
+TRX-ERL75OAIU5V9665HK8MD,2026-02-20 14:20:15,2026-02-20,PRD-KW6U7QA6AVNU,CLI-VHBEU7EEMIV1,Purchase,Other,164546.1,ARS,470.13,ATM,SUC-F321UEME,Boutique Moda,,Brazil,Rio de Janeiro,Approved,00,False,29.6,-33.8813969,-57.5221031
+TRX-YUHF42TD0KA92KK3CNBU,2026-02-20 12:43:40,2026-02-20,PRD-9V9RN2VYGM2G,CLI-6VCS2LIRSE4Y,Withdrawal,,997833.95,COP,249.46,ATM,SUC-JZCA1ZND,,,Colombia,Medellín,Approved,00,False,25.22,,
+TRX-Z8XXXH3FQ11C11UUX1TQ,2026-02-20 06:09:21,2026-02-20,PRD-72GSV5VILCOP,CLI-CGS8YGQUFDAN,Withdrawal,,830215.66,COP,207.55,POS,,,,Brazil,Salvador,Approved,00,False,0.45,,

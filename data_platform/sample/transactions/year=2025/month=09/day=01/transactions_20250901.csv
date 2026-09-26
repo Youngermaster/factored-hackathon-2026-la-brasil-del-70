@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-NDN4S91587A763T9POP1,2025-09-01 17:49:30,2025-09-01,PRD-WC92L94JI6U3,CLI-IX877AHQ2942,Transfer,,5029.75,USD,,App,,,,México,Puebla,Approved,00,False,11.34,,

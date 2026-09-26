@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-919Q53PYXN77ZUFAF0AN,2025-08-12 06:51:15,2025-08-12,PRD-90JNLYT1FQAP,CLI-1AS0INHPK43M,Payment,Services,1287.73,USD,,Web,,,,México,Querétaro,Approved,00,False,23.01,,

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-A88EDKUY19NDO56Q9Y6T,2026-03-19 00:41:47,2026-03-18,CMP-0SCQMRQB1JT6,CLI-TP8JBA2IK7EJ,SMS,template_CMP-0SCQMRQB1JT6_4,,Sent,True,False,,False,,,False,,,,,,0.1141

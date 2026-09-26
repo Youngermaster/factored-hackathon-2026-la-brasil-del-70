@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-2TQZD3H5ZDBDAZBH,2025-12-15 20:23:53,2025-12-15,CLI-7A9F4VIGPO6R,AGT-K11V6ZB5VS,Inbound Call,Phone,Transaccional,Transaccional,202.0,39.0,False,True,Neutral,-0.28,,,False,"PRD-9OFN4CQW9XDK,PRD-7SN4IBC85JA3",False,True

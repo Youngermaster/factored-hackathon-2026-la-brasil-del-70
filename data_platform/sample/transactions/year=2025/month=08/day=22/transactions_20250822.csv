@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5ORPLAPYD3W741NRF403,2025-08-23 01:47:29,2025-08-22,PRD-NLZ79H62LNBZ,CLI-FY5RJI3Q5D6U,Withdrawal,,163.98,USD,,ATM,SUC-Q9LRLZTA,,,México,Puebla,Approved,00,False,,,
+TRX-B5HQLXKT7HOKKPNCKZ4L,2025-08-22 22:32:32,2025-08-22,PRD-1NUA24WIW2XO,CLI-Q6CL8Y1VMVSB,Purchase,Other,151.36,USD,,POS,,Boutique Moda,Other,Colombia,,Approved,00,False,2.08,,
+TRX-DMAPY4Z81GH08PS5WDBJ,2025-08-22 09:57:38,2025-08-22,PRD-EDWC4ZHWLINZ,CLI-YC4WNTUC93XN,Withdrawal,,79279.54,ARS,226.51,POS,,,,Argentina,Buenos Aires,Approved,00,False,7.4,,
+TRX-T2VXJOVXY96JGYX0E6RO,2025-08-22 16:17:44,2025-08-22,PRD-19LLTE6F5IEW,CLI-R53C8RPXD32P,Purchase,Health,194462.62,COP,48.62,ATM,SUC-VZIGM714,Óptica Visión,Health,Colombia,Barranquilla,Approved,00,False,,,

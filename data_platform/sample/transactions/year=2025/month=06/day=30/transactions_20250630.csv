@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-ETKN3DP9D4UNZ3PLKE7H,2025-06-30 07:43:01,2025-06-30,PRD-18FMCIAXL72C,CLI-OTYTZE2FLKFL,Purchase,Services,333.09,USD,,ATM,SUC-349TR6OC,Internet Plus,Services,México,Tijuana,Approved,00,False,9.18,,
+TRX-FN8KUA89579WA8LIONXN,2025-06-30 15:45:57,2025-06-30,PRD-HVNGK4YXZUS5,CLI-7P0ZUEV7Y4EH,Withdrawal,,281.74,USD,,ATM,SUC-TVNO2KL5,,,México,Puebla,Approved,00,False,,,
+TRX-GZN8V2D5CHCKZ6SPSUEI,2025-07-01 03:40:12,2025-06-30,PRD-EG3OR9572TN1,CLI-898HYDPSE4K6,Payment,Services,1698.6,USD,,ATM,SUC-8GXP9TIM,,,México,Guadalajara,Declined,54,False,7.31,,

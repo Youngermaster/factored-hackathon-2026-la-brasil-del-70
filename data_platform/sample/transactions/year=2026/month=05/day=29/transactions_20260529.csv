@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-4FNZNCF2EEU3BX546TDP,2026-05-30 03:06:54,2026-05-29,PRD-H6F1F3YENJIR,CLI-Y15WQL0D9JH4,Withdrawal,,163406.45,ARS,466.88,App,,,,Argentina,Buenos Aires,Approved,00,False,7.19,,
+TRX-7XC3W8LZ3572GNT4DF49,2026-05-29 20:14:03,2026-05-29,PRD-AUH9G8MO202D,CLI-ZJCPKZZRXUR8,Withdrawal,,479569.01,COP,119.89,POS,,,,Colombia,Medellín,Approved,00,False,23.48,5.3359814,-74.3112348
+TRX-OLUC47UBHZYLDXQ584IX,2026-05-29 23:01:22,2026-05-29,PRD-OSDOMQC8A1GW,CLI-EJXBYCD0J96O,Payment,Other,1338.63,USD,,Web,,,,México,Puebla,Approved,00,False,25.64,,

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-37OFRAQ6TGN2JRNMCNXN,2025-06-19 04:16:09,2025-06-18,CMP-5S6E6XSEOQ85,CLI-H6OV6I0CT5IX,WhatsApp,template_CMP-5S6E6XSEOQ85_4,,Sent,True,,,False,,,False,,,,,,0.0479

@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-VJEZYG15NFA89E031Q2Q,2026-06-01 03:52:05,2026-05-31,INT-DN68KKCL22KXB2ZY,CLI-CTY661KC9RAS,AGT-Z32DMC1N4A,NPS,Email,7,Passive,¿El agente resolvió su consulta satisfactoriamente?,3.0,,1.0,,,,,9.45,43.42

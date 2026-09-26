@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-J9GU1K59BKDW9IWSZF5M,2025-11-10 05:07:01,2025-11-09,CLI-NOC612SZ8VKJ,SES-CS0CLAEKSG4N39O5P3X9N1BISCJ3,PageView,Navigation,iOS App,iOS,,2.7.9,,Productos,view_products,products_page,,,102.0,192.0.2.119,Colombia,Cali,True,,,,
+EVT-VUOUHK7EP5G8AHFGWG24,2025-11-10 05:04:02,2025-11-09,CLI-NOC612SZ8VKJ,SES-CS0CLAEKSG4N39O5P3X9N1BISCJ3,Login,Authentication,iOS App,,,2.7.9,/logout,Cerrar Sesión,logout,logout_btn,,,,198.51.100.154,Colombia,Cali,True,https://email.marketing.com,,organic,new_users

@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-36IHE366XJSYLOB23XBL,2026-05-27 05:52:29,2026-05-26,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Purchase,Entertainment,111530.27,ARS,318.66,ATM,SUC-HBYNA6O6,Teatro Nacional,Entertainment,Argentina,Rosario,Declined,14,False,13.01,-34.2971063,-57.9774539
+TRX-KCKTOEGZIA88Q0R5RYTP,2026-05-27 00:46:40,2026-05-26,PRD-Q33HTSW9L1AE,CLI-END66G0XIF95,Transfer,,7786.64,USD,,ATM,,,,México,Ciudad de México,Approved,00,False,6.69,,
+TRX-QC4SGJ02MF01IIHUEHGZ,2026-05-26 22:24:19,2026-05-26,PRD-LCYDS0GGEJY1,CLI-3XGV18QB96P9,Transfer,,8725.5,USD,,POS,,,,México,Monterrey,Approved,00,False,26.82,,

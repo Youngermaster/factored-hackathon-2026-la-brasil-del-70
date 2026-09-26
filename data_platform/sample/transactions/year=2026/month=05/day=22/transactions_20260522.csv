@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0OPGVHUCO77RAK2D7H7U,2026-05-22 12:34:36,2026-05-22,PRD-KSTY237L1T0W,CLI-VZJTC6LU907T,Purchase,Health,357.37,USD,,POS,,Óptica Visión,Health,México,Guadalajara,Approved,00,False,1.67,,
+TRX-T61GELSTYCX4XI2V3DSZ,2026-05-22 14:07:39,2026-05-22,PRD-OB1ZSVSO4LSD,CLI-RKIFX1G2SP3M,Purchase,Other,131.66,USD,,ATM,SUC-0OJNMRLP,Tienda General,Other,México,,Approved,00,False,20.92,,
+TRX-YB38FPC8PHV4E2I0132I,2026-05-23 04:10:12,2026-05-22,PRD-YLTDK76CQS1N,CLI-UHMB1J1GBKG4,Transfer,,36436536.79,COP,9109.13,ATM,SUC-X57ITSKO,,,Colombia,Cali,Approved,00,False,12.92,,

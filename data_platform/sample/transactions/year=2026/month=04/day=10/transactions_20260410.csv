@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-K0UQQYWD1DTXQ4U3RLKO,2026-04-10 07:26:41,2026-04-10,PRD-U9SPV3HRCHVD,CLI-3XGV18QB96P9,Withdrawal,,458.38,USD,,ATM,SUC-TVNO2KL5,,,México,Monterrey,Approved,00,False,0.89,,
+TRX-T1TH3TCKB814402LCGP6,2026-04-10 19:04:29,2026-04-10,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Purchase,Transport,163710.11,ARS,467.74,Web,,Taxi Seguro,Transport,Argentina,Rosario,Reversed,14,False,4.49,,
+TRX-V2270YRJYT0LB7RVNMAV,2026-04-10 13:01:41,2026-04-10,PRD-Y9NH496IDU4N,CLI-VZJTC6LU907T,Withdrawal,,266.64,USD,,ATM,SUC-9W1MT1C4,,,México,Guadalajara,Approved,00,False,6.88,-0.5366701,-0.4401611

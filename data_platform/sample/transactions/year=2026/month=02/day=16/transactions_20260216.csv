@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-IJ36MU6EOHRCUH8NWQR5,2026-02-16 15:02:34,2026-02-16,PRD-57LZ4Y4KBJ4T,CLI-2LQL5P2NJS9B,Purchase,Food,192.33,USD,,POS,,Tienda Don José,Food,USA,Miami,Approved,00,False,10.92,0.5116529,-0.4454349
+TRX-P2G0982VVS59LAOYJ9EC,2026-02-16 19:13:24,2026-02-16,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Deposit,,3255.51,USD,,ATM,SUC-5FDGLKJX,,,México,Ciudad de México,Approved,00,False,,0.2955278,0.4413813
+TRX-YPNMDKCMPD2RNUQGTD7E,2026-02-16 23:05:58,2026-02-16,PRD-BGC7KENP311C,CLI-9MNRLM8SP9QI,Payment,Health,710.59,USD,,Web,,,,México,Ciudad de México,Approved,00,False,25.22,,
+TRX-Z5FWU8FF2LCVSSXRJFH1,2026-02-17 02:43:45,2026-02-16,PRD-UT1ZRNBI00C5,CLI-KKSHE4CEJ1IT,Withdrawal,,308257.82,COP,77.06,POS,,,,Colombia,Cali,Approved,00,False,3.73,3.7660178,-74.4954856

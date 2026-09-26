@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2Z9RC7Q1BZB0AELOW3HF,2025-08-09 19:13:44,2025-08-09,PRD-FQ1L1Y6064V2,CLI-C0RXL4J0SXGR,Withdrawal,,415.22,USD,,Branch,SUC-Y18NE8GS,,,México,Tijuana,Approved,00,False,4.86,-0.6368381,-0.477275
+TRX-MWP1OKCF562HIIF0Q5A3,2025-08-10 00:08:54,2025-08-09,PRD-P1QA1JICBGAH,CLI-WKR4P95O4ZKE,Deposit,,601.0,USD,,Web,,,,México,Guadalajara,Approved,00,False,29.16,,
+TRX-RRTKYMOGQVP86246O2VE,2025-08-09 11:17:00,2025-08-09,PRD-4Q97UDZVE4MS,CLI-UHMB1J1GBKG4,Purchase,Transport,1915653.72,COP,478.91,Web,,Uber,Transport,Colombia,Cali,Approved,00,False,25.56,,

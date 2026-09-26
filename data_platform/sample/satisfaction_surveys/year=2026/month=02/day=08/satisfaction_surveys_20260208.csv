@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-VGBRWDDGTUK74RV7QSXB,2026-02-09 05:15:20,2026-02-08,INT-5XQO800RRVA06VH7,CLI-QZGUG3KBZ2ZG,AGT-T8LM02ABDZ,CES,Email,2,,¿Qué tan satisfecho está con el servicio recibido?,1.0,¿El tiempo de espera fue aceptable?,2.0,,,,,21.86,

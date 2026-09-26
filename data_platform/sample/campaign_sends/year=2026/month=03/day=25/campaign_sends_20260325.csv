@@ -1,0 +1,4 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-3EGZD7VIRRTWM9D5IHC4,2026-03-25 16:47:10,2026-03-25,CMP-I7SIPMOCNZ39,CLI-NSTPTDK3BPGH,Push,template_CMP-I7SIPMOCNZ39_3,,Sent,True,True,2026-03-31 00:34:30,True,2026-03-31 00:39:39,5.0,False,,,Mobile,Argentina,,0.0005
+SND-6TVH4AKCPGZBUU7M6A9Q,2026-03-25 06:44:14,2026-03-25,CMP-I7SIPMOCNZ39,CLI-SZ2W0R1BX8S0,Push,template_CMP-I7SIPMOCNZ39_5,,Sent,True,True,2026-04-01 00:39:52,False,,,False,,,,Colombia,,
+SND-FW36D4V4KAIWPBKO9Z4J,2026-03-25 06:07:59,2026-03-25,CMP-XAGRKOCHBHC9,CLI-H6OV6I0CT5IX,SMS,template_CMP-XAGRKOCHBHC9_3,,Sent,True,False,,False,,,False,,,,,,0.0516

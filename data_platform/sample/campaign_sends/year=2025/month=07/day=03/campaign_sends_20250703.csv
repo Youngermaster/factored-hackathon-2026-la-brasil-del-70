@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-08ICC681CMWY5ZI1FR11,2025-07-03 09:22:38,2025-07-03,CMP-1MQRF3372LIG,CLI-FKPNY8NAT22F,Push,template_CMP-1MQRF3372LIG_5,,Sent,True,False,,False,,,False,,,,,,0.0005

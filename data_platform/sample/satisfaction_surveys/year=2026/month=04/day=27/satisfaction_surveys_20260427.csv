@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-QRUP6C6CAUOAGTUKBYU1,2026-04-28 15:24:01,2026-04-27,INT-U3P1R8NOPU2QBGIQ,CLI-JHN3W46AKAVA,AGT-OXGDKDP90E,CES,IVR,3,,,,,3.0,,,,Negative,34.31,17.13

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-L7G1UNFHO6VTCE1LVO6U,2025-12-22 18:44:19,2025-12-22,CMP-H5R7NWP32K9G,CLI-898HYDPSE4K6,SMS,template_CMP-H5R7NWP32K9G_3,,Sent,True,False,,False,,,False,,,,,,0.1463

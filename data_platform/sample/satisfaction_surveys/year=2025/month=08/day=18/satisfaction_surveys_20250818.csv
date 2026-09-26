@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-GXGK7DNVWTFL1DDZWZY6,2025-08-19 06:02:42,2025-08-18,INT-8CSAF1O76BJ7IQ2W,CLI-UHMB1J1GBKG4,AGT-GDSRHZRHQ7,CES,SMS,3,,,,,,¿Volvería a contactarnos por este canal?,4.0,No estoy satisfecho con la solución.,,15.95,24.0

@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-AF5UT7FGHGFUWA9D40K1,2025-10-24 15:11:19,2025-10-24,PRD-6V0NRAE5BWYB,CLI-5L6EGAWYR2Q2,Withdrawal,,12201.79,ARS,34.86,Web,,,,Argentina,Córdoba,Approved,00,False,3.76,,
+TRX-MWBTG12H44KDVLUY7WGX,2025-10-24 21:37:26,2025-10-24,PRD-FJ63L0Y4KOBB,CLI-H6OV6I0CT5IX,Withdrawal,,172.57,USD,,ATM,SUC-QZU3WHKF,,,México,Querétaro,Approved,00,False,13.0,,
+TRX-W7E0FQBPO4K27JBEJ4YE,2025-10-24 08:18:04,2025-10-24,PRD-HPBG1LZ6SHYR,CLI-AMN80XXN1DT6,Withdrawal,,302.91,USD,,ATM,SUC-0OJNMRLP,,,México,Querétaro,Approved,00,False,1.2,,
+TRX-ZXEVMK60Q2QJM2FQJRGU,2025-10-24 10:20:59,2025-10-24,PRD-KOP86ODYWL99,CLI-VHBEU7EEMIV1,Purchase,Transport,22754.22,ARS,65.01,Web,,Estación de Servicio,Transport,Argentina,Buenos Aires,Approved,,False,25.69,,

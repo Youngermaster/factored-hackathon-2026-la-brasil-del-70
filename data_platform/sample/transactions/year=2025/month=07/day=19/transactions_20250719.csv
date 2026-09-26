@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-6HZWG7PF4L6DG83HFO6W,2025-07-19 06:43:52,2025-07-19,PRD-6522F5GP0394,CLI-END66G0XIF95,Withdrawal,,419.23,USD,,ATM,SUC-4ZFT9FN6,,,México,Ciudad de México,Approved,00,False,,,
+TRX-RZNEUQF9HZQO1FHTVJXB,2025-07-19 22:13:56,2025-07-19,PRD-YQQ674NN35JQ,CLI-ZJCPKZZRXUR8,Purchase,Transport,1810111.06,COP,452.53,Branch,SUC-GPHM9NB1,Taxi Seguro,,Colombia,Medellín,Approved,00,False,25.45,,
+TRX-T8CAO5C8V7T5R9SAZ61W,2025-07-20 01:48:07,2025-07-19,PRD-TPG6BN15KHOK,CLI-7A9F4VIGPO6R,Transfer,,13134265.53,COP,3283.57,ATM,SUC-LWQND6S8,,,Colombia,Cartagena,Approved,00,False,20.27,5.4874182,-74.7261089
+TRX-XMVWHFRN9FUQSZNTD9NI,2025-07-19 10:34:00,2025-07-19,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Withdrawal,,26.37,USD,,ATM,SUC-7G8CGE3F,,,México,Ciudad de México,Approved,00,False,9.21,0.9416878,0.2936856

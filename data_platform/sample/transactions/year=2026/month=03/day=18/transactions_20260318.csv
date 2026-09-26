@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CVL52KTSVOLU879XAN9A,2026-03-19 02:40:48,2026-03-18,PRD-VPPH40PYS9G2,CLI-YC4WNTUC93XN,Transfer,,3183169.26,ARS,9094.77,ATM,SUC-VPCJ60UW,,,Argentina,,Approved,00,False,3.21,,

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-V3HZO9HNHI4T9F5B7PRA,2025-09-24 05:54:22,2025-09-23,CMP-2MISMO9NJ962,CLI-QZGUG3KBZ2ZG,WhatsApp,template_CMP-2MISMO9NJ962_3,,Sent,True,,,False,,,False,,,,,,0.0693

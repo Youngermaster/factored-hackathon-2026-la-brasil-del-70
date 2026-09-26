@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-IBE5PEY7LLS1A58DF9Z5,2025-11-02 19:41:18,2025-11-02,CLI-6VCS2LIRSE4Y,SES-DD8U71FCVNOTJQ84IMI2S0DVCFZK,Login,Authentication,iOS App,iOS,,2.4.1,/login,Iniciar Sesión,login,login_form,,,,198.51.100.13,Colombia,Medellín,True,https://www.instagram.com,direct,organic,retention
+EVT-QUWCTF9BX12DXVOID2RN,2025-11-02 19:43:32,2025-11-02,CLI-6VCS2LIRSE4Y,SES-DD8U71FCVNOTJQ84IMI2S0DVCFZK,Click,Navigation,iOS App,iOS,,2.4.1,/products,Productos,view_products,,,,,192.0.2.218,Colombia,Medellín,True,,,,

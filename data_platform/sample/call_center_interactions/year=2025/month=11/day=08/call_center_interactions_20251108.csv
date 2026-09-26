@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-M8MT72PX9LAEM17L,2025-11-08 16:24:41,2025-11-08,CLI-QZGUG3KBZ2ZG,AGT-YBP5UDK1VN,Inbound Call,Phone,Retención,Retención,634.0,150.0,True,False,Neutral,-0.23,mexican,mexican,False,PRD-20D2IB4X08TI,False,True

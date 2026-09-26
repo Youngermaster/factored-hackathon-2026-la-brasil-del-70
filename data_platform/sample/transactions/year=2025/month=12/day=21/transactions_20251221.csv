@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-I0V275HQK1OVECQ9JRA6,2025-12-21 18:41:40,2025-12-21,PRD-U9SPV3HRCHVD,CLI-3XGV18QB96P9,Transfer,,3600.23,USD,,POS,,,,México,Monterrey,Approved,00,False,10.55,,

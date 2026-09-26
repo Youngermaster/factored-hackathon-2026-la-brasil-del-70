@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-86F2IVHMSWY9JC3O19UL,2026-05-26 03:32:40,2026-05-25,PRD-1JMI57ZE86FN,CLI-NOC612SZ8VKJ,Withdrawal,,426079.62,COP,106.52,POS,,,,Colombia,Cali,Approved,00,False,21.81,,

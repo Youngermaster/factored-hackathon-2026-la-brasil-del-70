@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-0EL2438OS97WKX8A,2026-04-02 13:02:15,2026-04-02,CLI-K0GJBJFDKIBO,AGT-ZGD5FBXG7L,Inbound Call,Phone,Transaccional,Transaccional,249.0,128.0,True,False,Neutral,0.23,colombian,colombian,False,,False,True

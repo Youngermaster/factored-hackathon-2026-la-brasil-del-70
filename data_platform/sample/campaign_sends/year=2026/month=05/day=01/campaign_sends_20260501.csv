@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-8O6M3ABY5INTS0RSE24I,2026-05-01 06:57:31,2026-05-01,CMP-D5UPMZN0TANX,CLI-5N42HUM8D4H6,SMS,,,Sent,True,True,2026-05-05 01:49:17,False,,,False,,,Desktop,Argentina,,0.0732

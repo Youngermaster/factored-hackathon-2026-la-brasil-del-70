@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1LXCXZBKML69LACW8BKU,2025-10-23 05:31:54,2025-10-22,PRD-Z098FMDQQBRD,CLI-YC4WNTUC93XN,Payment,Services,584199.71,ARS,1669.14,App,,,,Colombia,Barranquilla,Approved,00,False,,,
+TRX-70SQS6O7XP27W0ZMC5NZ,2025-10-22 07:34:45,2025-10-22,PRD-YWV4A7OL3R5I,CLI-AKACM6D5362F,Transfer,,9904.53,USD,,ATM,SUC-P5YISP64,,,México,Ciudad de México,Approved,00,False,18.32,,
+TRX-89VVH2607R1L8RLCNOR4,2025-10-22 06:55:20,2025-10-22,PRD-N1Q1RRJHBA9H,CLI-VU58CMFRCIP7,Deposit,,4859.42,USD,,App,,,,Mexico,Puebla,Approved,00,False,,,

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-UQZEL5BD0QCZIUKSNQOX,2025-07-27 16:53:02,2025-07-27,PRD-J5YQWDINGEK5,CLI-BH1ZBAHAHTEN,Purchase,Services,217.13,USD,,POS,,Servicios Públicos,Services,México,Tijuana,Approved,00,False,6.6,0.8269017,-0.5490785

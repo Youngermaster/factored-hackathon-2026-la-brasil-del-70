@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-IZKLJV0HN9ZSLXQ5CC3C,2025-08-12 21:59:28,2025-08-12,CLI-C9F3EFNAUCRP,SES-A1VVVUMTUI7F3Z5A1JNXYIZT0S1Q,Click,Navigation,iOS App,iOS,,,/products,Productos,view_products,products_page,,,,192.0.2.98,Colombia,Barranquilla,True,,,,
+EVT-NON6MLX2RO07QA35NPHG,2025-08-12 21:59:49,2025-08-12,CLI-C9F3EFNAUCRP,SES-A1VVVUMTUI7F3Z5A1JNXYIZT0S1Q,PageView,Product,iOS App,iOS,,4.0.7,/products/savings,Cuenta de Ahorro,view_product,savings_product,,,255.0,192.0.2.160,Colombia,,True,,,,

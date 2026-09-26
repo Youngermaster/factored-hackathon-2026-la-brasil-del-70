@@ -1,0 +1,12 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-8IG2583KDVFN3SCYS6JE,INT-RGWGOQUWTYVK61CL,2026-06-17,CLI-9MNRLM8SP9QI,AGT-VTWBPCIYQU,"Cliente: Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+
+Agente: Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.
+
+Cliente: Entiendo, muchas gracias.
+
+Agente: No hay problema, que tenga buen día.
+
+Cliente: Entiendo, muchas gracias.
+
+Agente: No hay problema, que tenga buen día.","Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros. Entiendo, muchas gracias. Entiendo, muchas gracias.","Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}. No hay problema, que tenga buen día. No hay problema, que tenga buen día.",es,mexican,0.76,"cuenta, banco","{""account_numbers"": 1, ""dates"": 0, ""amounts"": 2, ""products"": ""Cuenta Ahorro""}",consulta_general,Transaccional,AWS Transcribe,High,263.0

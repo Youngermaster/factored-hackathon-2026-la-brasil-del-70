@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-ZD36MJRHASPDID8J984X,2025-09-29 23:17:45,2025-09-29,PRD-3O2QE02Z3F4B,CLI-KKSHE4CEJ1IT,Withdrawal,,1924707.27,COP,481.18,Branch,SUC-6W9D0ZPD,,,Colombia,Cali,Approved,,False,16.58,,

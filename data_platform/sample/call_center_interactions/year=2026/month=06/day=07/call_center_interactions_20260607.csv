@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-1497IA9C366555PQ,2026-06-07 19:29:32,2026-06-07,CLI-NSTPTDK3BPGH,AGT-E46F2FQTOO,Inbound Call,Phone,Técnico,Técnico,324.0,114.0,True,False,Negativo,-0.61,argentine,mexican,False,,False,True

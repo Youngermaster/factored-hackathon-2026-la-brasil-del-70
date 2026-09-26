@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-IJ4SI0IVNHV0WASKL6PV,2025-11-30 05:19:42,2025-11-29,PRD-C9SCYXRRUZO1,CLI-TJIM7P52K5F7,Purchase,,177.14,USD,,ATM,SUC-7SL55GEJ,Restaurante El Buen Sabor,,México,,Approved,00,False,17.01,,

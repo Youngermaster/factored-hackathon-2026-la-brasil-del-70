@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-HD0AAAUVZF8CP0CV864D,2026-02-14 17:19:32,2026-02-14,PRD-D9Y29R9CRRY3,CLI-4QR1L5H7FKTD,Transfer,,33416938.03,COP,8354.23,Web,,,,Colombia,Medellín,Approved,00,False,13.79,,

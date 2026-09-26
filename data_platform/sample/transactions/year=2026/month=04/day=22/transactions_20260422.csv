@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-65IOV4E3UK2YKFCG5YF7,2026-04-23 02:32:32,2026-04-22,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Transfer,,1383.9,USD,,ATM,SUC-SUAMAVYV,,,México,,Approved,00,False,11.47,,
+TRX-MQ9I9GPW42ZE5IGBAZ18,2026-04-22 16:35:30,2026-04-22,PRD-H1DSUO9VXK9H,CLI-S21M6QBBQ32X,Withdrawal,,167591.34,ARS,478.83,POS,,,,Argentina,Rosario,Approved,00,False,12.49,-33.9183663,-58.2431235
+TRX-WIKQACX4BNURI27X177W,2026-04-23 02:02:30,2026-04-22,PRD-83SYEXZILUH3,CLI-3XGV18QB96P9,Withdrawal,,335.35,USD,,Branch,SUC-1PSI5W5X,,,México,Monterrey,Approved,00,False,,0.6360959,-0.7734681

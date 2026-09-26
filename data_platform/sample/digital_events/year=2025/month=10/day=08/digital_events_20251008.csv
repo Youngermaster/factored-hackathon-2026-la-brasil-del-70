@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-13FGSGM7BA1HTPVGODPE,2025-10-08 12:50:29,2025-10-08,CLI-TRSQ3XMFRJAC,SES-G9FDUPH3P894CE3P4GG9K623TZ6K,Click,Navigation,Desktop Web,Windows,Chrome,,/help,Ayuda,view_help,help_page,,,,198.51.100.197,México,Puebla,False,,,,
+EVT-BAIPUSYZZZMNGBP53YK2,2025-10-08 12:50:02,2025-10-08,CLI-TRSQ3XMFRJAC,SES-G9FDUPH3P894CE3P4GG9K623TZ6K,PageView,Navigation,Desktop Web,Windows,Chrome,,/products,Productos,view_products,products_page,,,43.0,198.51.100.84,México,Puebla,False,,,,
+EVT-LK1UXC4RFUON9HFCKQGA,2025-10-08 12:51:07,2025-10-08,CLI-TRSQ3XMFRJAC,SES-G9FDUPH3P894CE3P4GG9K623TZ6K,Error,Navigation,Desktop Web,Windows,,,/help,Ayuda,view_help,help_page,,,,192.0.2.105,México,Puebla,False,,,,

@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-0THETP5W3URHN1IN9RHS,2025-09-08 10:20:51,2025-09-08,CLI-UHMB1J1GBKG4,SES-YS9SX9QVA23OPOP1718J7OWYRKC6,PageView,Transaction,Android App,Android,,,/transfer,Transferir,initiate_transfer,transfer_form,,,56.0,192.0.2.5,Colombia,Cali,True,,,,

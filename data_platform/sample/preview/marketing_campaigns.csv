@@ -1,0 +1,11 @@
+campaign_id,campaign_name,description,campaign_type,campaign_objective,promoted_product,target_segment,target_country,start_date,end_date,budget,campaign_status,expected_conversion_rate
+CMP-06IKIC4I9JS9,CMP_RET_INV_May2025_0146,Campaña de retention para Inversión,Mix,Retention,Inversión,,,2025-05-28,2025-07-02,230105.71,Completed,6.36
+CMP-0SCQMRQB1JT6,CMP_UPS_PL_Feb2026_0051,Campaña de up-sell para Préstamo Personal,SMS,Up-sell,Préstamo Personal,Premium,,2026-02-03,2026-05-02,490614.51,Completed,
+CMP-173ISW5CHVBB,CMP_RET_PL_Dec2025_0180,Campaña de retention para Préstamo Personal,Email,Retention,Préstamo Personal,Plus,Argentina,2025-12-28,2026-01-31,91631.31,Completed,5.93
+CMP-1MQRF3372LIG,CMP_ACQ_INS_Jun2025_0091,,Push,Acquisition,Seguro,,Mexico,2025-06-24,2025-07-11,333931.86,Completed,9.91
+CMP-29Z8ETCSV0VF,CMP_XSL_CC_Jul2025_0139,Campaña de cross-sell para Tarjeta Crédito,Mix,Cross-sell,Tarjeta Crédito,,,2025-07-27,2025-09-20,295901.02,Completed,13.52
+CMP-2MISMO9NJ962,CMP_RET_SAV_Sep2025_0155,,WhatsApp,Retention,Cuenta Ahorro,,,2025-09-02,2025-09-29,415071.29,Completed,3.7
+CMP-4Z5J0NFQM5EO,CMP_ACQ_CHK_Jul2025_0092,Campaña de acquisition para Cuenta Corriente,Email,Acquisition,Cuenta Corriente,,Argentina,2025-07-08,2025-08-01,387862.94,Completed,11.42
+CMP-50EXSAPQSNH6,CMP_REA_INS_Sep2025_0008,Campaña de reactivation para Seguro,WhatsApp,Reactivation,Seguro,Plus,,2025-09-26,2025-12-03,433001.95,Completed,
+CMP-523WCPI68FFI,CMP_XSL_CC_Dec2025_0045,,Email,Cross-sell,Tarjeta Crédito,,Mexico,2025-12-24,2026-03-24,164155.75,Completed,7.4
+CMP-5S6E6XSEOQ85,CMP_ACQ_CC_Jun2025_0012,Campaña de acquisition para Tarjeta Crédito,Mix,Acquisition,Tarjeta Crédito,,Mexico,2025-06-10,2025-08-08,463253.09,Completed,3.93

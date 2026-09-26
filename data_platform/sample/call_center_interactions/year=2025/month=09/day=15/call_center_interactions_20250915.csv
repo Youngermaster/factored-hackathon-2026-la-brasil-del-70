@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-K7QVZ1S5AG9AMZT6,2025-09-15 08:47:35,2025-09-15,CLI-R53C8RPXD32P,AGT-4FZILKK4KX,Inbound Call,Phone,Técnico,Técnico,380.0,126.0,True,False,Muy Negativo,-0.78,colombian,colombian,False,,True,True

@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-7M7KK9G0WEP4XBD9PIK1,2026-04-30 17:02:24,2026-04-30,PRD-DOKA3EN20VKO,CLI-IZX582QFYSNH,Withdrawal,,162761.66,ARS,465.03,Transfer,,,,Argentina,Córdoba,Approved,00,False,9.93,,
+TRX-9JQ57PNROYIL2YWFMQQP,2026-04-30 12:00:56,2026-04-30,PRD-EQ7NY6RD93QE,CLI-UHMB1J1GBKG4,Purchase,Services,1941902.03,COP,485.48,POS,,Servicios Públicos,Services,Colombia,Cali,Approved,00,False,24.12,,
+TRX-OND9X4S10B86KJ3FRP41,2026-04-30 12:58:38,2026-04-30,PRD-H4DCLYJJ62SW,CLI-5L6EGAWYR2Q2,Purchase,Other,124918.4,ARS,356.91,App,,Boutique Moda,Other,Argentina,Córdoba,Declined,05,False,,,

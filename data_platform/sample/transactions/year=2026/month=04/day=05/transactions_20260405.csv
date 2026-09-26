@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-DOTUX9FZ7ZFWWYUMTL6G,2026-04-05 22:57:34,2026-04-05,PRD-EI4T0TUL807P,CLI-6VCS2LIRSE4Y,Transfer,,14002753.07,COP,3500.69,Web,,,,Colombia,Medellín,Approved,00,False,,,
+TRX-WN1NPJLST6CVDM5ZFWEL,2026-04-05 06:17:46,2026-04-05,PRD-9I54B0DPLJ3T,CLI-UWPSMKLGJ4HM,Payment,Food,565.82,USD,,ATM,SUC-3DCC91G4,,,México,Ciudad de México,Approved,00,False,,-0.7191986,0.7267837
+TRX-WPILLCP1EAG6L3HC9EA4,2026-04-05 18:05:33,2026-04-05,PRD-EMVTLIJGPZLP,CLI-AMN80XXN1DT6,Payment,Entertainment,823.44,USD,,POS,,,,México,,Approved,00,False,0.58,,
+TRX-Y4B8EC54EXWROKCPEUMI,2026-04-05 23:19:54,2026-04-05,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Withdrawal,,1527220.47,COP,381.81,POS,,,,Colombia,Bogotá,Declined,05,False,26.79,4.2922724,-74.3011405

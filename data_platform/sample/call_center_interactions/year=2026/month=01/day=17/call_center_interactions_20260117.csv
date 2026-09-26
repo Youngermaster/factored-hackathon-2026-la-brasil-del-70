@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-ZLLUUYL2OWQ6GFTM,2026-01-17 09:17:51,2026-01-17,CLI-UHMB1J1GBKG4,AGT-P7EOOA2P5S,Chat,WhatsApp,Producto,Producto,,,True,False,Neutral,0.02,colombian,colombian,False,PRD-WRXP8MZ437Q9,False,False

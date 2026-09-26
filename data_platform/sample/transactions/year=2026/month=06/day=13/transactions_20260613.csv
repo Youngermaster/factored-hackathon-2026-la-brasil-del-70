@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1P0IZJ30QONMFWR95JCH,2026-06-13 18:04:44,2026-06-13,PRD-1NUA24WIW2XO,CLI-Q6CL8Y1VMVSB,Purchase,,384.11,USD,,App,,Empresa Telefónica,Services,Colombia,Barranquilla,Reversed,14,False,9.82,,
+TRX-NLVWQL1PC1JDDPLWIZEF,2026-06-13 20:41:12,2026-06-13,PRD-FQW23YXXO9I2,CLI-R53C8RPXD32P,Withdrawal,,901869.49,COP,225.47,Web,,,,Colombia,Barranquilla,Approved,00,False,20.84,,

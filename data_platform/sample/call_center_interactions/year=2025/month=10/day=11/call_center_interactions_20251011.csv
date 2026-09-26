@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-NOAXMTAPLE6XJQKC,2025-10-11 13:27:26,2025-10-11,CLI-7P0ZUEV7Y4EH,AGT-2TAGK048H3,Outbound Call,Phone,Retención,Retención,637.0,,False,True,Muy Negativo,-0.95,,,False,PRD-F9PU12RJ5369,False,True

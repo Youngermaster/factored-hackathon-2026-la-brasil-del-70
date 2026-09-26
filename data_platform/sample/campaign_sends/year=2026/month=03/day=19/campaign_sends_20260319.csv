@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-GCVXVTL55ZPS3X6RIN5L,2026-03-19 18:05:53,2026-03-19,CMP-DLVIDZWR9YYG,CLI-7HT38ZKBZB3M,Email,,¡Oferta especial en Préstamo Personal!,Sent,True,True,2026-03-19 18:50:36,False,,,False,,,Desktop,Colombia,,0.007

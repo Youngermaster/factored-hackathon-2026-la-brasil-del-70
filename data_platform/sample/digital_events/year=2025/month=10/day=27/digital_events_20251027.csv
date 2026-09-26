@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-0IWT5ROSC37ESJKZFX6A,2025-10-27 08:33:36,2025-10-27,CLI-J9EWXIOYWJ7R,SES-OQG6DU3118DINXMJN3AEH56V60L5,Login,Authentication,Mobile Web,iOS,Safari,,/logout,Cerrar Sesión,logout,logout_btn,,,,192.0.2.210,México,Puebla,True,,,,
+EVT-HLI4O2CNQFE45LBOXSXB,2025-10-27 18:59:55,2025-10-27,CLI-Y15WQL0D9JH4,SES-2X6HEP1A7T8R60OODK01KG160B8L,Error,Transaction,iOS App,iOS,,1.3.2,/transfer,Transferir,initiate_transfer,transfer_form,,,,,Argentina,Buenos Aires,True,,,,

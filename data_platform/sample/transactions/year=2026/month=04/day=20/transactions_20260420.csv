@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0MEVBPXMQN5OGLZE40RP,2026-04-20 12:45:08,2026-04-20,PRD-K8H3IGZDDBD5,CLI-IZX582QFYSNH,Withdrawal,,17153.45,ARS,49.01,POS,,,,Argentina,Córdoba,Pending,14,False,17.81,-34.0476076,-58.859444
+TRX-GAZB7C3U26JE5X7LHBZ6,2026-04-20 19:09:48,2026-04-20,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Purchase,Entertainment,47071.98,ARS,134.49,ATM,SUC-RRCPMD2D,Teatro Nacional,Entertainment,Argentina,Córdoba,Approved,00,False,12.22,,
+TRX-OBM3D5EFZH6E39CS460C,2026-04-21 03:00:27,2026-04-20,PRD-HRVKK5EBRHP1,CLI-UWPSMKLGJ4HM,Deposit,,4755.46,USD,,POS,,,,México,Ciudad de México,Approved,00,False,,,
+TRX-QESN0YHWIDTZIOVW0NCR,2026-04-21 03:32:40,2026-04-20,PRD-J6A0T7IU5FFE,CLI-TJIM7P52K5F7,Transfer,,6693.17,USD,,POS,,,,México,Guadalajara,Approved,00,False,19.91,,

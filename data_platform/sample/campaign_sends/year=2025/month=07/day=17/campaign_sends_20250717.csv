@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-SSAD410U76Y2DMH20XIA,2025-07-17 06:43:51,2025-07-17,CMP-YYT37NY1CZS7,CLI-3XGV18QB96P9,Email,template_CMP-YYT37NY1CZS7_2,¡Oferta especial en Tarjeta Crédito!,Sent,True,True,2025-07-20 11:58:10,False,,,False,,,Tablet,México,,

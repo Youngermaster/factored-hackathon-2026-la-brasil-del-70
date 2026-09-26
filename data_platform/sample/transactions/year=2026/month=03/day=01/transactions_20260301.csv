@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-AHQ30S7C20X0AV6QORWK,2026-03-02 02:49:11,2026-03-01,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Withdrawal,,102161.57,ARS,291.89,ATM,,,,Argentina,Rosario,Approved,00,False,18.94,,

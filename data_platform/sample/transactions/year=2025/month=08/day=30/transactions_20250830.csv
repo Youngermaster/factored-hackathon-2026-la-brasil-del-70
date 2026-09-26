@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8GA3UR90AI7IGSH24S4C,2025-08-30 16:51:29,2025-08-30,PRD-HLYKD4IMAN2I,CLI-KKSHE4CEJ1IT,Payment,Entertainment,5007953.3,COP,,Transfer,,,,Colombia,Cali,Approved,,False,9.16,,

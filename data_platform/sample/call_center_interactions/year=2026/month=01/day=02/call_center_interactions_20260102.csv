@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-IGLAIEJTDQIFCU3F,2026-01-03 07:35:09,2026-01-02,CLI-FY5RJI3Q5D6U,AGT-0O9BVZZ68Z,Inbound Call,Phone,Técnico,Técnico,198.0,70.0,False,True,Negativo,-0.53,mexican,mexican,False,PRD-VFKU1S13IZ6S,False,True
+INT-LU8NPNXUBRNPBUN0,2026-01-02 16:42:03,2026-01-02,CLI-7HT38ZKBZB3M,AGT-8QYBQ76ZD2,Inbound Call,Phone,Retención,Retención,466.0,164.0,True,False,Negativo,-0.37,,,False,,False,True

@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3UKBSTUALSWSFQWWYO98,2026-04-14 02:47:07,2026-04-13,PRD-6MXVORJTLXV6,CLI-TJIM7P52K5F7,Adjustment,,297.53,USD,,POS,,,,México,Guadalajara,Approved,00,False,16.41,-0.7356893,-0.0455162
+TRX-HGLS6SS6GV64J5PZWGYF,2026-04-14 03:10:29,2026-04-13,PRD-VPPH40PYS9G2,CLI-YC4WNTUC93XN,Deposit,,441107.57,ARS,1260.31,POS,,,,Argentina,Buenos Aires,Pending,14,False,25.58,,
+TRX-M064C68ZVBHS903OJC58,2026-04-13 15:30:44,2026-04-13,PRD-KHOX2UG0S8DT,CLI-M78UJJ6XFNOT,Transfer,,604561.63,ARS,1727.32,ATM,SUC-RNIHGBDP,,,Argentina,Córdoba,Approved,00,False,,,
+TRX-OXS4VX54ZTUS40Q0BOQX,2026-04-14 04:39:57,2026-04-13,PRD-3O2QE02Z3F4B,CLI-KKSHE4CEJ1IT,Transfer,,35395350.86,COP,8848.84,ATM,SUC-CG5XPAZU,,,Colombia,Cali,Approved,00,False,,4.8379967,-73.8643264
+TRX-XIF4ESNXAOCJ526UJ9V4,2026-04-13 19:25:35,2026-04-13,PRD-DLLCBU9CNNTF,CLI-OTYTZE2FLKFL,Payment,Transport,681.85,USD,,App,,,,México,Tijuana,Approved,00,False,18.03,,

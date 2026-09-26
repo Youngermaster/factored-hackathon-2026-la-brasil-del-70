@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-HEOYY4JD3CVGRRPXGKNM,2025-11-12 02:49:25,2025-11-11,CLI-BH1ZBAHAHTEN,SES-9AWZ5E1TQAVNEL7Q2DNL5O3O3HXL,PageView,Transaction,Mobile Web,iOS,Samsung Internet,,/transfer,Transferir,initiate_transfer,transfer_form,,,290.0,192.0.2.98,México,Tijuana,True,,,,
+EVT-KWOBVA5HCYXDN3EPMYTS,2025-11-12 02:48:16,2025-11-11,CLI-BH1ZBAHAHTEN,SES-9AWZ5E1TQAVNEL7Q2DNL5O3O3HXL,Login,Authentication,Mobile Web,iOS,Samsung Internet,,/login,Iniciar Sesión,,login_form,,,,,México,Tijuana,True,,,,

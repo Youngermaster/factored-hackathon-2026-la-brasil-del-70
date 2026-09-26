@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CALJCW3KTXB3UYPOOXSF,2025-08-24 04:47:06,2025-08-23,PRD-DD31UBZ7Z3KG,CLI-3LBRN1SGWSLJ,Purchase,Food,12.86,USD,,App,,Tienda Don José,Food,México,Monterrey,Approved,00,False,7.37,,

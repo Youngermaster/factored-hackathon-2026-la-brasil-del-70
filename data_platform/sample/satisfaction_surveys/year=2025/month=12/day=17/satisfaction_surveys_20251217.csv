@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-FIAHEDHXT0M7XVA7M5ZD,2025-12-18 09:58:05,2025-12-17,INT-Q6AB1FYD78MRR74I,CLI-UHMB1J1GBKG4,AGT-5CXS2WPVJF,CSAT,SMS,4,,¿El agente resolvió su consulta satisfactoriamente?,1.0,¿El tiempo de espera fue aceptable?,5.0,¿Volvería a contactarnos por este canal?,2.0,,,26.55,19.14

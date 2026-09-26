@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9JEZCDS03OD0JDHOP9VF,2026-06-12 20:37:52,2026-06-12,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Purchase,Transport,263.99,USD,,Web,,Gasolinera Express,Transport,Colombia,Cali,Approved,,False,,,
+TRX-B35LVLEBS28AUOAEJ448,2026-06-12 17:54:45,2026-06-12,PRD-DLLCBU9CNNTF,CLI-OTYTZE2FLKFL,Adjustment,,166.78,USD,,ATM,SUC-HVN55QJQ,,,México,Tijuana,Approved,00,False,15.37,,
+TRX-ELVT6J2ZHNNBEB4IO6ZP,2026-06-12 11:18:31,2026-06-12,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Withdrawal,,199.18,USD,,POS,,,,Colombia,Medellín,Approved,00,False,,,
+TRX-FO6FE162MEQU2RRL7J6L,2026-06-12 16:01:49,2026-06-12,PRD-KRZVMYL7PDFC,CLI-FY5RJI3Q5D6U,Payment,,1263.55,USD,,Web,,,,México,Puebla,Approved,00,False,3.86,,
+TRX-LQ9ENMIFHVG7H6IPE6O5,2026-06-12 18:28:54,2026-06-12,PRD-FU9DT1YQGFNS,CLI-1AS0INHPK43M,Purchase,Other,390.84,USD,,Branch,SUC-SCFDICUT,,Other,México,Querétaro,Approved,,False,29.02,,

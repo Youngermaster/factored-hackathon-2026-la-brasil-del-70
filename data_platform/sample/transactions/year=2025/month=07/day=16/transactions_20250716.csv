@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2HYXEQ1S5GOJFCXLU66K,2025-07-17 05:02:12,2025-07-16,PRD-3O2QE02Z3F4B,CLI-KKSHE4CEJ1IT,Transfer,,27114743.11,COP,6778.69,POS,,,,USA,Miami,Approved,00,False,,,
+TRX-76GN3U9ICKP5FV80TO2O,2025-07-16 23:48:07,2025-07-16,PRD-FQ1L1Y6064V2,CLI-C0RXL4J0SXGR,Transfer,,2175.1,USD,,Web,,,,México,Tijuana,Reversed,51,False,16.66,,
+TRX-7Y2F2JU95YWCM6CPV01D,2025-07-16 16:52:25,2025-07-16,PRD-6D7E5ILZ8XI5,CLI-TJIM7P52K5F7,Payment,Food,1680.46,USD,,ATM,SUC-ISPO1DES,,,México,,Approved,00,False,27.77,,
+TRX-MD9CVYQHTN97G3ZGH9SH,2025-07-16 08:57:29,2025-07-16,PRD-ODJLM09U1GII,CLI-IMCRTKL094T5,Purchase,Transport,174.2,USD,,ATM,SUC-QZU3WHKF,Uber,,México,Querétaro,Approved,00,False,9.86,,

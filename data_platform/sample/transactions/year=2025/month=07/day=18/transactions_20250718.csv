@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8XL2T4H99LHRKTJVPWI2,2025-07-19 03:00:21,2025-07-18,PRD-5HZZAKVFR19T,CLI-KKSHE4CEJ1IT,Withdrawal,,487022.29,COP,121.76,ATM,SUC-CBGK7VQE,,,Colombia,Cali,Pending,05,False,17.89,5.1494403,-73.3825866
+TRX-SVTP82HWHPV2OTOWY7SK,2025-07-18 22:12:18,2025-07-18,PRD-WC92L94JI6U3,CLI-IX877AHQ2942,Transfer,,3291.56,USD,,ATM,SUC-KYUNO9E0,,,México,,Approved,00,False,19.64,-0.8069089,-0.2994484

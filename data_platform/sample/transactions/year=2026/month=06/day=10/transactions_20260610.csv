@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3SO3K8A5XUGF657VX99P,2026-06-10 16:35:09,2026-06-10,PRD-0WS8606X5ZOX,CLI-7P0ZUEV7Y4EH,Transfer,,3248.11,USD,,ATM,SUC-SCFDICUT,,,Spain,Madrid,Approved,00,False,6.95,,
+TRX-7MB9DEV9SOB73ZPQCSWR,2026-06-10 22:23:58,2026-06-10,PRD-TB7LHRJWMJTL,CLI-6VCS2LIRSE4Y,Purchase,Food,1146941.01,COP,286.74,ATM,SUC-E1VTXGEU,Super Ahorro,Food,Colombia,Medellín,Approved,00,False,,,
+TRX-CEX76ANJ3QHB4PDEXJVU,2026-06-10 11:20:20,2026-06-10,PRD-J5YQWDINGEK5,CLI-BH1ZBAHAHTEN,Payment,Entertainment,1936.4,USD,,App,,,,México,Tijuana,Approved,00,False,25.63,,
+TRX-U4ACXTI7671H6FA00WOP,2026-06-10 22:24:21,2026-06-10,PRD-K1C4P980WMUK,CLI-H6OV6I0CT5IX,Deposit,,4419.94,USD,,Web,,,,México,Querétaro,Approved,00,False,,,

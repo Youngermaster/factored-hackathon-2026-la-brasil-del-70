@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-7UMF78A98AKVA9XRP9PV,2026-05-23 00:04:31,2026-05-22,CMP-V5QX1R898OIS,CLI-OTYTZE2FLKFL,SMS,template_CMP-V5QX1R898OIS_3,,Sent,True,False,,False,,,False,,,,,,0.1181
+SND-JMWMIEJM8COBBARUIYGP,2026-05-22 20:46:16,2026-05-22,CMP-IYIS5JECVNBA,CLI-7HT38ZKBZB3M,Email,template_CMP-IYIS5JECVNBA_5,¡Oferta especial en Cuenta Ahorro!,Sent,True,False,,False,,,False,,,,,,0.0034

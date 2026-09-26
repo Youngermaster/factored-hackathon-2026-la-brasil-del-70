@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1BVNHBQ6KQV52YFSII2W,2026-05-22 02:13:45,2026-05-21,PRD-ODJLM09U1GII,CLI-IMCRTKL094T5,Purchase,Services,356.67,USD,,ATM,SUC-I8M9CS2Y,Internet Plus,Services,México,Querétaro,Approved,00,False,18.02,,
+TRX-F7IBRMS8QYPAYY3NGCUO,2026-05-21 14:32:18,2026-05-21,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Deposit,,1163389.58,ARS,3323.97,Web,,,,Argentina,Córdoba,Approved,,False,11.76,,
+TRX-INKUTE46S1BZ11GFYQ7Y,2026-05-21 20:14:31,2026-05-21,PRD-TLB7MRH0UTB4,CLI-UWPSMKLGJ4HM,Purchase,Entertainment,199.0,USD,,POS,,Conciertos Live,Entertainment,México,Ciudad de México,Declined,14,False,4.6,0.3825299,-0.1678292
+TRX-JCH3E9LJO838ITQM6ZAW,2026-05-21 17:16:50,2026-05-21,PRD-ENIMR71PNJWG,CLI-4QR1L5H7FKTD,Deposit,,6876127.31,COP,1719.03,POS,,,,Spain,Sevilla,Declined,51,False,10.27,3.8210191,-73.2435509

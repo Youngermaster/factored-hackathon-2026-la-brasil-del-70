@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3JWIM4Z559CA8H2SLHYA,2026-01-06 06:16:12,2026-01-06,PRD-WAMDFJPLRRJX,CLI-EJXBYCD0J96O,Purchase,Food,57.73,USD,,POS,,Tienda Don José,Food,México,Puebla,Approved,00,False,21.17,,0.2921596
+TRX-G7KI3UXAC8QOSCKEOR35,2026-01-06 13:20:50,2026-01-06,PRD-Z098FMDQQBRD,CLI-YC4WNTUC93XN,Payment,Health,207131.88,ARS,591.81,ATM,SUC-7TH4CVFK,,,Argentina,Buenos Aires,Approved,00,False,25.79,,
+TRX-JLG29AUHMUVA720OWOCQ,2026-01-06 16:33:07,2026-01-06,PRD-GAXFHHF40562,CLI-7HIH47RP95JX,Payment,Health,269966.36,ARS,771.33,Branch,,,,Argentina,Rosario,Pending,51,False,1.15,,
+TRX-ULPJO6557SJFSI5YGSNP,2026-01-06 19:26:46,2026-01-06,PRD-D7JD396B6UQP,CLI-END66G0XIF95,Withdrawal,,368.32,USD,,Web,,,,México,Ciudad de México,Approved,00,False,25.79,,
+TRX-YO5Y6TPSHUTMT32QS3PG,2026-01-07 05:56:05,2026-01-06,PRD-18FMCIAXL72C,CLI-OTYTZE2FLKFL,Purchase,Other,121.52,USD,,ATM,SUC-1PSI5W5X,Tienda General,Other,México,Tijuana,Approved,00,False,21.85,,

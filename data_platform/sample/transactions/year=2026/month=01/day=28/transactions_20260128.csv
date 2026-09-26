@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-WZTMDHY0ZVEDB3SHW09S,2026-01-29 05:00:11,2026-01-28,PRD-5HZZAKVFR19T,CLI-KKSHE4CEJ1IT,Purchase,Services,1008082.82,COP,252.02,ATM,SUC-4BEKYT6U,Cable TV,,Colombia,Cali,Approved,,False,2.55,4.5357028,-74.5135728

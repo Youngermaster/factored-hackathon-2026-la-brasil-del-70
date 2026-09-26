@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-Z5OPCUHYPKCY8VD6,2026-06-01 17:16:59,2026-06-01,CLI-JRCTRZ2GTFG8,AGT-QJDRG08QEG,Email,Email,Queja,Queja,,,True,False,Positivo,0.48,,,False,PRD-ULCRG15ABEWN,False,False

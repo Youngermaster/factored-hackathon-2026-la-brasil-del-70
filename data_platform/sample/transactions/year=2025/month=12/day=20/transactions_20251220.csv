@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-HRE9M3U7CMUIYOIHI6VH,2025-12-20 09:49:33,2025-12-20,PRD-X5FSZQXZPPAJ,CLI-EJXBYCD0J96O,Purchase,Services,223.0,USD,,Web,,Internet Plus,Services,México,Puebla,Approved,00,False,24.86,,

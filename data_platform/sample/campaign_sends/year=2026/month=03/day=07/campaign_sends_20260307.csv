@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-26SCBZP562FHO907848C,2026-03-08 02:36:27,2026-03-07,CMP-LRYA6O66IDFK,CLI-7HIH47RP95JX,Email,template_CMP-LRYA6O66IDFK_5,¡Oferta especial en Cuenta Ahorro!,Bounced,False,,,False,,,False,,,,,Invalid email address,0.0052

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-25XCVYBZ07QOGKY7Y0L4,2025-11-24 17:45:13,2025-11-24,PRD-9FETOE2N31SC,CLI-U8JZASBAZZ8W,Transfer,,7648.6,USD,,ATM,,,,México,Tijuana,Approved,00,False,28.78,,

@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2FXQJWFSM455NXM1KBSB,2026-01-21 14:34:17,2026-01-21,PRD-LXTGL6WOIY5S,CLI-IA17OMLTE32I,Deposit,,8243671.28,COP,2060.92,ATM,SUC-TQX7379E,,,Colombia,Bogotá,Approved,00,False,,,
+TRX-8VEV25U2HQXI93WKTL1W,2026-01-21 14:39:48,2026-01-21,PRD-7N3R25GSYY9B,CLI-ODH9G3RG7J9J,Purchase,Services,1784186.11,COP,,POS,,Cable TV,Services,Colombia,Cali,Approved,00,False,8.83,,
+TRX-KPWXC7KTEZ8VAV3BQ6CY,2026-01-21 19:57:59,2026-01-21,PRD-LCYDS0GGEJY1,CLI-3XGV18QB96P9,Withdrawal,,367.68,USD,,POS,,,,México,Monterrey,Approved,00,False,26.26,,

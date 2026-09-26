@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-9WZUOVBHXQ73TMHQWTLM,2025-11-14 15:21:24,2025-11-14,CLI-IA17OMLTE32I,SES-5392PTR90NJ6082D9F72RC4IGYE2,Login,Authentication,Android App,Android,,4.5.2,/logout,,logout,,,,,203.0.113.122,Colombia,Bogotá,True,https://www.instagram.com,direct,email,retention

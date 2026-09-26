@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-RKWZJE3QJX72LCI14S1P,2026-04-18 01:58:33,2026-04-17,CLI-NOC612SZ8VKJ,SES-OIIQZS7WI8OY2M458EIKHJQLAZDC,Login,Authentication,Android App,Android,,2.7.8,/logout,Cerrar Sesión,logout,logout_btn,,,,203.0.113.195,Colombia,Cali,True,https://www.facebook.com,google,email,retention

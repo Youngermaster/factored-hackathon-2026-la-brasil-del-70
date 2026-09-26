@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-1DKUX0UO6R1DEWEMQQLA,2025-12-23 00:09:06,2025-12-22,CLI-Y15WQL0D9JH4,SES-DI4CBGOSX07513W5NRB0UUVVC417,PageView,Product,Desktop Web,MacOS,Safari,,/products/savings,Cuenta de Ahorro,view_product,,,,131.0,203.0.113.169,Argentina,Buenos Aires,False,,,,
+EVT-I50H0E3I7Y8922X5DWHF,2025-12-23 00:11:31,2025-12-22,CLI-Y15WQL0D9JH4,SES-DI4CBGOSX07513W5NRB0UUVVC417,PageView,Navigation,Desktop Web,MacOS,Safari,,/home,Inicio,view_home,home_page,,,113.0,192.0.2.199,Argentina,Buenos Aires,False,,,,

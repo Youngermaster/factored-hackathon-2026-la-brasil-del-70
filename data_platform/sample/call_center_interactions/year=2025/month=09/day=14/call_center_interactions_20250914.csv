@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-X5GW9LBN5MONCWM2,2025-09-14 12:08:54,2025-09-14,CLI-VHBEU7EEMIV1,AGT-QTX61K7PE2,Inbound Call,Phone,Queja,Queja,538.0,109.0,False,True,Positivo,0.37,argentine,argentine,False,PRD-65IXX7L3C0G7,True,True

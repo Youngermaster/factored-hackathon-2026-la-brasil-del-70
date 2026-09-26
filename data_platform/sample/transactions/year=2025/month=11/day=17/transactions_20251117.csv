@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0L46R2MQ0NQEAXI42TTB,2025-11-17 23:13:00,2025-11-17,PRD-RVCJMMI3EZIU,CLI-TRSQ3XMFRJAC,Purchase,Other,151.61,USD,,POS,,Boutique Moda,Other,México,Puebla,Approved,00,False,,,
+TRX-8KBTACH0K4BQWJHQEUYM,2025-11-18 05:00:43,2025-11-17,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Deposit,,2946.99,USD,,ATM,SUC-F1BZEJXJ,,,México,,Approved,00,False,11.88,0.3049793,0.446058
+TRX-DLVRBWG766L3I1FLA4LW,2025-11-17 17:25:48,2025-11-17,PRD-DLLCBU9CNNTF,CLI-OTYTZE2FLKFL,Adjustment,,867.06,USD,,ATM,SUC-5FCLNF9U,,,Argentina,Córdoba,Approved,00,False,10.17,,
+TRX-OE3FRQ2RVLWJ48ZI5EDO,2025-11-17 22:55:03,2025-11-17,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Purchase,Services,164.54,USD,,POS,,Servicios Públicos,Services,Colombia,Medellín,Approved,00,False,22.71,3.9741841,-73.8098312
+TRX-U623B3NRPTHXU1FQ6SDE,2025-11-17 14:16:51,2025-11-17,PRD-63RBJOML9YC4,CLI-DMSDCHOBUHLX,Adjustment,,78.42,USD,,POS,,,,México,Querétaro,Approved,,False,8.43,,
+TRX-X8ZFNHID9AFM1HZ1ZFJS,2025-11-17 23:43:17,2025-11-17,PRD-6MXVORJTLXV6,CLI-TJIM7P52K5F7,Adjustment,,832.6,USD,,ATM,SUC-74OJEV5Z,,,México,Guadalajara,Approved,00,False,29.02,0.4798341,-0.9816522

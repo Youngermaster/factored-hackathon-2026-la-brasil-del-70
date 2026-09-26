@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8JSW9B07XOG62LBLVNPP,2026-02-26 03:21:13,2026-02-25,PRD-6MXVORJTLXV6,CLI-TJIM7P52K5F7,Payment,Health,575.88,USD,,ATM,SUC-H4YG9DLY,,,México,,Approved,00,False,26.14,,
+TRX-D0TDMK202V8WL94TD6K4,2026-02-25 22:29:53,2026-02-25,PRD-06IHSWOJA487,CLI-P2CRX7C6QTWG,Deposit,,1796.21,USD,,ATM,SUC-HVN55QJQ,,,México,Puebla,Approved,00,False,29.73,,
+TRX-E2X1X9K8NATORCLJMONN,2026-02-25 10:43:55,2026-02-25,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Deposit,,2492.86,USD,,Branch,SUC-JD6LDRA8,,,México,Guadalajara,Approved,00,False,26.34,-0.5451876,-0.8547947
+TRX-H9XAE07XIAI9HZU047BL,2026-02-25 21:43:18,2026-02-25,PRD-9HIQLRR3F9Y1,CLI-CGS8YGQUFDAN,Deposit,,8486857.39,COP,2121.71,Web,,,,Colombia,Barranquilla,Pending,05,False,19.84,,

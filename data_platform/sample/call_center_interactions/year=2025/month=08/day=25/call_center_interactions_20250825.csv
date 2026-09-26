@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-FEP38HFB3ZIRRWNY,2025-08-25 17:14:44,2025-08-25,CLI-JRCTRZ2GTFG8,AGT-CG3PF9BZHZ,Video,Web,Producto,Producto,449.0,,True,False,Neutral,0.17,,,False,PRD-4EML5I01D16G,True,True
+INT-UMPL8QW75NVGKAN0,2025-08-25 11:35:36,2025-08-25,CLI-H6OV6I0CT5IX,AGT-GF86DSKF59,Inbound Call,Phone,Técnico,Técnico,292.0,254.0,True,False,Neutral,-0.23,mexican,colombian,False,"PRD-X8AWMMSE3N7X,PRD-5ELATIHEQBWS",False,True

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-J2LTEXWQHCFSY1EUQG8V,2026-05-06 23:31:06,2026-05-06,PRD-K1C4P980WMUK,CLI-H6OV6I0CT5IX,Withdrawal,,71.18,USD,,ATM,SUC-KKZOCIP3,,,México,Querétaro,Approved,00,False,29.4,-0.0437405,0.3181261

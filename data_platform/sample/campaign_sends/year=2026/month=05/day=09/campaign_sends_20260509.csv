@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-RMMOE5SCUNR6KF3XYVKK,2026-05-09 06:48:22,2026-05-09,CMP-QK22RCTEVV8N,CLI-JHN3W46AKAVA,Email,template_CMP-QK22RCTEVV8N_1,¡Oferta especial en nan!,Sent,True,True,2026-05-14 17:50:18,False,,,False,,,Desktop,Colombia,,

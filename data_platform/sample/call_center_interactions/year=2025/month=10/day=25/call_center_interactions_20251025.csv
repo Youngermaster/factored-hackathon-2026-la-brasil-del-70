@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-KCJJGI49N7REE7CO,2025-10-26 02:43:12,2025-10-25,CLI-5L6EGAWYR2Q2,AGT-NRP3DGI0C2,Outbound Call,Phone,Producto,Producto,317.0,,True,False,Muy Positivo,0.96,,,True,,False,True

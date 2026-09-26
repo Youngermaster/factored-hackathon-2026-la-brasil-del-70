@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-FBXLP08P3A246WBFFE8D,2026-04-27 18:33:19,2026-04-27,CMP-XAGRKOCHBHC9,CLI-EJXBYCD0J96O,SMS,template_CMP-XAGRKOCHBHC9_2,,Sent,True,False,,False,,,False,,,,,,0.0858
+SND-NM4DT9S15NJMW5MNJWEI,2026-04-28 02:36:37,2026-04-27,CMP-NID1J8SSDLQR,CLI-C0RXL4J0SXGR,Email,template_CMP-NID1J8SSDLQR_4,¡Oferta especial en Préstamo Personal!,Sent,True,False,,False,,,False,,,,,,0.001

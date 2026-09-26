@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0Y0QOZ4Z4D4ABXQFD5XL,2025-10-02 11:36:49,2025-10-02,PRD-KAS76D9EAK3G,CLI-7P0ZUEV7Y4EH,Purchase,Entertainment,430.52,USD,,POS,,Streaming Music,Entertainment,México,Puebla,Pending,54,False,7.65,0.8998882,-0.1475477
+TRX-MJY8SMJ7JOEUD905OWBC,2025-10-03 04:58:21,2025-10-02,PRD-1JMI57ZE86FN,CLI-NOC612SZ8VKJ,Transfer,,16981966.64,COP,4245.49,Transfer,,,,Colombia,Cali,Approved,00,False,5.35,,
+TRX-ORF4Q76H5CEY58NDZB84,2025-10-02 19:35:06,2025-10-02,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Transfer,,1399.17,USD,,Web,,,,Spain,Madrid,Approved,00,False,22.06,,
+TRX-S2PDUHV4KTQ7U0EDEG10,2025-10-02 14:42:10,2025-10-02,PRD-LXTGL6WOIY5S,CLI-IA17OMLTE32I,Transfer,,26282900.71,COP,6570.73,POS,,,,Colombia,Bogotá,Approved,00,False,19.12,,
+TRX-Z3A5L0L3OFTML5VG3V3V,2025-10-03 01:06:27,2025-10-02,PRD-WAMDFJPLRRJX,CLI-EJXBYCD0J96O,Purchase,Entertainment,158.02,USD,,Branch,SUC-NBZZWX8W,Streaming Music,Entertainment,México,Puebla,Approved,00,False,0.94,-0.7383699,0.4248016

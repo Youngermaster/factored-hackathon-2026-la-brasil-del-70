@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-UK25WSIH7X4CHS8Y,2026-06-05 23:11:18,2026-06-05,CLI-UHMB1J1GBKG4,AGT-I1ZHCVFEX1,Email,Email,Técnico,Técnico,,,False,True,Neutral,-0.17,colombian,colombian,False,,False,False

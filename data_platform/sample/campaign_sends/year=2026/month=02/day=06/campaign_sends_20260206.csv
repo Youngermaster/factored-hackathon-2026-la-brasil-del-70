@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-3FF4TPBCS83891NPTOA0,2026-02-06 18:14:29,2026-02-06,CMP-I5TGQ4SXP4EG,CLI-END66G0XIF95,SMS,template_CMP-I5TGQ4SXP4EG_1,,Sent,True,True,2026-02-12 01:03:03,False,,,False,,,Desktop,México,,0.1026

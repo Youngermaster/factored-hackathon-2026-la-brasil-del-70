@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-GIXYI900TJSZQRMVGG2A,2025-11-25 16:11:03,2025-11-25,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Purchase,Transport,58648.0,ARS,167.57,App,,Gasolinera Express,Transport,Argentina,Rosario,Approved,00,False,8.28,,
+TRX-KORDAC5668JDD0LVN7L8,2025-11-25 09:51:51,2025-11-25,PRD-W0SEEA2Y41Q1,CLI-AKACM6D5362F,Transfer,,2395.88,USD,,POS,,,,México,Ciudad de México,Approved,00,False,4.62,0.7860104,-0.6258453
+TRX-PS2JW5FNP0QIC6MEZE8X,2025-11-25 22:59:17,2025-11-25,PRD-J6A0T7IU5FFE,CLI-TJIM7P52K5F7,Deposit,,3208.21,USD,,POS,,,,México,Guadalajara,Approved,00,False,8.37,,

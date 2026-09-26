@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-KACZ5VT1L47BVNQ7,2025-11-29 19:25:25,2025-11-29,CLI-P22FY6SYK6NO,AGT-0HSFPWDJF1,Inbound Call,Phone,Queja,Queja,476.0,147.0,False,True,Neutral,-0.22,,,False,,False,True

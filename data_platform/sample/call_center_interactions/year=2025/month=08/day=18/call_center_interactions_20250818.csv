@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-8CSAF1O76BJ7IQ2W,2025-08-18 19:09:44,2025-08-18,CLI-UHMB1J1GBKG4,AGT-GDSRHZRHQ7,Inbound Call,Phone,Producto,Producto,260.0,168.0,True,False,Neutral,0.25,colombian,mexican,False,"PRD-SD7CYOISVF69,PRD-V59WJIR8MOFI,PRD-LU0XQNIINW6C",False,True

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-JK9P0QIX3VB5JM6V8EL4,2025-07-16 06:29:04,2025-07-16,CMP-YYT37NY1CZS7,CLI-FY5RJI3Q5D6U,Email,template_CMP-YYT37NY1CZS7_5,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0033

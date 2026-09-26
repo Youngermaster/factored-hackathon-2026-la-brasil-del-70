@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-1Q5SOYPX3GSQZ0ZRFMUG,2025-07-14 08:13:54,2025-07-14,CMP-4Z5J0NFQM5EO,CLI-J9EWXIOYWJ7R,Email,template_CMP-4Z5J0NFQM5EO_4,¡Oferta especial en Cuenta Corriente!,Sent,True,False,,False,,,False,,,,,,0.0023

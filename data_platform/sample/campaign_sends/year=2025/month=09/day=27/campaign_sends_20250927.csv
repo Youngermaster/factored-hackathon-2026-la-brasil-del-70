@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-FNATBNPXD3PVIP8MKND5,2025-09-28 01:57:24,2025-09-27,CMP-PMANN9L4T3P4,CLI-AMN80XXN1DT6,Push,,,Sent,True,False,,False,,,False,,,,,,0.0009

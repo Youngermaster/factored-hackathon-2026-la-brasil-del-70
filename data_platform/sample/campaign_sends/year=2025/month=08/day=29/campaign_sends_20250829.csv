@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-6GMZHBHOLP683RCA58C8,2025-08-29 10:59:34,2025-08-29,CMP-29Z8ETCSV0VF,CLI-M78UJJ6XFNOT,Push,template_CMP-29Z8ETCSV0VF_4,,Sent,True,False,,False,,,False,,,,,,

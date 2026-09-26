@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-7LK3NU0WGAEAIJP05FNJ,2025-11-27 15:41:37,2025-11-27,CLI-BH1ZBAHAHTEN,SES-IXH3OLHVI9P3KQLCE6ZYY6WB9HRB,PageView,Navigation,iOS App,iOS,,2.9.6,/accounts,Mis Cuentas,view_accounts,,,,282.0,198.51.100.108,México,Tijuana,True,,,,

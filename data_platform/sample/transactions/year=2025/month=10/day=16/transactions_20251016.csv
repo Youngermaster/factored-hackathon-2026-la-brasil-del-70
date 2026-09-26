@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FZ1D7KR1LZ1PYXE5UCPG,2025-10-16 13:19:35,2025-10-16,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Transfer,,1097.0,USD,,POS,,,,México,Guadalajara,Approved,00,False,5.02,,
+TRX-VF565TLMFHQPPD9BGJOC,2025-10-16 15:31:11,2025-10-16,PRD-KTS7M76I4ESO,CLI-Q6CL8Y1VMVSB,Transfer,,15833379.65,COP,,Web,,,,Colombia,Barranquilla,Pending,05,False,12.04,,

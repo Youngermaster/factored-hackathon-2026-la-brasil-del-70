@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-5TWCIT2MBHSPP4ZXDJ0T,2026-06-14 03:59:57,2026-06-13,CMP-J88U5G2EEJD9,CLI-IX877AHQ2942,Push,template_CMP-J88U5G2EEJD9_4,,Sent,True,True,2026-06-14 08:14:38,True,2026-06-14 08:28:37,2.0,False,,,Desktop,México,,0.0008

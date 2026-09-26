@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-KWMJCOHLM1JPLN2OIKZX,2025-10-23 15:38:14,2025-10-23,CMP-5Z8WKKRT8VZI,CLI-R53C8RPXD32P,SMS,template_CMP-5Z8WKKRT8VZI_3,,Sent,True,False,,False,,,False,,,,,,0.1353
+SND-WUWE4V9W7Q177A0F41GL,2025-10-23 17:24:47,2025-10-23,CMP-5Z8WKKRT8VZI,CLI-U8JZASBAZZ8W,SMS,template_CMP-5Z8WKKRT8VZI_2,,Sent,True,False,,False,,,False,,,,,,0.1461
