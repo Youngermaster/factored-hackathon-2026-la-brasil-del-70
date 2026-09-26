@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+/*
+ * Neutral base only. Design tokens (color, type, spacing, radius, motion) arrive with the design system in
+ * phase 12 as CSS variables consumed through Tailwind's @theme.
+ */
+:root {
+  color-scheme: light dark;
+}

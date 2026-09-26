@@ -1,0 +1,7 @@
+# pnpm settings for the web app (a single-package workspace).
+# Dependency lifecycle scripts are blocked by default. These two are not needed:
+# - msw: its postinstall only copies the browser service worker, and tests use the Node server.
+# - unrs-resolver: its postinstall is a fallback for missing prebuilt binaries, which pnpm installs anyway.
+ignoredBuiltDependencies:
+  - msw
+  - unrs-resolver
