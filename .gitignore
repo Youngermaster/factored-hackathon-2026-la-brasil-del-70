@@ -12,6 +12,9 @@ kit/
 # Organizer and derived data (never commit)
 **/data/*
 !data/.gitkeep
+# Documentation about the data is not data.
+!docs/data/
+!docs/data/*.md
 *.parquet
 *.duckdb
 *.duckdb.wal
