@@ -13,6 +13,7 @@ dev = [
   "httpx==0.28.1",
   "hypothesis==6.168.1",
   "import-linter==2.15",
+  "jsonschema==4.26.0",
   "mypy==2.3.1",
   "pip-audit==2.10.1",
   "pytest==9.1.1",
@@ -109,7 +110,7 @@ files = [
 # checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["asyncpg", "asyncpg.*", "importlinter.*", "pytest_socket", "testcontainers.*"]
+module = ["asyncpg", "asyncpg.*", "importlinter.*", "jsonschema", "jsonschema.*", "pytest_socket", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]
