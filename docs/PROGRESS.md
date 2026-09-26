@@ -47,7 +47,9 @@ Plan: `docs/plans/phase-03.md` (no plan mode, per the orchestrator; open questio
 | `9d18a52` | Quality report, lineage page, cross-customer product flags, interrupted runs |
 | `00a2da8` | Explicit source (`BANK_DATA_SOURCE`, `DATA_SOURCE`), per-source warehouses, the make targets, the sample guard and codegen check in `make check` |
 | `e91e22f` | `bank-data sample`, pseudonyms, the provenance README with example rows, the preview, the guard, and the committed sample |
-| This commit | Docs (data card, update policy, source layout, pipeline page, ADRs 0007 and 0022, generated quality report and lineage), CI steps, bandit annotations, BACKLOG, this entry |
+| `38e4831` | Docs (data card, update policy, source layout, pipeline page, ADRs 0007 and 0022, generated quality report and lineage), CI steps, bandit annotations, BACKLOG, this entry |
+| `90c5cd7` | Track `docs/data/`: the `**/data/*` ignore rule had hidden it |
+| This commit | Final check numbers in this entry |
 
 #### Key data findings (phase 04 builds on these)
 
@@ -109,7 +111,7 @@ Results recorded in this phase:
 | `make pipeline` from the sample with S3 variables blanked | Completes offline in about 30 seconds; 783 objects, 2,470 rows, 0 quarantined |
 | `make data-sample` twice | Byte-identical; `git status` clean |
 | Committed sample | 74 customers, 2,470 rows plus 125 preview rows (2,595 of 5,000); every coverage case present; the guard passes |
-| Docs check | markdownlint 0 issues; 22 mermaid blocks in 72 files parse |
+| Docs check | markdownlint 0 issues; 23 mermaid blocks in 77 files parse |
 | Guards | No emoji; attribution clean; gitleaks found no leaks |
 
 #### Known limitations
