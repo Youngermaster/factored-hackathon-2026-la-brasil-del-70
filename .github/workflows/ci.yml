@@ -155,7 +155,7 @@ jobs:
           cache-dependency-glob: uv.lock
       - name: pip-audit (fails on any known vulnerability)
         run: |
-          uv export --frozen --all-packages --no-emit-workspace --format requirements-txt \
+          uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt \
             -o "${RUNNER_TEMP}/requirements-audit.txt"
           uv run --frozen pip-audit -r "${RUNNER_TEMP}/requirements-audit.txt" \
             --require-hashes --disable-pip --progress-spinner off

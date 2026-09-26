@@ -22,6 +22,7 @@ dev = [
   "pytest-socket==0.8.1",
   "ruff==0.16.9",
   "testcontainers==4.15.0",
+  "types-pyyaml==6.0.12.20260906",
 ]
 
 # ---------------------------------------------------------------------------
@@ -110,7 +111,7 @@ files = [
 # checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["asyncpg", "asyncpg.*", "importlinter.*", "jsonschema", "jsonschema.*", "pytest_socket", "testcontainers.*"]
+module = ["asyncpg", "asyncpg.*", "importlinter.*", "jsonschema", "jsonschema.*", "litellm", "litellm.*", "pytest_socket", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]
