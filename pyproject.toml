@@ -91,10 +91,25 @@ python_version = "3.12"
 strict = true
 warn_unreachable = true
 plugins = ["pydantic.mypy"]
-mypy_path = ["services/api/tests"]
+# Module names come from these bases, so the several tests/ directories and conftest.py files never collide.
+explicit_package_bases = true
+mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "ml/src", "evals/src"]
+files = [
+  "services/api/src",
+  "services/api/tests",
+  "data_platform/src",
+  "data_platform/tests",
+  "ml/src",
+  "ml/tests",
+  "evals/src",
+  "evals/tests",
+  "scripts",
+]
+# The root conftest.py shares its module name with services/api/tests/conftest.py, so `make typecheck`
+# checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["testcontainers.*", "pytest_socket", "importlinter.*"]
+module = ["asyncpg", "asyncpg.*", "importlinter.*", "pytest_socket", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]

@@ -4,7 +4,8 @@ FROM node:24.21.0-alpine3.24
 
 ENV COREPACK_HOME=/opt/corepack \
     COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
-    npm_config_package_import_method=copy
+    npm_config_package_import_method=copy \
+    npm_config_store_dir=/home/node/.local/share/pnpm/store
 
 # pnpm comes from corepack at the version pinned in package.json. The node_modules and store mount points are
 # created here, owned by the non-root `node` user, so the named volumes mounted over them inherit the ownership.

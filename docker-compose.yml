@@ -1,0 +1,172 @@
+# Development stack. PostgreSQL always runs; everything else is behind a profile:
+#   make up                          PostgreSQL only
+#   make up PROFILES="api web"       plus the API (hot reload) and the web dev server
+#   make up PROFILES=obs             plus the OpenTelemetry collector, Jaeger, Prometheus, and Grafana
+#   make up PROFILES=ml              plus the MLflow tracking server
+#
+# Values come from .env (see .env.example). Only the two PostgreSQL passwords are required, because Compose
+# checks required variables for every service, even in profiles that are not enabled. Every published port
+# binds to 127.0.0.1. Production deployment lives in deploy/ (phase 16).
+
+name: bank-agent
+
+x-hardening: &hardening
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  postgres:
+    image: postgres:16.15-alpine3.24
+    <<: *hardening
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bank_agent}
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER:-bank_owner}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?set POSTGRES_ADMIN_PASSWORD in .env, see .env.example}
+      POSTGRES_APP_USER: ${POSTGRES_APP_USER:-bank_app}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?set POSTGRES_APP_PASSWORD in .env, see .env.example}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./deploy/postgres/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      # TCP on 127.0.0.1 stays unavailable while the init scripts run on the socket-only temporary server.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  api:
+    profiles: [api]
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile.dev
+    <<: *hardening
+    cap_drop: [ALL]
+    # Optional here so `docker compose config` works from shell variables alone; the database values the
+    # API needs are passed explicitly below.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: ${POSTGRES_DB:-bank_agent}
+      POSTGRES_APP_USER: ${POSTGRES_APP_USER:-bank_app}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?set POSTGRES_APP_PASSWORD in .env, see .env.example}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    volumes:
+      - .:/workspace:ro
+      - api-venv:/opt/venv
+      - api-uv-cache:/opt/uv-cache
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    profiles: [web]
+    build:
+      context: apps/web
+      dockerfile: Dockerfile.dev
+    <<: *hardening
+    cap_drop: [ALL]
+    environment:
+      VITE_API_PROXY_TARGET: http://api:8000
+    volumes:
+      - ./apps/web:/workspace/apps/web
+      - web-node-modules:/workspace/apps/web/node_modules
+      - web-pnpm-store:/home/node/.local/share/pnpm/store
+    ports:
+      - "127.0.0.1:5173:5173"
+
+  otel-collector:
+    profiles: [obs]
+    image: otel/opentelemetry-collector:0.161.0
+    <<: *hardening
+    cap_drop: [ALL]
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./deploy/observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "127.0.0.1:4317:4317"
+      - "127.0.0.1:4318:4318"
+    depends_on:
+      - jaeger
+
+  jaeger:
+    profiles: [obs]
+    image: jaegertracing/jaeger:2.21.0
+    <<: *hardening
+    cap_drop: [ALL]
+    ports:
+      - "127.0.0.1:16686:16686"
+
+  prometheus:
+    profiles: [obs]
+    image: prom/prometheus:v3.15.0
+    <<: *hardening
+    cap_drop: [ALL]
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+    volumes:
+      - ./deploy/observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+
+  grafana:
+    profiles: [obs]
+    image: grafana/grafana:13.2.2
+    <<: *hardening
+    cap_drop: [ALL]
+    environment:
+      # Local development only: anonymous read-only access, no login form, no basic auth, so no admin
+      # password is needed. Dashboards are file-provisioned (phase 15).
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_BASIC_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+    volumes:
+      - ./deploy/observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - prometheus
+      - jaeger
+
+  mlflow:
+    profiles: [ml]
+    image: ghcr.io/mlflow/mlflow:v3.16.1
+    <<: *hardening
+    cap_drop: [ALL]
+    command:
+      - mlflow
+      - server
+      - --host=0.0.0.0
+      - --port=5000
+      - --backend-store-uri=sqlite:////mlflow/mlflow.db
+      - --artifacts-destination=/mlflow/artifacts
+      - --serve-artifacts
+    volumes:
+      - mlflow-data:/mlflow
+    ports:
+      - "127.0.0.1:5000:5000"
+
+volumes:
+  pgdata:
+  api-venv:
+  api-uv-cache:
+  web-node-modules:
+  web-pnpm-store:
+  prometheus-data:
+  grafana-data:
+  mlflow-data:

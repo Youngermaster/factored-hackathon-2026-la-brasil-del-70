@@ -53,6 +53,7 @@ data_platform/dbt/dbt_packages/
 
 # Node and web
 node_modules/
+.pnpm-store/
 apps/web/dist/
 apps/web/coverage/
 apps/web/.vite/

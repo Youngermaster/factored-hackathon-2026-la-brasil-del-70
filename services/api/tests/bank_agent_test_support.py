@@ -3,6 +3,7 @@
 import asyncio
 import itertools
 from collections.abc import Sequence
+from dataclasses import dataclass
 
 from bank_agent.api.provider import ApiConfig
 from bank_agent.ports.health import ReadinessCheck
@@ -82,3 +83,16 @@ def api_config(timeout_seconds: float = 2.0, expose_docs: bool = True) -> ApiCon
         expose_docs=expose_docs,
         readiness_timeout_seconds=timeout_seconds,
     )
+
+
+@dataclass(frozen=True)
+class PostgresInstance:
+    """Connection facts for the integration-test PostgreSQL container. Passwords are generated per session."""
+
+    host: str
+    port: int
+    database: str
+    owner: str
+    owner_password: str
+    app_user: str
+    app_password: str
