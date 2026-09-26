@@ -15,9 +15,12 @@ Offline measurements, simulations, and projected savings are always labeled sepa
 | Path | Content |
 |---|---|
 | `src/bank_evals/` | The Python package; `cli.py` is the `bank-eval` entry point |
+| `src/bank_evals/scenarios/model.py` | `Scenario`, version 1 of the scenario contract (`contracts/schemas/scenario.v1.json`) |
 | `tests/unit/` | Unit tests |
 
-Phase 14 adds `src/bank_evals/scenarios`, `src/bank_evals/systems`, graders, and reports.
+Phase 14 adds scenario generators and loaders, `src/bank_evals/systems`, graders, and reports.
+
+`bank-evals` depends on `bank-agent` (a uv workspace dependency) for the domain vocabulary the scenarios share with the system under test, and, from phase 14, to run the proposed system in process. `bank-agent` never imports `bank-evals`.
 
 ## Public interfaces
 
@@ -32,7 +35,8 @@ Phase 14 adds `src/bank_evals/scenarios`, `src/bank_evals/systems`, graders, and
 
 ## How to extend
 
-- **New scenario set:** add scenario files with their expected outcomes and a set hash, so reports can name the exact inputs.
+- **New scenario set:** add scenario files that validate against `Scenario` (id, split, language and dialect, category, persona reference, facts, scripted turns or simulator instructions, fixtures, tool failure plan, expected outcome and state assertions, disclosures, expected handoff fields, provenance, review status) and a set hash, so reports can name the exact inputs.
+- **New scenario field:** add it to `Scenario` as an optional field (additive, a minor version), run `make contracts`, and commit the regenerated schema with the change.
 - **New system under test:** implement it against the same tool interfaces as the proposed system, so comparisons stay fair.
 - **New command:** add a function decorated with `@app.command()` in `src/bank_evals/cli.py`.
 
