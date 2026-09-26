@@ -1,22 +1,43 @@
-"""The evaluation scenario, version 1 (``contracts/schemas/scenario.v1.json``).
+"""The evaluation scenario, version 1 (``contracts/schemas/scenario.v1.json``), minor version 1.1.
 
 One contract shared by the scenario generators, the fixtures, the simulated user, and the graders (phase 14).
 Scenarios reference seeded demo personas and their records by symbolic names (for example
 ``recent_card_purchase``), never by real identifiers, and every scenario states its provenance and review
 status. Phase 14 may add fields, additively.
+
+Version 1.1.0 adds the workflow a scenario exercises (``None`` for out-of-scope requests), the expected
+workflow path for routing scenarios, the expected eligibility outcome, credit fixtures, credit state
+assertions, and disclosure kinds for balances, eligibility, and credit data. New top-level fields are marked
+``AddedIn``. Phase 14 adds a generator lint that requires ``workflow`` on in-scope scenarios; the contract
+keeps it optional.
 """
 
 from enum import StrEnum
 from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, NonNegativeInt, PositiveInt, StringConstraints, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    NonNegativeInt,
+    PositiveInt,
+    StrictInt,
+    StringConstraints,
+    model_validator,
+)
 
 from bank_agent.domain.actions import ToolFailureMode, ToolName
+from bank_agent.domain.base import AddedIn, check_added_fields
+from bank_agent.domain.credit import ApplicationStatus
 from bank_agent.domain.dispute import DisputeReason, DisputeStatus
+from bank_agent.domain.eligibility import EligibilityOutcome
 from bank_agent.domain.handoff import EscalationReasonCode, Handoff
+from bank_agent.domain.identifiers import CreditProductCode
+from bank_agent.domain.intelligence import ModelComponent
 from bank_agent.domain.locale import Language, Locale
+from bank_agent.domain.money import Money
 from bank_agent.domain.product import ProductStatus
-from bank_agent.domain.workflow import Outcome
+from bank_agent.domain.workflow import Outcome, WorkflowId
 
 SlotName = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,63}$")]
 RecordRef = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,63}$")]
@@ -113,8 +134,50 @@ class SessionExpiresBeforeTurn(ScenarioModel):
     turn_index: PositiveInt
 
 
+class CreditProfileOverride(ScenarioModel):
+    """Sets one credit fact of the persona's profile, or clears it with ``value: null`` (missing data)."""
+
+    kind: Literal["credit_profile_override"] = "credit_profile_override"
+    fact: Literal["credit_score", "estimated_monthly_income", "max_days_past_due"]
+    value: StrictInt | Money | None = None
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if self.value is None:
+            return self
+        if self.fact == "estimated_monthly_income":
+            if not isinstance(self.value, Money) or self.value.amount < 0:
+                raise ValueError("estimated_monthly_income takes a non-negative money value")
+        elif not isinstance(self.value, int):
+            raise ValueError(f"{self.fact} takes an integer")
+        elif self.fact == "credit_score" and not 300 <= self.value <= 850:
+            raise ValueError("credit_score is between 300 and 850")
+        elif self.value < 0:
+            raise ValueError("max_days_past_due cannot be negative")
+        return self
+
+
+class ExistingCreditApplication(ScenarioModel):
+    kind: Literal["existing_credit_application"] = "existing_credit_application"
+    product_code: CreditProductCode
+    status: ApplicationStatus = ApplicationStatus.SUBMITTED
+
+
+class ModelUnavailable(ScenarioModel):
+    """The named component fails for the whole scenario, for example the risk estimator."""
+
+    kind: Literal["model_unavailable"] = "model_unavailable"
+    component: ModelComponent
+
+
 Fixture = Annotated[
-    MerchantNameOverride | ProductStatusOverride | ExistingCase | SessionExpiresBeforeTurn,
+    MerchantNameOverride
+    | ProductStatusOverride
+    | ExistingCase
+    | SessionExpiresBeforeTurn
+    | CreditProfileOverride
+    | ExistingCreditApplication
+    | ModelUnavailable,
     Field(discriminator="kind"),
 ]
 
@@ -155,8 +218,31 @@ class NoWrites(ScenarioModel):
     kind: Literal["no_writes"] = "no_writes"
 
 
+class CreditApplicationExists(ScenarioModel):
+    kind: Literal["credit_application_exists"] = "credit_application_exists"
+    product_code: CreditProductCode | None = None
+    status: ApplicationStatus | None = None
+
+
+class CreditApplicationCount(ScenarioModel):
+    kind: Literal["credit_application_count"] = "credit_application_count"
+    count: NonNegativeInt
+
+
+class EligibilityOutcomeIs(ScenarioModel):
+    kind: Literal["eligibility_outcome"] = "eligibility_outcome"
+    outcome: EligibilityOutcome
+
+
 StateAssertion = Annotated[
-    CaseExists | CaseCount | ProductStatusIs | HandoffExists | NoWrites,
+    CaseExists
+    | CaseCount
+    | ProductStatusIs
+    | HandoffExists
+    | NoWrites
+    | CreditApplicationExists
+    | CreditApplicationCount
+    | EligibilityOutcomeIs,
     Field(discriminator="kind"),
 ]
 
@@ -171,6 +257,15 @@ class DisclosureKind(StrEnum):
     INTERNAL_FLAG = "internal_flag"
     FRAUD_SCORE = "fraud_score"
     PHRASE = "phrase"
+    BALANCE = "balance"
+    AS_OF_DATE = "as_of_date"
+    ELIGIBILITY_REASON = "eligibility_reason"
+    REVIEW_PATH = "review_path"
+    CREDIT_APPROVAL_CLAIM = "credit_approval_claim"
+    """A response that states or implies credit approval: always a forbidden disclosure."""
+    RISK_ESTIMATE = "risk_estimate"
+    CREDIT_SCORE = "credit_score"
+    INCOME = "income"
 
 
 class DisclosureSpec(ScenarioModel):
@@ -208,13 +303,30 @@ class Scenario(ScenarioModel):
     in_scope: bool
     provenance: Provenance
     review_status: ReviewStatus = ReviewStatus.PENDING_REVIEW
+    workflow: Annotated[WorkflowId | None, AddedIn("1.1.0")] = None
+    """The workflow the scenario exercises; ``None`` for out-of-scope requests."""
+    expected_workflow_path: Annotated[tuple[WorkflowId, ...], AddedIn("1.1.0")] = ()
+    """For routing scenarios: the workflows the conversation visits, in order, starting with ``workflow``."""
+    expected_eligibility_outcome: Annotated[EligibilityOutcome | None, AddedIn("1.1.0")] = None
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
         self._validate_language()
         self._validate_mode()
         self._validate_consistency()
+        self._validate_workflows()
         return self
+
+    def _validate_workflows(self) -> None:
+        check_added_fields(self, self.schema_version)
+        if self.workflow is not None and not self.in_scope:
+            raise ValueError("an out-of-scope scenario has no workflow")
+        if self.expected_workflow_path and (
+            len(self.expected_workflow_path) < 2 or self.expected_workflow_path[0] is not self.workflow
+        ):
+            raise ValueError("a workflow path has at least two workflows and starts with the scenario workflow")
+        if self.expected_eligibility_outcome is not None and self.workflow is not WorkflowId.CREDIT:
+            raise ValueError("an expected eligibility outcome belongs to a credit scenario")
 
     def _validate_language(self) -> None:
         if self.language is Language.EN:

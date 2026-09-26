@@ -3,6 +3,16 @@
   "$id": "https://bank-agent.local/contracts/schemas/scenario.v1.json",
   "x-schema-version": "1.1.0",
   "$defs": {
+    "ApplicationStatus": {
+      "enum": [
+        "submitted",
+        "under_human_review",
+        "withdrawn",
+        "closed"
+      ],
+      "title": "ApplicationStatus",
+      "type": "string"
+    },
     "CaseCount": {
       "additionalProperties": false,
       "properties": {
@@ -67,6 +77,115 @@
       "title": "CaseExists",
       "type": "object"
     },
+    "CreditApplicationCount": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "credit_application_count",
+          "default": "credit_application_count",
+          "title": "Kind",
+          "type": "string"
+        },
+        "count": {
+          "minimum": 0,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "title": "CreditApplicationCount",
+      "type": "object"
+    },
+    "CreditApplicationExists": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "credit_application_exists",
+          "default": "credit_application_exists",
+          "title": "Kind",
+          "type": "string"
+        },
+        "product_code": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Product Code"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "CreditApplicationExists",
+      "type": "object"
+    },
+    "CreditProfileOverride": {
+      "additionalProperties": false,
+      "description": "Sets one credit fact of the persona's profile, or clears it with ``value: null`` (missing data).",
+      "properties": {
+        "kind": {
+          "const": "credit_profile_override",
+          "default": "credit_profile_override",
+          "title": "Kind",
+          "type": "string"
+        },
+        "fact": {
+          "enum": [
+            "credit_score",
+            "estimated_monthly_income",
+            "max_days_past_due"
+          ],
+          "title": "Fact",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "fact"
+      ],
+      "title": "CreditProfileOverride",
+      "type": "object"
+    },
+    "Currency": {
+      "enum": [
+        "MXN",
+        "COP",
+        "ARS",
+        "USD"
+      ],
+      "title": "Currency",
+      "type": "string"
+    },
     "DisclosureKind": {
       "enum": [
         "case_reference",
@@ -77,7 +196,15 @@
         "product_number",
         "internal_flag",
         "fraud_score",
-        "phrase"
+        "phrase",
+        "balance",
+        "as_of_date",
+        "eligibility_reason",
+        "review_path",
+        "credit_approval_claim",
+        "risk_estimate",
+        "credit_score",
+        "income"
       ],
       "title": "DisclosureKind",
       "type": "string"
@@ -133,6 +260,36 @@
       "title": "DisputeStatus",
       "type": "string"
     },
+    "EligibilityOutcome": {
+      "description": "There is no approved outcome by design: the synthetic service gives an indication, never a decision.",
+      "enum": [
+        "indicatively_eligible",
+        "not_eligible",
+        "review_required",
+        "insufficient_data"
+      ],
+      "title": "EligibilityOutcome",
+      "type": "string"
+    },
+    "EligibilityOutcomeIs": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "eligibility_outcome",
+          "default": "eligibility_outcome",
+          "title": "Kind",
+          "type": "string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/EligibilityOutcome"
+        }
+      },
+      "required": [
+        "outcome"
+      ],
+      "title": "EligibilityOutcomeIs",
+      "type": "object"
+    },
     "EscalationReasonCode": {
       "enum": [
         "amount_above_auto_limit",
@@ -182,6 +339,31 @@
         "reason"
       ],
       "title": "ExistingCase",
+      "type": "object"
+    },
+    "ExistingCreditApplication": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "existing_credit_application",
+          "default": "existing_credit_application",
+          "title": "Kind",
+          "type": "string"
+        },
+        "product_code": {
+          "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+          "title": "Product Code",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ApplicationStatus",
+          "default": "submitted"
+        }
+      },
+      "required": [
+        "product_code"
+      ],
+      "title": "ExistingCreditApplication",
       "type": "object"
     },
     "HandoffExists": {
@@ -255,6 +437,65 @@
         "value"
       ],
       "title": "MerchantNameOverride",
+      "type": "object"
+    },
+    "ModelComponent": {
+      "enum": [
+        "router",
+        "resolver",
+        "retriever",
+        "language_detector",
+        "llm",
+        "risk_estimator"
+      ],
+      "title": "ModelComponent",
+      "type": "string"
+    },
+    "ModelUnavailable": {
+      "additionalProperties": false,
+      "description": "The named component fails for the whole scenario, for example the risk estimator.",
+      "properties": {
+        "kind": {
+          "const": "model_unavailable",
+          "default": "model_unavailable",
+          "title": "Kind",
+          "type": "string"
+        },
+        "component": {
+          "$ref": "#/$defs/ModelComponent"
+        }
+      },
+      "required": [
+        "component"
+      ],
+      "title": "ModelUnavailable",
+      "type": "object"
+    },
+    "Money": {
+      "additionalProperties": false,
+      "description": "An amount in one currency. JSON form: ``{\"amount\": \"12.50\", \"currency\": \"MXN\"}``.",
+      "properties": {
+        "amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Amount"
+        },
+        "currency": {
+          "$ref": "#/$defs/Currency"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "title": "Money",
       "type": "object"
     },
     "NoWrites": {
@@ -526,6 +767,17 @@
       ],
       "title": "TurnAction",
       "type": "string"
+    },
+    "WorkflowId": {
+      "description": "The supported workflows (section 1 of CLAUDE.md). ``WorkflowRef.id`` stays a pattern-constrained string in\nevery contract; membership in this registry is checked by the application, not by the schemas.",
+      "enum": [
+        "account_inquiry",
+        "card_support",
+        "dispute",
+        "credit"
+      ],
+      "title": "WorkflowId",
+      "type": "string"
     }
   },
   "additionalProperties": false,
@@ -625,8 +877,11 @@
       "items": {
         "discriminator": {
           "mapping": {
+            "credit_profile_override": "#/$defs/CreditProfileOverride",
             "existing_case": "#/$defs/ExistingCase",
+            "existing_credit_application": "#/$defs/ExistingCreditApplication",
             "merchant_name_override": "#/$defs/MerchantNameOverride",
+            "model_unavailable": "#/$defs/ModelUnavailable",
             "product_status_override": "#/$defs/ProductStatusOverride",
             "session_expires_before_turn": "#/$defs/SessionExpiresBeforeTurn"
           },
@@ -644,6 +899,15 @@
           },
           {
             "$ref": "#/$defs/SessionExpiresBeforeTurn"
+          },
+          {
+            "$ref": "#/$defs/CreditProfileOverride"
+          },
+          {
+            "$ref": "#/$defs/ExistingCreditApplication"
+          },
+          {
+            "$ref": "#/$defs/ModelUnavailable"
           }
         ]
       },
@@ -676,6 +940,9 @@
           "mapping": {
             "case_count": "#/$defs/CaseCount",
             "case_exists": "#/$defs/CaseExists",
+            "credit_application_count": "#/$defs/CreditApplicationCount",
+            "credit_application_exists": "#/$defs/CreditApplicationExists",
+            "eligibility_outcome": "#/$defs/EligibilityOutcomeIs",
             "handoff_exists": "#/$defs/HandoffExists",
             "no_writes": "#/$defs/NoWrites",
             "product_status": "#/$defs/ProductStatusIs"
@@ -697,6 +964,15 @@
           },
           {
             "$ref": "#/$defs/NoWrites"
+          },
+          {
+            "$ref": "#/$defs/CreditApplicationExists"
+          },
+          {
+            "$ref": "#/$defs/CreditApplicationCount"
+          },
+          {
+            "$ref": "#/$defs/EligibilityOutcomeIs"
           }
         ]
       },
@@ -737,6 +1013,39 @@
     "review_status": {
       "$ref": "#/$defs/ReviewStatus",
       "default": "pending_review"
+    },
+    "workflow": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WorkflowId"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-added-in": "1.1.0"
+    },
+    "expected_workflow_path": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/WorkflowId"
+      },
+      "title": "Expected Workflow Path",
+      "type": "array",
+      "x-added-in": "1.1.0"
+    },
+    "expected_eligibility_outcome": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EligibilityOutcome"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-added-in": "1.1.0"
     }
   },
   "required": [

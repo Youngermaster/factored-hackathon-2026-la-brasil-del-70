@@ -16,7 +16,7 @@ The Pydantic models are the single source of truth. `scripts/generate_contracts.
 | `schemas/scenario.v1.json` | `bank_evals.scenarios.model.Scenario` | validation | scenario generators and reviewers (phase 14) | evaluation harness (phase 14) |
 | `schemas/policy_clause.v1.json` | `bank_agent.domain.policy.ClauseMetadata` | validation | policy authors (phase 06) | policy loader (phase 06) |
 
-- **Serialization mode** is used for documents the system produces. They match what `model_dump(mode="json")` emits: amounts are decimal strings (`"12.50"`), references are single strings (`transactions:T000123`, `DSP-CO-2.1@3`, `router:tfidf@3`), and every field is present, so every field is required.
+- **Serialization mode** is used for documents the system produces. They match what `model_dump(mode="json")` emits: amounts are decimal strings (`"12.50"`), references are single strings (`transactions:T000123`, `DSP-CO-2.1@3`, `router:tfidf@3`), and every field is present, so every field that existed in the major version's first release (`1.0.0`) is required. Fields added in a later minor version are the exception (see "Fields added in a minor version").
 - **Validation mode** is used for documents people and generators author. Fields with defaults may be omitted.
 - Every schema is JSON Schema 2020-12 with `additionalProperties: false` at every level. Each file carries `$schema`, an `$id` of the form `https://bank-agent.local/contracts/schemas/<name>.v<major>.json`, and `x-schema-version`.
 - Fields marked `x-pii` hold personal data and fields marked `x-internal` are never shown to customers or sent to a model.
@@ -43,6 +43,21 @@ Documents carry `schema_version` (for example `1.0.0`); consumers accept any `1.
 
 Because every level rejects unknown keys, a document written under a newer minor version fails validation against an older one. All producers and consumers live in this repository and regenerate together; when that stops being true, consumers must upgrade before producers emit the new fields.
 
+## Fields added in a minor version
+
+Decision recorded in phase 02b (approved 2026-09-26). The problem: in a serialization-mode schema every field is required, including a new field with a default. A document stored under `1.0.0` lacks that key, so it would fail the `1.1.0` schema even though the model accepts it, and "consumers accept any `1.x.y`" would stop being true.
+
+The rule:
+
+1. Every field added to a contract within a major version carries the `AddedIn("<version>")` marker from `bank_agent.domain.base`, for example `workflow: Annotated[WorkflowRef | None, AddedIn("1.1.0")] = None`. The schema shows it as `"x-added-in": "1.1.0"`.
+2. A hook on `DomainModel` leaves marked fields out of `required`, in every schema mode. Every field that existed in `x.0.0` stays required. Fields inside a model that is itself new are not marked: a document that has the parent field was written by a producer that emits all of its fields.
+3. A version gate (`check_added_fields`) rejects a document whose `schema_version` predates a marked field while that field holds a non-default value, so a version label never understates what a document contains.
+4. Removing a marker, or making a marked field required, is a major change.
+
+A stored `1.0.0` document therefore validates against the `1.1.0` models and schemas unchanged. Re-serializing it through a `1.1.0` model emits the new keys at their defaults; the `1.1.0` schema accepts that document and the `1.0.0` schema does not, which is the existing "consumers upgrade first" rule.
+
+Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validated against the models and the committed schemas (`services/api/tests/fixtures/contracts/v1.0.0/`, `evals/tests/fixtures/contracts/v1.0.0/`); a negative control shows that an unmarked new field breaks them; a schema walk checks that exactly the marked fields are optional. The alternative, keeping every field required and documenting that consumers read stored documents through the models, was rejected because it makes the schemas unusable for stored documents and for consumers outside Python.
+
 ## Deprecation path
 
 1. Mark the field deprecated in the model (`Field(deprecated=...)`), which adds `deprecated: true` to the schema, and add a row to the changelog below. Producers keep emitting it.
@@ -58,9 +73,14 @@ Because every level rejects unknown keys, a document written under a newer minor
 | decision | 1.0.0 | 2026-09-26 | Initial version |
 | scenario | 1.0.0 | 2026-09-26 | Initial version, with the fields phase 14 lists |
 | policy_clause | 1.0.0 | 2026-09-26 | Initial version |
+| handoff | 1.1.0 | 2026-09-26 | Adds optional `workflow`, `credit_review` (with an internal risk part), and `card_request`, marked `x-added-in`; widens `request.intent`, `actions_taken.action`, `escalation_reason.code` (card and credit codes), the source reference tables, and the clause family pattern (`ACC`, `CRE`, `ELG`); new documents default to `1.1.0` |
+| execution_record | 1.1.0 | 2026-09-26 | Adds optional `workflow_before`, `risk_estimates` (internal), and `eligibility_assessments`, kept as separate fields; widens intents, tool names, action kinds, model components (`risk_estimator`), and the clause family pattern; new documents default to `1.1.0` |
+| decision | 1.1.0 | 2026-09-26 | Widens the clause family pattern (`ACC`, `CRE`, `ELG`) and `action` (`submit_credit_application`); new documents default to `1.1.0` |
+| scenario | 1.1.0 | 2026-09-26 | Adds `workflow`, `expected_workflow_path`, and `expected_eligibility_outcome`; the fixtures `credit_profile_override`, `existing_credit_application`, and `model_unavailable`; the assertions `credit_application_exists`, `credit_application_count`, and `eligibility_outcome`; the disclosure kinds `balance`, `as_of_date`, `eligibility_reason`, `review_path`, `credit_approval_claim`, `risk_estimate`, `credit_score`, and `income`; widens tool names and escalation codes; new documents default to `1.1.0` |
+| policy_clause | 1.1.0 | 2026-09-26 | Widens the clause family pattern (`ACC`, `CRE`, `ELG`) |
 
 ## How to change a contract
 
-1. Change the model, following the versioning rules above; bump the version in `scripts/generate_contracts.py` and, for a major version, add the new file alongside the old one.
+1. Change the model, following the versioning rules above (a new field in a minor version carries `AddedIn`); bump the version in `scripts/generate_contracts.py` and the model's default `schema_version` (a test checks they match) and, for a major version, add the new file alongside the old one.
 2. Run `make contracts`.
 3. Update the changelog and the consumers, and commit the model, the schemas, and the consumers together.
