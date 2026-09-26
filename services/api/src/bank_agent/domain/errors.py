@@ -234,6 +234,14 @@ class LlmProviderError(LlmError):
     retryable = True
 
 
+class LlmProviderRejectedError(LlmProviderError):
+    """The provider refused the request (authentication, a malformed request, an unknown model) or no provider
+    is configured. A provider error, but never retried: the same request fails the same way."""
+
+    code = "llm_provider_rejected"
+    retryable = False
+
+
 class LlmInvalidOutputError(LlmError):
     code = "llm_invalid_output"
 

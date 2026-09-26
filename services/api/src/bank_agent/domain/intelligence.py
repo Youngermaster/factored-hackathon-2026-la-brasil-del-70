@@ -6,8 +6,10 @@ language model client are ports. These models are what they exchange. Scores and
 never only an alias such as ``champion``.
 """
 
+import hashlib
+import json
 import re
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from datetime import date
 from decimal import Decimal
 from enum import StrEnum
@@ -27,7 +29,7 @@ from pydantic import (
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema
 
-from bank_agent.domain.base import DomainModel, UntrustedText
+from bank_agent.domain.base import DomainModel, Pii, UntrustedText
 from bank_agent.domain.decision import ClauseRef
 from bank_agent.domain.identifiers import ConversationId, LineageId, TransactionId, TurnId
 from bank_agent.domain.locale import Country, Language
@@ -260,12 +262,42 @@ class TokenUsage(DomainModel):
         )
 
 
+def _canonical(value: PromptValue) -> JsonValue:
+    if isinstance(value, Money):
+        return {"amount": str(value.amount), "currency": value.currency.value}
+    if isinstance(value, Decimal):
+        return str(value)
+    if value is None or isinstance(value, str | int | bool):
+        return value
+    return [str(item) for item in value]
+
+
+def canonical_variables(variables: Mapping[str, PromptValue]) -> str:
+    """Canonical JSON for ``variables``: sorted keys, Decimal and Money as strings, no whitespace."""
+    normalized = {key: _canonical(value) for key, value in variables.items()}
+    return json.dumps(normalized, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def input_hash(prompt: PromptRef, variables: Mapping[str, PromptValue]) -> str:
+    """SHA-256 over the prompt reference and the canonical variables: the key ``FakeLLM`` scripts use."""
+    payload = f"{prompt}\n{canonical_variables(variables)}"
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+SensitiveTerm = Annotated[str, StringConstraints(min_length=2, max_length=80)]
+
+
 class LlmCallContext(DomainModel):
-    """Who a call is for, so the budget guard (phase 08) can enforce per-session and per-conversation caps."""
+    """Who a call is for, so the budget guard can enforce per-session and per-conversation caps.
+
+    ``sensitive_terms`` lists words the redaction decorator must mask wherever they appear in a variable, such
+    as the session customer's first name. It never leaves the gateway: providers and cassettes never see it.
+    """
 
     lineage_id: LineageId | None = None
     conversation_id: ConversationId | None = None
     turn_id: TurnId | None = None
+    sensitive_terms: Annotated[tuple[SensitiveTerm, ...], Pii("name"), Field(max_length=10)] = ()
 
 
 class TextGeneration(DomainModel):
@@ -294,13 +326,24 @@ class PromptVariableSpec(DomainModel):
     required: bool = True
     untrusted: bool = False
     """Untrusted variables are wrapped in data delimiters when the prompt is rendered."""
+    description: Annotated[str, StringConstraints(max_length=300)] = ""
+
+
+class PromptChange(DomainModel):
+    version: PositiveInt
+    change: Annotated[str, StringConstraints(min_length=1, max_length=500)]
 
 
 class PromptTemplate(DomainModel):
+    """A loaded prompt file. ``output_model`` names a model in ``domain.llm_outputs.OUTPUT_MODELS``; ``None``
+    means the prompt produces plain text. ``body`` holds the ``## System`` and ``## User`` sections."""
+
     ref: PromptRef
     purpose: Annotated[str, StringConstraints(min_length=1, max_length=500)]
     variables: dict[Annotated[str, StringConstraints(pattern=rf"^{_NAME}$")], PromptVariableSpec]
     output_model: Annotated[str, StringConstraints(max_length=200)] | None = None
+    owner: Annotated[str, StringConstraints(min_length=1, max_length=100)] = "unassigned"
+    changelog: tuple[PromptChange, ...] = ()
     body: str
 
 

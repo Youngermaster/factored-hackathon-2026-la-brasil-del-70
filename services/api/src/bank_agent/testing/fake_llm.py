@@ -6,8 +6,6 @@ entries in order and the last entry repeats, so "fail once, then succeed" is one
 raises ``FakeLLMScriptMissingError`` loudly; the fake never guesses.
 """
 
-import hashlib
-import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from decimal import Decimal
@@ -22,9 +20,24 @@ from bank_agent.domain.intelligence import (
     StructuredGeneration,
     TextGeneration,
     TokenUsage,
+    canonical_variables,
+    input_hash,
 )
 from bank_agent.domain.locale import Language
-from bank_agent.domain.money import Money
+
+__all__ = [
+    "DEFAULT_MODEL_ID",
+    "WILDCARD",
+    "FakeLLM",
+    "FakeLLMCall",
+    "FakeLLMScriptMissingError",
+    "Script",
+    "ScriptedError",
+    "ScriptedResponse",
+    "canonical_variables",
+    "input_hash",
+    "scripted_calls",
+]
 
 WILDCARD = "*"
 DEFAULT_MODEL_ID = "fake/scripted"
@@ -32,28 +45,6 @@ DEFAULT_MODEL_ID = "fake/scripted"
 
 class FakeLLMScriptMissingError(Exception):
     """A call had no script. Tests must script every call they make."""
-
-
-def _canonical(value: PromptValue) -> JsonValue:
-    if isinstance(value, Money):
-        return {"amount": str(value.amount), "currency": value.currency.value}
-    if isinstance(value, Decimal):
-        return str(value)
-    if value is None or isinstance(value, str | int | bool):
-        return value
-    return [str(item) for item in value]
-
-
-def canonical_variables(variables: Mapping[str, PromptValue]) -> str:
-    """Canonical JSON for ``variables``: sorted keys, Decimal and Money as strings, no whitespace."""
-    normalized = {key: _canonical(value) for key, value in variables.items()}
-    return json.dumps(normalized, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
-
-
-def input_hash(prompt: PromptRef, variables: Mapping[str, PromptValue]) -> str:
-    """The key the fake (and the phase 08 cassette client) uses for one call."""
-    payload = f"{prompt}\n{canonical_variables(variables)}"
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
