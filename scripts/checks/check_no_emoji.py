@@ -11,7 +11,8 @@ author (vendored skills, lockfiles, dependency folders). Binary files are skippe
 
 from __future__ import annotations
 
-import subprocess
+# subprocess runs only git with a fixed argument list (see tracked_files).
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -52,7 +53,8 @@ def is_excluded(path: str) -> bool:
 
 
 def tracked_files() -> list[str]:
-    result = subprocess.run(["git", "ls-files", "-z"], capture_output=True, check=True)
+    # Fixed argument list with no external input; git is resolved from PATH like every other developer tool.
+    result = subprocess.run(["git", "ls-files", "-z"], capture_output=True, check=True)  # nosec B603 B607
     return [p for p in result.stdout.decode("utf-8").split("\0") if p]
 
 

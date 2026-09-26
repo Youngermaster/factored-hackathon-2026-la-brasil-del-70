@@ -1,16 +1,17 @@
-# Seed configuration. Phase 01 extends it with ruff, formatting and web linting.
-# After copying: `pre-commit install` then `pre-commit autoupdate` to pin current releases.
+# Hooks run on every commit (pre-commit) and on the commit message (commit-msg).
+# Install with `make setup`. Hook repositories are pinned; refresh with `pre-commit autoupdate`.
+# The ruff rev must match the ruff version pinned in uv.lock.
 default_install_hook_types: [pre-commit, commit-msg]
 default_stages: [pre-commit]
 
 repos:
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.2
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
         args: ["--maxkb=500"]
@@ -18,17 +19,39 @@ repos:
       - id: check-merge-conflict
       - id: end-of-file-fixer
       - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.9
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
 
   - repo: local
     hooks:
       - id: strip-ai-attribution
         name: Strip AI tool attribution from the commit message
-        entry: python3 scripts/hooks/strip_ai_attribution.py
+        entry: uv run --no-project --python 3.12 python scripts/hooks/strip_ai_attribution.py
         language: system
         stages: [commit-msg]
       - id: no-emoji
         name: Forbid emoji characters
-        entry: python3 scripts/checks/check_no_emoji.py
+        entry: uv run --no-project --python 3.12 python scripts/checks/check_no_emoji.py
         language: system
         types: [text]
         exclude: ^(\.claude/skills/|kit/|data/|apps/web/node_modules/)
+      - id: web-eslint
+        name: ESLint (apps/web)
+        entry: scripts/hooks/run_web_tool.sh eslint --max-warnings=0 --no-warn-ignored --
+        language: system
+        files: ^apps/web/
+        types_or: [ts, tsx, javascript, jsx]
+      - id: web-prettier
+        name: Prettier check (apps/web)
+        entry: scripts/hooks/run_web_tool.sh prettier --check --ignore-unknown --
+        language: system
+        files: ^apps/web/
+        exclude: ^apps/web/pnpm-lock\.yaml$
