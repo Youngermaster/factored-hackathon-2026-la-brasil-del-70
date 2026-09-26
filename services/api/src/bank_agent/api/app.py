@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from bank_agent.api.domain_problems import domain_problem_registry
 from bank_agent.api.middleware import RequestIdMiddleware
 from bank_agent.api.problems import ProblemRegistry
 from bank_agent.api.provider import ApiConfig, ServiceProvider
@@ -15,8 +16,8 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     """Build the HTTP application around a service provider.
 
     The provider and config are stored on ``app.state`` for routers and dependencies, and the provider is
-    closed when the application shuts down. ``problems`` maps typed errors to problem details; a fresh
-    registry is used when none is given.
+    closed when the application shuts down. ``problems`` maps typed errors to problem details; when none is
+    given, a registry with every domain error family registered is used.
     """
 
     @asynccontextmanager
@@ -36,7 +37,7 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     )
     app.state.provider = provider
     app.state.api_config = config
-    (problems or ProblemRegistry()).install(app)
+    (problems or domain_problem_registry()).install(app)
     app.add_middleware(RequestIdMiddleware, id_factory=config.request_id_factory)
     app.include_router(health.router)
     return app

@@ -12,6 +12,7 @@ The HTTP layer: the FastAPI application factory, routers, request and response m
 | `provider.py` | `ServiceProvider` Protocol (what the API needs from the composition root) and `ApiConfig` |
 | `middleware.py` | `RequestIdMiddleware`: validates or generates `X-Request-ID`, binds it to the log context, echoes it |
 | `problems.py` | `ProblemRegistry` and the handlers for HTTP, validation, registered, and unexpected errors |
+| `domain_problems.py` | `DOMAIN_PROBLEMS` and `domain_problem_registry()`: every domain error family mapped to a status and problem type (404 not found, 401 authentication with its own `session-expired` type, 403 authorization with its own `step-up-required` type, 409 conflict and state transition, 422 invariant violation, 503 dependency, 500 configuration and access context); `create_app` uses it by default |
 | `routers/health.py` | `GET /health/live` and `GET /health/ready` |
 
 ## Who may import it
@@ -27,7 +28,7 @@ Only the entry point `bank_agent.asgi`. `api` and `bootstrap` are independent la
 ## How to extend
 
 - **Endpoint:** add a router module under `routers/`, include it in `app.py`, and add request and response models with explicit limits.
-- **Error type:** call `ProblemRegistry.register(ErrorType, ProblemType(status, slug, title))` once; subclasses map through their registered base.
+- **Error type:** add domain errors to a family in `bank_agent/domain/errors.py`, which `domain_problems.py` already maps; give an error its own entry in `DOMAIN_PROBLEMS` only when clients must act on it differently. Other typed errors use `ProblemRegistry.register(ErrorType, ProblemType(status, slug, title))`; subclasses map through their registered base.
 - **Dependency:** add a property to `ServiceProvider` and implement it in `bootstrap/container.py`.
 
 ## How to test
