@@ -19,7 +19,9 @@ from typing import Final
 
 from pydantic import JsonValue
 
+from bank_agent.adapters.llm.request import Generation, LlmDecorator, LlmRequest, Proceed
 from bank_agent.domain.intelligence import PromptValue
+from bank_agent.ports.llm import LLMClient
 
 UNREDACTED_VARIABLE_KEYS: Final[frozenset[str]] = frozenset(
     {
@@ -146,3 +148,16 @@ class Redactor:
         if isinstance(value, dict):
             return {key: self.redact_json(item, sensitive_terms) for key, item in value.items()}
         return value
+
+
+class RedactionDecorator(LlmDecorator):
+    """The outermost decorator: every variable outside the allowlist is scrubbed before anything else runs, so
+    no inner layer (tracing, cassettes, providers) ever sees the raw values."""
+
+    def __init__(self, inner: LLMClient, *, redactor: Redactor) -> None:
+        super().__init__(inner)
+        self.redactor = redactor
+
+    async def around(self, request: LlmRequest, proceed: Proceed) -> Generation:
+        terms = request.call_context.sensitive_terms
+        return await proceed(request.with_variables(self.redactor.redact_variables(request.variables, terms)))
