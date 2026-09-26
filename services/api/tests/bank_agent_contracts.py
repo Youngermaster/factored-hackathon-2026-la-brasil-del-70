@@ -1,8 +1,9 @@
 """Backends and the synthetic dataset for the shared repository contract suites (``tests/contracts``).
 
 Every adapter of a repository port runs the same suite. A backend seeds the dataset below and hands out
-readers and, if it can write, units of work. Phases 03 and 05 add ``DuckDbBackend`` (readers only) and
-``PostgresBackend`` to ``READ_BACKENDS`` and ``WRITE_BACKENDS`` with ``marks=pytest.mark.integration``.
+readers and, if it can write, units of work. ``DuckDbBackend`` (phase 03, readers only, in ``bank_agent_duckdb``)
+reads the dataset as gold serving Parquet; phase 05 adds ``PostgresBackend`` to both lists with
+``marks=pytest.mark.integration``.
 
 The dataset is a fixture: two synthetic customers with invented identifiers and values.
 """
@@ -235,5 +236,14 @@ class MemoryBackend:
         """Nothing to release."""
 
 
-READ_BACKENDS: list[object] = [pytest.param(MemoryBackend, marks=pytest.mark.unit, id="memory")]
+def _duckdb_backend() -> ReadBackend:
+    from bank_agent_duckdb import DuckDbBackend
+
+    return DuckDbBackend()
+
+
+READ_BACKENDS: list[object] = [
+    pytest.param(MemoryBackend, marks=pytest.mark.unit, id="memory"),
+    pytest.param(_duckdb_backend, marks=pytest.mark.integration, id="duckdb"),
+]
 WRITE_BACKENDS: list[object] = [pytest.param(MemoryBackend, marks=pytest.mark.unit, id="memory")]

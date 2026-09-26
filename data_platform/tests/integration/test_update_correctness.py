@@ -1,10 +1,21 @@
 """Update correctness on the synthetic late-arrival fixture (``data_platform/fixtures/late_arrival``)."""
 
+from decimal import Decimal
 from pathlib import Path
 
 import duckdb
 import pytest
 
+from bank_agent.adapters.persistence.duckdb.gold import DATASET_CREDIT_BALANCE_CONVENTION, GOLD_SCHEMAS
+from bank_agent.adapters.persistence.duckdb.readers import DuckDbGoldStore
+from bank_agent.domain.access import AccessContext
+from bank_agent.domain.accounts import BalanceView
+from bank_agent.domain.identifiers import CustomerId, ProductId
+from bank_agent.domain.locale import Country
+from bank_agent.domain.money import Currency, Money
+from bank_agent.domain.product import ProductType
+from bank_agent.domain.transaction import TransactionType
+from bank_agent.ports.repositories.transactions import TransactionQuery
 from bank_data import pipeline
 from bank_data.errors import SchemaEvolutionError
 from bank_data.ingest.manifest import Manifest, ObjectStatus
@@ -111,3 +122,38 @@ def test_additive_column_is_accepted_into_bronze_and_recorded(tmp_path: Path) ->
         connection.close()
     assert events == [("additive", "schema_additive_column", "channel_detail")]
     assert backlog == [("complaints", "channel_detail")]
+
+
+def test_gold_serving_files_match_the_adapter_contract(incremental_and_full: tuple[Path, Path]) -> None:
+    gold_dir = incremental_and_full[0].parent / "gold"
+    for table, columns in GOLD_SCHEMAS.items():
+        described = duckdb.execute(
+            "select column_name, column_type from (describe select * from read_parquet(?))",
+            [(gold_dir / f"{table}.parquet").as_posix()],
+        ).fetchall()
+        assert [(str(name), str(kind)) for name, kind in described] == list(columns), table
+
+
+async def test_bank_agent_readers_serve_the_fixture_gold_output(incremental_and_full: tuple[Path, Path]) -> None:
+    store = DuckDbGoldStore(incremental_and_full[0].parent / "gold")
+    try:
+        readers = store.readers(AccessContext.for_customer(CustomerId("CLI-FIX-0001")))
+        customer = await readers.customers.get_current()
+        products = await readers.products.list()
+        card = await readers.products.get(ProductId("PRD-FIX-CC01"))
+        payments = await readers.transactions.list(TransactionQuery(types=(TransactionType.PAYMENT,)))
+        profile = await readers.credit_profiles.get_mine()
+        insured = await store.readers(AccessContext.for_customer(CustomerId("CLI-FIX-0004"))).products.list()
+    finally:
+        store.close()
+    assert (customer.first_name, customer.country) == ("Ana", Country.MX)
+    assert [product.product_id for product in products] == ["PRD-FIX-CC01", "PRD-FIX-DC01", "PRD-FIX-SV01"]
+    assert card is not None
+    assert str(card.masked_number) == "**** 0001"
+    assert card.current_balance == Money.of("1200.50", Currency.USD)
+    view = BalanceView.from_product(card, DATASET_CREDIT_BALANCE_CONVENTION)
+    assert view.available_credit == Money.of("3799.50", Currency.USD)
+    assert [txn.transaction_id for txn in payments] == ["TRX-FIX-0002"]
+    assert profile is not None
+    assert profile.utilization == Decimal("0.2401")
+    assert insured[0].product_type is ProductType.OTHER
