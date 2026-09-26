@@ -6,13 +6,13 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 02, domain model, ports, and contracts |
-| Next phase | 02b, multi-workflow contracts (`kit/prompts/02b-multi-workflow-contracts.md`), then 08, then 03 once `.env` exists |
+| Last completed phase | 02b, multi-workflow domain and contracts |
+| Next phase | 08, LLM gateway (`kit/prompts/08-llm-gateway.md`), then 03 once `.env` exists |
 | Blocked | None |
 
 Pending human actions (none blocks phase 03 except item 2, which phase 03 needs for the S3 download):
 
-0. **Review the phase 02 domain model and handoff schema before phases 05, 06, and 09 start.** The summary is in the phase 02 entry below; contracts change cheaply now and expensively later.
+0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
 1. **License undecided; decide before submission.** No LICENSE file exists and the README says all rights are reserved until the team chooses. Tracked in `docs/BACKLOG.md` for phase 17.
 2. Create `.env` from `.env.example` and fill in the organizer S3 values and local secrets. Never paste the values into a session. Then run `make env-check` and confirm every required name reports `set`. Phase 03 needs the S3 values; `make up` needs the two PostgreSQL passwords. `make check` does not need `.env`.
@@ -20,6 +20,93 @@ Pending human actions (none blocks phase 03 except item 2, which phase 03 needs 
 4. Run `/status` in Claude Code from the repository root and record the loaded setting sources in the phase 00 entry below.
 
 ## Phase log
+
+### Phase 02b: multi-workflow domain and contracts (2026-09-26)
+
+Plan: `docs/plans/phase-02b.md`, approved 2026-09-26 by the orchestrator under the human's standing delegation, with every recommendation for open questions 1 to 5, 8, and 9 accepted, question 6 answered yes (the `handoff()` builder pins `schema_version` `1.0.0`, a new `handoff_v1_1()` builder exists, and the pinned test body is unchanged), and question 7 answered yes (`jsonschema` as a dev dependency).
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `d7ac151` | The approved plan |
+| `367c2f9` | `jsonschema` 4.26.0 in the dev dependencies |
+| `9fd5586` | Golden `1.0.0` handoff, execution record, decision, and scenario documents, frozen from the phase 02 builders, with tests against the models and the committed schemas |
+| `ca8027a` | `AddedIn` marker, the `required` schema hook on `DomainModel`, and the version gate, with a negative control; no schema changed |
+| `5680be9` | `WorkflowId`, ten new intents, `CROSS_WORKFLOW_INTENTS`, the workflow catalog, `escalation.py` with the card and credit codes, clause families `ACC`, `CRE`, `ELG`; every contract moved to `1.1.0` |
+| `0ed46c5` | Optional product balance fields, `BalanceView`, `available_credit` over an explicit convention, `PaymentStatusView`, `StatementSummary`, `TransactionQuery.types`; enriched contract fixture rows |
+| `4bb8b13` | `CardAction`, `CardBlockReason`, `CardStatusView`, `CardRequest`, `CARD_ACTION_HANDLING`, `BlockCardArguments.reason` |
+| `a4ba91a` | `CreditProduct`, `CreditProfile`, `CreditApplicationIntake` and its lifecycle, the credit identifiers, id kinds, source tables, and two errors |
+| `2dff782` | `CreditRiskFeatures`, `RiskEstimate`, `EligibilityAssessment`, `EligibilityView`, `ServiceRef`, `CreditReview`, the record entries, `ModelComponent.RISK_ESTIMATOR`, two dependency errors |
+| `e1c0714` | `submit_credit_application` (action, arguments, tool), seven more tools, the new `AssistantResponse` parts and the one-confirmation rule, the vocabulary test, the problem mapping tests |
+| `81b8f3a` | Handoff and execution record `1.1.0` fields and validators |
+| `42aa03c` | Scenario `1.1.0`, the changelog rows, and the serialization decision in `contracts/README.md` |
+| `dcf28ec` | `RiskEstimator`, `EligibilityPolicy`, `CreditProductCatalog`, `CreditProfileReader`, `CreditApplicationRepository`, workflow-aware `get_bound` |
+| `230edb2` | Memory credit repositories and catalog, `credit_profiles` and `credit_applications` on the unit of work, `FakeRiskEstimator`, `FakeEligibilityPolicy`, credit fixtures, four contract suite modules |
+| `3c30edd` | `workflow-registry.md`, `credit-separation.md`, domain model and ports pages, ADRs 0020 and 0021 |
+
+#### Review summary
+
+- **New intents and owners.** `account_inquiry`: `balance_inquiry`, `payment_status`, `statement_request`. `card_support`: `card_status`, `card_block`, `card_unblock_request`, `card_replacement_request`. `dispute`: `dispute_new`, `dispute_status`. `credit`: `credit_product_info`, `credit_eligibility`, `credit_application`, `credit_application_status`. Cross-workflow: `informational`, `unsupported`, `human_request`, `greeting_or_other`. A test fails when an intent has no owner.
+- **Card escalation-only actions.** A protective block is a self-service write (confirmation, step-up, verified read-back) from `card_support` and `dispute`. Unblock and replacement requests have no tool and go to a human with `card_unblock_requested` or `card_replacement_requested`.
+- **Credit application statuses.** `submitted` to `under_human_review` or `withdrawn`; `under_human_review` to `withdrawn` or `closed`. No approved or declined status. A customer can only withdraw; reviewer moves arrive in phase 13. A submitted intake is a review item of its own, not a handoff.
+- **Eligibility outcomes and review reasons.** Outcomes `indicatively_eligible`, `not_eligible`, `review_required`, `insufficient_data`. Review reasons `missing_income`, `missing_credit_score`, `borderline_risk_interval`, `risk_estimate_unavailable`, `days_past_due_present`, `amount_above_review_threshold`, `customer_contests_result`, and `product_requires_human_assessment` (mortgages are information only). A missing fact never yields `indicatively_eligible`; a missing estimate or an `unknown` band yields `review_required`.
+- **Risk estimate visibility.** Agents and evaluators see the estimate (handoff credit review, execution record); customers see only the outcome, reasons, uncertainty statement, review path, and disclaimer. Every estimate field and the credit score, income, days past due, and utilization are `Internal`; nothing internal is sent to a model.
+- **Contract bumps.** handoff, execution_record, decision, scenario, and policy_clause are now `1.1.0`. Fields added in a minor version carry `x-added-in` and are not required, so stored `1.0.0` documents validate against the new schemas (tested with golden documents and `jsonschema`).
+
+#### Decisions
+
+- [ADR 0020](adr/0020-four-workflows-and-the-workflow-registry.md): four workflows and the workflow registry.
+- [ADR 0021](adr/0021-credit-risk-and-eligibility-separation.md): separating conversation handling, risk estimates, and the synthetic eligibility service.
+- Serialization-mode defaults: the `AddedIn` marker, recorded in `contracts/README.md`.
+- `PolicyRepository.get_bound` takes the workflow (no implementation or caller existed).
+- Dependency added (dev group only): `jsonschema` 4.26.0 (MIT), with `referencing` 0.37.0 (MIT), `rpds-py` 2026.6.3 (MIT), `attrs` 26.1.0 (MIT), and `jsonschema-specifications` 2025.9.1 (MIT), a few MB installed. Reason: validating stored contract documents against the generated schemas. Phase 09 still decides the runtime dependency.
+
+Deviations from the plan text, found during implementation:
+
+- The dependency and the golden documents landed as two commits, so the phase has 16 commits instead of 15.
+- The contract fixture enrichment (balances, payment types) landed with the account views, because the type filter suite needs it; the new credit tables landed with the adapters as planned.
+- `CardActionConfirmation` lives in `conversation.py` and carries no product type; `cards.py` stays free of `actions` imports so `BlockCardArguments` can use `CardBlockReason`.
+- `StatementSummary` counts pending, declined, and reversed transactions as `not_settled_count` and totals only approved ones, a rule the plan left implicit.
+- `CreditApplicationIntake.declared_monthly_income` (and the matching argument and request fields) carry `Pii("financial")`; the plan left the marker open.
+- `EligibilityView` carries the missing fact names, so an `insufficient_data` answer can ask for exactly what is missing.
+- Credit fixtures live in `services/api/tests/bank_agent_credit.py`, next to the other shared test support modules.
+- The ADR index notes that numbers 0007 to 0019 are reserved.
+
+#### How to verify
+
+```bash
+make check                                                      # needs Docker running; never reads .env
+make contracts && git diff --exit-code contracts/               # schemas are current
+uv run pytest services/api/tests/contracts -q                   # every memory adapter and fake passes its suite
+uv run pytest services/api/tests/unit/domain/test_contract_compatibility.py evals/tests/unit/test_scenario_compatibility.py -q
+uv run lint-imports                                             # five contracts kept
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 855 unit tests (612 before this phase; 108 of them contract-suite tests, 75 before) and 11 integration tests pass; every phase 02 test passes without edits |
+| Coverage gates | All 11 pass: domain 99.7%, ports 100%, adapters 100%, api 97.4%, bootstrap 100%, testing 100%, evals 100%; policy and application report `no statements yet` |
+| Import contracts | 5 kept |
+| Contracts | `make contracts` leaves no diff; golden `1.0.0` documents validate against the `1.1.0` schemas |
+| Docs check | markdownlint 0 issues; 17 mermaid blocks in 53 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+
+#### Known limitations
+
+- The eligibility and estimator ports run only against the fakes until phases 06, 09, and 10; the credit repositories run only on the memory backend until phases 03 and 05.
+- Available credit is not computed until phase 03 records the credit balance sign convention; transfers and adjustments are `unclassified` in statement totals until phase 03 profiles amount signs.
+- `response_code` is not interpreted (no code table in the data).
+- Entry states in the workflow catalog are placeholders until phase 09.
+- A re-serialized `1.0.0` document carries the `1.1.0` keys at their defaults and so fails the `1.0.0` schema; consumers upgrade first, as before.
+- Agents can read only applications that a handoff references until phase 13 adds the review methods.
+
+#### Next phase
+
+Phase 08, LLM gateway (`kit/prompts/08-llm-gateway.md`), then phase 03 once `.env` exists. Phases 05, 06, and 09 should wait for the team's review of this entry and the phase 02 entry.
 
 ### Phase 02: domain model, ports, and contracts (2026-09-26)
 
