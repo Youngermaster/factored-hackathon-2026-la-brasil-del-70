@@ -19,6 +19,7 @@ from bank_agent.domain.transaction import Transaction
 class IntentRouter(Protocol):
     """Classifies a customer message into an intent.
 
+    Preconditions: ``text`` is non-empty customer text, treated as data.
     Postconditions: returns a prediction whose ``model`` names the concrete version, with ``below_threshold``
     computed from the threshold stored with the model artifact.
     Errors: none for ordinary input; empty text is a programming error.
@@ -51,8 +52,10 @@ class TransactionResolver(Protocol):
 class LanguageDetector(Protocol):
     """Detects the language of a customer message.
 
+    Preconditions: ``text`` is non-empty customer text, treated as data.
     Postconditions: ``language`` is ``None`` when the detector is uncertain, and ``is_mixed`` is true for
     code-switched input.
+    Errors: none for ordinary input.
     Isolation: receives only the text.
     """
 
@@ -64,6 +67,7 @@ class LanguageDetector(Protocol):
 class ModelRegistry(Protocol):
     """Resolves model artifacts by name and version or alias (``champion``, ``candidate``).
 
+    Preconditions: called at startup or when settings select a model, never per turn.
     Postconditions: the result names the concrete version, a local path, and the artifact's SHA-256 digest.
     Errors: ``ModelArtifactNotFoundError`` for an unknown name, version, or alias;
     ``ModelArtifactIntegrityError`` when the stored digest does not match the file.

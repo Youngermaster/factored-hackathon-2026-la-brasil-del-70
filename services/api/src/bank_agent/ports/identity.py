@@ -47,6 +47,7 @@ class IdentityProvider(Protocol):
 class OtpSender(Protocol):
     """Delivers one-time codes.
 
+    Preconditions: the dispatch names exactly one recipient and an unexpired code.
     Postconditions: the receipt carries the code only when demo mode is on (the demo sender); otherwise it
     only confirms delivery.
     Errors: ``ToolTransientError`` or ``ToolPermanentError`` when delivery fails.

@@ -73,7 +73,13 @@ class UnitOfWork(Protocol):
 
 
 class UnitOfWorkFactory(Protocol):
-    """Opens units of work. The only way application code reaches customer data."""
+    """Opens units of work. The only way application code reaches customer data.
+
+    Preconditions: ``context`` comes from a verified session or a staff session, never from request data.
+    Postconditions: each call returns a new, independent unit of work.
+    Errors: none at creation; failures surface when the unit of work is used.
+    Isolation: the context is fixed for the unit of work's lifetime and cannot be changed.
+    """
 
     def __call__(self, context: AccessContext) -> UnitOfWork:
         """Return a new, not yet entered, unit of work bound to ``context``."""

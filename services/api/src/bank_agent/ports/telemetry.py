@@ -32,7 +32,9 @@ class Histogram(Protocol):
 class Telemetry(Protocol):
     """Spans and metrics.
 
+    Preconditions: span and metric names are stable, lowercase, dot-separated identifiers.
     Postconditions: never raises for telemetry failures; a broken exporter must not break a turn.
+    Errors: none; failures are swallowed and, at most, logged by the adapter.
     Isolation: callers pass identifiers and codes only, never message text or personal data.
     """
 

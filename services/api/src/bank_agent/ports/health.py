@@ -7,8 +7,10 @@ from typing import Protocol, runtime_checkable
 class ReadinessCheck(Protocol):
     """Checks one dependency, such as the database, for readiness.
 
-    Implementations must not raise for an unavailable dependency; they return ``False``. They must never
-    include connection details or credentials in anything they log or return.
+    Preconditions: none; the check may run at any time, concurrently with traffic.
+    Postconditions: ``check`` returns ``True`` only when the dependency is reachable and usable.
+    Errors: implementations must not raise for an unavailable dependency; they return ``False``.
+    Isolation: implementations never include connection details or credentials in anything they log or return.
     """
 
     @property
