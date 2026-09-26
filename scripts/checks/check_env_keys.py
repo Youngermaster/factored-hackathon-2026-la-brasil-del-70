@@ -80,7 +80,10 @@ def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description="Report set or unset for documented environment variables.")
     parser.add_argument("--env-file", type=Path, default=Path(".env"), help="env file to inspect (default: .env)")
     parser.add_argument(
-        "--example", type=Path, default=Path(".env.example"), help="file that documents the names (default: .env.example)"
+        "--example",
+        type=Path,
+        default=Path(".env.example"),
+        help="file that documents the names (default: .env.example)",
     )
     args = parser.parse_args(argv[1:])
 

@@ -1,0 +1,201 @@
+# uv workspace root. This file is a virtual root: it has no [project] table and is never built.
+# Shared tool configuration for every Python package in the repository lives here.
+
+[tool.uv]
+required-version = ">=0.11.17"
+
+[tool.uv.workspace]
+members = ["services/api", "data_platform", "ml", "evals"]
+
+[dependency-groups]
+dev = [
+  "bandit==1.9.4",
+  "httpx==0.28.1",
+  "hypothesis==6.168.1",
+  "import-linter==2.15",
+  "mypy==2.3.1",
+  "pip-audit==2.10.1",
+  "pytest==9.1.1",
+  "pytest-asyncio==1.4.0",
+  "pytest-cov==7.1.0",
+  "pytest-socket==0.8.1",
+  "ruff==0.16.9",
+  "testcontainers==4.15.0",
+]
+
+# ---------------------------------------------------------------------------
+# ruff
+# ---------------------------------------------------------------------------
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+src = [
+  "services/api/src",
+  "services/api/tests",
+  "data_platform/src",
+  "data_platform/tests",
+  "ml/src",
+  "ml/tests",
+  "evals/src",
+  "evals/tests",
+  "scripts",
+]
+extend-exclude = ["kit", "data", "apps/web/node_modules"]
+
+[tool.ruff.lint]
+select = [
+  "E",     # pycodestyle errors
+  "W",     # pycodestyle warnings
+  "F",     # pyflakes
+  "I",     # isort
+  "UP",    # pyupgrade
+  "B",     # bugbear
+  "S",     # bandit rules
+  "C4",    # comprehensions
+  "SIM",   # simplifications
+  "RUF",   # ruff-specific
+  "PT",    # pytest style
+  "N",     # naming
+  "ASYNC", # async pitfalls
+  "DTZ",   # timezone-aware datetimes
+  "T20",   # stray print calls
+  "PTH",   # pathlib over os.path
+  "ERA",   # commented-out code
+  "TID",   # tidy imports
+  "PLE",   # pylint errors
+  "PLW",   # pylint warnings
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S101", "PLR2004", "S603", "S607"]
+"conftest.py" = ["S101"]
+"scripts/**" = ["T201", "S603", "S607"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["bank_agent", "bank_data", "bank_ml", "bank_evals"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+# ---------------------------------------------------------------------------
+# mypy
+# ---------------------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.12"
+# Strict for all first-party code. This covers the layers CLAUDE.md requires to be strict
+# (bank_agent.domain, bank_agent.ports, bank_agent.policy, bank_agent.application) and more.
+# Any future relaxation must be a per-module override for a third-party import
+# (ignore_missing_imports), never a relaxation for the four strict layers.
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+mypy_path = ["services/api/tests"]
+
+[[tool.mypy.overrides]]
+module = ["testcontainers.*", "pytest_socket", "importlinter.*"]
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+# ---------------------------------------------------------------------------
+# import-linter
+# ---------------------------------------------------------------------------
+
+[tool.importlinter]
+root_packages = ["bank_agent"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Hexagonal layers, inward dependencies only"
+type = "layers"
+layers = [
+  "bank_agent.api | bank_agent.bootstrap",
+  "bank_agent.adapters",
+  "bank_agent.application",
+  "bank_agent.policy",
+  "bank_agent.ports",
+  "bank_agent.domain",
+]
+
+[[tool.importlinter.contracts]]
+name = "Pure core has no framework or I/O imports"
+type = "forbidden"
+source_modules = ["bank_agent.domain", "bank_agent.ports", "bank_agent.policy"]
+forbidden_modules = ["fastapi", "sqlalchemy", "httpx", "boto3", "litellm"]
+
+[[tool.importlinter.contracts]]
+name = "Layers never import the entry points"
+type = "forbidden"
+source_modules = [
+  "bank_agent.domain",
+  "bank_agent.ports",
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.api",
+  "bank_agent.bootstrap",
+]
+forbidden_modules = ["bank_agent.asgi", "bank_agent.cli"]
+
+# ---------------------------------------------------------------------------
+# pytest
+# ---------------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["services/api/tests", "data_platform/tests", "ml/tests", "evals/tests", "scripts/tests"]
+# Shared test-support modules; each has a package-unique name so paths never collide.
+pythonpath = ["services/api/tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib", "--allow-unix-socket"]
+markers = [
+  "unit: fast tests with no network, database, or filesystem access outside tmp_path",
+  "integration: tests against real PostgreSQL, DuckDB files, or the ASGI app with real adapters",
+]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+asyncio_default_test_loop_scope = "function"
+xfail_strict = true
+filterwarnings = ["error"]
+
+# ---------------------------------------------------------------------------
+# coverage
+# ---------------------------------------------------------------------------
+
+[tool.coverage.run]
+source = ["bank_agent", "bank_data", "bank_ml", "bank_evals"]
+branch = true
+relative_files = true
+
+[tool.coverage.paths]
+source = ["services/api/src", "data_platform/src", "ml/src", "evals/src"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]
+
+# Minimum line coverage in percent, enforced by scripts/checks/check_coverage_gates.py over the
+# combined unit and integration coverage data. Keys are path prefixes relative to the repository root.
+[tool.bank.coverage-gates]
+"services/api/src/bank_agent/domain" = 90
+"services/api/src/bank_agent/ports" = 90
+"services/api/src/bank_agent/policy" = 90
+"services/api/src/bank_agent/application" = 90
+"services/api/src/bank_agent/adapters" = 80
+"services/api/src/bank_agent/api" = 80
+"services/api/src/bank_agent/bootstrap" = 80
+"data_platform/src" = 80
+"ml/src" = 80
+"evals/src" = 80
+
+# ---------------------------------------------------------------------------
+# bandit
+# ---------------------------------------------------------------------------
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "node_modules", "kit", "data"]

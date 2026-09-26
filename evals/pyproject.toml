@@ -1,0 +1,16 @@
+[project]
+name = "bank-evals"
+version = "0.1.0"
+description = "Evaluation harness: scenarios, systems under test, graders, and reports."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "typer>=0.27.2,<1",
+]
+
+[project.scripts]
+bank-eval = "bank_evals.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.17,<0.13"]
+build-backend = "uv_build"
