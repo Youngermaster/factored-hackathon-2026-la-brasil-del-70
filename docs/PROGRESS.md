@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 02b, multi-workflow domain and contracts |
-| Next phase | 08, LLM gateway (`kit/prompts/08-llm-gateway.md`), then 03 once `.env` exists |
+| Last completed phase | 08, LLM gateway, composable reliability, and the prompt registry (run before 03 to 07, which wait for `.env`) |
+| Next phase | 03, data platform (`kit/prompts/03-data-platform.md`), once `.env` exists. Without `.env` no later phase runs cleanly: 04, 05, and 10 need 03's gold tables, and 06 reads phase 04's `docs/decisions/workflow-prioritization.md`. Phase 06 (policy pack) is the only candidate to start early, and only if the human accepts running it without the prioritization decision |
 | Blocked | None |
 
 Pending human actions (none blocks phase 03 except item 2, which phase 03 needs for the S3 download):
@@ -18,8 +18,91 @@ Pending human actions (none blocks phase 03 except item 2, which phase 03 needs 
 2. Create `.env` from `.env.example` and fill in the organizer S3 values and local secrets. Never paste the values into a session. Then run `make env-check` and confirm every required name reports `set`. Phase 03 needs the S3 values; `make up` needs the two PostgreSQL passwords. `make check` does not need `.env`.
 3. `.claude/settings.json` still allows `npm ci`, `npm install *`, and `npm run *`, and asks for `npx *`. Sessions did not change permission settings. If you want pnpm commands pre-approved, add equivalents such as `Bash(pnpm install *)`, `Bash(pnpm run *)`, `Bash(pnpm --dir apps/web *)`, and `Bash(pnpm exec *)`, and consider `Bash(pnpm dlx *)` under `ask`.
 4. Run `/status` in Claude Code from the repository root and record the loaded setting sources in the phase 00 entry below.
+5. **Choose the language model provider** (phase 08 left it undecided). Until then `LLM_PROVIDER=fake` refuses every model call and workflows will run on their deterministic fallbacks.
+6. **Record real cassettes once the provider and key are chosen.** Every cassette in `evals/cassettes/` is a hand-authored fixture (`provenance: hand_authored_fixture`, model `fixture/hand-authored`); `evals/cassettes/README.md` has the recording steps. This is not a blocker.
+7. **Verify the price table.** `services/api/config/llm_prices.yaml` lists candidate prices (Anthropic `claude-sonnet-5` 2.00/10.00 and `claude-haiku-4-5-20251001` 1.00/5.00, OpenAI `gpt-5-mini` 0.25/2.00, USD per million tokens) with `verified: false`. Open each `source_url`, correct the numbers and date, and set `verified: true`; until then the budget guard charges 1.5 times the listed price.
+8. **Review the optional `litellm` extra before enabling it.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup`; check its advisories before `uv sync --extra litellm`.
 
 ## Phase log
+
+### Phase 08: LLM gateway, composable reliability, and the prompt registry (2026-09-26)
+
+Plan: `docs/plans/phase-08.md` (no plan mode required for this phase, per the orchestrator). Phase 08 ran before phases 03 to 07 because `.env` does not exist yet; it depends only on the phase 02 and 02b ports and fakes. Human decision for this phase: the provider is undecided, so nothing calls a live provider and no cassette was recorded.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `f59d49b` | The plan |
+| `c3b4d2d` | `pyyaml` as a runtime dependency, the optional `litellm` extra, `types-pyyaml`, the mypy override, and `--all-extras` in the CI audit |
+| `a1c56ae` | `domain/llm_outputs.py` (seven output models, `FallbackIntentLabel`, the forbidden prompt variable names), canonicalization moved into `domain/intelligence.py`, `LlmCallContext.sensitive_terms`, `PromptTemplate` owner and changelog, `LlmProviderRejectedError` |
+| `eaa2b9c` | `FilePromptRegistry` and the eight version 1 prompts with the prompts README |
+| `5b06e8f` | `PromptedLLMClient` (JSON Schema from the output model, one repair), `LiteLLMCompletion` and `LiteLLMClient`, `UnconfiguredLLMClient`, `Redactor`, `CassetteLLM` |
+| `3ce6975` | Timeout, bounded retry, circuit breaker, fallback, budget guard, cost accounting, tracing, and redaction decorators; `services/api/config/llm_prices.yaml` |
+| `1f21440` | New `LLM_*` settings and production rules, `bootstrap/llm.py`, the container wiring, 32 hand-authored fixture cassettes and their generator, `bank_evals.language_checks`, the integration test, conformance entries |
+| `3370bb0` | `docs/architecture/llm-gateway.md`, `docs/security/prompt-injection.md`, ADR 0013, README and index updates, BACKLOG rows |
+
+#### Review summary
+
+- **Port.** Unchanged from phase 02: `generate_structured` and `generate_text` return the value or text with usage, latency, model id, prompt reference, `repaired`, and `cost_usd`. Errors are the six LLM types, plus `LlmProviderRejectedError`, a non-retryable subtype of `provider_error` for 4xx rejections and "no provider configured".
+- **Stack order (outermost first).** Redaction, budget guard, tracing, cost accounting, fallback (only with a fallback model), then per provider circuit breaker, bounded retry (at most 2, transient errors only, exponential backoff with jitter), timeout. The prompt's order is kept; cost accounting and fallback, which it did not place, sit where tracing and the budget see the cost and each provider keeps its own breaker. A test walks the chain.
+- **Providers.** `fake` uses a client injected through `LlmOverrides`, otherwise `UnconfiguredLLMClient`; `cassette` replays (record mode wraps LiteLLM and is refused in production); `litellm` needs the extra, a model, and a key per model.
+- **Budget.** Per-session token cap, per-conversation cost cap (`LLM_CONVERSATION_BUDGET_USD`, new, default 0.50), daily cost cap. The guard reserves the worst-case reply before a call and keeps the reservation after `invalid_output` or a timeout.
+- **Prices.** Only in YAML, with `source_url` and `verified`. Unverified entries cost 1.5 times the listed price, unknown models the highest listed prices times 1.5, rounded up to eight decimals.
+- **Redaction.** Emails, CURP, CPF, CNPJ, keyword-introduced CC, DNI, RG, and other document numbers, card numbers, phones, dot-grouped numbers and 8+ digit runs unless next to a currency marker, session names, and names after phrases such as "me llamo" or "meu nome e". Allowlisted keys (`UNREDACTED_VARIABLE_KEYS`) pass unchanged.
+- **Prompts.** `extract_dispute_slots`, `extract_account_inquiry_slots`, `extract_card_support_slots`, `extract_credit_slots`, `classify_intent_fallback`, `detect_escalation_signals`, `phrase_response` (text), `summarize_for_handoff`, all version 1. The registry refuses any input named after a risk estimate, a credit profile fact, or an internal flag; `phrase_response` declares only the outcome code, the rendered reasons, and the disclaimer for credit.
+- **Tracing.** GenAI semantic conventions 1.37.0 attributes through the `Telemetry` port on a `gen_ai.chat` span; content capture off by default and refused in production.
+
+#### Decisions
+
+- [ADR 0013](adr/0013-litellm-behind-a-port-with-composable-decorators.md): LiteLLM behind the port with composable decorators.
+- `FakeLLM` stays in `bank_agent.testing` (the phase 02 open question): the composition root accepts an injected client and otherwise uses `UnconfiguredLLMClient`, so production code never imports test doubles.
+- The cassette key includes the session language in addition to the prompt id, version, model id, and variables, because the same variables in es and pt must give different replies. The JSON field is `cassette_id`, because gitleaks flags a 64-hex value under a `key` field.
+- A missing cassette raises `CassetteMissingError`, a configuration error outside the LLM family, so a caller's fallback cannot swallow it.
+- Dependencies: `pyyaml` 6.0.3 (MIT, already locked through bandit) becomes a direct runtime dependency for prompt front matter and prices; `types-pyyaml` 6.0.12.20260906 (Apache-2.0) joins the dev group; `litellm` 1.102.1 (MIT) is an optional extra because it measured 84 MB (170 MB with dependencies; human review item 8). `pip-audit` over every extra reports no known vulnerabilities.
+
+Deviations from the plan text, found during implementation:
+
+- The redaction decorator lives in `adapters/llm/redaction.py` next to the `Redactor` rather than in its own module.
+- `BoundedRetryDecorator` takes an optional sleep function so the composition root can pass a non-waiting one in tests.
+- The Portuguese check lives in `bank_evals.language_checks` (evaluation code), because phase 14 reuses it on recorded replies; its tests read the committed cassettes.
+- Fixture cassettes are generated by `scripts/write_fixture_cassettes.py` (the hand-authored content lives there), and a test compares its output with the committed files byte for byte.
+
+#### How to verify
+
+```bash
+make check                                                              # needs Docker running; never reads .env
+uv run pytest services/api/tests/unit/adapters/llm services/api/tests/unit/adapters/test_prompt_registry.py -q
+uv run pytest services/api/tests/unit/bootstrap/test_llm_composition.py -q     # stack order and provider selection
+uv run pytest services/api/tests/integration/test_llm_gateway_stack.py -q      # full stack, sockets disabled
+uv run python scripts/write_fixture_cassettes.py --check                       # fixture cassettes are current
+uv run python -c "import importlib.util; print(importlib.util.find_spec('litellm'))"   # None: the extra is not installed
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1166 unit tests (855 before this phase) and 16 integration tests (11 before) pass; no test opens a network socket or calls a provider |
+| Coverage gates | All 11 pass: domain 99.7%, ports 100%, adapters 99.9%, api 97.4%, bootstrap 100%, testing 100%, evals 100%; policy and application report `no statements yet` |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 19 mermaid blocks in 66 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+| Audit | `pip-audit` over all packages and every extra (litellm included): no known vulnerabilities |
+
+#### Known limitations
+
+- No live provider has been exercised; the LiteLLM request shape and error mapping are tested with an injected completion function. The first live run must happen after the human chooses a provider and reviews the extra.
+- Every cassette is a hand-authored fixture and says so; they test parsing, replay, and coverage, not model quality.
+- The Portuguese check is lexical: it catches Spanish leakage, not awkward phrasing.
+- The budget ledger is per process (BACKLOG, phase 15).
+- Name redaction covers known session names and introduced names only; workflow code must still keep names out of variables.
+- No workflow calls the gateway yet; callers, fallbacks, clause texts from the policy pack, and the grounding verifier for handoff summaries are phase 09 work (BACKLOG).
+
+#### Next phase
+
+Phase 03, data platform (`kit/prompts/03-data-platform.md`), once the human creates `.env` (pending action 2). Phases 04, 05, and 10 need 03's gold tables, and phase 06 reads phase 04's prioritization decision, so none of them runs cleanly first; phase 06 could start early only if the human accepts that gap. Phases 05, 06, and 09 should still wait for the team's review of the phase 02 and 02b entries (pending action 0).
 
 ### Phase 02b: multi-workflow domain and contracts (2026-09-26)
 
