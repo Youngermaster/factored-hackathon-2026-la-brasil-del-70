@@ -14,7 +14,7 @@ from pydantic import Field, JsonValue, NonNegativeInt, PositiveInt, StringConstr
 
 from bank_agent.domain.access import Channel
 from bank_agent.domain.actions import ActionKind
-from bank_agent.domain.base import DomainModel, Pii, UntrustedText, UtcDatetime
+from bank_agent.domain.base import DisplayText, DomainModel, Pii, UntrustedText, UtcDatetime
 from bank_agent.domain.decision import ClauseRef
 from bank_agent.domain.dispute import DisputeReason
 from bank_agent.domain.identifiers import ConversationId, CustomerId, HandoffId, LineageId, SourceRef, TurnId
@@ -25,7 +25,6 @@ from bank_agent.domain.workflow import Outcome, StateName, WorkflowRef
 MAX_CUSTOMER_MESSAGE_LENGTH = 2000
 TemplateId = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_.]{0,127}$")]
 Last4 = Annotated[str, StringConstraints(pattern=r"^[0-9A-Z]{4}$")]
-DisplayText = Annotated[str, StringConstraints(max_length=150)]
 
 
 class ConversationStatus(StrEnum):

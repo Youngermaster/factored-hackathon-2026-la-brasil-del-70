@@ -120,6 +120,7 @@ class InMemoryTransactionRepository:
                 and (query.occurred_to is None or txn.occurred_at <= query.occurred_to)
                 and (not query.product_ids or txn.product_id in query.product_ids)
                 and (not query.statuses or txn.status in query.statuses)
+                and (not query.types or txn.transaction_type in query.types)
                 and (query.min_amount is None or txn.amount.amount >= query.min_amount)
                 and (query.max_amount is None or txn.amount.amount <= query.max_amount)
             )

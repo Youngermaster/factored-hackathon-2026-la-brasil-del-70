@@ -166,6 +166,9 @@ Code = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,63}$")]
 SingleLineText = Annotated[str, StringConstraints(min_length=1, max_length=300, pattern=_NO_CONTROL_CHARACTERS)]
 """Short free text on one line: no line breaks or other control characters, at most 300 characters."""
 
+DisplayText = Annotated[str, StringConstraints(max_length=150)]
+"""Sanitized record text shown to the customer, such as a merchant name. Rendered as plain text only."""
+
 SummaryText = Annotated[str, StringConstraints(min_length=1, max_length=500, pattern=_NO_CONTROL_CHARACTERS)]
 """A single-paragraph summary of at most 500 characters. Line breaks are rejected, so a transcript cannot be pasted."""
 

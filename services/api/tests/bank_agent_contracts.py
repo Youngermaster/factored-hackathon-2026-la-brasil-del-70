@@ -10,7 +10,8 @@ The dataset is a fixture: two synthetic customers with invented identifiers and 
 from collections.abc import AsyncIterator
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass, field
-from datetime import timedelta
+from datetime import date, timedelta
+from decimal import Decimal
 from typing import Protocol
 
 import pytest
@@ -24,8 +25,9 @@ from bank_agent.domain.customer import Customer
 from bank_agent.domain.dispute import DisputeCase
 from bank_agent.domain.identifiers import CustomerId, StaffId
 from bank_agent.domain.locale import Country
+from bank_agent.domain.money import Currency, Money
 from bank_agent.domain.product import Product, ProductStatus, ProductType
-from bank_agent.domain.transaction import Transaction, TransactionStatus
+from bank_agent.domain.transaction import Transaction, TransactionChannel, TransactionStatus, TransactionType
 from bank_agent.ports.audit import AuditLog
 from bank_agent.ports.repositories.complaints import HistoricalComplaintReader
 from bank_agent.ports.repositories.customers import CustomerReader
@@ -64,14 +66,32 @@ class ContractDataset:
 
 def contract_dataset() -> ContractDataset:
     """Customer A (MX) has three products, eight transactions, three complaints, and one open case.
-    Customer B (CO) has one card, two transactions, and one complaint."""
+    Customer B (CO) has one card, two transactions, and one complaint.
+
+    Phase 02b enriched existing rows instead of adding new ones, so every phase 02 assertion still holds: the
+    credit card and the savings account carry balances, TXN-A-0004 (pending) and TXN-A-0005 (reversed) are
+    payments, and TXN-A-0006 is the declined card purchase."""
     day = timedelta(days=1)
     a_transactions = (
         transaction("TXN-A-0001", occurred_at=T0 - 3 * day, amount="1250.00"),
         transaction("TXN-A-0002", occurred_at=T0 - 5 * day, amount="89.90"),
         transaction("TXN-A-0003", occurred_at=T0 - 5 * day, amount="89.90"),
-        transaction("TXN-A-0004", occurred_at=T0 - 10 * day, amount="4500.00", status=TransactionStatus.PENDING),
-        transaction("TXN-A-0005", occurred_at=T0 - 20 * day, amount="300.00", status=TransactionStatus.REVERSED),
+        transaction(
+            "TXN-A-0004",
+            occurred_at=T0 - 10 * day,
+            amount="4500.00",
+            status=TransactionStatus.PENDING,
+            transaction_type=TransactionType.PAYMENT,
+            channel=TransactionChannel.APP,
+        ),
+        transaction(
+            "TXN-A-0005",
+            occurred_at=T0 - 20 * day,
+            amount="300.00",
+            status=TransactionStatus.REVERSED,
+            transaction_type=TransactionType.PAYMENT,
+            channel=TransactionChannel.WEB,
+        ),
         transaction("TXN-A-0006", occurred_at=T0 - 30 * day, amount="75.00", status=TransactionStatus.DECLINED),
         transaction("TXN-A-0007", occurred_at=T0 - 2 * day, amount="999.00", location_country="US"),
         transaction("TXN-A-0008", product_id="PRD-A-DEBIT", occurred_at=T0 - 1 * day, merchant_name=INJECTION_MERCHANT),
@@ -83,9 +103,25 @@ def contract_dataset() -> ContractDataset:
     return ContractDataset(
         customers=(customer(CUSTOMER_A, Country.MX), customer(CUSTOMER_B, Country.CO, first_name="Fixture B")),
         products=(
-            product("PRD-A-CARD"),
+            product(
+                "PRD-A-CARD",
+                current_balance=Money.of("8450.00", Currency.MXN),
+                credit_limit=Money.of("20000.00", Currency.MXN),
+                annual_interest_rate=Decimal("45.00"),
+                opened_on=date(2022, 3, 1),
+                expires_on=date(2028, 3, 31),
+                balance_as_of=T0 - 10 * day,
+                days_past_due=0,
+            ),
             product("PRD-A-DEBIT", product_type=ProductType.DEBIT_CARD, status=ProductStatus.BLOCKED),
-            product("PRD-A-SAVE", product_type=ProductType.SAVINGS_ACCOUNT),
+            product(
+                "PRD-A-SAVE",
+                product_type=ProductType.SAVINGS_ACCOUNT,
+                current_balance=Money.of("15200.00", Currency.MXN),
+                annual_interest_rate=Decimal("4.50"),
+                opened_on=date(2021, 7, 15),
+                balance_as_of=T0 - 10 * day,
+            ),
             product("PRD-B-CARD", customer_id=CUSTOMER_B),
         ),
         transactions=a_transactions + b_transactions,

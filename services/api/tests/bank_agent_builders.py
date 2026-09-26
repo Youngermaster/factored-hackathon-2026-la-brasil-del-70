@@ -78,14 +78,19 @@ def product(
     product_type: ProductType = ProductType.CREDIT_CARD,
     status: ProductStatus = ProductStatus.ACTIVE,
     currency: Currency = Currency.MXN,
+    **extra: Any,
 ) -> Product:
-    return Product(
-        product_id=ProductId(product_id),
-        customer_id=CustomerId(customer_id),
-        product_type=product_type,
-        status=status,
-        masked_number=MaskedNumber.from_full("4000000000001234"),
-        currency=currency,
+    """``extra`` sets the optional fields added in phase 02b (balance, limit, rate, dates, days past due)."""
+    return Product.model_validate(
+        {
+            "product_id": ProductId(product_id),
+            "customer_id": CustomerId(customer_id),
+            "product_type": product_type,
+            "status": status,
+            "masked_number": MaskedNumber.from_full("4000000000001234"),
+            "currency": currency,
+            **extra,
+        }
     )
 
 
@@ -99,16 +104,18 @@ def transaction(
     status: TransactionStatus = TransactionStatus.APPROVED,
     merchant_name: str | None = "FIXTURE MARKET",
     location_country: str = "MX",
+    transaction_type: TransactionType = TransactionType.PURCHASE,
+    channel: TransactionChannel = TransactionChannel.POS,
 ) -> Transaction:
     return Transaction(
         transaction_id=TransactionId(transaction_id),
         customer_id=CustomerId(customer_id),
         product_id=ProductId(product_id),
         occurred_at=occurred_at,
-        transaction_type=TransactionType.PURCHASE,
+        transaction_type=transaction_type,
         category=TransactionCategory.FOOD,
         amount=Money.of(amount, currency),
-        channel=TransactionChannel.POS,
+        channel=channel,
         status=status,
         merchant_name=UntrustedText(merchant_name) if merchant_name is not None else None,
         location_country=location_country,

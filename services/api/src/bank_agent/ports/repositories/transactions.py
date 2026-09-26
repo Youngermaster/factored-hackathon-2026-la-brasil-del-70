@@ -8,7 +8,7 @@ from pydantic import Field, model_validator
 from bank_agent.domain.base import DomainModel, UtcDatetime
 from bank_agent.domain.identifiers import ProductId, TransactionId
 from bank_agent.domain.money import Amount
-from bank_agent.domain.transaction import Transaction, TransactionStatus
+from bank_agent.domain.transaction import Transaction, TransactionStatus, TransactionType
 
 MAX_TRANSACTION_PAGE = 200
 
@@ -23,6 +23,8 @@ class TransactionQuery(DomainModel):
     occurred_to: UtcDatetime | None = None
     product_ids: tuple[ProductId, ...] = ()
     statuses: tuple[TransactionStatus, ...] = ()
+    types: tuple[TransactionType, ...] = ()
+    """For example payments and transfers for a payment status lookup; empty means every type."""
     min_amount: Amount | None = None
     max_amount: Amount | None = None
     limit: Annotated[int, Field(ge=1, le=MAX_TRANSACTION_PAGE)] = 50
