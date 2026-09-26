@@ -1,9 +1,13 @@
-"""The execution record, version 1 (``contracts/schemas/execution_record.v1.json``).
+"""The execution record, version 1 (``contracts/schemas/execution_record.v1.json``), minor version 1.1.
 
 One record per turn: the workflow state before and after, the intent, every policy decision with rule ids and
 versions, the cited clauses, the tool calls with redacted arguments and verification, the language model calls,
 the model, prompt, and policy versions, latency, tokens, cost, and the trace id. There is no free-text
 reasoning field by design: the record explains a decision through rules, sources, and outcomes. See ADR 0006.
+
+Version 1.1.0 adds ``workflow_before`` (set when the router moved the conversation in this turn), the risk
+estimates, and the eligibility assessments. Estimates and assessments are separate fields and are never merged,
+so the glass box shows them apart; the estimates are internal. The new fields are marked ``AddedIn``.
 """
 
 from decimal import Decimal
@@ -14,8 +18,9 @@ from pydantic import Field, NonNegativeInt, PositiveInt, StringConstraints, mode
 
 from bank_agent.domain.access import AuthLevel, Channel
 from bank_agent.domain.actions import ToolName, Verification
-from bank_agent.domain.base import Code, DomainModel, UtcDatetime
+from bank_agent.domain.base import AddedIn, Code, DomainModel, Internal, UtcDatetime, check_added_fields
 from bank_agent.domain.decision import ClauseRef, Decision
+from bank_agent.domain.eligibility import EligibilityAssessmentRecord, RiskEstimateRecord
 from bank_agent.domain.handoff import SchemaVersion
 from bank_agent.domain.identifiers import (
     CaseId,
@@ -140,9 +145,19 @@ class ExecutionRecord(DomainModel):
     safety_interventions: tuple[Code, ...] = ()
     handoff_ref: HandoffId | None = None
     case_refs: tuple[CaseId, ...] = ()
+    workflow_before: Annotated[WorkflowRef | None, AddedIn("1.1.0")] = None
+    risk_estimates: Annotated[tuple[RiskEstimateRecord, ...], AddedIn("1.1.0"), Internal()] = ()
+    eligibility_assessments: Annotated[tuple[EligibilityAssessmentRecord, ...], AddedIn("1.1.0")] = ()
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
+        check_added_fields(self, self.schema_version)
+        if self.workflow_before is not None and self.workflow_before == self.workflow:
+            raise ValueError("workflow_before is set only when the turn moved to another workflow")
+        estimate_ids = [estimate.estimate_id for estimate in self.risk_estimates]
+        assessment_ids = [assessment.assessment_id for assessment in self.eligibility_assessments]
+        if len(set(estimate_ids)) != len(estimate_ids) or len(set(assessment_ids)) != len(assessment_ids):
+            raise ValueError("risk estimates and eligibility assessments are recorded once each")
         usage = sum(
             (TokenUsage(input_tokens=c.input_tokens, output_tokens=c.output_tokens) for c in self.llm_calls),
             TokenUsage(),

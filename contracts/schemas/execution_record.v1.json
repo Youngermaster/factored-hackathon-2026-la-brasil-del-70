@@ -134,6 +134,84 @@
       "title": "DecisionKind",
       "type": "string"
     },
+    "EligibilityAssessmentRecord": {
+      "additionalProperties": false,
+      "description": "An eligibility assessment as the execution record keeps it: rule ids and versions, not parameters.",
+      "properties": {
+        "assessment_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "service": {
+          "$ref": "#/$defs/ServiceRef"
+        },
+        "product_code": {
+          "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+          "title": "Product Code",
+          "type": "string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/EligibilityOutcome"
+        },
+        "rules": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RuleVersion"
+          },
+          "title": "Rules",
+          "type": "array"
+        },
+        "review_reasons": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ReviewReason"
+          },
+          "title": "Review Reasons",
+          "type": "array"
+        },
+        "missing_facts": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "type": "string"
+          },
+          "title": "Missing Facts",
+          "type": "array"
+        },
+        "policy_pack_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Policy Pack Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "service",
+        "product_code",
+        "outcome",
+        "rules",
+        "review_reasons",
+        "missing_facts",
+        "policy_pack_version"
+      ],
+      "title": "EligibilityAssessmentRecord",
+      "type": "object"
+    },
+    "EligibilityOutcome": {
+      "description": "There is no approved outcome by design: the synthetic service gives an indication, never a decision.",
+      "enum": [
+        "indicatively_eligible",
+        "not_eligible",
+        "review_required",
+        "insufficient_data"
+      ],
+      "title": "EligibilityOutcome",
+      "type": "string"
+    },
     "GroundingReport": {
       "additionalProperties": false,
       "properties": {
@@ -472,6 +550,105 @@
       "title": "PromptRef",
       "type": "string"
     },
+    "ReviewReason": {
+      "enum": [
+        "missing_income",
+        "missing_credit_score",
+        "borderline_risk_interval",
+        "risk_estimate_unavailable",
+        "days_past_due_present",
+        "amount_above_review_threshold",
+        "customer_contests_result",
+        "product_requires_human_assessment"
+      ],
+      "title": "ReviewReason",
+      "type": "string"
+    },
+    "RiskBand": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ],
+      "title": "RiskBand",
+      "type": "string"
+    },
+    "RiskEstimateRecord": {
+      "additionalProperties": false,
+      "description": "A risk estimate as the execution record keeps it (glass box, phase 13). Internal.",
+      "properties": {
+        "model": {
+          "$ref": "#/$defs/ModelRef"
+        },
+        "estimate_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "title": "Estimate Id",
+          "type": "string"
+        },
+        "probability": {
+          "ge": 0,
+          "le": 1,
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "title": "Probability",
+          "type": "string",
+          "x-internal": true
+        },
+        "interval_low": {
+          "ge": 0,
+          "le": 1,
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "title": "Interval Low",
+          "type": "string",
+          "x-internal": true
+        },
+        "interval_high": {
+          "ge": 0,
+          "le": 1,
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "title": "Interval High",
+          "type": "string",
+          "x-internal": true
+        },
+        "band": {
+          "$ref": "#/$defs/RiskBand",
+          "x-internal": true
+        },
+        "flags": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/UncertaintyFlag"
+          },
+          "title": "Flags",
+          "type": "array"
+        },
+        "label_definition": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Label Definition",
+          "type": "string"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model",
+        "estimate_id",
+        "probability",
+        "interval_low",
+        "interval_high",
+        "band",
+        "flags",
+        "label_definition",
+        "latency_ms"
+      ],
+      "title": "RiskEstimateRecord",
+      "type": "object"
+    },
     "RiskTier": {
       "enum": [
         "low",
@@ -574,6 +751,32 @@
       ],
       "title": "RuleResult",
       "type": "object"
+    },
+    "RuleVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "minimum": 1,
+          "title": "Rule Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_version"
+      ],
+      "title": "RuleVersion",
+      "type": "object"
+    },
+    "ServiceRef": {
+      "pattern": "^eligibility:[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+      "title": "ServiceRef",
+      "type": "string"
     },
     "SourceRef": {
       "pattern": "^(customers|products|transactions|dispute_cases|historical_complaints|conversations|turns|execution_records|handoffs|audit_events|policy_clauses|credit_applications|credit_products|eligibility_assessments):[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$",
@@ -761,6 +964,16 @@
         "identity_mismatch"
       ],
       "title": "TrustEventKind",
+      "type": "string"
+    },
+    "UncertaintyFlag": {
+      "enum": [
+        "missing_features",
+        "out_of_distribution",
+        "wide_interval",
+        "model_unavailable"
+      ],
+      "title": "UncertaintyFlag",
       "type": "string"
     },
     "Verification": {
@@ -1089,6 +1302,37 @@
       },
       "title": "Case Refs",
       "type": "array"
+    },
+    "workflow_before": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WorkflowRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-added-in": "1.1.0"
+    },
+    "risk_estimates": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RiskEstimateRecord"
+      },
+      "title": "Risk Estimates",
+      "type": "array",
+      "x-added-in": "1.1.0",
+      "x-internal": true
+    },
+    "eligibility_assessments": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EligibilityAssessmentRecord"
+      },
+      "title": "Eligibility Assessments",
+      "type": "array",
+      "x-added-in": "1.1.0"
     }
   },
   "required": [

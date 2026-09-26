@@ -1,9 +1,12 @@
-"""The handoff to a human agent, version 1 (``contracts/schemas/handoff.v1.json``).
+"""The handoff to a human agent, version 1 (``contracts/schemas/handoff.v1.json``), minor version 1.1.
 
 A handoff carries the request, verified facts with their sources, the actions taken with their verification
 status, the policy basis, the escalation reason, and the open questions. It never carries a raw transcript:
 unknown keys are rejected at every level, every free-text field is length-capped, and the request summary is a
 single paragraph. The customer is referenced by internal id only. See ADR 0006.
+
+Version 1.1.0 adds the workflow, the credit review (with the risk estimate, which agents see and customers
+never do), and the card request. Those fields are marked ``AddedIn``, so stored 1.0.0 documents stay valid.
 """
 
 from datetime import datetime
@@ -14,19 +17,36 @@ from pydantic import Field, StringConstraints, model_validator
 
 from bank_agent.domain.access import AuthLevel
 from bank_agent.domain.actions import ActionKind, ActionStatus
-from bank_agent.domain.base import DomainModel, Pii, SingleLineText, SummaryText, UtcDatetime
+from bank_agent.domain.base import (
+    AddedIn,
+    DomainModel,
+    Pii,
+    SingleLineText,
+    SummaryText,
+    UtcDatetime,
+    check_added_fields,
+)
+from bank_agent.domain.cards import CardAction, CardRequest
 from bank_agent.domain.complaint import Priority
 from bank_agent.domain.decision import ClauseRef
+from bank_agent.domain.eligibility import CreditReview
 from bank_agent.domain.errors import InvalidHandoffTransitionError
 from bank_agent.domain.escalation import EscalationReasonCode as EscalationReasonCode
 from bank_agent.domain.identifiers import CaseId, ConversationId, CustomerId, HandoffId, SourceRef, StaffId
 from bank_agent.domain.locale import Country, Language
-from bank_agent.domain.workflow import Intent, StateName
+from bank_agent.domain.workflow import Intent, StateName, WorkflowRef
 
 SchemaVersion = Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")]
 MAX_VERIFIED_FACTS = 20
 MAX_ACTIONS = 10
 MAX_OPEN_QUESTIONS = 10
+CREDIT_REVIEW_CODES = frozenset(
+    {EscalationReasonCode.CREDIT_REVIEW_REQUIRED, EscalationReasonCode.ELIGIBILITY_CONTESTED}
+)
+CARD_REQUEST_CODES = {
+    EscalationReasonCode.CARD_UNBLOCK_REQUESTED: CardAction.UNBLOCK_REQUEST,
+    EscalationReasonCode.CARD_REPLACEMENT_REQUESTED: CardAction.REPLACEMENT_REQUEST,
+}
 
 
 class HandoffAuth(DomainModel):
@@ -105,6 +125,9 @@ class Handoff(DomainModel):
     customer_sentiment: Sentiment = Sentiment.UNKNOWN
     priority: Priority
     sla_due: UtcDatetime
+    workflow: Annotated[WorkflowRef | None, AddedIn("1.1.0")] = None
+    credit_review: Annotated[CreditReview | None, AddedIn("1.1.0")] = None
+    card_request: Annotated[CardRequest | None, AddedIn("1.1.0")] = None
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
@@ -112,6 +135,15 @@ class Handoff(DomainModel):
             raise ValueError("customer conversations, and so handoffs, are in Spanish or Portuguese")
         if self.sla_due < self.created_at:
             raise ValueError("sla_due cannot precede created_at")
+        check_added_fields(self, self.schema_version)
+        code = self.escalation_reason.code
+        if code in CREDIT_REVIEW_CODES and self.credit_review is None:
+            raise ValueError(f"escalation reason {code} needs a credit_review")
+        expected_action = CARD_REQUEST_CODES.get(code)
+        if expected_action is not None and (
+            self.card_request is None or self.card_request.action is not expected_action
+        ):
+            raise ValueError(f"escalation reason {code} needs a card_request for {expected_action}")
         return self
 
 
