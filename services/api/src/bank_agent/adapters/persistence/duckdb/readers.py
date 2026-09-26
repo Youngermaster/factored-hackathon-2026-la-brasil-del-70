@@ -193,7 +193,7 @@ class DuckDbTransactionReader:
             parameters.append(query.max_amount)
         parameters.append(query.limit)
         sql = (
-            "select * from transactions_serving where "  # noqa: S608 (fixed column names; values are bound)
+            "select * from transactions_serving where "  # noqa: S608  # nosec B608 (fixed column names; values are bound)
             + " and ".join(clauses)
             + " order by transaction_at desc, transaction_id asc limit ?"
         )

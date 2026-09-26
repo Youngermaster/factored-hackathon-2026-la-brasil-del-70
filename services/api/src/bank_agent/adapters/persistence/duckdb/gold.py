@@ -117,5 +117,6 @@ def open_gold(gold_dir: Path) -> duckdb.DuckDBPyConnection:
             connection.close()
             raise FileNotFoundError(f"gold serving file missing: {path.name}")
         escaped = path.as_posix().replace("'", "''")
-        connection.execute(f"create view {table} as select * from read_parquet('{escaped}')")  # noqa: S608 (fixed names)
+        statement = f"create view {table} as select * from read_parquet('{escaped}')"  # noqa: S608  # nosec B608 (table names come from GOLD_SCHEMAS; the path is escaped)
+        connection.execute(statement)
     return connection

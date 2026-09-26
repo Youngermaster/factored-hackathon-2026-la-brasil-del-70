@@ -36,9 +36,23 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0004](adr/0004-money-and-currency-handling.md) | Money and currency handling |
 | [adr/0005](adr/0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier |
 | [adr/0006](adr/0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field |
+| [adr/0007](adr/0007-dbt-duckdb-and-pandera-for-the-data-platform.md) | dbt-duckdb and Pandera for the data platform |
 | [adr/0013](adr/0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators |
 | [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
+| [adr/0022](adr/0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source |
+
+## Data
+
+| Document | Purpose |
+|---|---|
+| [data/data-card.md](data/data-card.md) | Provenance, intended use, personal data handling, the credit balance sign convention, known issues, and the data-use terms check |
+| [data/source-layout.md](data/source-layout.md) | The organizer bucket layout, partitions, snapshots, and delivered row counts |
+| [data/update-policy.md](data/update-policy.md) | Freshness targets, late arrivals, reprocessing and backfills, schema evolution, retention |
+| [data/quality-report.md](data/quality-report.md) | Generated data-quality report of the latest full build |
+| [data/lineage.md](data/lineage.md) | Generated lineage flowchart from the dbt manifest |
+| [workflows/data-pipeline.md](workflows/data-pipeline.md) | Source to serving flowchart and the incremental run with a late arrival |
+| [../data_platform/sample/README.md](../data_platform/sample/README.md) | The committed organizer sample: provenance, counts, treatments, and example rows per table |
 
 ## Packages and apps
 
@@ -46,7 +60,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 |---|---|
 | [services/api](../services/api/README.md) | API service and its layer READMEs |
 | [apps/web](../apps/web/README.md) | Web application and its layer READMEs |
-| [data_platform](../data_platform/README.md) | Data platform |
+| [data_platform](../data_platform/README.md) | Data platform: sources, commands, how to add a table or a source adapter |
 | [ml](../ml/README.md) | Learned components |
 | [evals](../evals/README.md) | Evaluation harness |
 | [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes (hand-authored fixtures until a provider is chosen) |
@@ -61,4 +75,4 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
-Later phases add `docs/workflows/`, `docs/data/`, `docs/evaluation/`, `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.
+Later phases add the workflow pages to `docs/workflows/`, and `docs/evaluation/`, `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.

@@ -16,6 +16,9 @@ adapters/
 │   │   ├── unit_of_work.py   InMemoryUnitOfWork(Factory): staged writes, atomic commit, conflict detection
 │   │   ├── credit_catalog.py InMemoryCreditProductCatalog, loaded from given entries
 │   │   └── sessions.py       InMemorySessionStore with trust state per lineage
+│   ├── duckdb/
+│   │   ├── gold.py           GOLD_SCHEMAS (the serving contract), open_gold, DATASET_CREDIT_BALANCE_CONVENTION
+│   │   └── readers.py        customer, product, transaction, complaint, credit profile readers; DuckDbGoldStore
 │   └── postgres/
 │       └── readiness.py      PostgresReadinessCheck: SELECT 1 as the application role
 ├── llm/
@@ -44,7 +47,7 @@ adapters/
 
 The memory adapters enforce the same access rules, append-only rules, idempotency, and optimistic concurrency the PostgreSQL adapters must provide, and pass the same contract suites. Their unit of work stages writes per table and applies them on `commit`; a commit that touches a key another unit of work changed in the meantime raises `ConcurrencyConflictError` and applies nothing. `InMemoryStore.seed` bypasses access contexts and exists for tests, fixtures, and demos only.
 
-Later phases add `persistence/duckdb` (phase 03, readers only), `persistence/postgres` repositories (phase 05), `identity/` (phase 05), `policy/` (phase 06), `retrieval/` (phase 07), `models/` (phases 09 and 10), and an OpenTelemetry adapter (phase 15). `docs/architecture/ports-and-adapters.md` has the full table.
+The DuckDB readers (phase 03) read the gold serving Parquet that `bank-data build` writes, bound to an access context with bound parameters only, and pass the read contract suites. Later phases add `persistence/postgres` repositories (phase 05), `identity/` (phase 05), `policy/` (phase 06), `retrieval/` (phase 07), `models/` (phases 09 and 10), and an OpenTelemetry adapter (phase 15). `docs/architecture/ports-and-adapters.md` has the full table.
 
 ## Who may import it
 

@@ -54,7 +54,7 @@ Cross-workflow intents (`informational`, `unsupported`, `human_request`, `greeti
 
 | Workflow | Answers | Confirms (write, with verified read-back) | Abstains or clarifies | Escalates |
 |---|---|---|---|---|
-| `account_inquiry` | Balances with their as-of instant, available credit once phase 03 fixes the sign convention, payment and transfer status, statement summaries with totals per currency | Nothing: read only | Requests for documents, statement delivery, balances of another customer, or anything not in the data (opening or closing statement balances) | Human requested, distress, legal mention, repeated failure |
+| `account_inquiry` | Balances with their as-of instant, available credit on credit cards (the data's balance is the amount owed), payment and transfer status, statement summaries with totals per currency | Nothing: read only | Requests for documents, statement delivery, balances of another customer, or anything not in the data (opening or closing statement balances) | Human requested, distress, legal mention, repeated failure |
 | `card_support` | Card status and expiry; declined purchases (the response code is not interpreted) | A protective block (`block_card`, confirmation, step-up, read-back) | Ambiguous card choice, unsupported card requests | Unblock and replacement requests (`card_unblock_requested`, `card_replacement_requested`), because they need identity and fraud checks the prototype cannot verify |
 | `dispute` | Dispute status with the SLA | Opening a dispute case, optionally with a protective block | Ambiguous transaction, dispute window closed (clause-backed) | Amount above the automatic limit, repeat complainer, legal mention, verification mismatch |
 | `credit` | Synthetic catalog information; an indicative eligibility result with reasons, uncertainty, review path, and the disclaimer | Recording an application intake for human review (`submit_credit_application`) | Missing information (asks for it), mortgages (information only) | Borderline results (`credit_review_required`), contested results (`eligibility_contested`), products that need a human assessment |
@@ -69,4 +69,5 @@ A write is allowed only when it is one of the current workflow's `write_actions`
 
 - Entry states are placeholders (`START`) until phase 09 defines the state machines.
 - The dataset's `response_code` has no code table, so declined card purchases are shown without a reason.
-- Transfers and adjustments are `unclassified` in statement totals until phase 03 profiles amount signs, and available credit is not computed until phase 03 records the credit balance sign convention.
+- Transfers and adjustments stay `unclassified` in statement totals: phase 03 found every amount positive, so the data does not encode their direction. Available credit uses the profiled convention (`balance_is_amount_owed`) and applies to credit cards only, because a loan's limit is not a drawable line ([data card](../data/data-card.md)).
+- `complaints.affected_product_id` always names another customer's product in the delivery, so historical complaints are served without a product reference; dispute intake cannot rely on it.

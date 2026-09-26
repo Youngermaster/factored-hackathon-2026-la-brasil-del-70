@@ -6,24 +6,125 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 08, LLM gateway, composable reliability, and the prompt registry (run before 03 to 07, which wait for `.env`) |
-| Next phase | 03, data platform (`kit/prompts/03-data-platform.md`), once `.env` exists. Without `.env` no later phase runs cleanly: 04, 05, and 10 need 03's gold tables, and 06 reads phase 04's `docs/decisions/workflow-prioritization.md`. Phase 06 (policy pack) is the only candidate to start early, and only if the human accepts running it without the prioritization decision |
+| Last completed phase | 03, data platform: manifest-driven ingestion, contracts, dbt-duckdb silver and gold, the committed sample |
+| Next phase | 04, data analysis and workflow selection (`kit/prompts/04-analysis-workflow-selection.md`). It reads `gold.contact_reason_daily` and the other marts; build them with `make pipeline DATA_SOURCE=s3` (or `BANK_DATA_SOURCE=s3` in `.env`). Phases 05 and 10 also read the gold tables |
 | Blocked | None |
 
-Pending human actions (none blocks phase 03 except item 2, which phase 03 needs for the S3 download):
+Pending human actions (none blocks phase 04):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
 1. **License undecided; decide before submission.** No LICENSE file exists and the README says all rights are reserved until the team chooses. Tracked in `docs/BACKLOG.md` for phase 17.
-2. Create `.env` from `.env.example` and fill in the organizer S3 values and local secrets. Never paste the values into a session. Then run `make env-check` and confirm every required name reports `set`. Phase 03 needs the S3 values; `make up` needs the two PostgreSQL passwords. `make check` does not need `.env`.
+2. **Check the organizer data-use terms before the repository is made public.** `data_platform/sample/` holds 2,595 pseudonymized organizer rows under CLAUDE.md rule 5; the terms are not in the repository. Tracked for phase 17. Optionally add `BANK_DATA_SOURCE=s3` to your `.env` (see `.env.example`) so `make pipeline` uses the full data by default.
 3. `.claude/settings.json` still allows `npm ci`, `npm install *`, and `npm run *`, and asks for `npx *`. Sessions did not change permission settings. If you want pnpm commands pre-approved, add equivalents such as `Bash(pnpm install *)`, `Bash(pnpm run *)`, `Bash(pnpm --dir apps/web *)`, and `Bash(pnpm exec *)`, and consider `Bash(pnpm dlx *)` under `ask`.
 4. Run `/status` in Claude Code from the repository root and record the loaded setting sources in the phase 00 entry below.
 5. **Choose the language model provider** (phase 08 left it undecided). Until then `LLM_PROVIDER=fake` refuses every model call and workflows will run on their deterministic fallbacks.
 6. **Record real cassettes once the provider and key are chosen.** Every cassette in `evals/cassettes/` is a hand-authored fixture (`provenance: hand_authored_fixture`, model `fixture/hand-authored`); `evals/cassettes/README.md` has the recording steps. This is not a blocker.
 7. **Verify the price table.** `services/api/config/llm_prices.yaml` lists candidate prices (Anthropic `claude-sonnet-5` 2.00/10.00 and `claude-haiku-4-5-20251001` 1.00/5.00, OpenAI `gpt-5-mini` 0.25/2.00, USD per million tokens) with `verified: false`. Open each `source_url`, correct the numbers and date, and set `verified: true`; until then the budget guard charges 1.5 times the listed price.
 8. **Review the optional `litellm` extra before enabling it.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup`; check its advisories before `uv sync --extra litellm`.
+9. **Review the data platform dependency footprint.** DuckDB, dbt-duckdb, and Pandera are named in the CLAUDE.md stack and boto3 in the phase prompt, so they were added without asking; together with their dependencies (dbt-core, pandas, numpy, botocore, agate) the development environment grew by about 340 MB. Individually the largest are the DuckDB binary (44 MB), pandas (41 MB), and botocore (25 MB). The API image needs only DuckDB (for the gold readers).
 
 ## Phase log
+
+### Phase 03: data platform (2026-09-26)
+
+Plan: `docs/plans/phase-03.md` (no plan mode, per the orchestrator; open questions decided in the plan and ADRs). Two requirements the human added during the phase are folded in: a readable preview of every table, and an explicit, never-mixed choice between the committed sample and the full data.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `47d1a05` | The plan, from profiling a full scratch mirror of the bucket |
+| `9ed7aa0` | DuckDB, dbt-core 1.12, dbt-duckdb 1.11, Pandera 0.33 (pandas), boto3, pydantic-settings, PyYAML (bank-data); DuckDB (bank-agent); pandas-stubs (dev) |
+| `1fb56aa` | Table specs for the 13 tables, strict parsing, strict Pandera schemas, row reasons, schema-evolution detection, canonical codes |
+| `a77c989` | `DataSource` port with `S3Source` and `LocalSource`, key-layout parsing, the DuckDB manifest, bronze and quarantine Parquet, the ingestion runner, settings, masking logs |
+| `2a4a630` | The dbt project: generated sources and silver contracts, `stg_` and `silver_` models, gold serving, ML inputs, marts, generic tests; the dbt subprocess runner, workspace, and CLI |
+| `b541131` | The late-arrival fixture (script with `--check`) and the update-correctness integration tests |
+| `2fa34bd` | Available credit for credit cards only; the profiled sign conventions in the domain docstrings |
+| `f9eedf3` | Restore `typing._GenericAlias.__call__` after Pandera patches it (regression test) |
+| `1eda921` | DuckDB readers over gold Parquet, `GOLD_SCHEMAS`, the `duckdb` contract backend, gold compatibility tests |
+| `559d57b` | Byte order marks written as escapes |
+| `9d18a52` | Quality report, lineage page, cross-customer product flags, interrupted runs |
+| `00a2da8` | Explicit source (`BANK_DATA_SOURCE`, `DATA_SOURCE`), per-source warehouses, the make targets, the sample guard and codegen check in `make check` |
+| `e91e22f` | `bank-data sample`, pseudonyms, the provenance README with example rows, the preview, the guard, and the committed sample |
+| This commit | Docs (data card, update policy, source layout, pipeline page, ADRs 0007 and 0022, generated quality report and lineage), CI steps, bandit annotations, BACKLOG, this entry |
+
+#### Key data findings (phase 04 builds on these)
+
+| Topic | Finding |
+|---|---|
+| Layout | 7,671 CSV objects (5.3 GB), one delivery on 2026-08-31: six root snapshots and seven daily-partitioned facts (2023-06-17 to 2026-06-17; `campaign_sends` from 2023-07-01) |
+| Row counts | transactions 4,425,008; digital_events 15,620,994; call_center_interactions 686,296; call_transcripts 171,321; satisfaction_surveys 212,759; complaints 67,095; campaign_sends 1,746,801; customers 150,000; products 400,000; daily_exchange_rates 13,164; service_agents 1,200; branches 350; marketing_campaigns 200 (23.5 million rows) |
+| Duplicates | None: 0 exact and 0 primary-key duplicates in every table (the announced ~2% is absent); uniqueness violations only on `product_number` (6) and `employee_code` (13) |
+| Late arrivals and schema evolution | None in the delivery (single write date, `process_date` always equals the key, identical headers); proven on the fixture instead |
+| Nulls | Random ~5% in many optional columns; structural nulls elsewhere (`amount_usd` 57%, null on every USD row; `transaction_category` 61%; `merchant_name` 77%; `landline_phone` 50%); `call_transcripts.duration_seconds` 14% null although required, so 24,029 transcripts are quarantined |
+| Orphans | `customers.registration_branch_id` 149,995 of 150,000 and `service_agents.assigned_branch_id` 831 of 833; every other foreign key resolves. `complaints.affected_product_id` always names another customer's product (44,570 of 44,570), `digital_events.product_id` almost always |
+| Contact reasons | Six coarse values, identical to `reason_category`: Transaccional 240,056 (35.0%), Producto 150,863 (22.0%), Queja 117,021 (17.1%), Técnico 102,899 (15.0%), Comercial 54,879 (8.0%), Retención 20,578 (3.0%). Resolution is lowest for Queja (43.6%); escalation is about 10% for every reason |
+| Text | Transcripts open with one of two balance-inquiry sentences whatever the topic; `detected_intents` is always `consulta_general`; complaint descriptions have five templates. No Portuguese |
+| Time | Timestamps are UTC and `process_date` is a UTC-6 business date (rows from 00:00 to 06:00 roll to the next calendar day in all countries) |
+| Snapshots | One snapshot of `customers` and `products`, not monthly: phase 10 needs another label strategy |
+| Money | Balances and amounts are never negative (credit balance convention `balance_is_amount_owed`); no MXN products (Mexican customers hold USD) |
+
+#### Decisions
+
+- [ADR 0007](adr/0007-dbt-duckdb-and-pandera-for-the-data-platform.md): dbt-duckdb and Pandera for the data platform, and when to move to a lakehouse.
+- [ADR 0022](adr/0022-committed-bounded-data-sample.md): the committed, bounded, pseudonymized sample, the preview, and the explicit data source.
+- Credit balance convention `balance_is_amount_owed` (data card); available credit for credit cards only; transfers and adjustments stay unclassified (all amounts positive); no masking needed for `merchant_name` (only purchases carry it, with 24 business names).
+- Bronze keeps raw strings; typing, trimming, and empty-to-null happen in silver. A file is a breaking type change when at least half its non-empty values in a column fail to parse. Additive-column backlog items go to the manifest, never into tracked files.
+- Incremental facts reprocess every partition loaded since the last run plus a 7-day lookback, over all versions of the affected keys, with `delete+insert` on the primary key; a re-delivery that drops keys triggers a full refresh.
+- Timestamps are UTC; the snapshot date is 2026-06-17 and balances are as of 2026-06-18T05:59:59Z.
+- Dependencies (all permissive and maintained, pinned in `uv.lock`): duckdb 1.5.5 (MIT), dbt-core 1.12.5 and dbt-duckdb 1.11.0 (Apache-2.0), pandera 0.33.1 (MIT) with pandas 3.0.6 (BSD-3-Clause), boto3 1.43.103 (Apache-2.0), pyyaml 6.0.3 (MIT) for bank-data; duckdb for bank-agent (gold readers); pandas-stubs 3.0.5 (BSD-3-Clause, dev) so the pandas code stays under strict mypy. Sizes are pending human action 9.
+
+Deviations from the plan text, found during implementation:
+
+- The whole-object glob in bronze was replaced by computed paths after the first full ingest ran quadratically slow (the path follows from the key); changing the snapshot date now needs a fresh warehouse.
+- `affected_product_id` and `product_id` cross-customer references were found while building the sample, so silver gained `has_foreign_affected_product` and `has_foreign_product`, and complaints are served without a foreign product reference.
+- The sample takes at least 70 customers and five complaints (complaints without a product reference are rare), giving 74 customers.
+- Pandera's global patch of `typing._GenericAlias.__call__` broke `CustomerId("...")` in the shared pytest process; the original method is restored after import.
+- `data_platform/tests/unit/test_cli.py` became `test_bank_data_cli.py` (a mypy module-name clash once `data_platform/tests` joined the mypy path).
+- The sample README carries no timestamp or git sha so regeneration leaves `git status` clean; the generated reports do carry both.
+
+#### How to verify
+
+```bash
+make check                                          # needs Docker; never reads .env
+make pipeline                                       # from the committed sample, offline (about 30 seconds)
+make data-sample && make data-sample && git status  # needs the s3 warehouse; tree stays clean
+make pipeline-sample DATA_SOURCE=s3                 # 2,000 customers of the full delivery
+make pipeline DATA_SOURCE=s3 && make data-report DATA_SOURCE=s3 && make lineage DATA_SOURCE=s3
+uv run pytest data_platform/tests/integration/test_update_correctness.py -q   # incremental equals full
+uv run pytest services/api/tests/contracts -q -k duckdb                       # DuckDB readers pass the suites
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1,269 unit and 58 integration tests pass (1,166 and 16 before) |
+| Coverage gates | All 11 pass; `data_platform/src` 96.4%, adapters 99.7% |
+| Full ingestion (S3) | 7,671 objects, 23,471,159 rows to bronze, 24,029 quarantined, 0 failed; about 8 minutes download and 12 minutes validation; a second run lists 7,671 unchanged in 4 seconds |
+| Full build (S3) | 41 models, a seed, 273 tests: PASS 313, WARN 2 (the two orphan branch references), ERROR 0; 2 minutes 8 seconds (1 minute 7 seconds incremental) |
+| `make pipeline-sample DATA_SOURCE=s3` | Completes; 17 seconds for 2,000 customers |
+| `make pipeline` from the sample with S3 variables blanked | Completes offline in about 30 seconds; 783 objects, 2,470 rows, 0 quarantined |
+| `make data-sample` twice | Byte-identical; `git status` clean |
+| Committed sample | 74 customers, 2,470 rows plus 125 preview rows (2,595 of 5,000); every coverage case present; the guard passes |
+| Docs check | markdownlint 0 issues; 22 mermaid blocks in 72 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+
+#### Known limitations
+
+- The delivery is static: late arrivals, re-deliveries, and schema evolution are proven on the synthetic fixture, not observed live; freshness thresholds are prototype values.
+- One snapshot of customers and products; `credit_risk_inputs` cannot give phase 10 a label after its features (BACKLOG).
+- The DuckDB readers are not wired into the composition root; phase 05 selects backends and seeds PostgreSQL from gold (BACKLOG).
+- The committed sample over-represents rare statuses by construction and is not a statistical sample; final numbers come from the full delivery.
+- The UTC reading of timestamps is an inference from the data, not a documented fact.
+- Contract changes need affected objects re-ingested by hand (BACKLOG: `--revalidate`).
+- The organizer data-use terms are unchecked (phase 17).
+
+#### Next phase
+
+Phase 04, data analysis and workflow selection (`kit/prompts/04-analysis-workflow-selection.md`), on the gold marts of the full delivery (`make pipeline DATA_SOURCE=s3`). Phases 05, 06, and 09 should still wait for the team's review of the phase 02 and 02b entries (pending action 0).
 
 ### Phase 08: LLM gateway, composable reliability, and the prompt registry (2026-09-26)
 
