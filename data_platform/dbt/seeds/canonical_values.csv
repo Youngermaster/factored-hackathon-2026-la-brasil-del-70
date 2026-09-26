@@ -1,0 +1,59 @@
+domain,source_value,canonical
+country,Argentina,AR
+country,Brasil,BR
+country,Brazil,BR
+country,Colombia,CO
+country,España,ES
+country,Mexico,MX
+country,México,MX
+country,Spain,ES
+country,USA,US
+country,United States,US
+document_type,CC,cc
+document_type,CE,ce
+document_type,CURP,curp
+document_type,DNI,dni
+document_type,Pasaporte,passport
+document_type,Passport,passport
+geographic_zone,Rural,rural
+geographic_zone,Suburban,suburban
+geographic_zone,Suburbana,suburban
+geographic_zone,Urban,urban
+geographic_zone,Urbana,urban
+product_type,Checking Account,checking_account
+product_type,Credit Card,credit_card
+product_type,Cuenta Ahorro,savings_account
+product_type,Cuenta Corriente,checking_account
+product_type,Debit Card,debit_card
+product_type,Insurance,insurance
+product_type,Inversión,investment
+product_type,Investment,investment
+product_type,Mortgage,mortgage
+product_type,Personal Loan,personal_loan
+product_type,Préstamo Hipotecario,mortgage
+product_type,Préstamo Personal,personal_loan
+product_type,Savings Account,savings_account
+product_type,Seguro,insurance
+product_type,Tarjeta Crédito,credit_card
+product_type,Tarjeta Débito,debit_card
+reason_category,Comercial,commercial
+reason_category,Commercial,commercial
+reason_category,Complaint,complaint
+reason_category,Product,product
+reason_category,Producto,product
+reason_category,Queja,complaint
+reason_category,Retención,retention
+reason_category,Retention,retention
+reason_category,Technical,technical
+reason_category,Transaccional,transactional
+reason_category,Transactional,transactional
+reason_category,Técnico,technical
+sentiment,Muy Negativo,very_negative
+sentiment,Muy Positivo,very_positive
+sentiment,Negative,negative
+sentiment,Negativo,negative
+sentiment,Neutral,neutral
+sentiment,Positive,positive
+sentiment,Positivo,positive
+sentiment,Very Negative,very_negative
+sentiment,Very Positive,very_positive

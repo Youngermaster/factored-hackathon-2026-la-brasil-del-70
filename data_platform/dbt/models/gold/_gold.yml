@@ -1,0 +1,137 @@
+version: 2
+
+models:
+  - name: customers_serving
+    description: Customers for the demo database; personal data limited to what the identity flow needs. External Parquet.
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: first_name
+        data_tests: [not_null]
+      - name: country
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [MX, CO, AR]
+      - name: segment
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [premium, plus, basic, student]
+      - name: customer_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [active, inactive, suspended, closed]
+
+  - name: products_serving
+    description: Products with masked numbers, balances as of the snapshot, and internal credit columns. External Parquet.
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('customers_serving')
+                field: customer_id
+      - name: product_number_last4
+        data_tests: [not_null]
+      - name: current_balance
+        data_tests:
+          - not_null
+          - non_negative
+      - name: balance_as_of
+        data_tests: [not_null]
+
+  - name: transactions_serving
+    description: Transactions for account, card, and dispute workflows; fraud and response codes are internal. External Parquet.
+    columns:
+      - name: transaction_id
+        data_tests: [unique, not_null]
+      - name: product_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('products_serving')
+                field: product_id
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('customers_serving')
+                field: customer_id
+      - name: amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: location_country
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [MX, CO, AR, US, ES, BR]
+              config:
+                severity: warn
+
+  - name: complaints_serving
+    description: Historical complaints, intake-time fields only. External Parquet.
+    columns:
+      - name: complaint_id
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('customers_serving')
+                field: customer_id
+
+  - name: credit_profiles_serving
+    description: One credit profile per customer at the snapshot date; score, income, days past due, and utilization are internal. External Parquet.
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('customers_serving')
+                field: customer_id
+      - name: credit_product_count
+        data_tests:
+          - not_null
+          - non_negative
+      - name: utilization
+        data_tests: [non_negative]
+      - name: tenure_months
+        data_tests: [non_negative]
+
+  - name: interactions_with_transcripts
+    description: Interactions left-joined to transcripts on interaction_id (ML input).
+    columns:
+      - name: interaction_id
+        data_tests: [unique, not_null]
+
+  - name: complaints_with_context
+    description: Complaints with product and customer context; post-outcome fields carry the outcome_ prefix (ML input).
+    columns:
+      - name: complaint_id
+        data_tests: [unique, not_null]
+
+  - name: credit_risk_inputs
+    description: Customer-level credit features per snapshot date, days past due in separate columns (ML input for phase 10).
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [customer_id, snapshot_date]
+
+  - name: contact_reason_daily
+    description: Daily contact-center volume and outcomes by contact reason, channel, and interaction type.
+  - name: complaint_funnel
+    description: Monthly complaint funnel by category, case type, and priority.
+  - name: sla_performance
+    description: Monthly complaint SLA performance by priority and category.
+  - name: channel_mix
+    description: Monthly volume by channel across contact center, digital, and complaints.
+  - name: digital_errors_daily
+    description: Daily digital error events and error rate by channel, platform, and page.
