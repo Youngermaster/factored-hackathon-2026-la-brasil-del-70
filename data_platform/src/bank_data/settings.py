@@ -7,7 +7,7 @@ environment handed to dbt. Names match the root ``.env.example``.
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 SourceKind = Literal["sample", "s3", "local"]
@@ -81,6 +81,13 @@ class PipelineSettings(BaseSettings):
     bank_data_ingest_workers: int = Field(default=6, ge=1, le=64)
 
     _normalize = field_validator("bank_data_warehouse_dir", mode="before")(_blank_to_none)
+
+    @field_validator("bank_data_dir", "bank_data_config_file", mode="before")
+    @classmethod
+    def _default_when_blank(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
 
     def warehouse_dir(self, source: SourceKind) -> Path:
         if self.bank_data_warehouse_dir is not None:

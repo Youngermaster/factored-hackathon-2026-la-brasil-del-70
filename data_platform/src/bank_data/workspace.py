@@ -57,7 +57,7 @@ class Workspace:
         if self.source_kind == "s3":
             return S3Source.from_settings(s3 or S3Settings())
         if self.source_kind == "sample":
-            return LocalSource(DEFAULT_SAMPLE_DIR)
+            return LocalSource(DEFAULT_SAMPLE_DIR, kind="sample")
         if self.local_dir is None:
             raise ConfigurationError("--local-dir is required for the local source")
         return LocalSource(self.local_dir)

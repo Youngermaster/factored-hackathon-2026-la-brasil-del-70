@@ -12,8 +12,13 @@ from typing import Annotated
 import typer
 
 from bank_data import DISTRIBUTION_NAME, __version__, pipeline
-from bank_data.errors import DataPlatformError
+from bank_data.errors import ConfigurationError, DataPlatformError
 from bank_data.logs import configure_logging
+from bank_data.reports import lineage as lineage_report
+from bank_data.reports import quality
+from bank_data.reports.meta import generated_now, git_sha
+from bank_data.sample.build import build_sample
+from bank_data.sample.extract import SampleSettings
 from bank_data.settings import DEFAULT_SAMPLE_DIR, REPOSITORY_ROOT, S3Settings, SourceKind
 from bank_data.transform.codegen import stale_files, write_generated
 from bank_data.workspace import DEFAULT_SAMPLE_SEED, Workspace
@@ -117,6 +122,77 @@ def run_tests(
     typer.echo("tests and freshness passed")
 
 
+def _report_path(workspace: Workspace, output: Path | None, name: str) -> Path:
+    """Committed docs are written only from the organizer data; other sources write next to their warehouse."""
+    if output is not None:
+        return output
+    if workspace.source_kind == "s3":
+        return REPOSITORY_ROOT / "docs" / "data" / name
+    return workspace.warehouse_dir / name
+
+
+OutputOption = Annotated[Path | None, typer.Option("--output", help="Where to write the Markdown page.")]
+
+
+@app.command()
+def report(source: SourceOption = None, local_dir: LocalDirOption = None, output: OutputOption = None) -> None:
+    """Write the data-quality report from the manifest, bronze, quarantine, and the built warehouse."""
+    try:
+        workspace = _workspace(source, local_dir)
+        target = workspace.dbt_target()
+        if not target.warehouse_db.exists():
+            raise ConfigurationError("no built warehouse; run `bank-data build` first")
+        data = quality.collect(
+            workspace.warehouse_dir,
+            target.warehouse_db,
+            workspace.config,
+            generated_at=generated_now(),
+            git_sha=git_sha(),
+        )
+    except DataPlatformError as error:
+        raise _fail(error) from None
+    path = _report_path(workspace, output, "quality-report.md")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(quality.render(data), encoding="utf-8")
+    typer.echo(f"wrote {_shown(path)}")
+
+
+@app.command()
+def lineage(source: SourceOption = None, local_dir: LocalDirOption = None, output: OutputOption = None) -> None:
+    """Run `dbt docs generate` and write the Mermaid lineage flowchart."""
+    try:
+        workspace = _workspace(source, local_dir)
+        runner = workspace.dbt()
+        runner.docs_generate(workspace.dbt_variables())
+        manifest = lineage_report.load_manifest(runner.manifest_path())
+    except DataPlatformError as error:
+        raise _fail(error) from None
+    path = _report_path(workspace, output, "lineage.md")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        lineage_report.render_lineage(
+            manifest, generated_at=generated_now(), git_sha=git_sha(), source_label=workspace.source_kind
+        ),
+        encoding="utf-8",
+    )
+    typer.echo(f"wrote {_shown(path)}")
+
+
+@app.command()
+def sample(
+    output: Annotated[Path, typer.Option("--output", help="Directory of the committed sample.")] = DEFAULT_SAMPLE_DIR,
+    seed: SeedOption = DEFAULT_SAMPLE_SEED,
+) -> None:
+    """Write the bounded, pseudonymized organizer sample (CLAUDE.md rule 5) from the s3 warehouse."""
+    try:
+        workspace = _workspace("s3", None)
+        result = build_sample(workspace, output, SampleSettings(seed=seed))
+    except DataPlatformError as error:
+        raise _fail(error) from None
+    rows = sum(len(table) for table in result.tables.values())
+    typer.echo(f"wrote {_shown(output)}: {len(result.customers)} customers, {rows} sample rows")
+
+
 @app.command()
 def codegen(
     check: Annotated[bool, typer.Option("--check", help="Fail when a generated file is out of date.")] = False,
@@ -140,6 +216,3 @@ def _shown(path: Path) -> str:
         return path.resolve().relative_to(REPOSITORY_ROOT).as_posix()
     except ValueError:
         return path.as_posix()
-
-
-__all__ = ["DEFAULT_SAMPLE_DIR", "app"]

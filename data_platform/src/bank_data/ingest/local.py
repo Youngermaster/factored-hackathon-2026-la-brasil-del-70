@@ -27,19 +27,20 @@ def file_md5(path: Path) -> str:
 class LocalSource:
     """Every regular file under ``root`` is an object; its key is the path relative to ``root``."""
 
-    def __init__(self, root: Path) -> None:
+    def __init__(self, root: Path, *, kind: str = "local") -> None:
         if not root.is_dir():
             raise ConfigurationError(f"local source directory does not exist: {root}")
         self._root = root.resolve()
+        self._kind = kind
 
     @property
     def label(self) -> str:
-        """``local:`` plus the path relative to the repository when it lies inside it (no home directory)."""
+        """The kind (``local`` or ``sample``) plus the path relative to the repository when it lies inside it."""
         try:
             shown = self._root.relative_to(REPOSITORY_ROOT).as_posix()
         except ValueError:
             shown = self._root.as_posix()
-        return f"local:{shown}"
+        return f"{self._kind}:{shown}"
 
     @property
     def prefix(self) -> str:

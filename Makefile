@@ -13,8 +13,15 @@ WEB := pnpm --dir apps/web
 PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts
 PROFILES ?=
 PROFILE_FLAGS := $(foreach profile,$(PROFILES),--profile $(profile))
+# Data source for the pipeline: sample (committed, offline) or s3 (organizer bucket). Empty means the
+# BANK_DATA_SOURCE setting, which defaults to sample. See data_platform/README.md.
+DATA_SOURCE ?=
+SOURCE_FLAG := $(if $(DATA_SOURCE),--source $(DATA_SOURCE),)
+SAMPLE_CUSTOMERS ?= 2000
+BANK_DATA := $(UV_RUN) bank-data
 
-.PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts
+.PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
+	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -64,6 +71,32 @@ env-check: ## Report set or unset for every documented environment variable, nev
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
 	$(UV_RUN) python scripts/generate_contracts.py
 
+data-download: ## Incremental, manifest-driven download of the organizer bucket into data/warehouse (needs S3 credentials)
+	$(BANK_DATA) ingest --source s3 --download-only
+
+pipeline: ## Ingest, build, and test bronze, silver, gold (DATA_SOURCE=sample|s3; default BANK_DATA_SOURCE or sample)
+	$(BANK_DATA) ingest $(SOURCE_FLAG)
+	$(BANK_DATA) build $(SOURCE_FLAG)
+	$(BANK_DATA) test $(SOURCE_FLAG)
+
+pipeline-sample: ## Ingest, then build silver and gold for SAMPLE_CUSTOMERS customers chosen by a seeded hash
+	$(BANK_DATA) ingest $(SOURCE_FLAG)
+	$(BANK_DATA) build $(SOURCE_FLAG) --sample-customers $(SAMPLE_CUSTOMERS)
+	$(BANK_DATA) test $(SOURCE_FLAG) --sample-customers $(SAMPLE_CUSTOMERS)
+
+data-sample: ## Regenerate the committed, bounded, pseudonymized sample in data_platform/sample (reads the s3 warehouse)
+	$(BANK_DATA) sample
+	$(GUARD_PY) scripts/checks/check_data_sample.py
+
+data-report: ## Write the data-quality report (docs/data/quality-report.md for the s3 source)
+	$(BANK_DATA) report $(SOURCE_FLAG)
+
+lineage: ## Run dbt docs generate and write the Mermaid lineage (docs/data/lineage.md for the s3 source)
+	$(BANK_DATA) lineage $(SOURCE_FLAG)
+
+data-codegen: ## Regenerate the dbt sources, silver contracts, and canonical seed from the table specs
+	$(BANK_DATA) codegen
+
 docs-check: ## Markdown lint and Mermaid validation
 	apps/web/node_modules/.bin/markdownlint-cli2
 	node scripts/checks/check_mermaid.mjs
@@ -80,6 +113,8 @@ check: ## Everything: lint, types, boundaries, tests with coverage gates, docs, 
 	$(GUARD_PY) scripts/checks/check_coverage_gates.py
 	@$(MAKE) test-web
 	@$(MAKE) docs-check
+	$(GUARD_PY) scripts/checks/check_data_sample.py
+	$(UV_RUN) bank-data codegen --check
 	$(GUARD_PY) scripts/checks/check_no_emoji.py
 	scripts/checks/check_no_ai_attribution.sh
 	gitleaks git --redact --no-banner .
