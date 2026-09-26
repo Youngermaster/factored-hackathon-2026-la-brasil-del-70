@@ -575,7 +575,7 @@
       "type": "object"
     },
     "SourceRef": {
-      "pattern": "^(customers|products|transactions|dispute_cases|historical_complaints|conversations|turns|execution_records|handoffs|audit_events|policy_clauses):[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$",
+      "pattern": "^(customers|products|transactions|dispute_cases|historical_complaints|conversations|turns|execution_records|handoffs|audit_events|policy_clauses|credit_applications|credit_products|eligibility_assessments):[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$",
       "title": "SourceRef",
       "type": "string"
     },

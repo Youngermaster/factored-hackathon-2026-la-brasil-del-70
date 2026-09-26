@@ -39,6 +39,10 @@ _PersonaId = NewType("_PersonaId", str)
 _StaffId = NewType("_StaffId", str)
 _IdempotencyKey = NewType("_IdempotencyKey", str)
 _TraceId = NewType("_TraceId", str)
+_ApplicationId = NewType("_ApplicationId", str)
+_RiskEstimateId = NewType("_RiskEstimateId", str)
+_AssessmentId = NewType("_AssessmentId", str)
+_CreditProductCode = NewType("_CreditProductCode", str)
 
 CustomerId = Annotated[_CustomerId, _constraint(20)]
 ProductId = Annotated[_ProductId, _constraint(20)]
@@ -58,6 +62,13 @@ PersonaId = Annotated[_PersonaId, _constraint(64)]
 StaffId = Annotated[_StaffId, _constraint(64)]
 IdempotencyKey = Annotated[_IdempotencyKey, StringConstraints(pattern=r"^[A-Za-z0-9_-]{16,128}$")]
 TraceId = Annotated[_TraceId, StringConstraints(pattern=r"^[0-9a-f]{32}$")]
+ApplicationId = Annotated[_ApplicationId, _constraint(64)]
+"""A credit application intake recorded for human review."""
+RiskEstimateId = Annotated[_RiskEstimateId, _constraint(64)]
+AssessmentId = Annotated[_AssessmentId, _constraint(64)]
+"""An assessment of the synthetic eligibility service."""
+CreditProductCode = Annotated[_CreditProductCode, StringConstraints(pattern=r"^[A-Z][A-Z0-9_-]{2,31}$")]
+"""A public code of a synthetic credit catalog entry, for example ``MX-CC-CLASSIC``."""
 
 
 class IdKind(StrEnum):
@@ -71,6 +82,9 @@ class IdKind(StrEnum):
     HANDOFF = "ho"
     AUDIT_EVENT = "aud"
     CHALLENGE = "chl"
+    APPLICATION = "app"
+    RISK_ESTIMATE = "rsk"
+    ASSESSMENT = "elg"
 
 
 class SourceTable(StrEnum):
@@ -87,6 +101,9 @@ class SourceTable(StrEnum):
     HANDOFFS = "handoffs"
     AUDIT_EVENTS = "audit_events"
     POLICY_CLAUSES = "policy_clauses"
+    CREDIT_APPLICATIONS = "credit_applications"
+    CREDIT_PRODUCTS = "credit_products"
+    ELIGIBILITY_ASSESSMENTS = "eligibility_assessments"
 
 
 _SOURCE_KEY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$"

@@ -80,6 +80,10 @@ class InvalidHandoffTransitionError(StateTransitionError):
     code = "handoff_transition_invalid"
 
 
+class InvalidApplicationTransitionError(StateTransitionError):
+    code = "credit_application_transition_invalid"
+
+
 # --- Not found -----------------------------------------------------------------------------------------------
 
 
@@ -111,6 +115,10 @@ class ConversationNotFoundError(NotFoundError):
 
 class HandoffNotFoundError(NotFoundError):
     code = "handoff_not_found"
+
+
+class CreditApplicationNotFoundError(NotFoundError):
+    code = "credit_application_not_found"
 
 
 class SessionNotFoundError(NotFoundError):
