@@ -1,0 +1,17 @@
+// markdownlint configuration for every committed Markdown file (run by `make docs-check`).
+// Long lines and tables are tolerated: MD013 (line length) and MD060 (table pipe spacing) are off, and so is
+// MD032, because the working agreement puts lists directly under bold lead-in lines.
+{
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD024": { "siblings_only": true },
+    "MD032": false,
+    "MD033": false,
+    "MD041": false,
+    "MD060": false
+  },
+  "globs": ["**/*.md"],
+  "gitignore": true,
+  "ignores": ["kit/**", "**/node_modules/**", ".claude/skills/**"]
+}
