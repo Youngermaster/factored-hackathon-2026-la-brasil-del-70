@@ -21,15 +21,17 @@ from bank_agent.adapters.persistence.memory.store import InMemoryStore
 from bank_agent.adapters.persistence.memory.unit_of_work import InMemoryUnitOfWorkFactory, standalone_audit_log
 from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.complaint import HistoricalComplaint
+from bank_agent.domain.credit import CreditApplicationIntake, CreditProduct, CreditProfile
 from bank_agent.domain.customer import Customer
 from bank_agent.domain.dispute import DisputeCase
-from bank_agent.domain.identifiers import CustomerId, StaffId
+from bank_agent.domain.identifiers import ApplicationId, CreditProductCode, CustomerId, IdempotencyKey, StaffId
 from bank_agent.domain.locale import Country
 from bank_agent.domain.money import Currency, Money
 from bank_agent.domain.product import Product, ProductStatus, ProductType
 from bank_agent.domain.transaction import Transaction, TransactionChannel, TransactionStatus, TransactionType
 from bank_agent.ports.audit import AuditLog
 from bank_agent.ports.repositories.complaints import HistoricalComplaintReader
+from bank_agent.ports.repositories.credit_profiles import CreditProfileReader
 from bank_agent.ports.repositories.customers import CustomerReader
 from bank_agent.ports.repositories.products import ProductReader
 from bank_agent.ports.repositories.transactions import TransactionReader
@@ -45,6 +47,7 @@ from bank_agent_builders import (
     product,
     transaction,
 )
+from bank_agent_credit import catalog_products, credit_profiles
 
 CONTEXT_A = AccessContext.for_customer(CustomerId(CUSTOMER_A))
 CONTEXT_B = AccessContext.for_customer(CustomerId(CUSTOMER_B))
@@ -62,6 +65,9 @@ class ContractDataset:
     transactions: tuple[Transaction, ...]
     complaints: tuple[HistoricalComplaint, ...]
     cases: tuple[DisputeCase, ...] = field(default=())
+    credit_profiles: tuple[CreditProfile, ...] = field(default=())
+    credit_applications: tuple[CreditApplicationIntake, ...] = field(default=())
+    credit_products: tuple[CreditProduct, ...] = field(default=())
 
 
 def contract_dataset() -> ContractDataset:
@@ -70,7 +76,9 @@ def contract_dataset() -> ContractDataset:
 
     Phase 02b enriched existing rows instead of adding new ones, so every phase 02 assertion still holds: the
     credit card and the savings account carry balances, TXN-A-0004 (pending) and TXN-A-0005 (reversed) are
-    payments, and TXN-A-0006 is the declined card purchase."""
+    payments, and TXN-A-0006 is the declined card purchase. New tables only: customer A has a complete credit
+    profile and one submitted application, customer B a profile without income, and the catalog has two
+    products per jurisdiction."""
     day = timedelta(days=1)
     a_transactions = (
         transaction("TXN-A-0001", occurred_at=T0 - 3 * day, amount="1250.00"),
@@ -132,6 +140,23 @@ def contract_dataset() -> ContractDataset:
             complaint("CMP-B-0001", customer_id=CUSTOMER_B, created_at=T0 - 5 * day),
         ),
         cases=(dispute_case("case-000001", txn=a_transactions[1], opened_at=T0 - 4 * day),),
+        credit_profiles=credit_profiles(),
+        credit_applications=(existing_application(),),
+        credit_products=catalog_products(),
+    )
+
+
+def existing_application() -> CreditApplicationIntake:
+    """Customer A's one application, submitted for human review two days before ``T0``."""
+    return CreditApplicationIntake.submit(
+        application_id=ApplicationId("app-000001"),
+        customer_id=CustomerId(CUSTOMER_A),
+        product_code=CreditProductCode("MX-PL-FIXTURE"),
+        requested_amount=Money.of("40000.00", Currency.MXN),
+        requested_term_months=24,
+        purpose="general_purpose",
+        idempotency_key=IdempotencyKey("idem-key-fixture-app-0001"),
+        created_at=T0 - timedelta(days=2),
     )
 
 
@@ -149,6 +174,9 @@ class Readers(Protocol):
 
     @property
     def complaints(self) -> HistoricalComplaintReader: ...
+
+    @property
+    def credit_profiles(self) -> CreditProfileReader: ...
 
 
 class ReadBackend(Protocol):
@@ -182,6 +210,8 @@ class MemoryBackend:
             transactions=data.transactions,
             complaints=data.complaints,
             cases=data.cases,
+            credit_profiles=data.credit_profiles,
+            credit_applications=data.credit_applications,
         )
 
     def readers(self, context: AccessContext) -> AbstractAsyncContextManager[Readers]:

@@ -11,8 +11,10 @@ adapters/
 ├── persistence/
 │   ├── memory/
 │   │   ├── store.py          InMemoryStore (committed tables) and transactional table views
-│   │   ├── repositories.py   every repository port, bound to an AccessContext
+│   │   ├── repositories.py   every repository port, bound to an AccessContext (credit profiles and
+│   │   │                     applications included)
 │   │   ├── unit_of_work.py   InMemoryUnitOfWork(Factory): staged writes, atomic commit, conflict detection
+│   │   ├── credit_catalog.py InMemoryCreditProductCatalog, loaded from given entries
 │   │   └── sessions.py       InMemorySessionStore with trust state per lineage
 │   └── postgres/
 │       └── readiness.py      PostgresReadinessCheck: SELECT 1 as the application role

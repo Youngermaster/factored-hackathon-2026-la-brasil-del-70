@@ -7,6 +7,8 @@ from bank_agent.adapters.persistence.memory.repositories import (
     InMemoryAuditLog,
     InMemoryCaseRepository,
     InMemoryConversationRepository,
+    InMemoryCreditApplicationRepository,
+    InMemoryCreditProfileReader,
     InMemoryCustomerRepository,
     InMemoryExecutionRecordRepository,
     InMemoryHandoffRepository,
@@ -46,6 +48,8 @@ class InMemoryUnitOfWork:
         self._records = TableView(store.execution_records)
         self._handoffs = TableView(store.handoffs)
         self._audit_events = TableView(store.audit_events)
+        self._credit_profiles = TableView(store.credit_profiles)
+        self._credit_applications = TableView(store.credit_applications)
         self._views: tuple[Transactional, ...] = (
             self._customers,
             self._products,
@@ -57,6 +61,8 @@ class InMemoryUnitOfWork:
             self._records,
             self._handoffs,
             self._audit_events,
+            self._credit_profiles,
+            self._credit_applications,
         )
 
     @property
@@ -98,6 +104,14 @@ class InMemoryUnitOfWork:
     @property
     def audit(self) -> InMemoryAuditLog:
         return InMemoryAuditLog(self._audit_events, self._context)
+
+    @property
+    def credit_profiles(self) -> InMemoryCreditProfileReader:
+        return InMemoryCreditProfileReader(self._credit_profiles, self._context)
+
+    @property
+    def credit_applications(self) -> InMemoryCreditApplicationRepository:
+        return InMemoryCreditApplicationRepository(self._credit_applications, self._handoffs, self._context)
 
     async def commit(self) -> None:
         if any(view.has_conflict() for view in self._views):

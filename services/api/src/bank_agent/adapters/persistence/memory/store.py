@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from bank_agent.domain.audit import AuditEvent
 from bank_agent.domain.complaint import HistoricalComplaint
 from bank_agent.domain.conversation import Conversation, Turn
+from bank_agent.domain.credit import CreditApplicationIntake, CreditProfile
 from bank_agent.domain.customer import Customer
 from bank_agent.domain.dispute import DisputeCase
 from bank_agent.domain.execution_record import ExecutionRecord
@@ -72,6 +73,9 @@ class InMemoryStore:
     execution_records: dict[str, ExecutionRecord] = field(default_factory=dict)
     handoffs: dict[str, HandoffRecord] = field(default_factory=dict)
     audit_events: dict[str, AuditEvent] = field(default_factory=dict)
+    credit_profiles: dict[str, CreditProfile] = field(default_factory=dict)
+    """Keyed by customer id: a customer has at most one credit profile."""
+    credit_applications: dict[str, CreditApplicationIntake] = field(default_factory=dict)
 
     def seed(
         self,
@@ -83,6 +87,8 @@ class InMemoryStore:
         cases: Iterable[DisputeCase] = (),
         conversations: Iterable[Conversation] = (),
         handoffs: Iterable[Handoff] = (),
+        credit_profiles: Iterable[CreditProfile] = (),
+        credit_applications: Iterable[CreditApplicationIntake] = (),
     ) -> None:
         """Load fixture data directly, bypassing access contexts. For tests, fixtures, and demos only."""
         self.customers.update((item.customer_id, item) for item in customers)
@@ -92,3 +98,5 @@ class InMemoryStore:
         self.cases.update((item.case_id, item) for item in cases)
         self.conversations.update((item.conversation_id, item) for item in conversations)
         self.handoffs.update((item.handoff_id, HandoffRecord(handoff=item)) for item in handoffs)
+        self.credit_profiles.update((item.customer_id, item) for item in credit_profiles)
+        self.credit_applications.update((item.application_id, item) for item in credit_applications)

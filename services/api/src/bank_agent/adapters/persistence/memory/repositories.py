@@ -8,6 +8,12 @@ from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.audit import AuditEvent
 from bank_agent.domain.complaint import HistoricalComplaint
 from bank_agent.domain.conversation import Conversation, Turn
+from bank_agent.domain.credit import (
+    CUSTOMER_APPLICATION_TRANSITIONS,
+    ApplicationStatus,
+    CreditApplicationIntake,
+    CreditProfile,
+)
 from bank_agent.domain.customer import Customer
 from bank_agent.domain.dispute import DisputeCase, DisputeStatus
 from bank_agent.domain.errors import (
@@ -16,6 +22,7 @@ from bank_agent.domain.errors import (
     CaseNotFoundError,
     ConcurrencyConflictError,
     ConversationNotFoundError,
+    CreditApplicationNotFoundError,
     CustomerNotFoundError,
     DuplicateEntityError,
     HandoffNotFoundError,
@@ -25,6 +32,7 @@ from bank_agent.domain.errors import (
 from bank_agent.domain.execution_record import ExecutionRecord
 from bank_agent.domain.handoff import Handoff, HandoffOutcomeCode, HandoffRecord
 from bank_agent.domain.identifiers import (
+    ApplicationId,
     CaseId,
     ConversationId,
     CustomerId,
@@ -398,3 +406,84 @@ class InMemoryAuditLog:
         found = [event for event in self._events.values() if matches(event)]
         found.sort(key=lambda event: (event.occurred_at, event.event_id))
         return found[: query.limit]
+
+
+class InMemoryCreditProfileReader:
+    def __init__(self, profiles: TableView[str, CreditProfile], context: AccessContext) -> None:
+        self._profiles = profiles
+        self._context = context
+
+    async def get_mine(self) -> CreditProfile | None:
+        return self._profiles.get(_customer_of(self._context))
+
+
+class InMemoryCreditApplicationRepository:
+    def __init__(
+        self,
+        applications: TableView[str, CreditApplicationIntake],
+        handoffs: TableView[str, HandoffRecord],
+        context: AccessContext,
+    ) -> None:
+        self._applications = applications
+        self._handoffs = handoffs
+        self._context = context
+
+    def _own(self) -> list[CreditApplicationIntake]:
+        owner = _customer_of(self._context)
+        return [item for item in self._applications.values() if item.customer_id == owner]
+
+    def _referenced_by_a_handoff(self, application_id: ApplicationId) -> bool:
+        for record in self._handoffs.values():
+            review = record.handoff.credit_review
+            if review is not None and review.application_ref == application_id:
+                return True
+        return False
+
+    async def create(self, intake: CreditApplicationIntake) -> CreditApplicationIntake:
+        if intake.customer_id != _customer_of(self._context):
+            raise AccessContextError("an application can only be created for the context customer")
+        existing = next((item for item in self._own() if item.idempotency_key == intake.idempotency_key), None)
+        if existing is not None:
+            if existing.same_request(intake):
+                return existing
+            raise IdempotencyConflictError()
+        if self._applications.get(intake.application_id) is not None:
+            raise DuplicateEntityError("an application with this id already exists")
+        self._applications.put(intake.application_id, intake)
+        return intake
+
+    async def get(self, application_id: ApplicationId) -> CreditApplicationIntake | None:
+        application = self._applications.get(application_id)
+        if self._context.role is Role.AGENT:
+            return application if self._referenced_by_a_handoff(application_id) else None
+        owner = _customer_of(self._context)
+        return application if application is not None and application.customer_id == owner else None
+
+    async def list_mine(
+        self, statuses: frozenset[ApplicationStatus] | None = None, limit: int = 50
+    ) -> Sequence[CreditApplicationIntake]:
+        found = [item for item in self._own() if statuses is None or item.status in statuses]
+        found.sort(key=lambda item: item.application_id)
+        found.sort(key=lambda item: item.created_at, reverse=True)
+        return found[:limit]
+
+    async def transition(
+        self,
+        application_id: ApplicationId,
+        status: ApplicationStatus,
+        *,
+        expected_version: int,
+        at: datetime,
+        reason_code: str,
+    ) -> CreditApplicationIntake:
+        owner = _customer_of(self._context)
+        if status not in CUSTOMER_APPLICATION_TRANSITIONS:
+            raise AccessContextError("a customer can only withdraw an application")
+        current = self._applications.get(application_id)
+        if current is None or current.customer_id != owner:
+            raise CreditApplicationNotFoundError()
+        if current.version != expected_version:
+            raise ConcurrencyConflictError("the application changed since it was read")
+        moved = current.transition_to(status, at=at, reason_code=reason_code).evolve(version=expected_version + 1)
+        self._applications.put(application_id, moved)
+        return moved

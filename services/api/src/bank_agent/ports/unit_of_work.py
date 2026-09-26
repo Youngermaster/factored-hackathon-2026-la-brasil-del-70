@@ -8,6 +8,8 @@ from bank_agent.ports.audit import AuditLog
 from bank_agent.ports.repositories.cases import CaseRepository
 from bank_agent.ports.repositories.complaints import HistoricalComplaintRepository
 from bank_agent.ports.repositories.conversations import ConversationRepository
+from bank_agent.ports.repositories.credit_applications import CreditApplicationRepository
+from bank_agent.ports.repositories.credit_profiles import CreditProfileReader
 from bank_agent.ports.repositories.customers import CustomerRepository
 from bank_agent.ports.repositories.execution_records import ExecutionRecordRepository
 from bank_agent.ports.repositories.handoffs import HandoffRepository
@@ -56,6 +58,12 @@ class UnitOfWork(Protocol):
 
     @property
     def audit(self) -> AuditLog: ...
+
+    @property
+    def credit_profiles(self) -> CreditProfileReader: ...
+
+    @property
+    def credit_applications(self) -> CreditApplicationRepository: ...
 
     async def commit(self) -> None:
         """Apply every write of this unit of work atomically."""

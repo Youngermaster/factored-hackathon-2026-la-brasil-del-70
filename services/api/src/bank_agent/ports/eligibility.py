@@ -50,7 +50,8 @@ class EligibilityPolicy(Protocol):
     Preconditions: the request was built by the workflow engine from the catalog, the verified customer's
     profile, the conversation's application facts, and the risk estimator's output; no model output selects
     this port.
-    Postconditions: deterministic for the same request and policy pack, with no I/O at call time. The result
+    Postconditions: deterministic for the same request and policy pack, with no I/O at call time (the
+    assessment id and time come from the injected ``IdGenerator`` and ``Clock``). The result
     names every rule it evaluated with versions and clause references, identifies the service with a
     ``ServiceRef`` (``eligibility:synthetic@<pack version>``), and is labeled synthetic. There is no approved
     outcome. Missing inputs produce ``insufficient_data`` or ``review_required`` with the missing facts, never

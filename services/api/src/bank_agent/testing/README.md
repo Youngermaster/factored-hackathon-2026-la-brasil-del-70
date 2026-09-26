@@ -14,8 +14,11 @@ Deterministic test doubles shared by the tests of every package and by the evalu
 | `language.py` | `FakeLanguageDetector` | `LanguageDetector` |
 | `models.py` | `FakeIntentRouter`, `FakeTransactionResolver` | `IntentRouter`, `TransactionResolver` |
 | `telemetry.py` | `RecordingTelemetry` | `Telemetry` |
+| `credit.py` | `FakeRiskEstimator`, `ScriptedRisk`, `feature_digest`, `FakeEligibilityPolicy` | `RiskEstimator`, `EligibilityPolicy` |
 
 `FakeLLM` scripts responses per prompt reference and input hash (SHA-256 over the prompt reference and the canonical JSON of the variables), or per prompt with a wildcard. Scripts are queues whose last entry repeats. An unscripted call raises `FakeLLMScriptMissingError`; the fake never guesses. The phase 08 cassette client reuses `input_hash`.
+
+`FakeRiskEstimator` scripts estimates per `feature_digest` (SHA-256 over the canonical JSON of the features), with a default, and raises `RiskEstimatorUnavailableError` when built with `unavailable=True`. `FakeEligibilityPolicy` stands in for the synthetic eligibility service until phase 06: it applies the guards the port documents (a product without self-service eligibility, missing facts, or a missing or `unknown` estimate lead to review or `insufficient_data`) and then returns the outcome scripted per product code. Both take a clock and an id generator.
 
 ## Rules
 
