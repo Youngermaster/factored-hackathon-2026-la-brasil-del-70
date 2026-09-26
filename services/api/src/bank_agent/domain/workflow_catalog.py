@@ -138,10 +138,11 @@ WORKFLOW_CATALOG = WorkflowCatalog(
             ),
             entry_state="START",
             clause_families=(*_COMMON_FAMILIES, ClauseFamily.CRE, ClauseFamily.ELG, ClauseFamily.ESC),
+            write_actions=(ActionKind.SUBMIT_CREDIT_APPLICATION,),
         ),
     )
 )
-"""The four supported workflows. The credit workflow gains ``submit_credit_application`` with that action."""
+"""The four supported workflows, version 1 each. Phase 09 may change entry states with its state machines."""
 
 
 class CardActionHandlingKind(StrEnum):

@@ -6,7 +6,8 @@
     "ActionKind": {
       "enum": [
         "create_dispute_case",
-        "block_card"
+        "block_card",
+        "submit_credit_application"
       ],
       "title": "ActionKind",
       "type": "string"
@@ -728,7 +729,7 @@
       "type": "string"
     },
     "ToolName": {
-      "description": "Every banking tool (phase 05). The last two are writes and match ``ActionKind``.",
+      "description": "Every banking tool (phase 05).\n\nThree are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and\n``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status. The\nrisk estimator and the eligibility service are not tools: the engine calls them, and no model output can\nselect them.",
       "enum": [
         "list_recent_transactions",
         "get_transaction",
@@ -736,7 +737,15 @@
         "list_my_cases",
         "get_case_status",
         "create_dispute_case",
-        "block_card"
+        "block_card",
+        "list_my_balances",
+        "get_payment_status",
+        "get_statement_summary",
+        "list_credit_products",
+        "get_credit_product",
+        "get_my_credit_profile",
+        "submit_credit_application",
+        "get_credit_application_status"
       ],
       "title": "ToolName",
       "type": "string"

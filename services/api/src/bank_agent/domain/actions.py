@@ -9,10 +9,10 @@ from typing import Annotated, Literal, Self
 
 from pydantic import Field, PositiveInt, model_validator
 
-from bank_agent.domain.base import Code, DomainModel, UtcDatetime
+from bank_agent.domain.base import Code, DomainModel, Pii, UtcDatetime
 from bank_agent.domain.cards import CardBlockReason
 from bank_agent.domain.dispute import DisputeReason
-from bank_agent.domain.identifiers import IdempotencyKey, ProductId, SourceRef, TransactionId
+from bank_agent.domain.identifiers import CreditProductCode, IdempotencyKey, ProductId, SourceRef, TransactionId
 from bank_agent.domain.money import Money
 from bank_agent.domain.workflow import StateName
 
@@ -20,10 +20,18 @@ from bank_agent.domain.workflow import StateName
 class ActionKind(StrEnum):
     CREATE_DISPUTE_CASE = "create_dispute_case"
     BLOCK_CARD = "block_card"
+    SUBMIT_CREDIT_APPLICATION = "submit_credit_application"
+    """Records an application intake for human review. It never decides and never moves money."""
 
 
 class ToolName(StrEnum):
-    """Every banking tool (phase 05). The last two are writes and match ``ActionKind``."""
+    """Every banking tool (phase 05).
+
+    Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
+    ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status. The
+    risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
+    select them.
+    """
 
     LIST_RECENT_TRANSACTIONS = "list_recent_transactions"
     GET_TRANSACTION = "get_transaction"
@@ -32,6 +40,17 @@ class ToolName(StrEnum):
     GET_CASE_STATUS = "get_case_status"
     CREATE_DISPUTE_CASE = "create_dispute_case"
     BLOCK_CARD = "block_card"
+    LIST_MY_BALANCES = "list_my_balances"
+    GET_PAYMENT_STATUS = "get_payment_status"
+    GET_STATEMENT_SUMMARY = "get_statement_summary"
+    LIST_CREDIT_PRODUCTS = "list_credit_products"
+    GET_CREDIT_PRODUCT = "get_credit_product"
+    GET_MY_CREDIT_PROFILE = "get_my_credit_profile"
+    SUBMIT_CREDIT_APPLICATION = "submit_credit_application"
+    GET_CREDIT_APPLICATION_STATUS = "get_credit_application_status"
+
+
+WRITE_TOOLS = frozenset({ToolName.CREATE_DISPUTE_CASE, ToolName.BLOCK_CARD, ToolName.SUBMIT_CREDIT_APPLICATION})
 
 
 class ToolFailureMode(StrEnum):
@@ -56,7 +75,29 @@ class BlockCardArguments(DomainModel):
     reason: CardBlockReason | None = None
 
 
-ActionArguments = Annotated[CreateDisputeArguments | BlockCardArguments, Field(discriminator="action")]
+class SubmitCreditApplicationArguments(DomainModel):
+    """What the customer asks for. The purpose is a code the catalog entry must allow (checked by policy)."""
+
+    action: Literal[ActionKind.SUBMIT_CREDIT_APPLICATION] = ActionKind.SUBMIT_CREDIT_APPLICATION
+    product_code: CreditProductCode
+    requested_amount: Money
+    requested_term_months: Annotated[int, Field(ge=1, le=480)]
+    purpose: Code
+    declared_monthly_income: Annotated[Money | None, Pii("financial")] = None
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if self.requested_amount.amount <= 0:
+            raise ValueError("the requested amount must be positive")
+        income = self.declared_monthly_income
+        if income is not None and (income.amount < 0 or income.currency is not self.requested_amount.currency):
+            raise ValueError("declared income must be non-negative and in the requested currency")
+        return self
+
+
+ActionArguments = Annotated[
+    CreateDisputeArguments | BlockCardArguments | SubmitCreditApplicationArguments, Field(discriminator="action")
+]
 
 
 class ActionRequest(DomainModel):

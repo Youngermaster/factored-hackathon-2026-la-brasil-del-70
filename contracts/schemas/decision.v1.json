@@ -6,7 +6,8 @@
     "ActionKind": {
       "enum": [
         "create_dispute_case",
-        "block_card"
+        "block_card",
+        "submit_credit_application"
       ],
       "title": "ActionKind",
       "type": "string"

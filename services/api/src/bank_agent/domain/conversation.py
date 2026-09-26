@@ -2,7 +2,8 @@
 
 Turns are stored for the conversation history and never copied into a handoff. ``AssistantResponse`` covers
 every message variant the chat renders (phase 13): plain text, citations, clarification options, the
-confirmation card, action statuses, the escalation notice, a step-up request, and system notices. All text is
+confirmation cards (dispute, card action, credit intake; at most one per response), action statuses, the
+escalation notice, a step-up request, system notices, and the account, card, and credit views. All text is
 rendered as plain text.
 """
 
@@ -13,11 +14,28 @@ from typing import Annotated, Self
 from pydantic import Field, JsonValue, NonNegativeInt, PositiveInt, StringConstraints, model_validator
 
 from bank_agent.domain.access import Channel
+from bank_agent.domain.accounts import BalanceView, PaymentStatusView, StatementSummary
 from bank_agent.domain.actions import ActionKind
-from bank_agent.domain.base import DisplayText, DomainModel, Pii, UntrustedText, UtcDatetime
+from bank_agent.domain.base import Code, DisplayText, DomainModel, Pii, UntrustedText, UtcDatetime
+from bank_agent.domain.cards import SELF_SERVICE_CARD_ACTIONS, CardAction, CardBlockReason, CardStatusView
+from bank_agent.domain.credit import CreditProduct, CreditProductType, TermMonths
 from bank_agent.domain.decision import ClauseRef
 from bank_agent.domain.dispute import DisputeReason
-from bank_agent.domain.identifiers import ConversationId, CustomerId, HandoffId, LineageId, SourceRef, TurnId
+from bank_agent.domain.eligibility import (
+    INDICATIVE_DISCLAIMER,
+    EligibilityOutcome,
+    EligibilityView,
+    IndicativeDisclaimer,
+)
+from bank_agent.domain.identifiers import (
+    ConversationId,
+    CreditProductCode,
+    CustomerId,
+    HandoffId,
+    LineageId,
+    SourceRef,
+    TurnId,
+)
 from bank_agent.domain.locale import Country, Language
 from bank_agent.domain.money import Money
 from bank_agent.domain.workflow import Outcome, StateName, WorkflowRef
@@ -93,6 +111,45 @@ class ConfirmationCard(DomainModel):
     expected_resolution_by: date | None = None
 
 
+class CardActionConfirmation(DomainModel):
+    """What the customer confirms before a card write. Only self-service card actions have one."""
+
+    action: CardAction
+    card_last4: Last4
+    reason: CardBlockReason | None = None
+    planned_actions: Annotated[tuple[ActionKind, ...], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if self.action not in SELF_SERVICE_CARD_ACTIONS:
+            raise ValueError("only a self-service card action is confirmed; the others go to a human")
+        if ActionKind.BLOCK_CARD not in self.planned_actions:
+            raise ValueError("a card block confirmation plans the block_card action")
+        return self
+
+
+class CreditIntakeConfirmation(DomainModel):
+    """What the customer confirms before an application intake is recorded for human review.
+
+    It shows no declared income, and states that the result is indicative, not an offer or a decision.
+    """
+
+    product_code: CreditProductCode
+    product_type: CreditProductType
+    requested_amount: Money
+    requested_term_months: TermMonths
+    purpose: Code
+    eligibility_outcome: EligibilityOutcome | None = None
+    disclaimer: IndicativeDisclaimer = INDICATIVE_DISCLAIMER
+    planned_actions: Annotated[tuple[ActionKind, ...], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if ActionKind.SUBMIT_CREDIT_APPLICATION not in self.planned_actions:
+            raise ValueError("an intake confirmation plans the submit_credit_application action")
+        return self
+
+
 class ActionDisplayStatus(StrEnum):
     PENDING = "pending"
     VERIFIED = "verified"
@@ -134,6 +191,21 @@ class AssistantResponse(DomainModel):
     escalation: EscalationNotice | None = None
     step_up_required: bool = False
     notices: tuple[NoticeCode, ...] = ()
+    balances: tuple[BalanceView, ...] = ()
+    payment_statuses: tuple[PaymentStatusView, ...] = ()
+    statement: StatementSummary | None = None
+    card_status: tuple[CardStatusView, ...] = ()
+    credit_products: tuple[CreditProduct, ...] = ()
+    eligibility: EligibilityView | None = None
+    card_action_confirmation: CardActionConfirmation | None = None
+    credit_intake_confirmation: CreditIntakeConfirmation | None = None
+
+    @model_validator(mode="after")
+    def _validate_confirmations(self) -> Self:
+        confirmations = (self.confirmation, self.card_action_confirmation, self.credit_intake_confirmation)
+        if sum(item is not None for item in confirmations) > 1:
+            raise ValueError("a response asks for at most one confirmation")
+        return self
 
 
 class Turn(DomainModel):
