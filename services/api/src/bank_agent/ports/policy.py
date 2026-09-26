@@ -6,6 +6,7 @@ from typing import Protocol
 from bank_agent.domain.actions import ActionKind
 from bank_agent.domain.locale import Country, Language
 from bank_agent.domain.policy import ActionRequirement, PolicyClause
+from bank_agent.domain.workflow import WorkflowId
 
 
 class PolicyRepository(Protocol):
@@ -14,7 +15,8 @@ class PolicyRepository(Protocol):
     Preconditions: loaded and validated at startup; ``jurisdiction`` always comes from the verified customer
     profile, never from user text.
     Postconditions: ``pack_version`` is a stable hash of the pack stored in every execution record.
-    ``get_bound`` returns clauses for ``jurisdiction`` plus those marked ``ALL``, in binding order.
+    ``get_bound`` returns the clauses bound to a state of one workflow (state names such as ``START`` repeat
+    across workflows), for ``jurisdiction`` plus those marked ``ALL``, in binding order.
     Errors: ``PolicyClauseNotFoundError`` for an unknown clause or version; ``PolicyBindingMissingError`` for
     a state without a binding (a startup error in practice); ``PolicyPackInvalidError`` for a malformed pack.
     Isolation: the pack contains no customer data.
@@ -28,8 +30,10 @@ class PolicyRepository(Protocol):
         """Return a clause in ``language``; the current version when ``version`` is ``None``."""
         ...
 
-    def get_bound(self, state: str, jurisdiction: Country, language: Language) -> Sequence[PolicyClause]:
-        """Return the clauses bound to a workflow state."""
+    def get_bound(
+        self, workflow: WorkflowId, state: str, jurisdiction: Country, language: Language
+    ) -> Sequence[PolicyClause]:
+        """Return the clauses bound to ``state`` of ``workflow``."""
         ...
 
     def list_clauses(

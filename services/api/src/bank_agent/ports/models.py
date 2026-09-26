@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Protocol
 
 from bank_agent.domain.base import UntrustedText
+from bank_agent.domain.eligibility import CreditRiskFeatures, RiskEstimate
 from bank_agent.domain.intelligence import (
     IntentPrediction,
     LanguageDetection,
@@ -76,4 +77,25 @@ class ModelRegistry(Protocol):
 
     def resolve(self, name: str, version_or_alias: str) -> ResolvedArtifact:
         """Return the artifact for ``name`` at ``version_or_alias``."""
+        ...
+
+
+class RiskEstimator(Protocol):
+    """Estimates the probability of the documented adverse credit outcome for one request.
+
+    Preconditions: ``features`` is the explicit allowlist in ``CreditRiskFeatures``, built by the application
+    from the verified customer's profile and the request; it has no identifier and no free text.
+    Postconditions: returns a ``RiskEstimate`` from a ``risk_estimator`` model at a concrete version, with
+    ``low <= probability <= high`` and a band. The estimate is predictive only: it never contains or implies an
+    eligibility outcome. The probability, interval, band, and flags are deterministic for the same features and
+    artifact; the estimate id and time come from the injected ``IdGenerator`` and ``Clock``.
+    Errors: raises ``RiskEstimatorUnavailableError`` when no estimate can be produced (missing artifact,
+    failed load), rather than guessing. It is never retried; the eligibility service then asks for review.
+    Isolation: receives only the features, never identifiers, records, or text, so it cannot reach customer
+    data. Its output is internal: never shown to customers and never sent to a language model. Phase 10 loads
+    implementations through ``ModelRegistry`` by alias.
+    """
+
+    def estimate(self, features: CreditRiskFeatures) -> RiskEstimate:
+        """Return the estimate for ``features``."""
         ...
