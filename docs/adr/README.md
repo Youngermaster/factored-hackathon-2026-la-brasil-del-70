@@ -7,6 +7,7 @@ Each record captures one choice between real alternatives, in the [MADR](https:/
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted | 2026-09-26 |
 | [0002](0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers | Accepted | 2026-09-26 |
 | [0003](0003-frontend-layering-and-state.md) | Frontend layering and state rules | Accepted | 2026-09-26 |
+| [0004](0004-money-and-currency-handling.md) | Money and currency handling | Accepted | 2026-09-26 |
 
 ## Adding a record
 
