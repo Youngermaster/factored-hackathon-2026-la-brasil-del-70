@@ -1,0 +1,46 @@
+{
+  "cassette_id": "0af3743e392e1dfea1978e487dfbfaebad00c2210bb844a417c214bb646a01a1",
+  "kind": "structured",
+  "labels": {
+    "case": "normal",
+    "workflow": "dispute"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 0.91,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "1500",
+      "card_last4_hint": "7314",
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "ontem",
+      "merchant_text": "Mercado Livre"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Não reconheço uma cobrança de 1500 pesos no Mercado Livre ontem, no cartão final 7314.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-09-26"
+  }
+}

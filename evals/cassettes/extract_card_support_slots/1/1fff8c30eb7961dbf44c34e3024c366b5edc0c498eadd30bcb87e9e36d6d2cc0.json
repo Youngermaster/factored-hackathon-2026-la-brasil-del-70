@@ -1,0 +1,36 @@
+{
+  "cassette_id": "1fff8c30eb7961dbf44c34e3024c366b5edc0c498eadd30bcb87e9e36d6d2cc0",
+  "kind": "structured",
+  "labels": {
+    "case": "normal",
+    "workflow": "card_support"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "block_reason_candidates": [
+      "lost"
+    ],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": "1187"
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Perdí mi tarjeta de débito terminada en 1187, por favor bloquéenla.",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -12,12 +12,13 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Annotated, Literal
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 LLMProvider = Literal["fake", "cassette", "litellm"]
+LLMCassetteMode = Literal["replay", "record"]
 
 MIN_SECRET_LENGTH = 32
 
@@ -42,6 +43,11 @@ KNOWN_DEFAULT_SECRETS: frozenset[str] = frozenset(
 )
 
 _ENV_FILE = Path(".env")
+# settings.py -> bootstrap -> bank_agent -> src -> services/api -> services -> repository root
+_SERVICE_ROOT = Path(__file__).resolve().parents[3]
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[5]
+DEFAULT_PRICES_FILE = _SERVICE_ROOT / "config" / "llm_prices.yaml"
+DEFAULT_CASSETTE_DIR = _REPOSITORY_ROOT / "evals" / "cassettes"
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:
@@ -101,7 +107,12 @@ class SecuritySettings(BaseSettings):
 
 
 class LLMSettings(BaseSettings):
-    """Language model gateway settings. Provider and model are chosen by evaluation."""
+    """Language model gateway settings. Provider and model are chosen by evaluation.
+
+    ``provider``: ``fake`` uses a client injected by tests or the evaluation harness, or, when none is injected,
+    a client that refuses every call so workflows take their deterministic fallbacks; ``cassette`` replays (or
+    records) cassettes; ``litellm`` calls a live provider through the optional ``litellm`` extra.
+    """
 
     model_config = _config("LLM_")
 
@@ -112,6 +123,25 @@ class LLMSettings(BaseSettings):
     api_key_fallback: SecretStr | None = None
     daily_budget_usd: Decimal = Field(default=Decimal(5), ge=0)
     session_token_limit: int = Field(default=20000, gt=0)
+    conversation_budget_usd: Decimal = Field(default=Decimal("0.50"), ge=0)
+    timeout_seconds: float = Field(default=20.0, gt=0, le=300)
+    max_retries: int = Field(default=2, ge=0, le=2)
+    retry_base_delay_seconds: float = Field(default=0.5, ge=0, le=30)
+    retry_max_delay_seconds: float = Field(default=4.0, ge=0, le=60)
+    circuit_failure_threshold: int = Field(default=5, ge=1, le=100)
+    circuit_reset_seconds: float = Field(default=30.0, gt=0, le=3600)
+    circuit_half_open_max_calls: int = Field(default=1, ge=1, le=10)
+    prices_file: Path = DEFAULT_PRICES_FILE
+    cassette_mode: LLMCassetteMode = "replay"
+    cassette_dir: Path = DEFAULT_CASSETTE_DIR
+    trace_content: bool = False
+
+    @field_validator("prices_file", "cassette_dir", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return DEFAULT_PRICES_FILE if info.field_name == "prices_file" else DEFAULT_CASSETTE_DIR
+        return value
 
 
 class ObservabilitySettings(BaseSettings):
@@ -184,6 +214,10 @@ def production_problems(settings: AppSettings) -> list[str]:
     ]
     if settings.llm.provider == "litellm":
         secrets.append(("LLM_API_KEY_PRIMARY", settings.llm.api_key_primary))
+    if settings.llm.trace_content:
+        problems.append("LLM_TRACE_CONTENT must be false in production")
+    if settings.llm.provider == "cassette" and settings.llm.cassette_mode == "record":
+        problems.append("LLM_CASSETTE_MODE=record is not allowed in production")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:

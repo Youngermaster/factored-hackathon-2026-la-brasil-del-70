@@ -71,7 +71,8 @@ class CassetteMismatchError(ConfigurationError):
 
 class Cassette(DomainModel):
     schema_version: Literal[1] = CASSETTE_SCHEMA_VERSION
-    key: Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+    cassette_id: Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+    """The cassette key; named ``cassette_id`` so secret scanners do not mistake the hash for a credential."""
     provenance: Provenance
     note: Annotated[str, StringConstraints(max_length=500)] = ""
     labels: dict[str, str] = Field(default_factory=dict)
@@ -109,7 +110,7 @@ def load_cassette(path: Path) -> Cassette:
         cassette = Cassette.model_validate_json(path.read_text(encoding="utf-8"))
     except ValidationError as error:
         raise CassetteMismatchError(f"{path.name}: not a valid cassette") from error
-    if stored_key(cassette) != cassette.key or path.stem != cassette.key:
+    if stored_key(cassette) != cassette.cassette_id or path.stem != cassette.cassette_id:
         raise CassetteMismatchError(f"{path.name}: the key does not match the content")
     return cassette
 
@@ -181,7 +182,7 @@ class CassetteLLM:
             redacted_output = self._redactor.redact_json(safe_output, terms)
             safe_output = redacted_output if isinstance(redacted_output, dict) else safe_output
         cassette = Cassette(
-            key=key,
+            cassette_id=key,
             provenance=Provenance.RECORDED,
             prompt=prompt,
             model_id=self.model_id,

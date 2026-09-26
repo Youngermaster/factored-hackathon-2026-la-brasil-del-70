@@ -1,0 +1,34 @@
+{
+  "cassette_id": "b73656a67d69b831e4b9e0dbf9183da77d66f463b37150fdce9f545388367628",
+  "kind": "text",
+  "labels": {
+    "case": "normal",
+    "workflow": "account_inquiry"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": "El saldo disponible de su cuenta de ahorros terminada en 3390 es de 12450.00 COP, con corte al 25 de septiembre de 2026 a las 23:59. Si necesita algo más, con gusto le ayudo.",
+  "output_model": null,
+  "prompt": "phrase_response@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "clause_texts": [
+      "[fixture] Los saldos se informan con su fecha y hora de corte."
+    ],
+    "dialect_hint": "es-CO",
+    "facts": [
+      "Cuenta de ahorros terminada en 3390: saldo disponible 12450.00 COP al 2026-09-25 23:59"
+    ],
+    "response_kind": "answer",
+    "workflow": "account_inquiry"
+  }
+}

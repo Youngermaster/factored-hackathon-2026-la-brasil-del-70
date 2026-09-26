@@ -1,0 +1,34 @@
+{
+  "cassette_id": "ebfbd7296260d32768518108bc9340d53377c28ece9171a0325c5d468feca07b",
+  "kind": "structured",
+  "labels": {
+    "case": "ambiguous",
+    "workflow": "credit"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Será que eu consigo um empréstimo?",
+    "dialect_hint": "pt-BR"
+  }
+}

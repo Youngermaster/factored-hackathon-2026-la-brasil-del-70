@@ -30,7 +30,7 @@ class BoundedRetryDecorator(LlmDecorator):
         max_retries: int = MAX_RETRIES_ALLOWED,
         base_delay_seconds: float = 0.5,
         max_delay_seconds: float = 4.0,
-        sleep: Sleep = asyncio.sleep,
+        sleep: Sleep | None = None,
         jitter: Callable[[], float] = _SYSTEM_RANDOM.random,
     ) -> None:
         if not 0 <= max_retries <= MAX_RETRIES_ALLOWED:
@@ -41,7 +41,7 @@ class BoundedRetryDecorator(LlmDecorator):
         self.max_retries = max_retries
         self.base_delay_seconds = base_delay_seconds
         self.max_delay_seconds = max_delay_seconds
-        self._sleep = sleep
+        self._sleep: Sleep = sleep if sleep is not None else asyncio.sleep
         self._jitter = jitter
 
     def delay_for(self, retry: int) -> float:

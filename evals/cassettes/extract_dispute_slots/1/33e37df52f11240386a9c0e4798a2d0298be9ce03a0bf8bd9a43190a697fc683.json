@@ -1,0 +1,48 @@
+{
+  "cassette_id": "33e37df52f11240386a9c0e4798a2d0298be9ce03a0bf8bd9a43190a697fc683",
+  "kind": "structured",
+  "labels": {
+    "case": "ambiguous",
+    "workflow": "dispute"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 0.5,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.25,
+        "intent": "payment_status"
+      }
+    ],
+    "reason_candidates": [],
+    "transaction": {
+      "amount": null,
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "semana passada",
+      "merchant_text": null
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Tem uma cobrança estranha na minha conta, acho que foi semana passada.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-09-26"
+  }
+}

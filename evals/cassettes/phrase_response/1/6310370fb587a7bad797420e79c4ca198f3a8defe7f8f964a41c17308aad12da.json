@@ -1,0 +1,40 @@
+{
+  "cassette_id": "6310370fb587a7bad797420e79c4ca198f3a8defe7f8f964a41c17308aad12da",
+  "kind": "text",
+  "labels": {
+    "case": "normal",
+    "workflow": "credit"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": "Com as informações que você passou, o seu pedido de empréstimo pessoal de 50000.00 MXN em 24 meses precisa da análise de uma pessoa da nossa equipe, porque o valor passa do limite de análise automática. [fixture] Resultado indicativo com regras sintéticas; não é uma oferta nem uma decisão de crédito.",
+  "output_model": null,
+  "prompt": "phrase_response@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "clause_texts": [
+      "[fixture] Valores altos precisam da análise de uma pessoa."
+    ],
+    "dialect_hint": "pt-BR",
+    "disclaimer": "[fixture] Resultado indicativo com regras sintéticas; não é uma oferta nem uma decisão de crédito.",
+    "eligibility_outcome": "review_required",
+    "eligibility_reasons": [
+      "O valor solicitado passa do limite de análise automática."
+    ],
+    "facts": [
+      "Produto: empréstimo pessoal do catálogo sintético",
+      "Valor solicitado: 50000.00 MXN em 24 meses"
+    ],
+    "response_kind": "eligibility_result",
+    "workflow": "credit"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "cassette_id": "7863f8c09dd8cbf9fddec1bcd2d7fd473665b73e4f9b99be7abd7176f7f34547",
+  "kind": "structured",
+  "labels": {
+    "case": "normal",
+    "workflow": "credit"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": "6500",
+    "product_of_interest": "credit_card",
+    "purpose": null,
+    "requested_amount": "10000",
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Gostaria de um cartão de crédito com limite de 10 mil, minha renda mensal é de 6500.",
+    "dialect_hint": "pt-BR"
+  }
+}

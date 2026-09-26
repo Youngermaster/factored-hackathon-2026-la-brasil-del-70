@@ -184,15 +184,15 @@ async def test_the_written_file_is_deterministic_and_keyed_by_its_content(tmp_pa
     assert _read(path) == first
     assert first.endswith("}\n")
     cassette = load_cassette(path)
-    assert stored_key(cassette) == cassette.key == path.stem
-    assert path == cassette_path(tmp_path, DISPUTE_PROMPT, cassette.key)
+    assert stored_key(cassette) == cassette.cassette_id == path.stem
+    assert path == cassette_path(tmp_path, DISPUTE_PROMPT, cassette.cassette_id)
 
 
 def _fixture(tmp_path: Path, **changes: object) -> Path:
     variables = json.loads(canonical_variables(dispute_variables("hola")))
     key = cassette_key(DISPUTE_PROMPT, MODEL, Language.ES, canonical_variables(dispute_variables("hola")))
     data = {
-        "key": key,
+        "cassette_id": key,
         "provenance": "hand_authored_fixture",
         "prompt": "extract_dispute_slots@1",
         "model_id": MODEL,

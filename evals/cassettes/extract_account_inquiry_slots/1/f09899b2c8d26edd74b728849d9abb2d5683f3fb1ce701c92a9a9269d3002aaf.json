@@ -1,0 +1,35 @@
+{
+  "cassette_id": "f09899b2c8d26edd74b728849d9abb2d5683f3fb1ce701c92a9a9269d3002aaf",
+  "kind": "structured",
+  "labels": {
+    "case": "normal",
+    "workflow": "account_inquiry"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": "5521",
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": "mês passado"
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Quero o resumo do extrato do cartão de crédito final 5521 do mês passado.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-09-26"
+  }
+}
