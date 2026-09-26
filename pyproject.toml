@@ -157,6 +157,39 @@ source_modules = [
 ]
 forbidden_modules = ["bank_agent.asgi", "bank_agent.cli"]
 
+[[tool.importlinter.contracts]]
+name = "Production code never imports the test doubles"
+type = "forbidden"
+source_modules = [
+  "bank_agent.domain",
+  "bank_agent.ports",
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.api",
+  "bank_agent.bootstrap",
+]
+forbidden_modules = ["bank_agent.testing"]
+
+[[tool.importlinter.contracts]]
+name = "Test doubles depend only on the domain and the ports"
+type = "forbidden"
+source_modules = ["bank_agent.testing"]
+forbidden_modules = [
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.api",
+  "bank_agent.bootstrap",
+  "bank_agent.asgi",
+  "bank_agent.cli",
+  "fastapi",
+  "sqlalchemy",
+  "httpx",
+  "boto3",
+  "litellm",
+]
+
 # ---------------------------------------------------------------------------
 # pytest
 # ---------------------------------------------------------------------------
@@ -204,6 +237,7 @@ exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]
 "services/api/src/bank_agent/adapters" = 80
 "services/api/src/bank_agent/api" = 80
 "services/api/src/bank_agent/bootstrap" = 80
+"services/api/src/bank_agent/testing" = 90
 "data_platform/src" = 80
 "ml/src" = 80
 "evals/src" = 80
