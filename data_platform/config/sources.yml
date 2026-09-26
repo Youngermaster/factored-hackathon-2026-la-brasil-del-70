@@ -1,0 +1,26 @@
+# Source configuration for the data platform. `bank-data codegen` reads it to write the dbt sources and
+# `bank-data ingest` reads it for the snapshot date and the type-change threshold. See docs/data/update-policy.md.
+dataset:
+  # The organizer delivery profiled in phase 03 (every object written 2026-08-31).
+  version: organizer-v1.0.0-2026-08-31
+  # Root snapshot files carry no date; their partition is the documented end of the dataset.
+  snapshot_date: "2026-06-17"
+ingest:
+  # Share of non-empty values in a column that must fail to parse before a file counts as a type change.
+  type_change_threshold: 0.5
+build:
+  # Fact models reprocess this many days before the latest loaded partition on every incremental run.
+  lookback_days: 7
+freshness:
+  # Prototype thresholds on `_loaded_at` (hours since the last successful load of the table).
+  # The organizer data is a single static delivery, so these are loose; production SLAs are in the update policy.
+  default:
+    warn_after_hours: 168
+    error_after_hours: 720
+  tables:
+    transactions:
+      warn_after_hours: 48
+      error_after_hours: 168
+    daily_exchange_rates:
+      warn_after_hours: 48
+      error_after_hours: 168
