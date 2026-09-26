@@ -15,6 +15,7 @@ dev = [
   "import-linter==2.15",
   "jsonschema==4.26.0",
   "mypy==2.3.1",
+  "pandas-stubs>=3.0",
   "pip-audit==2.10.1",
   "pytest==9.1.1",
   "pytest-asyncio==1.4.0",
@@ -95,7 +96,7 @@ warn_unreachable = true
 plugins = ["pydantic.mypy"]
 # Module names come from these bases, so the several tests/ directories and conftest.py files never collide.
 explicit_package_bases = true
-mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "ml/src", "evals/src"]
+mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "data_platform/tests", "ml/src", "evals/src"]
 files = [
   "services/api/src",
   "services/api/tests",
@@ -111,7 +112,7 @@ files = [
 # checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["asyncpg", "asyncpg.*", "importlinter.*", "jsonschema", "jsonschema.*", "litellm", "litellm.*", "pytest_socket", "testcontainers.*"]
+module = ["asyncpg", "asyncpg.*", "boto3", "boto3.*", "botocore", "botocore.*", "importlinter.*", "jsonschema", "jsonschema.*", "litellm", "litellm.*", "pytest_socket", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]
@@ -200,7 +201,7 @@ forbidden_modules = [
 minversion = "9.0"
 testpaths = ["services/api/tests", "data_platform/tests", "ml/tests", "evals/tests", "scripts/tests"]
 # Shared test-support modules; each has a package-unique name so paths never collide.
-pythonpath = ["services/api/tests"]
+pythonpath = ["services/api/tests", "data_platform/tests"]
 addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib", "--allow-unix-socket"]
 markers = [
   "unit: fast tests with no network, database, or filesystem access outside tmp_path",
