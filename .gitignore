@@ -10,7 +10,7 @@
 kit/
 
 # Organizer and derived data (never commit)
-data/
+**/data/*
 !data/.gitkeep
 *.parquet
 *.duckdb
