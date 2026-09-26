@@ -12,9 +12,16 @@ Two marker objects annotate fields for the layers that must treat them specially
 import types
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Annotated, Any, NewType, Union, get_args, get_origin
+from typing import Annotated, Any, NewType, Self, Union, get_args, get_origin
 
-from pydantic import AfterValidator, AwareDatetime, BaseModel, ConfigDict, GetJsonSchemaHandler, StringConstraints
+from pydantic import (
+    AfterValidator,
+    AwareDatetime,
+    BaseModel,
+    ConfigDict,
+    GetJsonSchemaHandler,
+    StringConstraints,
+)
 from pydantic_core import CoreSchema
 
 
@@ -22,6 +29,15 @@ class DomainModel(BaseModel):
     """Base class for every domain model: frozen, and unknown keys are rejected."""
 
     model_config = ConfigDict(frozen=True, extra="forbid", validate_default=True)
+
+    def evolve(self, **changes: Any) -> Self:
+        """Return a copy with ``changes`` applied and every validator run again.
+
+        Unlike ``model_copy(update=...)``, which skips validation, this keeps invariants intact.
+        """
+        data = dict(self)
+        data.update(changes)
+        return type(self).model_validate(data)
 
 
 @dataclass(frozen=True, slots=True)

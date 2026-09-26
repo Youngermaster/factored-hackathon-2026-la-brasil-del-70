@@ -8,6 +8,8 @@ Each record captures one choice between real alternatives, in the [MADR](https:/
 | [0002](0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers | Accepted | 2026-09-26 |
 | [0003](0003-frontend-layering-and-state.md) | Frontend layering and state rules | Accepted | 2026-09-26 |
 | [0004](0004-money-and-currency-handling.md) | Money and currency handling | Accepted | 2026-09-26 |
+| [0005](0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier | Accepted | 2026-09-26 |
+| [0006](0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field | Accepted | 2026-09-26 |
 
 ## Adding a record
 

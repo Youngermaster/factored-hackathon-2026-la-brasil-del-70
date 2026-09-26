@@ -42,6 +42,15 @@ class Channel(StrEnum):
     EVALUATION_HARNESS = "evaluation_harness"
 
 
+def check_subject(role: Role, customer_id: str | None, staff_id: str | None) -> None:
+    """Raise ``ValueError`` unless a customer role names only a customer and a staff role names only staff."""
+    if role is Role.CUSTOMER:
+        if customer_id is None or staff_id is not None:
+            raise ValueError("a customer subject names the customer and no staff member")
+    elif staff_id is None or customer_id is not None:
+        raise ValueError("a staff subject names the staff member and no customer")
+
+
 class AccessContext(DomainModel):
     """Who is asking. Repositories are bound to one context and scope every query by it.
 
@@ -57,11 +66,7 @@ class AccessContext(DomainModel):
 
     @model_validator(mode="after")
     def _validate_subject(self) -> Self:
-        if self.role is Role.CUSTOMER:
-            if self.customer_id is None or self.staff_id is not None:
-                raise ValueError("a customer context names the customer and no staff member")
-        elif self.staff_id is None or self.customer_id is not None:
-            raise ValueError("a staff context names the staff member and no customer")
+        check_subject(self.role, self.customer_id, self.staff_id)
         return self
 
     @classmethod
