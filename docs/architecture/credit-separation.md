@@ -44,7 +44,7 @@ flowchart LR
 
 | Rule | Where it is enforced |
 |---|---|
-| The model never receives the estimate or the credit profile | Both are marked `Internal()`; prompt builders (phase 08) exclude `internal_fields`; the view has no such field |
+| The model never receives the estimate or the credit profile | Both are marked `Internal()`; the prompt registry refuses any prompt input named after an internal field or a risk feature (`forbidden_variable_reason`), and `phrase_response` declares only the outcome code, the rendered reasons, and the disclaimer; the view has no such field |
 | The model never invents eligibility rules or implies approval | Eligibility comes only from `EligibilityPolicy`; no outcome or status means approved (a vocabulary test); graders flag `credit_approval_claim` (scenario disclosure kind) |
 | The estimate is predictive only | `RiskEstimator` returns a probability, interval, band, and flags, never an outcome; it raises `risk_estimator_unavailable` instead of guessing |
 | Missing data leads to review | A missing fact gives `insufficient_data` or `review_required`, never `indicatively_eligible` (model validator plus a property test); a missing estimate or an `unknown` band gives `review_required` |

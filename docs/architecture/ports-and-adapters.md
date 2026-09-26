@@ -86,8 +86,8 @@ The read side of each customer-data repository is its own Protocol (`CustomerRea
 | `OtpSender` | async | none | `DemoOtpSender` (05) |
 | `Clock` | sync | `SystemClock`; `FixedClock` (testing) | none |
 | `IdGenerator` | sync | `RandomIdGenerator`; `SequentialIdGenerator` (testing) | none |
-| `LLMClient` | async | `FakeLLM` (testing) | `LiteLLMClient`, `CassetteLLM`, and the decorator stack (08) |
-| `PromptRegistry` | sync | none | filesystem registry (08) |
+| `LLMClient` | async | `LiteLLMClient` (optional extra), `CassetteLLM`, `UnconfiguredLLMClient`, and the decorator stack ([llm-gateway.md](llm-gateway.md)); `FakeLLM` (testing) | provider chosen by evaluation (14) |
+| `PromptRegistry` | sync | `FilePromptRegistry` over `bank_agent/prompts/<id>/<version>.md` | none |
 | `PolicyRepository` | sync | none | filesystem policy pack (06), bound lookup per workflow and state (07) |
 | `CreditProductCatalog` | sync | memory (fixture entries) | filesystem catalog under `policies/credit/` (06) |
 | `EligibilityPolicy` | sync | `FakeEligibilityPolicy` (testing) | synthetic eligibility service over `ELG` rules in `bank_agent/policy/eligibility` (06) |

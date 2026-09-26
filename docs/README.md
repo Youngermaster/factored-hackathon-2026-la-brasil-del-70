@@ -27,6 +27,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [architecture/ports-and-adapters.md](architecture/ports-and-adapters.md) | Ports, adapters present and planned, isolation rules, contract suites |
 | [architecture/workflow-registry.md](architecture/workflow-registry.md) | The four workflows, the intents each owns, and what each answers, confirms, and escalates |
 | [architecture/credit-separation.md](architecture/credit-separation.md) | Conversation handling, risk estimates, and the synthetic eligibility service kept apart |
+| [architecture/llm-gateway.md](architecture/llm-gateway.md) | The language model port, providers, decorator stack, structured outputs, budgets, prices, tracing, and cassettes |
 | [../contracts/README.md](../contracts/README.md) | JSON Schema contracts and their versioning rules |
 | [adr/README.md](adr/README.md) | Index of architecture decision records |
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
@@ -35,6 +36,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0004](adr/0004-money-and-currency-handling.md) | Money and currency handling |
 | [adr/0005](adr/0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier |
 | [adr/0006](adr/0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field |
+| [adr/0013](adr/0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators |
 | [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
 
@@ -47,13 +49,16 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [data_platform](../data_platform/README.md) | Data platform |
 | [ml](../ml/README.md) | Learned components |
 | [evals](../evals/README.md) | Evaluation harness |
+| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes (hand-authored fixtures until a provider is chosen) |
+| [services/api/src/bank_agent/prompts](../services/api/src/bank_agent/prompts/README.md) | Versioned prompts: format, rules, how to add, test, and evaluate one |
 | [deploy](../deploy/README.md) | Database roles and observability configuration |
 
 ## Contributing and security
 
 | Document | Purpose |
 |---|---|
+| [security/prompt-injection.md](security/prompt-injection.md) | Prompt injection defense layers, their status, and their tests |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
-Later phases add `docs/workflows/`, `docs/data/`, `docs/evaluation/`, `docs/security/`, `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.
+Later phases add `docs/workflows/`, `docs/data/`, `docs/evaluation/`, `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.

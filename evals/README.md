@@ -16,6 +16,8 @@ Offline measurements, simulations, and projected savings are always labeled sepa
 |---|---|
 | `src/bank_evals/` | The Python package; `cli.py` is the `bank-eval` entry point |
 | `src/bank_evals/scenarios/model.py` | `Scenario`, version 1 of the scenario contract (`contracts/schemas/scenario.v1.json`) |
+| `src/bank_evals/language_checks.py` | `portuguese_problems` and `spanish_problems`: lexical checks that a reply is natural pt-BR or Spanish, run over cassettes |
+| `cassettes/` | Language model cassettes replayed by `CassetteLLM`; hand-authored fixtures until a provider is chosen ([README](cassettes/README.md)) |
 | `tests/unit/` | Unit tests |
 
 Phase 14 adds scenario generators and loaders, `src/bank_evals/systems`, graders, and reports.
