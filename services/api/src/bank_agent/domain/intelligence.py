@@ -47,6 +47,7 @@ class ModelComponent(StrEnum):
     RETRIEVER = "retriever"
     LANGUAGE_DETECTOR = "language_detector"
     LLM = "llm"
+    RISK_ESTIMATOR = "risk_estimator"
 
 
 MODEL_REF_PATTERN = rf"^({'|'.join(component.value for component in ModelComponent)}):{_NAME}@{_VERSION}$"

@@ -264,6 +264,17 @@ class ToolPermanentError(ToolError):
     code = "tool_permanent_failure"
 
 
+class RiskEstimatorUnavailableError(DependencyError):
+    """The risk estimator cannot produce an estimate. Never retried: the eligibility service falls back to
+    human review instead of guessing."""
+
+    code = "risk_estimator_unavailable"
+
+
+class EligibilityServiceUnavailableError(DependencyError):
+    code = "eligibility_service_unavailable"
+
+
 class ModelArtifactNotFoundError(DependencyError):
     code = "model_artifact_not_found"
 

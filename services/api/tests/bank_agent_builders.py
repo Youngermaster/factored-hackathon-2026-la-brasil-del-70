@@ -15,6 +15,7 @@ from bank_agent.domain.conversation import Conversation, Turn, WorkflowPosition
 from bank_agent.domain.customer import Customer, CustomerSegment, CustomerStatus
 from bank_agent.domain.decision import ClauseRef, Decision, DecisionKind, RuleResult
 from bank_agent.domain.dispute import DisputeCase, DisputeReason
+from bank_agent.domain.eligibility import EligibilityAssessment, EligibilityOutcome, RiskBand, RiskEstimate
 from bank_agent.domain.execution_record import ExecutionRecord, LatencyBreakdown
 from bank_agent.domain.handoff import (
     ActionTaken,
@@ -308,3 +309,46 @@ def execution_record(turn_id: str = "9b2f0d1e-0000-4000-8000-000000000001", **ov
 
 def a_date(day: int = 7) -> date:
     return date(2026, 6, day)
+
+
+def risk_estimate(**overrides: Any) -> RiskEstimate:
+    fields: dict[str, Any] = {
+        "estimate_id": "rsk-000001",
+        "model": "risk_estimator:fixture@1",
+        "probability": Decimal("0.12"),
+        "interval_low": Decimal("0.08"),
+        "interval_high": Decimal("0.17"),
+        "band": RiskBand.LOW,
+        "label_definition": "fixture_adverse_outcome",
+        "calibrated": True,
+        "computed_at": T0,
+    }
+    return RiskEstimate.model_validate({**fields, **overrides})
+
+
+def elg_rule(
+    rule_id: str = "ELG.min_credit_score", passed: bool = True, clause: str = "ELG-MX-1.1@1", **overrides: Any
+) -> RuleResult:
+    fields: dict[str, Any] = {
+        "rule_id": rule_id,
+        "rule_version": 1,
+        "passed": passed,
+        "effect": None if passed else DecisionKind.DENY,
+        "reason_code": "score_meets_minimum" if passed else "score_below_minimum",
+        "clause_refs": [clause],
+    }
+    return RuleResult.model_validate({**fields, **overrides})
+
+
+def eligibility_assessment(**overrides: Any) -> EligibilityAssessment:
+    fields: dict[str, Any] = {
+        "assessment_id": "elg-000001",
+        "product_code": "MX-PL-FIXTURE",
+        "outcome": EligibilityOutcome.INDICATIVELY_ELIGIBLE,
+        "rule_results": [elg_rule()],
+        "risk_estimate_ref": {"model": "risk_estimator:fixture@1", "estimate_id": "rsk-000001"},
+        "policy_pack_version": "pack-fixture-1",
+        "service": "eligibility:synthetic@pack-fixture-1",
+        "evaluated_at": T0,
+    }
+    return EligibilityAssessment.model_validate({**fields, **overrides})
