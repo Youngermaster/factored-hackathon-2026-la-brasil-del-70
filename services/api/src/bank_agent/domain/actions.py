@@ -10,6 +10,7 @@ from typing import Annotated, Literal, Self
 from pydantic import Field, PositiveInt, model_validator
 
 from bank_agent.domain.base import Code, DomainModel, UtcDatetime
+from bank_agent.domain.cards import CardBlockReason
 from bank_agent.domain.dispute import DisputeReason
 from bank_agent.domain.identifiers import IdempotencyKey, ProductId, SourceRef, TransactionId
 from bank_agent.domain.money import Money
@@ -52,6 +53,7 @@ class CreateDisputeArguments(DomainModel):
 class BlockCardArguments(DomainModel):
     action: Literal[ActionKind.BLOCK_CARD] = ActionKind.BLOCK_CARD
     product_id: ProductId
+    reason: CardBlockReason | None = None
 
 
 ActionArguments = Annotated[CreateDisputeArguments | BlockCardArguments, Field(discriminator="action")]

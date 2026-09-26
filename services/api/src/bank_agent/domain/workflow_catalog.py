@@ -9,12 +9,17 @@ and clause families, which themselves import the workflow vocabulary.
 """
 
 from collections import Counter
+from collections.abc import Mapping
+from enum import StrEnum
+from types import MappingProxyType
 from typing import Annotated, Self
 
 from pydantic import Field, PositiveInt, model_validator
 
 from bank_agent.domain.actions import ActionKind
 from bank_agent.domain.base import DomainModel
+from bank_agent.domain.cards import ESCALATION_ONLY_CARD_ACTIONS, SELF_SERVICE_CARD_ACTIONS, CardAction
+from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.policy import ClauseFamily
 from bank_agent.domain.workflow import CROSS_WORKFLOW_INTENTS, Intent, StateName, WorkflowId
 
@@ -137,3 +142,75 @@ WORKFLOW_CATALOG = WorkflowCatalog(
     )
 )
 """The four supported workflows. The credit workflow gains ``submit_credit_application`` with that action."""
+
+
+class CardActionHandlingKind(StrEnum):
+    SELF_SERVICE = "self_service"
+    ESCALATION_ONLY = "escalation_only"
+
+
+class CardActionHandling(DomainModel):
+    """How the system handles one card action.
+
+    A self-service action runs through its write action with confirmation, step-up, and a verified read-back.
+    An escalation-only action has no tool: the request goes to a human with ``escalation_code``.
+    """
+
+    action: CardAction
+    kind: CardActionHandlingKind
+    write_action: ActionKind | None = None
+    escalation_code: EscalationReasonCode | None = None
+    requires_confirmation: bool
+    requires_step_up: bool
+    verified_read_back: bool
+    workflows: Annotated[tuple[WorkflowId, ...], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if self.kind is CardActionHandlingKind.SELF_SERVICE:
+            if self.action not in SELF_SERVICE_CARD_ACTIONS or self.write_action is None:
+                raise ValueError("a self-service card action needs a write action")
+            if self.escalation_code is not None:
+                raise ValueError("a self-service card action has no escalation code")
+            if not (self.requires_confirmation and self.requires_step_up and self.verified_read_back):
+                raise ValueError("a card write needs confirmation, step-up, and a verified read-back")
+        else:
+            if self.action not in ESCALATION_ONLY_CARD_ACTIONS or self.escalation_code is None:
+                raise ValueError("an escalation-only card action needs an escalation code")
+            if self.write_action is not None or self.requires_confirmation or self.verified_read_back:
+                raise ValueError("an escalation-only card action has no tool, confirmation, or read-back")
+        return self
+
+
+CARD_ACTION_HANDLING: Mapping[CardAction, CardActionHandling] = MappingProxyType(
+    {
+        CardAction.BLOCK: CardActionHandling(
+            action=CardAction.BLOCK,
+            kind=CardActionHandlingKind.SELF_SERVICE,
+            write_action=ActionKind.BLOCK_CARD,
+            requires_confirmation=True,
+            requires_step_up=True,
+            verified_read_back=True,
+            workflows=(WorkflowId.CARD_SUPPORT, WorkflowId.DISPUTE),
+        ),
+        CardAction.UNBLOCK_REQUEST: CardActionHandling(
+            action=CardAction.UNBLOCK_REQUEST,
+            kind=CardActionHandlingKind.ESCALATION_ONLY,
+            escalation_code=EscalationReasonCode.CARD_UNBLOCK_REQUESTED,
+            requires_confirmation=False,
+            requires_step_up=False,
+            verified_read_back=False,
+            workflows=(WorkflowId.CARD_SUPPORT,),
+        ),
+        CardAction.REPLACEMENT_REQUEST: CardActionHandling(
+            action=CardAction.REPLACEMENT_REQUEST,
+            kind=CardActionHandlingKind.ESCALATION_ONLY,
+            escalation_code=EscalationReasonCode.CARD_REPLACEMENT_REQUESTED,
+            requires_confirmation=False,
+            requires_step_up=False,
+            verified_read_back=False,
+            workflows=(WorkflowId.CARD_SUPPORT,),
+        ),
+    }
+)
+"""Every ``CardAction`` and how it is handled. A test checks that the table covers every action."""
