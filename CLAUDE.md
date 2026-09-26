@@ -69,6 +69,7 @@ Frontend (`apps/web`):
 - API types: openapi-typescript plus openapi-fetch.
 - Tests: Vitest, React Testing Library, MSW, and vitest-axe.
 - Quality: ESLint flat config with import boundary rules, and Prettier.
+- Package manager: pnpm, pinned through the `packageManager` field, with a committed `pnpm-lock.yaml`. Later phase prompts that say npm or npx mean pnpm or `pnpm dlx` (for example `npm ci` is `pnpm install --frozen-lockfile`, `npm run X` is `pnpm run X`, and `npm audit --omit=dev` is `pnpm audit --prod`).
 
 Operations:
 
@@ -243,7 +244,7 @@ These follow OWASP ASVS level 2 practices and apply to every phase.
 
 **Supply chain.**
 - Lockfiles are committed.
-- pip-audit and `npm audit --omit=dev` run in CI and fail on high-severity findings.
+- pip-audit and `pnpm audit --prod --audit-level high` run in CI and fail on high-severity findings.
 - bandit runs in CI.
 
 **Containers.**
