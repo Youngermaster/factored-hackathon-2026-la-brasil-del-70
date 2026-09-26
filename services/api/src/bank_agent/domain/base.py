@@ -7,8 +7,12 @@ Two marker objects annotate fields for the layers that must treat them specially
   tests (phase 11), and evaluation graders (phase 14) find these fields with ``pii_fields``.
 - ``Internal()`` marks data that is never shown to customers or sent to a model, such as fraud labels. The
   JSON Schema carries ``x-internal``, and ``internal_fields`` finds them.
+
+A third marker, ``AddedIn(version)``, marks a field added in a minor version of a published contract. It keeps
+documents stored under an older minor version valid against the newer schema (see ``contracts/README.md``).
 """
 
+import re
 import types
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -22,18 +26,90 @@ from pydantic import (
     GetJsonSchemaHandler,
     StringConstraints,
 )
+from pydantic.config import JsonDict
 from pydantic_core import CoreSchema
+
+_VERSION_PATTERN = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)$")
+
+
+def parse_schema_version(version: str) -> tuple[int, int, int]:
+    """Split a semantic version such as ``1.1.0`` into comparable integers."""
+    match = _VERSION_PATTERN.fullmatch(version)
+    if match is None:
+        raise ValueError("a schema version has the form MAJOR.MINOR.PATCH")
+    return int(match[1]), int(match[2]), int(match[3])
+
+
+@dataclass(frozen=True, slots=True)
+class AddedIn:
+    """Field marker for a field added to a published contract in a minor version, for example ``1.1.0``.
+
+    The JSON Schema carries ``x-added-in``. In serialization-mode schemas the field is not required, so a
+    document stored under an older minor version, which lacks the key, still validates. Every field of a
+    contract that existed in the major version's first release stays required.
+    """
+
+    version: str
+
+    def __post_init__(self) -> None:
+        parse_schema_version(self.version)
+
+    def __get_pydantic_json_schema__(self, core_schema: CoreSchema, handler: GetJsonSchemaHandler) -> dict[str, Any]:
+        schema = dict(handler(core_schema))
+        schema["x-added-in"] = self.version
+        return schema
+
+
+def added_fields(model: type[BaseModel]) -> dict[str, AddedIn]:
+    """Map every top-level field of ``model`` that carries an ``AddedIn`` marker to the marker."""
+    return {
+        name: marker
+        for name, field in model.model_fields.items()
+        if (marker := _is_marked(field.metadata, AddedIn)) is not None
+    }
+
+
+def _optional_added_fields(schema: JsonDict, model: type[Any]) -> None:
+    """Schema hook: fields added in a minor version are not required, in any schema mode."""
+    added = set(added_fields(model))
+    required = schema.get("required")
+    if added and isinstance(required, list):
+        remaining = [name for name in required if name not in added]
+        if remaining:
+            schema["required"] = remaining
+        else:
+            del schema["required"]
+
+
+def check_added_fields(model: BaseModel, schema_version: str) -> None:
+    """Raise ``ValueError`` when a document labeled ``schema_version`` carries data from a later minor version.
+
+    A field marked ``AddedIn`` must hold its default in a document whose version predates the marker, so a
+    version label never understates what the document contains. Only marked fields are constrained.
+    """
+    declared = parse_schema_version(schema_version)
+    for name, marker in added_fields(type(model)).items():
+        if declared >= parse_schema_version(marker.version):
+            continue
+        field = type(model).model_fields[name]
+        if getattr(model, name) != field.get_default(call_default_factory=True):
+            raise ValueError(f"{name} was added in {marker.version} and cannot appear in a {schema_version} document")
 
 
 class DomainModel(BaseModel):
     """Base class for every domain model: frozen, and unknown keys are rejected.
 
     In serialization-mode JSON Schemas every field is required, because a serialized document always carries
-    every field, defaults included; consumers can rely on that.
+    every field, defaults included; consumers can rely on that. The exception is a field marked ``AddedIn``,
+    which is optional so that documents stored under an older minor version stay valid.
     """
 
     model_config = ConfigDict(
-        frozen=True, extra="forbid", validate_default=True, json_schema_serialization_defaults_required=True
+        frozen=True,
+        extra="forbid",
+        validate_default=True,
+        json_schema_serialization_defaults_required=True,
+        json_schema_extra=_optional_added_fields,
     )
 
     def evolve(self, **changes: Any) -> Self:
