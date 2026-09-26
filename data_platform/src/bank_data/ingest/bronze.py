@@ -70,7 +70,7 @@ def read_raw(path: Path, file_format: FileFormat) -> pd.DataFrame:
         raise UnreadableObjectError(type(error).__name__) from None
     finally:
         connection.close()
-    frame.columns = [str(name).strip().lstrip("﻿").lower() for name in frame.columns]
+    frame.columns = [str(name).strip().lstrip("\ufeff").lower() for name in frame.columns]
     return frame.astype("str")
 
 

@@ -27,7 +27,7 @@ LINEAGE = Lineage(
 
 def test_read_raw_keeps_empty_strings_and_normalizes_headers(tmp_path: Path) -> None:
     path = tmp_path / "file.csv"
-    path.write_text('﻿ID ,Name\n1,\n2,"x, y"\n', encoding="utf-8")
+    path.write_text('\ufeffID ,Name\n1,\n2,"x, y"\n', encoding="utf-8")
 
     frame = read_raw(path, "csv")
 

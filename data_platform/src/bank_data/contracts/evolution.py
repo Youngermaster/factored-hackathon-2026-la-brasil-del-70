@@ -57,7 +57,7 @@ class SchemaChange:
 
 
 def normalize_name(name: str) -> str:
-    return name.strip().lstrip("﻿").lower()
+    return name.strip().lstrip("\ufeff").lower()
 
 
 def schema_hash(columns: Sequence[str]) -> str:

@@ -54,6 +54,6 @@ def test_type_change_needs_the_threshold_share_of_failures() -> None:
 
 
 def test_schema_hash_is_stable_and_order_sensitive() -> None:
-    assert schema_hash(["﻿a", "B "]) == schema_hash(["a", "b"])
+    assert schema_hash(["\ufeffa", "B "]) == schema_hash(["a", "b"])
     assert schema_hash(["a", "b"]) != schema_hash(["b", "a"])
-    assert normalize_name(" ﻿Column ") == "column"
+    assert normalize_name(" \ufeffColumn ") == "column"

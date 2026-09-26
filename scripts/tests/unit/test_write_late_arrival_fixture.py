@@ -28,7 +28,7 @@ def test_committed_fixture_matches_the_script() -> None:
 def test_fixture_is_labeled_and_uses_only_invented_identifiers() -> None:
     assert "synthetic test data made by the team" in (fixture.ROOT / "FIXTURE.md").read_text(encoding="utf-8")
     for content in fixture.files().values():
-        assert content.startswith("﻿")
+        assert content.startswith("\ufeff")
         for line in content.splitlines()[1:]:
             identifiers = [field for field in line.split(",") if field[:4] in {"CLI-", "PRD-", "TRX-", "AGT-"}]
             assert all("FIX" in identifier for identifier in identifiers)

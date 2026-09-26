@@ -21,7 +21,7 @@ from pathlib import Path
 from bank_data.contracts.tables import table_spec
 
 ROOT = Path(__file__).resolve().parents[1] / "data_platform" / "fixtures" / "late_arrival"
-BOM = "﻿"
+BOM = "\ufeff"
 
 Row = dict[str, str]
 

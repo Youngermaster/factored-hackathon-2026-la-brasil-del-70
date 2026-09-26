@@ -15,7 +15,7 @@ RATE_HEADER = "date,source_currency,target_currency,exchange_rate,buy_rate,sell_
 
 
 def _rates(*rows: str) -> str:
-    return "﻿" + RATE_HEADER + "".join(f"{row}\n" for row in rows)
+    return "\ufeff" + RATE_HEADER + "".join(f"{row}\n" for row in rows)
 
 
 def _runner(source_dir: Path, warehouse: Path) -> IngestRunner:
