@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "state": "CHECK_ELIGIBILITY",
+  "action": "create_dispute_case",
+  "kind": "allow",
+  "rule_results": [
+    {
+      "rule_id": "DSP.within_window",
+      "rule_version": 1,
+      "passed": true,
+      "effect": null,
+      "reason_code": "within_window",
+      "params": {
+        "window_days": 60,
+        "days_since": 3
+      },
+      "clause_refs": [
+        "DSP-MX-2.1@1"
+      ],
+      "missing_facts": []
+    }
+  ],
+  "decisive_rule_ids": [],
+  "clause_refs": [
+    "DSP-MX-2.1@1"
+  ],
+  "policy_pack_version": "pack-fixture-1"
+}
