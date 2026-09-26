@@ -1,0 +1,9 @@
+﻿product_id,customer_id,product_type,product_number,currency,current_balance,credit_limit,interest_rate,opening_date,expiration_date,opening_branch_id,product_status,opening_channel,has_linked_app,days_past_due,last_transaction_date,last_updated
+PRD-FIX-CC01,CLI-FIX-0001,Tarjeta Crédito,4000000000000001,USD,1200.50,5000.00,45.0,2021-01-01,2027-01-31,BR-FIX-001,Active,App,True,0.0,2024-01-02 18:00:00,2024-01-03 12:00:00
+PRD-FIX-DC01,CLI-FIX-0001,Tarjeta Débito,4000000000000002,USD,350.00,,0.0,2021-01-01,2026-12-31,BR-FIX-001,Blocked,App,True,,,2024-01-03 12:00:00
+PRD-FIX-SV01,CLI-FIX-0001,Cuenta Ahorro,1234500001,USD,8000.00,,2.5,2021-01-01,,BR-FIX-001,Active,Branch,False,,,2024-01-03 12:00:00
+PRD-FIX-CK02,CLI-FIX-0002,Cuenta Corriente,1234500002,COP,2500000.00,,0.3,2021-01-01,,BR-FIX-002,Active,App,True,,,2024-01-03 12:00:00
+PRD-FIX-PL02,CLI-FIX-0002,Préstamo Personal,LN-0000002,COP,9000000.00,10000000.00,28.0,2021-01-01,,BR-FIX-002,Active,App,True,30.0,,2024-01-03 12:00:00
+PRD-FIX-MG03,CLI-FIX-0003,Préstamo Hipotecario,MG-0000003,ARS,50000000.00,60000000.00,45.0,2021-01-01,,BR-FIX-003,Active,App,True,0.0,,2024-01-03 12:00:00
+PRD-FIX-CC03,CLI-FIX-0003,Tarjeta Crédito,5000000000000003,ARS,100000.00,400000.00,45.0,2021-01-01,2028-03-31,BR-FIX-003,Active,App,True,0.0,,2024-01-03 12:00:00
+PRD-FIX-IN04,CLI-FIX-0004,Seguro,POL-0000004,USD,0.0,,,2021-01-01,,BR-FIX-001,Active,Web,True,,,2024-01-03 12:00:00

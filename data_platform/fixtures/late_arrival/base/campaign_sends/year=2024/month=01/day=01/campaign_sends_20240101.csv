@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-FIX-0001,2024-01-01 13:00:00,2024-01-01,CMP-FIX-0001,CLI-FIX-0001,Email,template_CMP-FIX-0001_1,Oferta de prueba,Sent,True,True,2024-01-01 15:00:00,False,,,False,,,Mobile,México,,0.0100

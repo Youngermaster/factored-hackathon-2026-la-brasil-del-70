@@ -1,0 +1,3 @@
+﻿agent_id,employee_code,first_name,last_name,email,phone,native_accent,country_of_origin,assigned_branch_id,agent_type,experience_level,languages,specialty,hire_date,avg_csat,total_monthly_interactions,agent_status,work_shift
+AGT-FIX-01,E90001,Carla,Agente Uno,carla.agent@example.com,+52 55 0000 9001,mexican,Mexico,BR-FIX-001,Phone,Senior,español,Fraudes,2018-04-01,4.5,400.0,Active,Morning
+AGT-FIX-02,E90002,Diego,Agente Dos,diego.agent@example.com,,argentine,Argentina,,Digital,Junior,"español, portugués",,2023-02-01,,,Active,Night

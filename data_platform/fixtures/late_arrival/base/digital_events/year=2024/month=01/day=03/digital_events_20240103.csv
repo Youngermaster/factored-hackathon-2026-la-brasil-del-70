@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-FIX-0004,2024-01-03 09:00:00,2024-01-03,CLI-FIX-0003,SES-FIX-0003,Click,Product,Android App,Android,,5.0.1,/products/credit-card,Tarjeta de Crédito,view_product,cc_product,PRD-FIX-CC03,,,192.0.2.10,Argentina,Buenos Aires,True,,,,

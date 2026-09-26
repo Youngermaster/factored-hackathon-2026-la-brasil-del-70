@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-FIX-0003,2024-01-03 10:00:00,2024-01-03,CLI-FIX-0003,AGT-FIX-02,Inbound Call,Phone,Producto,Producto,300.0,30.0,True,False,Positivo,0.7,argentine,argentine,False,,False,True

@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-FIX-0001,2024-01-01 14:00:00,2024-01-01,CLI-FIX-0001,SES-FIX-0001,Login,Authentication,Android App,Android,,5.0.1,/login,Iniciar Sesión,login,login_form,,,,192.0.2.10,México,Ciudad de México,True,,,,
+EVT-FIX-0002,2024-01-01 14:01:00,2024-01-01,CLI-FIX-0001,SES-FIX-0001,Error,Navigation,Android App,Android,,5.0.1,/payments,Pagar Servicios,initiate_payment,payment_form,,,,192.0.2.10,México,Ciudad de México,True,,,,
+EVT-FIX-0003,2024-01-01 14:05:00,2024-01-01,,SES-FIX-0002,PageView,Navigation,Desktop Web,Windows,Firefox,,/home,Inicio,view_home,home_page,,,,192.0.2.10,México,Ciudad de México,False,,,,

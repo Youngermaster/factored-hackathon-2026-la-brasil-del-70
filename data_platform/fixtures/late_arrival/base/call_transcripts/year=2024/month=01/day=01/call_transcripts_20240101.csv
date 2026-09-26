@@ -1,0 +1,7 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-FIX-0001,INT-FIX-0001,2024-01-01,CLI-FIX-0001,AGT-FIX-01,"Cliente: Hola, tengo una consulta.
+
+Agente: Con gusto le ayudo.","Hola, tengo una consulta.",Con gusto le ayudo.,es,mexican,0.9,"cuenta, banco","{""account_numbers"": 0}",consulta_general,Transaccional,Whisper v3,High,300.0
+TRS-FIX-0002,INT-FIX-0002,2024-01-01,CLI-FIX-0002,AGT-FIX-01,"Cliente: Hola, tengo una consulta.
+
+Agente: Con gusto le ayudo.","Hola, tengo una consulta.",Con gusto le ayudo.,es,colombian,0.9,"cuenta, banco","{""account_numbers"": 0}",consulta_general,Queja,Whisper v3,High,
