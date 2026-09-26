@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "permissions": {
+    "allow": [
+      "Bash(make *)",
+      "Bash(uv sync *)",
+      "Bash(uv run *)",
+      "Bash(uv add *)",
+      "Bash(uv lock *)",
+      "Bash(npm ci)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(docker compose *)",
+      "Bash(pre-commit run *)",
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git add *)",
+      "Bash(git commit -m *)",
+      "Bash(git restore *)",
+      "Bash(git switch *)",
+      "Bash(git branch *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git reset *)",
+      "Bash(git rebase *)",
+      "Bash(npx *)",
+      "Bash(aws *)",
+      "Bash(curl *)",
+      "Bash(docker system prune *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.production)",
+      "Read(./**/.env)",
+      "Read(./kit/organizer/**)",
+      "Read(./data/raw/**)",
+      "Bash(git commit --no-verify *)",
+      "Bash(git commit -n *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git config user.*)",
+      "Bash(cat .env*)",
+      "Bash(printenv *)",
+      "Bash(env)"
+    ]
+  }
+}
