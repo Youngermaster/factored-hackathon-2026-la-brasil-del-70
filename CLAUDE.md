@@ -6,13 +6,36 @@ This file is the working agreement for every Claude Code session in this reposit
 
 We are building an AI-first banking customer-service system for the Factored AI & Data Hackathon 2026. The organizer requirements are summarized in `docs/organizer/BRIEF.md` and the dataset schema in `docs/organizer/DATA_DICTIONARY.md`. Read both before designing anything.
 
-Chosen workflow: transaction-dispute intake and dispute status, with a protective card block as a sub-action. Phase 04 confirms or overturns this choice with data (`docs/decisions/workflow-selection.md`). If phase 04 overturns it, the human updates this section before later phases run.
+**Scope (human decision, 2026-09-26): four workflows, each built in depth.**
+
+| Workflow id | Covers | What the system may do |
+|---|---|---|
+| `account_inquiry` | Account and payment inquiries: balances, payment status, statement summaries | Read only, always stating the as-of date of the data |
+| `card_support` | Card status, protective card block, unblock and replacement requests | Block a card (confirmation, step-up, verified read-back). Unblock and replacement requests go to a human |
+| `dispute` | Transaction-dispute intake and dispute status | Open a dispute case (confirmation, verified read-back), with an optional protective card block |
+| `credit` | Credit-product information and eligibility support | Answer from the synthetic product catalog, give an indicative eligibility result from the synthetic eligibility service, and record an application intake for human review. Never a lending decision |
+
+Requests outside these four workflows, and unsupported requests inside them, get a clarifying question, a clause-backed abstention, or a handoff. Every workflow has a normal path, an ambiguous or unsupported path, and a human-escalation path, each demonstrated in Spanish and Portuguese.
+
+**Why this deviates from the brief.** The brief says depth over breadth and that more workflows earn no bonus. The team chose breadth anyway (see `docs/plans/kickoff-notes.md`). The scoring risk is real: the extra workflows earn nothing by themselves, and four shallow flows would score worse than one deep one. We manage that risk as follows:
+
+- Every workflow meets the same depth bar: policy clauses, bound clauses per state, an explicit state machine, verified actions, a structured handoff, es and pt coverage, and a page in `docs/workflows/`.
+- Every workflow is evaluated separately, with its own scenario slice, metrics, and failure table. Aggregate numbers are never reported without the per-workflow numbers next to them.
+- The shared engine, policy kernel, grounding verifier, and evaluation harness carry the engineering depth once, for all four.
+- If a workflow cannot meet the bar before the deadline, it is cut back to clarify, abstain, or hand off, and the cut is documented as a limitation. It is never shipped shallow.
+
+**Credit rules (from the brief, mandatory for the `credit` workflow).**
+
+- Conversation handling, predictive risk estimates, and eligibility policy are separate components behind separate ports (`RiskEstimator` and `EligibilityPolicy`).
+- Eligibility comes only from the synthetic eligibility service, which is clearly labeled synthetic. The language model never invents eligibility rules, never states or implies approval, and never receives the risk estimate or the customer's credit profile.
+- Every eligibility answer shows its reasons, its uncertainty, and a review path. Missing data and borderline cases go to human review.
+- No live lending decisions and no movement of money, in any workflow.
 
 Design thesis: the language model understands, deterministic code decides, and evidence proves it.
 
 Facts from the brief that drive every decision:
 
-- Depth over breadth. Implementing more workflows earns nothing.
+- Depth over breadth. Implementing more workflows earns nothing. The scope decision above explains how the team handles this.
 - Required behaviors: a normal resolution path, an ambiguous or unsupported request, and a case requiring human intervention, in Spanish and Portuguese.
 - Permissions and policy are enforced outside model-generated prose. The system reports only actions whose outcomes it has verified.
 - Identity comes from a trusted test session. A national ID or customer number alone never proves identity. Customer isolation is enforced in the service or tool layer.
@@ -37,7 +60,16 @@ Facts from the brief that drive every decision:
    - Credentials come only from environment variables loaded by pydantic-settings.
    - Never read, print, or commit `.env`. Scripts must never echo secret values.
    - The organizer data dictionary PDF contains credentials, so it must never be committed or pasted anywhere.
-5. No organizer data in git. Data lives under `data/`, which is gitignored. Test fixtures are small, synthetic, and labeled as fixtures.
+5. Organizer data in git is limited to one bounded, documented sample. Full data lives under `data/`, which is gitignored. The only organizer data that may be committed is the extract in `data_platform/sample/`, and only under these conditions:
+   - `make data-sample` produces it from the pipeline, deterministically (customers chosen by a seeded hash and followed through every table). It is never hand-picked or hand-edited, and ad hoc extracts are never committed.
+   - It holds at most 5,000 rows in total across all tables, and never a full table.
+   - Direct identifiers (document numbers, names, emails, phones, addresses, birth dates) are replaced with deterministic, format-valid pseudonyms, so the data contracts still pass and no identifier is copied verbatim.
+   - `data_platform/sample/README.md` states the source, the dataset version (snapshot dates and manifest etags), the extraction command, query, and seed, the row count per table, the column treatments, and that it is organizer-provided synthetic data subject to the organizer's data-use terms.
+   - It never contains credentials, `.env` values, or anything taken from the data dictionary PDF.
+   - A check in `make check` fails when the sample exceeds the row limit or the README is missing.
+   - The organizer's data-use terms are checked before the repository is made public (phase 17 re-verifies). If they forbid redistribution or are unclear, stop and ask the human. Never rewrite history to remove the sample without the human's explicit instruction.
+
+   Test fixtures stay small, synthetic, team-made, and labeled as fixtures.
 6. Minimize data sent to external model providers. Send only the fields a prompt needs. Never send document numbers, full names, emails, phone numbers, or addresses.
 7. No placeholder implementations for required behavior: no `TODO: implement`, no `pass` bodies, no hard-coded fake returns in production code paths. If something is out of scope for the current phase, record it in `docs/BACKLOG.md` with the reason and the phase that owns it.
 8. Never disable, skip, xfail, or weaken tests, linters, type checks, coverage gates, or security checks to make a phase pass. Fix the cause.
@@ -106,7 +138,7 @@ Operations:
 │       │   ├── bootstrap/          settings, composition root
 │       │   └── prompts/            versioned prompt files
 │       └── tests/{unit,integration,contracts}
-├── data_platform/                  ingestion, contracts, dbt project, reports
+├── data_platform/                  ingestion, contracts, dbt project, reports, committed sample (rule 5)
 ├── ml/                             bank_ml: router and resolver pipelines
 ├── evals/                          bank_evals: scenarios, harness, graders, reports
 ├── policies/                       synthetic policy pack (es, pt), bindings, matrix
@@ -143,9 +175,10 @@ Decorators are stacked in the composition root like building blocks. Never put c
 - Rule parameters and customer-facing clause text live in files under `policies/`, not in code.
 - The evaluator returns a `Decision` that names every rule id and clause version it used.
 - Adding a rule means a new function, a clause file, and tests. Workflow code only changes when a new state is needed.
+- Credit eligibility rules are policy rules like any other (`ELG.*`). The synthetic eligibility service implements the `EligibilityPolicy` port on top of the evaluator, and its parameters live in `policies/`, labeled synthetic.
 
 **Replaceable models.**
-- The intent router, transaction resolver, retriever, and LLM client are ports.
+- The intent router, transaction resolver, credit risk estimator, retriever, and LLM client are ports.
 - Implementations are selected by name and version, or by an alias such as `champion`, through settings.
 - Artifacts load through a `ModelRegistry` port (filesystem adapter by default, MLflow adapter optional).
 - Swapping a model never requires workflow changes.
@@ -321,7 +354,8 @@ Make targets are added by the phase that implements them, and `make help` lists 
 | `make test-unit`, `make test-integration`, `make test-web` | Individual suites |
 | `make data-download` | Incremental S3 download driven by the manifest; reads credentials from the environment |
 | `make pipeline`, `make pipeline-sample` | Build bronze, silver, and gold (full or deterministic sample) |
-| `make data-report`, `make analysis` | Data-quality report and workflow-selection analysis |
+| `make data-sample` | Regenerate the committed, bounded organizer data sample in `data_platform/sample/` (rule 5) |
+| `make data-report`, `make analysis` | Data-quality report and per-workflow demand and prioritization analysis |
 | `make seed` | Load the demo subset into PostgreSQL |
 | `make train` | Train and register the learned components |
 | `make eval` | Run the evaluation harness |
@@ -333,7 +367,9 @@ Make targets are added by the phase that implements them, and `make help` lists 
 
 Every phase prompt in `kit/prompts/` runs under this protocol.
 
-1. Read this file, `docs/PROGRESS.md`, `docs/BACKLOG.md`, the phase prompt, and every file the prompt lists under "Read first".
+1. Sync, then read.
+   - Phases commit directly to `main`, and teammates push to it too. If a remote is configured and the working tree is clean, run `git pull --ff-only` first. If the pull fails, or the tree is not clean, stop and tell the human. Never force-push, rebase, or merge over someone else's work.
+   - Read this file, `docs/PROGRESS.md`, `docs/BACKLOG.md`, the phase prompt, and every file the prompt lists under "Read first".
 2. Write a short plan to `docs/plans/phase-NN.md`:
    - files to create or change,
    - tests to add,
@@ -356,6 +392,7 @@ Every phase prompt in `kit/prompts/` runs under this protocol.
 
 ## 12. Commit conventions
 
+- **Branch:** phases commit directly to `main` (team decision). Pushing still happens only when the human asks (rule 3).
 - **Format:** Conventional Commits, `type(scope): summary`. The summary is imperative, at most 72 characters, with no trailing period.
 - **Types:** `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `build`, `ci`, `perf`, `security`.
 - **Scopes:** `domain`, `policy`, `workflow`, `api`, `web`, `data`, `ml`, `evals`, `infra`, `docs`, `security`.
@@ -386,3 +423,8 @@ A phase is done only when all of the following are true:
 | Execution record | The per-turn audit artifact: state, rule ids and versions, clause references, tool calls with verification results, model and prompt versions, latency, and cost. |
 | Trust state | Per-session, append-only risk evidence. Its derived risk tier never decreases within a session. |
 | Bound policy | A clause fetched deterministically by id for a workflow state, as opposed to one found by open retrieval. |
+| Workflow registry | The set of supported workflows (`account_inquiry`, `card_support`, `dispute`, `credit`). Each maps its intents to one state machine; the router uses it to dispatch and to move a conversation between workflows. An intent outside it is out of scope. |
+| Synthetic eligibility service | The deterministic `EligibilityPolicy` implementation that turns team-authored, synthetic `ELG` rules into an eligibility outcome with rule ids, reasons, and review flags. It never approves credit, and it is labeled synthetic wherever it appears. |
+| Risk estimate | A predictive estimate from the `RiskEstimator` port: a probability with an uncertainty interval, a band, and a model version, trained on synthetic organizer data. It is one input to the synthetic eligibility service, never a decision, and never shown to customers or sent to a model. |
+| Eligibility outcome | `indicatively_eligible`, `not_eligible`, `review_required`, or `insufficient_data`. There is no approved outcome by design. |
+| Committed data sample | The bounded, deterministic extract of organizer data in `data_platform/sample/`, governed by rule 5. |

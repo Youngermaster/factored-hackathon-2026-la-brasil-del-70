@@ -7,7 +7,7 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 | Field | Value |
 |---|---|
 | Last completed phase | 02, domain model, ports, and contracts |
-| Next phase | 03, data platform (`kit/prompts/03-data-platform.md`) |
+| Next phase | 02b, multi-workflow contracts (`kit/prompts/02b-multi-workflow-contracts.md`), then 08, then 03 once `.env` exists |
 | Blocked | None |
 
 Pending human actions (none blocks phase 03 except item 2, which phase 03 needs for the S3 download):
@@ -102,7 +102,7 @@ Results recorded in this phase:
 - Ports for identity, prompts, policy, retrieval, and the model registry have no implementation yet (phases 05 to 10).
 - In-process ports are synchronous; a remote implementation would need an async variant.
 - A newer minor version of a contract fails an older validator because unknown keys are rejected; producers and consumers must upgrade together (documented in `contracts/README.md`).
-- The kickoff notes describe four service domains; CLAUDE.md section 1 still chooses one workflow (disputes with a protective card block), and phase 04 confirms or overturns it with data.
+- Superseded on 2026-09-26: the human chose four workflows (`account_inquiry`, `card_support`, `dispute`, `credit`); CLAUDE.md section 1 records the decision, and phase 02b extends these contracts additively.
 
 #### Next phase
 
