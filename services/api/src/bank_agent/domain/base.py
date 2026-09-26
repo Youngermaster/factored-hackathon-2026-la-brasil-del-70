@@ -26,9 +26,15 @@ from pydantic_core import CoreSchema
 
 
 class DomainModel(BaseModel):
-    """Base class for every domain model: frozen, and unknown keys are rejected."""
+    """Base class for every domain model: frozen, and unknown keys are rejected.
 
-    model_config = ConfigDict(frozen=True, extra="forbid", validate_default=True)
+    In serialization-mode JSON Schemas every field is required, because a serialized document always carries
+    every field, defaults included; consumers can rely on that.
+    """
+
+    model_config = ConfigDict(
+        frozen=True, extra="forbid", validate_default=True, json_schema_serialization_defaults_required=True
+    )
 
     def evolve(self, **changes: Any) -> Self:
         """Return a copy with ``changes`` applied and every validator run again.

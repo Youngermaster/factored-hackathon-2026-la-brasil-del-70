@@ -14,7 +14,7 @@ PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts
 PROFILES ?=
 PROFILE_FLAGS := $(foreach profile,$(PROFILES),--profile $(profile))
 
-.PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check
+.PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -60,6 +60,9 @@ test-web: ## Web tests with coverage
 
 env-check: ## Report set or unset for every documented environment variable, never a value
 	$(GUARD_PY) scripts/checks/check_env_keys.py
+
+contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
+	$(UV_RUN) python scripts/generate_contracts.py
 
 docs-check: ## Markdown lint and Mermaid validation
 	apps/web/node_modules/.bin/markdownlint-cli2

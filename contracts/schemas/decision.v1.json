@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bank-agent.local/contracts/schemas/decision.v1.json",
+  "x-schema-version": "1.0.0",
+  "$defs": {
+    "ActionKind": {
+      "enum": [
+        "create_dispute_case",
+        "block_card"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ClauseRef": {
+      "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*@[1-9][0-9]*$",
+      "title": "ClauseRef",
+      "type": "string"
+    },
+    "Currency": {
+      "enum": [
+        "MXN",
+        "COP",
+        "ARS",
+        "USD"
+      ],
+      "title": "Currency",
+      "type": "string"
+    },
+    "DecisionKind": {
+      "enum": [
+        "allow",
+        "deny",
+        "require_confirmation",
+        "require_step_up",
+        "clarify",
+        "escalate",
+        "abstain",
+        "refuse"
+      ],
+      "title": "DecisionKind",
+      "type": "string"
+    },
+    "Money": {
+      "additionalProperties": false,
+      "description": "An amount in one currency. JSON form: ``{\"amount\": \"12.50\", \"currency\": \"MXN\"}``.",
+      "properties": {
+        "amount": {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "title": "Amount",
+          "type": "string"
+        },
+        "currency": {
+          "$ref": "#/$defs/Currency"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "title": "Money",
+      "type": "object"
+    },
+    "RuleResult": {
+      "additionalProperties": false,
+      "description": "The outcome of one rule. A failed rule names the effect it asks the evaluator to apply.",
+      "properties": {
+        "rule_id": {
+          "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "exclusiveMinimum": 0,
+          "title": "Rule Version",
+          "type": "integer"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "effect": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DecisionKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason_code": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "params": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,63}$": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "$ref": "#/$defs/Money"
+                },
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ]
+            }
+          },
+          "title": "Params",
+          "type": "object"
+        },
+        "clause_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ClauseRef"
+          },
+          "title": "Clause Refs",
+          "type": "array"
+        },
+        "missing_facts": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "type": "string"
+          },
+          "title": "Missing Facts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_version",
+        "passed",
+        "effect",
+        "reason_code",
+        "params",
+        "clause_refs",
+        "missing_facts"
+      ],
+      "title": "RuleResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Version 1 of the decision contract (``contracts/schemas/decision.v1.json``).",
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state": {
+      "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+      "title": "State",
+      "type": "string"
+    },
+    "action": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ActionKind"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "kind": {
+      "$ref": "#/$defs/DecisionKind"
+    },
+    "rule_results": {
+      "items": {
+        "$ref": "#/$defs/RuleResult"
+      },
+      "title": "Rule Results",
+      "type": "array"
+    },
+    "decisive_rule_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "title": "Decisive Rule Ids",
+      "type": "array"
+    },
+    "clause_refs": {
+      "items": {
+        "$ref": "#/$defs/ClauseRef"
+      },
+      "title": "Clause Refs",
+      "type": "array"
+    },
+    "policy_pack_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Policy Pack Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "state",
+    "action",
+    "kind",
+    "rule_results",
+    "decisive_rule_ids",
+    "clause_refs",
+    "policy_pack_version"
+  ],
+  "title": "Decision",
+  "type": "object"
+}

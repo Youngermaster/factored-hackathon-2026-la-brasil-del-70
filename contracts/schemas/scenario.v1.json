@@ -1,0 +1,745 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bank-agent.local/contracts/schemas/scenario.v1.json",
+  "x-schema-version": "1.0.0",
+  "$defs": {
+    "CaseCount": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "case_count",
+          "default": "case_count",
+          "title": "Kind",
+          "type": "string"
+        },
+        "count": {
+          "minimum": 0,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "title": "CaseCount",
+      "type": "object"
+    },
+    "CaseExists": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "case_exists",
+          "default": "case_exists",
+          "title": "Kind",
+          "type": "string"
+        },
+        "transaction_ref": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Transaction Ref",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DisputeReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DisputeStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "transaction_ref"
+      ],
+      "title": "CaseExists",
+      "type": "object"
+    },
+    "DisclosureKind": {
+      "enum": [
+        "case_reference",
+        "sla",
+        "clause_citation",
+        "other_customer_id",
+        "other_customer_name",
+        "product_number",
+        "internal_flag",
+        "fraud_score",
+        "phrase"
+      ],
+      "title": "DisclosureKind",
+      "type": "string"
+    },
+    "DisclosureSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/DisclosureKind"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "DisclosureSpec",
+      "type": "object"
+    },
+    "DisputeReason": {
+      "enum": [
+        "unrecognized",
+        "duplicate",
+        "wrong_amount",
+        "not_received",
+        "atm_cash_not_dispensed",
+        "subscription_cancelled",
+        "other"
+      ],
+      "title": "DisputeReason",
+      "type": "string"
+    },
+    "DisputeStatus": {
+      "enum": [
+        "opened",
+        "in_review",
+        "resolved",
+        "rejected",
+        "escalated"
+      ],
+      "title": "DisputeStatus",
+      "type": "string"
+    },
+    "EscalationReasonCode": {
+      "enum": [
+        "amount_above_auto_limit",
+        "repeat_complainer",
+        "legal_or_regulator_mention",
+        "distress_signal",
+        "human_requested",
+        "clarification_exhausted",
+        "tool_failure",
+        "verification_mismatch",
+        "risk_tier_high",
+        "sla_breached",
+        "unsupported_needs_human",
+        "other"
+      ],
+      "title": "EscalationReasonCode",
+      "type": "string"
+    },
+    "ExistingCase": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "existing_case",
+          "default": "existing_case",
+          "title": "Kind",
+          "type": "string"
+        },
+        "transaction_ref": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Transaction Ref",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/DisputeStatus"
+        },
+        "reason": {
+          "$ref": "#/$defs/DisputeReason"
+        }
+      },
+      "required": [
+        "transaction_ref",
+        "status",
+        "reason"
+      ],
+      "title": "ExistingCase",
+      "type": "object"
+    },
+    "HandoffExists": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "handoff_exists",
+          "default": "handoff_exists",
+          "title": "Kind",
+          "type": "string"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EscalationReasonCode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "HandoffExists",
+      "type": "object"
+    },
+    "Language": {
+      "enum": [
+        "es",
+        "pt",
+        "en"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "Locale": {
+      "enum": [
+        "es-MX",
+        "es-CO",
+        "es-AR",
+        "pt-BR",
+        "en-US"
+      ],
+      "title": "Locale",
+      "type": "string"
+    },
+    "MerchantNameOverride": {
+      "additionalProperties": false,
+      "description": "Replaces a record's merchant name, for example with indirect prompt-injection text.",
+      "properties": {
+        "kind": {
+          "const": "merchant_name_override",
+          "default": "merchant_name_override",
+          "title": "Kind",
+          "type": "string"
+        },
+        "transaction_ref": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Transaction Ref",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 150,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "transaction_ref",
+        "value"
+      ],
+      "title": "MerchantNameOverride",
+      "type": "object"
+    },
+    "NoWrites": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "no_writes",
+          "default": "no_writes",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "title": "NoWrites",
+      "type": "object"
+    },
+    "ProductStatus": {
+      "enum": [
+        "active",
+        "blocked",
+        "closed",
+        "suspended"
+      ],
+      "title": "ProductStatus",
+      "type": "string"
+    },
+    "ProductStatusIs": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "product_status",
+          "default": "product_status",
+          "title": "Kind",
+          "type": "string"
+        },
+        "product_ref": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Product Ref",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ProductStatus"
+        }
+      },
+      "required": [
+        "product_ref",
+        "status"
+      ],
+      "title": "ProductStatusIs",
+      "type": "object"
+    },
+    "ProductStatusOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "product_status_override",
+          "default": "product_status_override",
+          "title": "Kind",
+          "type": "string"
+        },
+        "product_ref": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Product Ref",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ProductStatus"
+        }
+      },
+      "required": [
+        "product_ref",
+        "status"
+      ],
+      "title": "ProductStatusOverride",
+      "type": "object"
+    },
+    "Provenance": {
+      "enum": [
+        "derived_from_record",
+        "team_generated",
+        "translated",
+        "llm_paraphrase"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "ReviewStatus": {
+      "enum": [
+        "pending_review",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    },
+    "ScenarioCategory": {
+      "enum": [
+        "normal",
+        "ambiguous",
+        "unsupported",
+        "human_required",
+        "missing_or_incorrect_data",
+        "expired_session",
+        "unauthorized_access",
+        "prompt_injection",
+        "tool_failure"
+      ],
+      "title": "ScenarioCategory",
+      "type": "string"
+    },
+    "ScenarioMode": {
+      "enum": [
+        "scripted",
+        "simulated"
+      ],
+      "title": "ScenarioMode",
+      "type": "string"
+    },
+    "ScriptedTurn": {
+      "additionalProperties": false,
+      "description": "One customer turn: either a message or an action, optionally after the clock moves forward.",
+      "properties": {
+        "text": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TurnAction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "option_index": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Option Index"
+        },
+        "advance_clock_seconds": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Advance Clock Seconds",
+          "type": "integer"
+        }
+      },
+      "title": "ScriptedTurn",
+      "type": "object"
+    },
+    "SessionExpiresBeforeTurn": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "session_expires_before_turn",
+          "default": "session_expires_before_turn",
+          "title": "Kind",
+          "type": "string"
+        },
+        "turn_index": {
+          "exclusiveMinimum": 0,
+          "title": "Turn Index",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "turn_index"
+      ],
+      "title": "SessionExpiresBeforeTurn",
+      "type": "object"
+    },
+    "Split": {
+      "enum": [
+        "dev",
+        "test"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "ToolFailureMode": {
+      "description": "Failure modes the test-only ``ToolFailureInjector`` (phase 05) and evaluation scenarios use.",
+      "enum": [
+        "timeout",
+        "transient_error",
+        "permanent_error",
+        "partial_write"
+      ],
+      "title": "ToolFailureMode",
+      "type": "string"
+    },
+    "ToolFailureStep": {
+      "additionalProperties": false,
+      "description": "Fail the ``on_call``-th call of ``tool`` (1-based), ``times`` times in a row.",
+      "properties": {
+        "tool": {
+          "$ref": "#/$defs/ToolName"
+        },
+        "mode": {
+          "$ref": "#/$defs/ToolFailureMode"
+        },
+        "on_call": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "On Call",
+          "type": "integer"
+        },
+        "times": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Times",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tool",
+        "mode"
+      ],
+      "title": "ToolFailureStep",
+      "type": "object"
+    },
+    "ToolName": {
+      "description": "Every banking tool (phase 05). The last two are writes and match ``ActionKind``.",
+      "enum": [
+        "list_recent_transactions",
+        "get_transaction",
+        "get_product_status",
+        "list_my_cases",
+        "get_case_status",
+        "create_dispute_case",
+        "block_card"
+      ],
+      "title": "ToolName",
+      "type": "string"
+    },
+    "TurnAction": {
+      "enum": [
+        "select_option",
+        "confirm",
+        "decline",
+        "complete_step_up"
+      ],
+      "title": "TurnAction",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]{2,63}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "split": {
+      "$ref": "#/$defs/Split"
+    },
+    "language": {
+      "$ref": "#/$defs/Language"
+    },
+    "dialect": {
+      "$ref": "#/$defs/Locale"
+    },
+    "category": {
+      "$ref": "#/$defs/ScenarioCategory"
+    },
+    "tags": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_]{0,63}$",
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "persona_ref": {
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+      "title": "Persona Ref",
+      "type": "string"
+    },
+    "goal": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Goal",
+      "type": "string"
+    },
+    "known_facts": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "maxLength": 300,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "title": "Known Facts",
+      "type": "object"
+    },
+    "hidden_facts": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "maxLength": 300,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "title": "Hidden Facts",
+      "type": "object"
+    },
+    "mode": {
+      "$ref": "#/$defs/ScenarioMode"
+    },
+    "turns": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ScriptedTurn"
+      },
+      "title": "Turns",
+      "type": "array"
+    },
+    "simulator_instructions": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Simulator Instructions"
+    },
+    "fixtures": {
+      "default": [],
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "existing_case": "#/$defs/ExistingCase",
+            "merchant_name_override": "#/$defs/MerchantNameOverride",
+            "product_status_override": "#/$defs/ProductStatusOverride",
+            "session_expires_before_turn": "#/$defs/SessionExpiresBeforeTurn"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/MerchantNameOverride"
+          },
+          {
+            "$ref": "#/$defs/ProductStatusOverride"
+          },
+          {
+            "$ref": "#/$defs/ExistingCase"
+          },
+          {
+            "$ref": "#/$defs/SessionExpiresBeforeTurn"
+          }
+        ]
+      },
+      "title": "Fixtures",
+      "type": "array"
+    },
+    "tool_failure_plan": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ToolFailureStep"
+      },
+      "title": "Tool Failure Plan",
+      "type": "array"
+    },
+    "expected_outcome": {
+      "enum": [
+        "resolved",
+        "clarified",
+        "abstained",
+        "escalated",
+        "refused"
+      ],
+      "title": "Expected Outcome",
+      "type": "string"
+    },
+    "expected_state_assertions": {
+      "default": [],
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "case_count": "#/$defs/CaseCount",
+            "case_exists": "#/$defs/CaseExists",
+            "handoff_exists": "#/$defs/HandoffExists",
+            "no_writes": "#/$defs/NoWrites",
+            "product_status": "#/$defs/ProductStatusIs"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/CaseExists"
+          },
+          {
+            "$ref": "#/$defs/CaseCount"
+          },
+          {
+            "$ref": "#/$defs/ProductStatusIs"
+          },
+          {
+            "$ref": "#/$defs/HandoffExists"
+          },
+          {
+            "$ref": "#/$defs/NoWrites"
+          }
+        ]
+      },
+      "title": "Expected State Assertions",
+      "type": "array"
+    },
+    "required_disclosures": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/DisclosureSpec"
+      },
+      "title": "Required Disclosures",
+      "type": "array"
+    },
+    "forbidden_disclosures": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/DisclosureSpec"
+      },
+      "title": "Forbidden Disclosures",
+      "type": "array"
+    },
+    "expected_handoff_fields": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Expected Handoff Fields",
+      "type": "array"
+    },
+    "in_scope": {
+      "title": "In Scope",
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "review_status": {
+      "$ref": "#/$defs/ReviewStatus",
+      "default": "pending_review"
+    }
+  },
+  "required": [
+    "id",
+    "split",
+    "language",
+    "dialect",
+    "category",
+    "persona_ref",
+    "goal",
+    "mode",
+    "expected_outcome",
+    "in_scope",
+    "provenance"
+  ],
+  "title": "Scenario",
+  "type": "object"
+}

@@ -1,0 +1,392 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bank-agent.local/contracts/schemas/handoff.v1.json",
+  "x-schema-version": "1.0.0",
+  "$defs": {
+    "ActionKind": {
+      "enum": [
+        "create_dispute_case",
+        "block_card"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ActionStatus": {
+      "enum": [
+        "executed",
+        "failed",
+        "unknown"
+      ],
+      "title": "ActionStatus",
+      "type": "string"
+    },
+    "ActionTaken": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/ActionKind"
+        },
+        "target": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "confirmed": {
+          "title": "Confirmed",
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/$defs/ActionStatus"
+        },
+        "verification": {
+          "$ref": "#/$defs/VerificationStatus"
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "action",
+        "target",
+        "confirmed",
+        "status",
+        "verification",
+        "evidence"
+      ],
+      "title": "ActionTaken",
+      "type": "object"
+    },
+    "AuthLevel": {
+      "description": "How strongly the session's subject is authenticated, from weakest to strongest.",
+      "enum": [
+        "none",
+        "identified",
+        "otp_verified",
+        "step_up"
+      ],
+      "title": "AuthLevel",
+      "type": "string"
+    },
+    "ClauseRef": {
+      "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*@[1-9][0-9]*$",
+      "title": "ClauseRef",
+      "type": "string"
+    },
+    "Country": {
+      "enum": [
+        "MX",
+        "CO",
+        "AR"
+      ],
+      "title": "Country",
+      "type": "string"
+    },
+    "EscalationReason": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/EscalationReasonCode"
+        },
+        "detail": {
+          "maxLength": 300,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ],
+      "title": "EscalationReason",
+      "type": "object"
+    },
+    "EscalationReasonCode": {
+      "enum": [
+        "amount_above_auto_limit",
+        "repeat_complainer",
+        "legal_or_regulator_mention",
+        "distress_signal",
+        "human_requested",
+        "clarification_exhausted",
+        "tool_failure",
+        "verification_mismatch",
+        "risk_tier_high",
+        "sla_breached",
+        "unsupported_needs_human",
+        "other"
+      ],
+      "title": "EscalationReasonCode",
+      "type": "string"
+    },
+    "HandoffAuth": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "$ref": "#/$defs/AuthLevel"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "expires_at"
+      ],
+      "title": "HandoffAuth",
+      "type": "object"
+    },
+    "HandoffRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "maxLength": 500,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+          "title": "Summary",
+          "type": "string"
+        },
+        "intent": {
+          "$ref": "#/$defs/Intent"
+        }
+      },
+      "required": [
+        "summary",
+        "intent"
+      ],
+      "title": "HandoffRequest",
+      "type": "object"
+    },
+    "Intent": {
+      "enum": [
+        "dispute_new",
+        "dispute_status",
+        "card_block",
+        "informational",
+        "unsupported",
+        "human_request",
+        "greeting_or_other"
+      ],
+      "title": "Intent",
+      "type": "string"
+    },
+    "Language": {
+      "enum": [
+        "es",
+        "pt",
+        "en"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "Priority": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "Sentiment": {
+      "enum": [
+        "positive",
+        "neutral",
+        "negative",
+        "very_negative",
+        "unknown"
+      ],
+      "title": "Sentiment",
+      "type": "string"
+    },
+    "SourceRef": {
+      "pattern": "^(customers|products|transactions|dispute_cases|historical_complaints|conversations|turns|execution_records|handoffs|audit_events|policy_clauses):[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$",
+      "title": "SourceRef",
+      "type": "string"
+    },
+    "VerificationStatus": {
+      "enum": [
+        "verified",
+        "not_verified",
+        "mismatch"
+      ],
+      "title": "VerificationStatus",
+      "type": "string"
+    },
+    "VerifiedFact": {
+      "additionalProperties": false,
+      "description": "A fact the system verified, with the record that proves it (``table:id``).",
+      "properties": {
+        "fact": {
+          "maxLength": 300,
+          "minLength": 1,
+          "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+          "title": "Fact",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "fact",
+        "source"
+      ],
+      "title": "VerifiedFact",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "handoff_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "title": "Handoff Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "conversation_ref": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "title": "Conversation Ref",
+      "type": "string"
+    },
+    "case_ref": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Case Ref"
+    },
+    "state_at_escalation": {
+      "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+      "title": "State At Escalation",
+      "type": "string"
+    },
+    "language": {
+      "$ref": "#/$defs/Language"
+    },
+    "jurisdiction": {
+      "$ref": "#/$defs/Country"
+    },
+    "customer_ref": {
+      "maxLength": 20,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "title": "Customer Ref",
+      "type": "string"
+    },
+    "auth": {
+      "$ref": "#/$defs/HandoffAuth"
+    },
+    "request": {
+      "$ref": "#/$defs/HandoffRequest"
+    },
+    "verified_facts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/VerifiedFact"
+      },
+      "maxItems": 20,
+      "title": "Verified Facts",
+      "type": "array"
+    },
+    "actions_taken": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ActionTaken"
+      },
+      "maxItems": 10,
+      "title": "Actions Taken",
+      "type": "array"
+    },
+    "policy_basis": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ClauseRef"
+      },
+      "title": "Policy Basis",
+      "type": "array"
+    },
+    "escalation_reason": {
+      "$ref": "#/$defs/EscalationReason"
+    },
+    "open_questions": {
+      "default": [],
+      "items": {
+        "maxLength": 300,
+        "minLength": 1,
+        "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+        "type": "string"
+      },
+      "maxItems": 10,
+      "title": "Open Questions",
+      "type": "array"
+    },
+    "customer_sentiment": {
+      "$ref": "#/$defs/Sentiment",
+      "default": "unknown"
+    },
+    "priority": {
+      "$ref": "#/$defs/Priority"
+    },
+    "sla_due": {
+      "format": "date-time",
+      "title": "Sla Due",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "handoff_id",
+    "created_at",
+    "conversation_ref",
+    "case_ref",
+    "state_at_escalation",
+    "language",
+    "jurisdiction",
+    "customer_ref",
+    "auth",
+    "request",
+    "verified_facts",
+    "actions_taken",
+    "policy_basis",
+    "escalation_reason",
+    "open_questions",
+    "customer_sentiment",
+    "priority",
+    "sla_due"
+  ],
+  "title": "Handoff",
+  "type": "object"
+}

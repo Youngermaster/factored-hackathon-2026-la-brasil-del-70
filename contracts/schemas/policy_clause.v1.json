@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bank-agent.local/contracts/schemas/policy_clause.v1.json",
+  "x-schema-version": "1.0.0",
+  "$defs": {
+    "Currency": {
+      "enum": [
+        "MXN",
+        "COP",
+        "ARS",
+        "USD"
+      ],
+      "title": "Currency",
+      "type": "string"
+    },
+    "Jurisdiction": {
+      "enum": [
+        "MX",
+        "CO",
+        "AR",
+        "ALL"
+      ],
+      "title": "Jurisdiction",
+      "type": "string"
+    },
+    "Language": {
+      "enum": [
+        "es",
+        "pt",
+        "en"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "Money": {
+      "additionalProperties": false,
+      "description": "An amount in one currency. JSON form: ``{\"amount\": \"12.50\", \"currency\": \"MXN\"}``.",
+      "properties": {
+        "amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Amount"
+        },
+        "currency": {
+          "$ref": "#/$defs/Currency"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "title": "Money",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Front matter of one clause file. Version 1 of the policy clause contract.",
+  "properties": {
+    "clause_id": {
+      "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*$",
+      "title": "Clause Id",
+      "type": "string"
+    },
+    "version": {
+      "exclusiveMinimum": 0,
+      "title": "Version",
+      "type": "integer"
+    },
+    "jurisdiction": {
+      "$ref": "#/$defs/Jurisdiction"
+    },
+    "language": {
+      "$ref": "#/$defs/Language"
+    },
+    "effective_from": {
+      "format": "date",
+      "title": "Effective From",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "params": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "title": "Params",
+      "type": "object"
+    },
+    "bound_rules": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+        "type": "string"
+      },
+      "title": "Bound Rules",
+      "type": "array"
+    },
+    "summary": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "clause_id",
+    "version",
+    "jurisdiction",
+    "language",
+    "effective_from",
+    "synthetic",
+    "summary"
+  ],
+  "title": "ClauseMetadata",
+  "type": "object"
+}

@@ -1,0 +1,1110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bank-agent.local/contracts/schemas/execution_record.v1.json",
+  "x-schema-version": "1.0.0",
+  "$defs": {
+    "ActionKind": {
+      "enum": [
+        "create_dispute_case",
+        "block_card"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "AuthLevel": {
+      "description": "How strongly the session's subject is authenticated, from weakest to strongest.",
+      "enum": [
+        "none",
+        "identified",
+        "otp_verified",
+        "step_up"
+      ],
+      "title": "AuthLevel",
+      "type": "string"
+    },
+    "Channel": {
+      "description": "The service channel a conversation runs on (not the channel of a transaction).",
+      "enum": [
+        "web_chat",
+        "agent_console",
+        "evaluation_harness"
+      ],
+      "title": "Channel",
+      "type": "string"
+    },
+    "ClauseRef": {
+      "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*@[1-9][0-9]*$",
+      "title": "ClauseRef",
+      "type": "string"
+    },
+    "Currency": {
+      "enum": [
+        "MXN",
+        "COP",
+        "ARS",
+        "USD"
+      ],
+      "title": "Currency",
+      "type": "string"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "description": "Version 1 of the decision contract (``contracts/schemas/decision.v1.json``).",
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "state": {
+          "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+          "title": "State",
+          "type": "string"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActionKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "kind": {
+          "$ref": "#/$defs/DecisionKind"
+        },
+        "rule_results": {
+          "items": {
+            "$ref": "#/$defs/RuleResult"
+          },
+          "title": "Rule Results",
+          "type": "array"
+        },
+        "decisive_rule_ids": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+            "type": "string"
+          },
+          "title": "Decisive Rule Ids",
+          "type": "array"
+        },
+        "clause_refs": {
+          "items": {
+            "$ref": "#/$defs/ClauseRef"
+          },
+          "title": "Clause Refs",
+          "type": "array"
+        },
+        "policy_pack_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Policy Pack Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "state",
+        "action",
+        "kind",
+        "rule_results",
+        "decisive_rule_ids",
+        "clause_refs",
+        "policy_pack_version"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "DecisionKind": {
+      "enum": [
+        "allow",
+        "deny",
+        "require_confirmation",
+        "require_step_up",
+        "clarify",
+        "escalate",
+        "abstain",
+        "refuse"
+      ],
+      "title": "DecisionKind",
+      "type": "string"
+    },
+    "GroundingReport": {
+      "additionalProperties": false,
+      "properties": {
+        "llm_phrasing_used": {
+          "default": false,
+          "title": "Llm Phrasing Used",
+          "type": "boolean"
+        },
+        "template_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_.]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Template Id"
+        },
+        "violations": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "type": "string"
+          },
+          "title": "Violations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "llm_phrasing_used",
+        "template_id",
+        "violations"
+      ],
+      "title": "GroundingReport",
+      "type": "object"
+    },
+    "Intent": {
+      "enum": [
+        "dispute_new",
+        "dispute_status",
+        "card_block",
+        "informational",
+        "unsupported",
+        "human_request",
+        "greeting_or_other"
+      ],
+      "title": "Intent",
+      "type": "string"
+    },
+    "IntentPrediction": {
+      "additionalProperties": false,
+      "properties": {
+        "intent": {
+          "$ref": "#/$defs/Intent"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/IntentScore"
+          },
+          "maxItems": 7,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "below_threshold": {
+          "title": "Below Threshold",
+          "type": "boolean"
+        },
+        "model": {
+          "$ref": "#/$defs/ModelRef"
+        }
+      },
+      "required": [
+        "intent",
+        "confidence",
+        "candidates",
+        "below_threshold",
+        "model"
+      ],
+      "title": "IntentPrediction",
+      "type": "object"
+    },
+    "IntentScore": {
+      "additionalProperties": false,
+      "properties": {
+        "intent": {
+          "$ref": "#/$defs/Intent"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "intent",
+        "score"
+      ],
+      "title": "IntentScore",
+      "type": "object"
+    },
+    "Language": {
+      "enum": [
+        "es",
+        "pt",
+        "en"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "LanguageDetection": {
+      "additionalProperties": false,
+      "description": "``language`` is ``None`` when the detector is uncertain; the engine then asks the customer.",
+      "properties": {
+        "language": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Language"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LanguageScore"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "is_mixed": {
+          "default": false,
+          "title": "Is Mixed",
+          "type": "boolean"
+        },
+        "detector": {
+          "$ref": "#/$defs/ModelRef"
+        }
+      },
+      "required": [
+        "language",
+        "confidence",
+        "candidates",
+        "is_mixed",
+        "detector"
+      ],
+      "title": "LanguageDetection",
+      "type": "object"
+    },
+    "LanguageScore": {
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "$ref": "#/$defs/Language"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "language",
+        "score"
+      ],
+      "title": "LanguageScore",
+      "type": "object"
+    },
+    "LatencyBreakdown": {
+      "additionalProperties": false,
+      "properties": {
+        "total_ms": {
+          "minimum": 0,
+          "title": "Total Ms",
+          "type": "integer"
+        },
+        "stages": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,63}$": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Stages",
+          "type": "object"
+        }
+      },
+      "required": [
+        "total_ms",
+        "stages"
+      ],
+      "title": "LatencyBreakdown",
+      "type": "object"
+    },
+    "LlmCallRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "prompt": {
+          "$ref": "#/$defs/PromptRef"
+        },
+        "model_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "input_tokens": {
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "ge": 0,
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "title": "Cost Usd",
+          "type": "string"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/LlmCallStatus"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Code"
+        }
+      },
+      "required": [
+        "prompt",
+        "model_id",
+        "input_tokens",
+        "output_tokens",
+        "cost_usd",
+        "latency_ms",
+        "status",
+        "error_code"
+      ],
+      "title": "LlmCallRecord",
+      "type": "object"
+    },
+    "LlmCallStatus": {
+      "enum": [
+        "ok",
+        "repaired",
+        "failed",
+        "fallback"
+      ],
+      "title": "LlmCallStatus",
+      "type": "string"
+    },
+    "ModelRef": {
+      "pattern": "^(router|resolver|retriever|language_detector|llm):[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+      "title": "ModelRef",
+      "type": "string"
+    },
+    "Money": {
+      "additionalProperties": false,
+      "description": "An amount in one currency. JSON form: ``{\"amount\": \"12.50\", \"currency\": \"MXN\"}``.",
+      "properties": {
+        "amount": {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "title": "Amount",
+          "type": "string"
+        },
+        "currency": {
+          "$ref": "#/$defs/Currency"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "title": "Money",
+      "type": "object"
+    },
+    "Outcome": {
+      "enum": [
+        "resolved",
+        "clarified",
+        "abstained",
+        "escalated",
+        "refused",
+        "in_progress"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "PromptRef": {
+      "pattern": "^[a-z][a-z0-9_]{0,63}@[1-9][0-9]*$",
+      "title": "PromptRef",
+      "type": "string"
+    },
+    "RiskTier": {
+      "enum": [
+        "low",
+        "elevated",
+        "high"
+      ],
+      "title": "RiskTier",
+      "type": "string"
+    },
+    "RuleResult": {
+      "additionalProperties": false,
+      "description": "The outcome of one rule. A failed rule names the effect it asks the evaluator to apply.",
+      "properties": {
+        "rule_id": {
+          "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "exclusiveMinimum": 0,
+          "title": "Rule Version",
+          "type": "integer"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "effect": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DecisionKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason_code": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "params": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,63}$": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "$ref": "#/$defs/Money"
+                },
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ]
+            }
+          },
+          "title": "Params",
+          "type": "object"
+        },
+        "clause_refs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ClauseRef"
+          },
+          "title": "Clause Refs",
+          "type": "array"
+        },
+        "missing_facts": {
+          "default": [],
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "type": "string"
+          },
+          "title": "Missing Facts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_version",
+        "passed",
+        "effect",
+        "reason_code",
+        "params",
+        "clause_refs",
+        "missing_facts"
+      ],
+      "title": "RuleResult",
+      "type": "object"
+    },
+    "SourceRef": {
+      "pattern": "^(customers|products|transactions|dispute_cases|historical_complaints|conversations|turns|execution_records|handoffs|audit_events|policy_clauses):[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$",
+      "title": "SourceRef",
+      "type": "string"
+    },
+    "TokenUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens"
+      ],
+      "title": "TokenUsage",
+      "type": "object"
+    },
+    "ToolCallRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "exclusiveMinimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "tool": {
+          "$ref": "#/$defs/ToolName"
+        },
+        "arguments": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,63}$": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "title": "Arguments",
+          "type": "object"
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_-]{16,128}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idempotency Key"
+        },
+        "status": {
+          "$ref": "#/$defs/ToolCallStatus"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Code"
+        },
+        "attempts": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "result_summary": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result Summary"
+        },
+        "verification": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Verification"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "sequence",
+        "tool",
+        "arguments",
+        "idempotency_key",
+        "status",
+        "error_code",
+        "attempts",
+        "latency_ms",
+        "result_summary",
+        "verification"
+      ],
+      "title": "ToolCallRecord",
+      "type": "object"
+    },
+    "ToolCallStatus": {
+      "enum": [
+        "ok",
+        "not_found",
+        "failed",
+        "unknown",
+        "rejected_by_allowlist"
+      ],
+      "title": "ToolCallStatus",
+      "type": "string"
+    },
+    "ToolName": {
+      "description": "Every banking tool (phase 05). The last two are writes and match ``ActionKind``.",
+      "enum": [
+        "list_recent_transactions",
+        "get_transaction",
+        "get_product_status",
+        "list_my_cases",
+        "get_case_status",
+        "create_dispute_case",
+        "block_card"
+      ],
+      "title": "ToolName",
+      "type": "string"
+    },
+    "TrustEventKind": {
+      "enum": [
+        "failed_otp",
+        "otp_lockout",
+        "cross_customer_probe",
+        "injection_detected",
+        "third_party_admission",
+        "unusual_amount",
+        "identity_mismatch"
+      ],
+      "title": "TrustEventKind",
+      "type": "string"
+    },
+    "Verification": {
+      "additionalProperties": false,
+      "description": "The result of reading back an action's effect.",
+      "properties": {
+        "verified": {
+          "title": "Verified",
+          "type": "boolean"
+        },
+        "check": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Check",
+          "type": "string"
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "mismatch_code": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mismatch Code"
+        },
+        "checked_at": {
+          "format": "date-time",
+          "title": "Checked At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "verified",
+        "check",
+        "evidence",
+        "mismatch_code",
+        "checked_at"
+      ],
+      "title": "Verification",
+      "type": "object"
+    },
+    "WorkflowRef": {
+      "additionalProperties": false,
+      "description": "Which workflow definition, and which version of it, handled a turn.",
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "exclusiveMinimum": 0,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "title": "WorkflowRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "turn_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "title": "Turn Id",
+      "type": "string"
+    },
+    "conversation_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "title": "Conversation Id",
+      "type": "string"
+    },
+    "customer_ref": {
+      "anyOf": [
+        {
+          "maxLength": 20,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Customer Ref"
+    },
+    "session_ref": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Ref"
+    },
+    "workflow": {
+      "$ref": "#/$defs/WorkflowRef"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "channel": {
+      "$ref": "#/$defs/Channel"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Language"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "language_detection": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LanguageDetection"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "auth_level": {
+      "$ref": "#/$defs/AuthLevel"
+    },
+    "state_before": {
+      "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+      "title": "State Before",
+      "type": "string"
+    },
+    "state_after": {
+      "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+      "title": "State After",
+      "type": "string"
+    },
+    "outcome": {
+      "$ref": "#/$defs/Outcome"
+    },
+    "intent": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/IntentPrediction"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "decisions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Decision"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "clause_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ClauseRef"
+      },
+      "title": "Clause Refs",
+      "type": "array"
+    },
+    "tool_calls": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ToolCallRecord"
+      },
+      "title": "Tool Calls",
+      "type": "array"
+    },
+    "llm_calls": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/LlmCallRecord"
+      },
+      "title": "Llm Calls",
+      "type": "array"
+    },
+    "models": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ModelRef"
+      },
+      "title": "Models",
+      "type": "array"
+    },
+    "prompts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PromptRef"
+      },
+      "title": "Prompts",
+      "type": "array"
+    },
+    "policy_pack_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Policy Pack Version",
+      "type": "string"
+    },
+    "latency": {
+      "$ref": "#/$defs/LatencyBreakdown"
+    },
+    "token_usage": {
+      "$ref": "#/$defs/TokenUsage",
+      "default": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      }
+    },
+    "cost_usd": {
+      "default": "0",
+      "ge": 0,
+      "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+      "title": "Cost Usd",
+      "type": "string"
+    },
+    "trace_id": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{32}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trace Id"
+    },
+    "risk_tier": {
+      "$ref": "#/$defs/RiskTier",
+      "default": "low"
+    },
+    "trust_events_added": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TrustEventKind"
+      },
+      "title": "Trust Events Added",
+      "type": "array"
+    },
+    "grounding": {
+      "$ref": "#/$defs/GroundingReport",
+      "default": {
+        "llm_phrasing_used": false,
+        "template_id": null,
+        "violations": []
+      }
+    },
+    "safety_interventions": {
+      "default": [],
+      "items": {
+        "pattern": "^[a-z][a-z0-9_]{0,63}$",
+        "type": "string"
+      },
+      "title": "Safety Interventions",
+      "type": "array"
+    },
+    "handoff_ref": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Handoff Ref"
+    },
+    "case_refs": {
+      "default": [],
+      "items": {
+        "maxLength": 64,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+        "type": "string"
+      },
+      "title": "Case Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "turn_id",
+    "conversation_id",
+    "customer_ref",
+    "session_ref",
+    "workflow",
+    "recorded_at",
+    "channel",
+    "language",
+    "language_detection",
+    "auth_level",
+    "state_before",
+    "state_after",
+    "outcome",
+    "intent",
+    "decisions",
+    "clause_refs",
+    "tool_calls",
+    "llm_calls",
+    "models",
+    "prompts",
+    "policy_pack_version",
+    "latency",
+    "token_usage",
+    "cost_usd",
+    "trace_id",
+    "risk_tier",
+    "trust_events_added",
+    "grounding",
+    "safety_interventions",
+    "handoff_ref",
+    "case_refs"
+  ],
+  "title": "ExecutionRecord",
+  "type": "object"
+}
