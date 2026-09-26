@@ -61,6 +61,12 @@ SILVER_EXTRAS: dict[str, tuple[DerivedColumn, ...]] = {
     "service_agents": (
         DerivedColumn("has_duplicate_employee_code", "boolean", "another agent shares the employee code (UQ)"),
     ),
+    "complaints": (
+        DerivedColumn(
+            "has_foreign_affected_product", "boolean", "affected_product_id names another customer's product"
+        ),
+    ),
+    "digital_events": (DerivedColumn("has_foreign_product", "boolean", "product_id names another customer's product"),),
     "transactions": (
         DerivedColumn("amount_usd_recomputed", "boolean", "amount_usd was null and was recomputed (as-of rate)"),
         DerivedColumn("transaction_local_time", "timestamp", "transaction_date in the customer's country time zone"),

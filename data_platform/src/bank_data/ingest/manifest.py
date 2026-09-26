@@ -223,6 +223,9 @@ class Manifest:
         return [(str(key), str(code)) for key, code in rows]
 
     def start_run(self, run_id: str, source_label: str, started_at: datetime, contract_version: str) -> None:
+        """Record a new run; a run still marked running belonged to a process that stopped, so it becomes
+        ``interrupted``."""
+        self._connection.execute("update runs set status = 'interrupted' where status = 'running'")
         self._connection.execute(
             "insert into runs (run_id, source_label, started_at, status, contract_version) values (?, ?, ?, ?, ?)",
             [run_id, source_label, started_at, "running", contract_version],

@@ -1973,6 +1973,9 @@ models:
   - name: is_orphan_product_id
     data_type: boolean
     description: product_id is set but has no row in products
+  - name: has_foreign_product
+    data_type: boolean
+    description: product_id names another customer's product
 - name: stg_complaints
   description: Typed, trimmed, canonical, deduplicated complaints (incremental on process_date).
   config:
@@ -2231,6 +2234,9 @@ models:
   - name: is_orphan_assigned_agent_id
     data_type: boolean
     description: assigned_agent_id is set but has no row in service_agents
+  - name: has_foreign_affected_product
+    data_type: boolean
+    description: affected_product_id names another customer's product
 - name: stg_campaign_sends
   description: Typed, trimmed, canonical, deduplicated campaign_sends (incremental on process_date).
   config:

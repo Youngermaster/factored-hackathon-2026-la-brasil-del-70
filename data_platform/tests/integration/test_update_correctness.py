@@ -1,5 +1,6 @@
 """Update correctness on the synthetic late-arrival fixture (``data_platform/fixtures/late_arrival``)."""
 
+from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -17,8 +18,12 @@ from bank_agent.domain.product import ProductType
 from bank_agent.domain.transaction import TransactionType
 from bank_agent.ports.repositories.transactions import TransactionQuery
 from bank_data import pipeline
+from bank_data.config import load_config
 from bank_data.errors import SchemaEvolutionError
 from bank_data.ingest.manifest import Manifest, ObjectStatus
+from bank_data.reports import quality
+from bank_data.reports.lineage import load_manifest, render_lineage
+from bank_data.settings import DEFAULT_CONFIG_FILE
 from bank_data_fixture import copy_parts, ingest_and_build, table_hashes, workspace
 
 LATE_KEY = "transactions/year=2024/month=01/day=02/transactions_20240102.csv"
@@ -157,3 +162,32 @@ async def test_bank_agent_readers_serve_the_fixture_gold_output(incremental_and_
     assert profile is not None
     assert profile.utilization == Decimal("0.2401")
     assert insured[0].product_type is ProductType.OTHER
+
+
+def test_quality_report_and_lineage_render_from_the_fixture_warehouse(incremental_and_full: tuple[Path, Path]) -> None:
+    warehouse_db = incremental_and_full[0]
+    warehouse_dir = warehouse_db.parent
+    data = quality.collect(
+        warehouse_dir,
+        warehouse_db,
+        load_config(DEFAULT_CONFIG_FILE),
+        generated_at=datetime(2026, 9, 26, 12, 0, tzinfo=UTC),
+        git_sha="abc1234",
+    )
+    text = quality.render(data)
+    assert "from commit `abc1234`" in text
+    assert "| call_transcripts | null_in_required_column | duration_seconds | 1 |" in text
+    assert "| complaints | additive | schema_additive_column | channel_detail |" in text
+    assert "| customers | registration_branch_id | branches | 1 | 4 | 25.000% |" in text
+    transactions = next(item for item in data.counts if item.table == "transactions")
+    assert (transactions.exact_duplicates, transactions.key_duplicates) == (1, 2)
+    assert transactions.bronze_rows - transactions.silver_rows == 3
+
+    manifest = load_manifest(warehouse_dir / "dbt" / "full" / "dbt_target" / "manifest.json")
+    page = render_lineage(
+        manifest, generated_at=datetime(2026, 9, 26, tzinfo=UTC), git_sha="abc1234", source_label="local"
+    )
+    assert "flowchart LR" in page
+    assert "bronze_transactions --> stg_transactions" in page
+    assert "stg_transactions --> silver_transactions" in page
+    assert "silver_transactions --> transactions_serving" in page
