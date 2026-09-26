@@ -40,6 +40,7 @@ An arrow means "may import". A layer may import any layer below it, not only the
 | `api` | FastAPI app factory, routers, middleware, problem details | [api](src/bank_agent/api/README.md) |
 | `bootstrap` | Settings, logging, and the composition root | [bootstrap](src/bank_agent/bootstrap/README.md) |
 | `prompts` | Versioned prompt files | [prompts](src/bank_agent/prompts/README.md) |
+| `testing` | Deterministic test doubles (not a layer; production code never imports it) | [testing](src/bank_agent/testing/README.md) |
 
 Three contracts apply:
 

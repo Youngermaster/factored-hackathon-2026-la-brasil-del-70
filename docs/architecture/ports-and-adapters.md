@@ -1,0 +1,104 @@
+# Ports and adapters
+
+The application reaches every external capability through a port, a `typing.Protocol` in `services/api/src/bank_agent/ports`. Adapters in `bank_agent/adapters` implement the ports, and the composition root (`bootstrap/container.py`) is the only module that chooses them. Cross-cutting behavior (retry, timeout, circuit breaker, budget guard, tracing, redaction, failure injection) is added by decorators that implement the same port and wrap another implementation.
+
+## Structure
+
+An arrow from A to B means "A depends on B".
+
+```mermaid
+flowchart LR
+    subgraph core["Application core"]
+        app["application<br/>workflow engine, tools"]
+        policy["policy<br/>evaluator, rules"]
+        ports["ports<br/>Protocols"]
+        domain["domain"]
+        app --> policy
+        app --> ports
+        policy --> ports
+        ports --> domain
+    end
+
+    subgraph adapters["adapters"]
+        memory["persistence/memory"]
+        postgres["persistence/postgres"]
+        duckdb["persistence/duckdb"]
+        system["system<br/>clock, ids"]
+        telemetry["telemetry"]
+        llm["llm"]
+        other["identity, policy,<br/>retrieval, models"]
+    end
+
+    testing["bank_agent.testing<br/>test doubles"]
+    root["bootstrap/container.py<br/>composition root"]
+
+    memory --> ports
+    postgres --> ports
+    duckdb --> ports
+    system --> ports
+    telemetry --> ports
+    llm --> ports
+    other --> ports
+    testing --> ports
+    root --> adapters
+    root --> app
+```
+
+`bank_agent.testing` is not a layer: production code never imports it and it imports only `domain` and `ports`. Two import-linter contracts enforce both directions.
+
+## Isolation by construction
+
+Repositories are bound to an `AccessContext` (role plus customer or staff id) when a unit of work creates them, and no repository method accepts a customer identifier. Another customer's resource behaves exactly like a missing one. The PostgreSQL unit of work (phase 05) also sets `app.customer_id` and `app.role` inside each transaction, so row-level security backs up the repository scoping.
+
+Role rules every repository adapter implements identically:
+
+| Repository | Customer | Agent | Evaluator |
+|---|---|---|---|
+| Customers, products, transactions, complaints | Own records | Refused | Refused |
+| Cases | Own cases, all methods | `get` of a case a handoff references | Refused |
+| Conversations and turns | Own | Refused | Refused |
+| Execution records | Append and read own | Refused | Read all |
+| Handoffs | Add and read own | Read, list, claim, resolve | Refused |
+| Audit log | Append | Append | Append and list |
+
+The read side of each customer-data repository is its own Protocol (`CustomerReader`, `ProductReader`, `TransactionReader`, `HistoricalComplaintReader`), so read-only backends implement it without a unit of work.
+
+## Ports, adapters, and phases
+
+| Port | Mode | Present adapters | Planned adapters (phase) |
+|---|---|---|---|
+| `CustomerReader`, `CustomerRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
+| `ProductReader`, `ProductRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
+| `TransactionReader`, `TransactionRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
+| `HistoricalComplaintReader`, `HistoricalComplaintRepository` | async | memory | DuckDB reader (03), PostgreSQL (05) |
+| `CaseRepository` | async | memory | PostgreSQL (05) |
+| `ConversationRepository` | async | memory | PostgreSQL (05) |
+| `ExecutionRecordRepository` | async | memory | PostgreSQL, append-only at the database level (05) |
+| `HandoffRepository` | async | memory | PostgreSQL (05) |
+| `AuditLog` | async | memory (in a unit of work and standalone) | PostgreSQL, append-only at the database level (05) |
+| `UnitOfWork`, `UnitOfWorkFactory` | async | memory | PostgreSQL with row-level security context (05) |
+| `SessionStore` | async | memory | PostgreSQL (05) |
+| `IdentityProvider` | async | none | mock identity provider (05) |
+| `OtpSender` | async | none | `DemoOtpSender` (05) |
+| `Clock` | sync | `SystemClock`; `FixedClock` (testing) | none |
+| `IdGenerator` | sync | `RandomIdGenerator`; `SequentialIdGenerator` (testing) | none |
+| `LLMClient` | async | `FakeLLM` (testing) | `LiteLLMClient`, `CassetteLLM`, and the decorator stack (08) |
+| `PromptRegistry` | sync | none | filesystem registry (08) |
+| `PolicyRepository` | sync | none | filesystem policy pack (06), bound lookup (07) |
+| `Retriever` | sync | none | BM25, dense, hybrid (07) |
+| `IntentRouter` | sync | `FakeIntentRouter` (testing) | `router:keyword@1` (09), `router:tfidf` and `router:embeddings` (10) |
+| `TransactionResolver` | sync | `FakeTransactionResolver` (testing) | `resolver:rules@1` (09), `resolver:lgbm` (10) |
+| `LanguageDetector` | sync | `FakeLanguageDetector` (testing) | lingua adapter (09) |
+| `ModelRegistry` | sync | none | filesystem registry (10), MLflow registry (10, optional) |
+| `Telemetry` | sync | `NoopTelemetry`; `RecordingTelemetry` (testing) | OpenTelemetry (15) |
+| `ReadinessCheck` | async | `PostgresReadinessCheck` | further dependencies (15) |
+
+Async ports may perform I/O. Sync ports run in process on data loaded at startup; a remote implementation (for example a hosted classifier) would need an async variant of the port.
+
+## Contract suites
+
+Every adapter runs the shared suite for its port in `services/api/tests/contracts/`: one parameterized class per port. Backends are listed in `services/api/tests/bank_agent_contracts.py`: `READ_BACKENDS` for the reader suites and `WRITE_BACKENDS` for the writer, unit of work, audit, and session store suites. The memory backend is marked `unit`; database backends added in phases 03 and 05 are marked `integration`. The model and determinism suites parameterize over the test doubles and the system adapters, and phases 09 and 10 add their implementations to the same lists.
+
+The suites check, for every adapter: domain objects are returned; another customer's record behaves like a missing one; roles are enforced; ordering and limits are deterministic; idempotent writes return the stored result; append-only records reject changes; optimistic versions reject stale writes; session rotation retires the old token digest; trust state is append-only; and a unit of work applies writes only on commit, rolls back otherwise, and refuses a conflicting commit.
+
+A separate conformance test checks, through mypy, that each implementation satisfies its port, and at runtime that every port docstring states preconditions, postconditions, errors, and isolation.

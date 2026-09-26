@@ -9,7 +9,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [CLAUDE.md](../CLAUDE.md) | Rules, stack, architecture, testing, documentation, and commit conventions for every session |
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
-| [plans/](plans/) | The approved plan for each phase |
+| [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes |
 
 ## Organizer material
 
@@ -23,10 +23,16 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [architecture/overview.md](architecture/overview.md) | Monorepo components and their dependency direction |
+| [architecture/domain-model.md](architecture/domain-model.md) | Domain class diagram, case lifecycle, trust tiers, personal data, error taxonomy |
+| [architecture/ports-and-adapters.md](architecture/ports-and-adapters.md) | Ports, adapters present and planned, isolation rules, contract suites |
+| [../contracts/README.md](../contracts/README.md) | JSON Schema contracts and their versioning rules |
 | [adr/README.md](adr/README.md) | Index of architecture decision records |
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
 | [adr/0002](adr/0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers |
 | [adr/0003](adr/0003-frontend-layering-and-state.md) | Frontend layering and state rules |
+| [adr/0004](adr/0004-money-and-currency-handling.md) | Money and currency handling |
+| [adr/0005](adr/0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier |
+| [adr/0006](adr/0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field |
 
 ## Packages and apps
 
