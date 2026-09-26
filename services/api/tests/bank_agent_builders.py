@@ -230,7 +230,12 @@ def decision(kind: DecisionKind = DecisionKind.ALLOW, results: tuple[RuleResult,
 
 
 def handoff(**overrides: Any) -> Handoff:
+    """A handoff exactly as phase 02 built it: a version 1.0.0 document with no 1.1.0 field.
+
+    It pins ``schema_version`` because the model default moved to 1.1.0; use ``handoff_v1_1`` for new fields.
+    """
     fields: dict[str, Any] = {
+        "schema_version": "1.0.0",
         "handoff_id": HandoffId("ho-000001"),
         "created_at": T0,
         "conversation_ref": "conv-000001",
@@ -267,6 +272,11 @@ def handoff(**overrides: Any) -> Handoff:
         "sla_due": T0 + timedelta(hours=24),
     }
     return Handoff.model_validate({**fields, **overrides})
+
+
+def handoff_v1_1(**overrides: Any) -> Handoff:
+    """A version 1.1.0 handoff: the phase 02 document relabeled, ready for the fields added in 1.1.0."""
+    return handoff(**{"schema_version": "1.1.0", **overrides})
 
 
 def execution_record(turn_id: str = "9b2f0d1e-0000-4000-8000-000000000001", **overrides: Any) -> ExecutionRecord:

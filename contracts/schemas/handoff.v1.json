@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://bank-agent.local/contracts/schemas/handoff.v1.json",
-  "x-schema-version": "1.0.0",
+  "x-schema-version": "1.1.0",
   "$defs": {
     "ActionKind": {
       "enum": [
@@ -74,7 +74,7 @@
       "type": "string"
     },
     "ClauseRef": {
-      "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*@[1-9][0-9]*$",
+      "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF|ACC|CRE|ELG)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*@[1-9][0-9]*$",
       "title": "ClauseRef",
       "type": "string"
     },
@@ -121,7 +121,11 @@
         "risk_tier_high",
         "sla_breached",
         "unsupported_needs_human",
-        "other"
+        "other",
+        "card_unblock_requested",
+        "card_replacement_requested",
+        "credit_review_required",
+        "eligibility_contested"
       ],
       "title": "EscalationReasonCode",
       "type": "string"
@@ -167,6 +171,7 @@
       "type": "object"
     },
     "Intent": {
+      "description": "What the customer wants. Each intent is owned by exactly one workflow or is cross-workflow.\n\n``domain.workflow_catalog.WORKFLOW_CATALOG`` assigns the owners; ``CROSS_WORKFLOW_INTENTS`` lists the rest.",
       "enum": [
         "dispute_new",
         "dispute_status",
@@ -174,7 +179,17 @@
         "informational",
         "unsupported",
         "human_request",
-        "greeting_or_other"
+        "greeting_or_other",
+        "balance_inquiry",
+        "payment_status",
+        "statement_request",
+        "card_status",
+        "card_unblock_request",
+        "card_replacement_request",
+        "credit_product_info",
+        "credit_eligibility",
+        "credit_application",
+        "credit_application_status"
       ],
       "title": "Intent",
       "type": "string"
@@ -249,7 +264,7 @@
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "default": "1.0.0",
+      "default": "1.1.0",
       "pattern": "^1\\.[0-9]+\\.[0-9]+$",
       "title": "Schema Version",
       "type": "string"

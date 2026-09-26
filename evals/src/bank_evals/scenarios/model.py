@@ -183,7 +183,7 @@ HANDOFF_FIELDS = frozenset(Handoff.model_fields)
 
 
 class Scenario(ScenarioModel):
-    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.0.0"
+    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.1.0"
     id: Annotated[str, StringConstraints(pattern=r"^[a-z0-9][a-z0-9_-]{2,63}$")]
     split: Split
     language: Language

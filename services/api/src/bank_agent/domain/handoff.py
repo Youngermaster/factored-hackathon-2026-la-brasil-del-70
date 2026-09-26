@@ -18,6 +18,7 @@ from bank_agent.domain.base import DomainModel, Pii, SingleLineText, SummaryText
 from bank_agent.domain.complaint import Priority
 from bank_agent.domain.decision import ClauseRef
 from bank_agent.domain.errors import InvalidHandoffTransitionError
+from bank_agent.domain.escalation import EscalationReasonCode as EscalationReasonCode
 from bank_agent.domain.identifiers import CaseId, ConversationId, CustomerId, HandoffId, SourceRef, StaffId
 from bank_agent.domain.locale import Country, Language
 from bank_agent.domain.workflow import Intent, StateName
@@ -71,21 +72,6 @@ class ActionTaken(DomainModel):
         return self
 
 
-class EscalationReasonCode(StrEnum):
-    AMOUNT_ABOVE_AUTO_LIMIT = "amount_above_auto_limit"
-    REPEAT_COMPLAINER = "repeat_complainer"
-    LEGAL_OR_REGULATOR_MENTION = "legal_or_regulator_mention"
-    DISTRESS_SIGNAL = "distress_signal"
-    HUMAN_REQUESTED = "human_requested"
-    CLARIFICATION_EXHAUSTED = "clarification_exhausted"
-    TOOL_FAILURE = "tool_failure"
-    VERIFICATION_MISMATCH = "verification_mismatch"
-    RISK_TIER_HIGH = "risk_tier_high"
-    SLA_BREACHED = "sla_breached"
-    UNSUPPORTED_NEEDS_HUMAN = "unsupported_needs_human"
-    OTHER = "other"
-
-
 class EscalationReason(DomainModel):
     code: EscalationReasonCode
     detail: SingleLineText
@@ -100,7 +86,7 @@ class Sentiment(StrEnum):
 
 
 class Handoff(DomainModel):
-    schema_version: SchemaVersion = "1.0.0"
+    schema_version: SchemaVersion = "1.1.0"
     handoff_id: HandoffId
     created_at: UtcDatetime
     conversation_ref: ConversationId

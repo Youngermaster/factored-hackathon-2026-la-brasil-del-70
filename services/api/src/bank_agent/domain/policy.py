@@ -21,6 +21,8 @@ from bank_agent.domain.workflow import StateName
 
 
 class ClauseFamily(StrEnum):
+    """Clause families. Must list exactly ``decision.CLAUSE_FAMILIES``, which builds the clause id pattern."""
+
     SCOPE = "SCOPE"
     AUTH = "AUTH"
     PRV = "PRV"
@@ -28,6 +30,12 @@ class ClauseFamily(StrEnum):
     CRD = "CRD"
     ESC = "ESC"
     INF = "INF"
+    ACC = "ACC"
+    """Account and payment inquiries."""
+    CRE = "CRE"
+    """Credit product information."""
+    ELG = "ELG"
+    """Synthetic eligibility rules."""
 
 
 class Jurisdiction(StrEnum):

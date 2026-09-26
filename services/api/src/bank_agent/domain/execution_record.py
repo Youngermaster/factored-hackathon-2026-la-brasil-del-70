@@ -108,7 +108,7 @@ class GroundingReport(DomainModel):
 
 
 class ExecutionRecord(DomainModel):
-    schema_version: SchemaVersion = "1.0.0"
+    schema_version: SchemaVersion = "1.1.0"
     turn_id: TurnId
     conversation_id: ConversationId
     customer_ref: CustomerId | None = None

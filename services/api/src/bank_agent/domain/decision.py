@@ -27,7 +27,7 @@ from bank_agent.domain.base import Code, DomainModel
 from bank_agent.domain.money import Money
 from bank_agent.domain.workflow import StateName
 
-CLAUSE_FAMILIES = ("SCOPE", "AUTH", "PRV", "DSP", "CRD", "ESC", "INF")
+CLAUSE_FAMILIES = ("SCOPE", "AUTH", "PRV", "DSP", "CRD", "ESC", "INF", "ACC", "CRE", "ELG")
 CLAUSE_JURISDICTIONS = ("MX", "CO", "AR", "ALL")
 CLAUSE_ID_PATTERN = rf"^({'|'.join(CLAUSE_FAMILIES)})-({'|'.join(CLAUSE_JURISDICTIONS)})-[0-9]+(\.[0-9]+)*$"
 CLAUSE_REF_PATTERN = CLAUSE_ID_PATTERN[:-1] + "@[1-9][0-9]*$"
@@ -125,7 +125,7 @@ def ordered_clause_union(results: tuple[RuleResult, ...]) -> tuple[ClauseRef, ..
 class Decision(DomainModel):
     """Version 1 of the decision contract (``contracts/schemas/decision.v1.json``)."""
 
-    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.0.0"
+    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.1.0"
     state: StateName
     action: ActionKind | None = None
     kind: DecisionKind
