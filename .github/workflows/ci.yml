@@ -1,0 +1,170 @@
+# Continuous integration. No job reads repository secrets; integration tests generate their own
+# database credentials at runtime. Actions are pinned by commit SHA with the release tag in a comment.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly dependency audit, Mondays 06:00 UTC.
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  UV_VERSION: "0.11.17"
+  GITLEAKS_VERSION: "8.30.1"
+  GITLEAKS_LINUX_X64_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+
+jobs:
+  python:
+    name: python
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Install dependencies
+        run: uv sync --all-packages --frozen
+      - name: Ruff lint
+        run: uv run --frozen ruff check --output-format=github .
+      - name: Ruff format check
+        run: uv run --frozen ruff format --check .
+      - name: mypy
+        run: |
+          uv run --frozen mypy
+          uv run --frozen mypy conftest.py
+      - name: Import boundaries
+        run: uv run --frozen lint-imports
+      - name: bandit
+        run: uv run --frozen bandit -q -c pyproject.toml -r services/api/src data_platform/src ml/src evals/src scripts
+      - name: Unit tests
+        run: COVERAGE_FILE=.coverage.unit uv run --frozen pytest -m unit --cov --cov-report=
+      - name: Integration tests (PostgreSQL through testcontainers)
+        run: COVERAGE_FILE=.coverage.integration uv run --frozen pytest -m integration --cov --cov-report=
+      - name: Coverage gates
+        run: |
+          uv run --frozen coverage combine --keep -q .coverage.unit .coverage.integration
+          uv run --frozen coverage json -q -o coverage.json
+          uv run --frozen coverage report
+          uv run --no-project --python 3.12 python scripts/checks/check_coverage_gates.py
+
+  web:
+    name: web
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: apps/web/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: ESLint
+        run: pnpm run lint
+      - name: Prettier check
+        run: pnpm run format:check
+      - name: Typecheck
+        run: pnpm run typecheck
+      - name: Tests with coverage
+        run: pnpm run test:coverage
+      - name: Build
+        run: pnpm run build
+
+  guards:
+    name: guards
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install gitleaks (checksum verified)
+        run: |
+          archive="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "${RUNNER_TEMP}/${archive}" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${archive}"
+          echo "${GITLEAKS_LINUX_X64_SHA256}  ${RUNNER_TEMP}/${archive}" | sha256sum --check --strict
+          tar -xzf "${RUNNER_TEMP}/${archive}" -C "${RUNNER_TEMP}" gitleaks
+          echo "${RUNNER_TEMP}" >> "${GITHUB_PATH}"
+      - name: gitleaks over the full history
+        run: gitleaks git --redact --no-banner .
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - name: No emoji characters
+        run: uv run --no-project --python 3.12 python scripts/checks/check_no_emoji.py
+      - name: No AI attribution over the full history
+        run: scripts/checks/check_no_ai_attribution.sh
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: apps/web/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - name: Install web dependencies (markdownlint, mermaid)
+        run: pnpm --dir apps/web install --frozen-lockfile
+      - name: Docs check
+        run: make docs-check
+      - name: Compose file is valid
+        run: |
+          POSTGRES_ADMIN_PASSWORD="$(openssl rand -hex 16)" POSTGRES_APP_PASSWORD="$(openssl rand -hex 16)" \
+            docker compose --profile '*' config --quiet
+
+  audit:
+    name: audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: pip-audit (fails on any known vulnerability)
+        run: |
+          uv export --frozen --all-packages --no-emit-workspace --format requirements-txt \
+            -o "${RUNNER_TEMP}/requirements-audit.txt"
+          uv run --frozen pip-audit -r "${RUNNER_TEMP}/requirements-audit.txt" \
+            --require-hashes --disable-pip --progress-spinner off
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: apps/web/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: pnpm audit (production dependencies, high and critical)
+        working-directory: apps/web
+        run: pnpm audit --prod --audit-level high
