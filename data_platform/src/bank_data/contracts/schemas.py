@@ -8,8 +8,8 @@ them first and bronze keeps them as nullable strings.
 from functools import cache
 
 import pandas as pd
-import pandera.pandas as pa
 
+from bank_data.contracts._pandera import pa
 from bank_data.contracts.parsing import PANDAS_DTYPES
 from bank_data.contracts.tables import (
     CONTRACT_VERSION,

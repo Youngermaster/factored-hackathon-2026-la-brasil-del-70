@@ -19,8 +19,8 @@ from dataclasses import dataclass
 from datetime import date
 
 import pandas as pd
-import pandera.errors
 
+from bank_data.contracts._pandera import errors as pandera_errors
 from bank_data.contracts.parsing import ParsedColumn, parse_column
 from bank_data.contracts.schemas import SURVEY_SCORE_CHECK, schema_for
 from bank_data.contracts.tables import TableSpec
@@ -102,8 +102,8 @@ def validate_rows(
     typed = pd.DataFrame({name: item.values for name, item in parsed.items()}, index=index)
     try:
         schema_for(spec.name).validate(typed, lazy=True)
-    except pandera.errors.SchemaErrors as errors:
-        cases = errors.failure_cases
+    except pandera_errors.SchemaErrors as failure:
+        cases = failure.failure_cases
         order = {name: position for position, name in enumerate(spec.column_names)}
         cases = cases.assign(_order=cases["column"].map(order).fillna(len(order)))
         cases = cases.sort_values(["_order", "check_number"], kind="stable", na_position="last")

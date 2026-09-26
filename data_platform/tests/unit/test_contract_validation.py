@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Annotated, NewType
 
 import pandas as pd
 import pytest
@@ -158,3 +159,13 @@ def test_partition_mismatch_is_quarantined() -> None:
 )
 def test_maps_pandera_checks_to_reason_codes(check: str, reason: str) -> None:
     assert reason_for_check(check) == reason
+
+
+_Identifier = NewType("_Identifier", str)
+Identifier = Annotated[_Identifier, "constraint"]
+
+
+def test_importing_the_contracts_keeps_newtype_aliases_callable() -> None:
+    import bank_data.contracts.schemas  # noqa: F401 (the import is the subject of the test)
+
+    assert Identifier("C1") == "C1"
