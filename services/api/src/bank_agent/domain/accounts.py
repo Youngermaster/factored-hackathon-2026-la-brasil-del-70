@@ -5,11 +5,13 @@ can check each number against a record. The dataset is a monthly snapshot: every
 instant. There are no statement balances in the data, so a statement summary never shows an opening or a
 closing balance, and there is no document generation or delivery.
 
-Two conventions depend on how the data encodes signs, which phase 03 profiles:
+Two conventions depend on how the data encodes signs. Phase 03 profiled them (``docs/data/data-card.md``):
 
-- whether a credit product's ``current_balance`` is the amount owed or is negative when owed
-  (``CreditBalanceConvention``; there is deliberately no default), and
-- the direction of transfers and adjustments, which stay ``unclassified`` in statement totals.
+- ``CreditBalanceConvention`` has deliberately no default here; the organizer data uses
+  ``balance_is_amount_owed`` (every balance is non-negative), exposed by the data adapter as
+  ``DATASET_CREDIT_BALANCE_CONVENTION``. Available credit is computed for revolving credit (credit cards) only;
+- every transaction amount is positive, so the data does not say which way transfers and adjustments move
+  money, and they stay ``unclassified`` in statement totals.
 """
 
 import re
@@ -51,7 +53,7 @@ def _require_table(ref: SourceRef, table: SourceTable, name: str) -> None:
 
 
 class CreditBalanceConvention(StrEnum):
-    """How a credit product's ``current_balance`` encodes debt. Phase 03 records which one the data uses."""
+    """How a credit product's ``current_balance`` encodes debt. The organizer data: amount owed (phase 03)."""
 
     BALANCE_IS_AMOUNT_OWED = "balance_is_amount_owed"
     BALANCE_IS_NEGATIVE_WHEN_OWED = "balance_is_negative_when_owed"
@@ -103,13 +105,14 @@ class BalanceView(DomainModel):
     def from_product(cls, product: Product, convention: CreditBalanceConvention | None = None) -> Self:
         """Build the view from a product that has a balance.
 
-        ``available_credit`` is computed only for a credit product with a limit and only when a convention is
-        given. Raises ``ValueError`` when the product has no balance.
+        ``available_credit`` is computed only for revolving credit (a credit card) with a limit and only when a
+        convention is given; loans show their balance and limit without it. Raises ``ValueError`` when the
+        product has no balance.
         """
         if product.current_balance is None or product.balance_as_of is None:
             raise ValueError("the product has no balance")
         available: AvailableCredit | None = None
-        if convention is not None and product.credit_limit is not None and product.is_credit_product:
+        if convention is not None and product.credit_limit is not None and product.is_revolving_credit:
             available = available_credit(product.credit_limit, product.current_balance, convention)
         return cls(
             product_ref=SourceRef.of(SourceTable.PRODUCTS, product.product_id),
@@ -177,8 +180,9 @@ def direction_of(product_type: ProductType, transaction_type: TransactionType) -
     """Which way a transaction moves the product's balance.
 
     A deposit is a credit; a purchase or a withdrawal is a debit; a payment is a credit on a credit product
-    (it reduces the debt) and a debit on any other product. Transfers and adjustments are unclassified until
-    phase 03 profiles the amount signs.
+    (it reduces the debt) and a debit on any other product. Transfers and adjustments are unclassified: phase
+    03 found every amount positive (the smallest transfer is 100.01, the smallest adjustment 10.00), so the
+    data does not encode their direction.
     """
     if transaction_type is TransactionType.DEPOSIT:
         return EntryDirection.CREDIT

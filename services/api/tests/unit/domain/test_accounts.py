@@ -136,6 +136,20 @@ def test_balance_view_with_a_convention_computes_available_credit() -> None:
     assert view.available_credit == mxn("11550.00")
 
 
+def test_balance_view_of_a_loan_shows_balance_and_limit_without_available_credit() -> None:
+    loan = product(
+        "PRD-A-LOAN",
+        product_type=ProductType.PERSONAL_LOAN,
+        current_balance=mxn("9000"),
+        credit_limit=mxn("10000"),
+        balance_as_of=T0,
+    )
+    view = BalanceView.from_product(loan, CreditBalanceConvention.BALANCE_IS_AMOUNT_OWED)
+    assert view.credit_limit == mxn("10000")
+    assert view.available_credit is None
+    assert view.over_limit is False
+
+
 def test_balance_view_of_a_deposit_account_has_no_available_credit() -> None:
     savings = product(
         "PRD-A-SAVE", product_type=ProductType.SAVINGS_ACCOUNT, current_balance=mxn("15200"), balance_as_of=T0

@@ -28,7 +28,7 @@ class ProductType(StrEnum):
     MORTGAGE = "mortgage"
     INVESTMENT = "investment"
     OTHER = "other"
-    """Values beyond the documented list (the source list is truncated); phase 03 reports them."""
+    """Values beyond this list. Phase 03 found one: insurance (``Seguro``), served as ``other``."""
 
 
 class ProductStatus(StrEnum):
@@ -40,6 +40,9 @@ class ProductStatus(StrEnum):
 
 CARD_TYPES = frozenset({ProductType.CREDIT_CARD, ProductType.DEBIT_CARD})
 CREDIT_PRODUCT_TYPES = frozenset({ProductType.CREDIT_CARD, ProductType.PERSONAL_LOAN, ProductType.MORTGAGE})
+REVOLVING_CREDIT_TYPES = frozenset({ProductType.CREDIT_CARD})
+"""Products with a drawable credit line. A loan's ``credit_limit`` in the data is not one (phase 03 profiling:
+mortgage balances exceed their limit in 49% of rows), so available credit is computed for these only."""
 
 MAX_ANNUAL_RATE = Decimal("999.99")
 """``interest_rate`` is ``DECIMAL(5,2)``; annual rates above 100 percent occur (for example in Argentina)."""
@@ -80,6 +83,10 @@ class Product(DomainModel):
     @property
     def is_credit_product(self) -> bool:
         return self.product_type in CREDIT_PRODUCT_TYPES
+
+    @property
+    def is_revolving_credit(self) -> bool:
+        return self.product_type in REVOLVING_CREDIT_TYPES
 
     def blocked(self) -> Self:
         """Return this card blocked. Blocking a blocked card is a no-op.
