@@ -106,7 +106,7 @@ def _calibration(name: str, model: dict[str, Any]) -> list[str]:
     accuracy = ", ".join(f"{b['accuracy']:.3f}" for b in bins)
     confidence = ", ".join(f"{b['mean_confidence']:.3f}" for b in bins)
     lines = [
-        f"#### `{name}`",
+        f"### `{name}`",
         "",
         "```mermaid",
         "xychart-beta",
@@ -231,7 +231,7 @@ def _validation(result: dict[str, Any]) -> list[str]:
 def _errors(result: dict[str, Any]) -> list[str]:
     lines: list[str] = []
     for name, rows in result["errors"].items():
-        lines += [f"#### `{name}`", ""]
+        lines += [f"### `{name}`", ""]
         lines += table(
             ["Text (synthetic)", "Locale", "True", "Predicted", "Confidence"],
             [
@@ -262,7 +262,7 @@ def render(result: dict[str, Any]) -> str:
     sections += ["## Workflow confusion (test)", ""]
     for name, model in result["models"].items():
         if name in result["artifacts"] or name == "keyword@1":
-            sections += [f"#### `{name}`", "", *_confusion(model["test"]["workflow_confusion"]), ""]
+            sections += [f"### `{name}`", "", *_confusion(model["test"]["workflow_confusion"]), ""]
     sections += ["## Calibration and coverage (test)", ""]
     for name, model in result["models"].items():
         if name in result["artifacts"]:

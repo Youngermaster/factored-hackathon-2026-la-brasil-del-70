@@ -78,7 +78,7 @@ def _silver(result: dict[str, Any]) -> list[str]:
 def _failures(result: dict[str, Any]) -> list[str]:
     lines: list[str] = []
     for name, rows in result["failures"].items():
-        lines += [f"#### `{name}`", ""]
+        lines += [f"### `{name}`", ""]
         if not rows:
             lines += ["No failures on test.", ""]
             continue
