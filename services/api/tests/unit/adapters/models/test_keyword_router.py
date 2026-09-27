@@ -32,6 +32,8 @@ ROUTER = KeywordIntentRouter()
         ("Recomiéndame una inversión", Intent.UNSUPPORTED),
         ("Quero um aumento de limite", Intent.UNSUPPORTED),
         ("Quiero hacer una transferencia", Intent.UNSUPPORTED),
+        ("Quiero un contracargo ya", Intent.UNSUPPORTED),
+        ("Me garantizas el reembolso?", Intent.UNSUPPORTED),
         ("Quiero un préstamo", Intent.CREDIT_PRODUCT_INFO),
         ("¿Cuál es mi saldo?", Intent.BALANCE_INQUIRY),
         ("Hola", Intent.GREETING_OR_OTHER),

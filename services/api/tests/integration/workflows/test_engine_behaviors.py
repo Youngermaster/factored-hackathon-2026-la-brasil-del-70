@@ -2,6 +2,8 @@
 
 from datetime import timedelta
 
+from pydantic import JsonValue
+
 from bank_agent.application.engine.llm import PHRASE_RESPONSE
 from bank_agent.domain.conversation import NoticeCode
 from bank_agent.domain.execution_record import RetrievalDecisionCode
@@ -170,8 +172,11 @@ async def test_model_phrasing_is_used_only_when_it_passes_the_verifier(memory_on
 
 async def test_a_model_handoff_summary_is_kept_only_when_grounded(memory_only: Backend) -> None:
     summarize = PromptRef(prompt_id="summarize_for_handoff", version=1)
-    good = {"summary": "El cliente disputa una transaccion de 15000.00 MXN del 2026-06-12.", "cited_fact_ids": ["F1"]}
-    bad = {"summary": "El cliente pide un reembolso de 99999 MXN.", "cited_fact_ids": ["F1"]}
+    good: dict[str, JsonValue] = {
+        "summary": "El cliente disputa una transaccion de 15000.00 MXN del 2026-06-12.",
+        "cited_fact_ids": ["F1"],
+    }
+    bad: dict[str, JsonValue] = {"summary": "El cliente pide un reembolso de 99999 MXN.", "cited_fact_ids": ["F1"]}
     for output, kept in ((good, True), (bad, False)):
         fake = FakeLLM()
         fake.script(SIGNALS, ScriptedResponse(output=NO_SIGNALS))

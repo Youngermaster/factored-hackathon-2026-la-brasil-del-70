@@ -76,7 +76,11 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
     Intent.UNSUPPORTED: (
         (r"invers|invert|acciones de|cripto|investimento|investir|recomienda|recomenda", _STRONG),
         (r"aument(o|ar) (de |el |mi |o |do )?(limite|cupo)", _STRONG),
-        (r"reembolso (ya|ahora)|devuelvan (mi|el) dinero|estorno (ja|imediato)|devolvam", _STRONG),
+        (
+            r"reembolso (ya|ahora)|devuelvan (mi|el) dinero|estorno (ja|imediato)|devolvam|contracargo|chargeback",
+            _STRONG,
+        ),
+        (r"garantiz\w* (el |que me )?(reembolso|devuelvan)|garant\w* (o )?estorno", _STRONG),
         (r"(hacer|haz|quiero) una transferencia|transferir|fazer uma transferencia|pagar (mi|a|la|o|minha)", _MEDIUM),
         (r"invest|increase my limit|transfer money", _STRONG),
     ),
