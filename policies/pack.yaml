@@ -1,0 +1,7 @@
+# Synthetic policy pack for the Factored AI & Data Hackathon 2026 prototype.
+# Team-authored demonstration content: not a real regulation and not any real bank's terms.
+pack_id: bank-agent-synthetic
+label: Synthetic customer-service policy pack (demonstration only)
+synthetic: true
+supported_workflows: [account_inquiry, card_support, dispute, credit]
+languages: [es, pt, en]

@@ -1,0 +1,23 @@
+# The action matrix: every write action, what it requires, and the workflow states that may perform it.
+# CLAUDE.md section 7: every write requires step-up authentication, and every write needs the customer's
+# explicit confirmation. A state is only meaningful with its workflow, because state names repeat.
+actions:
+  - action: create_dispute_case
+    requires_confirmation: true
+    required_auth_level: otp_verified
+    requires_step_up: true
+    allowed_states:
+      dispute: [CONFIRM_DISPUTE, CREATE_CASE]
+  - action: block_card
+    requires_confirmation: true
+    required_auth_level: otp_verified
+    requires_step_up: true
+    allowed_states:
+      card_support: [CONFIRM_BLOCK, EXECUTE_BLOCK]
+      dispute: [OFFER_CARD_BLOCK, EXECUTE_BLOCK]
+  - action: submit_credit_application
+    requires_confirmation: true
+    required_auth_level: otp_verified
+    requires_step_up: true
+    allowed_states:
+      credit: [CONFIRM_APPLICATION, SUBMIT_APPLICATION]
