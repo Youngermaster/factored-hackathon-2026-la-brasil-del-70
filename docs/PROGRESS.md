@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 10, session 10a: shared ML foundations, the learned intent router (`router:tfidf`, `router:embeddings`) and transaction resolver (`resolver:lgbm`) behind their ports, loaded through the filesystem `ModelRegistry`, evaluated against the rule baselines, and promoted; the rule baselines stay the defaults |
-| Next phase | 10, session 10b (`kit/prompts/10-learned-components.md`, session 10b): the credit risk estimator on the same foundations. The phase 09 prompt still asks that phase 11 start after the 09a and 09b walkthroughs (pending actions 21 and 25) |
+| Last completed phase | 10, session 10b: the learned credit risk estimator. `risk_estimator:logreg` (promoted on test) and `risk_estimator:lgbm` (promotion refused: no gain over logistic regression) are cross-sectional snapshot risk estimates on synthetic data, behind the `RiskEstimator` port and loaded through the filesystem `ModelRegistry`. The score-band baseline stays the default |
+| Next phase | 11, API and security (`kit/prompts/11-api-security.md`). The phase 09 prompt still asks that phase 11 start after the 09a and 09b walkthroughs (pending actions 21 and 25) |
 | Blocked | None |
 
-Pending human actions (none blocks session 10b; the phase 09 prompt asks that phase 11 start after actions 21 and 25):
+Pending human actions (the phase 09 prompt asks that phase 11 start after actions 21 and 25):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -48,7 +48,114 @@ Pending human actions (none blocks session 10b; the phase 09 prompt asks that ph
 31. **Review the promotions and the learned-model defaults.** The session promoted `router:tfidf`, `router:embeddings`, and `resolver:lgbm` under the delegated approval (records in `data/artifacts/models/*/*/promotions.jsonl`). The defaults stay on the rule baselines until phase 14 (ADRs 0015 and 0016). To re-promote after retraining, run `make promote APPROVED_BY="Name"`.
 32. **Resolved (2026-09-27): duplicate ADR number 0025.** The human chose to renumber the session 09b record to `0029-in-domain-unsupported-requests.md`; the teammate's `0025-tuesday-account-inquiry-mvp-and-observability.md` keeps its number. The human also decided the build does not follow ADR 0025's Tuesday MVP scope: all four workflows stay automated as built.
 
+33. **Review the risk estimator promotion and the default** ([model card](models/risk-estimator.md), [ADR 0030](adr/0030-credit-risk-estimator.md)). The session promoted `risk_estimator:logreg@2afb401aa70e` and refused `risk_estimator:lgbm@1c54c935b495` on test, under the delegated approval (records in `data/artifacts/models/risk_estimator/*/promotions.jsonl`). The label is cross-sectional (one snapshot), and the only signal is the credit product count. `WORKFLOW_RISK_ESTIMATOR` stays `score_band@1` until phase 14 (BACKLOG).
+34. **Feed a finding into action 17.** Credit score shows no association with snapshot delinquency on the full delivery (test ROC AUC 0.504 for the score bands; univariate 0.495), so the synthetic `ELG` score minimums find no support in this label. This is a question for the reviewers of the synthetic thresholds, not a policy change.
+
 ## Phase log
+
+### Phase 10, session 10b: the learned credit risk estimator (2026-09-27)
+
+Plan: `docs/plans/phase-10b.md` (not a plan-mode phase; the human delegated approvals). Every open question is decided in the plan with its reasoning, including the label, the promotion rule, and the interval criterion. All three were fixed before any test number existed. The pull at the start was a fast-forward no-op ("Already up to date").
+
+This is a risk estimate trained on synthetic organizer data. It is not a lending model, it is not validated for any real credit decision, and it never approves or declines anything. It is one input to the synthetic eligibility service, which is also labeled synthetic.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `e9ea0a1`, `e90475c` | The plan, with the data findings that shape it and the decided open questions |
+| `e29d006` | `bank_agent`: the shared `risk_features@1` vector, the `risk_classifier/1` artifact (linear or tree scorer, identity, Platt, or isotonic calibrator, bootstrap or Venn-Abers interval, policy cut points, train ranges), `LearnedRiskEstimator` (`risk_estimator:logreg`, `risk_estimator:lgbm`), and `WORKFLOW_RISK_ESTIMATOR` selection with the baseline fallback. The contract suite now covers the score-band, `logreg`, and `lgbm` estimators |
+| `9feec3c` | `bank_ml.risk`, with the risk label and protected-attribute denylists in `bank_ml.common.leakage`:<br>- the label (cross-sectional, plus a forward-looking mode) and the gold reader (separate feature, label, and slice queries);<br>- the dataset, logistic regression, and monotone LightGBM;<br>- calibration, bootstrap and Venn-Abers intervals, and numpy scoring checked against the adapter;<br>- the test evaluation, slices and disparities, the test-based promotion, the report, and `bank-ml risk` |
+| `f45154c` | Integration tests on a synthetic gold fixture (train, evaluate, promote, serve, cut points, reproducibility, CLI); `make train` and `make promote` include the risk estimator |
+| `5ec6b61` | Generated `docs/evaluation/risk-estimator.md` (full gold, clean commit `f45154c`) |
+| `a1076e8`, `73c3a35` | Model card, ADR 0030, README, index, credit-separation, and credit-workflow updates; the separation test also runs with a learned estimator; test typing |
+| This commit | BACKLOG and this entry |
+
+#### Label and data
+
+- **Label** `snapshot_dpd30_any_credit_product`: any open credit product 30 or more days past due. The delivery has one snapshot, so the label is **cross-sectional**. It measures a concurrent association, not a forecast.
+- **Population.** 77,229 customers with an open credit product and known values. 2,784 are excluded as unknown, and 3,178 as partly unknown.
+- **Splits.** Customer hash 60/20/20: train 46,264; dev 15,643, halved into calibration and selection; test 15,322. Prevalence is 17.1%.
+- **What the data shows.**
+  - Delinquency is about 12.4% per credit product, independent of type and status.
+  - The customer rate follows the credit product count.
+  - Credit score, income, tenure, and utilization show no association (univariate ROC AUC 0.495 to 0.502).
+  - Rates by country, segment, and every protected attribute are 16% to 18%.
+
+#### Headline results (test split, scored once; 95% customer bootstrap intervals)
+
+| Model | ROC AUC | PR AUC | Brier | ECE |
+|---|---|---|---|---|
+| `score_band@1` (shipped priors) | 0.504 [0.492, 0.514] | 0.174 | 0.1935 | 0.1938 |
+| Score bands re-estimated on train | 0.505 [0.493, 0.517] | 0.174 | 0.1428 | 0.0031 |
+| `logreg` | 0.611 [0.599, 0.623] | 0.258 [0.246, 0.273] | 0.1383 | 0.0078 |
+| `lgbm` | 0.612 [0.599, 0.624] | 0.257 [0.243, 0.272] | 0.1380 | 0.0039 |
+
+- **Paired differences.** `logreg` against the shipped bands: ROC AUC +0.107 [+0.093, +0.124]. `lgbm` against `logreg`: +0.001 [-0.005, +0.007], and PR AUC -0.001.
+- **Promotion** (`make promote`, approver "orchestrator (human-delegated approval, session 10b)"):
+  - `risk_estimator:logreg@2afb401aa70e` promoted to champion;
+  - `risk_estimator:lgbm@1c54c935b495` refused, because it does not beat logistic regression;
+  - the router and resolver promotions were no-ops (already champions).
+- **Bands** (policy cuts 0.20 and 0.35): both models put 67.0% of customers in low, 31.4% to 31.5% in medium, and 1.5% to 1.6% in high. Borderline intervals are 22.2% for logreg (two-product customers sit at about 0.215) and 2.6% for lgbm.
+- **Intervals** (chosen on dev by the pre-registered rule): the bootstrap ensemble for logreg (mean width 0.0145) and Venn-Abers for lgbm (0.0087). Test group coverage is 1.00 for both; the stricter inside share is 0.40 and 0.20.
+- **Disparities.** By country, segment, and within-country income tertile, calibration gaps range from -0.010 to +0.005 and ROC AUC from 0.595 to 0.624, with low-band shares of 65.5% to 69.7%. No group is listed. This is a disparity report, not a fairness certification.
+
+#### Decisions
+
+- [ADR 0030](adr/0030-credit-risk-estimator.md): the cross-sectional label and its forward mode, the four served allowlisted features, the dev-chosen calibration and interval, the policy bands, the test-based promotion, and why the estimator stays separate from eligibility policy.
+- **Features.** Credit score, tenure, credit product count, and utilization, read from the table the API serves through one shared function. The excluded fields and the reasons:
+  - days past due: they define the label;
+  - statuses: they date from the same snapshot as the label;
+  - application fields: the snapshot has no applications;
+  - income: never served in USD;
+  - protected and proxy attributes and identifiers: never features (guard and source scan).
+- **Bands** come from the pack's `ELG-ALL-2` cut points rather than a dev choice, so the estimator and the eligibility service agree. Dev reports the band populations.
+- **Promotion on test**, as the human asked. The rule was pre-registered: a paired lower bound of the ROC AUC gain above zero against every reference, PR AUC not lower, Brier within 0.002, and ECE at most 0.03.
+- **Serving.** A missing artifact serves the baseline; a corrupt one stops startup; a scoring failure raises `risk_estimator_unavailable`. An out-of-distribution profile gets band `unknown`.
+- **ADR number** 0030 (the prompt's 0023 is taken). No new dependency.
+
+Deviations from the prompt and plan, found during implementation:
+
+- **Venn-Abers edges** sit at midpoints between distinct train scores. Tree ensembles give few distinct scores, and a score on an edge flipped bins between numpy and pure-Python summation; the adapter check caught it.
+- **The credit product count slice** is reported as diagnostic only and never listed, because it is the model's main feature, not a population group.
+- **`make train` was not run in full.** The session ran `bank-ml risk train` and `bank-ml risk evaluate`, the two lines `make train` adds, so the committed router and resolver reports were not regenerated only to change their timestamps. Retraining reproduced the same artifact versions as a scratch run.
+- **The CLI takes `--artifacts-dir`**, so tests never write under `data/`.
+
+#### How to verify
+
+```bash
+make check                                              # needs Docker; never reads .env
+uv run pytest ml/tests/unit/risk ml/tests/integration/test_risk_pipeline.py -q
+uv run pytest services/api/tests/unit/adapters/models/test_learned_risk.py services/api/tests/contracts/test_credit_model_ports_contract.py -q
+uv run bank-ml risk train && uv run bank-ml risk evaluate   # needs the s3 gold; about 50 seconds
+make promote APPROVED_BY="Name Surname"
+# WORKFLOW_RISK_ESTIMATOR=logreg@champion opts the API in to the learned estimator
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 (at `73c3a35`, before this entry) |
+| Python tests | 2,392 unit and 1,183 integration tests pass (2,293 and 1,175 after 10a) |
+| Coverage gates | All 11 pass: `ml/src` 98.3%, adapters 98.1%, bootstrap 99.3%, application 92.9%, domain 99.7%, ports 100% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 63 mermaid blocks in 290 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+| Reproducibility | Retraining gives identical artifact versions and metrics (integration test; the full-gold run matched a scratch run: `2afb401aa70e`, `1c54c935b495`) |
+
+#### Known limitations
+
+- The estimate is cross-sectional and synthetic, and its only signal is structural (the number of credit products). It says nothing about creditworthiness, and credit score carries no association with the label (pending action 34).
+- The eligibility service already sends any customer with days past due above zero to review, so the estimate is read only for customers whose own label is negative.
+- With a learned estimator, every first-time applicant is out of distribution and goes to review (BACKLOG).
+- The estimate does not depend on the requested product, term, or amount.
+- The group-coverage criterion is lenient; the stricter inside share is reported next to it.
+- The default stays `score_band@1` until phase 14 (BACKLOG).
+
+#### Next phase
+
+Phase 11, API and security (`kit/prompts/11-api-security.md`). The phase 09 prompt asks that it start after the team's 09a and 09b walkthroughs (pending actions 21 and 25).
 
 ### Phase 10, session 10a: shared ML foundations, the learned router, and the transaction resolver (2026-09-27)
 
