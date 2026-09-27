@@ -7,7 +7,8 @@ fall before the cutoff and test instants after the cutoff plus the gap, from tes
 reference instant: the country's dispute window (``DSP-*-1``) for ``dispute``, payments and transfers inside
 ``ACC-ALL-2`` for ``payment_lookup``. In dev and test, 10% of queries drop the target from the candidates
 (``target_absent``): the right behavior there is to not auto-select anything. Descriptions come from
-``describe`` (30% in Portuguese), and descriptors from the engine's deterministic understanding.
+``describe`` (30% in Portuguese), and descriptors from the engine's deterministic understanding. The content hash
+covers the descriptors too, so a change in the understanding code makes a trained model stale.
 """
 
 from collections import Counter
@@ -180,7 +181,8 @@ def _queries(reader: GoldReader, use: str, config: ResolverConfig) -> list[Query
 def _card(queries: list[Query], config: ResolverConfig) -> DatasetCard:
     rows = [
         {"query_id": q.query_id, "split": q.split, "text": q.text, "target": q.target_id,
-         "candidates": [t.transaction_id for t in q.candidates], "now": q.now.isoformat()}
+         "candidates": [t.transaction_id for t in q.candidates], "now": q.now.isoformat(),
+         "descriptor": q.descriptor.model_dump(mode="json")}
         for q in queries
     ]  # fmt: skip
     sizes = Counter(len(q.candidates) for q in queries)
