@@ -46,6 +46,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0022](adr/0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source |
 | [adr/0023](adr/0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending |
 | [adr/0024](adr/0024-workflow-registry-with-router-dispatch.md) | A workflow registry with router dispatch over one generic engine |
+| [adr/0025](adr/0025-tuesday-account-inquiry-mvp-and-observability.md) | Tuesday MVP includes account inquiry, mock escalation, and assistant profile |
+| [adr/0026](adr/0026-live-agent-joins-escalated-conversation.md) | Human escalation progresses from simulated replies to a human service agent joining the conversation |
+| [adr/0027](adr/0027-opt-in-financial-memory-and-guidance.md) | Financial memory and guidance are opt-in and grounded |
+| [adr/0028](adr/0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces |
 
 ## Data
 
