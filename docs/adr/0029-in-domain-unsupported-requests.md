@@ -1,4 +1,4 @@
-# 0025: In-domain unsupported requests are abstained by the owning workflow
+# 0029: In-domain unsupported requests are abstained by the owning workflow
 
 - Status: accepted
 - Date: 2026-09-27

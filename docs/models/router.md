@@ -60,7 +60,7 @@ Artifacts are JSON parameters, evaluated in pure Python inside `bank_agent`. The
 
 - Every utterance was written or derived by the team (one author pool, which also wrote the keyword baseline), so accuracy on real customers will differ. Human validation of 200 items (`docs/evaluation/router-labeling.md`) and native review of pt-BR are pending.
 - Dev and test are small (68 and 136 seed groups), so intervals are wide and the test error at the dev threshold exceeds the dev target.
-- The out-of-scope class is weak; the in-domain unsupported recognizers (ADR 0025) and the out-of-scope answer remain the safety net.
+- The out-of-scope class is weak; the in-domain unsupported recognizers (ADR 0029) and the out-of-scope answer remain the safety net.
 - No language-model paraphrase or zero-shot reference was run (no provider).
 - The embedding router needs the `ml` extra, which the API image does not install; without it the composition root serves the keyword baseline and logs the fallback.
 

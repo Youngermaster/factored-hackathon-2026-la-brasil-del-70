@@ -29,6 +29,6 @@ The `IntentRouter` port needs a learned implementation that beats `router:keywor
 ## Consequences
 
 - Training and serving share one analyzer (`text_features.router_terms`) and the same adapter, so what is evaluated is what serves.
-- The out-of-scope class is weak for every model (embeddings 0.281, TF-IDF 0.031 on test). The in-domain unsupported recognizers (ADR 0025) and the out-of-scope answer remain the safety net, and more `unsupported` seeds are the first data to add.
+- The out-of-scope class is weak for every model (embeddings 0.281, TF-IDF 0.031 on test). The in-domain unsupported recognizers (ADR 0029) and the out-of-scope answer remain the safety net, and more `unsupported` seeds are the first data to add.
 - The test error among covered items (about 10%) is twice the dev target of 5%; dev has 68 seed groups. Human labels, native pt review, and generated paraphrases (all pending) are the next inputs, followed by retraining and re-choosing the threshold.
 - Serving embeddings requires the `ml` extra (806 MB). Where it is absent, the composition root falls back to the keyword baseline and logs the reason.

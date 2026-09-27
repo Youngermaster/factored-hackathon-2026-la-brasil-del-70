@@ -46,7 +46,7 @@ Pending human actions (none blocks session 10b; the phase 09 prompt asks that ph
 29. **Generate the router paraphrases once a provider is chosen** (after actions 5 and 6): `bank-ml router paraphrase --purpose train` and `--purpose eval`, review the rows (`review_status: pending`), record the cassettes, and rerun `make train`. No cassette exists yet, and none was fabricated.
 30. **Verify the 12 silver complaint-to-transaction matches** in `data/labeling/resolver_silver_sample.csv` (gitignored; regenerate with `bank-ml resolver evaluate`), marking `verified_match` yes or no. The result feeds the dispute data support item (BACKLOG).
 31. **Review the promotions and the learned-model defaults.** The session promoted `router:tfidf`, `router:embeddings`, and `resolver:lgbm` under the delegated approval (records in `data/artifacts/models/*/*/promotions.jsonl`). The defaults stay on the rule baselines until phase 14 (ADRs 0015 and 0016). To re-promote after retraining, run `make promote APPROVED_BY="Name"`.
-32. **Two ADRs carry number 0025** (`0025-in-domain-unsupported-requests.md` from session 09b and `0025-tuesday-account-inquiry-mvp-and-observability.md` from PR #2). Decide which one to renumber; this session did not rename a teammate's file.
+32. **Resolved (2026-09-27): duplicate ADR number 0025.** The human chose to renumber the session 09b record to `0029-in-domain-unsupported-requests.md`; the teammate's `0025-tuesday-account-inquiry-mvp-and-observability.md` keeps its number. The human also decided the build does not follow ADR 0025's Tuesday MVP scope: all four workflows stay automated as built.
 
 ## Phase log
 
@@ -160,7 +160,7 @@ Plan: `docs/plans/phase-09b.md`. The prompt asks for plan mode and a team walkth
 | `f2c52c5` | Credit scenarios 24 to 29 with variants, the separation guard (recording `FakeLLM`), the Hypothesis property, the wording guards, and unit tests for periods, slots, recognizers, intake keys, signals, and router phrases |
 | `ab66cb4` | Test typing for mypy |
 | `ac139bb` | `docs/workflows/account-inquiry.md`, `docs/workflows/credit-information.md`, router, handoff, execution-record, credit-separation, and README updates; credit handoffs carry the assessment as a verified fact |
-| `005d972` | ADR 0025 and the BACKLOG rows |
+| `005d972` | ADR 0029 (numbered 0025 at the time) and the BACKLOG rows |
 | This commit | This entry |
 
 #### Review summary (walk the team through these)
@@ -168,11 +168,11 @@ Plan: `docs/plans/phase-09b.md`. The prompt asks for plan mode and a team walkth
 - **Account inquiry.** Read only (a registry test asserts no write tool and no EXECUTE state in either variant). Balances state the balance record's as-of date and show available credit on cards; payment status locates the customer's own payments and transfers through the resolver (options when two are similar) and answers from `get_payment_status` with the data as-of date (2026-06-17); statements resolve the period, ask again when it is missing or over `ACC-ALL-2`, and show totals per currency with no balances. Transfers, bill payments, due dates, and certificates abstain with `ACC-ALL-3`; a contested balance escalates with the balances as verified facts.
 - **Credit.** Catalog answers with `CRE-ALL-1`; eligibility runs ESTIMATE_RISK (engine-only profile read, `RiskEstimator` port, no default on failure) and ASSESS_ELIGIBILITY (the synthetic service) in the same turn, recorded as separate entries, then the phase 06 rendering with reasons, uncertainty, the review path, and the disclaimer. Intake only after an explanation, confirmed, stepped up, submitted with an idempotency key tied to the assessment, and read back. `review_required` and `insufficient_data` offer a handoff with `credit_review`; a declared income assesses again; a contested result hands off with `eligibility_contested`; mortgages are information only; limit increases, restructuring, disbursements, and "just approve it" abstain with `CRE-ALL-3` (and `CRE-ALL-1`) without approval wording.
 - **Separation.** The model sees customer text only (and, with phrasing on, the template text plus the outcome code, rendered reasons, and disclaimer); a test drives every credit path with understanding, phrasing, and summaries on and finds no profile or estimate value in any prompt. The verifier gets the assessment, the catalog entry, and the profile, estimate, and declared income as forbidden figures.
-- **Engine changes** are listed in the plan's first table; each adds a capability the definitions could not provide. The out-of-scope path now asks enabled workflows whether a request is their own unsupported request ([ADR 0025](adr/0025-in-domain-unsupported-requests.md)).
+- **Engine changes** are listed in the plan's first table; each adds a capability the definitions could not provide. The out-of-scope path now asks enabled workflows whether a request is their own unsupported request ([ADR 0029](adr/0029-in-domain-unsupported-requests.md)).
 
 #### Decisions
 
-- [ADR 0025](adr/0025-in-domain-unsupported-requests.md): in-domain unsupported requests are abstained by the owning workflow through a recognizer on its definition, instead of bending intent labels or adding intents.
+- [ADR 0029](adr/0029-in-domain-unsupported-requests.md): in-domain unsupported requests are abstained by the owning workflow through a recognizer on its definition, instead of bending intent labels or adding intents.
 - Balances state the record's as-of instant; payments and statements state the data as-of date from policy settings. Fixture balances are dated at 2026-06-17.
 - A credit card records a one-month term (the billing cycle and every card's catalog minimum); the purpose maps to catalog codes (`general_purpose` otherwise) and is shown before anything is recorded.
 - The estimate is never persisted in the conversation data; a later handoff re-runs the deterministic estimator for `CreditReview.risk` and records it in that turn. The assessment (no profile or estimate values) is kept in the flow data.
