@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 04, demand evidence and workflow prioritization: reason mapping, per-workflow evidence, pre-registered scores, the labeling export |
-| Next phase | 05, core banking and identity (`kit/prompts/05-core-banking-identity.md`). It seeds data for all four workflows in the order of `docs/decisions/workflow-prioritization.md` (`account_inquiry`, `card_support`, `dispute`, `credit`); pending action 0 (review of the phase 02 and 02b contracts) should come first |
-| Blocked | None. No phase 04 stop condition fired (`docs/analysis/workflow-evidence.md`, section "Stop conditions") |
+| Last completed phase | 05, core banking, identity, and customer isolation: PostgreSQL schema with forced RLS, adapters passing every shared suite, the mock identity service and sessions, banking tools with read-back verification, the demo seed |
+| Next phase | 06, policy pack and kernel (`kit/prompts/06-policy.md`). It must also publish the synthetic credit catalog (with the product codes the seed uses) and replace the tool defaults phase 05 left (statement cap, dispute SLA); see `docs/BACKLOG.md` |
+| Blocked | None |
 
-Pending human actions (none blocks phase 05):
+Pending human actions (none blocks phase 06):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -27,8 +27,102 @@ Pending human actions (none blocks phase 05):
 11. **Start the automatable-share labeling task** (`docs/analysis/labeling-protocol.md`). The 600-item sample is at `data/labeling/automatable_sample.csv` (gitignored; regenerate with `make analysis DATA_SOURCE=s3`); two labelers per item, adjudicated, without opening `automatable_prelabels.csv` first. 75 items per workflow is the floor. Expect `card_support`, `dispute`, and `credit` items to be labeled as not matching their workflow: transcripts are two balance templates. This does not block any phase; the scores use the labeled proxy until then.
 12. **Verify or replace the cost assumptions** in `data_platform/analysis/cost_assumptions.yaml` (loaded cost per handled minute: MX 0.18, CO 0.14, AR 0.16 USD; after-call work 1.15; all `assumption: true`, `verified: false`) before any cost figure leaves the repository as more than an illustration.
 13. **Review the matplotlib footprint.** matplotlib 3.11.2 with pillow, fonttools, kiwisolver, contourpy, cycler, and pyparsing adds about 54 MB to the development environment (matplotlib 24 MB, fontTools 14 MB, PIL 13 MB), at the 50 MB guideline. It was added without asking because the phase prompt names it; it is a `bank-data` dependency only and never enters the API image.
+14. **Decide whether `docs/adr/0000-team-alignment-and-hackathon-strategy.md` belongs in the ADR index.** It was merged from the team repository during phase 05 (only its whitespace was changed so `make docs-check` passes). It is not listed in `docs/adr/README.md`, and parts of it (for example a ten-day deadline and a feature lock on day 1) are team statements the phase log does not record elsewhere.
+15. **Review the phase 05 security design before phase 11 exposes it**: `docs/security/identity-and-sessions.md`, `docs/security/data-isolation.md`, and ADRs 0008 to 0010. Identity lookups and one-time codes derive their keys from `SESSION_SECRET`, so rotating it requires `make seed` again.
 
 ## Phase log
+
+### Phase 05: mock core banking, identity, and customer isolation (2026-09-27)
+
+Plan: `docs/plans/phase-05.md`. The prompt asks for plan mode; the human delegated plan approval to the orchestrator, which pre-approved a plan that follows the prompt, CLAUDE.md, and the phase 02 and 02b contracts. Every open question was decided by the session under that pre-approval and is recorded in the plan.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `0c62291` | The plan: schema, row-level security design, session design, decided open questions |
+| `fe722ae` | Alembic 1.20.0 |
+| `4c05c69` | Seven Alembic revisions: context helpers and the identity directory; products, transactions, complaints, credit profiles; dispute cases, credit applications, the action ledger table; sessions, one-time-code challenges, trust events; conversations, turns, execution records, handoffs, audit events; forced RLS; least-privilege grants, append-only triggers, the `eval` schema and `bank_evaluator` role |
+| `8a981a9`, `48f9e3d` | PostgreSQL unit of work, repositories, mappers, session store, standalone audit log, seeder; revision 0008 (audit replay check); `PostgresBackend` in both contract backend lists; one migrated testcontainers database per test session |
+| `5d029df`, `52e5ad9` | Integration tests for RLS, agent and evaluator limits, append-only tables, the credit status constraint, the evaluation schema |
+| `67faac0` | `MockIdentityProvider`, `IdentityKeys`, `DemoOtpSender`, the challenge store, `OtpPolicy` and `SessionPolicy` |
+| `e848899` | `SessionService` (login, step-up with rotation, resolution, logout, revocation), `PostgresChallengeStore`, identity integration tests |
+| `14f1161` | `ActionLedger` port (memory and PostgreSQL, contract suite), `ToolArgumentError` |
+| `47f32b8` | tzdata 2026.4 |
+| `a512409`, `b6494d9` | Banking tools (`SessionContext`, read and write tools, engine-only credit profile read, audit with redacted arguments), `WriteVerifier`, `ToolFailureInjector`; tool contract suites on memory and PostgreSQL; mapper round-trip and tool rule unit tests |
+| `9ef2238` | `bootstrap/persistence.py` and container wiring; `bank-agent db upgrade` |
+| `f12e7b3` | `bank-data seed`, `data_platform/seed/personas.yaml`, `make seed`, `make db-upgrade`; bank-data depends on bank-agent |
+| `4dd6700`, `6ada48d`, `d1ed01c`, `6de9a4c`, `9718bc8` | Adapters and application READMEs, `docs/security/identity-and-sessions.md`, `docs/security/data-isolation.md`, `docs/demo/personas.md`, ADRs 0008 to 0010, data platform README |
+| `3184ab1` | Whitespace fix in `docs/adr/0000-team-alignment-and-hackathon-strategy.md` (merged from the team repository during the phase) so `make docs-check` passes |
+| This commit | BACKLOG and this entry |
+
+#### Review summary
+
+- **Schema.** Reference tables (`customers`, `products`, `transactions`, `historical_complaints`, `credit_profiles`, `identity_directory`, `staff_members`) are read only for the application role, except `UPDATE (status, status_changed_at)` on products. Written aggregates store their validated domain document as JSONB next to the scalar columns used by queries and policies, with check constraints tying them together. Composite foreign keys keep every transaction, case, and turn on its own customer's records. Idempotency keys are unique per customer.
+- **Row-level security.** Enabled and forced on every table. Policies read `app.role` and `app.customer_id`, which the unit of work sets with `set_config(..., true)` as its first statement; without a context every policy is false. Agents read every handoff and only the cases and applications a handoff references; evaluators read records, audit events, and handoffs; the `identity` role serves sessions and challenges; the `seed` policies apply to the owner role only. Details: `docs/security/data-isolation.md`.
+- **Concurrency.** Writes take `FOR NO KEY UPDATE NOWAIT` locks; a row held by another open unit of work marks the unit of work conflicted and `commit` raises `ConcurrencyConflictError`, matching the memory adapter without blocking requests.
+- **Identity.** Persona id or document plus phone last four; unknown identifications get an indistinguishable challenge and the same error. Codes: six digits, HMAC-SHA256 with a per-challenge salt and a key derived from `SESSION_SECRET`, constant-time comparison, 5 minutes, 5 attempts, 15-minute lockout. Sessions: 256-bit token stored as a SHA-256 digest, 15-minute idle and 60-minute absolute expiry, rotation on step-up (5-minute window), logout and revocation. Details: `docs/security/identity-and-sessions.md`.
+- **Tools.** Reads for all four workflows, scoped by the session (another customer's id is not found); balances always carry `as_of`; statements total per currency and cap the period at 92 days until phase 06; the credit catalog is filtered by the verified jurisdiction. Writes: `create_dispute_case`, `block_card` (step-up required), `submit_credit_application` (status `submitted`, never a decision); all idempotent by key. No unblock or replacement tool. `get_my_credit_profile` lives on engine-only tools. Every call writes an audit event with redacted arguments in its own unit of work.
+- **Seed.** 16 customer personas and 2 staff personas selected by named criteria and a seeded hash; every workflow's normal, ambiguous, and escalation paths have a persona; two synthesized records (one open case, one application intake), labeled `seed`. Only keyed digests of document numbers and phone digits are stored.
+
+#### Decisions
+
+- [ADR 0008](adr/0008-server-side-opaque-sessions.md): server-side opaque sessions instead of JWT.
+- [ADR 0009](adr/0009-row-level-security-as-defense-in-depth.md): row-level security as defense in depth behind tool-layer scoping.
+- [ADR 0010](adr/0010-idempotency-keys-and-read-back-verification.md): idempotency keys and read-back verification for writes.
+- `AccessContext` stays the database context; the application adds `SessionContext` (session plus instant) for tools.
+- Identity keys derive from `SESSION_SECRET` with HMAC and fixed labels; no new environment variable.
+- Lifetimes are constants in code (`application/identity/policy.py`), not settings.
+- The container uses the PostgreSQL adapters when the application role is configured and empty memory adapters otherwise; the identity service needs `SESSION_SECRET`; the credit catalog is empty (`catalog-unconfigured`) until phase 06.
+- Dependencies (pinned in `uv.lock`): alembic 1.20.0 (MIT) with mako 1.4.3 (MIT), named in the CLAUDE.md stack; tzdata 2026.4 (Apache-2.0) for customer-local dates in slim images. Both are a few MB. bank-data gained a workspace dependency on bank-agent (lockfile change only).
+
+Deviations from the prompt and plan, found during implementation:
+
+- Revision 0008 was added: PostgreSQL applies SELECT policies to an explicit `ON CONFLICT` arbiter, so audit replays from contexts that cannot read audit events use a narrow `SECURITY DEFINER` digest lookup.
+- `block_card` idempotency needed a new port, `ActionLedger` (`action_idempotency` table), added to the unit of work with memory and PostgreSQL adapters and a contract suite.
+- `trust_events` was added to the schema because the `SessionStore` port stores trust state; it is append-only like the audit tables.
+- SQL is written with bound `text()` statements instead of SQLAlchemy table metadata, so there is no `tables.py` to drift from the migrations; the migrations are the only schema definition.
+- `get_product_status` returns a `ProductStatusView` (status and expiry, no balances or internal fields) for cards and other products alike.
+- The similar-transfer criterion accepts amounts within 5%, because equal amounts are rare in the data.
+- Tool suites live under `tests/contracts/` so they run on both the memory and the PostgreSQL backends.
+
+#### How to verify
+
+```bash
+make check                                                     # needs Docker; never reads .env
+make up && make seed                                           # compose PostgreSQL; full gold when BANK_DATA_SOURCE=s3
+make seed                                                      # again: same counts, no changes
+uv run pytest services/api/tests/contracts -q -k postgres      # PostgreSQL adapters in every shared suite
+uv run pytest services/api/tests/integration/test_row_level_security.py services/api/tests/integration/test_schema_guards.py -q
+uv run pytest services/api/tests/integration/test_identity_postgres.py data_platform/tests/integration/test_seed.py -q
+uv run bank-agent db upgrade                                   # schema at revision 0008
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1,387 unit and 208 integration tests pass (1,326 and 63 before); the PostgreSQL adapters run every shared contract suite |
+| Coverage gates | All 11 pass: application 95.4%, adapters 98.0%, bootstrap 100%, domain 99.7%, ports 100%, `data_platform/src` 96.7% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 27 mermaid blocks in 94 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+| `make seed` (full delivery, `BANK_DATA_SOURCE=s3`) | 200 customers, 559 products, 6,119 transactions, 84 complaints, 200 credit profiles, 200 identity entries, 2 staff, 1 seeded case, 1 seeded application; selection in about 1 second; a second run leaves the same counts; schema at revision 0008 |
+
+#### Known limitations
+
+- The development and test owner is the image superuser, which bypasses RLS; the seed policies and the audit replay check are written for a non-superuser owner that phase 16 must introduce and verify.
+- RLS protects rows, not columns: internal fields (fraud labels, days past due, credit profile facts) must still be stripped from customer-facing DTOs and model inputs (BACKLOG, phases 09 and 11).
+- No HTTP routes, cookies, or CSRF yet (phase 11); `DemoOtpSender` is the only code delivery.
+- The credit catalog is empty until phase 06; the seeded application names `CO-PL-STANDARD`, which phase 06 must publish. The statement cap (92 days) and dispute SLA (15 days) are defaults until phase 06 policy parameters exist.
+- Seeded data ends at the 2026-06-17 snapshot; time-based policy windows must use the data's as-of instant (BACKLOG, phase 06).
+- Portuguese paths are played by Mexican, Colombian, and Argentine personas: the data has no Brazilian customers.
+- Nothing purges expired sessions and challenges yet (BACKLOG, phase 15).
+
+#### Next phase
+
+Phase 06, policy pack and kernel (`kit/prompts/06-policy.md`): the synthetic clauses in the prioritization order, the `ELG` eligibility parameters, the synthetic credit catalog (including the product codes the seed uses), and the tool parameters that phase 05 left as defaults.
 
 ### Phase 04: demand evidence and workflow prioritization (2026-09-26)
 
