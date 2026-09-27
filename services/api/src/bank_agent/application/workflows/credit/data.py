@@ -16,7 +16,7 @@ from bank_agent.application.engine.data import dump
 from bank_agent.application.engine.shared import spend_clarification
 from bank_agent.domain.base import DomainModel
 from bank_agent.domain.credit import CreditProductType, TermMonths
-from bank_agent.domain.eligibility import EligibilityAssessment
+from bank_agent.domain.eligibility import EligibilityAssessment, EligibilityOutcome
 from bank_agent.domain.identifiers import CreditProductCode
 from bank_agent.domain.money import Currency, Money
 from bank_agent.domain.workflow import Intent
@@ -75,6 +75,8 @@ def open_questions(data: CreditData) -> tuple[str, ...]:
             questions.append("What term does the customer want?")
     if data.assessment is not None and data.assessment.missing_facts:
         questions.append("Which missing information can the customer or the records provide?")
+    elif data.assessment is not None and data.assessment.outcome is not EligibilityOutcome.INDICATIVELY_ELIGIBLE:
+        questions.append("What does the credit team conclude after reviewing the flagged request?")
     return tuple(questions)
 
 

@@ -66,4 +66,14 @@ A submitted intake is a review item of its own, listed for agents in phase 13; i
 
 ## Implementation
 
+The credit workflow (session 09b, [credit information](../workflows/credit-information.md)) enforces the separation in the engine, not in prompts:
+
+| Component | Where | Enforcement |
+|---|---|---|
+| Conversation handling | `workflows/credit/understand.py`, `info.py`, `collect.py`, `explain.py`, `templates/credit.py` | The model receives only the customer's message (`extract_credit_slots`) and, with phrasing on, the template text plus the outcome code, rendered reasons, and disclaimer; a recording-`FakeLLM` test asserts no prompt carries a profile or estimate value |
+| Risk estimate | `workflows/credit/assessment.py`, `adapters/models/score_band_risk.py` | Called by the engine through `CreditPorts.risk_estimator`; the profile comes from the engine-only tool (on no allowlist; the registry refuses it); an unavailable estimator gives `None`; the estimate lives in `TurnContext.turn_values` for one turn and in `ExecutionRecord.risk_estimates` |
+| Eligibility policy | `workflows/credit/assessment.py` | Called through `CreditPorts.eligibility` with the estimate or `None`; the assessment is recorded in `eligibility_assessments`, apart from the estimate, and kept in the flow data (it carries no profile or estimate value) |
+
+The customer view is the phase 06 rendering of `EligibilityView`; the verifier checks every credit reply with the assessment (outcome claims), the catalog entry (figures), and the profile, estimate, and declared income as forbidden figures, and refuses approval wording. The baseline estimator is `risk_estimator:score_band@1` until phase 10.
+
 The `EligibilityPolicy` port is implemented by `SyntheticEligibilityService` on the policy kernel (phase 06, [ADR 0011](../adr/0011-policy-as-data-and-pure-rule-functions.md)). Its rules, parameters per jurisdiction and product, outcome mapping, and customer-facing rendering are in [docs/policy/eligibility.md](../policy/eligibility.md); the synthetic catalog is under `policies/credit/` and listed in the [policy catalog](../policy/catalog.md#credit-catalog).

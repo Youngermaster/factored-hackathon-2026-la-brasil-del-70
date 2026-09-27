@@ -29,6 +29,7 @@ from bank_agent.domain.eligibility import (
 )
 from bank_agent.domain.errors import EligibilityServiceUnavailableError, RiskEstimatorUnavailableError
 from bank_agent.domain.escalation import EscalationReasonCode
+from bank_agent.domain.identifiers import SourceRef, SourceTable
 from bank_agent.domain.locale import Country
 from bank_agent.domain.money import Money
 from bank_agent.ports.eligibility import CreditApplicationFacts, EligibilityRequest
@@ -162,5 +163,9 @@ async def assess_step(ctx: TurnContext) -> Step:
     except EligibilityServiceUnavailableError as error:
         return escalate(ctx, EscalationReasonCode.OTHER, error.code)
     ctx.recorder.eligibility_assessments.append(EligibilityAssessmentRecord.from_assessment(assessment))
+    evidence = SourceRef.of(SourceTable.ELIGIBILITY_ASSESSMENTS, assessment.assessment_id)
+    ctx.engine = ctx.engine.with_fact(
+        f"synthetic eligibility assessment for {product.product_code}: {assessment.outcome.value}", evidence
+    )
     save(ctx, data.evolve(assessment=assessment, explained=False))
     return Step("EXPLAIN_ELIGIBILITY")

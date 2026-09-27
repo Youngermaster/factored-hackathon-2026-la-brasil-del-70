@@ -2,13 +2,20 @@
 
 ## Responsibility
 
-The application layer orchestrates: the workflow engine, the dispute intake and status workflows, the protective card block, handoffs, and execution records. It calls ports, asks the policy kernel for decisions, and reports only outcomes it has verified. It never knows which adapter sits behind a port.
+The application layer orchestrates: the workflow engine, the four workflows (account inquiry, card support, dispute intake and status, credit information and eligibility support), handoffs, and execution records. It calls ports, asks the policy kernel for decisions, and reports only outcomes it has verified. It never knows which adapter sits behind a port.
 
 Phase 09 (session 09a) added the workflow engine and the first two workflows:
 
 - `engine/`: the generic engine ([workflow router](../../../../../docs/workflows/workflow-router.md), ADRs 0014 and 0024). `definition.py` (states, transitions, handlers, allowlists, binding states), `registry.py` (startup validation against the catalog, bindings, matrix, and tools), `router.py` (dispatch and switch rules), `engine.py` (`WorkflowEngine.process_turn`: replay, session gate, language, untrusted-content checks, routing, handlers, rendering, one unit of work), `gate.py`, `flow.py`, `tools.py` (`GuardedToolset`), `decide.py` (kernel calls), `shared.py` (escalate, abstain, refuse, out of scope, informational, step-up), `handoff.py` and `summary.py`, `recorder.py` and `records.py` (execution records), `render.py`, `phrase.py`, and `templates/` (es, pt, en).
 - `understanding/`: deterministic amounts and slang, relative dates, yes and no, option and language choices, and fallback slot extraction.
 - `workflows/`: `dispute/`, `card_support/`, `shared/writes.py` (confirmed idempotent writes and read-backs), and `baseline/` (B0 definitions, menu router, fixed strings).
+
+Session 09b added the last two workflows as definitions, with the engine changed only where a capability was missing:
+
+- `workflows/account_inquiry/` ([account inquiry](../../../../../docs/workflows/account-inquiry.md)): read only; balances with the record's as-of date, payment status through the resolver and `get_payment_status`, statement summaries over a resolved period, and the `unsupported` recognizer (`ACC-ALL-3`).
+- `workflows/credit/` ([credit information](../../../../../docs/workflows/credit-information.md)): catalog answers, `assessment.py` (the risk estimate and the synthetic eligibility service, kept apart), `explain.py` (the rendered `EligibilityView` and the review offers), `intake.py` (confirmation, step-up, submission, read-back), `review.py` (the `credit_review` section), and the `unsupported` recognizer (`CRE-ALL-3`).
+- Engine additions: `EngineServices.credit` (`CreditPorts`: catalog, eligibility service, risk estimator), `GuardedToolset.engine_credit_profile` (the engine-only read, recorded), typed account and credit tool calls, `TurnContext.turn_values` (the profile and the estimate for one turn, never persisted), `Reply.credit` and `Reply.cite` (credit evidence for the verifier, credit fields for phrasing), `WorkflowDefinition.unsupported` with `flow.in_domain_unsupported`, `credit_review` on handoffs, and the separate record entries.
+- `understanding/periods.py` (statement periods) and `understanding/slots.py` (account and credit slots).
 
 Phases 05 and 07 added three use-case packages:
 
@@ -24,6 +31,7 @@ Phases 05 and 07 added three use-case packages:
 ## How to extend
 
 - **Add a state.** Add its canonical name to `WorkflowDescriptor.states` and bind it in `policies/bindings.yaml` if it needs its own rules or clauses (otherwise reuse an existing binding state as its `policy_state`). Write an async handler `(TurnContext) -> Step` that reads only through `ctx.tools`, asks the kernel through `decide.evaluate`, and returns a `Reply` built from a template; add a `StateSpec` with its kind, allowlist, and (for writes) `action_policy_states`; add its exits to the transition table; add templates in es, pt, and en and a golden entry; add tests. The registry refuses the definition until the binding and the matrix agree.
+- **Recognize an in-domain unsupported request.** Give the definition an `unsupported` recognizer returning an `UnsupportedRequest` (code, clause ids, template); the engine consults it before the generic out-of-scope answer and the workflow's UNDERSTAND can call it too.
 - **Add a workflow.** Write a definition (`build_definition`) whose intents equal the catalog's, register its factory in `bootstrap/workflows.py` (`PROPOSED_DEFINITIONS`, and a B0 variant in `BASELINE_DEFINITIONS`), enable it with `WORKFLOW_ENABLED`, and add its page in `docs/workflows/` and scenario tests in es and pt. The engine does not change.
 - **Add a tool to a workflow.** Implement it as below, then add its `ToolName` to the allowlist of the states that need it; a write also needs an action policy state that `policies/matrix.yaml` allows, a `PlannedWrite`, and a `ReadBack`.
 - Add a use case as a class or function that receives its ports as constructor or call arguments, never as globals.

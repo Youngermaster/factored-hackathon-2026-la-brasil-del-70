@@ -25,9 +25,10 @@ The record is appended in the same unit of work as the conversation update, the 
 | `policy_pack_version` | The pack every decision used |
 | `latency`, `token_usage`, `cost_usd` | Total and per stage (`gate`, `workflow`); tokens and cost are the sums over the model calls |
 | `grounding` | The template id, whether model phrasing was used, and the verifier's violation kinds |
-| `safety_interventions` | Codes such as `injection_detected`, `record_text_injection_flagged`, `session_expired`, `llm_fallback`, `out_of_scope`, `grounding_violation`, `phrasing_rejected`, `handoff_summary_rejected`, `tool_rejected_by_allowlist` |
+| `safety_interventions` | Codes such as `injection_detected`, `record_text_injection_flagged`, `session_expired`, `llm_fallback`, `out_of_scope`, `unsupported_<code>` (for example `unsupported_transfer`, `unsupported_decision_now`), `mortgage_information_only`, `risk_estimate_unavailable`, `grounding_violation`, `phrasing_rejected`, `handoff_summary_rejected`, `tool_rejected_by_allowlist` |
 | `handoff_ref`, `case_refs` | The handoff of an escalated turn (required), the cases a verified write opened |
-| `risk_estimates`, `eligibility_assessments` | Credit turns (session 09b), kept as separate entries |
+| `risk_estimates` | Credit turns: each estimate the engine obtained from the `RiskEstimator` port (model, estimate id, probability, interval, band, flags, label definition, latency). Internal: never shown to customers or sent to a model. Empty when the estimator was unavailable (never a default) |
+| `eligibility_assessments` | Credit turns: each assessment of the synthetic eligibility service (`eligibility:synthetic@<pack>`, product, outcome, ELG rule ids and versions, review reasons, missing facts). Kept apart from the estimates: the two are never merged |
 
 ## Explaining a decision without chain-of-thought
 
@@ -42,6 +43,34 @@ flowchart LR
 ```
 
 Each answer to "why" is a chain of facts the system can show: which rule failed, with which parameter from which clause version, over which record, and what was done about it. The first decision recorded for a state is the engine's authentication check, made without record facts, so its non-authentication rules report missing facts; only an authentication denial or step-up from that check is acted on.
+
+## Example: a credit turn (abridged, scenario 27)
+
+The turn that assessed a borderline request. The profile read is a recorded tool call with no values; the estimate and the assessment are separate entries.
+
+```json
+{
+  "workflow": {"id": "credit", "version": 1},
+  "state_before": "START",
+  "state_after": "EXPLAIN_ELIGIBILITY",
+  "outcome": "in_progress",
+  "tool_calls": [
+    {"tool": "list_credit_products", "status": "ok", "result_summary": "count_3"},
+    {"tool": "get_my_credit_profile", "status": "ok", "arguments": {}, "result_summary": "found"}
+  ],
+  "models": ["router:keyword@1", "language_detector:lexical@1", "risk_estimator:score_band@1"],
+  "risk_estimates": [
+    {"model": "risk_estimator:score_band@1", "estimate_id": "rsk-000001", "probability": "0.15",
+     "interval_low": "0.08", "interval_high": "0.26", "band": "low", "flags": ["wide_interval"],
+     "label_definition": "score_band_baseline_prior", "latency_ms": 0}
+  ],
+  "eligibility_assessments": [
+    {"assessment_id": "elg-000001", "service": "eligibility:synthetic@pack-...", "product_code": "CO-PL-STANDARD",
+     "outcome": "review_required", "review_reasons": ["borderline_risk_interval"], "missing_facts": []}
+  ],
+  "grounding": {"llm_phrasing_used": false, "template_id": "credit.eligibility", "violations": []}
+}
+```
 
 ## Example (abridged)
 

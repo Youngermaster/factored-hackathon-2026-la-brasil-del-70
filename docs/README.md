@@ -97,6 +97,8 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [workflows/workflow-router.md](workflows/workflow-router.md) | One turn end to end (flowchart), dispatch and switch rules, the registry, guarantees, and baseline B0 |
 | [workflows/dispute-intake.md](workflows/dispute-intake.md) | Dispute state machine, state to rules, clauses, and tools, sequences for the normal, ambiguous, and escalation paths, and the confirmation and abstention matrix |
 | [workflows/card-support.md](workflows/card-support.md) | Card support state machine, state table, sequences, and matrix |
+| [workflows/account-inquiry.md](workflows/account-inquiry.md) | Account inquiry state machine (read only), state table, as-of dates, sequences, and matrix |
+| [workflows/credit-information.md](workflows/credit-information.md) | Credit state machine, the separation of conversation, risk estimate, and eligibility, the score-band baseline, sequences, and matrix |
 | [workflows/handoff.md](workflows/handoff.md) | The handoff schema walkthrough, worked examples, and what agents see |
 | [workflows/execution-records.md](workflows/execution-records.md) | Execution record fields, storage, and explaining a decision without chain-of-thought |
 | [../services/api/src/bank_agent/application/README.md](../services/api/src/bank_agent/application/README.md) | How to add a state, a workflow, or a tool |

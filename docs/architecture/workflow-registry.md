@@ -59,7 +59,7 @@ Cross-workflow intents (`informational`, `unsupported`, `human_request`, `greeti
 | `dispute` | Dispute status with the SLA | Opening a dispute case, optionally with a protective block | Ambiguous transaction, dispute window closed (clause-backed) | Amount above the automatic limit, repeat complainer, legal mention, verification mismatch |
 | `credit` | Synthetic catalog information; an indicative eligibility result with reasons, uncertainty, review path, and the disclaimer | Recording an application intake for human review (`submit_credit_application`) | Missing information (asks for it), mortgages (information only) | Borderline results (`credit_review_required`), contested results (`eligibility_contested`), products that need a human assessment |
 
-Every workflow has a normal path, an ambiguous or unsupported path, and a human-escalation path, each in Spanish and Portuguese. The engine, the router, and the enabled set are described in [workflow router](../workflows/workflow-router.md); the state machines are in [dispute intake](../workflows/dispute-intake.md) and [card support](../workflows/card-support.md) (session 09a), with `account_inquiry` and `credit` following in session 09b.
+Every workflow has a normal path, an ambiguous or unsupported path, and a human-escalation path, each in Spanish and Portuguese. The engine, the router, and the enabled set are described in [workflow router](../workflows/workflow-router.md); the state machines are in [dispute intake](../workflows/dispute-intake.md) and [card support](../workflows/card-support.md) (session 09a), and [account inquiry](../workflows/account-inquiry.md) and [credit information](../workflows/credit-information.md) (session 09b).
 
 ## Actions across workflows
 

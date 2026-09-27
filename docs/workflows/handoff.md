@@ -33,7 +33,7 @@ flowchart LR
 | `priority`, `customer_sentiment` | `high` for distress, a legal mention, or a high risk tier; otherwise `medium` | |
 | `sla_due` | `ESC-<country>-2`: `priority_handoff_sla_hours` for distress, else `handoff_sla_hours`; `CRD-ALL-3` for card requests | Synthetic values |
 | `card_request` | Unblock or replacement requests | Required by the model for those codes |
-| `credit_review` | Session 09b | |
+| `credit_review` | Credit handoffs (`credit_review_required`, `eligibility_contested`, and a review requested after `not_eligible`) | The product, the outcome, the ELG rule ids, the failing reason codes, the review reasons, the missing facts, and `risk` (band, interval, model, label): internal, for agents only, derived again deterministically at escalation time |
 
 Unknown keys are rejected at every level of the model and the schema, which is how transcript fields are refused. The engine validates every handoff against the schema generated from the model (the same generation `make contracts` writes; a test compares it with the committed file) before storing it.
 
@@ -79,11 +79,63 @@ The customer disputes a 15,000.00 MXN purchase; `DSP.amount_within_auto_limit` e
 }
 ```
 
-Other card handoffs: a stolen-card replacement after an accepted protective block lists the block in `actions_taken` with `verification: verified` and evidence `products:<id>` (scenario 16). Session 09b adds worked examples for `account_inquiry` and `credit` (with `credit_review`).
+Other card handoffs: a stolen-card replacement after an accepted protective block lists the block in `actions_taken` with `verification: verified` and evidence `products:<id>` (scenario 16).
+
+## Worked example: account inquiry (contested balance, es-CO)
+
+The customer insists a balance is wrong (scenario 23). The balance and its as-of date are the verified fact; nothing is written.
+
+```json
+{
+  "schema_version": "1.2.0",
+  "state_at_escalation": "BALANCES",
+  "language": "es",
+  "jurisdiction": "CO",
+  "request": {"summary": "Customer request (balance_inquiry) in workflow account_inquiry, state BALANCES. Escalated: unsupported_needs_human. Verified facts: 1; actions: 0.", "intent": "balance_inquiry"},
+  "verified_facts": [{"fact": "checking_account ending 3333 balance 3450000.00 COP as of 2026-06-17", "source": "products:PRD-FIXCO-CHK"}],
+  "actions_taken": [],
+  "policy_basis": ["ACC-ALL-1@1", "ESC-CO-2@1"],
+  "escalation_reason": {"code": "unsupported_needs_human", "detail": "balance_contested"},
+  "open_questions": ["Which balance does the customer consider wrong, and why?"],
+  "priority": "medium",
+  "sla_due": "2026-06-19T15:00:00Z",
+  "workflow": {"id": "account_inquiry", "version": 1}
+}
+```
+
+## Worked example: credit (borderline estimate, pt-BR)
+
+The synthetic service returns `review_required` because the estimate's interval straddles a cut point (scenario 27); the customer accepts the review. The estimate is in `credit_review.risk` for the reviewer; the customer never saw it.
+
+```json
+{
+  "schema_version": "1.2.0",
+  "state_at_escalation": "EXPLAIN_ELIGIBILITY",
+  "language": "pt",
+  "jurisdiction": "CO",
+  "request": {"summary": "Customer request (credit_eligibility) in workflow credit, state EXPLAIN_ELIGIBILITY. Escalated: credit_review_required. Verified facts: 1; actions: 0.", "intent": "credit_eligibility"},
+  "verified_facts": [{"fact": "synthetic eligibility assessment for CO-PL-STANDARD: review_required", "source": "eligibility_assessments:elg-000001"}],
+  "policy_basis": ["ESC-ALL-4@1", "ESC-CO-2@1"],
+  "escalation_reason": {"code": "credit_review_required", "detail": "credit_review_required: review_required"},
+  "open_questions": ["What does the credit team conclude after reviewing the flagged request?"],
+  "workflow": {"id": "credit", "version": 1},
+  "credit_review": {
+    "product_code": "CO-PL-STANDARD",
+    "eligibility_outcome": "review_required",
+    "rule_ids": ["ELG.self_service_product", "ELG.credit_score_present", "ELG.credit_score_minimum", "ELG.income_present", "ELG.payment_to_income_max", "ELG.days_past_due_max", "ELG.tenure_minimum", "ELG.amount_within_product_range", "ELG.risk_estimate_available", "ELG.risk_band_acceptable", "ELG.risk_interval_not_borderline"],
+    "reason_codes": ["borderline_risk_interval"],
+    "review_reasons": ["borderline_risk_interval"],
+    "missing_facts": [],
+    "risk": {"band": "low", "interval_low": "0.08", "interval_high": "0.26", "model": "risk_estimator:score_band@1", "label_definition": "score_band_baseline_prior"}
+  }
+}
+```
+
+A missing-income case (scenario 26) carries `eligibility_outcome: insufficient_data`, `missing_facts: ["monthly_income"]`, and `review_reasons: ["missing_income"]`; a contested result carries `eligibility_contested` and adds `customer_contests_result` to the review reasons.
 
 ## What agents see
 
-The agent inbox (phase 13) shows the handoff as stored: the summary, the facts with links to their records, the actions and whether each was verified, the policy basis rendered from the clauses, the open questions, the SLA, and the card request. Agents do not see the conversation transcript through the handoff; turns stay in the conversation store for the customer's own history.
+The agent inbox (phase 13) shows the handoff as stored: the summary, the facts with links to their records, the actions and whether each was verified, the policy basis rendered from the clauses, the open questions, the SLA, the card request, and the credit review with the internal estimate (agents only; customer DTOs strip internal fields, phase 11). Agents do not see the conversation transcript through the handoff; turns stay in the conversation store for the customer's own history.
 
 ## Limitations
 
