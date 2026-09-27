@@ -44,6 +44,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
 | [adr/0022](adr/0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source |
 | [adr/0023](adr/0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending |
+| [adr/0024](adr/0024-tuesday-account-inquiry-mvp-and-observability.md) | Tuesday MVP is account inquiry plus simulated human escalation |
+| [adr/0025](adr/0025-live-agent-joins-escalated-conversation.md) | Human escalation progresses from simulated replies to a human service agent joining the conversation |
+| [adr/0026](adr/0026-opt-in-financial-companion-and-agent-personalization.md) | Personalized financial companion features are opt-in and grounded |
+| [adr/0027](adr/0027-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces |
 
 ## Data
 
