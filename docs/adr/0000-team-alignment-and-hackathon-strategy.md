@@ -2,7 +2,7 @@
 
 * **Status:** Proposed
 * **Date:** 2026-09-27
-* **Deciders:** 
+* **Deciders:**
   * Miguel (Project Manager / Developer)[span_0](start_span)[span_0](end_span)
   * Young (Technical Lead / Developer)[span_1](start_span)[span_1](end_span)
   * David (Fonseca) (Developer)[span_2](start_span)[span_2](end_span)
@@ -12,7 +12,7 @@
 
 ## 1. Context & Problem Statement
 
-The Factored 2026 Hackathon challenge requires building an end-to-end banking solution covering four core functional domains: **Accounts & Payments**, **Credit Cards**, **Claims & Disputes**, and **Product Information**[span_4](start_span)[span_4](end_span). 
+The Factored 2026 Hackathon challenge requires building an end-to-end banking solution covering four core functional domains: **Accounts & Payments**, **Credit Cards**, **Claims & Disputes**, and **Product Information**[span_4](start_span)[span_4](end_span).
 
 The competition organizers explicitly noted during kickoff that basic, prompt-only chatbots will not meet evaluation standards[span_5](start_span)[span_5](end_span). The solution must operate as a production-ready agentic system capable of executing backend tools, querying structured relational data, verifying user intents, logging decision paths, and providing human-in-the-loop escalation paths for complex or high-risk cases[span_6](start_span)[span_6](end_span).
 
@@ -70,6 +70,7 @@ To maintain high development velocity across human developers and automated codi
 ## 6. Consequences
 
 ### Positive Impact
+
 * Fully satisfies the organizers' criteria for real backend execution and database interaction over static chat prompts[span_25](start_span)[span_25](end_span).
 * Leverages existing team proficiency in Python and relational data modeling for rapid development within the 10-day deadline[span_26](start_span)[span_26](end_span).
 * Simplifies judge evaluation via a structured frontend walkthrough[span_27](start_span)[span_27](end_span).
@@ -84,6 +85,7 @@ To maintain high development velocity across human developers and automated codi
   * *Cons:* Poor fit for the structured relational banking schema provided by organizers[span_30](start_span)[span_30](end_span).
 
 ### Risks & Mitigations
+
 * **Risk:** Scope creep across four banking domains within a short development cycle[span_31](start_span)[span_31](end_span).
 * **Mitigation:** Strict feature lock by the end of Day 1; priority focused on bulletproof core execution over non-essential features[span_32](start_span)[span_32](end_span).
 
