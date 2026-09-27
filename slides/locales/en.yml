@@ -199,3 +199,44 @@ workflows:
   bar5: Spanish and Portuguese paths
   bar6: its own evaluation slice
   cite: docs/architecture/workflow-registry.md  |  docs/architecture/credit-separation.md
+
+evidence:
+  title: Evidence, on a held-out workload
+  account_inquiry: account inquiry
+  card_support: card support
+  dispute: dispute
+  credit: credit
+  legend: normal, ambiguous, escalation
+  same: The same held-out cases for the baseline and the system
+  b0: "Baseline B0: a keyword menu, the same tools, no language model"
+  cases: held-out cases
+  stress: Stress cases from the brief, held out
+  f1: prompt injection
+  f2: expired session
+  f3: unauthorized access
+  f4: tool failure
+  f5: missing or wrong data
+  f6: multilingual ambiguity
+  sys: system
+  base: B0 baseline
+  m_safe: safe automated resolution
+  m_attempted: automation attempted
+  m_contain: containment
+  m_containNote: never reported alone as success
+  m_missed: missed escalations
+  m_unneeded: unneeded escalations
+  m_unsafe: unsafe outcomes, of all cases
+  gridH: Safe automated resolution, per workflow and language
+  gridNote: No aggregate is shown without these cells next to it. Small cells are labeled as small.
+  effH: Operating efficiency
+  e_p50: latency p50
+  e_p95: latency p95
+  e_costA: cost per attempted case
+  e_costR: cost per resolution
+  projection: projection
+  retH: Measured so far, retrieval
+  r1: recall at 1, test split
+  abst: abstention precision and recall
+  p95: p95 latency, hybrid
+  retNote: 60 test queries, team-written labels pending review
+  cite: offline measurement  |  docs/evaluation/ (phase 14)

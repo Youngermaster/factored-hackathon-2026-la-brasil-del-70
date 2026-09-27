@@ -75,3 +75,17 @@ clicks: 5
 WORKFLOWS. Narration: script.md, section "workflows". Click 1 account inquiry,
 2 card support, 3 dispute, 4 credit separation, 5 the depth bar.
 -->
+
+---
+layout: scene
+routeAlias: evidence
+clicks: 4
+---
+
+<Scene name="evidence" />
+
+<!--
+EVIDENCE. Narration: script.md, section "evidence". Click 1 stress cases,
+2 outcomes against B0, 3 per workflow and language, 4 efficiency and retrieval.
+Pending values render as dashed boxes until phase 14 fills data/metrics.yml.
+-->
