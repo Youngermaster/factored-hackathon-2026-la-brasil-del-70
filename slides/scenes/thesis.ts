@@ -27,7 +27,7 @@ export default defineScene({
   cues: [2.4, 5.4, 8.4, 11.4, 14.6, 17.6, 20.4],
   draw({ t, L, M, K }) {
     const fin = outCubic(seg(t, 17.7, 18.3))
-    const dimAll = 1 - 0.95 * fin
+    const dimAll = 1 - fin
     const heading = (i: number, key: string, color: string, t0: number) =>
       K.words(L(key), X[i], HY, { t, t0, size: 34, weight: 700, fam: 'display', color, stagger: 0.03 })
     const caption = (i: number, s: string, color: string, t0: number) =>
