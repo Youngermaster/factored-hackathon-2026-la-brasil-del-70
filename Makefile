@@ -23,7 +23,7 @@ BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed \
-	policy-lock policy-catalog index eval-retrieval train promote
+	policy-lock policy-catalog index eval-retrieval train promote openapi
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -72,6 +72,10 @@ env-check: ## Report set or unset for every documented environment variable, nev
 
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
 	$(UV_RUN) python scripts/generate_contracts.py
+
+openapi: ## Export contracts/openapi.json and regenerate the web API types (apps/web/src/shared/api/generated)
+	$(UV_RUN) python scripts/export_openapi.py
+	$(WEB) exec node tooling/generate-api-types.ts
 
 policy-lock: ## Rewrite policies/versions.lock.yaml after a clause change (refuses a change without a version bump)
 	$(UV_RUN) bank-agent policy lock

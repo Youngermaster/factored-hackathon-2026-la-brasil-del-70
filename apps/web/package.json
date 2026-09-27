@@ -47,6 +47,7 @@
     "markdownlint-cli2": "0.23.3",
     "mermaid": "12.0.0",
     "msw": "2.15.0",
+    "openapi-typescript": "7.13.0",
     "prettier": "3.9.9",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",

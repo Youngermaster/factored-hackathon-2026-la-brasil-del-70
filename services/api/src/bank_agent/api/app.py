@@ -16,6 +16,7 @@ from bank_agent.api.middleware import (
     RequestIdMiddleware,
     SecurityHeadersMiddleware,
 )
+from bank_agent.api.openapi import install_openapi
 from bank_agent.api.problems import PAYLOAD_TOO_LARGE_PROBLEM, PROBLEM_CONTENT_TYPE, ProblemRegistry
 from bank_agent.api.provider import ApiConfig, ServiceProvider
 from bank_agent.api.ratelimit import SlidingWindowLimiter
@@ -84,4 +85,5 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     app.include_router(conversations.router)
     app.include_router(agent.router)
     app.include_router(evaluation.router)
+    install_openapi(app)
     return app

@@ -38,7 +38,7 @@ async def _run_check(check: ReadinessCheck, timeout_seconds: float) -> CheckStat
     return "ok" if healthy else "unavailable"
 
 
-@router.get("/live", response_model=LivenessResponse)
+@router.get("/live", response_model=LivenessResponse, operation_id="health_live")
 async def live() -> LivenessResponse:
     """The process is up and serving requests."""
     return LivenessResponse()
@@ -48,6 +48,7 @@ async def live() -> LivenessResponse:
     "/ready",
     response_model=ReadinessResponse,
     responses={status.HTTP_503_SERVICE_UNAVAILABLE: {"model": ReadinessResponse}},
+    operation_id="health_ready",
 )
 async def ready(request: Request, response: Response) -> ReadinessResponse:
     """Every configured dependency is reachable. Failures report the check name only, never error text."""
