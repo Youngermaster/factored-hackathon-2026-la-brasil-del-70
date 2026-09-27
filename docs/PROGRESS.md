@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 09, session 09a: the generic workflow engine, the validated workflow registry, router dispatch with confirmed switches, the `dispute` and `card_support` workflows, and baseline B0, with scenarios 1 to 20 on memory and PostgreSQL |
-| Next phase | 09, session 09b (`kit/prompts/09-workflow-engine.md`, session 09b): `account_inquiry` and `credit` as definitions on the 09a engine, their B0 variants, and tasks 27 to 30 for them; after the team's 09a walkthrough (pending action 21) |
+| Last completed phase | 09, session 09b: the `account_inquiry` and `credit` workflows (with the `risk_estimator:score_band@1` baseline) as definitions on the 09a engine, their B0 variants, all four workflows enabled by default, and scenarios 19 to 29 with variants on memory and PostgreSQL |
+| Next phase | 10 (`kit/prompts/10-learned-components.md`): the learned router, resolver, and risk estimator behind their ports. The prompt asks that phase 11 wait for both phase 09 walkthroughs (pending actions 21 and 25) |
 | Blocked | None |
 
-Pending human actions (none blocks phase 09b except action 21, the 09a walkthrough the prompt requires before 09b):
+Pending human actions (none blocks phase 10; the phase 09 prompt asks that phase 11 start after actions 21 and 25):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -38,8 +38,87 @@ Pending human actions (none blocks phase 09b except action 21, the 09a walkthrou
 22. **Decide the language detector.** The prompt names a lingua-language-detector adapter; its 2.2.0 wheels are about 170 MB (above the 50 MB rule, and it would enter the API image). Phase 09a ships the in-house `language_detector:lexical@1` behind the port. Approve lingua (and the image size) or keep the lexical detector (BACKLOG, phase 10).
 23. **Review the contract bump to 1.2.0** (`contracts/README.md` changelog): `execution_record` adds `retrieval` and the `list_my_cards` tool name, `scenario` widens tool names, and the other three contracts moved only to stay on the shared minor release.
 24. **Review the new SLA rule and its clause wording** (`DSP-{MX,CO,AR}-2`, version 2, one added sentence in es, pt, and en) together with pending action 16.
+25. **Walk the team through phase 09b** (the prompt's human review): the account inquiry and credit state tables (`docs/workflows/account-inquiry.md`, `docs/workflows/credit-information.md`, `docs/plans/phase-09b.md`) and scenario tests 19 to 29 (`services/api/tests/integration/workflows/test_account_inquiry.py`, `test_credit_workflow.py`, `test_credit_edges.py`). Record the reviewers, the date, and any requested changes here. Reviewers: pending. Date: pending. Session 09b ran before action 21 under the orchestrator's instruction.
+26. **Review the score-band risk baseline** (`docs/workflows/credit-information.md#risk-estimator-baseline-risk_estimatorscore_band1`): the bands, the deliberately wide intervals, and the two transition bands that straddle the synthetic cut points, together with pending action 17. It is a baseline with no trained label, labeled as such; phase 10 replaces it.
 
 ## Phase log
+
+### Phase 09, session 09b: account inquiry, credit, the score-band risk baseline, baseline B0 (2026-09-27)
+
+Plan: `docs/plans/phase-09b.md`. The prompt asks for plan mode and a team walkthrough; the human delegated plan approval to the orchestrator, which pre-approved a plan that follows the prompt, CLAUDE.md, the 09a engine design, and the existing contracts. Every open question was decided by the session under that pre-approval (plan, "Decisions on open questions"). The 09a walkthrough (pending action 21) was not treated as a blocker, on the orchestrator's instruction; the 09b walkthrough is pending action 25. The pull at the start was a fast-forward no-op ("Already up to date").
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `a1658e3` | The plan: state tables for both workflows, tools per state, credit separation, the score-band table, the scenario list, decided open questions |
+| `fad98a7` | Engine hooks: `CreditPorts` in `EngineServices`, the engine-only profile read on `GuardedToolset` (recorded, no values), typed account and credit tool calls, separate `risk_estimates` and `eligibility_assessments` in the recorder, `evaluate(account=, credit=)`, `credit_review` on handoffs and escalation codes, `Reply.credit` and `Reply.cite`, phrasing's credit fields, `WorkflowDefinition.unsupported` with `in_domain_unsupported`, `app-` ids checked for ownership, over-indebtedness as distress; `adapters/models/score_band_risk.py` (`risk_estimator:score_band@1`) and `WORKFLOW_RISK_ESTIMATOR` |
+| `a4cd144` | The `account_inquiry` workflow and its B0 variant, the period table (`understanding/periods.py`), account and credit slots (`understanding/slots.py`), router phrases for balances, payments, statements, and credit, and 09b fixture data (balances, transfers, May statement lines, credit profiles, a second Portuguese persona) |
+| `ff1ce5b` | Template goldens for the account templates (balance, total, and as-of facts supplied with their kinds) |
+| `57b95e9` | The `credit` workflow and its B0 variant, structured credit response fields (`credit_products`, `eligibility`, `credit_intake_confirmation`), and `WORKFLOW_ENABLED` with all four workflows (the 09a scenarios pass with them enabled) |
+| `1caac17` | Account scenarios 19 to 23 with variants on both backends |
+| `f2c52c5` | Credit scenarios 24 to 29 with variants, the separation guard (recording `FakeLLM`), the Hypothesis property, the wording guards, and unit tests for periods, slots, recognizers, intake keys, signals, and router phrases |
+| `ab66cb4` | Test typing for mypy |
+| `ac139bb` | `docs/workflows/account-inquiry.md`, `docs/workflows/credit-information.md`, router, handoff, execution-record, credit-separation, and README updates; credit handoffs carry the assessment as a verified fact |
+| `005d972` | ADR 0025 and the BACKLOG rows |
+| This commit | This entry |
+
+#### Review summary (walk the team through these)
+
+- **Account inquiry.** Read only (a registry test asserts no write tool and no EXECUTE state in either variant). Balances state the balance record's as-of date and show available credit on cards; payment status locates the customer's own payments and transfers through the resolver (options when two are similar) and answers from `get_payment_status` with the data as-of date (2026-06-17); statements resolve the period, ask again when it is missing or over `ACC-ALL-2`, and show totals per currency with no balances. Transfers, bill payments, due dates, and certificates abstain with `ACC-ALL-3`; a contested balance escalates with the balances as verified facts.
+- **Credit.** Catalog answers with `CRE-ALL-1`; eligibility runs ESTIMATE_RISK (engine-only profile read, `RiskEstimator` port, no default on failure) and ASSESS_ELIGIBILITY (the synthetic service) in the same turn, recorded as separate entries, then the phase 06 rendering with reasons, uncertainty, the review path, and the disclaimer. Intake only after an explanation, confirmed, stepped up, submitted with an idempotency key tied to the assessment, and read back. `review_required` and `insufficient_data` offer a handoff with `credit_review`; a declared income assesses again; a contested result hands off with `eligibility_contested`; mortgages are information only; limit increases, restructuring, disbursements, and "just approve it" abstain with `CRE-ALL-3` (and `CRE-ALL-1`) without approval wording.
+- **Separation.** The model sees customer text only (and, with phrasing on, the template text plus the outcome code, rendered reasons, and disclaimer); a test drives every credit path with understanding, phrasing, and summaries on and finds no profile or estimate value in any prompt. The verifier gets the assessment, the catalog entry, and the profile, estimate, and declared income as forbidden figures.
+- **Engine changes** are listed in the plan's first table; each adds a capability the definitions could not provide. The out-of-scope path now asks enabled workflows whether a request is their own unsupported request ([ADR 0025](adr/0025-in-domain-unsupported-requests.md)).
+
+#### Decisions
+
+- [ADR 0025](adr/0025-in-domain-unsupported-requests.md): in-domain unsupported requests are abstained by the owning workflow through a recognizer on its definition, instead of bending intent labels or adding intents.
+- Balances state the record's as-of instant; payments and statements state the data as-of date from policy settings. Fixture balances are dated at 2026-06-17.
+- A credit card records a one-month term (the billing cycle and every card's catalog minimum); the purpose maps to catalog codes (`general_purpose` otherwise) and is shown before anything is recorded.
+- The estimate is never persisted in the conversation data; a later handoff re-runs the deterministic estimator for `CreditReview.risk` and records it in that turn. The assessment (no profile or estimate values) is kept in the flow data.
+- `review_required` offers a handoff and records an intake only on an explicit request; `not_eligible` offers a person (`human_requested` with `credit_review`).
+- Application status comes from an intake verified in the conversation or a named `app-` id; no list tool exists (BACKLOG).
+- `WORKFLOW_ENABLED` defaults to all four workflows; the scenario harness uses the same default. Two 09a tests changed only in their configuration expectations: the uncertain-router question now offers the first two enabled workflows in catalog order, and the "missing definition" check builds a registry without `credit` directly.
+- No new runtime dependency.
+
+Deviations from the prompt and plan, found during implementation:
+
+- As in 09a, handler tests that need the real pack (the eligibility rules and credit clauses are not in the unit fixture pack) run in process as integration tests over the in-memory adapters and PostgreSQL: the "no prompt receives profile or estimate values" test, the estimator-unavailable path (scenario 29 and the property), and the property itself (`tests/integration/workflows/test_credit_properties.py`).
+- `TurnContext.turn_values` was added (not in the plan) to carry the profile and the estimate from ESTIMATE_RISK to ASSESS_ELIGIBILITY within one turn without persisting them.
+- Credit handoffs gained a verified fact for the assessment (`eligibility_assessments:<id>`) and an open question for the reviewer, so a reviewer's handoff is never empty.
+
+#### How to verify
+
+```bash
+make check                                                                # needs Docker; never reads .env
+uv run pytest services/api/tests/integration/workflows -q                 # scenarios 1 to 29 and variants, memory and PostgreSQL
+uv run pytest services/api/tests/integration/workflows/test_credit_separation.py services/api/tests/integration/workflows/test_credit_properties.py -q
+uv run pytest services/api/tests/unit/application services/api/tests/unit/adapters/models -q
+UPDATE_TEMPLATE_GOLDEN=1 uv run pytest services/api/tests/unit/application/engine/test_template_golden.py -q   # after a wording change
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 2,174 unit and 1,167 integration tests pass (1,958 and 1,115 after 09a); the workflow scenarios run on the in-memory adapters and on PostgreSQL through testcontainers; no test calls a live model |
+| Coverage gates | All 11 pass: application 92.8%, adapters 98.1%, bootstrap 99.2%, policy 96.6%, domain 99.7%, ports 100% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 57 mermaid blocks in 268 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+
+#### Known limitations
+
+- The risk estimator is a score-band baseline with no trained label and uncalibrated, wide intervals; income is not normalized to USD for it (no exchange rates).
+- The router, resolver, and language detector are still rule baselines; the account and credit phrases and the unsupported recognizers are closed es and pt lexicons, measured only on the scenario set.
+- Accepting the offer of a person after an abstention needs the customer to ask for one in words (as in 09a).
+- Application status needs an intake from the same conversation or an application id; there is no list tool yet.
+- Portuguese scenarios still use Mexican and Colombian personas and their currencies; statements have no opening or closing balances because the data has none.
+
+#### Next phase
+
+Phase 10 (`kit/prompts/10-learned-components.md`): the learned router, transaction resolver, and risk estimator behind their ports, loaded through `ModelRegistry`, with the rule baselines (including `risk_estimator:score_band@1`) kept for the comparison. The phase 09 prompt asks that phase 11 start after the team's walkthroughs of 09a and 09b (pending actions 21 and 25).
 
 ### Phase 09, session 09a: workflow engine, registry, router, dispute, card support, baseline B0 (2026-09-27)
 
