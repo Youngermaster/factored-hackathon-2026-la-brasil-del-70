@@ -228,6 +228,7 @@ def test_production_refuses_content_capture_and_recording(
         monkeypatch.setenv(name, _key())
     monkeypatch.setenv("APP_ENV", "production")
     monkeypatch.setenv("RETRIEVAL_INDEX_SOURCE", "stored")
+    monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "https://bank.example")
     monkeypatch.setenv("LLM_PROVIDER", "cassette")
     monkeypatch.setenv(variable, value)
 

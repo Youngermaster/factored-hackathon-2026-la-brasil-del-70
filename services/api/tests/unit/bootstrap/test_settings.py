@@ -16,7 +16,12 @@ def _strong_secret() -> str:
 @pytest.fixture
 def production_environment(monkeypatch: pytest.MonkeyPatch) -> dict[str, str]:
     """A complete, valid production environment with secrets generated for this test."""
-    values = {"APP_ENV": "production", "DEMO_MODE": "false", "RETRIEVAL_INDEX_SOURCE": "stored"}
+    values = {
+        "APP_ENV": "production",
+        "DEMO_MODE": "false",
+        "RETRIEVAL_INDEX_SOURCE": "stored",
+        "CORS_ALLOWED_ORIGINS": "https://bank.example",
+    }
     values.update({name: _strong_secret() for name in SECRET_VARIABLES})
     for name, value in values.items():
         monkeypatch.setenv(name, value)
@@ -115,7 +120,7 @@ def test_production_reports_every_problem_at_once(monkeypatch: pytest.MonkeyPatc
     with pytest.raises(SettingsError) as raised:
         load_settings(env_file=None)
 
-    assert len(raised.value.problems) == 2 + len(SECRET_VARIABLES)
+    assert len(raised.value.problems) == 3 + len(SECRET_VARIABLES)
     assert any(problem.startswith("RETRIEVAL_INDEX_SOURCE must be stored") for problem in raised.value.problems)
 
 
@@ -200,3 +205,49 @@ def test_database_is_configured_once_the_application_password_is_set(monkeypatch
     monkeypatch.setenv("POSTGRES_APP_PASSWORD", _strong_secret())
 
     assert load_settings(env_file=None).database.is_configured
+
+
+@pytest.mark.parametrize(
+    ("origins", "problem"),
+    [
+        ("*", "CORS_ALLOWED_ORIGINS must not contain * in production"),
+        (
+            "https://bank.example,http://localhost:5173",
+            "CORS_ALLOWED_ORIGINS must list https origins only in production",
+        ),
+    ],
+)
+def test_production_refuses_wildcard_and_plain_http_origins(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch, origins: str, problem: str
+) -> None:
+    monkeypatch.setenv("CORS_ALLOWED_ORIGINS", origins)
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == [problem]
+
+
+def test_production_refuses_a_plain_http_llm_base_url(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("LLM_API_BASE", "http://localhost:11434")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LLM_API_BASE must use https in production"]
+
+
+def test_security_limits_and_evaluation_settings_have_documented_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    settings = load_settings(env_file=None)
+    assert settings.security.max_request_body_bytes == 16384
+    assert settings.security.rate_limit_auth_per_minute == 10
+    assert settings.security.rate_limit_session_write_per_minute == 20
+    assert settings.evaluation.summaries_public is False
+    assert settings.evaluation.summaries_dir.is_absolute()
+    monkeypatch.setenv("EVAL_SUMMARIES_DIR", "")
+    monkeypatch.setenv("EVAL_SUMMARIES_PUBLIC", "true")
+    reloaded = load_settings(env_file=None)
+    assert reloaded.evaluation.summaries_dir == settings.evaluation.summaries_dir
+    assert reloaded.evaluation.summaries_public is True

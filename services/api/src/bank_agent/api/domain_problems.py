@@ -5,9 +5,18 @@ get their own problem type because clients act on them differently (an expired s
 Phase 11 refines individual codes (for example 429 with ``Retry-After`` for a lockout) here, never in routers.
 """
 
+import math
 from typing import Final
 
-from bank_agent.api.problems import INTERNAL_PROBLEM, ProblemRegistry, ProblemType
+from bank_agent.api.errors import (
+    CsrfTokenError,
+    NotAuthenticatedError,
+    PayloadTooLargeError,
+    RateLimitedError,
+    RoleNotPermittedError,
+    ServiceUnavailableError,
+)
+from bank_agent.api.problems import INTERNAL_PROBLEM, PAYLOAD_TOO_LARGE_PROBLEM, ProblemRegistry, ProblemType
 from bank_agent.domain.errors import (
     AccessContextError,
     AuthenticationError,
@@ -16,6 +25,9 @@ from bank_agent.domain.errors import (
     ConflictError,
     DependencyError,
     DomainError,
+    IdentityChallengeExpiredError,
+    IdentityChallengeFailedError,
+    IdentityLockedError,
     InvariantViolationError,
     NotFoundError,
     SessionExpiredError,
@@ -48,3 +60,39 @@ def register_domain_problems(registry: ProblemRegistry) -> ProblemRegistry:
 def domain_problem_registry() -> ProblemRegistry:
     """A new registry with every domain error family registered."""
     return register_domain_problems(ProblemRegistry())
+
+
+def _retry_after(exception: Exception) -> dict[str, str]:
+    if isinstance(exception, RateLimitedError):
+        return {"Retry-After": str(exception.retry_after_seconds)}
+    if isinstance(exception, IdentityLockedError):
+        return {"Retry-After": str(max(1, math.ceil(exception.retry_after.total_seconds())))}
+    return {}
+
+
+RATE_LIMITED_PROBLEM: Final = ProblemType(429, "rate-limited", "Too many requests")
+CSRF_PROBLEM: Final = ProblemType(403, "csrf-token-invalid", "Missing or invalid CSRF token")
+AUTHENTICATION_REQUIRED_PROBLEM: Final = ProblemType(401, "authentication-required", "Authentication required")
+
+HTTP_PROBLEMS: Final[tuple[tuple[type[Exception], ProblemType], ...]] = (
+    (CsrfTokenError, CSRF_PROBLEM),
+    (NotAuthenticatedError, AUTHENTICATION_REQUIRED_PROBLEM),
+    (RoleNotPermittedError, ProblemType(403, "role-not-permitted", "Not permitted for this role")),
+    (PayloadTooLargeError, PAYLOAD_TOO_LARGE_PROBLEM),
+    (RateLimitedError, RATE_LIMITED_PROBLEM),
+    (ServiceUnavailableError, ProblemType(503, "service-unavailable", "The service is not configured")),
+    (IdentityLockedError, ProblemType(429, "identity-locked", "Too many failed attempts; try again later")),
+    (IdentityChallengeFailedError, ProblemType(401, "verification-failed", "The verification failed")),
+    (IdentityChallengeExpiredError, ProblemType(401, "code-expired", "The one-time code expired")),
+)
+"""HTTP-layer errors and the identity errors clients act on differently (resend, wait). Registered before the
+domain families, so the most specific entry wins."""
+
+
+def api_problem_registry() -> ProblemRegistry:
+    """The registry ``create_app`` installs: the HTTP-layer errors, the identity refinements, and the families."""
+    registry = ProblemRegistry()
+    for error_type, problem in HTTP_PROBLEMS:
+        needs_retry_after = problem.status == 429
+        registry.register(error_type, problem, headers=_retry_after if needs_retry_after else None)
+    return register_domain_problems(registry)

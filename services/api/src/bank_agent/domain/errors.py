@@ -226,6 +226,12 @@ class DuplicateEntityError(ConflictError):
     code = "duplicate_entity"
 
 
+class TurnConflictError(ConflictError):
+    """A client turn id that was already used in another conversation."""
+
+    code = "turn_conflict"
+
+
 # --- Dependencies --------------------------------------------------------------------------------------------
 
 

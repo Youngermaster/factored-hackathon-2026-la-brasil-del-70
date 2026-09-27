@@ -58,6 +58,7 @@ DEFAULT_INDEX_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "ind
 DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "embeddings"
 DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
 DEFAULT_MODEL_REGISTRY_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "models"
+DEFAULT_EVAL_SUMMARIES_DIR = _REPOSITORY_ROOT / "evals" / "reports" / "summaries"
 _SELECTION = r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}"
 ROUTER_SELECTION = rf"^(keyword@1|(tfidf|embeddings)@{_SELECTION})$"
 RESOLVER_SELECTION = rf"^(rules@1|lgbm@{_SELECTION})$"
@@ -108,13 +109,24 @@ class DatabaseSettings(BaseSettings):
 
 
 class SecuritySettings(BaseSettings):
-    """Session, CSRF, and CORS settings."""
+    """Session, CSRF, CORS, request size, and rate limit settings.
+
+    Rate limits are requests per minute per rate class (``auth``, ``write``, ``read``), counted per client IP
+    (``RATE_LIMIT_*_PER_MINUTE``) and per session (``RATE_LIMIT_SESSION_*_PER_MINUTE``).
+    """
 
     model_config = _config()
 
     session_secret: SecretStr | None = None
     csrf_secret: SecretStr | None = None
     cors_allowed_origins: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["http://localhost:5173"])
+    max_request_body_bytes: int = Field(default=16384, ge=1024, le=1_048_576)
+    rate_limit_auth_per_minute: int = Field(default=10, ge=1, le=100_000)
+    rate_limit_write_per_minute: int = Field(default=30, ge=1, le=100_000)
+    rate_limit_read_per_minute: int = Field(default=120, ge=1, le=100_000)
+    rate_limit_session_auth_per_minute: int = Field(default=10, ge=1, le=100_000)
+    rate_limit_session_write_per_minute: int = Field(default=20, ge=1, le=100_000)
+    rate_limit_session_read_per_minute: int = Field(default=60, ge=1, le=100_000)
 
     @field_validator("cors_allowed_origins", mode="before")
     @classmethod
@@ -139,6 +151,8 @@ class LLMSettings(BaseSettings):
     fallback_model: str = ""
     api_key_primary: SecretStr | None = None
     api_key_fallback: SecretStr | None = None
+    api_base: str = ""
+    """Optional provider base URL passed to LiteLLM, for example ``http://localhost:11434`` for a local Ollama."""
     daily_budget_usd: Decimal = Field(default=Decimal(5), ge=0)
     session_token_limit: int = Field(default=20000, gt=0)
     conversation_budget_usd: Decimal = Field(default=Decimal("0.50"), ge=0)
@@ -269,6 +283,26 @@ class WorkflowSettings(BaseSettings):
         return value
 
 
+class EvaluationSettings(BaseSettings):
+    """Published evaluation summaries served by ``/v1/eval/summaries``.
+
+    ``summaries_dir`` holds the summary files the evaluation harness publishes (phase 14); a missing directory
+    means nothing is published yet. ``summaries_public=true`` serves them without a session.
+    """
+
+    model_config = _config("EVAL_")
+
+    summaries_dir: Path = DEFAULT_EVAL_SUMMARIES_DIR
+    summaries_public: bool = False
+
+    @field_validator("summaries_dir", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object) -> object:
+        if isinstance(value, str) and not value.strip():
+            return DEFAULT_EVAL_SUMMARIES_DIR
+        return value
+
+
 class ObservabilitySettings(BaseSettings):
     """OpenTelemetry export settings."""
 
@@ -291,6 +325,7 @@ class AppSettings:
         policy: PolicySettings | None = None,
         retrieval: RetrievalSettings | None = None,
         workflow: WorkflowSettings | None = None,
+        evaluation: EvaluationSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
@@ -300,6 +335,7 @@ class AppSettings:
         self.policy = policy if policy is not None else PolicySettings()
         self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
         self.workflow = workflow if workflow is not None else WorkflowSettings()
+        self.evaluation = evaluation if evaluation is not None else EvaluationSettings()
 
     @property
     def is_production(self) -> bool:
@@ -330,6 +366,15 @@ def _secret_problem(variable: str, secret: SecretStr | None) -> str | None:
     return None
 
 
+def _origin_problems(origins: list[str]) -> list[str]:
+    """Credentialed CORS needs an explicit allowlist of https origins in production."""
+    if any(origin.strip() == "*" for origin in origins):
+        return ["CORS_ALLOWED_ORIGINS must not contain * in production"]
+    if any(not origin.startswith("https://") for origin in origins):
+        return ["CORS_ALLOWED_ORIGINS must list https origins only in production"]
+    return []
+
+
 def production_problems(settings: AppSettings) -> list[str]:
     """Return every production rule the settings violate; empty outside production."""
     if not settings.is_production:
@@ -351,6 +396,9 @@ def production_problems(settings: AppSettings) -> list[str]:
         problems.append("LLM_CASSETTE_MODE=record is not allowed in production")
     if settings.retrieval.index_source != "stored":
         problems.append("RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)")
+    problems.extend(_origin_problems(settings.security.cors_allowed_origins))
+    if settings.llm.api_base and not settings.llm.api_base.startswith("https://"):
+        problems.append("LLM_API_BASE must use https in production")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:
@@ -372,6 +420,7 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
+        evaluation=EvaluationSettings(_env_file=env_file),
     )
     problems = production_problems(settings)
     if problems:
