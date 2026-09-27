@@ -61,6 +61,7 @@ DEFAULT_MODEL_REGISTRY_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "models"
 _SELECTION = r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}"
 ROUTER_SELECTION = rf"^(keyword@1|(tfidf|embeddings)@{_SELECTION})$"
 RESOLVER_SELECTION = rf"^(rules@1|lgbm@{_SELECTION})$"
+RISK_ESTIMATOR_SELECTION = rf"^(score_band@1|(logreg|lgbm)@{_SELECTION})$"
 DEFAULT_THRESHOLD_BM25 = 3.6292
 """Tuned on the dev split of retrieval_judgments.v1 (docs/evaluation/retrieval.md); rerun `make eval-retrieval`."""
 DEFAULT_THRESHOLD_DENSE = 0.8275
@@ -233,8 +234,9 @@ class WorkflowSettings(BaseSettings):
     (CLAUDE.md section 1). Model phrasing and handoff summaries are off by default and, when on, must pass the
     grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations:
     ``WORKFLOW_ROUTER`` is ``keyword@1`` (default), ``tfidf@<version or alias>``, or ``embeddings@<version or alias>``;
-    ``WORKFLOW_RESOLVER`` is ``rules@1`` (default) or ``lgbm@<version or alias>``. Learned models load from the
-    filesystem registry at ``WORKFLOW_MODEL_REGISTRY_DIR``; without an artifact the rule baseline serves.
+    ``WORKFLOW_RESOLVER`` is ``rules@1`` (default) or ``lgbm@<version or alias>``; ``WORKFLOW_RISK_ESTIMATOR`` is
+    ``score_band@1`` (default), ``logreg@<version or alias>``, or ``lgbm@<version or alias>``. Learned models load
+    from the filesystem registry at ``WORKFLOW_MODEL_REGISTRY_DIR``; without an artifact the baseline serves.
     """
 
     model_config = _config("WORKFLOW_")
@@ -250,9 +252,9 @@ class WorkflowSettings(BaseSettings):
     resolver: Annotated[str, Field(pattern=RESOLVER_SELECTION)] = "rules@1"
     model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
     language_detector: Literal["lexical@1"] = "lexical@1"
-    risk_estimator: Literal["score_band@1"] = "score_band@1"
+    risk_estimator: Annotated[str, Field(pattern=RISK_ESTIMATOR_SELECTION)] = "score_band@1"
 
-    @field_validator("router", "resolver", "model_registry_dir", mode="before")
+    @field_validator("router", "resolver", "risk_estimator", "model_registry_dir", mode="before")
     @classmethod
     def _empty_model_means_default(cls, value: object, info: ValidationInfo) -> object:
         if isinstance(value, str) and not value.strip():
