@@ -67,3 +67,12 @@ async def postgres_api(request: pytest.FixtureRequest, monkeypatch: pytest.Monke
     yield backend
     for harness in backend.built:
         await harness.container.aclose()
+
+
+@pytest.fixture
+async def memory_api(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch) -> AsyncIterator[ApiBackend]:
+    """The in-memory adapters only, for tests that seed records the database would tie to other rows."""
+    backend = await _backend("memory", request, monkeypatch)
+    yield backend
+    for harness in backend.built:
+        await harness.container.aclose()
