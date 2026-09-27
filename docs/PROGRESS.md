@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 06, policy pack and kernel: a synthetic, trilingual policy pack (50 clauses in es, pt, en, jurisdiction-specific for MX, CO, AR), the pure evaluator with its rules, the explanation renderer, the synthetic eligibility service, the synthetic credit catalog, and the tool parameters from the pack |
-| Next phase | 07, grounding and retrieval (`kit/prompts/07-grounding-retrieval.md`). The bound lookup can use `PolicyRepository.get_bound` over the phase 06 pack; the workflow engine (phase 09) must build `PolicyFacts` and call the evaluator (`docs/BACKLOG.md`) |
+| Last completed phase | 07, grounding and retrieval: the bound clause lookup verified at startup, open retrieval (BM25, dense, hybrid) only for informational questions with measured abstention, indexes keyed by the pack version, the deterministic grounding verifier, 100 pending relevance judgments, and the retrieval comparison |
+| Next phase | 09, session 09a (`kit/prompts/09-workflow-engine.md`, session 09a): engine, registry, router dispatch, `dispute`, `card_support`, baseline B0. It must wire the bound lookup, informational retrieval, and the verifier (`docs/BACKLOG.md`) |
 | Blocked | None |
 
-Pending human actions (none blocks phase 07):
+Pending human actions (none blocks phase 09a):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -32,8 +32,92 @@ Pending human actions (none blocks phase 07):
 16. **Review the policy clauses for plausibility and bilingual quality before phase 09, workflow by workflow** (`policies/clauses/`, the rendered texts in `services/api/tests/integration/policy/golden/`, and `docs/policy/catalog.md`). A Spanish speaker and a Portuguese speaker review each workflow's clauses (account_inquiry, card_support, dispute, credit, and the common SCOPE, AUTH, PRV, ESC, INF clauses); record the reviewers and the date here. Reviewers: pending. Date: pending. This is not a blocker for phase 07.
 17. **Review the synthetic eligibility thresholds and the credit catalog separately** (`docs/policy/eligibility.md`, `policies/clauses/elg/`, `policies/credit/`): score minimums, payment-to-income maximums, review thresholds, acceptable bands, cut points, and product ranges. Record the reviewers and the date here. Reviewers: pending. Date: pending.
 18. **Confirm step-up on every write.** Phase 06 follows CLAUDE.md section 7 ("Write actions require step-up"), so opening a dispute case and recording a credit application now need a step-up code, like the card block. CLAUDE.md section 1 lists step-up only for the card block; if the team prefers the section 1 reading, set `requires_step_up: false` for those rows in `policies/matrix.yaml` (the tools follow the matrix).
+19. **Review the retrieval relevance judgments** (`evals/data/retrieval_judgments.v1.jsonl`, 100 lines, all `review_status: pending`) following `docs/evaluation/retrieval-labeling.md`: a Spanish and a Portuguese reviewer per line, adjudication of disagreements, a reviewed `v2` file, and `make eval-retrieval` again. Record the reviewers, the date, and the agreement here. Reviewers: pending. Date: pending. This is not a blocker; the results in `docs/evaluation/retrieval.md` are reported as provisional until then.
+20. **Review the optional `ml` extra footprint**: sentence-transformers 6.1.0 with torch 2.14.0 measured 806 MB installed (pre-approved, extra only, never in the API image), plus the 471 MB model `intfloat/multilingual-e5-small` (MIT) cached under `data/models/`. `make setup` does not install it; `uv sync --all-packages --extra ml` does.
 
 ## Phase log
+
+### Phase 07: grounding with bound policies and measured retrieval (2026-09-27)
+
+Plan: `docs/plans/phase-07.md` (not a plan-mode phase). The human delegated approvals to the orchestrator, which pre-approved sentence-transformers with torch in an optional `ml` extra only, a small multilingual model downloaded from Hugging Face into a gitignored cache, MLflow on a local file store, and judgments marked pending with the review recorded as a pending action. The pull at the start was a fast-forward no-op ("Already up to date").
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `3590cc1` | The plan with the decided open questions |
+| `2123101` | `WorkflowDescriptor.states` (the canonical state names); the loader rejects bindings that miss a registered state or bind an unknown one; `application/grounding/bound.py` (`BoundPolicyLookup`, `BoundPolicy`) resolves every state, country, and language at construction and takes the verified `Customer` |
+| `eb9ac4d` | `adapters/retrieval`: tokenizer (`fold-stop-trunc6@1`), corpus without ELG, in-house Okapi BM25, dense retrieval with the `Embedder` protocol, `SentenceTransformerEmbedder` (lazy import) and `CachingEmbedder`, reciprocal rank fusion with component floors, the index store keyed by pack version; three domain errors; the `ml` extra, `mlflow-skinny`, the PyTorch CPU index for Linux, mypy overrides |
+| `b6ab7ed` | `RetrievalPolicy` (per-retriever threshold, ELG dropped again) and `InformationalRetrieval` (only `Intent.INFORMATIONAL`, jurisdiction from the verified customer) |
+| `f208af4` | The grounding verifier: `numbers.py`, `lexicon.py`, `evidence.py`, `draft.py`, `verifier.py`, with unit tests and a real-pack test over every bound explanation and every eligibility answer |
+| `60c8ba9` | `RetrievalSettings` (`RETRIEVAL_*`, production requires a stored index), `bootstrap/retrieval.py`, the container's `grounding` services (an injectable embedder), `bank-agent index build`, `make index`, `make eval-retrieval`, `.env.example` |
+| `992fdd6` | `evals/data/retrieval_judgments.v1.jsonl` (100 queries), `bank_evals.retrieval` (judgments, metrics, runner with dev tuning, evaluation, report, MLflow tracker), `bank-eval retrieval`; the tuned thresholds become the settings defaults |
+| `e167299` | `docs/evaluation/retrieval.md`, generated from `992fdd6` with the real model |
+| `35abb58` | `docs/workflows/grounding.md`, the retrieval README, `docs/evaluation/retrieval-labeling.md`, ADR 0012, README and index updates, BACKLOG rows |
+| This commit | This entry |
+
+#### Review summary
+
+- **Bound lookup.** A missing binding is a startup error twice over: the pack loader compares `bindings.yaml` with `WorkflowDescriptor.states`, and `BoundPolicyLookup` resolves all 31 states in 3 countries and 3 languages when the container starts. `for_state` takes the verified `Customer`, so the jurisdiction cannot come from text.
+- **Open retrieval.** Corpus: 123 documents (41 current clauses without ELG, in es, pt, en), filtered by language and jurisdiction (or `ALL`) before scoring. Only the informational intent retrieves (`RetrievalNotAllowedError` otherwise). Thresholds tuned on the dev split: BM25 3.6292, dense cosine 0.8275; hybrid fuses with k = 60 after those floors and abstains when nothing survives.
+- **Index.** `bank-agent index build [--dense]` writes `data/artifacts/retrieval/indexes/<pack version>/` (manifest, `bm25.json`, `dense.json`); loading refuses another pack version, corpus digest, tokenizer, or embedding model. `RETRIEVAL_INDEX_SOURCE=build` (development default) builds BM25 from the loaded pack; production requires `stored`.
+- **Verifier.** Deterministic checks listed in `docs/workflows/grounding.md`: citations (exist, current, jurisdiction), every figure against cited or bound clause parameters, record facts, and the catalog entry (with units), es and pt number and date formats, currency markers against the account currency, verified actions only, balances and totals against their facts with the as-of date, catalog figures, eligibility outcome against the assessment, approval wording in credit text, and no score, income, or risk figure. Whole quoted policy sentences are not treated as claims.
+- **Retrieval results (provisional, labels pending, test split: 48 in-scope and 12 out-of-scope queries).** BM25: recall@3 0.85, MRR 0.85, nDCG@5 0.84, abstention precision 0.80 and recall 1.00, p50 0.05 ms. Dense: recall@3 0.93, MRR 0.86, nDCG@5 0.86, abstention 0.92 and 0.92, p50 6.3 ms. Hybrid: recall@3 0.84, MRR 0.85, abstention 0.92 and 0.92, p50 6.2 ms. Per-workflow cells hold 12 in-scope queries; `dispute` is the weakest slice for every retriever (BM25 recall@3 0.67).
+
+#### Decisions
+
+- [ADR 0012](adr/0012-bound-policies-and-informational-retrieval.md): bound policies for workflow states, open retrieval only for informational questions, BM25 as the API default.
+- Registered states live in the domain catalog (`WorkflowDescriptor.states`), equal to the `bindings.yaml` names; phase 09 builds its machines from them.
+- BM25 is implemented in the repository: `rank-bm25` has had no release since 2022 (CLAUDE.md rule 10), and `bm25s` brings SciPy into the API runtime for about 140 documents.
+- ELG clauses are excluded from the retrieval corpus and dropped again by the retrieval policy, so retrieved text never supplies an eligibility rule.
+- Thresholds are tuned on the dev split (40 queries) and reported on the test split (60), maximizing balanced accuracy, ties to the lowest threshold; the split is fixed in each judgment line.
+- The API default is BM25 because the API image never installs the `ml` extra; on the provisional labels BM25 has the best abstention recall and dense the best recall@3.
+- Dependencies (licenses checked, pinned in `uv.lock`, `pip-audit` over every extra reports no known vulnerabilities):
+  - `sentence-transformers` 6.1.0 (Apache-2.0) with `torch` 2.14.0 (BSD-3-Clause), in the optional `ml` extra of `bank-agent`: **806 MB installed** in a clean Python 3.12 virtual environment on macOS arm64 (torch 557 MB, SciPy 82 MB, transformers 56 MB, sympy 42 MB, scikit-learn 34 MB, numpy 26 MB). Pre-approved by the human; never installed by `make setup` or in the API image; torch resolves from the PyTorch CPU index on Linux so the lock carries no CUDA wheels.
+  - The model `intfloat/multilingual-e5-small` (MIT): 471 MB in `data/models/huggingface` (gitignored); embeddings cached in `data/artifacts/retrieval/embeddings` (1.5 MB).
+  - `mlflow-skinny` 3.16.1 (Apache-2.0) in `bank-evals`: about 60 MB with its dependencies in a clean environment (MLflow itself 25 MB), most of them already in the workspace. MLflow 3.16 keeps the file store in maintenance mode, so the tracker sets `MLFLOW_ALLOW_FILE_STORE=true` for `file:` URIs only (the human asked for `file:./mlruns`).
+- `.gitignore` gets a narrow exception for `evals/data/*.jsonl` (team-written judgments, not organizer data).
+
+Deviations from the prompt and plan, found during implementation:
+
+- The verifier also refuses a cited clause of another jurisdiction (`clause_outside_jurisdiction`) and claims of actions no tool performs (`unsupported_action_claim`), which the prompt did not list.
+- `ResponseDraft.text` accepts up to 20,000 characters: the full bound explanation of some states is longer than 5,000.
+- Quoted whole clause sentences skip the action and eligibility lexicons (CRD-ALL-2 describes a block in general terms).
+- Production settings tests now set `RETRIEVAL_INDEX_SOURCE=stored`, and the "every problem at once" test expects the new rule; no assertion was weakened.
+- The report and metrics live in `bank_evals.retrieval`; `make eval-retrieval` is a new target (the prompt names only the command).
+
+#### How to verify
+
+```bash
+make check                                                             # needs Docker; never reads .env
+uv run pytest services/api/tests/unit/application/grounding services/api/tests/unit/adapters/retrieval -q
+uv run pytest services/api/tests/integration/grounding evals/tests -q  # real pack, CLI, evaluation end to end
+make index && make index DENSE=1                                       # DENSE needs uv sync --all-packages --extra ml
+make eval-retrieval                                                    # rewrites docs/evaluation/retrieval.md, logs to ./mlruns
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1,758 unit and 1,034 integration tests pass (1,553 and 449 before); the real-model test ran (the `ml` extra is installed in this environment) |
+| Coverage gates | All 11 pass: application 97.1%, adapters 98.1%, bootstrap 99.6%, policy 96.6%, domain 99.7%, `evals/src` 99.0% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 30 mermaid blocks in 256 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+| Audit | `pip-audit` over all packages and every extra: no known vulnerabilities |
+
+#### Known limitations
+
+- The judgments are team-written and unreviewed (pending action 19); every retrieval number is provisional, and per-workflow, per-language, and per-jurisdiction cells are small (12 in-scope test queries per workflow).
+- The verifier is lexical: numbers written as words and paraphrased claims outside its lexicons are not detected (BACKLOG, phase 14).
+- No workflow calls the bound lookup, retrieval, or the verifier yet (BACKLOG, phase 09); the production image does not build an index yet (BACKLOG, phase 16).
+- `make check` exercises the real embedding model only where the `ml` extra is installed; elsewhere that one module is skipped with its reason, and dense and hybrid run on the fake embedder.
+
+#### Next phase
+
+Phase 09, session 09a (`kit/prompts/09-workflow-engine.md`, session 09a): the engine, the workflow registry, router dispatch, `dispute`, `card_support`, and baseline B0, using `BoundPolicyLookup`, `InformationalRetrieval`, and `GroundingVerifier` from this phase. Pending actions 16 to 19 should be done first where they touch those workflows.
 
 ### Phase 06: policy pack and deterministic policy kernel (2026-09-27)
 
