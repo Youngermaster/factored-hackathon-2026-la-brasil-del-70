@@ -1,0 +1,90 @@
+# Every number the deck draws. Scenes read these with M('key'); they never
+# hardcode a figure. Paths are relative to the repository root.
+#
+#   kind: offline      measured on historical or held-out data, not production
+#         provisional  offline, but on labels still pending human review
+#         projection   computed from stated, unverified assumptions
+#         simulation   produced by a simulated workload
+#         synthetic    a parameter of the team's synthetic policy pack
+#   status: pending    the value does not exist yet; the deck shows "pending"
+#
+# `pnpm check:content` lists pending metrics. `pnpm check:content --strict`
+# fails while any metric a slide uses is still pending: run it before the
+# final export (pnpm export:final does).
+
+# -- data platform (phase 03) -----------------------------------------------
+data.rows_ingested: {value: 23471159, display: "23,471,159", kind: offline, source: docs/data/quality-report.md, note: "rows loaded by run ingest-710bbb8b31fd4f28"}
+data.rows_quarantined: {value: 24029, display: "24,029", kind: offline, source: docs/data/quality-report.md, note: "call_transcripts with a null duration"}
+data.tables: {value: 13, kind: offline, source: docs/data/quality-report.md}
+data.interactions: {value: 686296, display: "686,296", kind: offline, source: docs/analysis/workflow-evidence.md}
+data.complaints: {value: 67095, display: "67,095", kind: offline, source: docs/analysis/workflow-evidence.md}
+data.period: {value: "2023-06 to 2026-06", kind: offline, source: docs/analysis/workflow-evidence.md, note: "2023-06-17 to 2026-06-17"}
+data.transcripts: {value: 147292, display: "147,292", kind: offline, source: docs/analysis/workflow-evidence.md}
+data.transcript_texts: {value: 42, kind: offline, source: docs/analysis/workflow-evidence.md, note: "distinct customer texts"}
+data.orphan_branch_refs: {value: 149995, display: "149,995 of 150,000", kind: offline, source: docs/data/data-card.md, note: "customers.registration_branch_id"}
+data.complaint_foreign_product: {value: 44570, display: "44,570 of 44,570", kind: offline, source: docs/data/data-card.md, note: "complaint product refs naming another customer's product"}
+
+# -- demand per workflow (phase 04, primary mapping) --------------------------
+share.account_inquiry: {value: 31.9, display: "31.9%", kind: offline, source: docs/analysis/workflow-evidence.md}
+share.card_support: {value: 20.0, display: "20.0%", kind: offline, source: docs/analysis/workflow-evidence.md}
+share.dispute: {value: 19.1, display: "19.1%", kind: offline, source: docs/analysis/workflow-evidence.md}
+share.credit: {value: 7.3, display: "7.3%", kind: offline, source: docs/analysis/workflow-evidence.md}
+share.other: {value: 21.7, display: "21.7%", kind: offline, source: docs/analysis/workflow-evidence.md}
+
+fcr.account_inquiry: {value: 91.5, display: "91.5%", kind: offline, source: docs/analysis/workflow-evidence.md}
+fcr.card_support: {value: 89.6, display: "89.6%", kind: offline, source: docs/analysis/workflow-evidence.md}
+fcr.dispute: {value: 43.6, display: "43.6%", kind: offline, source: docs/analysis/workflow-evidence.md}
+fcr.credit: {value: 65.2, display: "65.2%", kind: offline, source: docs/analysis/workflow-evidence.md}
+
+csat_low.dispute: {value: 54.5, display: "54.5%", kind: offline, source: docs/analysis/workflow-evidence.md, note: "CSAT 1 or 2"}
+handle.dispute: {value: 435, display: "435 s", kind: offline, source: docs/analysis/workflow-evidence.md}
+
+cost_resolved.account_inquiry: {value: 0.76, display: "0.76 USD", kind: projection, source: docs/analysis/workflow-evidence.md, note: "from data_platform/analysis/cost_assumptions.yaml, unverified"}
+cost_resolved.card_support: {value: 0.93, display: "0.93 USD", kind: projection, source: docs/analysis/workflow-evidence.md}
+cost_resolved.dispute: {value: 3.13, display: "3.13 USD", kind: projection, source: docs/analysis/workflow-evidence.md}
+cost_resolved.credit: {value: 2.60, display: "2.60 USD", kind: projection, source: docs/analysis/workflow-evidence.md}
+
+# -- synthetic policy pack (phase 06), used in the illustrated dispute turn --
+policy.dispute_window_ar: {value: 30, display: "30 days", kind: synthetic, source: policies/clauses/dsp/DSP-AR-1.en.md}
+policy.auto_limit_ar: {value: 600000, display: "600,000 ARS", kind: synthetic, source: policies/clauses/dsp/DSP-AR-3.en.md}
+policy.dispute_sla_ar: {value: 30, display: "30 days", kind: synthetic, source: policies/clauses/dsp/DSP-AR-2.en.md}
+policy.handoff_sla_ar: {value: 48, display: "48 h", kind: synthetic, source: policies/clauses/esc/ESC-AR-2.en.md}
+
+# -- retrieval, the learned component measured so far (phase 07) -------------
+retrieval.test_queries: {value: 60, kind: provisional, source: docs/evaluation/retrieval.md, note: "48 in scope, 12 out of scope; labels pending review"}
+retrieval.r1.bm25: {value: 0.72, display: "0.72", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.r1.dense: {value: 0.69, display: "0.69", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.r1.hybrid: {value: 0.74, display: "0.74", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.abst_p.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.abst_r.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.p95.hybrid: {value: 6.88, display: "6.9 ms", kind: provisional, source: docs/evaluation/retrieval.md}
+
+# -- held-out evaluation (phase 14): pending until the harness reports -------
+# Each value is the proposed system on the held-out workload; `.b0` is the
+# keyword-menu baseline B0 on the same workload. Replace `status: pending`
+# with `value:` and `display:` when docs/evaluation/ has the report.
+eval.cases: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "held-out scenarios, all workflows and languages"}
+eval.safe_resolution: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.safe_resolution.b0: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.attempted: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "share of cases where automation was attempted"}
+eval.containment: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.containment.b0: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.missed_escalations: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "count over cases that required a transfer"}
+eval.unneeded_escalations: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.unsafe: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "count and denominator, for example 0 of 240"}
+eval.unsafe.b0: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.latency_p50: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.latency_p95: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.cost_attempted: {status: pending, kind: projection, source: "docs/evaluation/ (phase 14)", note: "from the verified price table and token counts"}
+eval.cost_resolved: {status: pending, kind: projection, source: "docs/evaluation/ (phase 14)", note: "not defined when there are no resolutions"}
+eval.sar.account_inquiry.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.account_inquiry.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.card_support.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.card_support.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.dispute.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.dispute.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.credit.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+eval.sar.credit.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+
+# -- operation (phases 15 to 17) ----------------------------------------------
+deploy.url: {status: pending, kind: offline, source: "deploy/README.md (phase 16)", note: "the public URL the organizers require"}
