@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 09, session 09b: the `account_inquiry` and `credit` workflows (with the `risk_estimator:score_band@1` baseline) as definitions on the 09a engine, their B0 variants, all four workflows enabled by default, and scenarios 19 to 29 with variants on memory and PostgreSQL |
-| Next phase | 10 (`kit/prompts/10-learned-components.md`): the learned router, resolver, and risk estimator behind their ports. The prompt asks that phase 11 wait for both phase 09 walkthroughs (pending actions 21 and 25) |
+| Last completed phase | 10, session 10a: shared ML foundations, the learned intent router (`router:tfidf`, `router:embeddings`) and transaction resolver (`resolver:lgbm`) behind their ports, loaded through the filesystem `ModelRegistry`, evaluated against the rule baselines, and promoted; the rule baselines stay the defaults |
+| Next phase | 10, session 10b (`kit/prompts/10-learned-components.md`, session 10b): the credit risk estimator on the same foundations. The phase 09 prompt still asks that phase 11 start after the 09a and 09b walkthroughs (pending actions 21 and 25) |
 | Blocked | None |
 
-Pending human actions (none blocks phase 10; the phase 09 prompt asks that phase 11 start after actions 21 and 25):
+Pending human actions (none blocks session 10b; the phase 09 prompt asks that phase 11 start after actions 21 and 25):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -41,7 +41,106 @@ Pending human actions (none blocks phase 10; the phase 09 prompt asks that phase
 25. **Walk the team through phase 09b** (the prompt's human review): the account inquiry and credit state tables (`docs/workflows/account-inquiry.md`, `docs/workflows/credit-information.md`, `docs/plans/phase-09b.md`) and scenario tests 19 to 29 (`services/api/tests/integration/workflows/test_account_inquiry.py`, `test_credit_workflow.py`, `test_credit_edges.py`). Record the reviewers, the date, and any requested changes here. Reviewers: pending. Date: pending. Session 09b ran before action 21 under the orchestrator's instruction.
 26. **Review the score-band risk baseline** (`docs/workflows/credit-information.md#risk-estimator-baseline-risk_estimatorscore_band1`): the bands, the deliberately wide intervals, and the two transition bands that straddle the synthetic cut points, together with pending action 17. It is a baseline with no trained label, labeled as such; phase 10 replaces it.
 
+27. **Label the router validation sample** (`ml/corpus/router/validation/router_validation_v1.csv`, 200 items) following `docs/evaluation/router-labeling.md`: two labelers without the key file, adjudication, then `make train` to report kappa and label accuracy. Reviewers: pending. Date: pending. Not a blocker; the router numbers are provisional until then.
+28. **Native review of the pt-BR router seeds** (`ml/corpus/router/seeds/*.yaml`, 136 pt-BR seeds) and of the Portuguese resolver templates (`ml/src/bank_ml/resolver/describe.py`). Reviewer: pending. Date: pending.
+29. **Generate the router paraphrases once a provider is chosen** (after actions 5 and 6): `bank-ml router paraphrase --purpose train` and `--purpose eval`, review the rows (`review_status: pending`), record the cassettes, and rerun `make train`. No cassette exists yet, and none was fabricated.
+30. **Verify the 12 silver complaint-to-transaction matches** in `data/labeling/resolver_silver_sample.csv` (gitignored; regenerate with `bank-ml resolver evaluate`), marking `verified_match` yes or no. The result feeds the dispute data support item (BACKLOG).
+31. **Review the promotions and the learned-model defaults.** The session promoted `router:tfidf`, `router:embeddings`, and `resolver:lgbm` under the delegated approval (records in `data/artifacts/models/*/*/promotions.jsonl`). The defaults stay on the rule baselines until phase 14 (ADRs 0015 and 0016). To re-promote after retraining, run `make promote APPROVED_BY="Name"`.
+32. **Two ADRs carry number 0025** (`0025-in-domain-unsupported-requests.md` from session 09b and `0025-tuesday-account-inquiry-mvp-and-observability.md` from PR #2). Decide which one to renumber; this session did not rename a teammate's file.
+
 ## Phase log
+
+### Phase 10, session 10a: shared ML foundations, the learned router, and the transaction resolver (2026-09-27)
+
+Plan: `docs/plans/phase-10a.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op. During the session a teammate merge (`2f4ff5a`, PR #2 with ADRs 0025 to 0028) and a slides commit (`0ac0500`) landed on this checkout. A `git reset --soft HEAD~1`, meant to split a local commit, briefly moved the branch below that merge. It was put back on the merge commit, whose tree was verified identical, with nothing lost and nothing pushed. The seed corpus stayed inside `5f63b42` rather than rewriting history under the merge. Session 10b (the credit risk estimator) was not implemented.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `b338153` | The plan with decided open questions |
+| `07441bd` | `bank_agent` adapters: `FilesystemModelRegistry` and `FilesystemModelStore` (JSON artifacts, content versions, SHA-256 on resolve and on read, aliases, promotion history), `router:tfidf`, `router:embeddings`, `resolver:lgbm`, the pure-Python tree evaluator, the shared features (`text_features`, `resolver_features`), `bootstrap/models.py` (selection by `WORKFLOW_ROUTER` and `WORKFLOW_RESOLVER`, fallback to the baselines), `WORKFLOW_MODEL_REGISTRY_DIR`, `ModelUnavailableError`, contract suites for the registry and the new adapters; ML dependencies |
+| `5f63b42` | `bank_ml.common`: seeds, salted hashing, group, temporal, and stratified seed-group splits, MinHash LSH deduplication, dataset cards, the post-outcome leakage denylist, metrics with cluster bootstrap intervals, ECE and coverage-risk, temperature scaling, dev-only thresholds, MLflow tracking (SQLite), promotion with recorded decisions; the 544 team-authored router seeds |
+| `1ca1c90` | The router lexicon, augmentation with provenance, perturbations, the dataset builder, and the corpus leakage guard |
+| `0d13786` | Offline paraphrase prompts `paraphrase_router_seed@1` and `paraphrase_router_eval@1` (`UtteranceParaphrases`) |
+| `24a9141` | Router models, evaluation, robustness and transfer, the transcript analysis, paraphrase generation through the gateway, the 200-item validation sheet, the report, and the `bank-ml router` CLI |
+| `6aec889` | Engine bug fix found by the resolver error analysis ("el 5 de febrero de 1500 pesos" read 1500 as the year and lost the amount), with regression tests; the shared deterministic descriptor |
+| `c0e2779` | The resolver: gold reader, templates, dataset with labels by construction, the LightGBM ranker with the none option, evaluation, silver labels, report, and the `bank-ml resolver` CLI |
+| `b45d8fe` | Resolver integration tests on a synthetic gold fixture, the leakage scan, `make train` and `make promote` |
+| `1d72ea8`, `2c19633` | The resolver dataset hash covers descriptors; report heading levels |
+| `abf0b2a` | Generated `docs/evaluation/router.md` and `docs/evaluation/resolver.md` |
+| This commit | Model cards, ADRs 0015 and 0016, the router labeling protocol, `ml/README.md`, README and index updates, BACKLOG, and this entry |
+
+#### Headline results (test splits, never used for a choice; 95% bootstrap intervals)
+
+| Component | Baseline | Learned | Notes |
+|---|---|---|---|
+| Router, accuracy (601 items, 136 seed groups) | `keyword@1` 0.381 [0.299, 0.455] | `embeddings` 0.749 [0.679, 0.805]; `tfidf` 0.677 [0.596, 0.749] | Majority 0.075 |
+| Router, macro-F1 | 0.385 | 0.742 (embeddings); 0.661 (tfidf) | |
+| Router, workflow accuracy | 0.574 | 0.834; 0.827 | Out of scope is the weakest slice (0.281; 0.031) |
+| Router, high-stakes recall (mean) | 0.471 | 0.805; 0.741 | |
+| Router, coverage and error at the dev threshold | 0.491 and 0.363 | 0.619 and 0.102; 0.484 and 0.096 | Target 5% on dev; test error is twice that |
+| Resolver, dispute, two or more candidates (652) | `rules@1` top-1 0.989, coverage 0.793, wrong 0.003 | `lgbm` top-1 1.000, coverage 0.913, wrong 0.000 | Target absent auto-selected: 0.049 against 0.000 |
+| Resolver, payment lookup, two or more candidates (676) | top-1 0.989, coverage 0.769, wrong 0.000 | top-1 1.000, coverage 0.936, wrong 0.001 | Target absent: 0.000 against 0.026 |
+
+Champions promoted on dev (approver recorded as "orchestrator (human-delegated approval, session 10a)"): `router:tfidf@986872f0284f`, `router:embeddings@32666d7d4e3f`, `resolver:lgbm@411b1d77d17b`. The defaults stay on the rule baselines.
+
+#### Decisions
+
+- [ADR 0015](adr/0015-router-model-choice.md): TF-IDF and embedding routers behind the port, both promoted; embeddings is the better model, TF-IDF runs in the current API image; the keyword baseline stays the default until phase 14.
+- [ADR 0016](adr/0016-resolver-approach.md): a LightGBM lambdarank resolver with labels by construction, an evidence gate, and a none-of-these option chosen on dev together with the margin.
+- **Training text.** Router training and evaluation text is team-authored seeds (8 per intent and locale) with deterministic augmentation and provenance; transcripts are analyzed and reported, not used (42 distinct texts, 0% agreement between the mapped contact reason and `detected_intents`).
+- **Leakage.**
+  - Router: near-duplicate seeds, cross-intent minimal pairs included, share a seed group; groups are split per intent and locale; a unit test guards the committed corpus.
+  - Resolver: customer group split plus a temporal cutoff with a gap.
+  - Both: promotion, thresholds, temperatures, and hyperparameters use dev only.
+- **Artifacts.** JSON parameters evaluated in pure Python in `bank_agent`, with no ML library in the API image, no unpickling, and digest checks. LightGBM equivalence is tested to 1e-9.
+- **Rare intents.** The router never merges them into a workflow-level label, because the port returns an `Intent`; the build refuses an intent with fewer than 4 train seed groups (none has).
+- **Paraphrases.** Two different prompts for training and evaluation paraphrases; generation stops without a provider, and no cassette is invented.
+- **Dependencies** (licenses checked, pinned in `uv.lock`): LightGBM 4.7.0 (MIT, 5.2 MB), datasketch 2.0.0 (MIT, 0.4 MB), and rapidfuzz 3.14.6 (MIT, 4.4 MB; also an API runtime dependency for merchant similarity) as new; scikit-learn, numpy, duckdb, and mlflow-skinny, already locked, now direct dependencies of `bank-ml`.
+- **MLflow** training runs use SQLite (`sqlite:///mlruns.db`, gitignored); retrieval keeps the file store the human chose (BACKLOG).
+
+Deviations from the prompt and plan, found during implementation:
+
+- **None option.** Not in the plan. The first resolver auto-selected 24% of target-absent test queries, so a none option and a target-absent constraint (at most 5% on dev) were added.
+- **Minimal pairs.** Near-duplicate seeds with different intents are kept in one group instead of stopping the build.
+- **Contract test.** The resolver contract now asserts the port's postcondition (a subset of the candidates, each once), because the rule and learned resolvers do not rank implausible candidates. The fake keeps its own rank-everything test.
+- **Weak silver labels.** Only 12 of 8,523 complaints match any own transaction, so the silver evaluation is reported but carries almost no weight.
+- **Masked digits.** Resolver failure examples in the committed report have their digits masked, because they come from organizer transactions (rule 5).
+- **Test tracking.** The integration test uses MLflow's file store: the SQLite store emits a SQLAlchemy 2.1 deprecation warning inside MLflow, and the suite treats warnings as errors. `make train` exercises SQLite.
+
+#### How to verify
+
+```bash
+make check                                              # needs Docker; never reads .env
+uv run pytest ml/tests -q                               # unit and integration on fixtures (no warehouse needed)
+uv run pytest services/api/tests/unit/adapters/models services/api/tests/contracts/test_model_ports_contract.py -q
+make train                                              # needs the s3 gold for the resolver; about 90 seconds
+make promote APPROVED_BY="Name Surname"
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 2,293 unit and 1,175 integration tests pass (2,174 and 1,167 after 09b) |
+| Coverage gates | All 11 pass: `ml/src` 98.0%, application 92.9%, adapters 98.1%, bootstrap 99.2%, domain 99.7%, ports 100% |
+| Docs check | markdownlint 0 issues; 61 mermaid blocks parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+| Reproducibility | Retraining gives identical artifact versions and metrics (router and resolver integration tests; `make train` twice gave the same versions) |
+
+#### Known limitations
+
+- All router text is team-written (one author pool, which also wrote the keyword rules), and resolver descriptions are templates. Real customers will be harder. The 200-item human validation, the native pt review, and paraphrase generation are pending.
+- Dev and test are small for the router (68 and 136 seed groups), and the test error at the dev threshold (about 10%) exceeds the 5% dev target. The out-of-scope class is weak.
+- The resolver task is near the ceiling for both models (small candidate sets, 24 merchants), so the measured gain is mostly coverage.
+- The embedding router needs the `ml` extra, which the API image does not install.
+- No language-model reference was run and no MLflow registry adapter was built (both optional, in the BACKLOG).
+
+#### Next phase
+
+Phase 10, session 10b (`kit/prompts/10-learned-components.md`, session 10b): the credit risk estimator on the same foundations (`bank_ml.common` splits, leakage guards extended with `days_past_due` and later statuses, tracking, and promotion through the filesystem registry), replacing `risk_estimator:score_band@1` as the default only after its evaluation.
 
 ### Phase 09, session 09b: account inquiry, credit, the score-band risk baseline, baseline B0 (2026-09-27)
 
