@@ -10,7 +10,7 @@ Terminology in this and the follow-up decisions: **AI assistant** is the model-d
 
 ADR 0020 defines the product scope: account inquiry, card support, dispute, and credit. Tuesday's release automates only verified account questions: balances, payment and transfer status, and supported statement summaries. When card-support, dispute, or credit is recognized, the AI assistant must call the escalation tool. The tool records the handoff and asks a mock human service agent to join that same conversation and send a randomized response from the bounded demo set. This mock join is part of Tuesday's working flow; connecting a real human service agent is a later increment. The team will use the working product and observed conversations to automate selected intents incrementally, keeping escalation available when policy, ambiguity, or risk requires it.
 
-The current web app renders only the product name and the API exposes a health route. A working release needs a customer interface, a verified demo session, customer-scoped reads, a simulated escalation response, and end-to-end visibility into what the language model did. The domain has a persisted handoff lifecycle, but a handoff record alone is not a live customer-to-agent conversation. The project also has versioned prompts, Pydantic models that produce JSON Schema, LLM-call metadata, append-only PostgreSQL execution records, and a telemetry port. Tuesday's release must connect these pieces into a traceable product and export model traces to Langfuse.
+The current web app renders only the product name and the API exposes a health route. A working release needs a customer interface with a login page that verifies a fixed demo credential, a session bound to one fixed demo customer and dataset, a mocked human escalation, and end-to-end visibility into what the language model did. The domain has a persisted handoff lifecycle, but a handoff record alone is not a live customer-to-agent conversation. The project also has versioned prompts, Pydantic models that produce JSON Schema, LLM-call metadata, append-only PostgreSQL execution records, and a telemetry port. Tuesday's release must connect these pieces into a traceable product and export model traces to Langfuse.
 
 This is a hackathon project using the organizer's synthetic data. Customer and product records represent the 2026-06-17 snapshot; customer-facing answers must say when the underlying data is as of.
 
@@ -18,11 +18,13 @@ This is a hackathon project using the organizer's synthetic data. Customer and p
 
 ```mermaid
 flowchart TD
-    C[Customer message] --> S[Verify demo session and load conversation]
-    S --> A[AI assistant returns typed intent and slots]
+    C[Customer opens the app] --> LOGIN[Login page accepts the fixed demo credential]
+    LOGIN --> S[Verify credential and create demo session]
+    S --> D[Bind session to fixed demo customer and load conversation]
+    D --> A[AI assistant returns typed intent and slots]
     A --> V[Validate output against versioned JSON Schema]
     V --> R{Recognized intent}
-    R -->|Account inquiry| Q[Read customer-scoped account records]
+    R -->|Account inquiry| Q[Read fixed demo customer's account records]
     Q --> G[Ground answer in verified records]
     G --> CHAT[Reply in the same conversation]
     R -->|Card support, dispute, or credit| T[Application calls escalate_to_human]
@@ -35,7 +37,7 @@ flowchart TD
     P --> O[Export correlated model traces to Langfuse]
 ```
 
-The model supplies a validated intent; application code calls services and the escalation tool using the authenticated customer and conversation context. The mock service agent and its randomized reply are visible in the existing conversation and clearly labeled as simulation.
+The app presents a login page and accepts the fixed demo credential. A successful verification creates a demo session bound to the one fixed demo customer; the app does not support choosing a customer or entering an account/customer ID. The model supplies a validated intent; application code calls services and the escalation tool using the verified session's fixed customer and conversation context. The mock service agent and its randomized reply are visible in the existing conversation and clearly labeled as simulation.
 
 ## Considered options
 
@@ -53,7 +55,7 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 - The mock human service agent's join and message appear in the customer's AI-assistant conversation, with a clear simulation label. The response does not claim that a case was investigated, an action completed, or a real human service agent joined.
 - The demo verifies end to end that each of the three routed workflow categories invokes the escalation tool, records a traceable handoff, shows the mock human service agent joining the same conversation, and produces a traceable randomized response. A handoff record without the mock join and visible response does not meet this Tuesday acceptance bar.
 - Every chat has a unique, persisted conversation ID. Customer messages, tool calls, handoff events, mock-agent join events and replies, and execution records refer to that ID. Escalation stays in the same chat; it does not create a second chat or lose the existing history.
-- Customers may start multiple chats over time. Apply a server-side rate limit of at most five new chats per authenticated customer in any rolling 60-minute window. Existing chats and messages do not consume the new-chat allowance. When limited, explain when the customer can try again; do not discard existing chats.
+- The demo supports multiple chats over time. Apply a server-side rate limit of at most five new chats for the fixed demo customer in any rolling 60-minute window. Existing chats and messages do not consume the new-chat allowance. When limited, explain when the user can try again; do not discard existing chats.
 
 ### Next step: human service agent joins the chat
 
@@ -68,6 +70,7 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 ### Iteration after Tuesday
 
 - Use observed account questions and human-handled conversations to select further automation candidates. Add workflow automation in increments, each with its own safe read/action boundary, clarification and failure behavior, and human fallback.
+- Replace the single fixed demo credential and customer with production-grade identity verification before exposing user-specific data or supporting multiple customer profiles.
 - Escalation remains available whenever the customer asks for a person, the intent is uncertain, required evidence is missing, policy requires review, or a tool or verification step fails. Automation may reduce unnecessary escalation only after its conditions are defined and checked; it must not conceal a required handoff.
 - Explore opt-in financial memory and guidance, AI-assistant name customization, and pet-style AI-assistant images as later product increments under [ADR 0027](0027-opt-in-financial-companion-and-agent-personalization.md). These features are not part of Tuesday's release.
 - Explore mock multi-bank import/export connectors and future crypto/xStocks navigation surfaces under [ADR 0028](0028-mocked-multibank-and-digital-asset-surfaces.md). These are roadmap/demo features, not Tuesday functionality.
@@ -76,12 +79,12 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 
 - The model does not call services, choose a customer record, or receive service credentials. It returns a typed intent and the minimum slots needed for the account-inquiry workflow.
 - Define versioned request and response models for each LLM-to-application boundary. Generate their JSON Schemas from the Pydantic models and validate every model output before application code uses it. Schemas reject undeclared fields; invalid output follows a bounded repair attempt and then deterministic clarify, abstain, or handoff behavior.
-- The authenticated session determines the customer. Backend code applies the allowlisted intent and validated slots to customer-scoped read tools, then grounds the answer in their returned records. The model may phrase the verified result; it cannot assert an action or fact absent from those records.
+- Successful demo-session verification binds the session server-side to the fixed demo customer. Backend code applies the allowlisted intent and validated slots to that customer's read tools, then grounds the answer in returned records. The model and user input cannot select a different customer or assert an action or fact absent from the records.
 
 ### Escalation tool contract
 
 - For recognized `card_support`, `dispute`, or `credit` requests, application code invokes the `escalate_to_human` tool. The model cannot call infrastructure directly, choose the customer identity, or bypass the validated intent and server-side conversation context.
-- Define the tool request and response with versioned Pydantic models and publish their JSON Schemas. The request contains the authenticated conversation ID, one of the three workflow enums, and a bounded handoff reason. The customer ID comes from the authenticated session, not model output.
+- Define the tool request and response with versioned Pydantic models and publish their JSON Schemas. The request contains the application-selected conversation ID, one of the three workflow enums, and a bounded handoff reason. The customer ID is resolved from the verified demo session to the fixed demo profile, not from model or user input.
 - The tool creates and persists a handoff, then emits a mock-human-joined event and a message from the `mock_human_service_agent` sender role in the same conversation. The response contains the handoff ID, mock join/message IDs, and a bounded randomized reply. It is marked as simulated in the payload and customer UI.
 - Persist and trace the validated tool request, schema/version, tool outcome, handoff, mock join event, and reply against the conversation ID. Tool errors follow the documented safe failure path; they must not be shown as a successful human connection.
 
@@ -101,7 +104,7 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 
 ### Customer-facing acceptance bar
 
-- A user enters through the trusted demo identity/session flow; a customer or document number alone is not proof of identity. Every lookup is scoped to that session's customer.
+- The app shows a login page. A fixed demo credential must be verified before creating a demo session, and that session is always bound to the same fixed demo customer and synthetic records. Users cannot choose another customer or switch records by entering an ID. Production-grade identity verification and access to multiple customer profiles remain future work.
 - Balance answers include currency and the data as-of date: 2026-06-17 (end of business day; serving instant 2026-06-18T05:59:59Z). Status answers identify the relevant transaction and its recorded date/status.
 - Transfers and adjustments remain unclassified in statement totals when the data does not encode direction. Missing or ambiguous data leads to a question, abstention, or handoff instead of a guessed answer.
 - The interface explains that the data is synthetic and part of the hackathon demonstration.
