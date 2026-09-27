@@ -88,6 +88,7 @@ class LiteLLMCompletion:
         api_key: SecretStr | None,
         timeout_seconds: float,
         acompletion: AsyncCompletion | None = None,
+        api_base: str | None = None,
     ) -> None:
         if not model:
             raise LlmProviderRejectedError("no model is configured")
@@ -95,6 +96,7 @@ class LiteLLMCompletion:
         self._api_key = api_key
         self._timeout_seconds = timeout_seconds
         self._acompletion = acompletion
+        self._api_base = api_base or None
 
     @property
     def model_id(self) -> str:
@@ -111,6 +113,8 @@ class LiteLLMCompletion:
         }
         if self._api_key is not None:
             arguments["api_key"] = self._api_key.get_secret_value()
+        if self._api_base is not None:
+            arguments["api_base"] = self._api_base
         if request.json_schema is not None:
             arguments["response_format"] = {
                 "type": "json_schema",
@@ -142,6 +146,9 @@ class LiteLLMClient(PromptedLLMClient):
         timeout_seconds: float,
         acompletion: AsyncCompletion | None = None,
         monotonic: Callable[[], float] = time.perf_counter,
+        api_base: str | None = None,
     ) -> None:
-        completion = LiteLLMCompletion(model, api_key=api_key, timeout_seconds=timeout_seconds, acompletion=acompletion)
+        completion = LiteLLMCompletion(
+            model, api_key=api_key, timeout_seconds=timeout_seconds, acompletion=acompletion, api_base=api_base
+        )
         super().__init__(registry, completion, monotonic=monotonic)

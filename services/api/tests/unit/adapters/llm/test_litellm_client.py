@@ -253,3 +253,16 @@ async def test_unconfigured_client_refuses_every_call() -> None:
             call_context=CONTEXT,
         )
     assert not LlmProviderRejectedError.retryable
+
+
+async def test_passes_the_configured_base_url_for_a_local_provider() -> None:
+    recorder = Recorder(_response("hola"))
+    completion = LiteLLMCompletion(
+        "ollama/qwen2.5:7b-instruct", api_key=None, timeout_seconds=5, acompletion=recorder,
+        api_base="http://localhost:11434",
+    )  # fmt: skip
+
+    await completion.complete(CompletionRequest(REQUEST.messages, 50, 0.0))
+
+    assert recorder.kwargs[0]["api_base"] == "http://localhost:11434"
+    assert "api_key" not in recorder.kwargs[0]
