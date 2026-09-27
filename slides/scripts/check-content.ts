@@ -40,7 +40,9 @@ const cueCount = new Map<string, number>()
 const usedMetrics = new Set<string>()
 const metricFamilies: string[] = []
 for (const name of sceneNames) {
-  const src = strip(read(`scenes/${name}.ts`))
+  // a scene may split its drawing into scenes/parts/<name>-*.ts; those strings count as its own
+  const parts = existsSync(join(ROOT, 'scenes/parts')) ? readdirSync(join(ROOT, 'scenes/parts')).filter((f) => f.startsWith(`${name}-`)) : []
+  const src = strip([read(`scenes/${name}.ts`), ...parts.map((f) => read(`scenes/parts/${f}`))].join('\n'))
   const ident = src.match(/cues:\s*([A-Z_][A-Z0-9_]*)\b/)?.[1]
   const cues = ident ? src.match(new RegExp(`const ${ident} = \\[([^\\]]*)\\]`)) : src.match(/cues:\s*\[([^\]]*)\]/)
   if (!cues) fail(`scenes/${name}.ts has no cues array`)

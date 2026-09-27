@@ -103,9 +103,10 @@ arch:
   n_data: data platform
   n_dataSub: DuckDB, dbt, contracts
   p1h: Policy kernel
-  p1a: Rules are pure functions, registered by id.
-  p1b: Clause text and parameters are data in policies/, in es, pt and en.
-  p1c: Every Decision names the rule ids and clause versions it used.
+  p1file: DSP-AR-1.es.md
+  p1rule: DSP.within_window()
+  p1dec: Decision  DSP-AR-1@1
+  p1c: Rules are code. Clauses are data.
   p2h: LLM gateway
   d1: redaction
   d2: budget guard
@@ -118,31 +119,31 @@ arch:
   prov1: fake
   prov2: cassette
   prov3: litellm
-  p2c: Providers swap by settings. Any model error falls back to clarify, abstain or hand off.
+  p2c: The provider is a setting.
   p3h: Grounding verifier
-  draft: model draft
-  gate: verifier
+  draftOk: 30 days
+  draftBad: 45 days
+  gate: verify
   send: send
   template: template
-  p3c: Amounts, dates, clause ids and action claims must match records, clauses or verified results.
+  p3c: One unsupported number, and a template goes instead.
   p4h: Data platform
   s1: raw
   s2: bronze
   s3: silver
   s4: gold
+  quarantine: quarantine
   rowsIn: rows ingested
-  rowsQ: rows quarantined, never dropped
-  p4c: Contracts on ingestion, quality report, lineage, deterministic sample.
+  rowsQ: quarantined, never dropped
   p5h: Imports flow inward
-  p5a: import-linter fails the build if an edge is imported by the core.
   port1: LLMClient
   port2: Retriever
   port3: IntentRouter
   port4: RiskEstimator
   port5: EligibilityPolicy
   port6: Repositories
-  p5c: Swapping a model or a store never changes workflow code.
-  cite: docs/architecture  |  ADR 0002, 0011, 0012, 0013
+  p5c: Swap a model, keep the workflow.
+  cite: docs/architecture  |  ADR 0002, 0011, 0012, 0013  |  the 45-day draft is illustrative
 
 workflows:
   title: Four workflows, one depth bar
