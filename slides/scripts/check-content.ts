@@ -41,7 +41,8 @@ const usedMetrics = new Set<string>()
 const metricFamilies: string[] = []
 for (const name of sceneNames) {
   const src = strip(read(`scenes/${name}.ts`))
-  const cues = src.match(/cues:\s*\[([^\]]*)\]/)
+  const ident = src.match(/cues:\s*([A-Z_][A-Z0-9_]*)\b/)?.[1]
+  const cues = ident ? src.match(new RegExp(`const ${ident} = \\[([^\\]]*)\\]`)) : src.match(/cues:\s*\[([^\]]*)\]/)
   if (!cues) fail(`scenes/${name}.ts has no cues array`)
   else cueCount.set(name, cues[1].split(',').filter((x) => x.trim()).length)
   const block = strings[name]
@@ -59,7 +60,8 @@ for (const name of sceneNames) {
     const hit = used.has(k) || families.some((p) => p && k.startsWith(p))
     if (!hit && !dynamic) warn(`${name}.${k} is defined but never drawn`)
   }
-  for (const m of src.matchAll(/\bM\(\s*'([^']+)'\s*\)/g)) usedMetrics.add(m[1])
+  // metric keys appear as M('key') or as string literals in row tables passed to M()
+  for (const m of src.matchAll(/'([a-z_0-9]+(?:\.[a-z_0-9]+)+)'/g)) usedMetrics.add(m[1])
   for (const m of src.matchAll(/\bM\(\s*`([^`$]*)\$\{/g)) metricFamilies.push(m[1])
 }
 const blocks = slidesMd.split(/^---$/m)

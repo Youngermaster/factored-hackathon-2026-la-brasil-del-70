@@ -30,7 +30,7 @@ export default defineScene({
       const rows = M('data.rows_ingested')
       K.text(K.count(0, rows.num, seg(t, 0.3, 2.3), ','), MX, 610, { size: 180, weight: 700, fam: 'display', ls: -0.03 })
       K.words(L('rows'), MX, 710, { t, t0: 1.2, size: 44, weight: 500, fam: 'sans', color: C.dim, ls: -0.01 })
-      K.label(L('rowsSub'), MX, 780, { alpha: outCubic(seg(t, 1.8, 2.3)) })
+      K.label(`${M('data.tables').text} ${L('rowsSub')}`, MX, 780, { alpha: outCubic(seg(t, 1.8, 2.3)) })
       source(K, rows, outCubic(seg(t, 1.8, 2.3)))
     })
 

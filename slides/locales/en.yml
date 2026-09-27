@@ -14,7 +14,7 @@
 hook:
   eyebrow: La Brasil del 70  |  Factored AI & Data Hackathon 2026
   rows: rows of synthetic bank data, ingested under contracts
-  rowsSub: 13 tables  |  Mexico, Colombia, Argentina
+  rowsSub: tables  |  Mexico, Colombia, Argentina
   shareTitle: What customers contact the bank for
   shareSub: interactions and complaints
   account_inquiry: account inquiry
@@ -238,7 +238,7 @@ evidence:
   r1: recall at 1, test split
   abst: abstention precision and recall
   p95: p95 latency, hybrid
-  retNote: 60 test queries, team-written labels pending review
+  retNote: test queries, team-written labels pending review
   cite: offline measurement  |  docs/evaluation/ (phase 14)
 
 close:

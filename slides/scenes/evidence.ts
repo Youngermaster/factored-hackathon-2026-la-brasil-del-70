@@ -140,7 +140,7 @@ export default defineScene({
         K.label(L('abst'), 1000, 778, { size: 22 })
         K.text(M('retrieval.p95.hybrid').text, 1480, 740, { size: 40, weight: 700, fam: 'display' })
         K.label(L('p95'), 1480, 778, { size: 22 })
-        source(K, M('retrieval.r1.hybrid'), 1, L('retNote'))
+        source(K, M('retrieval.r1.hybrid'), 1, `${M('retrieval.test_queries').text} ${L('retNote')}`)
       })
     })
   },
