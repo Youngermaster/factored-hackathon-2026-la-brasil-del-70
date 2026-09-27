@@ -1,0 +1,101 @@
+# Demo personas for `bank-data seed`. Each persona names a selection criterion (implemented in
+# data_platform/src/bank_data/seed/criteria.py), never a customer: the seed picks the first matching active
+# customer, with a phone on file, by a seeded hash, so the choice is deterministic and no personal data lives here.
+# See docs/demo/personas.md for what each persona demonstrates.
+version: 1
+seed: bank-demo-personas-v1
+customers:
+  - id: acc-mx-accounts
+    criterion: checking_and_savings_with_balances
+    country: MX
+    workflows: [account_inquiry]
+    demonstrates: Balances with their as-of instant on a checking and a savings account (normal path)
+  - id: acc-co-payments
+    criterion: pending_and_reversed_payment
+    country: CO
+    workflows: [account_inquiry]
+    demonstrates: A pending payment and a reversed payment (payment status, normal path)
+  - id: acc-ar-similar-transfers
+    criterion: two_similar_transfers
+    country: AR
+    workflows: [account_inquiry]
+    demonstrates: Two transfers of the same amount within a week (payment ambiguity, clarifying question)
+  - id: crd-mx-two-cards
+    criterion: two_active_cards
+    country: MX
+    workflows: [card_support]
+    demonstrates: Two active cards (card ambiguity, then a protective block with step-up)
+  - id: crd-co-declined
+    criterion: card_with_declined_purchase
+    country: CO
+    workflows: [card_support]
+    demonstrates: A declined card purchase (card status; the response code is not interpreted)
+  - id: crd-ar-expired
+    criterion: expired_card
+    country: AR
+    workflows: [card_support]
+    demonstrates: An expired card (status answer, replacement request handed off)
+  - id: crd-mx-blocked
+    criterion: blocked_card
+    country: MX
+    workflows: [card_support]
+    demonstrates: An already blocked card (unblock request handed off; no unblock tool exists)
+  - id: dsp-co-unrecognized
+    criterion: card_with_recent_purchase
+    country: CO
+    workflows: [dispute, card_support]
+    demonstrates: A recent approved card purchase to dispute as unrecognized, with an optional protective block
+  - id: dsp-mx-open-case
+    criterion: card_with_recent_purchase
+    country: MX
+    seeded_case: true
+    workflows: [dispute]
+    demonstrates: An open dispute case (dispute status with the SLA)
+  - id: dsp-ar-repeat-complainer
+    criterion: repeat_complainer
+    country: AR
+    workflows: [dispute]
+    demonstrates: Three or more complaints in the last year (repeat complainer escalation)
+  - id: dsp-mx-similar-purchases
+    criterion: similar_purchases
+    country: MX
+    workflows: [dispute]
+    demonstrates: Several purchases at the same merchant within a month (ambiguous transaction)
+  - id: cre-mx-complete
+    criterion: complete_credit_profile
+    country: MX
+    workflows: [credit]
+    demonstrates: A complete credit profile with no days past due (indicative eligibility, normal path)
+  - id: cre-co-no-income
+    criterion: credit_profile_without_income
+    country: CO
+    workflows: [credit]
+    demonstrates: No income on file (insufficient data, asks for the missing fact)
+  - id: cre-ar-borderline
+    criterion: borderline_credit_score
+    country: AR
+    workflows: [credit]
+    demonstrates: A credit score near the synthetic threshold (borderline, human review)
+  - id: cre-mx-past-due
+    criterion: credit_days_past_due
+    country: MX
+    workflows: [credit]
+    demonstrates: Days past due on a credit product (review required)
+  - id: cre-co-application
+    criterion: complete_credit_profile
+    country: CO
+    seeded_application: true
+    workflows: [credit]
+    demonstrates: An existing credit application intake (application status)
+staff:
+  - id: agent-demo-01
+    staff_id: agent-demo-01
+    role: agent
+    display_name: Demo agent
+  - id: evaluator-demo-01
+    staff_id: evaluator-demo-01
+    role: evaluator
+    display_name: Demo evaluator
+coverage:
+  min_customers_per_country: 2
+  every_segment: true

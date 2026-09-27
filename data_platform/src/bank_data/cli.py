@@ -250,6 +250,27 @@ def codegen(
         typer.echo(f"wrote {_shown(path)}")
 
 
+@app.command()
+def seed(
+    source: SourceOption = None,
+    local_dir: LocalDirOption = None,
+    customers: Annotated[
+        int, typer.Option("--customers", min=1, help="Target number of customers (personas always included).")
+    ] = 200,
+) -> None:
+    """Load the demo personas and a deterministic customer subset from gold into PostgreSQL, idempotently."""
+    from bank_data.seed.command import seed as run
+
+    try:
+        report = run(_workspace(source, local_dir), customers=customers)
+    except DataPlatformError as error:
+        raise _fail(error) from None
+    for persona_id, customer_id in report.selection.personas.items():
+        typer.echo(f"persona {persona_id}: {customer_id}")
+    for table, count in report.counts.items():
+        typer.echo(f"{table}: {count}")
+
+
 def _shown(path: Path) -> str:
     try:
         return path.resolve().relative_to(REPOSITORY_ROOT).as_posix()

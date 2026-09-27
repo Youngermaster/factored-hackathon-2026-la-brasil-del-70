@@ -18,10 +18,11 @@ PROFILE_FLAGS := $(foreach profile,$(PROFILES),--profile $(profile))
 DATA_SOURCE ?=
 SOURCE_FLAG := $(if $(DATA_SOURCE),--source $(DATA_SOURCE),)
 SAMPLE_CUSTOMERS ?= 2000
+SEED_CUSTOMERS ?= 200
 BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
-	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis
+	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -99,6 +100,12 @@ lineage: ## Run dbt docs generate and write the Mermaid lineage (docs/data/linea
 
 data-codegen: ## Regenerate the dbt sources, silver contracts, and canonical seed from the table specs
 	$(BANK_DATA) codegen
+
+db-upgrade: ## Apply the PostgreSQL migrations as the owner role (reads .env through the service settings)
+	$(UV_RUN) bank-agent db upgrade
+
+seed: ## Migrate, then load the demo personas and SEED_CUSTOMERS customers from gold into the compose PostgreSQL
+	$(BANK_DATA) seed $(SOURCE_FLAG) --customers $(SEED_CUSTOMERS)
 
 docs-check: ## Markdown lint and Mermaid validation
 	apps/web/node_modules/.bin/markdownlint-cli2

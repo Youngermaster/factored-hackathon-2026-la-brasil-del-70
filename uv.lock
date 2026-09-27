@@ -295,6 +295,7 @@ name = "bank-data"
 version = "0.1.0"
 source = { editable = "data_platform" }
 dependencies = [
+    { name = "bank-agent" },
     { name = "boto3" },
     { name = "dbt-core" },
     { name = "dbt-duckdb" },
@@ -309,6 +310,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "bank-agent", editable = "services/api" },
     { name = "boto3", specifier = ">=1.43,<2" },
     { name = "dbt-core", specifier = ">=1.11,<1.13" },
     { name = "dbt-duckdb", specifier = ">=1.11.0,<2" },
