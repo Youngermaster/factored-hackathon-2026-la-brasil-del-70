@@ -1,4 +1,4 @@
-# 0025: Tuesday MVP is account inquiry plus simulated human escalation
+# 0025: Tuesday MVP is account inquiry plus tool-triggered mock human escalation
 
 - Status: accepted
 - Date: 2026-09-27
@@ -6,9 +6,9 @@
 
 ## Context
 
-Terminology in this and the follow-up decisions: **AI assistant** is the model-driven chat experience; **human service agent** is a person who handles an escalated customer-service request; **simulated service reply** is the Tuesday demo's mock response and is not a human answer. Avoid using the bare word “agent” when either meaning could apply.
+Terminology in this and the follow-up decisions: **AI assistant** is the model-driven chat experience; **human service agent** is a person who handles an escalated customer-service request; **mock human service agent** is a software simulation that appears in the chat and sends a randomized demo response, not a real person. Avoid using the bare word “agent” when either meaning could apply.
 
-ADR 0020 defines the product scope: account inquiry, card support, dispute, and credit. Tuesday's release automates only verified account questions: balances, payment and transfer status, and supported statement summaries. Card-support, dispute, and credit requests should be recognized and routed to a simulated service responder that returns a randomized, bounded demo message. A human service agent joining the customer's chat is a later increment. The team will use the working product and observed conversations to automate selected intents incrementally, keeping escalation available when policy, ambiguity, or risk requires it.
+ADR 0020 defines the product scope: account inquiry, card support, dispute, and credit. Tuesday's release automates only verified account questions: balances, payment and transfer status, and supported statement summaries. When card-support, dispute, or credit is recognized, the AI assistant must call the escalation tool. The tool records the handoff and asks a mock human service agent to join that same conversation and send a randomized response from the bounded demo set. This mock join is part of Tuesday's working flow; connecting a real human service agent is a later increment. The team will use the working product and observed conversations to automate selected intents incrementally, keeping escalation available when policy, ambiguity, or risk requires it.
 
 The current web app renders only the product name and the API exposes a health route. A working release needs a customer interface, a verified demo session, customer-scoped reads, a simulated escalation response, and end-to-end visibility into what the language model did. The domain has a persisted handoff lifecycle, but a handoff record alone is not a live customer-to-agent conversation. The project also has versioned prompts, Pydantic models that produce JSON Schema, LLM-call metadata, append-only PostgreSQL execution records, and a telemetry port. Tuesday's release must connect these pieces into a traceable product and export model traces to Langfuse.
 
@@ -18,18 +18,18 @@ This is a hackathon project using the organizer's synthetic data. Customer and p
 
 1. **Keep the existing shell and demonstrate workflows through scripts.** Fastest, but it is not a working customer-facing product and cannot demonstrate escalation.
 2. **Automate all four workflows or build live human service chat before Tuesday.** Matches the long-term scope, but risks leaving account inquiry and model observability incomplete.
-3. **Automate account inquiry and simulate service replies for card, dispute, and credit requests.** Delivers a usable, bounded release while preserving a clear escalation path and deferring the human service-agent connection.
+3. **Automate account inquiry and route card, dispute, and credit requests through a mocked human escalation.** Delivers a usable, bounded release: the escalation tool records the handoff, a mock human service agent joins the same conversation, and the mock sends a randomized demo response. A real human service-agent connection remains a later increment.
 
 ## Decision
 
-Choose option 3. Tuesday's release includes verified, read-only account inquiry and simulated service replies for card-support, dispute, and credit requests. The four workflow scope in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md) remains in force; automation depth is staged. Account inquiry supports balance, payment/transfer status, and supported statement questions in Spanish and Portuguese, including clarification for ambiguity and escalation when records cannot support an answer. Recognized card-support, dispute, or credit intents route to the simulated service responder rather than attempting self-service workflow actions. The customer-facing experience must clearly label the reply as simulated; it must never imply a human service agent has joined.
+Choose option 3. Tuesday's release includes verified, read-only account inquiry and mocked human escalations for card-support, dispute, and credit requests. The four-workflow scope in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md) remains in force; automation depth is staged. Account inquiry supports balance, payment/transfer status, and supported statement questions in Spanish and Portuguese, including clarification for ambiguity and escalation when records cannot support an answer. For recognized card-support, dispute, or credit intents, the AI assistant invokes the escalation tool instead of attempting self-service workflow actions. The tool records the handoff, adds a clearly identified mock human service agent to the same conversation, and emits a randomized response from the bounded demo set. The UI and records must identify this as a simulation and must not imply that a real person has joined.
 
-### Simulated escalation acceptance bar
+### Mock human escalation acceptance bar
 
-- The customer can request a human service agent or ask for card support, dispute, or credit help. Each path creates or records the appropriate handoff context and returns a randomized response from a bounded set of simulated service replies.
-- The simulated reply is visible in the customer's AI-assistant conversation and is clearly labeled as a simulated service response. It does not claim that a case was investigated, an action completed, or a human service agent joined.
-- The demo verifies end to end that explicit requests for a human service agent and each of the three routed workflow categories reach the simulated responder and produce a traceable response. A handoff record without a visible simulated reply does not meet this Tuesday acceptance bar.
-- Every chat has a unique, persisted conversation ID. Customer messages, simulated replies, execution records, and any handoff refer to that ID. Escalation stays in the same chat; it does not create a second chat or lose the existing history.
+- The customer can request a human service agent or ask for card support, dispute, or credit help. For each of the three workflow categories, the AI assistant invokes the escalation tool; the tool records the handoff and causes a mock human service agent to join that chat and send a randomized response from a bounded demo set.
+- The mock human service agent's join and message appear in the customer's AI-assistant conversation, with a clear simulation label. The response does not claim that a case was investigated, an action completed, or a real human service agent joined.
+- The demo verifies end to end that each of the three routed workflow categories invokes the escalation tool, records a traceable handoff, shows the mock human service agent joining the same conversation, and produces a traceable randomized response. A handoff record without the mock join and visible response does not meet this Tuesday acceptance bar.
+- Every chat has a unique, persisted conversation ID. Customer messages, tool calls, handoff events, mock-agent join events and replies, and execution records refer to that ID. Escalation stays in the same chat; it does not create a second chat or lose the existing history.
 - Customers may start multiple chats over time. Apply a server-side rate limit of at most five new chats per authenticated customer in any rolling 60-minute window. Existing chats and messages do not consume the new-chat allowance. When limited, explain when the customer can try again; do not discard existing chats.
 
 ### Next step: human service agent joins the chat
@@ -55,6 +55,13 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 - Define versioned request and response models for each LLM-to-application boundary. Generate their JSON Schemas from the Pydantic models and validate every model output before application code uses it. Schemas reject undeclared fields; invalid output follows a bounded repair attempt and then deterministic clarify, abstain, or handoff behavior.
 - The authenticated session determines the customer. Backend code applies the allowlisted intent and validated slots to customer-scoped read tools, then grounds the answer in their returned records. The model may phrase the verified result; it cannot assert an action or fact absent from those records.
 
+### Escalation tool contract
+
+- For recognized `card_support`, `dispute`, or `credit` requests, application code invokes the `escalate_to_human` tool. The model cannot call infrastructure directly, choose the customer identity, or bypass the validated intent and server-side conversation context.
+- Define the tool request and response with versioned Pydantic models and publish their JSON Schemas. The request contains the authenticated conversation ID, one of the three workflow enums, and a bounded handoff reason. The customer ID comes from the authenticated session, not model output.
+- The tool creates and persists a handoff, then emits a mock-human-joined event and a message from the `mock_human_service_agent` sender role in the same conversation. The response contains the handoff ID, mock join/message IDs, and a bounded randomized reply. It is marked as simulated in the payload and customer UI.
+- Persist and trace the validated tool request, schema/version, tool outcome, handoff, mock join event, and reply against the conversation ID. Tool errors follow the documented safe failure path; they must not be shown as a successful human connection.
+
 ### Model and call records
 
 - Pin one explicit provider and model identifier for the Tuesday build, using an immutable model version/snapshot when the provider exposes one. Do not rely on a moving `latest` alias. Record both the configured request model and the model identifier returned by the provider.
@@ -77,16 +84,16 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 - The interface explains that the data is synthetic and part of the hackathon demonstration.
 - A demo can show the resulting call record in PostgreSQL and its correlated model trace in Langfuse, including exact model and prompt versions and the JSON Schema version/hash.
 
-“Working by Tuesday” means a customer can complete account questions with the AI assistant and receive a clearly labeled simulated service reply when routed for card-support, dispute, or credit help. The later human-service-chat increment means an authenticated human service agent can join and exchange messages in the customer's same conversation. Both customer-service interactions and model calls can be inspected through persisted records and correlated traces below.
+“Working by Tuesday” means a customer can complete account questions with the AI assistant and, for card-support, dispute, or credit, see `escalate_to_human` record a handoff and a clearly labeled mock human service agent join the same chat and send a randomized demo response. The later human-service-chat increment means an authenticated real human service agent can join and exchange messages in the customer's same conversation. Both customer-service interactions and model calls can be inspected through persisted records and correlated traces below.
 
 ## Consequences
 
-- Tuesday delivers account inquiry through the AI assistant and simulated service replies for the other three. The broader ADR 0020 scope is retained for later automation increments; a human service agent joining the chat is a separate next step.
+- Tuesday delivers account inquiry through the AI assistant and tool-triggered, same-chat mock human escalation for the other three. The broader ADR 0020 scope is retained for later automation increments; connecting a real human service agent is a separate next step.
 - The model identifier, prompt version, and output schema become reproducibility data, not informal deployment details. A change to any of them can be traced to the calls and answers it produced.
 - PostgreSQL provides durable, append-only audit records; Langfuse provides searchable LLM traces and usage/latency analysis. This avoids making an external observability service the only source of evidence.
 - Langfuse's OpenTelemetry ingestion is supported, and it can capture generation model, usage, cost, and prompt-version information. Prompt-level version comparisons require linking the local prompt version to a Langfuse prompt object; the Tuesday implementation should preserve local prompt files as the source of truth and record the reference either way.
 - The tracing path must be exercised end to end: emitting a span alone is not proof that Langfuse received or rendered it as a model generation.
-- The simulated service responder is sufficient for Tuesday's demonstration but is not a substitute for a human-in-the-loop operating path. The authenticated human service-agent inbox, joining an existing customer conversation, and persistent two-way messaging are explicit follow-up requirements; see [ADR 0026](0026-live-agent-joins-escalated-conversation.md).
+- The mock human service agent demonstrates the escalation flow but is not a real human-in-the-loop operating path. The authenticated human service-agent inbox, real agents joining existing customer conversations, and persistent two-way messaging are explicit follow-up requirements; see [ADR 0026](0026-live-agent-joins-escalated-conversation.md).
 - Human-handled conversations provide operational evidence for deciding which additional intents are safe and valuable to automate later; they do not by themselves establish that an intent is automatable.
 
 ## References

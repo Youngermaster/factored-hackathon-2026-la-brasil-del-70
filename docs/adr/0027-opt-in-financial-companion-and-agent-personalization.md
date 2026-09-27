@@ -50,6 +50,6 @@ Choose option 2 as a future product direction. These capabilities are not part o
 ## References
 
 - [ADR 0020: Four workflows and the workflow registry](0020-four-workflows-and-the-workflow-registry.md)
-- [ADR 0025: Tuesday MVP is account inquiry plus simulated human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0025: Tuesday MVP is account inquiry plus tool-triggered mock human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)
 - [ADR 0026: Human escalation progresses from simulated replies to a human service agent joining the conversation](0026-live-agent-joins-escalated-conversation.md)
 - [Data card: intended use and data boundaries](../data/data-card.md)
