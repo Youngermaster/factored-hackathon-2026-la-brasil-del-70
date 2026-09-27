@@ -102,3 +102,16 @@ clicks: 3
 CLOSE. Narration: script.md, section "close". Click 1 route to operation,
 2 team, 3 the thesis and the links.
 -->
+
+---
+layout: scene
+routeAlias: appendix-data
+clicks: 1
+---
+
+<Scene name="appendix" />
+
+<!--
+APPENDIX (not in the video). Profiling findings, then the projected cost
+per resolved contact. Use it for questions, or cut it from the PDF.
+-->

@@ -276,3 +276,19 @@ close:
   c3: Evidence *proves it.*
   repo: github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70
   cite: docs/data/data-card.md  |  docs/workflows/grounding.md  |  docs/architecture/llm-gateway.md
+
+appendix:
+  eyebrow: appendix
+  title: What profiling found in the data
+  q1: customer branch references point to no branch
+  q1h: flagged in silver and listed, never dropped
+  q2: complaint product references name another customer's product
+  q2h: so historical complaints are served without a product
+  q3: transcripts have a null duration the dictionary forbids
+  q3h: quarantined with a reason, never dropped silently
+  costTitle: Cost per resolved contact, projected from history
+  account_inquiry: account inquiry
+  card_support: card support
+  dispute: dispute
+  credit: credit
+  costNote: Handle minutes times an assumed loaded cost per minute. No figure here is a measured saving.
