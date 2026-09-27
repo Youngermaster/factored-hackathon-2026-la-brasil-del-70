@@ -23,7 +23,7 @@ BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed \
-	policy-lock policy-catalog index eval-retrieval train promote openapi
+	policy-lock policy-catalog index eval-retrieval train promote openapi llm-smoke api-local-llm env
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -67,11 +67,26 @@ test-integration: ## Python integration tests against PostgreSQL (needs Docker),
 test-web: ## Web tests with coverage
 	$(WEB) run test:coverage
 
+env: ## Create .env from .env.example (only when absent) with freshly generated development secrets
+	$(GUARD_PY) scripts/make_env.py
+
 env-check: ## Report set or unset for every documented environment variable, never a value
 	$(GUARD_PY) scripts/checks/check_env_keys.py
 
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
 	$(UV_RUN) python scripts/generate_contracts.py
+
+# Opt-in local language model (never used by check or CI). The litellm extra is installed on demand for these runs.
+LLM_EXTRA_RUN := uv run --frozen --extra litellm --package bank-agent
+LOCAL_LLM_MODEL ?= ollama/qwen2.5:7b-instruct
+LOCAL_LLM_BASE ?= http://localhost:11434
+
+llm-smoke: ## Opt-in: run the fixture prompts (es, pt, four workflows) against the configured live provider; never in check or CI
+	$(LLM_EXTRA_RUN) python scripts/llm_smoke.py
+
+api-local-llm: ## Opt-in: run the API on :8000 with the local Ollama model through LiteLLM (LOCAL_LLM_MODEL, LOCAL_LLM_BASE)
+	LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=$(LOCAL_LLM_MODEL) LLM_API_BASE=$(LOCAL_LLM_BASE) \
+		$(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
 
 openapi: ## Export contracts/openapi.json and regenerate the web API types (apps/web/src/shared/api/generated)
 	$(UV_RUN) python scripts/export_openapi.py

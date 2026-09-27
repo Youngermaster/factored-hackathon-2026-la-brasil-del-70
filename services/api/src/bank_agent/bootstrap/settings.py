@@ -24,6 +24,18 @@ LLMProvider = Literal["fake", "cassette", "litellm"]
 LLMCassetteMode = Literal["replay", "record"]
 
 MIN_SECRET_LENGTH = 32
+# A refused prefix, not a secret.
+DEV_ONLY_SECRET_PREFIX = "dev-only-"  # noqa: S105  # nosec B105
+"""Every development placeholder secret starts with this; production refuses any secret that does."""
+DEV_ONLY_SECRETS: frozenset[str] = frozenset(
+    {
+        "dev-only-not-a-secret-postgres-owner-password",
+        "dev-only-not-a-secret-postgres-app-password",
+        "dev-only-not-a-secret-session-key-for-local-work-0000",
+        "dev-only-not-a-secret-csrf-key-for-local-work-000000000",
+    }
+)
+"""The placeholder secrets in ``.env.example``, so `cp .env.example .env` works in development only."""
 
 # Values that must never be accepted as a production secret, compared case-insensitively.
 KNOWN_DEFAULT_SECRETS: frozenset[str] = frozenset(
@@ -43,6 +55,7 @@ KNOWN_DEFAULT_SECRETS: frozenset[str] = frozenset(
         "secret",
         "test",
     }
+    | DEV_ONLY_SECRETS
 )
 
 _ENV_FILE = Path(".env")
@@ -359,6 +372,8 @@ def _secret_problem(variable: str, secret: SecretStr | None) -> str | None:
     value = secret.get_secret_value().strip() if secret is not None else ""
     if not value:
         return f"{variable} must be set in production"
+    if value.lower().startswith(DEV_ONLY_SECRET_PREFIX):
+        return f"{variable} must not be a development-only value in production"
     if value.lower() in KNOWN_DEFAULT_SECRETS:
         return f"{variable} must not be a known default value in production"
     if len(value) < MIN_SECRET_LENGTH:

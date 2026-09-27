@@ -4,7 +4,6 @@ Items that are out of scope for the phase that found them. Each row names the re
 
 | Item | Reason | Owning phase | Priority |
 |---|---|---|---|
-| Move the LLM API key variables into the `REQUIRED` set of `check_env_keys.py` when a live provider is selected | They are optional while `LLM_PROVIDER=fake`; phase 08 built the gateway but the human has not chosen a provider | 14 (or whichever phase first runs a live provider) | Medium |
 | Decide the repository license before submission (license undecided; no LICENSE file yet) | The human has not chosen a license; the README states all rights are reserved until then | 17 | High |
 | Add the deferred frontend dependencies (React Router, TanStack Query, Radix UI, i18next, react-hook-form, zod, openapi-typescript, openapi-fetch, one icon set) and choose the accessibility test library | Phase 01 ships only the neutral shell; vitest-axe needs a maintenance decision because its latest stable release is 0.1.0 and the 1.0 line has been a prerelease since 2023 | 12 | High |
 | Use a non-superuser owner role for migrations in production PostgreSQL | Development and tests use the image bootstrap role `bank_owner` as the owner, which is a superuser inside the throwaway container | 16 | High |

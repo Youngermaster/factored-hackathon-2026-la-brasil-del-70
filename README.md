@@ -36,7 +36,14 @@ make setup     # Python and web dependencies, git hooks
 make check     # every quality gate; needs Docker, never needs .env
 ```
 
-To run the development stack, create `.env` from `.env.example` and fill in the values locally (never commit it or paste it anywhere), then:
+To run the development stack, create `.env` first. Both ways give a working local environment with no edits (never commit `.env` or paste it anywhere):
+
+```bash
+make env                      # the stronger option: copies .env.example and generates fresh random dev secrets
+cp .env.example .env          # also works: the example's dev-only secrets are refused in production
+```
+
+Then:
 
 ```bash
 make up                       # PostgreSQL
@@ -44,7 +51,7 @@ make up PROFILES="api web"    # plus the API on :8000 and the web app on :5173
 make down
 ```
 
-`make help` lists every target. `make env-check` reports which documented variables are set without printing any value.
+The organizer S3 values stay empty unless you need the full delivery (`make data-download` with `DATA_SOURCE=s3`); the team takes them from the organizer data dictionary, which is never committed. `make help` lists every target. `make env-check` reports which variables the current configuration needs and whether each is set, without printing any value. An opt-in local language model (Ollama) is described in `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
 
 ## Data
 

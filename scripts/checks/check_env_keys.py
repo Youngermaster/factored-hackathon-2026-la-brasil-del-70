@@ -7,10 +7,19 @@ Usage:
 
 Variable names come from `.env.example`, which documents every setting. A
 variable counts as set when it is non-empty in the process environment or in
-the env file. The script only tests each value for emptiness: it never prints,
-logs, or returns a value, and its messages never include file content.
+the env file. Secret values are only tested for emptiness: the script never
+prints, logs, or returns them, and its messages never include file content.
 
-Exit status is 1 when any name in REQUIRED is unset, and 0 otherwise.
+What is required depends on the configuration, read from three non-secret
+selectors (the process environment wins over the env file, as in the settings):
+
+- always: the database passwords and the session and CSRF secrets;
+- `BANK_DATA_SOURCE=s3`: the organizer bucket variables;
+- `LLM_PROVIDER=litellm`: the primary model, and its API key unless the model is
+  a local Ollama model (`ollama/...`, `ollama_chat/...`); a configured fallback
+  model needs its key too; `LLM_PROVIDER=cassette`: the primary model.
+
+Exit status is 1 when a required name is unset, and 0 otherwise.
 """
 
 from __future__ import annotations
@@ -21,19 +30,21 @@ import re
 import sys
 from pathlib import Path
 
-# Variables that must be set before the data and persistence phases can run.
-# The LLM keys stay optional while LLM_PROVIDER=fake; they move here once the human chooses a live provider.
-REQUIRED: tuple[str, ...] = (
-    "AWS_ACCESS_KEY_ID",
-    "AWS_SECRET_ACCESS_KEY",
-    "AWS_DEFAULT_REGION",
-    "DATA_BUCKET",
-    "DATA_PREFIX",
+ALWAYS_REQUIRED: tuple[str, ...] = (
     "POSTGRES_ADMIN_PASSWORD",
     "POSTGRES_APP_PASSWORD",
     "SESSION_SECRET",
     "CSRF_SECRET",
 )
+S3_REQUIRED: tuple[str, ...] = (
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_DEFAULT_REGION",
+    "DATA_BUCKET",
+    "DATA_PREFIX",
+)
+SELECTORS: tuple[str, ...] = ("BANK_DATA_SOURCE", "LLM_PROVIDER", "LLM_PRIMARY_MODEL", "LLM_FALLBACK_MODEL")
+KEYLESS_MODEL_PREFIXES: tuple[str, ...] = ("ollama/", "ollama_chat/")
 
 NAME_PATTERN = re.compile(r"^(?:export\s+)?([A-Z][A-Z0-9_]*)\s*=(.*)$")
 
@@ -70,6 +81,45 @@ def names_set_in_file(env_path: Path) -> set[str]:
     return present
 
 
+def _unquoted(raw: str) -> str:
+    value = raw.strip()
+    if value[:1] in {'"', "'"}:
+        closing = value.find(value[0], 1)
+        return value[1:closing] if closing != -1 else value[1:]
+    return re.split(r"\s+#", value, maxsplit=1)[0].strip() if not value.startswith("#") else ""
+
+
+def selector_values(env_path: Path) -> dict[str, str]:
+    """The non-secret selectors, from the env file and then the process environment (which wins)."""
+    values: dict[str, str] = {}
+    if env_path.is_file():
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            match = NAME_PATTERN.match(line.strip())
+            if match and match.group(1) in SELECTORS:
+                values[match.group(1)] = _unquoted(match.group(2))
+    for name in SELECTORS:
+        if os.environ.get(name, "").strip():
+            values[name] = os.environ[name].strip()
+    return values
+
+
+def required_names(selectors: dict[str, str]) -> list[str]:
+    """What must be set for this configuration."""
+    required = list(ALWAYS_REQUIRED)
+    if selectors.get("BANK_DATA_SOURCE", "sample").lower() == "s3":
+        required += S3_REQUIRED
+    provider = selectors.get("LLM_PROVIDER", "fake").lower()
+    if provider in {"litellm", "cassette"}:
+        required.append("LLM_PRIMARY_MODEL")
+    if provider == "litellm":
+        for model_name, key_name in (("LLM_PRIMARY_MODEL", "LLM_API_KEY_PRIMARY"),
+                                     ("LLM_FALLBACK_MODEL", "LLM_API_KEY_FALLBACK")):  # fmt: skip
+            model = selectors.get(model_name, "")
+            if (model or model_name == "LLM_PRIMARY_MODEL") and not model.startswith(KEYLESS_MODEL_PREFIXES):
+                required.append(key_name)
+    return required
+
+
 def names_set_in_process(names: list[str]) -> set[str]:
     """Return the names that have a non-empty value in the process environment."""
     return {name for name in names if os.environ.get(name, "").strip()}
@@ -91,7 +141,9 @@ def main(argv: list[str]) -> int:
         return 2
 
     names = example_names(args.example)
-    for name in REQUIRED:
+    selectors = selector_values(args.env_file)
+    required_set = required_names(selectors)
+    for name in required_set:
         if name not in names:
             names.append(name)
 
@@ -101,8 +153,10 @@ def main(argv: list[str]) -> int:
     else:
         print(f"check-env-keys: {args.env_file} not found; checking the process environment only")
 
-    required = [name for name in names if name in REQUIRED]
-    optional = [name for name in names if name not in REQUIRED]
+    required = [name for name in names if name in required_set]
+    optional = [name for name in names if name not in required_set]
+    source = "s3" if "AWS_ACCESS_KEY_ID" in required_set else "sample"
+    print(f"Data source: {source}; the organizer bucket variables are {'required' if source == 's3' else 'optional'}")
 
     print("Required:")
     for name in required:
