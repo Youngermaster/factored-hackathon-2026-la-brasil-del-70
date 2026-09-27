@@ -13,7 +13,7 @@ import re
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 
-from bank_agent.application.understanding.dates import MONTHS
+from bank_agent.application.understanding.dates import MONTHS, YEAR
 from bank_agent.application.understanding.text import fold
 from bank_agent.domain.money import Currency
 
@@ -38,7 +38,7 @@ _WORD_AMOUNT = re.compile(
 )
 _NOISE = re.compile(
     r"\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?"
-    rf"|\d{{1,2}} de (?:{'|'.join(MONTHS)})(?: de \d{{4}})?"
+    rf"|\d{{1,2}} de (?:{'|'.join(MONTHS)})(?: de {YEAR})?"
     r"|(?:terminad[ao]|termina|final|finalizad[ao]|acabad[ao]|ending)(?: en| em| in)? \d{4}"
     r"|\d+ (?:dias?|days?|semanas?|meses|mes|horas?|anos?|minutos?)\b"
     r"|\b(?:de|del|en|em|of|in) (?:19|20)\d{2}\b(?! ?(?:pesos|varos|reais|usd|mxn|cop|ars|k\b|mil\b|lucas?))"

@@ -32,7 +32,12 @@ WEEKDAYS = {
 _SMALL = {"un": 1, "una": 1, "um": 1, "uma": 1, "dos": 2, "dois": 2, "duas": 2, "tres": 3, "cuatro": 4, "quatro": 4}
 _DAYS_AGO = re.compile(r"\b(?:hace|ha|faz)\s(?P<n>\d{1,2}|[a-z]+)\sdias?\b")
 _WEEKDAY = re.compile(rf"\b(?P<day>{'|'.join(WEEKDAYS)})(?:-feira)?\b")
-_NAMED = re.compile(rf"\b(?P<day>\d{{1,2}}) de (?P<month>{'|'.join(MONTHS)})(?: de (?P<year>\d{{4}}))?\b")
+YEAR = (
+    r"(?:19|20)\d{2}(?![.,]\d)"
+    r"(?!\s?(?:pesos?|varos?|reais|dolares|dollars?|usd|mxn|cop|ars|brl|mil|k|lucas?|palos?)\b)"
+)
+"""A year after a named date: 19xx or 20xx, never the start of an amount ("5 de mayo de 1500 pesos")."""
+_NAMED = re.compile(rf"\b(?P<day>\d{{1,2}}) de (?P<month>{'|'.join(MONTHS)})(?: de (?P<year>{YEAR}))?\b")
 _NUMERIC = re.compile(r"\b(?P<a>\d{1,2})[/-](?P<b>\d{1,2})(?:[/-](?P<year>\d{2,4}))?\b")
 
 
