@@ -131,18 +131,19 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 ## Product path after Tuesday
 
 ```mermaid
-flowchart LR
-    MVP[Tuesday MVP<br/>Account inquiry automation<br/>Mock human escalation for card, dispute, credit]
-    OBS[Review customer outcomes,<br/>handoffs, PostgreSQL records<br/>and Langfuse traces]
-    NEXT[Select well-supported,<br/>low-risk intents to automate]
-    AUTO[Add automation in small steps<br/>with validation and human fallback]
-    LIVE[Build authenticated human-service inbox<br/>and real same-chat join<br/>(ADR 0026)]
-    PERSONAL[Optional financial memory,<br/>tips and assistant personalization<br/>(ADR 0027)]
-    MOCKS[Mocked LATAM bank connectors<br/>and coming-soon digital-asset tabs<br/>(ADR 0028)]
+flowchart TD
+    MVP["Tuesday MVP: automate account inquiry; mock escalations for card, dispute, and credit"]
+    OBS["Review customer outcomes, handoffs, database records, and Langfuse traces"]
+    NEXT{"Choose the next increment"}
+    LIVE["Connect real human service agents to existing chats (ADR 0026)"]
+    AUTO["Automate supported, low-risk intents incrementally"]
+    SAFE["Keep human escalation for ambiguity, risk, and failures"]
+    PERSONAL["Later: opt-in financial companion (ADR 0027)"]
+    MOCKS["Later demo surfaces: mocked banks and digital assets (ADR 0028)"]
 
-    MVP --> OBS --> NEXT --> AUTO
-    AUTO --> OBS
-    MVP --> LIVE
-    OBS --> PERSONAL
-    OBS --> MOCKS
+    MVP --> OBS --> NEXT
+    NEXT --> LIVE --> SAFE
+    NEXT --> AUTO --> SAFE
+    SAFE --> PERSONAL
+    SAFE --> MOCKS
 ```
