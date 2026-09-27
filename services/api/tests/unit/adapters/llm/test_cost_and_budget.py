@@ -120,7 +120,7 @@ def test_the_local_ollama_model_is_verified_at_zero_cost_and_labeled_local() -> 
     assert local.input_usd_per_million == local.output_usd_per_million == 0
     assert "Local development model" in local.notes
     effective = table.effective(local.model_id)
-    assert (effective.basis, effective.input_usd_per_million) == (PriceBasis.VERIFIED, 0)
+    assert (effective.basis, effective.input_usd_per_million) == (PriceBasis.VERIFIED, Decimal(0))
 
 
 @pytest.mark.parametrize(
