@@ -162,3 +162,11 @@ def required_fields_present(context: RuleContext) -> Verdict:
     if amount.currency is transaction.amount.currency and amount > transaction.amount:
         return fail(DecisionKind.CLARIFY, "disputed_amount_exceeds_transaction")
     return ok("required_fields_present")
+
+
+@RULES.rule("DSP.case_within_sla", version=1, reasons=("case_within_sla", "case_sla_breached"))
+def case_within_sla(context: RuleContext) -> Verdict:
+    """An open case past its resolution SLA goes to a person (the ``DSP-<country>-2`` clause says so)."""
+    if _dispute(context).case_sla_breached:
+        return fail(DecisionKind.ESCALATE, "case_sla_breached")
+    return ok("case_within_sla")

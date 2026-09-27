@@ -149,3 +149,11 @@ def test_credit_product_rules() -> None:
     assert run("CRE.offered_in_jurisdiction", credit())[1] == "product_unknown"
     assert run("CRE.disclaimer_present", credit())[1] == "disclaimer_missing"
     assert run("CRE.disclaimer_present", credit(disclaimer_included=True))[0]
+
+
+def test_an_open_case_past_its_sla_escalates() -> None:
+    assert run("DSP.case_within_sla", dispute(case_sla_breached=True))[1:3] == (
+        "case_sla_breached",
+        DecisionKind.ESCALATE,
+    )
+    assert run("DSP.case_within_sla", dispute())[:2] == (True, "case_within_sla")

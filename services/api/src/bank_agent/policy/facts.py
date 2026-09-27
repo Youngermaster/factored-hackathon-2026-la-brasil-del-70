@@ -77,6 +77,9 @@ class DisputeFacts(DomainModel):
     transaction: TransactionFacts | None = None
     reason: DisputeReason | None = None
     disputed_amount: Money | None = None
+    case_sla_breached: bool = False
+    """The open case the customer asks about is past its resolution SLA. Cases are live records, so the engine
+    compares the SLA with the ``Clock``, not with ``data_as_of``, and passes the result in."""
 
 
 class CreditFacts(DomainModel):

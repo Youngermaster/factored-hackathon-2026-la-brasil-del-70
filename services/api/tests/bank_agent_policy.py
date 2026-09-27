@@ -249,6 +249,7 @@ FIXTURE_CLAUSES: dict[str, tuple[dict[str, Any], tuple[str, ...]]] = {
             "DSP.not_already_disputed",
             "DSP.reason_supported",
             "DSP.required_fields_present",
+            "DSP.case_within_sla",
         ),
     ),
     "CRE-ALL-1": ({}, _family("CRE.")),
