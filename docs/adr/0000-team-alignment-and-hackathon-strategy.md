@@ -3,10 +3,10 @@
 * **Status:** Proposed
 * **Date:** 2026-09-27
 * **Deciders:**
-  * Miguel (Project Manager / Developer)
-  * Young (Technical Lead / Developer)
-  * David (Fonseca) (Developer)
-  * Julián (Developer)
+  * Miguel Correa (Project Manager / AI Engineer)
+  * Young (Technical Lead / Software Engineer)
+  * Fonseca (Software Engineer / TBD)
+  * Julian Valencia (Data Engineer / Software Engineer)
 
 ---
 
@@ -22,9 +22,10 @@ The competition organizers explicitly noted during kickoff that basic, prompt-on
 
 To maintain high development velocity across human developers and automated coding agents during the 10-day build window, team roles are defined as follows:
 
-* **Miguel (Project Manager / Developer):** Overall project management, drafting Architecture Decision Records (ADRs) and pull requests, backend development, and alignment on challenge criteria.
-* **Young (Technical Lead / Developer):** Repository setup, core architecture, initial code and documentation uploads, technical stack specifications, and agent integration.
-* **Julián & David (Fonseca) (Developers):** Relational dataset analysis, data extraction, uploading small working datasets to `/data` in the repository, and defining schema requirements.
+* **Miguel Correa (Project Manager / AI Engineer):** Project management, AI engineering, drafting Architecture Decision Records (ADRs) and pull requests, and alignment on challenge criteria.
+* **Young (Technical Lead / Software Engineer):** Technical leadership and software engineering, including repository setup, core architecture, technical stack specifications, and agent integration.
+* **Julian Valencia (Data Engineer / Software Engineer):** Data engineering and software engineering across relational dataset analysis, data extraction, and schema requirements.
+* **Fonseca (Software Engineer / TBD):** Software engineering; additional responsibilities are to be determined.
 
   > **Note (Young, 2026-09-27):** Datasets will not be uploaded to `data/`. That folder is gitignored and holds each person's local download of the full dataset (`make data-download`). The committed samples live in `data_platform/sample/`: a small linked sample that runs the whole pipeline offline, and a `preview/` folder with about ten example rows per table. Both are regenerated with `make data-sample`; see `data_platform/sample/README.md`.
 
