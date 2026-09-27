@@ -7,7 +7,7 @@ done only when a ``Verification`` read back its effect and found the expected st
 from enum import StrEnum
 from typing import Annotated, Literal, Self
 
-from pydantic import Field, PositiveInt, model_validator
+from pydantic import Field, PositiveInt, StringConstraints, model_validator
 
 from bank_agent.domain.base import Code, DomainModel, Pii, UtcDatetime
 from bank_agent.domain.cards import CardBlockReason
@@ -155,3 +155,18 @@ class Verification(DomainModel):
         if not self.verified and self.mismatch_code is None:
             raise ValueError("a negative verification needs a mismatch code")
         return self
+
+
+class ActionLedgerEntry(DomainModel):
+    """The first outcome of a write that has no natural idempotency record of its own (a card block).
+
+    A repeated idempotency key with the same ``request_digest`` replays ``outcome``; with a different digest it is
+    an idempotency conflict. The entry belongs to the context customer, never named here.
+    """
+
+    action: ActionKind
+    idempotency_key: IdempotencyKey
+    target: SourceRef
+    request_digest: Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
+    outcome: Code
+    recorded_at: UtcDatetime

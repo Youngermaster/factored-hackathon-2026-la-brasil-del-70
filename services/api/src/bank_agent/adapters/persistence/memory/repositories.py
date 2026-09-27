@@ -5,6 +5,7 @@ from datetime import datetime
 
 from bank_agent.adapters.persistence.memory.store import TableView
 from bank_agent.domain.access import AccessContext, Role
+from bank_agent.domain.actions import ActionKind, ActionLedgerEntry
 from bank_agent.domain.audit import AuditEvent
 from bank_agent.domain.complaint import HistoricalComplaint
 from bank_agent.domain.conversation import Conversation, Turn
@@ -487,3 +488,22 @@ class InMemoryCreditApplicationRepository:
         moved = current.transition_to(status, at=at, reason_code=reason_code).evolve(version=expected_version + 1)
         self._applications.put(application_id, moved)
         return moved
+
+
+class InMemoryActionLedger:
+    def __init__(self, entries: TableView[tuple[str, str, str], ActionLedgerEntry], context: AccessContext) -> None:
+        self._entries = entries
+        self._context = context
+
+    async def find(self, action: ActionKind, key: IdempotencyKey) -> ActionLedgerEntry | None:
+        return self._entries.get((_customer_of(self._context), action.value, key))
+
+    async def record(self, entry: ActionLedgerEntry) -> ActionLedgerEntry:
+        slot = (_customer_of(self._context), entry.action.value, entry.idempotency_key)
+        existing = self._entries.get(slot)
+        if existing is not None:
+            if existing.request_digest != entry.request_digest:
+                raise IdempotencyConflictError()
+            return existing
+        self._entries.put(slot, entry)
+        return entry

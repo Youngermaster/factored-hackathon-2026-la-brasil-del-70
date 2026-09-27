@@ -4,6 +4,7 @@ from types import TracebackType
 from typing import Protocol, Self
 
 from bank_agent.adapters.persistence.memory.repositories import (
+    InMemoryActionLedger,
     InMemoryAuditLog,
     InMemoryCaseRepository,
     InMemoryConversationRepository,
@@ -50,6 +51,7 @@ class InMemoryUnitOfWork:
         self._audit_events = TableView(store.audit_events)
         self._credit_profiles = TableView(store.credit_profiles)
         self._credit_applications = TableView(store.credit_applications)
+        self._action_ledger = TableView(store.action_ledger)
         self._views: tuple[Transactional, ...] = (
             self._customers,
             self._products,
@@ -63,6 +65,7 @@ class InMemoryUnitOfWork:
             self._audit_events,
             self._credit_profiles,
             self._credit_applications,
+            self._action_ledger,
         )
 
     @property
@@ -112,6 +115,10 @@ class InMemoryUnitOfWork:
     @property
     def credit_applications(self) -> InMemoryCreditApplicationRepository:
         return InMemoryCreditApplicationRepository(self._credit_applications, self._handoffs, self._context)
+
+    @property
+    def action_ledger(self) -> InMemoryActionLedger:
+        return InMemoryActionLedger(self._action_ledger, self._context)
 
     async def commit(self) -> None:
         if any(view.has_conflict() for view in self._views):

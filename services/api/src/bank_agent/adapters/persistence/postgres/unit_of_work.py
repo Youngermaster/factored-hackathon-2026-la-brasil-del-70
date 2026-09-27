@@ -13,6 +13,7 @@ from bank_agent.adapters.persistence.postgres.repositories.accounts import (
     PostgresProductRepository,
     PostgresTransactionRepository,
 )
+from bank_agent.adapters.persistence.postgres.repositories.action_ledger import PostgresActionLedger
 from bank_agent.adapters.persistence.postgres.repositories.cases import PostgresCaseRepository
 from bank_agent.adapters.persistence.postgres.repositories.conversations import PostgresConversationRepository
 from bank_agent.adapters.persistence.postgres.repositories.credit_applications import (
@@ -95,6 +96,10 @@ class PostgresUnitOfWork:
     @property
     def credit_applications(self) -> PostgresCreditApplicationRepository:
         return PostgresCreditApplicationRepository(self._open())
+
+    @property
+    def action_ledger(self) -> PostgresActionLedger:
+        return PostgresActionLedger(self._open())
 
     async def _restart(self) -> None:
         """Begin a new transaction with the same context, so later reads never run without one."""

@@ -5,6 +5,7 @@ from typing import Protocol, Self
 
 from bank_agent.domain.access import AccessContext
 from bank_agent.ports.audit import AuditLog
+from bank_agent.ports.repositories.action_ledger import ActionLedger
 from bank_agent.ports.repositories.cases import CaseRepository
 from bank_agent.ports.repositories.complaints import HistoricalComplaintRepository
 from bank_agent.ports.repositories.conversations import ConversationRepository
@@ -64,6 +65,9 @@ class UnitOfWork(Protocol):
 
     @property
     def credit_applications(self) -> CreditApplicationRepository: ...
+
+    @property
+    def action_ledger(self) -> ActionLedger: ...
 
     async def commit(self) -> None:
         """Apply every write of this unit of work atomically."""

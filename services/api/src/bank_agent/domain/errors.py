@@ -33,6 +33,12 @@ class InvariantViolationError(DomainError):
     code = "invariant_violation"
 
 
+class ToolArgumentError(InvariantViolationError):
+    """A tool argument is outside what the tool accepts (for example a statement period that is too long)."""
+
+    code = "tool_argument_invalid"
+
+
 class CurrencyMismatchError(InvariantViolationError):
     code = "currency_mismatch"
 
