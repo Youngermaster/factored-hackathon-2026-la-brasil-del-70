@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 03, data platform: manifest-driven ingestion, contracts, dbt-duckdb silver and gold, the committed sample |
-| Next phase | 04, data analysis and workflow selection (`kit/prompts/04-analysis-workflow-selection.md`). It reads `gold.contact_reason_daily` and the other marts; build them with `make pipeline DATA_SOURCE=s3` (or `BANK_DATA_SOURCE=s3` in `.env`). Phases 05 and 10 also read the gold tables |
-| Blocked | None |
+| Last completed phase | 04, demand evidence and workflow prioritization: reason mapping, per-workflow evidence, pre-registered scores, the labeling export |
+| Next phase | 05, core banking and identity (`kit/prompts/05-core-banking-identity.md`). It seeds data for all four workflows in the order of `docs/decisions/workflow-prioritization.md` (`account_inquiry`, `card_support`, `dispute`, `credit`); pending action 0 (review of the phase 02 and 02b contracts) should come first |
+| Blocked | None. No phase 04 stop condition fired (`docs/analysis/workflow-evidence.md`, section "Stop conditions") |
 
-Pending human actions (none blocks phase 04):
+Pending human actions (none blocks phase 05):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -23,8 +23,94 @@ Pending human actions (none blocks phase 04):
 7. **Verify the price table.** `services/api/config/llm_prices.yaml` lists candidate prices (Anthropic `claude-sonnet-5` 2.00/10.00 and `claude-haiku-4-5-20251001` 1.00/5.00, OpenAI `gpt-5-mini` 0.25/2.00, USD per million tokens) with `verified: false`. Open each `source_url`, correct the numbers and date, and set `verified: true`; until then the budget guard charges 1.5 times the listed price.
 8. **Review the optional `litellm` extra before enabling it.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup`; check its advisories before `uv sync --extra litellm`.
 9. **Review the data platform dependency footprint.** DuckDB, dbt-duckdb, and Pandera are named in the CLAUDE.md stack and boto3 in the phase prompt, so they were added without asking; together with their dependencies (dbt-core, pandas, numpy, botocore, agate) the development environment grew by about 340 MB. Individually the largest are the DuckDB binary (44 MB), pandas (41 MB), and botocore (25 MB). The API image needs only DuckDB (for the gold readers).
+10. **Review the workflow prioritization** (`docs/decisions/workflow-prioritization.md`): confirm the build and depth order (`account_inquiry`, `card_support`, `dispute`, `credit`), read the "Breadth risk" section (`credit` is the weakest candidate for depth; `card_support` has no demand evidence under the strict mapping; `dispute` has the weakest data support), and decide whether the pre-registered weights stand. A weight change is a new pre-registration version (`docs/analysis/workflow-scoring-preregistration.md`); rerun `make analysis DATA_SOURCE=s3`.
+11. **Start the automatable-share labeling task** (`docs/analysis/labeling-protocol.md`). The 600-item sample is at `data/labeling/automatable_sample.csv` (gitignored; regenerate with `make analysis DATA_SOURCE=s3`); two labelers per item, adjudicated, without opening `automatable_prelabels.csv` first. 75 items per workflow is the floor. Expect `card_support`, `dispute`, and `credit` items to be labeled as not matching their workflow: transcripts are two balance templates. This does not block any phase; the scores use the labeled proxy until then.
+12. **Verify or replace the cost assumptions** in `data_platform/analysis/cost_assumptions.yaml` (loaded cost per handled minute: MX 0.18, CO 0.14, AR 0.16 USD; after-call work 1.15; all `assumption: true`, `verified: false`) before any cost figure leaves the repository as more than an illustration.
+13. **Review the matplotlib footprint.** matplotlib 3.11.2 with pillow, fonttools, kiwisolver, contourpy, cycler, and pyparsing adds about 54 MB to the development environment (matplotlib 24 MB, fontTools 14 MB, PIL 13 MB), at the 50 MB guideline. It was added without asking because the phase prompt names it; it is a `bank-data` dependency only and never enters the API image.
 
 ## Phase log
+
+### Phase 04: demand evidence and workflow prioritization (2026-09-26)
+
+Plan: `docs/plans/phase-04.md` (no plan mode, per the orchestrator; the human pre-approved plans and had already confirmed the four-workflow scope, so the phase continued after the prioritization document instead of stopping for confirmation). Data: the full organizer delivery (`BANK_DATA_SOURCE=s3`), recorded in every report header.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `17cafb9` | The plan, from profiling the phase 03 warehouse |
+| `0f3b5f8` | The pre-registration (`docs/analysis/workflow-scoring-preregistration.md`, `data_platform/analysis/scoring.yaml`) and the reason mapping with three scenarios, committed before any score was computed |
+| `4458f61` | matplotlib for the figures |
+| `2d71a25` | `bank_data.analysis` (mapping, metrics, seeded bootstrap, kappa, Cramer's V, spikes, scoring and sensitivity, labeling export and pre-labels, figures, reports), `bank-data analysis`, `make analysis`, the cost assumptions, unit tests, the mapping coverage test, and the fixture integration test |
+| This commit | Generated reports and figures, the labeling protocol, the analysis README, the prioritization decision, ADR 0023, the data card, data platform README, docs index, BACKLOG, and this entry |
+
+#### Headline results (primary mapping, pre-registered weights)
+
+| Rank | Workflow | Score | Contacts (share) | First contact resolution | Handle time | CSAT 1 or 2 | Automatable, proxy | Data support | Cost per resolved contact (projected) |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | `account_inquiry` | 70.4 | 240,056 (31.9%) | 91.5% | 221 s | 20.8% | 70.1% | 92% | 0.76 USD |
+| 2 | `card_support` | 64.4 | 150,863 (20.0%) | 89.6% | 266 s | 22.2% | 68.6% | 98% | 0.93 USD |
+| 3 | `dispute` | 63.5 | 144,154 (19.1%; 27,133 complaints) | 43.6% | 435 s | 54.5% | 33.2% | 32% | 3.13 USD |
+| 4 | `credit` | 55.8 | 54,879 (7.3%) | 65.2% | 540 s | 39.1% | 50.0% | 70% | 2.60 USD |
+
+- Sensitivity: first and last place hold in all 12 weight variants; `card_support` and `dispute` (0.9 points apart, a pre-registered tie broken by data support) swap in 1 of 12 (data support weight minus 5). Strict mapping: `card_support` and `credit` have no unambiguous interaction demand. Alternative mapping (`Producto` to `credit`): `credit` second, `card_support` last.
+- Sub-intents: all 11 non-escalation sub-intents are classed "automate" (none falls below the 0.5 data support threshold); `card_unblock_request` and `card_replacement_request` hand off by design. Clarifying paths are sized inside each flow (23.2% of transactions unclassifiable in statement totals; 32.0% of customers lacking a credit score or income; no complaint names a transaction).
+- Unmapped volume 0%; no stop condition fired. Escalation (about 10%), hour of day (flat), and complaint outcomes (flat across categories) are generator properties. Digital errors are followed by a contact within 24 hours no more often than other events (0.43% against 0.42%).
+- Transcripts: 42 distinct customer texts from two balance templates, Cramer's V 0.008 with the contact reason. Every one of the 600 sampled items is a balance question, so the machine pre-labels mark all 450 non-`account_inquiry` items as not matching their workflow.
+
+#### Decisions
+
+- [ADR 0023](adr/0023-workflow-prioritization-method.md): pre-registered weighted scoring, with a labeled structured proxy for the automatable share while human labels are pending, and weight and mapping sensitivity.
+- [Workflow prioritization](decisions/workflow-prioritization.md): build and depth order `account_inquiry`, `card_support`, `dispute`, `credit`; `credit` is the weakest candidate for depth and the first cut candidate, then `card_support`.
+- Weights are the prompt defaults, committed before results; the human may adjust them later as a new version.
+- The automatable share counts only labeled items whose text matches the workflow; `unclear` counts as not automatable; machine pre-labels live in a separate file with `review_status=pending` and are never read as labels; a rerun never overwrites a labeled file.
+- Pain leaves out sentiment (constant `neutral` on transactional contacts); its complaint component is the SLA breach rate.
+- Cost assumptions are stated team figures with derivations (`assumption: true`, `verified: false`), reported at 0.5, 1, and 1.5 times; costs never enter the score. The label-based addressable cost reads "pending human labels".
+- Local hours use fixed country offsets (MX UTC-6, CO UTC-5, AR UTC-3); the lag baseline is a deterministic 5% md5 sample of non-error events.
+- Dependency: matplotlib 3.11.2 (Matplotlib license, PSF-based) with pillow 12.3.0 (MIT-CMU), fonttools 4.66.0 (MIT), kiwisolver 1.5.1 (BSD), contourpy 1.4.0 (BSD), cycler 0.12.1 (BSD), pyparsing 3.3.3 (MIT), pinned in `uv.lock`; size is pending action 13.
+
+Deviations from the prompt and plan, found during implementation:
+
+- Analysis logic lives in `data_platform/src/bank_data/analysis/` (typed, tested, covered) rather than directly in `data_platform/analysis/`, which holds the inputs and a README with the code map.
+- The generated scores are a separate report (`docs/analysis/workflow-scores.md`) next to `workflow-evidence.md`, plus `analysis-results.json` for later phases; the decision document is written by hand from them.
+- The mapping CSV carries `source`, `value`, `subcategory`, and two scenario columns besides the prompt's `workflow_id`, `sub_intent`, and `rationale`, and maps the dictionary's English spellings of the contact reasons as well.
+- The mapping coverage test checks the committed sample, the fixture, and every accepted `reason_category`, because the full delivery is not available in CI; `make analysis` repeats the check on the full data as a stop condition.
+- The transcript opening used for the signal check is the first sentence that mentions a balance, because one template opens with a greeting sentence.
+
+#### How to verify
+
+```bash
+make check                                                     # needs Docker; never reads .env
+make analysis DATA_SOURCE=s3                                   # about 30 seconds on the phase 03 warehouse
+git diff --stat docs/analysis                                  # only the header timestamps and commit change
+uv run pytest data_platform/tests/unit -k "analysis or mapping" -q
+uv run pytest data_platform/tests/integration/test_analysis.py -q
+make pipeline && make analysis                                 # offline, on the committed sample; writes under data/warehouse-sample/analysis
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1,326 unit and 63 integration tests pass (1,269 and 58 before) |
+| Coverage gates | All 11 pass; `data_platform/src` 97.2% (the analysis package 98%) |
+| Docs check | markdownlint 0 issues; 23 mermaid blocks in 86 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+| `make analysis DATA_SOURCE=s3` | 686,296 interactions and 67,095 complaints; about 27 seconds; figures byte-identical on a rerun |
+| `make analysis DATA_SOURCE=sample` | Completes offline (the 74-customer sample is not representative: it ranks `card_support` first) |
+
+#### Known limitations
+
+- The automatable share is a proxy (historically simple contacts) until humans label, and transcripts cannot supply labels for `card_support`, `dispute`, or `credit`.
+- Three of the four interaction mappings are assumptions; the strict scenario leaves `card_support` and `credit` without interaction demand.
+- Rubric values (harm, demo depth, capability) are judgments, written down with reasons.
+- Costs are unverified projections; complaint back-office handling time is not in the data and is excluded.
+- The data is synthetic and several fields are generator-uniform, so differences between workflows come mostly from the contact reason.
+
+#### Next phase
+
+Phase 05, core banking and identity (`kit/prompts/05-core-banking-identity.md`), seeding all four workflows in the prioritization order. Pending actions 0 and 10 (contract review and prioritization review) should come first; the labeling task (action 11) runs in parallel and does not block.
 
 ### Phase 03: data platform (2026-09-26)
 

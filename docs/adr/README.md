@@ -17,6 +17,7 @@ Numbers 0008 to 0012 and 0014 to 0019 are reserved for the phases that already n
 | [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
 | [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |
 | [0022](0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source | Accepted | 2026-09-26 |
+| [0023](0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending | Accepted | 2026-09-26 |
 
 ## Adding a record
 

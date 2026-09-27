@@ -7,6 +7,7 @@
 - manifest-driven ingestion from the organizer S3 bucket or a local directory, with Pandera contracts, quarantine, and schema-evolution detection;
 - the dbt-duckdb project that builds silver (typed, deduplicated, flagged) and gold (serving Parquet for the API, ML inputs, and analytics marts), incrementally;
 - the data-quality report and the lineage page;
+- the phase 04 demand evidence and workflow prioritization analysis (`bank-data analysis`), with its inputs in `analysis/` and `mappings/`;
 - the committed, bounded, pseudonymized sample in `sample/` (CLAUDE.md rule 5) and the synthetic update-correctness fixture in `fixtures/`.
 
 Raw and derived data live under the repository `data/` directory, which is gitignored. The full dataset never enters git.
@@ -57,6 +58,9 @@ make pipeline DATA_SOURCE=s3       # or set BANK_DATA_SOURCE=s3 in .env and run 
 | `src/bank_data/transform/` | The dbt subprocess runner and the code generator for dbt sources, silver contracts, and the canonical seed |
 | `src/bank_data/reports/` | Quality report and lineage page |
 | `src/bank_data/sample/` | Committed-sample selection, pseudonyms, and the provenance README |
+| `src/bank_data/analysis/` | The phase 04 analysis: reason mapping, metrics, bootstrap statistics, pre-registered scoring, labeling export, figures, and reports |
+| `analysis/` | Analysis inputs: the pre-registered `scoring.yaml` and `cost_assumptions.yaml` (every value an assumption); see [`analysis/README.md`](analysis/README.md) |
+| `mappings/workflow_mapping.csv` | Every observed contact reason and complaint category mapped to a workflow or `other`, with scenarios and rationale |
 | `config/sources.yml` | Dataset version, snapshot date, type-change threshold, lookback window, freshness thresholds |
 | `dbt/` | The dbt project: macros, generated `models/sources.yml` and `models/silver/_silver.yml`, silver and gold models, generic tests, the `canonical_values` seed |
 | `fixtures/late_arrival/` | Synthetic update-correctness fixture (labeled in `FIXTURE.md`) |
@@ -74,6 +78,7 @@ The `bank-data` command. Every data command takes `--source sample|s3|local` (de
 | `bank-data test` | part of `make pipeline` | `dbt test` and `dbt source freshness` |
 | `bank-data report` | `make data-report` | The quality report (`docs/data/quality-report.md` for the S3 source) |
 | `bank-data lineage` | `make lineage` | `dbt docs generate` and the Mermaid lineage (`docs/data/lineage.md` for the S3 source) |
+| `bank-data analysis [--output-dir D] [--labeling-dir D]` | `make analysis` | Demand evidence, pre-registered scores, figures, and the labeling files (`docs/analysis/` and `data/labeling/` for the S3 source; next to the warehouse otherwise) |
 | `bank-data sample` | `make data-sample` | Regenerate `sample/` from the S3 warehouse, then run the guard |
 | `bank-data codegen [--check]` | `make data-codegen` | Regenerate (or check) the dbt files derived from the table specs |
 
@@ -86,6 +91,7 @@ The gold serving Parquet (`customers_serving`, `products_serving`, `transactions
 - **Add a table.** Add a `TableSpec` to `contracts/tables.py` (columns, types, nullability, accepted values, ranges, primary key, order column, customer column), add translations to `contracts/canonical.py` if its values need them, run `make data-codegen`, and add `dbt/models/silver/stg_<table>.sql` (two lines: the config and `{{ stg_body('<table>') }}`) and `silver_<table>.sql` (orphan flags with the `orphan_flag` macro). Bump `CONTRACT_VERSION`. The contract, bronze layout, deduplication, and incremental logic follow from the spec.
 - **Add a data source adapter.** Implement the `DataSource` Protocol in `ingest/source.py` (`label`, `prefix`, `list_objects`, `download`), raising `SourceAccessError` with non-secret messages, and wire it in `workspace.py`. The manifest, contracts, and dbt layers do not change.
 - **Add a gold model.** Add SQL under `dbt/models/gold/<serving|ml|marts>/` and its tests in `_gold.yml`. A new serving table also needs a `GOLD_SCHEMAS` entry and a reader in bank-agent.
+- **Extend the analysis.** See [`analysis/README.md`](analysis/README.md): a new criterion or weight is a new pre-registration version; a new reason needs a mapping row with a rationale.
 - **Change a contract.** Edit the spec, run `make data-codegen`, bump `CONTRACT_VERSION`, and add a unit test for the new rule.
 
 ## How to test
@@ -110,3 +116,4 @@ Coverage for `data_platform/src` is gated at 80% line coverage by `make check`.
 | `bank-data test` | a few seconds | 11 seconds |
 | `make pipeline-sample DATA_SOURCE=s3` (2,000 customers, ingest already done) | not applicable | 17 seconds |
 | `bank-data sample` | not applicable | 37 seconds |
+| `make analysis` | a few seconds | about 30 seconds (matplotlib's first run builds a font cache) |

@@ -41,6 +41,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
 | [adr/0022](adr/0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source |
+| [adr/0023](adr/0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending |
 
 ## Data
 
@@ -53,6 +54,18 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [data/lineage.md](data/lineage.md) | Generated lineage flowchart from the dbt manifest |
 | [workflows/data-pipeline.md](workflows/data-pipeline.md) | Source to serving flowchart and the incremental run with a late arrival |
 | [../data_platform/sample/README.md](../data_platform/sample/README.md) | The committed organizer sample: provenance, counts, treatments, and example rows per table |
+
+## Analysis and decisions
+
+| Document | Purpose |
+|---|---|
+| [analysis/README.md](analysis/README.md) | Index of the phase 04 reports, how to regenerate them, and the dataset version |
+| [analysis/workflow-scoring-preregistration.md](analysis/workflow-scoring-preregistration.md) | Criteria, weights, formulas, rubrics, and rules, committed before any score |
+| [analysis/workflow-evidence.md](analysis/workflow-evidence.md) | Generated demand, outcome, pattern, cost, segment, and data support evidence per workflow |
+| [analysis/workflow-scores.md](analysis/workflow-scores.md) | Generated scores, ranking, weight and mapping sensitivity, and sub-intent classes |
+| [analysis/labeling-protocol.md](analysis/labeling-protocol.md) | The automatable-share labeling task and the transcript limitation |
+| [decisions/workflow-prioritization.md](decisions/workflow-prioritization.md) | Build and depth order, sub-intent classes, breadth risk, and what would change the order |
+| [../data_platform/analysis/README.md](../data_platform/analysis/README.md) | The analysis inputs (scoring, cost assumptions, reason mapping) and code map |
 
 ## Packages and apps
 
