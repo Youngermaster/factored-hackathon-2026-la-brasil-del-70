@@ -52,6 +52,10 @@ adapters/
 │   ├── circuit_breaker.py    CircuitBreakerDecorator
 │   ├── retry.py              BoundedRetryDecorator
 │   └── timeout.py            TimeoutDecorator
+├── models/
+│   ├── keyword_router.py     router:keyword@1, weighted keyword patterns in es, pt, en (IntentRouter)
+│   ├── rules_resolver.py     resolver:rules@1, amount, merchant, date, and channel evidence (TransactionResolver)
+│   └── lexical_language.py   language_detector:lexical@1, marker words and orthography (LanguageDetector)
 ├── retrieval/                corpus from the pack (no ELG), BM25, dense, hybrid, embedding cache, index store
 ├── prompts/
 │   └── file_registry.py      FilePromptRegistry: versioned prompt files, variable validation, data delimiters
@@ -68,7 +72,7 @@ The DuckDB readers (phase 03) read the gold serving Parquet that `bank-data buil
 
 The PostgreSQL adapters (phase 05) pass every read and write contract suite. A unit of work opens a connection, begins a transaction, and sets `app.role` and `app.customer_id` with `set_config(..., true)` before any other statement; row-level security then filters every table again behind the repositories' own `WHERE customer_id = ...` clauses (`docs/security/data-isolation.md`). Writes lock rows with `FOR NO KEY UPDATE NOWAIT`: when another open unit of work holds the row, the unit of work is marked conflicted and `commit` raises `ConcurrencyConflictError`, the same optimistic behavior as the memory adapter, without making a request wait on another request's lock. Aggregates with nested structure store their validated domain document as JSONB next to the scalar columns used by queries and policies, and check constraints keep the two in agreement.
 
-`policy/` (phase 06) reads the synthetic policy pack: `FilesystemPolicyRepository` implements `PolicyRepository`, `FilesystemCreditCatalog` implements `CreditProductCatalog` (with es, pt, and en display text), and `tasks.py` rewrites the version lock and the policy catalog page; the parsing and validation are the pure loader in `bank_agent.policy.loader`. `retrieval/` (phase 07) implements the `Retriever` port over the pack: BM25, dense embeddings from the optional `ml` extra, reciprocal rank fusion, and indexes keyed by the pack version ([README](retrieval/README.md)). Later phases add `models/` (phases 09 and 10), and an OpenTelemetry adapter (phase 15). `docs/architecture/ports-and-adapters.md` has the full table.
+`policy/` (phase 06) reads the synthetic policy pack: `FilesystemPolicyRepository` implements `PolicyRepository`, `FilesystemCreditCatalog` implements `CreditProductCatalog` (with es, pt, and en display text), and `tasks.py` rewrites the version lock and the policy catalog page; the parsing and validation are the pure loader in `bank_agent.policy.loader`. `retrieval/` (phase 07) implements the `Retriever` port over the pack: BM25, dense embeddings from the optional `ml` extra, reciprocal rank fusion, and indexes keyed by the pack version ([README](retrieval/README.md)). `models/` (phase 09) holds the rule baselines behind the router, resolver, and language detector ports; phase 10 adds learned implementations behind the same ports, and a lingua-language-detector adapter waits for the team's approval of its size. An OpenTelemetry adapter arrives in phase 15. `docs/architecture/ports-and-adapters.md` has the full table.
 
 ## Who may import it
 

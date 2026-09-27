@@ -40,10 +40,12 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0011](adr/0011-policy-as-data-and-pure-rule-functions.md) | Policy as data plus pure rule functions, with the synthetic eligibility service on the same kernel |
 | [adr/0012](adr/0012-bound-policies-and-informational-retrieval.md) | Bound policies for workflow states, with open retrieval only for informational questions |
 | [adr/0013](adr/0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators |
+| [adr/0014](adr/0014-explicit-state-machine-over-an-agent-framework.md) | An explicit state machine over an agent framework |
 | [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
 | [adr/0022](adr/0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source |
 | [adr/0023](adr/0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending |
+| [adr/0024](adr/0024-workflow-registry-with-router-dispatch.md) | A workflow registry with router dispatch over one generic engine |
 
 ## Data
 
@@ -87,6 +89,17 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [../services/api/src/bank_agent/adapters/retrieval/README.md](../services/api/src/bank_agent/adapters/retrieval/README.md) | The retrievers, the index store, how to add a retriever and how to re-index |
 | [evaluation/retrieval-labeling.md](evaluation/retrieval-labeling.md) | The relevance judgment format and the labeling and review protocol |
 | [evaluation/retrieval.md](evaluation/retrieval.md) | Generated comparison of BM25, dense, and hybrid retrieval, by workflow, language, and jurisdiction |
+
+## Workflow engine and workflows
+
+| Document | Purpose |
+|---|---|
+| [workflows/workflow-router.md](workflows/workflow-router.md) | One turn end to end (flowchart), dispatch and switch rules, the registry, guarantees, and baseline B0 |
+| [workflows/dispute-intake.md](workflows/dispute-intake.md) | Dispute state machine, state to rules, clauses, and tools, sequences for the normal, ambiguous, and escalation paths, and the confirmation and abstention matrix |
+| [workflows/card-support.md](workflows/card-support.md) | Card support state machine, state table, sequences, and matrix |
+| [workflows/handoff.md](workflows/handoff.md) | The handoff schema walkthrough, worked examples, and what agents see |
+| [workflows/execution-records.md](workflows/execution-records.md) | Execution record fields, storage, and explaining a decision without chain-of-thought |
+| [../services/api/src/bank_agent/application/README.md](../services/api/src/bank_agent/application/README.md) | How to add a state, a workflow, or a tool |
 
 ## Packages and apps
 
