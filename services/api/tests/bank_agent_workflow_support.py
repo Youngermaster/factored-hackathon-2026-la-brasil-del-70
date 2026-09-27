@@ -82,6 +82,9 @@ NO_SIGNALS = {"legal_or_regulator_mention": False, "distress": False, "human_req
 SIGNALS = PromptRef(prompt_id="detect_escalation_signals", version=1)
 DISPUTE_SLOTS = PromptRef(prompt_id="extract_dispute_slots", version=1)
 CARD_SLOTS = PromptRef(prompt_id="extract_card_support_slots", version=1)
+ACCOUNT_SLOTS = PromptRef(prompt_id="extract_account_inquiry_slots", version=1)
+CREDIT_SLOTS = PromptRef(prompt_id="extract_credit_slots", version=1)
+PHRASE = PromptRef(prompt_id="phrase_response", version=1)
 
 
 def assert_schema_valid(handoff: Handoff) -> None:

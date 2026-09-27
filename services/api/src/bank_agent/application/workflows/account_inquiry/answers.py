@@ -57,7 +57,9 @@ def _balance_item(ctx: TurnContext, view: BalanceView) -> tuple[dict[str, Param]
 
 
 def _balance_fact(ctx: TurnContext, view: BalanceView, as_of: date) -> None:
-    text = f"{view.product_type.value} ending {view.masked_number.last4} balance {view.current_balance} as of {as_of}"
+    balance = view.current_balance
+    text = f"{view.product_type.value} ending {view.masked_number.last4} balance {balance.amount} "
+    text += f"{balance.currency.value} as of {as_of}"
     ctx.engine = ctx.engine.with_fact(text, view.product_ref)
 
 
@@ -136,7 +138,8 @@ async def payment_status(ctx: TurnContext) -> Step:
     if stop is not None:
         return stop
     ctx.engine = ctx.engine.with_fact(
-        f"{view.transaction_type.value} of {view.amount} on {view.occurred_on} is {view.status.value}",
+        f"{view.transaction_type.value} of {view.amount.amount} {view.amount.currency.value} on {view.occurred_on} "
+        f"is {view.status.value}",
         view.transaction_ref,
     )
     params: dict[str, Param] = {

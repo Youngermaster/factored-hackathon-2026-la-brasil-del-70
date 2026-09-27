@@ -29,6 +29,7 @@ from bank_agent.domain.handoff import HandoffRecord
 from bank_agent.domain.identifiers import ConversationId, CustomerId, HandoffId, LineageId, SessionId, TurnId
 from bank_agent.domain.session import Session
 from bank_agent.ports.llm import LLMClient
+from bank_agent.ports.models import RiskEstimator
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 from bank_agent.testing.clock import FixedClock
@@ -122,6 +123,7 @@ def build_harness(
     llm_understanding: bool = True,
     phrasing: bool = False,
     handoff_summary: bool = False,
+    risk_estimator: RiskEstimator | None = None,
 ) -> Harness:
     clock, ids = FixedClock(NOW), SequentialIdGenerator()
     policy, grounding = shared_policy()
@@ -151,5 +153,6 @@ def build_harness(
         clock=clock,
         ids=ids,
         environment="test",
+        risk_estimator=risk_estimator,
     )
     return Harness(services.engine(), services.engine("baseline_b0"), uow_factory, session_store, clock)
