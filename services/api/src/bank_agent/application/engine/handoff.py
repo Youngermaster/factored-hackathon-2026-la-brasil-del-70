@@ -20,6 +20,7 @@ from bank_agent.domain.actions import ActionStatus
 from bank_agent.domain.cards import CardRequest
 from bank_agent.domain.complaint import Priority
 from bank_agent.domain.decision import ClauseRef
+from bank_agent.domain.eligibility import CreditReview
 from bank_agent.domain.errors import InvariantViolationError
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.handoff import (
@@ -52,6 +53,7 @@ class HandoffPlan:
     policy_basis: tuple[ClauseRef, ...] = ()
     card_request: CardRequest | None = None
     case_ref: CaseId | None = None
+    credit_review: CreditReview | None = None
     summary_extra: tuple[str, ...] = field(default_factory=tuple)
 
 
@@ -144,6 +146,7 @@ class HandoffBuilder:
             sla_due=now + timedelta(hours=_hours(ctx, plan, urgent)),
             workflow=ctx.definition.ref,
             card_request=plan.card_request,
+            credit_review=plan.credit_review,
         )
         validate_handoff(handoff)
         return handoff

@@ -2,8 +2,9 @@
 
 Both share the same ports, tools, policy kernel, grounding verifier, and handoff builder; only the definitions
 differ. Registry validation runs here, at startup, so an enabled workflow without a definition, an unbound state,
-or a tool the matrix does not allow stops the process. The router, resolver, and language detector are selected by
-name from ``WorkflowSettings``; the evaluation harness (phase 14) resolves ``engine("baseline_b0")``.
+or a tool the matrix does not allow stops the process. The router, resolver, language detector, and risk estimator
+(``risk_estimator:score_band@1`` until phase 10) are selected by name from ``WorkflowSettings``; the evaluation
+harness (phase 14) resolves ``engine("baseline_b0")``.
 """
 
 from collections.abc import Callable, Mapping
@@ -12,7 +13,8 @@ from dataclasses import dataclass, replace
 from bank_agent.adapters.models.keyword_router import KeywordIntentRouter
 from bank_agent.adapters.models.lexical_language import LexicalLanguageDetector
 from bank_agent.adapters.models.rules_resolver import RuleTransactionResolver
-from bank_agent.application.engine.context import EngineServices, EngineSettings, ToolProvider
+from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
+from bank_agent.application.engine.context import CreditPorts, EngineServices, EngineSettings, ToolProvider
 from bank_agent.application.engine.definition import WorkflowDefinition
 from bank_agent.application.engine.engine import WorkflowEngine
 from bank_agent.application.engine.registry import build_registry
@@ -30,7 +32,7 @@ from bank_agent.domain.workflow import WorkflowId
 from bank_agent.domain.workflow_catalog import WORKFLOW_CATALOG
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.llm import LLMClient
-from bank_agent.ports.models import IntentRouter, LanguageDetector, TransactionResolver
+from bank_agent.ports.models import IntentRouter, LanguageDetector, RiskEstimator, TransactionResolver
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
@@ -73,8 +75,14 @@ def build_workflows(
     router: IntentRouter | None = None,
     resolver: TransactionResolver | None = None,
     language_detector: LanguageDetector | None = None,
+    risk_estimator: RiskEstimator | None = None,
 ) -> WorkflowServices:
     enabled = enabled_workflows(settings)
+    credit = CreditPorts(
+        catalog=policy.catalog,
+        eligibility=policy.eligibility,
+        risk_estimator=risk_estimator or ScoreBandRiskEstimator(clock, ids),
+    )
     services = EngineServices(
         uow_factory=uow_factory,
         session_store=session_store,
@@ -89,6 +97,7 @@ def build_workflows(
         language_detector=language_detector or LexicalLanguageDetector(),
         clock=clock,
         ids=ids,
+        credit=credit,
     )
     renderer = Renderer(policy.pack, grounding.verifier)
     proposed = EngineSettings(

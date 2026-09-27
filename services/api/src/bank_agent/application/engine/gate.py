@@ -18,12 +18,19 @@ from bank_agent.application.engine.states import auth_required_reply
 from bank_agent.domain.actions import ToolName
 from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.decision import DecisionKind
-from bank_agent.domain.identifiers import CaseId, ProductId, SourceRef, SourceTable, TransactionId
+from bank_agent.domain.identifiers import ApplicationId, CaseId, ProductId, SourceRef, SourceTable, TransactionId
 from bank_agent.domain.llm_outputs import EscalationSignals as ModelSignals
 from bank_agent.domain.trust import TrustEvent, TrustEventKind
 from bank_agent.domain.workflow import Outcome
 
-REFERENCE_CHECKS = frozenset({ToolName.GET_TRANSACTION, ToolName.GET_PRODUCT_STATUS, ToolName.GET_CASE_STATUS})
+REFERENCE_CHECKS = frozenset(
+    {
+        ToolName.GET_TRANSACTION,
+        ToolName.GET_PRODUCT_STATUS,
+        ToolName.GET_CASE_STATUS,
+        ToolName.GET_CREDIT_APPLICATION_STATUS,
+    }
+)
 
 
 async def add_trust_event(
@@ -96,6 +103,9 @@ async def _references(ctx: TurnContext) -> None:
         for case_id in found.cases:
             if await ctx.tools.get_case_status(CaseId(case_id)) is None:
                 foreign.append(SourceRef.of(SourceTable.DISPUTE_CASES, case_id))
+        for application_id in found.applications:
+            if await ctx.tools.get_credit_application_status(ApplicationId(application_id)) is None:
+                foreign.append(SourceRef.of(SourceTable.CREDIT_APPLICATIONS, application_id))
     foreign.extend(
         SourceRef.of(SourceTable.CUSTOMERS, value) for value in found.customers if value != ctx.customer.customer_id
     )

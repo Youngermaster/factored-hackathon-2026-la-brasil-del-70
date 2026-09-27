@@ -157,9 +157,12 @@ class Renderer:
         text = "\n".join(part.text for part in parts)
         check = "\n".join(part.check for part in parts)
         paragraphs = self._explanation(reply.explain, given.language, given.locale, MAX_TEXT - len(text))
-        cited = tuple(dict.fromkeys(reply.explain))[: len(paragraphs)]
+        appended = tuple(dict.fromkeys(reply.explain))[: len(paragraphs)]
+        inline = tuple(ref for ref in dict.fromkeys(reply.cite) if ref not in appended)
+        cited = (*appended, *inline)
         full, full_check = "\n\n".join([text, *paragraphs]), "\n\n".join([check, *paragraphs])
         facts = (*reply.facts, *(fact for part in parts for fact in part.facts))
+        credit = reply.credit
         context = GroundingContext(
             workflow=given.workflow,
             language=given.language,
@@ -168,11 +171,16 @@ class Renderer:
             facts=_unique_ids(facts),
             bound_clauses=given.bound,
             actions=given.actions,
+            eligibility=credit.assessment if credit is not None else None,
+            catalog_product=credit.product if credit is not None else None,
+            credit_profile=credit.profile if credit is not None else None,
+            risk_estimate=credit.estimate if credit is not None else None,
+            declared_income=credit.declared_income if credit is not None else None,
         )
         violations = self._verifier.verify(ResponseDraft(text=full_check, citations=cited), context)
+        excerpts = (*paragraphs, *(explain(self._pack, (ref,), given.language, given.locale).text for ref in inline))
         citations = tuple(
-            Citation(clause=ref, excerpt=paragraph[:MAX_EXCERPT])
-            for ref, paragraph in zip(cited, paragraphs, strict=True)
+            Citation(clause=ref, excerpt=excerpt[:MAX_EXCERPT]) for ref, excerpt in zip(cited, excerpts, strict=True)
         )
         response = AssistantResponse(
             language=given.language,

@@ -1,4 +1,5 @@
-"""Escalation and privacy signals: a deterministic keyword detector in es and pt, merged with the optional
+"""Escalation and privacy signals: a deterministic keyword detector in es and pt (distress includes financial
+distress and over-indebtedness, which feed ``ESC.distress_signal``), merged with the optional
 ``detect_escalation_signals`` prompt. A signal counts when either source reports it; a gateway failure leaves the
 deterministic result, so a missing model never hides a signal the keywords see."""
 
@@ -18,6 +19,10 @@ _DISTRESS = re.compile(
     r"\b(desesperad[oa]|angustiad[oa]|no tengo (para|con que) comer|no se que hacer|nao sei o que fazer|panico|"
     r"me amenaza\w*|estoy en peligro|socorro|me estan presionando|me presionan|estou sendo pressionad[oa]|"
     r"chorando|llorando|emergencia medica|hospital|me quiero morir|desperate|panic)\b"
+    r"|\b(no puedo pagar (mis|las|mi) deudas?|no me alcanza para pagar|estoy (muy |super )?endeudad[oa]|"
+    r"sobreendeudad[oa]|ahogad[oa] (en|con) deudas|no llego a fin de mes|superendividad[oa]|"
+    r"(estou|to|tou) (muito )?endividad[oa]|nao consigo pagar (minhas|as|meus) (dividas|contas)|"
+    r"afogad[oa] em dividas|over.?indebted|cannot pay my debts)\b"
 )
 _HUMAN = re.compile(
     r"\b(hablar con (una persona|un humano|un asesor|alguien|un agente|un ejecutivo)|asesor humano|agente humano|"

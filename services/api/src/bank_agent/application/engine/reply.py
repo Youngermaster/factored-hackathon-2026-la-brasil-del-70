@@ -19,7 +19,9 @@ from bank_agent.domain.conversation import (
     EscalationNotice,
     NoticeCode,
 )
+from bank_agent.domain.credit import CreditProduct, CreditProfile
 from bank_agent.domain.decision import ClauseRef
+from bank_agent.domain.eligibility import EligibilityAssessment, RiskEstimate
 from bank_agent.domain.money import Money
 
 
@@ -49,6 +51,26 @@ Param = Money | date | int | str | RecordText | Masked | Choices
 
 
 @dataclass(frozen=True)
+class CreditEvidence:
+    """What a credit reply may rely on, for the grounding verifier and for optional phrasing.
+
+    ``assessment`` and ``product`` are evidence (an outcome claim must match the assessment; catalog figures must
+    match the entry). ``profile``, ``estimate``, and ``declared_income`` reach only the verifier, as figures that
+    must never appear. Phrasing receives only ``outcome``, ``reasons``, and ``disclaimer``: never the profile, the
+    estimate, or any of their values.
+    """
+
+    assessment: EligibilityAssessment | None = None
+    product: CreditProduct | None = None
+    profile: CreditProfile | None = None
+    estimate: RiskEstimate | None = None
+    declared_income: Money | None = None
+    outcome: str | None = None
+    reasons: tuple[str, ...] = ()
+    disclaimer: str | None = None
+
+
+@dataclass(frozen=True)
 class Reply:
     template: str
     params: dict[str, Param] = field(default_factory=dict)
@@ -69,3 +91,7 @@ class Reply:
     """A template rendered before the main one (``common.resume`` after re-authentication)."""
     bilingual: bool = False
     """Render the template in Spanish and Portuguese together (the language question)."""
+    cite: tuple[ClauseRef, ...] = ()
+    """Clauses whose text is already part of a parameter (the rendered eligibility explanation): cited and used as
+    evidence, but not appended again."""
+    credit: CreditEvidence | None = None

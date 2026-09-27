@@ -1,8 +1,9 @@
 """Finish a reply: render the template, verify it, and optionally let the language model phrase it.
 
 Phrasing is off by default (``WORKFLOW_LLM_PHRASING``). When on, the model receives the template text as its facts
-and the rendered clause texts, and its draft must pass the grounding verifier with the same evidence; any violation
-or gateway failure keeps the template, and the violation kinds go into the execution record.
+and the rendered clause texts (a credit reply adds only the outcome code, the rendered reasons, and the disclaimer,
+never the profile or the estimate), and its draft must pass the grounding verifier with the same evidence; any
+violation or gateway failure keeps the template, and the violation kinds go into the execution record.
 """
 
 from bank_agent.application.engine.context import TurnContext
@@ -16,6 +17,7 @@ from bank_agent.domain.intelligence import PromptValue
 from bank_agent.domain.locale import Language
 
 _KINDS = (
+    ("eligibility", "eligibility_result"),
     ("confirm", "confirm_request"),
     ("offer", "confirm_request"),
     ("created", "action_result"),
@@ -65,6 +67,13 @@ async def finish_reply(ctx: TurnContext, renderer: Renderer, reply: Reply) -> As
             "customer_message": ctx.text,
             "dialect_hint": ctx.locale.value,
         }
+        credit = reply.credit
+        if credit is not None and credit.outcome is not None:
+            # Only the outcome code, the rendered reasons, and the disclaimer: never the profile or the estimate.
+            variables["eligibility_outcome"] = credit.outcome
+            variables["eligibility_reasons"] = list(credit.reasons)
+            if credit.disclaimer is not None:
+                variables["disclaimer"] = credit.disclaimer
         drafted = await text(ctx, PHRASE_RESPONSE, variables)
         if drafted and drafted.strip():
             draft = ResponseDraft(text=drafted.strip()[:MAX_TEXT], citations=rendered.citations)

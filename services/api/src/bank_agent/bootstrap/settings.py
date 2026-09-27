@@ -226,7 +226,7 @@ class WorkflowSettings(BaseSettings):
     ``enabled`` lists the workflows the router may dispatch to (``WORKFLOW_ENABLED=dispute,card_support``);
     intents of any other workflow get the out-of-scope answer, which is also how a workflow is cut back
     (CLAUDE.md section 1). Model phrasing and handoff summaries are off by default and, when on, must pass the
-    grounding verifier. Router, resolver, and language detector names select their implementations.
+    grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations.
     """
 
     model_config = _config("WORKFLOW_")
@@ -239,6 +239,7 @@ class WorkflowSettings(BaseSettings):
     router: Literal["keyword@1"] = "keyword@1"
     resolver: Literal["rules@1"] = "rules@1"
     language_detector: Literal["lexical@1"] = "lexical@1"
+    risk_estimator: Literal["score_band@1"] = "score_band@1"
 
     @field_validator("enabled", mode="before")
     @classmethod

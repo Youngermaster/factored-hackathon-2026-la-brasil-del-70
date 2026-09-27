@@ -42,6 +42,19 @@ Handler = Callable[["TurnContext"], Awaitable["Step"]]
 
 
 @dataclass(frozen=True)
+class UnsupportedRequest:
+    """A request that belongs to a workflow's domain but that the workflow does not handle (a transfer in
+    ``account_inquiry``, a limit increase in ``credit``): abstained with the workflow's own clauses."""
+
+    code: str
+    clauses: tuple[str, ...]
+    template: str = "common.unsupported_in_workflow"
+
+
+UnsupportedRecognizer = Callable[[str], UnsupportedRequest | None]
+
+
+@dataclass(frozen=True)
 class StateSpec:
     name: str
     policy_state: str
@@ -72,6 +85,9 @@ class WorkflowDefinition:
     variant: str = "proposed"
     open_questions: Callable[["TurnContext"], tuple[str, ...]] | None = None
     """Questions a handoff lists from the workflow's unresolved slots, whichever step escalates."""
+    unsupported: UnsupportedRecognizer | None = None
+    """Recognizes in-domain requests the workflow does not handle; the engine checks it before the generic
+    out-of-scope answer, so the abstention cites the workflow's clause."""
 
     def __post_init__(self) -> None:
         if self.entry_state not in self.states:
@@ -119,6 +135,7 @@ def build_definition(
     entry_state: str = START,
     variant: str = "proposed",
     open_questions: Callable[["TurnContext"], tuple[str, ...]] | None = None,
+    unsupported: UnsupportedRecognizer | None = None,
 ) -> WorkflowDefinition:
     """A definition whose table also holds the shared exits and the AUTH_REQUIRED resumes."""
     by_name = {spec.name: spec for spec in states}
@@ -141,4 +158,5 @@ def build_definition(
         intents=intents,
         variant=variant,
         open_questions=open_questions,
+        unsupported=unsupported,
     )

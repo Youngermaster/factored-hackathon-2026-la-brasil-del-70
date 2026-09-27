@@ -5,7 +5,13 @@ Each builds a ``Step`` from verified state and clause references; none writes cu
 
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import current_intent, evaluate, explanation
-from bank_agent.application.engine.definition import ABSTAINED, AUTH_REQUIRED, ESCALATED, REFUSED
+from bank_agent.application.engine.definition import (
+    ABSTAINED,
+    AUTH_REQUIRED,
+    ESCALATED,
+    REFUSED,
+    UnsupportedRequest,
+)
 from bank_agent.application.engine.handoff import HandoffBuilder, HandoffPlan
 from bank_agent.application.engine.reply import Param, Reply
 from bank_agent.application.engine.templates.labels import CAPABILITIES, join
@@ -13,6 +19,7 @@ from bank_agent.application.grounding.retrieval import RetrievalDecision
 from bank_agent.domain.cards import CardRequest
 from bank_agent.domain.conversation import EscalationNotice, NoticeCode
 from bank_agent.domain.decision import ClauseRef, Decision, DecisionKind
+from bank_agent.domain.eligibility import CreditReview
 from bank_agent.domain.errors import ConfigurationError
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.execution_record import RetrievalDecisionCode, RetrievalRecord
@@ -43,6 +50,7 @@ def escalate(
     card_request: CardRequest | None = None,
     case_ref: CaseId | None = None,
     intent: Intent | None = None,
+    credit_review: CreditReview | None = None,
 ) -> Step:
     """Build and validate the handoff, and tell the customer when a person will contact them."""
     sla_clause = "CRD-ALL-3" if card_request is not None else f"ESC-{ctx.customer.country.value}-2"
@@ -59,6 +67,7 @@ def escalate(
         policy_basis=basis,
         card_request=card_request,
         case_ref=case_ref,
+        credit_review=credit_review,
     )
     handoff = BUILDER.build(ctx, plan)
     ctx.handoff = handoff
@@ -93,6 +102,16 @@ def out_of_scope(ctx: TurnContext) -> Step:
     refs = (clause_ref(ctx, "SCOPE-ALL-1"), *explanation(decision))
     reply = Reply(template="common.out_of_scope", params={"capabilities": capabilities(ctx)}, explain=refs)
     return Step(ABSTAINED, reply, Outcome.ABSTAINED)
+
+
+def abstain_unsupported(ctx: TurnContext, request: UnsupportedRequest) -> Step:
+    """An in-domain request the workflow does not handle: the workflow's clauses, the ``SCOPE`` decision, and an
+    offer of a human. The decision is evaluated with intent ``unsupported``, so it names ``SCOPE.supported_intent``."""
+    decision = evaluate(ctx, policy_state="START", intent=Intent.UNSUPPORTED)
+    ctx.recorder.intervention("out_of_scope")
+    ctx.recorder.intervention(f"unsupported_{request.code}")
+    refs = (*(clause_ref(ctx, clause_id) for clause_id in request.clauses), *explanation(decision))
+    return Step(ABSTAINED, Reply(template=request.template, explain=refs), Outcome.ABSTAINED)
 
 
 def greeting(ctx: TurnContext, *, clarify: bool = False) -> Step:
@@ -154,6 +173,8 @@ def escalation_code(decision: Decision) -> EscalationReasonCode:
         "DSP.case_within_sla": EscalationReasonCode.SLA_BREACHED,
         "CRD.unblock_requires_human": EscalationReasonCode.CARD_UNBLOCK_REQUESTED,
         "CRD.replacement_requires_human": EscalationReasonCode.CARD_REPLACEMENT_REQUESTED,
+        "ESC.credit_review_required": EscalationReasonCode.CREDIT_REVIEW_REQUIRED,
+        "ESC.eligibility_contested": EscalationReasonCode.ELIGIBILITY_CONTESTED,
     }
     for rule_id in decision.decisive_rule_ids:
         if rule_id in codes:
@@ -168,6 +189,7 @@ def escalate_decision(
     open_questions: tuple[str, ...] = (),
     card_request: CardRequest | None = None,
     case_ref: CaseId | None = None,
+    credit_review: CreditReview | None = None,
 ) -> Step:
     code = escalation_code(decision)
     detail = ", ".join(decision.decisive_rule_ids) or "escalation"
@@ -179,6 +201,7 @@ def escalate_decision(
         open_questions=open_questions,
         card_request=card_request,
         case_ref=case_ref,
+        credit_review=credit_review,
     )
 
 

@@ -54,4 +54,6 @@ def build_record(
         case_refs=tuple(dict.fromkeys(recorder.case_refs)),
         workflow_before=workflow_before,
         retrieval=recorder.retrieval,
+        risk_estimates=tuple(recorder.risk_estimates),
+        eligibility_assessments=tuple(recorder.eligibility_assessments),
     )

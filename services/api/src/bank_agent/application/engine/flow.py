@@ -12,6 +12,7 @@ from bank_agent.application.engine.registry import WorkflowRegistry
 from bank_agent.application.engine.reply import Param, Reply
 from bank_agent.application.engine.router import Route, RouteKind, dispatch
 from bank_agent.application.engine.shared import (
+    abstain_unsupported,
     blocking_step,
     escalate,
     escalate_decision,
@@ -103,7 +104,7 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
     if menu is not None and kind in (RouteKind.GREETING, RouteKind.CLARIFY_WORKFLOW):
         return Step(ctx.state, Reply(template=menu, bilingual=True), Outcome.CLARIFIED)
     if kind is RouteKind.OUT_OF_SCOPE:
-        return out_of_scope(ctx)
+        return in_domain_unsupported(ctx, registry) or out_of_scope(ctx)
     if kind is RouteKind.INFORMATIONAL:
         return informational(ctx)
     if kind is RouteKind.HUMAN:
@@ -120,6 +121,26 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
     if predicted is not None and predicted in ctx.definition.intents:
         ctx.engine = ctx.engine.evolve(intent=predicted)
     return await run_handlers(ctx)
+
+
+def in_domain_unsupported(ctx: TurnContext, registry: WorkflowRegistry) -> Step | None:
+    """A request no intent covers but that an enabled workflow recognizes as its own unsupported request (a
+    transfer, a limit increase): abstained with that workflow's clauses. The current workflow is asked first. Outside
+    a pending step the conversation moves to that workflow's ABSTAINED state; mid-flow the pending step is kept."""
+    current = None if ctx.at_router else ctx.workflow
+    order = ([current] if current is not None else []) + [w for w in ctx.enabled if w is not current]
+    for workflow in order:
+        recognize = registry.definition(workflow).unsupported
+        request = recognize(ctx.text) if recognize is not None else None
+        if request is None:
+            continue
+        if workflow is not current:
+            if current is not None and ctx.definition.spec(ctx.state).mid_flow:
+                kept = abstain_unsupported(ctx, request)
+                return Step(ctx.state, kept.reply, kept.outcome)
+            enter(ctx, registry, workflow, switch=current is not None)
+        return abstain_unsupported(ctx, request)
+    return None
 
 
 def clarify_workflow(ctx: TurnContext, options: tuple[WorkflowId, ...]) -> Step:

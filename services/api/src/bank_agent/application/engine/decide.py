@@ -10,7 +10,7 @@ from bank_agent.domain.actions import ActionRequest
 from bank_agent.domain.decision import ClauseRef, Decision, DecisionKind
 from bank_agent.domain.workflow import CROSS_WORKFLOW_INTENTS, Intent
 from bank_agent.policy.explain import decision_refs
-from bank_agent.policy.facts import CardFacts, DisputeFacts, EvaluationRequest, PolicyFacts
+from bank_agent.policy.facts import AccountFacts, CardFacts, CreditFacts, DisputeFacts, EvaluationRequest, PolicyFacts
 
 
 def evaluate(
@@ -21,9 +21,12 @@ def evaluate(
     action: ActionRequest | None = None,
     dispute: DisputeFacts | None = None,
     card: CardFacts | None = None,
+    account: AccountFacts | None = None,
+    credit: CreditFacts | None = None,
     clarification_attempts: int = 0,
     tool_failures: int = 0,
     verification_mismatch: bool = False,
+    eligibility_contested: bool = False,
 ) -> Decision:
     chosen_intent = intent if intent is not None else current_intent(ctx)
     facts = PolicyFacts(
@@ -35,9 +38,12 @@ def evaluate(
             clarification_attempts=clarification_attempts,
             tool_failures_after_retries=tool_failures,
             verification_mismatch=verification_mismatch,
+            eligibility_contested=eligibility_contested,
         ),
+        account=account,
         dispute=dispute,
         card=card,
+        credit=credit,
     )
     request = EvaluationRequest(
         workflow=ctx.workflow,

@@ -16,6 +16,7 @@ from pydantic import BaseModel
 
 from bank_agent.application.grounding.draft import VerifiedAction
 from bank_agent.domain.decision import ClauseRef, Decision
+from bank_agent.domain.eligibility import EligibilityAssessmentRecord, RiskEstimateRecord
 from bank_agent.domain.errors import LlmError
 from bank_agent.domain.execution_record import (
     GroundingReport,
@@ -52,6 +53,9 @@ class TurnRecorder:
     citations: list[ClauseRef] = field(default_factory=list)
     retrieval: RetrievalRecord | None = None
     grounding: GroundingReport = field(default_factory=GroundingReport)
+    risk_estimates: list[RiskEstimateRecord] = field(default_factory=list)
+    """Credit turns: each estimate the engine obtained, kept apart from the assessments (never merged)."""
+    eligibility_assessments: list[EligibilityAssessmentRecord] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         self._started = self.monotonic()

@@ -12,7 +12,7 @@ from pathlib import Path
 
 from bank_agent.adapters.llm.unconfigured import UnconfiguredLLMClient
 from bank_agent.application.engine.engine import TurnRequest, WorkflowEngine
-from bank_agent.application.tools.banking import BankingTools, SessionToolset
+from bank_agent.application.tools.banking import BankingTools, EngineOnlyTools, SessionToolset
 from bank_agent.application.tools.base import ToolDependencies
 from bank_agent.application.tools.context import SessionContext, ToolSettings
 from bank_agent.application.tools.failure_injection import ToolFailureInjector
@@ -55,6 +55,9 @@ class FailingTools:
             self._tools.for_session(context), self._tools.for_session(context, commit=False), self._plan,
             environment="test",
         )  # fmt: skip
+
+    def engine_only(self, context: SessionContext) -> EngineOnlyTools:
+        return self._tools.engine_only(context)
 
     @property
     def dependencies(self) -> ToolDependencies:

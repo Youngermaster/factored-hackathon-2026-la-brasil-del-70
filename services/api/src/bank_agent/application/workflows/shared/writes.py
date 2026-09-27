@@ -21,7 +21,7 @@ from bank_agent.domain.errors import AuthenticationError, AuthorizationError, Do
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.execution_record import ToolCallStatus
 from bank_agent.domain.identifiers import CaseId, SourceRef
-from bank_agent.policy.facts import CardFacts, DisputeFacts
+from bank_agent.policy.facts import CardFacts, CreditFacts, DisputeFacts
 
 
 @dataclass(frozen=True)
@@ -31,6 +31,9 @@ class PlannedWrite:
     run: Callable[[], Awaitable[SourceRef]]
     dispute: DisputeFacts | None = None
     card: CardFacts | None = None
+    credit: CreditFacts | None = None
+    denied_template: str = "dispute.denied"
+    """What the customer hears when the kernel no longer allows the confirmed write."""
 
 
 @dataclass(frozen=True)
@@ -52,13 +55,18 @@ async def execute_writes(ctx: TurnContext, writes: list[PlannedWrite], *, state:
         if done is not None and done.verified:
             continue
         decision = evaluate(
-            ctx, policy_state=write.policy_state, action=request, dispute=write.dispute, card=write.card
+            ctx,
+            policy_state=write.policy_state,
+            action=request,
+            dispute=write.dispute,
+            card=write.card,
+            credit=write.credit,
         )
         stop = blocking_step(ctx, decision, state=state)
         if stop is not None:
             return stop
         if decision.kind is not DecisionKind.ALLOW:
-            return abstain(ctx, "dispute.denied", explanation(decision))
+            return abstain(ctx, write.denied_template, explanation(decision))
         failed = ExecutedAction(
             action=request.action, target=request.target, idempotency_key=request.idempotency_key, failed=True
         )

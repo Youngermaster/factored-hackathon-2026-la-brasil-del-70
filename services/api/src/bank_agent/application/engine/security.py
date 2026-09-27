@@ -4,7 +4,8 @@
 Spanish, Portuguese, and English. It never blocks by itself: text stays data whatever it says, because no text can
 select a state or a tool. A hit on customer text adds an ``injection_detected`` trust event; a hit on record text is
 recorded as a safety intervention only (the customer did not write it). ``referenced_ids`` finds transaction,
-product, customer, and case identifiers so the engine can check them against the session's own records.
+product, customer, case, and credit application identifiers so the engine can check them against the session's
+own records.
 """
 
 import re
@@ -36,7 +37,7 @@ _INJECTION: dict[str, re.Pattern[str]] = {
         r"\b(customer_id|customer id|id de cliente|otro cliente|outro cliente|another customer)\b"
     ),
 }
-_IDS = re.compile(r"\b(?:TRX|TXN|PRD|CLI|CUS)-[A-Z0-9][A-Z0-9-]{3,29}\b|\bcase-[0-9a-z]{6,59}\b", re.IGNORECASE)
+_IDS = re.compile(r"\b(?:TRX|TXN|PRD|CLI|CUS)-[A-Z0-9][A-Z0-9-]{3,29}\b|\b(?:case|app)-[0-9a-z]{6,59}\b", re.IGNORECASE)
 
 
 def detect_injection(text: str) -> tuple[str, ...]:
@@ -51,10 +52,11 @@ class ReferencedIds:
     products: tuple[str, ...] = ()
     customers: tuple[str, ...] = ()
     cases: tuple[str, ...] = ()
+    applications: tuple[str, ...] = ()
 
     @property
     def any(self) -> bool:
-        return bool(self.transactions or self.products or self.customers or self.cases)
+        return bool(self.transactions or self.products or self.customers or self.cases or self.applications)
 
 
 def referenced_ids(text: str) -> ReferencedIds:
@@ -65,4 +67,5 @@ def referenced_ids(text: str) -> ReferencedIds:
         products=tuple(dict.fromkeys(v for v in upper if v.startswith("PRD-"))),
         customers=tuple(dict.fromkeys(v for v in upper if v.startswith(("CLI-", "CUS-")))),
         cases=tuple(dict.fromkeys(v.lower() for v in found if v.lower().startswith("case-"))),
+        applications=tuple(dict.fromkeys(v.lower() for v in found if v.lower().startswith("app-"))),
     )

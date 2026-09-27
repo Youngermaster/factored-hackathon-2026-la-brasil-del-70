@@ -10,7 +10,7 @@ from bank_agent.application.engine.data import EngineData
 from bank_agent.application.engine.definition import WorkflowDefinition
 from bank_agent.application.engine.recorder import TurnRecorder
 from bank_agent.application.engine.reply import Reply
-from bank_agent.application.engine.tools import GuardedToolset
+from bank_agent.application.engine.tools import CreditProfileSource, GuardedToolset
 from bank_agent.application.grounding.bound import BoundPolicy, BoundPolicyLookup
 from bank_agent.application.grounding.retrieval import InformationalRetrieval
 from bank_agent.application.grounding.verifier import GroundingVerifier
@@ -32,9 +32,11 @@ from bank_agent.domain.trust import TrustState
 from bank_agent.domain.workflow import Outcome, WorkflowId, WorkflowRef
 from bank_agent.policy.facts import EscalationSignals, EvaluationRequest, PrivacySignals
 from bank_agent.policy.pack import PolicyPack
+from bank_agent.ports.credit_catalog import CreditProductCatalog
 from bank_agent.ports.determinism import Clock, IdGenerator
+from bank_agent.ports.eligibility import EligibilityPolicy
 from bank_agent.ports.llm import LLMClient
-from bank_agent.ports.models import IntentRouter, LanguageDetector, TransactionResolver
+from bank_agent.ports.models import IntentRouter, LanguageDetector, RiskEstimator, TransactionResolver
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
@@ -43,6 +45,8 @@ class ToolProvider(Protocol):
     """``BankingTools`` satisfies it; tests and evaluations wrap it (the failure injector) the same way."""
 
     def for_session(self, context: SessionContext) -> SessionToolset: ...
+
+    def engine_only(self, context: SessionContext) -> CreditProfileSource: ...
 
     @property
     def dependencies(self) -> ToolDependencies: ...
@@ -77,6 +81,16 @@ class EngineSettings:
 
 
 @dataclass(frozen=True)
+class CreditPorts:
+    """The three credit components the engine calls itself (never through a tool allowlist): the synthetic catalog,
+    the synthetic eligibility service, and the risk estimator. The language model reaches none of them."""
+
+    catalog: CreditProductCatalog
+    eligibility: EligibilityPolicy
+    risk_estimator: RiskEstimator
+
+
+@dataclass(frozen=True)
 class EngineServices:
     uow_factory: UnitOfWorkFactory
     session_store: SessionStore
@@ -91,6 +105,7 @@ class EngineServices:
     language_detector: LanguageDetector
     clock: Clock
     ids: IdGenerator
+    credit: CreditPorts
 
 
 @dataclass(frozen=True)
@@ -162,6 +177,11 @@ class TurnContext:
     def bound(self, policy_state: str | None = None) -> BoundPolicy:
         state = policy_state or self.policy_state
         return self.services.bound.for_state(self.workflow, state, self.customer, self.language)
+
+    def profile_reader(self) -> CreditProfileSource:
+        if self.session_context is None:
+            raise RuntimeError("no verified session to read the credit profile with")
+        return self.services.tools.engine_only(self.session_context)
 
     def write_verifier(self) -> WriteVerifier:
         if self.session_context is None:
