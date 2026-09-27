@@ -8,6 +8,7 @@ import pytest
 
 from bank_agent.adapters.persistence.postgres import migrate
 from bank_agent.domain.audit import AuditEvent, AuditOutcome
+from bank_agent.domain.identifiers import AuditEventId
 from bank_agent_builders import T0, execution_record, handoff
 from bank_agent_contracts import CONTEXT_A, contract_dataset
 from bank_agent_postgres import owner_engine
@@ -25,7 +26,7 @@ async def with_history(migrated_postgres: PostgresInstance) -> AsyncIterator[Pos
         await uow.execution_records.append(execution_record("turn-000001"))
         await uow.audit.append(
             AuditEvent(
-                event_id="aud-000001",
+                event_id=AuditEventId("aud-000001"),
                 occurred_at=T0 + timedelta(minutes=1),
                 action="create_dispute_case",
                 outcome=AuditOutcome.SUCCESS,
