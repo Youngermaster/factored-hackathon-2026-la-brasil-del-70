@@ -1,0 +1,151 @@
+[b0.menu]
+Menu principal (somente em espanhol).
+
+[b0.reasons]
+Escreva o motivo em espanhol.
+
+[card.already_blocked]
+O seu cartão de crédito **** 1234 já está bloqueado.
+
+[card.anything_else]
+Posso ajudar com mais alguma coisa sobre os seus cartões?
+
+[card.blocked]
+Pronto: bloqueamos o seu cartão de crédito **** 1234 e conferimos nos registros.
+
+[card.clarify_options]
+Você tem vários cartões. Sobre qual deles é o seu pedido?
+1) cartão de crédito **** 1234
+2) cartão de crédito **** 1234
+
+[card.confirm_block]
+Vou bloquear o seu cartão de crédito **** 1234. O bloqueio é imediato e o cartão deixará de funcionar. Confirma? Responda sim ou não.
+
+[card.declined]
+Compras recusadas recentes (os registros não indicam o motivo):
+15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN
+15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN
+
+[card.declined_item]
+15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN
+
+[card.no_cards]
+Não encontrei cartões em seu nome.
+
+[card.not_blockable]
+Não posso bloquear o seu cartão de crédito **** 1234 por aqui.
+
+[card.offer_block_first]
+Antes de passar o seu pedido para uma pessoa da equipe, recomendo bloquear o seu cartão de crédito **** 1234 para que ninguém possa usá-lo. Quer que eu bloqueie? Responda sim ou não.
+
+[card.option]
+1) cartão de crédito **** 1234
+
+[card.status]
+O seu cartão de crédito **** 1234 está aberto.
+
+[card.status_with_expiry]
+O seu cartão de crédito **** 1234 está aberto e vence em 31 de março de 2028.
+
+[common.auth_required]
+A sua sessão expirou. Para continuar, preciso que você verifique a sua identidade de novo; depois retomamos de onde paramos.
+
+[common.clarify_intent]
+Não entendi bem o seu pedido. Posso ajudar com cartões e contestações. Do que você precisa?
+
+[common.clarify_workflow]
+Para ajudar melhor: o seu pedido é sobre os seus cartões ou sobre uma contestação?
+
+[common.confirm_again]
+Não entendi. Responda sim para confirmar ou não para cancelar.
+
+[common.escalated]
+Vou transferir a sua conversa para uma pessoa da equipe, que vai entrar em contato até 2 de agosto de 2026. Compartilho o que já verificamos para você não precisar repetir.
+
+[common.escalated_already]
+O seu pedido já está com uma pessoa da equipe, que vai entrar em contato até 2 de agosto de 2026.
+
+[common.greeting]
+Olá. Posso ajudar com cartões e contestações. Como posso ajudar?
+
+[common.informational_abstain]
+Não encontrei uma regra da política que responda à sua pergunta com segurança. Se quiser, transfiro você para uma pessoa da equipe.
+
+[common.informational_answer]
+Isto é o que diz a política que se aplica ao seu pedido:
+
+[common.language_question]
+Em qual idioma você prefere ser atendido: espanhol ou português?
+
+[common.nothing_recorded]
+Certo, não registrei nada. Posso ajudar com mais alguma coisa?
+
+[common.out_of_scope]
+Isso eu não consigo fazer aqui. Posso ajudar com cartões e contestações. Se preferir, transfiro você para uma pessoa da equipe.
+
+[common.refused]
+Não encontrei esse registro entre os seus produtos. Só posso ajudar com os seus próprios produtos e transações.
+
+[common.refused_third_party]
+Não posso atender pedidos sobre os produtos de outra pessoa.
+
+[common.resume]
+Obrigado por verificar a sua identidade. Vamos retomar de onde paramos.
+
+[common.step_up_required]
+Para fazer isso, preciso de uma verificação reforçada da sua identidade. Conclua e me escreva para continuar.
+
+[common.switch_confirm]
+Ainda temos pendente a sua contestação. Quer deixar isso e passar para os seus cartões? Responda sim ou não.
+
+[common.switch_declined]
+Certo, seguimos com a sua contestação.
+
+[dispute.ask_details]
+Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.
+
+[dispute.ask_reason]
+Qual é o motivo? Por exemplo: você não reconhece a compra, uma cobrança duplicada, um valor diferente, algo que não recebeu, um saque sem dinheiro ou uma assinatura que já cancelou.
+
+[dispute.case_created]
+Pronto: registramos sua contestação com o número de caso case-000001. Vamos responder até 2 de agosto de 2026.
+
+[dispute.case_created_and_blocked]
+Pronto: bloqueamos o seu cartão **** 1234 e registramos sua contestação com o número de caso case-000001. Vamos responder até 2 de agosto de 2026.
+
+[dispute.clarify_date]
+Quando você diz 03/04, se refere a os seus cartões ou a uma contestação?
+
+[dispute.clarify_options]
+Encontrei várias transações parecidas. Qual você quer contestar?
+1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+2) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+
+[dispute.confirm]
+Vou registrar uma contestação da transação de 15 de junho de 2026 em FIXTURE MARKET no valor de 1.250,00 MXN (cartão **** 1234), motivo: você não reconhece a compra. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
+
+[dispute.confirm_with_block]
+Vou bloquear o seu cartão **** 1234 e registrar uma contestação da transação de 15 de junho de 2026 em FIXTURE MARKET no valor de 1.250,00 MXN, motivo: você não reconhece a compra. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
+
+[dispute.denied]
+Não posso registrar esta contestação aqui. Se quiser, transfiro você para uma pessoa da equipe.
+
+[dispute.offer_block]
+Como você não reconhece a compra, posso bloquear preventivamente o seu cartão **** 1234 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.
+
+[dispute.option]
+1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+
+[dispute.status_item]
+case-000001, 1.250,00 MXN: aberto, resposta até 2 de agosto de 2026
+
+[dispute.status_many]
+Estes são os seus casos:
+case-000001, 1.250,00 MXN: aberto, resposta até 2 de agosto de 2026
+case-000001, 1.250,00 MXN: aberto, resposta até 2 de agosto de 2026
+
+[dispute.status_none]
+Não encontrei contestações registradas em seu nome. Se quiser abrir uma, me diga qual transação você não reconhece.
+
+[dispute.status_one]
+O seu caso case-000001 no valor de 1.250,00 MXN está aberto. A data prevista de resposta é 2 de agosto de 2026.

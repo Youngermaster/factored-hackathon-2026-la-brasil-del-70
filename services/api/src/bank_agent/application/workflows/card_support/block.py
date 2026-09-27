@@ -5,7 +5,7 @@ replacement request, the handoff follows whether the block was accepted or decli
 from dataclasses import replace
 
 from bank_agent.application.engine.context import Step, TurnContext
-from bank_agent.application.engine.decide import evaluate, explanation
+from bank_agent.application.engine.decide import beyond_step_up, evaluate, explanation
 from bank_agent.application.engine.definition import RESOLVED
 from bank_agent.application.engine.idempotency import derive_key
 from bank_agent.application.engine.reply import Masked, Param, Reply
@@ -91,9 +91,10 @@ async def confirm_block(ctx: TurnContext) -> Step:
     stop = blocking_step(ctx, decision, state=CONFIRM_BLOCK, step_up_ok=True)
     if stop is not None:
         return stop
-    if decision.kind is DecisionKind.ABSTAIN:
+    kind = beyond_step_up(decision)
+    if kind is DecisionKind.ABSTAIN:
         return abstain(ctx, "card.already_blocked", explanation(decision), _params(ctx, data))
-    if decision.kind is DecisionKind.DENY:
+    if kind is DecisionKind.DENY:
         return abstain(ctx, "card.not_blockable", explanation(decision), _params(ctx, data))
     save(ctx, data.evolve(confirm_shown=True))
     confirmation = CardActionConfirmation(

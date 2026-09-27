@@ -4,7 +4,7 @@ read from the session's own records; deny reasons become customer explanations t
 from datetime import timedelta
 
 from bank_agent.application.engine.context import Step, TurnContext
-from bank_agent.application.engine.decide import evaluate, explanation
+from bank_agent.application.engine.decide import beyond_step_up, evaluate, explanation
 from bank_agent.application.engine.definition import RESOLVED
 from bank_agent.application.engine.idempotency import derive_key
 from bank_agent.application.engine.reply import Masked, Param, RecordText, Reply
@@ -170,7 +170,7 @@ async def offer_block(ctx: TurnContext) -> Step:
     stop = blocking_step(ctx, decision, state=OFFER_BLOCK, step_up_ok=True)
     if stop is not None:
         return stop
-    if decision.kind in (DecisionKind.DENY, DecisionKind.ABSTAIN):
+    if beyond_step_up(decision) in (DecisionKind.DENY, DecisionKind.ABSTAIN):
         save(ctx, data.evolve(block_offer=BlockOffer.SKIPPED))
         return Step(CONFIRM)
     save(ctx, data.evolve(block_offer=BlockOffer.OFFERED))

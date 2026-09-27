@@ -7,7 +7,7 @@ kernel is pure; this module only builds the request.
 
 from bank_agent.application.engine.context import TurnContext
 from bank_agent.domain.actions import ActionRequest
-from bank_agent.domain.decision import ClauseRef, Decision
+from bank_agent.domain.decision import ClauseRef, Decision, DecisionKind
 from bank_agent.domain.workflow import CROSS_WORKFLOW_INTENTS, Intent
 from bank_agent.policy.explain import decision_refs
 from bank_agent.policy.facts import CardFacts, DisputeFacts, EvaluationRequest, PolicyFacts
@@ -71,3 +71,21 @@ def clarification_left(ctx: TurnContext) -> bool:
     """True while another clarifying question fits the budget (``ESC.clarification_exhausted`` decides)."""
     decision = evaluate(ctx, clarification_attempts=ctx.clarifications_used)
     return not failed(decision, "ESC.clarification_exhausted")
+
+
+_PRECEDENCE = (
+    DecisionKind.REFUSE,
+    DecisionKind.ESCALATE,
+    DecisionKind.DENY,
+    DecisionKind.ABSTAIN,
+    DecisionKind.CLARIFY,
+)
+
+
+def beyond_step_up(decision: Decision) -> DecisionKind:
+    """The decision without its step-up request: authentication outranks everything in the kernel, so a pending
+    step-up can hide that the action would be denied or abstained anyway (an already blocked card)."""
+    if decision.kind is not DecisionKind.REQUIRE_STEP_UP:
+        return decision.kind
+    effects = {r.effect for r in decision.rule_results if not r.passed and r.effect is not DecisionKind.REQUIRE_STEP_UP}
+    return next((kind for kind in _PRECEDENCE if kind in effects), DecisionKind.REQUIRE_STEP_UP)

@@ -1,0 +1,151 @@
+[b0.menu]
+Menú principal. Escribe una opción: reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta o hablar con una persona.
+
+[b0.reasons]
+Escribe el motivo: no reconozco, duplicado, monto distinto, no recibido, cajero o suscripción.
+
+[card.already_blocked]
+Tu tarjeta de crédito **** 1234 ya está bloqueada.
+
+[card.anything_else]
+¿Hay algo más en lo que te ayude con tus tarjetas?
+
+[card.blocked]
+Listo: bloqueamos tu tarjeta de crédito **** 1234 y lo comprobamos en los registros.
+
+[card.clarify_options]
+Tienes varias tarjetas. ¿Sobre cuál me consultas?
+1) tarjeta de crédito **** 1234
+2) tarjeta de crédito **** 1234
+
+[card.confirm_block]
+Voy a bloquear tu tarjeta de crédito **** 1234. El bloqueo es inmediato y la tarjeta dejará de funcionar. ¿Confirmas? Responde sí o no.
+
+[card.declined]
+Compras rechazadas recientes (los registros no indican el motivo):
+15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN
+15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN
+
+[card.declined_item]
+15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN
+
+[card.no_cards]
+No encontré tarjetas a tu nombre.
+
+[card.not_blockable]
+No puedo bloquear tu tarjeta de crédito **** 1234 desde aquí.
+
+[card.offer_block_first]
+Antes de pasar tu solicitud a una persona del equipo, te recomiendo bloquear tu tarjeta de crédito **** 1234 para que nadie pueda usarla. ¿Quieres que la bloquee? Responde sí o no.
+
+[card.option]
+1) tarjeta de crédito **** 1234
+
+[card.status]
+Tu tarjeta de crédito **** 1234 está abierto.
+
+[card.status_with_expiry]
+Tu tarjeta de crédito **** 1234 está abierto y vence el 31 de marzo de 2028.
+
+[common.auth_required]
+Tu sesión venció. Para continuar necesito que verifiques tu identidad de nuevo; después retomamos donde íbamos.
+
+[common.clarify_intent]
+No entendí bien tu solicitud. Puedo ayudarte con tarjetas y reclamaciones. ¿Qué necesitas?
+
+[common.clarify_workflow]
+Para ayudarte mejor: ¿tu consulta es sobre tus tarjetas o sobre una reclamación?
+
+[common.confirm_again]
+No te entendí. Responde sí para confirmar o no para cancelar.
+
+[common.escalated]
+Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 2 de agosto de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.
+
+[common.escalated_already]
+Tu solicitud ya está con una persona del equipo, que te contactará a más tardar el 2 de agosto de 2026.
+
+[common.greeting]
+Hola. Puedo ayudarte con tarjetas y reclamaciones. ¿En qué te ayudo?
+
+[common.informational_abstain]
+No encontré una regla de la política que responda tu pregunta con seguridad. Si quieres, te comunico con una persona del equipo.
+
+[common.informational_answer]
+Esto es lo que dice la política que aplica a tu consulta:
+
+[common.language_question]
+¿En qué idioma prefieres que te atienda: español o portugués?
+
+[common.nothing_recorded]
+De acuerdo, no registré nada. ¿Hay algo más en lo que te ayude?
+
+[common.out_of_scope]
+Eso no lo puedo hacer aquí. Puedo ayudarte con tarjetas y reclamaciones. Si prefieres, te comunico con una persona del equipo.
+
+[common.refused]
+No encontré ese registro entre tus productos. Solo puedo ayudarte con tus propios productos y transacciones.
+
+[common.refused_third_party]
+No puedo atender solicitudes sobre los productos de otra persona.
+
+[common.resume]
+Gracias por verificar tu identidad. Retomemos donde íbamos.
+
+[common.step_up_required]
+Para hacer esto necesito una verificación reforzada de tu identidad. Complétala y escríbeme para continuar.
+
+[common.switch_confirm]
+Todavía tenemos pendiente tu reclamación. ¿Quieres dejarlo y pasar a tus tarjetas? Responde sí o no.
+
+[common.switch_declined]
+De acuerdo, seguimos con tu reclamación.
+
+[dispute.ask_details]
+Para encontrar la transacción, dime la fecha aproximada, el monto y el comercio.
+
+[dispute.ask_reason]
+¿Cuál es el motivo? Por ejemplo: no reconoces la compra, un cargo duplicado, un monto distinto, algo que no recibiste, un retiro en cajero sin efectivo o una suscripción que ya cancelaste.
+
+[dispute.case_created]
+Listo: registramos tu reclamación con el número de caso case-000001. Te responderemos a más tardar el 2 de agosto de 2026.
+
+[dispute.case_created_and_blocked]
+Listo: bloqueamos tu tarjeta **** 1234 y registramos tu reclamación con el número de caso case-000001. Te responderemos a más tardar el 2 de agosto de 2026.
+
+[dispute.clarify_date]
+Cuando dices 03/04, ¿te refieres al tus tarjetas o al una reclamación?
+
+[dispute.clarify_options]
+Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?
+1) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
+2) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
+
+[dispute.confirm]
+Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en FIXTURE MARKET por 1,250.00 MXN (tarjeta **** 1234), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
+
+[dispute.confirm_with_block]
+Voy a bloquear tu tarjeta **** 1234 y a registrar una reclamación por la transacción del 15 de junio de 2026 en FIXTURE MARKET por 1,250.00 MXN, motivo: no reconoces la compra. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
+
+[dispute.denied]
+No puedo registrar esta reclamación aquí. Si quieres, te comunico con una persona del equipo.
+
+[dispute.offer_block]
+Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 1234 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.
+
+[dispute.option]
+1) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
+
+[dispute.status_item]
+case-000001, 1,250.00 MXN: abierto, respuesta a más tardar el 2 de agosto de 2026
+
+[dispute.status_many]
+Estos son tus casos:
+case-000001, 1,250.00 MXN: abierto, respuesta a más tardar el 2 de agosto de 2026
+case-000001, 1,250.00 MXN: abierto, respuesta a más tardar el 2 de agosto de 2026
+
+[dispute.status_none]
+No encontré reclamaciones registradas a tu nombre. Si quieres presentar una, cuéntame qué transacción no reconoces.
+
+[dispute.status_one]
+Tu caso case-000001 por 1,250.00 MXN está abierto. La fecha comprometida de respuesta es el 2 de agosto de 2026.
