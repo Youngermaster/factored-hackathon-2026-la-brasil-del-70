@@ -27,6 +27,7 @@ kit/
 
 # ML tracking and artifacts
 mlruns/
+mlruns.db
 mlartifacts/
 models/artifacts/
 *.pkl

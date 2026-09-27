@@ -22,12 +22,23 @@ from bank_agent.domain.errors import ConfigurationError, ModelArtifactIntegrityE
 from bank_agent_models import EMBEDDING_ARTIFACT, LGBM_ARTIFACT, TFIDF_ARTIFACT, FixtureEmbedder, publish
 
 
+@pytest.fixture(autouse=True)
+def _no_model_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in ("WORKFLOW_ROUTER", "WORKFLOW_RESOLVER", "WORKFLOW_MODEL_REGISTRY_DIR", "RETRIEVAL_EMBEDDING_MODEL"):
+        monkeypatch.delenv(name, raising=False)
+
+
+def workflow_settings(**values: object) -> WorkflowSettings:
+    """Settings from ``values`` and defaults only: no environment file is read."""
+    return WorkflowSettings(_env_file=None, **values)  # type: ignore[arg-type]
+
+
 def settings(tmp_path: Path, **values: str) -> WorkflowSettings:
-    return WorkflowSettings.model_validate({"model_registry_dir": tmp_path, **values})
+    return workflow_settings(model_registry_dir=tmp_path, **values)
 
 
 def test_defaults_are_the_rule_baselines(tmp_path: Path) -> None:
-    defaults = WorkflowSettings()
+    defaults = workflow_settings()
     assert (defaults.router, defaults.resolver, defaults.model_registry_dir) == (
         "keyword@1",
         "rules@1",
@@ -73,8 +84,8 @@ def test_selections_are_validated() -> None:
         split_selection("tfidf")
     for field, value in (("router", "gpt@1"), ("router", "tfidf@"), ("resolver", "lgbm@../x"), ("resolver", "x@1")):
         with pytest.raises(ValidationError):
-            WorkflowSettings.model_validate({field: value})
-    blank = WorkflowSettings.model_validate({"router": " ", "resolver": "", "model_registry_dir": ""})
+            workflow_settings(**{field: value})
+    blank = workflow_settings(router=" ", resolver="", model_registry_dir="")
     assert (blank.router, blank.resolver, blank.model_registry_dir) == (
         "keyword@1",
         "rules@1",
@@ -84,7 +95,7 @@ def test_selections_are_validated() -> None:
 
 def test_default_embedder_is_absent_without_the_extra(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("bank_agent.bootstrap.models.ml_extra_installed", lambda: False)
-    assert default_embedder(RetrievalSettings())() is None
+    assert default_embedder(RetrievalSettings(_env_file=None))() is None
 
 
 def test_default_embedder_builds_the_cached_sentence_transformer(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -96,5 +107,5 @@ def test_default_embedder_builds_the_cached_sentence_transformer(monkeypatch: py
         return FixtureEmbedder()
 
     monkeypatch.setattr("bank_agent.bootstrap.models.build_embedder", fake_build)
-    assert isinstance(default_embedder(RetrievalSettings())(), FixtureEmbedder)
-    assert built == [RetrievalSettings().embedding_model]
+    assert isinstance(default_embedder(RetrievalSettings(_env_file=None))(), FixtureEmbedder)
+    assert built == [RetrievalSettings(_env_file=None).embedding_model]

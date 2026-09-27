@@ -20,7 +20,7 @@ CORPUS_DIR = REPOSITORY_ROOT / "ml" / "corpus" / "router"
 LOCALES = ("es-MX", "es-CO", "es-AR", "pt-BR")
 SLOTS = frozenset({"amount", "merchant", "date", "last4", "product"})
 SCOPES = frozenset({"banking_unsupported", "off_domain"})
-_SLOT = re.compile(r"\{(\w+)\}")
+SLOT_PATTERN = re.compile(r"\{(\w+)\}")
 
 
 class CorpusError(ValueError):
@@ -41,7 +41,7 @@ class Seed:
 
     @property
     def slots(self) -> tuple[str, ...]:
-        return tuple(_SLOT.findall(self.template))
+        return tuple(SLOT_PATTERN.findall(self.template))
 
 
 @dataclass(frozen=True)
@@ -62,7 +62,7 @@ def _entry(intent: Intent, locale: str, raw: Any) -> tuple[str, str | None]:
         raise CorpusError(f"{intent}/{locale}: a seed is a string or a mapping with text")
     if (intent is Intent.UNSUPPORTED) != (scope is not None) or (scope is not None and scope not in SCOPES):
         raise CorpusError(f"{intent}/{locale}: unsupported seeds need a scope, other seeds none: {text!r}")
-    unknown = set(_SLOT.findall(text)) - SLOTS
+    unknown = set(SLOT_PATTERN.findall(text)) - SLOTS
     if unknown:
         raise CorpusError(f"{intent}/{locale}: unknown slots {sorted(unknown)} in {text!r}")
     return text.strip(), scope

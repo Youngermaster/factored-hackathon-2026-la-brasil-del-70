@@ -4,7 +4,8 @@
    intents: a cross-intent pair is a minimal pair ("bloquear" against "desbloquear"), kept in one split so neither
    text leaks into the other's split; the card counts them.
 2. Seed groups are split within each (intent, locale) stratum of their first seed: 2 test, 1 dev, 5 train of 8.
-3. Each seed is augmented; every item inherits its seed group's split. Paraphrase items (``extra``) do too.
+3. Each seed is augmented; every item inherits its seed group's split. Stored training paraphrases
+   (``paraphrase_router_seed``) are added only for seeds whose group is in train; any other is dropped and counted.
 4. Dev items that are near-duplicates of a train item, and test items that are near-duplicates of a train or dev
    item (``CROSS_SPLIT_THRESHOLD``), are removed and counted.
 5. Every intent needs at least ``MIN_TRAIN_GROUPS`` train seed groups; the router cannot serve a workflow-level
@@ -30,6 +31,7 @@ from bank_ml.common.hashing import rows_digest
 from bank_ml.common.splits import Split, stratified_group_split
 from bank_ml.router.augment import Item, augment, fill
 from bank_ml.router.corpus import CORPUS_DIR, CorpusError, Seed, load_lexicon, load_seeds
+from bank_ml.router.paraphrase import load_paraphrases
 
 DATASET_NAME = "router"
 DATASET_VERSION = "router-v1"
@@ -76,9 +78,10 @@ def _dedupe(items: list[Item]) -> tuple[list[Item], list[tuple[str, str, float]]
     return [item for item in items if item.item_id not in found], removed
 
 
-def build_dataset(corpus_dir: Path = CORPUS_DIR, extra: Sequence[Item] = ()) -> RouterDataset:
+def build_dataset(corpus_dir: Path = CORPUS_DIR) -> RouterDataset:
     seeds = load_seeds(corpus_dir)
     lexicon = load_lexicon(corpus_dir)
+    extra = load_paraphrases("train", seeds, lexicon, corpus_dir)
     canonical = {seed.seed_id: fill(seed, lexicon, None) for seed in seeds}
     groups, assignment, pairs = _group_splits(seeds, canonical)
     items = [
@@ -86,7 +89,9 @@ def build_dataset(corpus_dir: Path = CORPUS_DIR, extra: Sequence[Item] = ()) -> 
         for seed in seeds
         for item in augment(seed, lexicon)
     ]
-    items += [item.with_split(groups[item.seed_id], assignment[groups[item.seed_id]]) for item in extra]
+    items += [
+        item.with_split(groups[item.seed_id], "train") for item in extra if assignment[groups[item.seed_id]] == "train"
+    ]
     items, removed = _dedupe(items)
     train_groups = Counter(intent for intent, group in {(i.intent, i.group_id) for i in items if i.split == "train"})
     short = [intent.value for intent in Intent if train_groups[intent] < MIN_TRAIN_GROUPS]
