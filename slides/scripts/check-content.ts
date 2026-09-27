@@ -108,7 +108,7 @@ console.log('\ntokens')
 const css = read('styles/tokens.css')
 const cssVar = (n: string) => css.match(new RegExp(`--${n}:\\s*(#[0-9A-Fa-f]{6})`))?.[1]?.toUpperCase()
 const MAP: Record<string, string> = {
-  bg: 'ink', bg2: 'ink-2', rail: 'rail', faint: 'faint', paper: 'paper', dim: 'dim', mute: 'mute',
+  bg: 'ink', bg2: 'ink-2', rail: 'rail', faint: 'faint', paper: 'paper', dim: 'dim', mute: 'mute', inkDim: 'ink-dim', inkMute: 'ink-mute',
   blue: 'blue', blueText: 'blue-text', blueDeep: 'blue-deep', yellow: 'yellow', yellowDeep: 'yellow-deep',
   red: 'red', redText: 'red-text', redDeep: 'red-deep',
 }

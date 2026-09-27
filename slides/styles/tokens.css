@@ -31,6 +31,10 @@
   --dim:        #B8B8B5;
   --mute:       #8C8C89;   /* captions and citations only */
 
+  /* ink tones for text on the light-gray slide and on yellow fields */
+  --ink-dim:    #3A3A38;   /* 9.1 on paper, 7.3 on yellow */
+  --ink-mute:   #5C5C59;   /* 5.4 on paper */
+
   /* the three accents */
   --blue:       #3772FF;
   --blue-text:  #6F9BFF;   /* blue at body size */

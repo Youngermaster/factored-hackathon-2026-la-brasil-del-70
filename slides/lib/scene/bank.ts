@@ -42,19 +42,22 @@ export function along(pts: readonly { x: number; y: number }[], u: number) {
  */
 export function node(
   K: Kit, x: number, y: number, w: number, h: number,
-  o: { label: string; sub?: string; tone: Tone; k?: number; size?: number; bar?: boolean },
+  o: { label: string; sub?: string; tone: Tone; k?: number; size?: number; bar?: boolean; filled?: boolean },
 ) {
   const k = o.k ?? 1
   if (k <= 0) return
   const c = tone(o.tone)
+  // filled: the accent itself is the block, with ink text (never red: ink on red is large-only)
+  const fg = o.filled ? C.bg : C.paper
+  const sub = o.filled ? (o.tone === 'blue' ? C.bg : C.inkDim) : c.text
   K.fade(clamp(k * 2), () => {
     const dy = (1 - outExpo(k)) * 24
-    K.fillRR(x, y + dy, w, h, 10, c.deep)
-    if (o.bar !== false) K.fillRR(x, y + dy, 6, h, 3, c.main)
+    K.fillRR(x, y + dy, w, h, 10, o.filled ? c.main : c.deep)
+    if (o.bar !== false && !o.filled) K.fillRR(x, y + dy, 6, h, 3, c.main)
     const size = o.size ?? 30
     const cy = y + dy + h / 2
-    K.text(o.label, x + 30, o.sub ? cy - 6 : cy, { size, weight: 600, color: C.paper, base: o.sub ? 'alphabetic' : 'middle' })
-    if (o.sub) K.text(o.sub, x + 30, cy + 30, { size: 22, weight: 500, fam: 'mono', color: c.text })
+    K.text(o.label, x + 30, o.sub ? cy - 6 : cy, { size, weight: 600, color: fg, base: o.sub ? 'alphabetic' : 'middle' })
+    if (o.sub) K.text(o.sub, x + 30, cy + 30, { size: 22, weight: 500, fam: 'mono', color: sub })
   })
 }
 
@@ -132,8 +135,8 @@ export function hex(K: Kit, cx: number, cy: number, r: number, o: { k?: number; 
  * from, e.g. "offline measurement  |  docs/analysis/workflow-evidence.md".
  * `extra` appends a note such as a sample size.
  */
-export function source(K: Kit, m: Metric, a = 1, extra?: string) {
-  K.cite(`${KIND_LABEL[m.kind]}  |  ${m.source}${extra ? `  |  ${extra}` : ''}`, a)
+export function source(K: Kit, m: Metric, a = 1, extra?: string, color?: string) {
+  K.cite(`${KIND_LABEL[m.kind]}  |  ${m.source}${extra ? `  |  ${extra}` : ''}`, a, color)
 }
 
 /** A metric value, or a visible "pending" placeholder when phase 14 has not landed. Returns width. */

@@ -32,14 +32,13 @@ hook:
   txTwo: balance questions, whatever the topic
   txLine1: Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
   txLine2: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
-  txPunch: So routing is trained on *team-authored* utterances, labeled as such.
+  txPunch: So routing learns from *team-written* utterances.
   scopeTitle: Four workflows, each built in depth
-  scope_account_inquiry: balances, payments, statements, always with an as-of date
-  scope_card_support: card status and a verified protective block
-  scope_dispute: dispute intake with a verified case, and its status
-  scope_credit: catalog, indicative eligibility, intake for human review
-  langs: Spanish and Portuguese
-  langsNote: The organizer data has no Portuguese; pt test text is team-generated.
+  scope_account_inquiry: balances, statements
+  scope_card_support: status, protective block
+  scope_dispute: intake, case status
+  scope_credit: catalog, eligibility
+  ofContacts: of contacts
 
 thesis:
   title: One customer turn

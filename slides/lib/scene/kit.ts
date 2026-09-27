@@ -31,6 +31,8 @@ export const C = {
   paper: '#E6E6E4',
   dim: '#B8B8B5',
   mute: '#8C8C89',
+  inkDim: '#3A3A38',
+  inkMute: '#5C5C59',
   blue: '#3772FF',
   blueText: '#6F9BFF',
   blueDeep: '#0E1A3A',
@@ -371,7 +373,7 @@ export function makeKit(ctx: CanvasRenderingContext2D) {
   }
 
   /** Source line, bottom-left: every number on screen names where it came from. */
-  const cite = (s: string, a = 1) => text(s, MX, H - 48, { size: 22, weight: 400, fam: 'mono', color: C.mute, alpha: a * 0.9 })
+  const cite = (s: string, a = 1, color: string = C.mute) => text(s, MX, H - 48, { size: 22, weight: 400, fam: 'mono', color, alpha: a })
 
   /** A number that counts from a to b over progress k, with thousands separators. */
   const count = (a: number, b: number, k: number, sep = ' ') =>
@@ -420,8 +422,8 @@ export function makeKit(ctx: CanvasRenderingContext2D) {
   }
 
   /** Slide title, top-left, kinetic. One per scene; `*accent*` words allowed. */
-  const title = (s: string, t: number, t0 = 0.1, o: { tout?: number; size?: number; maxW?: number } = {}) =>
-    words(s, MX, 150, { t, t0, size: o.size ?? 56, weight: 700, fam: 'display', maxW: o.maxW ?? 1500, lh: 1.1, tout: o.tout })
+  const title = (s: string, t: number, t0 = 0.1, o: { tout?: number; size?: number; maxW?: number; color?: string } = {}) =>
+    words(s, MX, 150, { t, t0, size: o.size ?? 56, weight: 700, fam: 'display', maxW: o.maxW ?? 1500, lh: 1.1, tout: o.tout, color: o.color })
 
   /**
    * The punchline: a kinetic sentence in Instrument Sans, usually near the

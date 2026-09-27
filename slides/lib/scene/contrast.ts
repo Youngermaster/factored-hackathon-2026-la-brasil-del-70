@@ -36,8 +36,11 @@ export const TEXT_PAIRS: readonly TextPair[] = [
   { fg: 'bg', bg: 'yellow', min: 4.5, use: 'ink on a filled yellow tab' },
   { fg: 'bg', bg: 'paper', min: 4.5, use: 'ink on a filled paper tab' },
   { fg: 'bg', bg: 'blue', min: 4.5, use: 'ink on a filled blue tab' },
-  { fg: 'bg', bg: 'red', min: 3, use: 'ink on a filled red tab, large only' },
-]
+  { fg: 'bg', bg: 'red', min: 3, use: 'ink on a filled red tab or field, large only' },
+  // colour fields and the light-gray slide
+  { fg: 'inkDim', bg: 'paper', min: 4.5, use: 'secondary text on the light-gray slide' },
+  { fg: 'inkMute', bg: 'paper', min: 4.5, use: 'captions and citations on the light-gray slide' },
+  { fg: 'inkDim', bg: 'yellow', min: 4.5, use: 'secondary text on a yellow field' },]
 
 const lin = (v: number) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
 export function luminance(hex: string) {
