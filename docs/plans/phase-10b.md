@@ -69,7 +69,7 @@ Framing, repeated in the model card, the ADR, and every report: this is a risk e
 | `services/api/src/bank_agent/bootstrap/{models,workflows,settings}.py` | `build_risk_estimator`, selection pattern, fallback |
 | `ml/src/bank_ml/common/leakage.py` | Risk label denylist, protected attributes, name scan |
 | `ml/src/bank_ml/risk/` | `data.py`, `guards.py`, `models.py`, `calibration.py`, `uncertainty.py`, `scoring.py`, `evaluate.py`, `slices.py`, `pipeline.py`, `promotion.py`, `report.py`, `command.py` |
-| `ml/src/bank_ml/cli.py`, `Makefile` | `bank-ml risk train|evaluate|promote`; `make train` and `make promote` |
+| `ml/src/bank_ml/cli.py`, `Makefile` | `bank-ml risk train`, `evaluate`, and `promote`; `make train` and `make promote` |
 | Docs | `docs/models/risk-estimator.md`, generated `docs/evaluation/risk-estimator.md`, ADR 0030, `ml/README.md`, `credit-separation.md`, `credit-information.md`, `eligibility.md` (note only), BACKLOG, PROGRESS |
 
 ## Tests to add
