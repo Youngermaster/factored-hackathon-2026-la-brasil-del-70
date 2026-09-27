@@ -102,7 +102,7 @@ The card block in Portuguese, with its step-up code, then a credit question answ
 
 <!-- slide 6, about 20 s -->
 
-[arrive] What we cannot claim yet: the data is synthetic, the Portuguese is ours, and our labels await review.
+[arrive] What we cannot claim yet: the data is synthetic, the Portuguese is ours, our labels await review, and the verifier only catches what its word lists know.
 
 [click 1] Retries, fallbacks, row-level security and tracing are in place. Monitoring and load tests are next.
 

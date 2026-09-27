@@ -244,24 +244,27 @@ evidence:
 
 close:
   limitsTitle: What we cannot claim yet
-  l1: The organizer data is synthetic, and several fields are generator artifacts.
-  l2: The organizer data has no Portuguese; our pt test text is team-generated.
-  l3: Our labels and relevance judgments are still pending human review.
-  l4: Costs are projections from assumptions nobody has verified yet.
-  l5: The grounding verifier is lexical, so a number written as words passes it.
+  l1: synthetic data
+  l1s: with generator artifacts
+  l2: our Portuguese
+  l2s: team-generated test text
+  l3: labels in review
+  l3s: humans have not checked them
+  l4: costs projected
+  l4s: from unverified assumptions
   routeTitle: The route to operation
   inPlace: in place
-  i1: bounded retries, timeouts, circuit breakers
-  i2: a template when the model fails or is not grounded
-  i3: row-level security behind tool-layer scoping
-  i4: a traced span, with its cost, per model call
-  i5: redaction before any provider sees text
-  remaining: remaining
-  r1: monitoring and alerting
-  r2: capacity limits and a load test
-  r3: data retention settings
-  r4: a chosen model provider, real cassettes
-  r5: the public deployment
+  i1: bounded retries
+  i2: template fallback
+  i3: row-level security
+  i4: traced model calls
+  i5: redaction
+  remaining: next
+  r1: monitoring
+  r2: load test
+  r3: retention
+  r4: model provider
+  r5: deployment
   deployed: deployed at
   teamTitle: La Brasil del 70
   m1: Miguel
