@@ -25,6 +25,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0022](0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source | Accepted | 2026-09-26 |
 | [0023](0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending | Accepted | 2026-09-26 |
 | [0024](0024-workflow-registry-with-router-dispatch.md) | A workflow registry with router dispatch over one generic engine | Accepted | 2026-09-27 |
+| [0025](0025-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow | Accepted | 2026-09-27 |
 
 ## Adding a record
 
