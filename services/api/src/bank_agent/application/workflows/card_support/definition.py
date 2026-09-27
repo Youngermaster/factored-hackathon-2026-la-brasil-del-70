@@ -3,6 +3,7 @@
 Documented in ``docs/workflows/card-support.md``.
 """
 
+from bank_agent.application.engine.context import TurnContext
 from bank_agent.application.engine.definition import (
     ABSTAINED,
     REFUSED,
@@ -15,7 +16,8 @@ from bank_agent.application.engine.definition import (
 )
 from bank_agent.application.engine.states import accept_request, auth_required_state, end_state, escalated_state
 from bank_agent.application.workflows.card_support.block import confirm_block, execute, verify
-from bank_agent.application.workflows.card_support.select import clarify, select_card, understand
+from bank_agent.application.workflows.card_support.data import load
+from bank_agent.application.workflows.card_support.select import WHICH_CARD, clarify, select_card, understand
 from bank_agent.application.workflows.card_support.status import card_status
 from bank_agent.domain.actions import ActionKind, ToolName
 from bank_agent.domain.workflow import WorkflowId
@@ -59,6 +61,10 @@ TRANSITIONS = {
 }
 
 
+def questions(ctx: TurnContext) -> tuple[str, ...]:
+    return WHICH_CARD if load(ctx).product_id is None else ()
+
+
 def build_card_support() -> WorkflowDefinition:
     return build_definition(
         workflow=WorkflowId.CARD_SUPPORT,
@@ -66,4 +72,5 @@ def build_card_support() -> WorkflowDefinition:
         states=STATES,
         transitions=TRANSITIONS,
         intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.CARD_SUPPORT).intents),
+        open_questions=questions,
     )

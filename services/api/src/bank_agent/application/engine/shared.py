@@ -4,7 +4,7 @@ Each builds a ``Step`` from verified state and clause references; none writes cu
 """
 
 from bank_agent.application.engine.context import Step, TurnContext
-from bank_agent.application.engine.decide import evaluate, explanation
+from bank_agent.application.engine.decide import current_intent, evaluate, explanation
 from bank_agent.application.engine.definition import ABSTAINED, AUTH_REQUIRED, ESCALATED, REFUSED
 from bank_agent.application.engine.handoff import HandoffBuilder, HandoffPlan
 from bank_agent.application.engine.reply import Param, Reply
@@ -47,7 +47,10 @@ def escalate(
     """Build and validate the handoff, and tell the customer when a person will contact them."""
     sla_clause = "CRD-ALL-3" if card_request is not None else f"ESC-{ctx.customer.country.value}-2"
     basis = (*(explanation(decision) if decision is not None else ()), clause_ref(ctx, sla_clause))
-    chosen = intent or (ctx.prediction.intent if ctx.prediction else Intent.HUMAN_REQUEST)
+    chosen = intent or current_intent(ctx) or Intent.HUMAN_REQUEST
+    questions = ctx.definition.open_questions
+    if not open_questions and questions is not None and not ctx.at_router:
+        open_questions = questions(ctx)
     plan = HandoffPlan(
         code=code,
         detail=detail,

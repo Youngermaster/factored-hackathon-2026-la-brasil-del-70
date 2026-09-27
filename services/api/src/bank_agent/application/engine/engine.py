@@ -100,6 +100,9 @@ class WorkflowEngine:
         conversation = loaded.conversation or self._new_conversation(request, loaded.customer, now)
         ctx = await self._context(request, conversation, loaded, now)
         step = await self._run(ctx)
+        if step.next_state != ctx.state:
+            ctx.definition.check_transition(ctx.state, step.next_state)
+            ctx.state = step.next_state
         reply = step.reply
         if reply is None:
             raise RuntimeError("a turn must end with a reply")

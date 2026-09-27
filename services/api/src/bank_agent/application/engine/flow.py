@@ -54,6 +54,7 @@ async def run_handlers(ctx: TurnContext) -> Step:
     while True:
         spec = ctx.definition.spec(ctx.state)
         ctx.tools.allow(spec.allowed_tools)
+        asked_again = ctx.reprompt
         try:
             step = await spec.handler(ctx)
         except AuthenticationError:
@@ -69,7 +70,8 @@ async def run_handlers(ctx: TurnContext) -> Step:
             return escalate(ctx, EscalationReasonCode.TOOL_FAILURE, error.code, decision=decision)
         ctx.definition.check_transition(ctx.state, step.next_state)
         ctx.state = step.next_state
-        ctx.reprompt = False
+        if asked_again:
+            ctx.reprompt = False
         if step.reply is not None:
             return step
         steps += 1

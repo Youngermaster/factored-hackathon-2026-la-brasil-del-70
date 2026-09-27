@@ -70,6 +70,8 @@ class WorkflowDefinition:
     transitions: Mapping[str, frozenset[str]]
     intents: frozenset[Intent]
     variant: str = "proposed"
+    open_questions: Callable[["TurnContext"], tuple[str, ...]] | None = None
+    """Questions a handoff lists from the workflow's unresolved slots, whichever step escalates."""
 
     def __post_init__(self) -> None:
         if self.entry_state not in self.states:
@@ -116,6 +118,7 @@ def build_definition(
     intents: frozenset[Intent],
     entry_state: str = START,
     variant: str = "proposed",
+    open_questions: Callable[["TurnContext"], tuple[str, ...]] | None = None,
 ) -> WorkflowDefinition:
     """A definition whose table also holds the shared exits and the AUTH_REQUIRED resumes."""
     by_name = {spec.name: spec for spec in states}
@@ -137,4 +140,5 @@ def build_definition(
         transitions=table,
         intents=intents,
         variant=variant,
+        open_questions=open_questions,
     )

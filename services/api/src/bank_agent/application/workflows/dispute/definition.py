@@ -3,6 +3,7 @@
 Documented in ``docs/workflows/dispute-intake.md``.
 """
 
+from bank_agent.application.engine.context import TurnContext
 from bank_agent.application.engine.definition import (
     ABSTAINED,
     REFUSED,
@@ -15,6 +16,7 @@ from bank_agent.application.engine.definition import (
 )
 from bank_agent.application.engine.states import accept_request, auth_required_state, end_state, escalated_state
 from bank_agent.application.workflows.dispute.act import execute, verify
+from bank_agent.application.workflows.dispute.data import load, open_questions
 from bank_agent.application.workflows.dispute.decide import (
     check_eligibility,
     classify_reason,
@@ -74,6 +76,10 @@ TRANSITIONS = {
 }
 
 
+def questions(ctx: TurnContext) -> tuple[str, ...]:
+    return open_questions(load(ctx))
+
+
 def build_dispute() -> WorkflowDefinition:
     return build_definition(
         workflow=WorkflowId.DISPUTE,
@@ -81,4 +87,5 @@ def build_dispute() -> WorkflowDefinition:
         states=STATES,
         transitions=TRANSITIONS,
         intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.DISPUTE).intents),
+        open_questions=questions,
     )

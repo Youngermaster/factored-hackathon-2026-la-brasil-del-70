@@ -39,6 +39,7 @@ def build_dispute_b0() -> WorkflowDefinition:
         transitions=transitions,
         intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.DISPUTE).intents),
         variant=VARIANT,
+        open_questions=dispute.questions,
     )
 
 
@@ -50,6 +51,7 @@ def build_card_support_b0() -> WorkflowDefinition:
         transitions=card.TRANSITIONS,
         intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.CARD_SUPPORT).intents),
         variant=VARIANT,
+        open_questions=card.questions,
     )
 
 
