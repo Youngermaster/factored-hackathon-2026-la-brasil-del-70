@@ -58,6 +58,9 @@ def resolve_turn_language(ctx: TurnContext) -> Step | None:
     detection = ctx.services.language_detector.detect(ctx.text)
     ctx.detection = detection
     ctx.recorder.model(detection.detector)
+    if ctx.settings.fixed_language is not None:
+        ctx.language = ctx.settings.fixed_language
+        return None
     resolution = resolve_language(
         detection,
         text=ctx.text,

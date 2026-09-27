@@ -17,6 +17,7 @@ _SETTINGS_PREFIXES = (
     "OTEL_",
     "POLICY_",
     "RETRIEVAL_",
+    "WORKFLOW_",
 )
 
 

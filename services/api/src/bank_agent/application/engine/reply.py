@@ -63,6 +63,8 @@ class Reply:
     step_up_required: bool = False
     notices: tuple[NoticeCode, ...] = ()
     card_status: tuple[CardStatusView, ...] = ()
+    suffix: tuple[tuple[str, dict[str, "Param"]], ...] = ()
+    """Further templates appended after the main one, each with its own parameters."""
     prefix: str | None = None
     """A template rendered before the main one (``common.resume`` after re-authentication)."""
     bilingual: bool = False

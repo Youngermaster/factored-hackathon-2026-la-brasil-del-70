@@ -60,6 +60,10 @@ class EngineSettings:
     max_steps: int = 12
     llm_max_output_tokens: int = 600
     environment: str = "development"
+    fixed_language: Language | None = None
+    """Baseline B0 answers in one fixed language whatever the customer writes."""
+    menu_template: str | None = None
+    """Baseline B0 shows a fixed menu instead of the greeting and the workflow question."""
 
 
 @dataclass(frozen=True)

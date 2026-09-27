@@ -193,3 +193,13 @@ def blocking_step(ctx: TurnContext, decision: Decision, *, state: str, step_up_o
     if kind is DecisionKind.REQUIRE_STEP_UP and not step_up_ok:
         return step_up(ctx, state)
     return None
+
+
+def spend_clarification(ctx: TurnContext, *, open_questions: tuple[str, ...] = ()) -> Step | None:
+    """Count one more clarifying question, or escalate when the budget is spent (``ESC.clarification_exhausted``)."""
+    decision = evaluate(ctx, clarification_attempts=ctx.clarifications_used)
+    exhausted = any(r.rule_id == "ESC.clarification_exhausted" and not r.passed for r in decision.rule_results)
+    if not exhausted:
+        ctx.clarifications_used += 1
+        return None
+    return escalate_decision(ctx, decision, open_questions=open_questions)

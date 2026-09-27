@@ -57,6 +57,11 @@ CARD: dict[str, dict[Language, str]] = {
         PT: "Pronto: bloqueamos o seu {type} {card} e conferimos nos registros.",
         EN: "Done: we blocked your {type} {card} and checked it in the records.",
     },
+    "card.already_blocked": {
+        ES: "Tu {type} {card} ya está bloqueada.",
+        PT: "O seu {type} {card} já está bloqueado.",
+        EN: "Your {type} {card} is already blocked.",
+    },
     "card.not_blockable": {
         ES: "No puedo bloquear tu {type} {card} desde aquí.",
         PT: "Não posso bloquear o seu {type} {card} por aqui.",

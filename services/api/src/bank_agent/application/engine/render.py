@@ -152,7 +152,8 @@ class Renderer:
         languages = (Language.ES, Language.PT) if reply.bilingual else (given.language,)
         parts = [fill(reply.template, reply.params, language, given.locale) for language in languages]
         if reply.prefix is not None:
-            parts.insert(0, fill(reply.prefix, {}, given.language, given.locale))
+            parts.insert(0, fill(reply.prefix, reply.params, given.language, given.locale))
+        parts.extend(fill(template, params, given.language, given.locale) for template, params in reply.suffix)
         text = "\n".join(part.text for part in parts)
         check = "\n".join(part.check for part in parts)
         paragraphs = self._explanation(reply.explain, given.language, given.locale, MAX_TEXT - len(text))

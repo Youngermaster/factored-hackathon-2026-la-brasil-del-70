@@ -79,6 +79,9 @@ async def run_handlers(ctx: TurnContext) -> Step:
 
 async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route) -> Step:
     kind = route.kind
+    menu = ctx.settings.menu_template
+    if menu is not None and kind in (RouteKind.GREETING, RouteKind.CLARIFY_WORKFLOW):
+        return Step(ctx.state, Reply(template=menu, bilingual=True), Outcome.CLARIFIED)
     if kind is RouteKind.OUT_OF_SCOPE:
         return out_of_scope(ctx)
     if kind is RouteKind.INFORMATIONAL:

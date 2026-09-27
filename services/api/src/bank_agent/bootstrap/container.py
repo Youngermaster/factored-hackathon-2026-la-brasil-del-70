@@ -7,7 +7,8 @@ directly, and tests build it with their own settings. The language model gateway
 phases add model clients here. Persistence, identity, and the banking tools come from ``bootstrap/persistence.py``;
 the policy pack, the synthetic credit catalog, and the eligibility service from ``bootstrap/policy.py``; the bound
 clause lookup, open retrieval, and the grounding verifier from ``bootstrap/retrieval.py`` (tests and the evaluation
-harness may inject an embedder so dense retrieval runs without the optional ``ml`` extra).
+harness may inject an embedder so dense retrieval runs without the optional ``ml`` extra); the workflow engines (the
+proposed system and baseline B0) from ``bootstrap/workflows.py``.
 """
 
 from collections.abc import Sequence
@@ -33,6 +34,7 @@ from bank_agent.bootstrap.persistence import (
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
 from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
+from bank_agent.bootstrap.workflows import WorkflowServices, build_workflows
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.llm import LLMClient
@@ -97,6 +99,18 @@ class Container:
             catalog=self._policy.catalog,
             tool_policy=self._policy.tool_policy,
         )
+        self._workflows = build_workflows(
+            settings.workflow,
+            uow_factory=self._persistence.uow_factory,
+            session_store=self._persistence.session_store,
+            tools=self._banking_tools,
+            policy=self._policy,
+            grounding=self._grounding,
+            llm=self._llm_client,
+            clock=self._clock,
+            ids=self._ids,
+            environment=settings.runtime.app_env,
+        )
         self._readiness_checks: tuple[ReadinessCheck, ...] = (
             (PostgresReadinessCheck(self._engine),) if self._engine is not None else ()
         )
@@ -145,6 +159,11 @@ class Container:
     @property
     def banking_tools(self) -> BankingTools:
         return self._banking_tools
+
+    @property
+    def workflows(self) -> WorkflowServices:
+        """The workflow engines: ``engine()`` is the proposed system, ``engine("baseline_b0")`` baseline B0."""
+        return self._workflows
 
     @property
     def database_engine(self) -> AsyncEngine | None:

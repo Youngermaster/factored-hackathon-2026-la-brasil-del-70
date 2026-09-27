@@ -8,11 +8,10 @@ Every question counts against the clarification budget; once it is spent the ker
 from datetime import UTC, datetime, time, timedelta
 
 from bank_agent.application.engine.context import Step, TurnContext
-from bank_agent.application.engine.decide import clarification_left, evaluate
 from bank_agent.application.engine.render import clean_record_text
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
 from bank_agent.application.engine.security import detect_injection
-from bank_agent.application.engine.shared import escalate_decision
+from bank_agent.application.engine.shared import spend_clarification
 from bank_agent.application.understanding.answers import parse_choice
 from bank_agent.application.understanding.dates import MONTHS, narrow
 from bank_agent.application.understanding.text import words
@@ -43,12 +42,8 @@ def window_start(ctx: TurnContext) -> datetime:
 
 def exhausted(ctx: TurnContext, data: DisputeData) -> Step | None:
     """The escalation when no clarifying question is left, else ``None`` (and one more question is counted)."""
-    if clarification_left(ctx):
-        ctx.clarifications_used += 1
-        return None
     save(ctx, data)
-    decision = evaluate(ctx, clarification_attempts=ctx.clarifications_used)
-    return escalate_decision(ctx, decision, open_questions=open_questions(data))
+    return spend_clarification(ctx, open_questions=open_questions(data))
 
 
 async def _last4_by_product(ctx: TurnContext) -> dict[ProductId, str]:
