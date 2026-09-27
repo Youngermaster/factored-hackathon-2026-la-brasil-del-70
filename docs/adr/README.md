@@ -2,7 +2,7 @@
 
 Each record captures one choice between real alternatives, in the [MADR](https://adr.github.io/madr/) format: context, options, decision, and consequences. Records are numbered in order and never rewritten; a later record supersedes an earlier one and both link to each other.
 
-Numbers 0014 to 0019 are reserved for the phases that already name them, so the table lists records by number, not by date.
+Numbers 0015 to 0019 are reserved for the phases that already name them, so the table lists records by number, not by date.
 
 | Number | Title | Status | Date |
 |---|---|---|---|
@@ -19,14 +19,16 @@ Numbers 0014 to 0019 are reserved for the phases that already name them, so the 
 | [0011](0011-policy-as-data-and-pure-rule-functions.md) | Policy as data plus pure rule functions, with the synthetic eligibility service on the same kernel | Accepted | 2026-09-27 |
 | [0012](0012-bound-policies-and-informational-retrieval.md) | Bound policies for workflow states, with open retrieval only for informational questions | Accepted | 2026-09-27 |
 | [0013](0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators | Accepted | 2026-09-26 |
+| [0014](0014-explicit-state-machine-over-an-agent-framework.md) | An explicit state machine over an agent framework | Accepted | 2026-09-27 |
 | [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
 | [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |
 | [0022](0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source | Accepted | 2026-09-26 |
 | [0023](0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending | Accepted | 2026-09-26 |
-| [0024](0024-tuesday-account-inquiry-mvp-and-observability.md) | Tuesday MVP is account inquiry plus simulated human escalation | Accepted | 2026-09-27 |
-| [0025](0025-live-agent-joins-escalated-conversation.md) | Human escalation progresses from simulated replies to a human service agent joining the conversation | Accepted | 2026-09-27 |
-| [0026](0026-opt-in-financial-companion-and-agent-personalization.md) | Personalized financial companion features are opt-in and grounded | Accepted | 2026-09-27 |
-| [0027](0027-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces | Accepted | 2026-09-27 |
+| [0024](0024-workflow-registry-with-router-dispatch.md) | A workflow registry with router dispatch over one generic engine | Accepted | 2026-09-27 |
+| [0025](0025-tuesday-account-inquiry-mvp-and-observability.md) | Tuesday MVP is account inquiry plus simulated human escalation | Accepted | 2026-09-27 |
+| [0026](0026-live-agent-joins-escalated-conversation.md) | Human escalation progresses from simulated replies to a human service agent joining the conversation | Accepted | 2026-09-27 |
+| [0027](0027-opt-in-financial-companion-and-agent-personalization.md) | Personalized financial companion features are opt-in and grounded | Accepted | 2026-09-27 |
+| [0028](0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces | Accepted | 2026-09-27 |
 
 ## Adding a record
 

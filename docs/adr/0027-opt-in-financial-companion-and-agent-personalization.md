@@ -1,11 +1,11 @@
-# 0026: Personalized financial companion features are opt-in and grounded
+# 0027: Personalized financial companion features are opt-in and grounded
 
 - Status: accepted
 - Date: 2026-09-27
 
 ## Context
 
-After the account-inquiry and human-escalation increments in [ADR 0024](0024-tuesday-account-inquiry-mvp-and-observability.md) and [ADR 0025](0025-live-agent-joins-escalated-conversation.md), the product may grow into a more personal banking companion. The intended experience could remember relevant financial context and prior customer-service conversations, offer optional financial tips or a plan, let a customer name the assistant, and show it with a pet-style image.
+After the account-inquiry and human-escalation increments in [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) and [ADR 0026](0026-live-agent-joins-escalated-conversation.md), the product may grow into a more personal banking companion. The intended experience could remember relevant financial context and prior customer-service conversations, offer optional financial tips or a plan, let a customer name the assistant, and show it with a pet-style image.
 
 This direction builds on the four workflow scope in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md), but adds persistent personal context and proactive financial guidance. Those features need user choice, clear evidence and freshness, strict customer isolation, and careful boundaries around investment-related guidance. The current hackathon data is synthetic and is not a basis for real financial advice.
 
@@ -50,6 +50,6 @@ Choose option 2 as a future product direction. These capabilities are not part o
 ## References
 
 - [ADR 0020: Four workflows and the workflow registry](0020-four-workflows-and-the-workflow-registry.md)
-- [ADR 0024: Tuesday MVP is account inquiry plus simulated human escalation](0024-tuesday-account-inquiry-mvp-and-observability.md)
-- [ADR 0025: Human escalation progresses from simulated replies to a human service agent joining the conversation](0025-live-agent-joins-escalated-conversation.md)
+- [ADR 0025: Tuesday MVP is account inquiry plus simulated human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0026: Human escalation progresses from simulated replies to a human service agent joining the conversation](0026-live-agent-joins-escalated-conversation.md)
 - [Data card: intended use and data boundaries](../data/data-card.md)

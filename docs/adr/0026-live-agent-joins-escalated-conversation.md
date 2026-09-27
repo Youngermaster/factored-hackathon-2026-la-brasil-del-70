@@ -1,11 +1,11 @@
-# 0025: Human escalation progresses from simulated replies to a human service agent joining the conversation
+# 0026: Human escalation progresses from simulated replies to a human service agent joining the conversation
 
 - Status: accepted
 - Date: 2026-09-27
 
 ## Context
 
-ADR 0020 assigns human escalation paths to workflows that the prototype cannot safely resolve. ADR 0006 defines the structured, auditable handoff record. In these decisions, the **AI assistant** is the model-driven customer chat and a **human service agent** is a person handling an escalated request. For the Tuesday account-inquiry release, [ADR 0024](0024-tuesday-account-inquiry-mvp-and-observability.md) chooses a bounded simulated service responder for card-support, dispute, and credit requests to keep the first release achievable.
+ADR 0020 assigns human escalation paths to workflows that the prototype cannot safely resolve. ADR 0006 defines the structured, auditable handoff record. In these decisions, the **AI assistant** is the model-driven customer chat and a **human service agent** is a person handling an escalated request. For the Tuesday account-inquiry release, [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) chooses a bounded simulated service responder for card-support, dispute, and credit requests to keep the first release achievable.
 
 A generated or randomized simulated service reply demonstrates routing, but it is not human review and does not let a human service agent help the customer. The product's follow-up human escalation capability must let an authenticated human service agent join the customer's existing AI-assistant conversation and continue the exchange there.
 
@@ -40,4 +40,4 @@ This decision preserves ADR 0020's four-workflow product scope. The initial rele
 
 - [ADR 0020: Four workflows and the workflow registry](0020-four-workflows-and-the-workflow-registry.md)
 - [ADR 0006: Handoff and execution record contracts](0006-handoff-and-execution-record-contracts.md)
-- [ADR 0024: Tuesday MVP is account inquiry plus simulated human escalation](0024-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0025: Tuesday MVP is account inquiry plus simulated human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)

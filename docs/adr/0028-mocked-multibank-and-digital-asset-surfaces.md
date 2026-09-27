@@ -1,4 +1,4 @@
-# 0027: Multi-bank connectors and digital-asset tabs start as mock surfaces
+# 0028: Multi-bank connectors and digital-asset tabs start as mock surfaces
 
 - Status: accepted
 - Date: 2026-09-27
@@ -24,7 +24,7 @@ Choose option 2 as a later, mock-only product increment. Neither surface is part
 - Define a provider-neutral connector contract for importing and exporting customer-authorized financial information. Keep connector methods and schemas explicit about supported data, provenance, currency, and source institution.
 - Implement only mock adapters over team-made synthetic fixtures. The app may demonstrate reading/importing balances or transaction history and exporting a customer-approved summary or file, but it must label the source and mock status clearly.
 - Prioritize a short list of representative, high-usage banks in the target Latin American markets in a later planning step. Do not claim support for a bank until its connector path is implemented; no live integration or bank credential collection is included in this mock increment.
-- Imported information is available for the customer's own account questions and, only with the separate consent in ADR 0026, personalized memory. It is retrieved as user data; it is not used to train or fine-tune a model.
+- Imported information is available for the customer's own account questions and, only with the separate consent in ADR 0027, personalized memory. It is retrieved as user data; it is not used to train or fine-tune a model.
 - Keep every import/export scoped to the authenticated customer, auditable by conversation or transfer ID, and explicit about stale, missing, or mock data. Export requires the customer's confirmation of the destination and data being shared, even when the demo uses a local fixture.
 
 ### Crypto and xStocks tabs
@@ -43,6 +43,6 @@ Choose option 2 as a later, mock-only product increment. Neither surface is part
 
 ## References
 
-- [ADR 0024: Tuesday MVP is account inquiry plus simulated human escalation](0024-tuesday-account-inquiry-mvp-and-observability.md)
-- [ADR 0026: Personalized financial companion features are opt-in and grounded](0026-opt-in-financial-companion-and-agent-personalization.md)
+- [ADR 0025: Tuesday MVP is account inquiry plus simulated human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0027: Personalized financial companion features are opt-in and grounded](0027-opt-in-financial-companion-and-agent-personalization.md)
 - [Data card: provenance and intended use](../data/data-card.md)

@@ -1,4 +1,4 @@
-# 0024: Tuesday MVP is account inquiry plus simulated human escalation
+# 0025: Tuesday MVP is account inquiry plus simulated human escalation
 
 - Status: accepted
 - Date: 2026-09-27
@@ -46,8 +46,8 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 
 - Use observed account questions and human-handled conversations to select further automation candidates. Add workflow automation in increments, each with its own safe read/action boundary, clarification and failure behavior, and human fallback.
 - Escalation remains available whenever the customer asks for a person, the intent is uncertain, required evidence is missing, policy requires review, or a tool or verification step fails. Automation may reduce unnecessary escalation only after its conditions are defined and checked; it must not conceal a required handoff.
-- Explore opt-in financial memory and guidance, AI-assistant name customization, and pet-style AI-assistant images as later product increments under [ADR 0026](0026-opt-in-financial-companion-and-agent-personalization.md). These features are not part of Tuesday's release.
-- Explore mock multi-bank import/export connectors and future crypto/xStocks navigation surfaces under [ADR 0027](0027-mocked-multibank-and-digital-asset-surfaces.md). These are roadmap/demo features, not Tuesday functionality.
+- Explore opt-in financial memory and guidance, AI-assistant name customization, and pet-style AI-assistant images as later product increments under [ADR 0027](0027-opt-in-financial-companion-and-agent-personalization.md). These features are not part of Tuesday's release.
+- Explore mock multi-bank import/export connectors and future crypto/xStocks navigation surfaces under [ADR 0028](0028-mocked-multibank-and-digital-asset-surfaces.md). These are roadmap/demo features, not Tuesday functionality.
 
 ### LLM-to-service contract
 
@@ -86,7 +86,7 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 - PostgreSQL provides durable, append-only audit records; Langfuse provides searchable LLM traces and usage/latency analysis. This avoids making an external observability service the only source of evidence.
 - Langfuse's OpenTelemetry ingestion is supported, and it can capture generation model, usage, cost, and prompt-version information. Prompt-level version comparisons require linking the local prompt version to a Langfuse prompt object; the Tuesday implementation should preserve local prompt files as the source of truth and record the reference either way.
 - The tracing path must be exercised end to end: emitting a span alone is not proof that Langfuse received or rendered it as a model generation.
-- The simulated service responder is sufficient for Tuesday's demonstration but is not a substitute for a human-in-the-loop operating path. The authenticated human service-agent inbox, joining an existing customer conversation, and persistent two-way messaging are explicit follow-up requirements; see [ADR 0025](0025-live-agent-joins-escalated-conversation.md).
+- The simulated service responder is sufficient for Tuesday's demonstration but is not a substitute for a human-in-the-loop operating path. The authenticated human service-agent inbox, joining an existing customer conversation, and persistent two-way messaging are explicit follow-up requirements; see [ADR 0026](0026-live-agent-joins-escalated-conversation.md).
 - Human-handled conversations provide operational evidence for deciding which additional intents are safe and valuable to automate later; they do not by themselves establish that an intent is automatable.
 
 ## References
