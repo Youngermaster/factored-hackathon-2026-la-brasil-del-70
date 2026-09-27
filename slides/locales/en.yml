@@ -1,0 +1,42 @@
+# Every word the deck draws, one block per scene (scenes/<name>.ts reads its
+# block with L('key')). Edit wording here; never in the drawing code.
+#
+# Rules (pnpm check:content enforces the first two):
+#   - no em dashes; use a comma, a period, a colon or a connector word
+#   - every key a scene draws must exist here, and every key here must be drawn
+#   - numbers do not live here: they come from data/metrics.yml
+#   - *asterisks* mark accent words in kinetic lines (the scene picks the colour)
+#   - a plain value containing ": " must be quoted
+#
+# Two YAML traps: a plain scalar with ": " inside is a syntax error (quote it),
+# and a value starting with * or & must be quoted.
+
+hook:
+  eyebrow: La Brasil del 70  |  Factored AI & Data Hackathon 2026
+  rows: rows of synthetic bank data, ingested under contracts
+  rowsSub: 13 tables  |  Mexico, Colombia, Argentina
+  shareTitle: What customers contact the bank for
+  shareSub: interactions and complaints
+  account_inquiry: account inquiry
+  card_support: card support
+  dispute: dispute
+  credit: credit
+  other: other
+  fcrTitle: Resolved at first contact
+  fcrPunch: "*Disputes* carry the pain"
+  fcrLowCsat: low satisfaction (CSAT 1 or 2)
+  fcrHandle: average handle time
+  txTitle: And the transcripts?
+  txServed: transcripts
+  txDistinct: distinct customer texts
+  txTwo: balance questions, whatever the topic
+  txLine1: Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+  txLine2: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
+  txPunch: So routing is trained on *team-authored* utterances, labeled as such.
+  scopeTitle: Four workflows, each built in depth
+  scope_account_inquiry: balances, payments, statements, always with an as-of date
+  scope_card_support: card status and a verified protective block
+  scope_dispute: dispute intake with a verified case, and its status
+  scope_credit: catalog, indicative eligibility, intake for human review
+  langs: Spanish and Portuguese
+  langsNote: The organizer data has no Portuguese; pt test text is team-generated.

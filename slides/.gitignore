@@ -1,0 +1,8 @@
+# Dependencies and build outputs of the slides package (kept out of the root
+# workspace; the root .gitignore also covers node_modules/ and dist/).
+node_modules/
+dist/
+export/
+.shots/
+.slidev/
+*.log

@@ -1,0 +1,45 @@
+{
+  "name": "bank-agent-pitch-slides",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pitch deck for the Factored AI & Data Hackathon 2026 video: motion-graphics scenes drawn in code",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "slidev --port 3131",
+    "build": "slidev build --router-mode hash",
+    "export": "slidev export --format pdf --with-clicks --timeout 120000 --output export/la-brasil-del-70-pitch.pdf",
+    "export:final": "pnpm check:content --strict && pnpm export",
+    "check:content": "tsx scripts/check-content.ts",
+    "check:types": "node scripts/check-types.mjs",
+    "check:fit": "node scripts/check-fit.mjs",
+    "shots": "node scripts/shots.mjs --clicks",
+    "verify": "pnpm check:types && pnpm check:content"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.19.1",
+    "@slidev/client": "^52.19.1",
+    "@slidev/theme-default": "^0.25.0",
+    "@slidev/types": "^52.19.1",
+    "vue": "^3.5.42",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource-variable/unbounded": "^5.3.0",
+    "@types/node": "^26.4.1",
+    "playwright-chromium": "^1.56.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vite": "^8.2.2",
+    "vue-tsc": "^2.2.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "playwright-chromium"]
+  }
+}

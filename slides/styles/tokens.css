@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Design tokens: the "Azure Skies" palette
+   --------------------------------------------------------------------------
+   Defined once here (CSS) and once in lib/scene/kit.ts (the canvas `C`
+   object). scripts/check-content.ts fails when the two disagree, and it
+   checks every text pair listed in lib/scene/contrast.ts against WCAG AA.
+
+   MEANING, never swapped between slides (the project thesis in colour):
+     blue    the language model and understanding: intents, extraction, tokens
+     yellow  deterministic code deciding and acting: rules, state machine,
+             verified tool actions
+     red     risk, refusal, escalation, a blocked injection
+     paper   data, customers, documents, plain text
+     ink     the ground
+
+   Contrast on --ink (#070707), measured:
+     paper 16.1   dim 10.1   mute 6.0   blue-text 7.5   red-text 6.4
+     yellow 13.0  blue 4.8   red 4.4 (large text only: 24px bold and up)
+   Filled chips carry ink text: yellow 13.0, paper 16.1, blue 4.8.
+   ========================================================================== */
+
+:root {
+  /* ground */
+  --ink:        #070707;
+  --ink-2:      #121212;   /* the only raised surface, used sparingly */
+  --rail:       #1F1F1F;   /* rules and tracks */
+  --faint:      #2E2E2E;   /* hairlines, never load-bearing */
+
+  /* neutrals: paper is data and text */
+  --paper:      #E6E6E4;
+  --dim:        #B8B8B5;
+  --mute:       #8C8C89;   /* captions and citations only */
+
+  /* the three accents */
+  --blue:       #3772FF;
+  --blue-text:  #6F9BFF;   /* blue at body size */
+  --blue-deep:  #0E1A3A;   /* explicit hex: alpha chains make contrast unverifiable */
+
+  --yellow:     #FDC840;
+  --yellow-deep:#2B2208;
+
+  --red:        #E12B37;
+  --red-text:   #F0616A;   /* red at body size */
+  --red-deep:   #2E0B0E;
+
+  /* type */
+  --font-display: 'Unbounded Variable', 'Arial Black', sans-serif;
+  --font-sans:    'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:    'Geist Mono Variable', ui-monospace, Menlo, monospace;
+
+  /* easing: the in/out pairs are exact mirrors, so velocity is continuous at a seam */
+  --e-out-quart: cubic-bezier(0.25, 1, 0.50, 1);
+  --e-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --e-out-expo:  cubic-bezier(0.16, 1, 0.30, 1);
+  --e-in-cubic:  cubic-bezier(0.32, 0, 0.67, 0);
+  --e-in-quint:  cubic-bezier(0.64, 0, 0.78, 0);
+  --e-linear:    linear;
+
+  /* durations: a keypress-triggered seam completes within 700 ms */
+  --d-step:  260ms;
+  --d-entry: 420ms;
+  --d-exit:  300ms;
+  --d-enter: 380ms;
+
+  --slidev-transition-duration: 0.38s;
+}
