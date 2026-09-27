@@ -98,6 +98,9 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
         return confirm_switch(ctx, route.target)
     if kind in (RouteKind.START, RouteKind.SWITCH) and route.target is not None:
         enter(ctx, registry, route.target, switch=kind is RouteKind.SWITCH)
+    predicted = ctx.prediction.intent if ctx.prediction is not None else None
+    if predicted is not None and predicted in ctx.definition.intents:
+        ctx.engine = ctx.engine.evolve(intent=predicted)
     return await run_handlers(ctx)
 
 

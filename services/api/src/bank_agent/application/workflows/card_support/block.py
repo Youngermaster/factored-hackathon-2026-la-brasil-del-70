@@ -67,7 +67,7 @@ def _handoff(ctx: TurnContext, data: CardData) -> Step:
     facts = CardFacts(
         owned_by_session_customer=True, is_card=True, status=data.status or ProductStatus.ACTIVE, request=data.action
     )
-    decision = evaluate(ctx, card=facts)
+    decision = evaluate(ctx, policy_state="CARD_REQUEST_HANDOFF", card=facts)
     request = CardRequest(action=data.action, product_ref=target) if data.action and target else None
     return escalate_decision(ctx, decision, card_request=request)
 
