@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-10LKDWWHPHW14OYFT7RK,2025-11-06 02:53:02,2025-11-05,PRD-Y9NH496IDU4N,CLI-VZJTC6LU907T,Withdrawal,,108.15,USD,,POS,,,,México,Guadalajara,Approved,00,False,27.9,,
+TRX-1QK8LNEW1TLC5ME6QM4Z,2025-11-05 14:14:34,2025-11-05,PRD-SQ6SP8PDHFUQ,CLI-SZHLZ1F4MOTC,Purchase,Services,270.08,USD,,ATM,SUC-W04NBWY9,Empresa Telefónica,Services,México,Puebla,Approved,00,False,1.7,,
+TRX-R3OPUGGNTLQQX5DNKI2B,2025-11-05 16:26:42,2025-11-05,PRD-0FF2K4AGLWFX,CLI-C0RXL4J0SXGR,Deposit,,2818.67,USD,,Web,,,,México,,Approved,00,False,,,
+TRX-VNYJ4QI6R255Y8XCB8PR,2025-11-05 08:53:31,2025-11-05,PRD-TB7LHRJWMJTL,CLI-6VCS2LIRSE4Y,Withdrawal,,869281.86,COP,217.32,ATM,SUC-A1FLMPEF,,,Colombia,Medellín,Approved,00,False,19.95,5.3456476,-74.5177727

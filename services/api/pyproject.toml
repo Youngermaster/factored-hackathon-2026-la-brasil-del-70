@@ -5,18 +5,32 @@ description = "Banking customer-service API: hexagonal core, policy kernel, work
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+  "alembic>=1.16,<2",
   "asyncpg>=0.31.0,<1",
+  "duckdb>=1.5.5,<2",
   "fastapi>=0.141.1,<1",
+  "jsonschema>=4.26.0,<5",
   "pydantic>=2.13.5,<3",
   "pydantic-settings>=2.15.0,<3",
+  "pyyaml>=6.0.3,<7",
+  "rapidfuzz>=3.14.6,<4",
   "sqlalchemy[asyncio]>=2.1.1,<3",
   "structlog>=26.1.0,<27",
   "typer>=0.27.2,<1",
+  "tzdata>=2026.1",
   "uvicorn[standard]>=0.54.0,<1",
 ]
 
 [project.scripts]
 bank-agent = "bank_agent.cli:app"
+
+[project.optional-dependencies]
+# Optional: 170 MB installed with its dependencies, so `make setup` does not install it.
+# Install with `uv sync --all-packages --extra litellm` once a provider is chosen (see ADR 0013).
+litellm = ["litellm==1.102.1"]
+# Optional: dense retrieval embeddings (sentence-transformers with torch, about 806 MB installed with their
+# dependencies). Never installed in the API runtime image or by `make setup`; see the retrieval adapter README.
+ml = ["sentence-transformers==6.1.0", "torch==2.14.0"]
 
 [build-system]
 requires = ["uv_build>=0.11.17,<0.13"]

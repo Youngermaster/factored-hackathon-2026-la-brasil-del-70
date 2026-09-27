@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-HVEA1DBOV9QPQUC9,2026-03-08 13:06:41,2026-03-08,CLI-UWPSMKLGJ4HM,AGT-5PP7O7ZE96,Inbound Call,Phone,Queja,Queja,535.0,80.0,False,True,Neutral,-0.26,mexican,mexican,False,"PRD-A1AS7WD6VM59,PRD-HPVXRS9TDMLT,PRD-WMPF6GX7K2EJ",False,True

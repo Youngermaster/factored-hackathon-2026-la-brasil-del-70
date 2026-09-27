@@ -1,6 +1,6 @@
 # Architecture overview
 
-This page shows the monorepo components and the direction of their dependencies as of phase 01. Phase 17 replaces it with the final context, container, and component views.
+This page shows the monorepo components and the direction of their dependencies as of phase 02b. The domain model and the ports are described in [domain-model.md](domain-model.md) and [ports-and-adapters.md](ports-and-adapters.md); the four workflows in [workflow-registry.md](workflow-registry.md); and the credit separation in [credit-separation.md](credit-separation.md). Phase 17 replaces it with the final context, container, and component views.
 
 ## Components and dependency direction
 
@@ -60,6 +60,7 @@ flowchart TD
 
 - **Backend layers** import inward only. `api` and `bootstrap` are independent of each other; the entry points wire them. import-linter enforces three contracts (layers, a pure core without framework or I/O imports, and no layer importing the entry points). See [ADR 0002](../adr/0002-uv-workspace-and-hexagonal-backend.md).
 - **Frontend layers** import downward only, and features are reached only through their `index.ts`. ESLint boundary policies enforce this. See [ADR 0003](../adr/0003-frontend-layering-and-state.md).
+- **Test doubles are not a layer.** `bank_agent.testing` imports only `domain` and `ports`, and no production layer imports it; two import-linter contracts enforce this. `bank_evals` imports the `bank_agent` domain for the scenario contract.
 - **The API never imports the offline packages.** It reads models through the `ModelRegistry` port and data through repositories. The evaluation harness depends on the API composition root, not the other way around.
 - **The API connects to PostgreSQL as the application role**, which owns nothing and has no `BYPASSRLS`. See [deploy/README.md](../../deploy/README.md).
 

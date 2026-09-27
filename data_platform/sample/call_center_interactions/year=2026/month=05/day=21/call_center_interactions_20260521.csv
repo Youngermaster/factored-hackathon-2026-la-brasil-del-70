@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-WH2AZR2X65PKLU9U,2026-05-22 06:55:52,2026-05-21,CLI-WKR4P95O4ZKE,AGT-OU7FAUBSD0,Inbound Call,Phone,Producto,Producto,219.0,81.0,True,False,Muy Positivo,0.9,mexican,mexican,False,,False,True

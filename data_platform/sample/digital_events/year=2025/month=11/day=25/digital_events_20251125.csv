@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-PANIQLS5TRANO3XPF6HS,2025-11-25 08:19:51,2025-11-25,CLI-AMN80XXN1DT6,SES-4E0P3G3SQAHPF9ZOREORRS98HXYY,PageView,Product,Desktop Web,Linux,Chrome,,/products/savings,Cuenta de Ahorro,view_product,savings_product,,,225.0,203.0.113.218,México,Querétaro,False,,,,

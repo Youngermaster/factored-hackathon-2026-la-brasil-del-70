@@ -1,0 +1,23 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-4VMAHXZDFTZXX99YB92F,INT-OD1VF51L9MSMZ6YC,2026-06-10,CLI-S21M6QBBQ32X,AGT-BT05WAA543,"Cliente: Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+
+Agente: Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.
+
+Cliente: Muy bien, ¿hay algo más que deba saber?
+
+Agente: Perfecto, ¿necesita algo más?
+
+Cliente: ¿Y eso cuánto tiempo tarda?
+
+Agente: Claro, estoy para servirle.","Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros. Muy bien, ¿hay algo más que deba saber? ¿Y eso cuánto tiempo tarda?","Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}. Perfecto, ¿necesita algo más? Claro, estoy para servirle.",es,,0.84,"cuenta, servicio, banco","{""account_numbers"": 2, ""dates"": 0, ""amounts"": 0, ""products"": ""Tarjeta Crédito""}",consulta_general,Técnico,Azure Speech,High,349.0
+TRS-DVFYOWGBKK8VR18R34LW,INT-6O4R1QFTYGKYARAI,2026-06-10,CLI-W6CYG2XGJXVX,AGT-XUBJTI8AW5,"Cliente: Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+
+Agente: Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.
+
+Cliente: ¿Y eso cuánto tiempo tarda?
+
+Agente: Con gusto. ¿Hay algo más en lo que pueda ayudarle?
+
+Cliente: ¿Y eso cuánto tiempo tarda?
+
+Agente: No hay problema, que tenga buen día.","Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros. ¿Y eso cuánto tiempo tarda? ¿Y eso cuánto tiempo tarda?","Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}. Con gusto. ¿Hay algo más en lo que pueda ayudarle? No hay problema, que tenga buen día.",es,mexican,0.99,"servicio, banco, cuenta","{""account_numbers"": 1, ""dates"": 0, ""amounts"": 1, ""products"": null}",consulta_general,Comercial,Google STT,High,218.0

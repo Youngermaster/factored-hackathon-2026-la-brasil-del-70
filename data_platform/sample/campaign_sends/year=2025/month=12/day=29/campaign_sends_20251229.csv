@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-1B7K6U6AN1J4TX4SAHPC,2025-12-29 11:32:25,2025-12-29,CMP-J48OP2EJE7FW,CLI-5L6EGAWYR2Q2,Push,template_CMP-J48OP2EJE7FW_1,,Sent,True,True,2026-01-02 15:47:59,True,2026-01-02 16:15:04,5.0,False,,,Tablet,,,0.0002

@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-72KOYELMFBMH9IOEK35K,2025-12-25 12:39:51,2025-12-25,CMP-OZ3ECV86GFA8,CLI-IMCRTKL094T5,Email,template_CMP-OZ3ECV86GFA8_3,¡Oferta especial en Tarjeta Crédito!,Failed,False,,,False,,,False,,,,,SMTP error,0.0038
+SND-NP9SPFYH3O5EPWG9D3VL,2025-12-25 07:33:06,2025-12-25,CMP-523WCPI68FFI,CLI-8QOOAQN2VSCE,Email,template_CMP-523WCPI68FFI_3,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0061

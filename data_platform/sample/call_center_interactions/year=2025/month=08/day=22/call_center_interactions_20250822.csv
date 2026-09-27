@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-4OFP8H2FLIQUP3EA,2025-08-22 19:04:06,2025-08-22,CLI-C9F3EFNAUCRP,AGT-Q4SXP4EG6L,Outbound Call,Phone,Transaccional,Transaccional,278.0,,True,False,Neutral,-0.17,colombian,mexican,False,PRD-4KR3W60L6JJK,False,True

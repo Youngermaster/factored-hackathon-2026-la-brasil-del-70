@@ -1,0 +1,39 @@
+# Language model prices, read by the cost accounting decorator and the budget guard.
+#
+# Prices are US dollars per million tokens, written as quoted strings so they parse as exact decimals.
+# No price exists anywhere in code. The provider has not been chosen (human decision pending), so every entry
+# below is a candidate with verified: false. Before relying on an entry, a person opens source_url, checks both
+# prices for the exact model id, updates effective_date, and sets verified: true in the same commit.
+#
+# Unverified entries are charged at their price times unverified_price_multiplier, and a model missing from
+# this table is charged at the highest input and output prices below times the multiplier, so the budget guard
+# errs on the side of spending less.
+#
+# model_id is the id the gateway is configured with (LLM_PRIMARY_MODEL, LLM_FALLBACK_MODEL), in the LiteLLM
+# provider/model form.
+
+schema_version: 1
+currency: USD
+unverified_price_multiplier: "1.5"
+models:
+  - model_id: anthropic/claude-sonnet-5
+    input_usd_per_million: "2.00"
+    output_usd_per_million: "10.00"
+    effective_date: 2026-06-24
+    source_url: https://platform.claude.com/docs/en/about-claude/pricing
+    verified: false
+    notes: Candidate primary model. Standard first-party API rates; batch, caching, and partner platform prices differ.
+  - model_id: anthropic/claude-haiku-4-5-20251001
+    input_usd_per_million: "1.00"
+    output_usd_per_million: "5.00"
+    effective_date: 2026-06-24
+    source_url: https://platform.claude.com/docs/en/about-claude/pricing
+    verified: false
+    notes: Candidate low-cost model for extraction prompts. Standard first-party API rates.
+  - model_id: openai/gpt-5-mini
+    input_usd_per_million: "0.25"
+    output_usd_per_million: "2.00"
+    effective_date: 2026-09-26
+    source_url: https://openai.com/api/pricing/
+    verified: false
+    notes: Candidate fallback model from a second provider. Price taken from the provider's published list at launch; confirm it is still current.

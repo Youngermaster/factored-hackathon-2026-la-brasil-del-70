@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-G8ETOQESFTL5JLLGYUV9,2025-08-25 03:30:43,2025-08-24,CLI-W6CYG2XGJXVX,SES-AWNW54SQ2T4Y9ZOE5KBPJOOEBR87,Logout,Authentication,iOS App,iOS,,4.2.7,/logout,Cerrar Sesión,logout,,,,,203.0.113.60,México,Monterrey,True,,,,
+EVT-YW331Q85NGRL6KXNL0BD,2025-08-25 03:25:47,2025-08-24,CLI-TP8JBA2IK7EJ,SES-IYH1JTWRH66RVINBZ73875Q1EWQI,Logout,Authentication,Desktop Web,MacOS,Chrome,,/login,Iniciar Sesión,login,login_form,,,,203.0.113.109,México,Guadalajara,False,,,,

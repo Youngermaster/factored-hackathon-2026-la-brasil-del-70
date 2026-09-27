@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-5XQO800RRVA06VH7,2026-02-08 11:59:09,2026-02-08,CLI-QZGUG3KBZ2ZG,AGT-T8LM02ABDZ,Inbound Call,Phone,Queja,Queja,207.0,97.0,False,True,Positivo,0.69,mexican,mexican,False,,True,True

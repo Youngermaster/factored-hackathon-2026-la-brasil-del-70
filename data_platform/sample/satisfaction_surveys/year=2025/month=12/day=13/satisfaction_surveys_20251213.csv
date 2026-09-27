@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-3B82PVB76GP6PHY39918,2025-12-14 09:44:27,2025-12-13,INT-P9SCRL9VFRV1ONO0,CLI-ODH9G3RG7J9J,AGT-PE3Z64L6KA,CES,SMS,3,,,,,,,,El agente no fue muy claro en sus explicaciones.,Negative,7.21,29.58

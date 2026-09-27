@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CBIM8L4HQGHVYY7CCVRM,2026-02-11 12:01:26,2026-02-11,PRD-OSL49HPKW0E1,CLI-7HIH47RP95JX,Purchase,Services,5505.19,ARS,15.73,App,,Cable TV,Services,Argentina,Rosario,Approved,00,False,1.26,,
+TRX-I7KFW106C7DCSLJA1O7S,2026-02-11 11:09:09,2026-02-11,PRD-BRNTPHAHNIOT,CLI-6VCS2LIRSE4Y,Deposit,,8048476.85,COP,2012.12,POS,,,,Colombia,Medellín,Approved,00,False,12.92,,
+TRX-XRI2NVIL4TN5U9EKYS47,2026-02-11 21:17:33,2026-02-11,PRD-7OJ4LO02QADD,CLI-AKACM6D5362F,Deposit,,1014.84,USD,,Transfer,,,,México,Ciudad de México,Approved,00,False,15.66,,

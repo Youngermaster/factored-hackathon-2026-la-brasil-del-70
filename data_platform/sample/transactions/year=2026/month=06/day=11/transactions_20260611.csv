@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8XKRUYX0T8AQ8L92JC4C,2026-06-11 16:27:49,2026-06-11,PRD-5HZZAKVFR19T,CLI-KKSHE4CEJ1IT,Purchase,Services,1323676.47,COP,,POS,,Empresa Telefónica,Services,Colombia,Cali,Approved,00,False,,5.3446081,-75.0521518
+TRX-BHJS7JBLLLBLRHHRW0B1,2026-06-11 16:19:43,2026-06-11,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Purchase,Food,352.83,USD,,App,,,Food,Argentina,Mendoza,Approved,00,False,,,
+TRX-MKU708C9IWQ8US0CGHO7,2026-06-12 02:41:24,2026-06-11,PRD-VGQSGACCL7UK,CLI-IMCRTKL094T5,Withdrawal,,287.18,USD,,ATM,SUC-5R12FFLE,,,México,Querétaro,Approved,00,False,,,
+TRX-PL32GQYCY7R5X8VT1DB9,2026-06-12 00:28:03,2026-06-11,PRD-U339B1ZJK4LR,CLI-IX877AHQ2942,Deposit,,1601.9,USD,,Branch,SUC-4CNRVPYL,,,México,Puebla,Pending,14,False,24.65,,
+TRX-Z33XX3DDI2NHV78E16EI,2026-06-12 00:47:06,2026-06-11,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Withdrawal,,276341.79,COP,69.09,POS,,,,Colombia,Bogotá,Pending,51,False,6.82,,

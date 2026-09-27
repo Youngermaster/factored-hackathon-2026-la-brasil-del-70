@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3X4QQOA7JECIRLXNW7ON,2025-08-05 07:00:17,2025-08-05,PRD-WAMDFJPLRRJX,CLI-EJXBYCD0J96O,Purchase,Services,393.4,USD,,Web,,Empresa Telefónica,Services,México,Puebla,Approved,00,False,3.11,,
+TRX-64WTH07ZPTTIM8947BDO,2025-08-05 12:51:40,2025-08-05,PRD-FJB80FBRBO6Y,CLI-QZGUG3KBZ2ZG,Purchase,Other,43.36,USD,,ATM,SUC-8XAGRKOC,Boutique Moda,Other,México,Tijuana,Approved,00,False,16.79,,
+TRX-F83TPBZUSB8IIUZYNK7X,2025-08-05 16:44:30,2025-08-05,PRD-Z098FMDQQBRD,CLI-YC4WNTUC93XN,Adjustment,,155839.29,ARS,445.26,POS,,,,Argentina,Buenos Aires,Approved,00,False,12.27,-34.6893998,-58.8958937
+TRX-PJG2VTRD31UITT1GKLN0,2025-08-05 13:20:28,2025-08-05,PRD-UQW1R8JQZQ1V,CLI-TP8JBA2IK7EJ,Payment,Entertainment,804.2,USD,,ATM,SUC-033KHYS2,,,México,Guadalajara,Approved,00,False,25.45,,
+TRX-XTSUKPCBZR2GBJ0M9GB7,2025-08-06 03:09:06,2025-08-05,PRD-DLLCBU9CNNTF,CLI-OTYTZE2FLKFL,Transfer,,6144.48,USD,,POS,,,,México,Tijuana,Pending,54,False,15.09,,

@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-KDI7M8MX8YQQTKZNQG5D,2025-09-22 22:11:08,2025-09-22,PRD-9HIQLRR3F9Y1,CLI-CGS8YGQUFDAN,Withdrawal,,181167.64,COP,45.29,Web,,,,Colombia,,Declined,51,False,25.37,,
+TRX-OFAR7ALPC4726RWNDMW5,2025-09-22 08:46:59,2025-09-22,PRD-KA2VRTUQG3JR,CLI-K0GJBJFDKIBO,Deposit,,14068841.84,COP,3517.21,Web,,,,Colombia,Bogotá,Approved,00,False,26.63,,

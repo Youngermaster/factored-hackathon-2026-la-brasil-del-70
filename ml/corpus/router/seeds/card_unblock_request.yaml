@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: card_unblock_request
+seeds:
+  es-MX:
+    - "Quiero desbloquear mi tarjeta"
+    - "Hola, bloqueé mi tarjeta porque creí que la perdí, pero ya la encontré, ¿me la reactivan?"
+    - "Porfa, desbloqueen la tarjeta terminación {last4}"
+    - "Me bloquearon la tarjeta por una compra que sí hice yo, necesito que la liberen"
+    - "¿Me ayudan a volver a activar mi tarjeta de débito?"
+    - "La congelé {date} y ya la quiero usar otra vez"
+    - "desbloqueo de tarjeta ahorita por favor"
+    - "Oigan, mi tarjeta quedó bloqueada por meter mal el NIP, ¿la pueden desbloquear?"
+  es-CO:
+    - "Buenas tardes, regáleme el desbloqueo de la tarjeta"
+    - "Ya apareció la tarjeta que había reportado, quiero habilitarla de nuevo"
+    - "Me colabora quitándole el bloqueo a la tarjeta de crédito"
+    - "Se me bloqueó la clave de la tarjeta débito, ¿me la pueden desbloquear?"
+    - "Quiero reactivar la tarjeta que termina en {last4}"
+    - "El banco me bloqueó la tarjeta por seguridad pero las compras eran mías, necesito que la activen"
+    - "Listo, ya volví del viaje, quiten el bloqueo preventivo"
+    - "activar otra vez mi tarjeta"
+  es-AR:
+    - "Che, desbloqueame la tarjeta que ya la encontré"
+    - "Hola, pausé la tarjeta de crédito y ahora quiero volver a usarla"
+    - "¿Podés reactivar la tarjeta terminada en {last4}?"
+    - "Me bloquearon la débito por equivocarme con el PIN, necesito que la habiliten"
+    - "La tarjeta quedó bloqueada {date} por una compra en el exterior que hice yo, liberala por favor"
+    - "quiero desbloquear la tarjeta de débito"
+    - "Necesito sacar el bloqueo de la tarjeta, tengo que pagar el alquiler"
+    - "Necesito que me destraben la tarjeta hoy mismo"
+  pt-BR:
+    - "Quero desbloquear meu cartão"
+    - "Achei o cartão que tinha bloqueado, dá pra reativar?"
+    - "Por favor, desbloqueiem o cartão final {last4}"
+    - "Meu cartão foi bloqueado por senha errada, preciso liberar"
+    - "Oi, o banco travou meu cartão por uma compra que fui eu que fiz, podem desbloquear?"
+    - "Bloqueei temporariamente {date} e agora quero usar de novo"
+    - "reativar cartão de crédito"
+    - "Beleza, voltei de viagem, pode tirar o bloqueio do cartão"

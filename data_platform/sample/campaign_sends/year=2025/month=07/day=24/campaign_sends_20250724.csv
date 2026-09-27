@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-4FEXG7AZ68Q1DH3KJM46,2025-07-24 06:25:26,2025-07-24,CMP-5S6E6XSEOQ85,CLI-TJIM7P52K5F7,SMS,template_CMP-5S6E6XSEOQ85_1,,Sent,True,True,2025-07-27 04:14:03,False,,,False,,,Mobile,México,,0.0639

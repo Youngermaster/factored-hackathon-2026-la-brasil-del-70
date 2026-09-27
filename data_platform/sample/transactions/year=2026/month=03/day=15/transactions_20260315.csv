@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-IBVQ9ETFDQOKR3MO0Q4O,2026-03-16 03:50:27,2026-03-15,PRD-USBCAP4K97FR,CLI-VHBEU7EEMIV1,Purchase,Health,42668.9,ARS,121.91,ATM,SUC-XHNP3DLP,Laboratorio Central,Health,Spain,Sevilla,Approved,00,False,,,

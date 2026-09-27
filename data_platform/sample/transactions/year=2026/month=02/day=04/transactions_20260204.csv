@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-023CIJMZV2ES7I785NLW,2026-02-04 23:02:57,2026-02-04,PRD-1F6D9RZUC9QO,CLI-DMSDCHOBUHLX,Withdrawal,,415.43,USD,,ATM,SUC-7G8CGE3F,,,México,,Approved,00,False,4.73,,
+TRX-1FR70AMGTD76UZM8JES6,2026-02-04 13:48:37,2026-02-04,PRD-3RQTX2R42FRO,CLI-1AS0INHPK43M,Withdrawal,,375.52,USD,,POS,,,,México,Querétaro,Approved,00,False,24.66,,
+TRX-1WJV2FJ0WOTUZM8PCK4E,2026-02-05 05:44:11,2026-02-04,PRD-W23AA9WQQYUM,CLI-1PQOJNHN9ASF,Withdrawal,,21.57,USD,,POS,,,,México,Tijuana,Approved,00,False,27.9,,
+TRX-JSYZXFNQRIXLQLPLBCL8,2026-02-04 09:09:55,2026-02-04,PRD-FQ1L1Y6064V2,CLI-C0RXL4J0SXGR,Payment,Food,510.84,USD,,Branch,SUC-1PSI5W5X,,,Argentina,Buenos Aires,Approved,00,False,27.8,-0.9691251,-0.5430566

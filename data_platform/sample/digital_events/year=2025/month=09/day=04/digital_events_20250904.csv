@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-WMTXOVHXS06OPM63VOKF,2025-09-04 06:32:13,2025-09-04,CLI-NOC612SZ8VKJ,SES-B3GE5RGZB40SXCV6XD4LG0EJKRX6,PageView,Transaction,Mobile Web,Android,Samsung Internet,,/transfer,Transferir,initiate_transfer,transfer_form,,,180.0,192.0.2.109,Colombia,Cali,True,,,,

@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-ZUJK3YOBCZMP8KJGJFBK,2026-04-23 22:01:27,2026-04-23,CMP-8M9CS2YG8PAT,CLI-P2CRX7C6QTWG,Email,template_CMP-8M9CS2YG8PAT_5,¡Oferta especial en Préstamo Personal!,Sent,True,False,,False,,,False,,,,,,0.0093

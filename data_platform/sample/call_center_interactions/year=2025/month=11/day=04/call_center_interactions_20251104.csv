@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-E2EPUAYZBFOKK99E,2025-11-04 20:05:00,2025-11-04,CLI-7A9F4VIGPO6R,AGT-YF9RO3EJZU,Inbound Call,Phone,Comercial,Comercial,556.0,205.0,True,False,Muy Positivo,0.93,,,False,"PRD-9320TBUCHTNJ,PRD-V249YJ0E03ET",False,True

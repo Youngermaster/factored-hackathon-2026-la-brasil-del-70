@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-493VXQ86THW3QVHY,2026-04-01 00:48:12,2026-03-31,CLI-4QR1L5H7FKTD,AGT-78UF97BVDP,Outbound Call,Phone,Retención,Retención,552.0,,True,False,Negativo,-0.41,,,False,"PRD-0K172B47DRS0,PRD-5JAU0VJ899D3",False,True

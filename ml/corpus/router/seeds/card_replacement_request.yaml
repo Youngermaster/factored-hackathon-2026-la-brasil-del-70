@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: card_replacement_request
+seeds:
+  es-MX:
+    - "Necesito una tarjeta nueva, la mía ya está toda rota"
+    - "Hola, se me dobló la tarjeta y ya no pasa en las terminales, ¿me mandan otra?"
+    - "Quiero reposición de mi tarjeta terminación {last4}"
+    - "Perdí mi tarjeta y ya la bloqueé, ahora quiero que me manden una nueva"
+    - "Mi tarjeta vence este mes, ¿me pueden enviar la renovación?"
+    - "reposición de tarjeta de débito"
+    - "El chip ya no jala, porfa tramítenme un plástico nuevo"
+    - "Oye, quiero pedir otra tarjeta, la mía ya se borró de tanto uso"
+  es-CO:
+    - "Buenos días, necesito que me expidan una tarjeta nueva"
+    - "La tarjeta se me partió, regáleme una de reemplazo"
+    - "Quiero solicitar la reexpedición de la tarjeta débito"
+    - "Me robaron la tarjeta la semana pasada y ya la bloqueé, ¿me mandan otra?"
+    - "Mi tarjeta que termina en {last4} está vencida, necesito la nueva"
+    - "El datáfono no me lee el chip, me colabora con un plástico nuevo"
+    - "Se me dañó la banda magnética, quiero cambiar la tarjeta"
+    - "reemplazo de tarjeta de crédito"
+  es-AR:
+    - "Hola, necesito que me hagan una reimpresión de la tarjeta"
+    - "Che, la tarjeta está hecha pelota, ¿me mandan una nueva?"
+    - "Se me venció la de crédito y no me llegó la nueva, pedímela por favor"
+    - "Quiero pedir reposición de la tarjeta terminada en {last4}"
+    - "Ya la denuncié como robada, ahora quiero que me manden la nueva a casa"
+    - "El chip no funciona más, necesito otra tarjeta"
+    - "tarjeta nueva por deterioro"
+    - "Mi perro mordió la tarjeta y quedó inservible, ¿podés tramitarme otra?"
+  pt-BR:
+    - "Preciso de um cartão novo, o meu quebrou"
+    - "Oi, quero pedir a segunda via do cartão"
+    - "Meu cartão final {last4} tá vencendo, podem mandar outro?"
+    - "Perdi o cartão e já bloqueei, agora quero um novo"
+    - "O chip parou de funcionar, quero solicitar a troca do cartão"
+    - "Solicitar reemissão do cartão de débito"
+    - "O cartão tá todo gasto e a maquininha não lê mais, quero outro"
+    - "Boa tarde, meu cartão venceu e o novo não chegou, podem enviar?"

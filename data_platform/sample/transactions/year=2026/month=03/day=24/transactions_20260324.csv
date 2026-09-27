@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5BVM44HP8YP0YSAVH2IN,2026-03-24 16:36:00,2026-03-24,PRD-D8GGMVJTCKGQ,CLI-IMCRTKL094T5,Payment,Entertainment,1012.14,USD,,ATM,SUC-SCFDICUT,,,México,Querétaro,Approved,00,False,3.42,,
+TRX-D3MOAN74YN91ASF0H5HT,2026-03-24 19:19:38,2026-03-24,PRD-EG3OR9572TN1,CLI-898HYDPSE4K6,Purchase,Entertainment,279.95,USD,,POS,,Cine Premium,Entertainment,México,Guadalajara,Approved,00,False,23.57,-0.9939973,0.7729533
+TRX-RX29G8KPW93PUPRNUGXF,2026-03-24 07:28:19,2026-03-24,PRD-5HZZAKVFR19T,CLI-KKSHE4CEJ1IT,Purchase,Health,320294.92,COP,80.07,POS,,Óptica Visión,Health,Colombia,Cali,Approved,,False,6.57,,

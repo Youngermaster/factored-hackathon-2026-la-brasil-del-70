@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-UQI8SD15CZ80EQ11WG5N,2025-12-30 20:00:47,2025-12-30,PRD-LRKH4MK5OK2V,CLI-N9ZXVIIXZ6JN,Purchase,Health,7375.96,ARS,21.07,ATM,SUC-Y7VHYCDG,,Health,Argentina,Córdoba,Approved,00,False,12.47,,

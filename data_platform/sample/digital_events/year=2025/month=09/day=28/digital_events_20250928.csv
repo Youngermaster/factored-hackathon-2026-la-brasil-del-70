@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-WUFZK5DLVQIU4OADYNML,2025-09-28 06:51:49,2025-09-28,CLI-OTYTZE2FLKFL,SES-562SQUYK734C45JSM5DOQGRFXE6F,PageView,Navigation,Mobile Web,Android,Chrome,,/home,Inicio,view_home,home_page,,,182.0,192.0.2.152,México,Tijuana,True,,,,

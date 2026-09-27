@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: card_status
+seeds:
+  es-MX:
+    - "¿Mi tarjeta está activa?"
+    - "No quiero bloquearla, solo saber si está activa"
+    - "Hola, ¿me pueden decir cuándo vence mi tarjeta terminación {last4}?"
+    - "Intenté pagar en {merchant} y me rechazaron la tarjeta, ¿por qué?"
+    - "¿Sigue bloqueada mi tarjeta o ya se puede usar?"
+    - "estado de mi tarjeta de débito"
+    - "Oigan, ¿ya se venció mi tarjeta? No le veo bien la fecha"
+    - "Porfa, ¿me confirman si la tarjeta que me llegó ya quedó activada?"
+  es-CO:
+    - "¿Me regala el estado de mi tarjeta de crédito?"
+    - "Buenos días, fui a pagar {date} y me salió declinada, ¿qué pasó?"
+    - "Quisiera saber hasta cuándo está vigente la tarjeta"
+    - "¿La tarjeta que termina en {last4} está bloqueada?"
+    - "No me deja comprar por internet con la débito, ¿está inactiva?"
+    - "Solo quiero consultar si la tarjeta está habilitada, no necesito hacer nada más"
+    - "¿Por qué me rechazaron la tarjeta en el datáfono?"
+    - "¿Cuál es la fecha de vencimiento de mi plástico?"
+  es-AR:
+    - "¿Mi tarjeta está habilitada?"
+    - "Che, ¿por qué me rebotó la tarjeta en {merchant}?"
+    - "Decime si la tarjeta terminada en {last4} sigue bloqueada"
+    - "¿Cuándo se me vence la tarjeta de débito?"
+    - "No te pido que la desbloquees, solo quiero saber en qué estado está"
+    - "Me rechazaron un pago con la de crédito, ¿tiene algún problema?"
+    - "Hola, ¿la tarjeta nueva ya está activa o tengo que esperar?"
+    - "estado tarjeta"
+  pt-BR:
+    - "Meu cartão está ativo?"
+    - "Por que meu cartão foi recusado na {merchant}?"
+    - "Quando vence meu cartão de crédito?"
+    - "O cartão final {last4} tá bloqueado?"
+    - "Oi, não quero cancelar nem bloquear, só saber se o cartão tá funcionando"
+    - "Tentei pagar {date} e deu cartão negado, o que aconteceu?"
+    - "Queria confirmar se o cartão novo já foi ativado"
+    - "situação do meu cartão"

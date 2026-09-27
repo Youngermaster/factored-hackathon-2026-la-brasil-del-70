@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0.0",
+  "id": "normal-es-mx-001",
+  "split": "dev",
+  "language": "es",
+  "dialect": "es-MX",
+  "category": "normal",
+  "tags": [
+    "unrecognized_charge"
+  ],
+  "persona_ref": "persona-mx-card",
+  "goal": "Dispute an unrecognized card purchase from three days ago.",
+  "known_facts": {
+    "amount": "1,250 pesos",
+    "merchant": "a market"
+  },
+  "hidden_facts": {
+    "date": "three days ago"
+  },
+  "mode": "scripted",
+  "turns": [
+    {
+      "text": "No reconozco un cargo de 1250 pesos",
+      "action": null,
+      "option_index": null,
+      "advance_clock_seconds": 0
+    },
+    {
+      "text": null,
+      "action": "confirm",
+      "option_index": null,
+      "advance_clock_seconds": 0
+    }
+  ],
+  "simulator_instructions": null,
+  "fixtures": [],
+  "tool_failure_plan": [],
+  "expected_outcome": "resolved",
+  "expected_state_assertions": [
+    {
+      "kind": "case_exists",
+      "transaction_ref": "recent_card_purchase",
+      "reason": null,
+      "status": null
+    }
+  ],
+  "required_disclosures": [
+    {
+      "kind": "case_reference",
+      "value": null
+    },
+    {
+      "kind": "sla",
+      "value": null
+    }
+  ],
+  "forbidden_disclosures": [
+    {
+      "kind": "fraud_score",
+      "value": null
+    }
+  ],
+  "expected_handoff_fields": [],
+  "in_scope": true,
+  "provenance": "team_generated",
+  "review_status": "pending_review"
+}

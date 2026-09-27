@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-6L01UQGUB81XVEZVHP86,2025-10-03 20:20:43,2025-10-03,PRD-KTS7M76I4ESO,CLI-Q6CL8Y1VMVSB,Payment,Entertainment,1521232.03,COP,380.31,ATM,,,,Colombia,Barranquilla,Approved,00,False,19.41,,
+TRX-AD7NCLMWFYOQKWT9NJ41,2025-10-03 09:50:44,2025-10-03,PRD-VX09B0EAAI90,CLI-IMCRTKL094T5,Withdrawal,,366.05,USD,,ATM,SUC-S49Q0IRI,,,México,Querétaro,Approved,,False,14.54,,
+TRX-QLJ2DF3BIUFXY3OMGGUI,2025-10-03 12:51:01,2025-10-03,PRD-KA2VRTUQG3JR,CLI-K0GJBJFDKIBO,Withdrawal,,1031062.65,COP,257.77,Web,,,,Colombia,Bogotá,Approved,00,False,10.63,,

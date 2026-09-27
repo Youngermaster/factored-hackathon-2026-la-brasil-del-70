@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-9ACSR0HHXN90FF31,2025-11-25 06:49:19,2025-11-24,CLI-KDRMF6UI68X1,AGT-WCPI68FFI5,Video,App,Técnico,Técnico,662.0,,False,True,Neutral,0.14,mexican,mexican,False,"PRD-2N5J8S5Q4NQY,PRD-1Q9FI5NNM40C",False,True

@@ -1,0 +1,3 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-5SJSZX1NC27XBCBKFNAG,2025-08-25 21:55:43,2025-08-25,INT-UMPL8QW75NVGKAN0,CLI-H6OV6I0CT5IX,AGT-GF86DSKF59,CSAT,SMS,3,,¿Cómo calificaría la atención brindada?,3.0,,,,,,,20.96,19.55
+SRV-IGNWZF2ICCIMZJ6CF92M,2025-08-26 14:24:00,2025-08-25,INT-FEP38HFB3ZIRRWNY,CLI-JRCTRZ2GTFG8,AGT-CG3PF9BZHZ,CSAT,Email,3,,,,,,,,,,29.67,30.16

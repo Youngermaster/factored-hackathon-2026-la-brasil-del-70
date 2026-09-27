@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-WNFUNEK70DI2K6MU,2026-01-18 13:00:18,2026-01-18,CLI-P22FY6SYK6NO,AGT-G4VQ2XMN69,Video,App,Transaccional,Transaccional,196.0,,True,False,Neutral,-0.01,,,False,,False,True

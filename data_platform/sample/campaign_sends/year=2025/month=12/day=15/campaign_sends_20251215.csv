@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-50NJD8DJW6YITYA20PF2,2025-12-15 20:40:53,2025-12-15,CMP-J48OP2EJE7FW,CLI-END66G0XIF95,Push,template_CMP-J48OP2EJE7FW_4,,Sent,True,True,2025-12-19 12:46:33,False,,,False,,,Mobile,México,,
+SND-5JRZK1YIR2EYLWAQ152K,2025-12-15 22:06:22,2025-12-15,CMP-J48OP2EJE7FW,CLI-BH1ZBAHAHTEN,Push,template_CMP-J48OP2EJE7FW_5,,Sent,True,False,,False,,,False,,,,,,0.0001

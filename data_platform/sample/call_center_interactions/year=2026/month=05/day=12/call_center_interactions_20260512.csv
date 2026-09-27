@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-C5ZGRD425W0FW762,2026-05-12 08:16:19,2026-05-12,CLI-NSTPTDK3BPGH,AGT-8KFHE6XRQ4,Outbound Call,Phone,Queja,Queja,367.0,,False,True,Neutral,-0.19,argentine,argentine,False,,False,True
+INT-VD09K9OKJU1X1GYC,2026-05-13 05:40:01,2026-05-12,CLI-4QR1L5H7FKTD,AGT-V0731LP1QE,Inbound Call,Phone,Técnico,Técnico,283.0,133.0,False,True,Positivo,0.31,,,False,,False,True

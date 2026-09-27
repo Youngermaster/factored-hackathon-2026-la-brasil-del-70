@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-65D9GYFHWXV76SC9XXD4,2025-10-04 09:59:21,2025-10-04,PRD-1JMI57ZE86FN,CLI-NOC612SZ8VKJ,Transfer,,34797320.5,COP,8699.33,POS,,,,Colombia,Cali,Approved,00,False,17.4,,
+TRX-O19SMZKBSAIC5BLVML6J,2025-10-04 12:04:42,2025-10-04,PRD-Z098FMDQQBRD,CLI-YC4WNTUC93XN,Payment,Entertainment,429882.85,ARS,1228.24,ATM,SUC-BMVBUHCL,,,Argentina,Buenos Aires,Approved,00,False,,-34.3784151,-58.5273595
+TRX-OZPR8AR7KII0Z7FEUZGN,2025-10-04 18:16:38,2025-10-04,PRD-57LZ4Y4KBJ4T,CLI-2LQL5P2NJS9B,Purchase,Transport,272.0,USD,,ATM,SUC-YJSI0V1D,Estación de Servicio,Transport,México,Querétaro,Approved,00,False,1.09,,
+TRX-YOET4SUO225V47KGCDZU,2025-10-05 03:44:48,2025-10-04,PRD-1F6D9RZUC9QO,CLI-DMSDCHOBUHLX,Withdrawal,,102.02,USD,,Web,,,,México,Querétaro,Approved,00,False,16.97,,

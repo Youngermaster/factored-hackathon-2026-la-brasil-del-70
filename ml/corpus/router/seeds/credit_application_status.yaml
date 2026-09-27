@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: credit_application_status
+seeds:
+  es-MX:
+    - "¿Cómo va mi solicitud de préstamo?"
+    - "Hola, metí la solicitud de {product} {date} y no me han dicho nada"
+    - "¿Ya aprobaron mi tarjeta de crédito?"
+    - "Quiero saber si ya revisaron mi solicitud de crédito automotriz"
+    - "estatus de mi solicitud de crédito"
+    - "Oigan, llevo dos semanas esperando respuesta del préstamo, ¿en qué va?"
+    - "¿Me rechazaron el crédito o sigue en análisis?"
+    - "No quiero volver a aplicar, solo saber qué pasó con la solicitud que ya hice"
+  es-CO:
+    - "¿En qué va mi solicitud de crédito?"
+    - "Buenas tardes, radiqué la solicitud de {product} y quisiera saber si ya salió"
+    - "Me colabora con el estado del crédito de vivienda que pedí"
+    - "¿Ya hay respuesta de la tarjeta de crédito que solicité {date}?"
+    - "¿Mi crédito de libre inversión ya fue aprobado?"
+    - "Llevo un mes esperando el desembolso del préstamo aprobado, ¿qué pasa con eso?"
+    - "seguimiento solicitud de crédito"
+    - "Sumercé, ¿ya estudiaron mi solicitud?"
+  es-AR:
+    - "¿Cómo viene mi solicitud de préstamo?"
+    - "Hola, pedí {product} {date}, ¿ya está aprobado?"
+    - "Che, ¿salió la tarjeta de crédito que pedí?"
+    - "Decime si ya aprobaron el hipotecario que tramité"
+    - "Hace diez días mandé la solicitud y no tengo novedades"
+    - "¿Me rechazaron el préstamo? No me llegó ningún mail"
+    - "estado de mi solicitud de préstamo"
+    - "Fijate en qué quedó mi pedido de crédito, por favor"
+  pt-BR:
+    - "Como está minha solicitação de empréstimo?"
+    - "Oi, pedi {product} {date} e ainda não tive resposta"
+    - "Meu cartão de crédito foi aprovado?"
+    - "Queria acompanhar a análise do meu financiamento"
+    - "status da proposta de crédito"
+    - "Já faz uma semana que mandei a proposta, cadê a resposta?"
+    - "Meu empréstimo foi negado ou ainda tá em análise?"
+    - "Não quero pedir de novo, só saber como ficou a solicitação que já enviei"

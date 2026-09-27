@@ -1,0 +1,4 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-CMCT9KZKMB9LV9T36S9Z,2026-06-02 08:19:52,2026-06-02,CMP-FY89BSPQB927,CLI-5L6EGAWYR2Q2,WhatsApp,template_CMP-FY89BSPQB927_1,,Sent,True,,,False,,,False,,,,,,0.0389
+SND-ILRD3GQ2YYS5EHJ5E1SY,2026-06-03 00:19:15,2026-06-02,CMP-IB0OD3DV699Y,CLI-NSTPTDK3BPGH,Push,template_CMP-IB0OD3DV699Y_2,,Sent,True,False,,False,,,False,,,,,,0.0004
+SND-QVJ1LB5QR7BVCHMVQSNF,2026-06-02 09:28:40,2026-06-02,CMP-V5QX1R898OIS,CLI-CTY661KC9RAS,SMS,template_CMP-V5QX1R898OIS_1,,Sent,True,False,,False,,,False,,,,,,0.0957

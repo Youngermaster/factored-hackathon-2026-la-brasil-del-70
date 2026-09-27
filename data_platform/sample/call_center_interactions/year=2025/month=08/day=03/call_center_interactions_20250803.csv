@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-LKW1TV00UX3543K3,2025-08-04 01:54:22,2025-08-03,CLI-U8JZASBAZZ8W,AGT-VSNRM7IQIT,Inbound Call,Phone,Transaccional,Transaccional,271.0,0.0,True,False,Neutral,0.15,,,False,PRD-P3IKQVT5RHN1,False,True

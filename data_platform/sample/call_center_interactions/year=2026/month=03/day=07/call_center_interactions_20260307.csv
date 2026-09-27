@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-EOR5ZFGAQHDMN1E2,2026-03-07 15:16:20,2026-03-07,CLI-WKR4P95O4ZKE,AGT-3Z0BAXO1P6,Inbound Call,Phone,Transaccional,Transaccional,162.0,165.0,True,False,Neutral,-0.21,mexican,mexican,False,"PRD-4QN6SL66NVAJ,PRD-0VYONBS5V08S",False,True

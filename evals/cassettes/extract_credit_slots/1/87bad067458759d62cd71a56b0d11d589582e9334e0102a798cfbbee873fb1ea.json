@@ -1,0 +1,34 @@
+{
+  "cassette_id": "87bad067458759d62cd71a56b0d11d589582e9334e0102a798cfbbee873fb1ea",
+  "kind": "structured",
+  "labels": {
+    "case": "out_of_scope",
+    "workflow": "credit"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "¿Cuánto está el dólar hoy?",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-P47VI4M7HAO2Y1WISJ4Y,2025-07-11 17:57:24,2025-07-10,INT-GSVRIRBC87LKY2OT,CLI-U8JZASBAZZ8W,AGT-3QD3LV3C23,CSAT,SMS,3,,¿Qué tan satisfecho está con el servicio recibido?,1.0,,,,,No resolvieron mi problema completamente.,Negative,14.6,36.19

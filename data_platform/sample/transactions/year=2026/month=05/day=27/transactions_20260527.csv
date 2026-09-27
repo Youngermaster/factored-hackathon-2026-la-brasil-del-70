@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2F52KWXF7J74RJ4FOYTW,2026-05-28 05:40:19,2026-05-27,PRD-9NHF15DY0HLK,CLI-J9EWXIOYWJ7R,Purchase,Transport,238.04,USD,,ATM,SUC-N8LPAX0U,,Transport,México,Puebla,Approved,00,False,27.94,,
+TRX-MIGW6C8QEK38BECQSL0W,2026-05-27 07:28:38,2026-05-27,PRD-OSDOMQC8A1GW,CLI-EJXBYCD0J96O,Payment,Food,1479.85,USD,,ATM,SUC-57LRN6RH,,,México,Puebla,Approved,00,False,,,
+TRX-OZAUABKBCHC8PRH9NMF3,2026-05-27 13:04:55,2026-05-27,PRD-J5YQWDINGEK5,CLI-BH1ZBAHAHTEN,Purchase,Food,81.28,USD,,ATM,SUC-F1BZEJXJ,Tienda Don José,Food,Argentina,Rosario,Approved,00,False,16.17,,

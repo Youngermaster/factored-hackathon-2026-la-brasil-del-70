@@ -22,8 +22,7 @@ import sys
 from pathlib import Path
 
 # Variables that must be set before the data and persistence phases can run.
-# The LLM keys stay optional while LLM_PROVIDER=fake; phase 08 moves them here
-# when a live provider is selected.
+# The LLM keys stay optional while LLM_PROVIDER=fake; they move here once the human chooses a live provider.
 REQUIRED: tuple[str, ...] = (
     "AWS_ACCESS_KEY_ID",
     "AWS_SECRET_ACCESS_KEY",

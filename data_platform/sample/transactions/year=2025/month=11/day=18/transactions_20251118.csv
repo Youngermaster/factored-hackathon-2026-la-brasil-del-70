@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-DGSCDKHK0UELW2O77BDO,2025-11-18 23:07:55,2025-11-18,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Withdrawal,,1491118.1,COP,372.78,ATM,SUC-2QR0HN01,,,Colombia,,Approved,,False,24.88,,
+TRX-FPZW80FBO4XAAE1F1Q2W,2025-11-18 06:45:14,2025-11-18,PRD-T65J6M8T8FD6,CLI-IMCRTKL094T5,Payment,Services,1524.68,USD,,ATM,SUC-1PYKK6ZV,,,México,Querétaro,Approved,00,False,,0.4067142,-0.7252573
+TRX-H5IEK525S1JRRZG5MFZ5,2025-11-19 05:36:16,2025-11-18,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Purchase,Food,149319.9,ARS,426.63,POS,,Super Ahorro,Food,Argentina,Córdoba,Approved,00,False,29.41,,
+TRX-RXH48XQOOT3BVFU326IR,2025-11-18 22:58:37,2025-11-18,PRD-TLB7MRH0UTB4,CLI-UWPSMKLGJ4HM,Purchase,Entertainment,209.76,USD,,POS,,Cine Premium,Entertainment,México,Ciudad de México,Approved,00,False,19.71,,

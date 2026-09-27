@@ -1,0 +1,117 @@
+# Router augmentation lexicon (phase 10a). Team-written; not organizer data. The merchant names are the generic
+# names that appear in the synthetic organizer transactions (no person or real company is named).
+# The first value of each slot list is the canonical fill of a seed; augmentation draws the others.
+slots:
+  amount:
+    es-MX: ["500 pesos", "1,250 pesos", "quinientos varos", "mil pesos", "300 varos", "2 mil pesitos", "$850"]
+    es-CO: ["50 mil pesos", "50 lucas", "cien mil pesos", "20.000 pesos", "80 mil", "35 mil pesitos", "$120.000"]
+    es-AR: ["15 lucas", "2000 mangos", "cinco mil pesos", "3.500 pesos", "diez lucas", "una luca", "$ 7.800"]
+    pt-BR: ["R$ 150", "cem reais", "50 conto", "R$ 1.200,00", "trezentos reais", "80 pila", "R$ 45,90"]
+  merchant:
+    es-MX: ["Super Ahorro", "Tienda Don José", "Uber", "Farmacia Salud", "Cine Premium", "Gasolinera Express"]
+    es-CO: ["Mercado Central", "Restaurante El Buen Sabor", "Taxi Seguro", "Óptica Visión", "Internet Plus", "Uber"]
+    es-AR: ["Super Ahorro", "Ferretería", "Streaming Music", "Clínica Médica", "Estación de Servicio", "Uber"]
+    pt-BR: ["Mercado Central", "Super Ahorro", "Uber", "Farmacia Salud", "Boutique Moda", "Cine Premium"]
+  date:
+    es-MX: ["ayer", "el lunes", "el 3 de mayo", "hace dos días", "antier", "el fin de semana", "esta mañana"]
+    es-CO: ["ayer", "el martes", "el 12 de abril", "hace tres días", "anteayer", "el sábado", "esta mañana"]
+    es-AR: ["ayer", "el viernes", "el 5 de junio", "hace dos días", "anteayer", "el finde", "hoy a la mañana"]
+    pt-BR: ["ontem", "na segunda", "no dia 3 de maio", "há dois dias", "anteontem", "no fim de semana", "hoje cedo"]
+  last4:
+    es-MX: ["4821", "0937", "1156", "7702"]
+    es-CO: ["3310", "5528", "0419", "8864"]
+    es-AR: ["2275", "6093", "1480", "9912"]
+    pt-BR: ["7345", "0281", "5566", "4109"]
+  product:
+    es-MX: ["préstamo personal", "tarjeta de crédito", "crédito hipotecario", "crédito de nómina"]
+    es-CO: ["crédito de libre inversión", "tarjeta de crédito", "crédito hipotecario", "préstamo personal"]
+    es-AR: ["préstamo personal", "tarjeta de crédito", "crédito hipotecario", "préstamo prendario"]
+    pt-BR: ["empréstimo pessoal", "cartão de crédito", "financiamento imobiliário", "crédito consignado"]
+
+# Regional slang: whole-word, case-insensitive replacements applied to the canonical text.
+slang:
+  es-MX:
+    dinero: ["lana", "varo"]
+    "por favor": ["porfa", "porfis"]
+    ahora: ["ahorita"]
+    tarjeta: ["plástico"]
+    rápido: ["rapidito"]
+    amigo: ["compa"]
+  es-CO:
+    dinero: ["plata"]
+    "por favor": ["porfa", "hágame el favor"]
+    rápido: ["rapidito"]
+    ayúdeme: ["colabóreme"]
+    ayudar: ["colaborar"]
+  es-AR:
+    dinero: ["guita", "plata"]
+    "por favor": ["porfi"]
+    trabajo: ["laburo"]
+    "fin de semana": ["finde"]
+    amigo: ["chabón"]
+  pt-BR:
+    dinheiro: ["grana"]
+    você: ["vc"]
+    "por favor": ["pfv"]
+    estou: ["tô"]
+    para: ["pra"]
+    está: ["tá"]
+
+# Speech-to-text fillers inserted at word boundaries (robustness set only).
+fillers:
+  es-MX: ["este", "o sea", "eh", "bueno", "pues"]
+  es-CO: ["pues", "eh", "o sea", "mire", "bueno"]
+  es-AR: ["che", "eh", "tipo", "bueno", "o sea"]
+  pt-BR: ["tipo", "né", "então", "olha", "hum"]
+
+# Speech-to-text confusions (seseo, yeismo, reductions), whole-word replacements (robustness set only).
+homophones:
+  es:
+    hice: "ise"
+    vez: "ves"
+    hacer: "aser"
+    haber: "a ver"
+    llegó: "yegó"
+    cancelé: "canselé"
+    necesito: "nesesito"
+    cobraron: "cobraro"
+    hay: "ai"
+    ya: "lla"
+  pt:
+    não: "num"
+    está: "tá"
+    você: "cê"
+    para: "pra"
+    mas: "mais"
+    cartão: "cartaum"
+    preciso: "presiso"
+    fiz: "fis"
+
+# QWERTY neighbours for keyboard typos.
+keyboard:
+  a: "qwsz"
+  b: "vghn"
+  c: "xdfv"
+  d: "serfcx"
+  e: "wsdr"
+  f: "drtgvc"
+  g: "ftyhbv"
+  h: "gyujnb"
+  i: "ujko"
+  j: "huikmn"
+  k: "jiolm"
+  l: "kop"
+  m: "njk"
+  n: "bhjm"
+  o: "iklp"
+  p: "ol"
+  q: "wa"
+  r: "edft"
+  s: "awedxz"
+  t: "rfgy"
+  u: "yhji"
+  v: "cfgb"
+  w: "qase"
+  x: "zsdc"
+  y: "tghu"
+  z: "asx"

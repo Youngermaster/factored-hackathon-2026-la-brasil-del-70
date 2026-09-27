@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-BVP4P73V5Q1XK7VU,2026-01-14 12:36:08,2026-01-14,CLI-3XGV18QB96P9,AGT-JPATDOZLSQ,Inbound Call,Phone,Queja,Queja,512.0,20.0,False,True,Muy Negativo,-1.0,,,False,"PRD-LATBH831X367,PRD-03YNQCV311ME,PRD-67207UFO23LQ",False,True
+INT-IMM2DUVK6QVKUY8T,2026-01-14 18:07:36,2026-01-14,CLI-8QOOAQN2VSCE,AGT-R5961LOEMU,Outbound Call,Phone,Transaccional,Transaccional,416.0,,True,False,Neutral,-0.17,colombian,mexican,False,,False,True

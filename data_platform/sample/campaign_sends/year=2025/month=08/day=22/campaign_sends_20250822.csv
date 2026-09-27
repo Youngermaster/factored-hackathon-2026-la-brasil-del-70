@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-63ME02Y9P9OGZD64BRDR,2025-08-22 08:00:01,2025-08-22,CMP-PMANN9L4T3P4,CLI-ZJCPKZZRXUR8,Push,template_CMP-PMANN9L4T3P4_2,,Sent,True,False,,False,,,False,,,,,,0.0008

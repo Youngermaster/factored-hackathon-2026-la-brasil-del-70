@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-ZOT6MGZ2ZX9BWGJZZNRE,2026-01-05 06:18:09,2026-01-05,PRD-5OAKISYUKZUZ,CLI-VU58CMFRCIP7,Transfer,,819.32,USD,,App,,,,México,Querétaro,Approved,00,False,,,

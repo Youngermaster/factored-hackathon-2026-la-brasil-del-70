@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-I26HIIRUJCLUYILT4UOQ,2026-01-17 17:03:57,2026-01-17,CLI-CGS8YGQUFDAN,SES-7EIVLCLKDDAU0FT0A3QIH8HVA5QG,PageView,Navigation,iOS App,iOS,,3.3.9,/accounts,Mis Cuentas,view_accounts,,,,177.0,203.0.113.142,Colombia,Barranquilla,True,,,,
+EVT-L7I5CWS02IIJHQ859RE3,2026-01-17 17:06:46,2026-01-17,CLI-CGS8YGQUFDAN,SES-7EIVLCLKDDAU0FT0A3QIH8HVA5QG,Logout,Authentication,iOS App,iOS,,3.3.9,/login,Iniciar Sesión,login,login_form,,,,198.51.100.96,Colombia,Barranquilla,True,,,,
+EVT-VKDZTP5XDGHFW8D49E8F,2026-01-17 17:04:09,2026-01-17,CLI-CGS8YGQUFDAN,SES-7EIVLCLKDDAU0FT0A3QIH8HVA5QG,Click,Navigation,iOS App,iOS,,3.3.9,/products,Productos,view_products,products_page,,,,,Colombia,Barranquilla,True,,,,

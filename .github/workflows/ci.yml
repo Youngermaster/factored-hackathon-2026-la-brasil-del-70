@@ -62,6 +62,10 @@ jobs:
           uv run --frozen coverage json -q -o coverage.json
           uv run --frozen coverage report
           uv run --no-project --python 3.12 python scripts/checks/check_coverage_gates.py
+      - name: Generated dbt files are current
+        run: uv run --frozen bank-data codegen --check
+      - name: Pipeline from the committed sample (offline, no credentials)
+        run: make pipeline DATA_SOURCE=sample
 
   web:
     name: web
@@ -121,6 +125,8 @@ jobs:
           version: ${{ env.UV_VERSION }}
       - name: No emoji characters
         run: uv run --no-project --python 3.12 python scripts/checks/check_no_emoji.py
+      - name: Committed data sample within bounds (CLAUDE.md rule 5)
+        run: uv run --no-project --python 3.12 python scripts/checks/check_data_sample.py
       - name: No AI attribution over the full history
         run: scripts/checks/check_no_ai_attribution.sh
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
@@ -155,7 +161,7 @@ jobs:
           cache-dependency-glob: uv.lock
       - name: pip-audit (fails on any known vulnerability)
         run: |
-          uv export --frozen --all-packages --no-emit-workspace --format requirements-txt \
+          uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt \
             -o "${RUNNER_TEMP}/requirements-audit.txt"
           uv run --frozen pip-audit -r "${RUNNER_TEMP}/requirements-audit.txt" \
             --require-hashes --disable-pip --progress-spinner off

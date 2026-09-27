@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-Z4VVGKJL99H87MUKG1QT,2026-02-19 01:57:10,2026-02-18,CMP-LRYA6O66IDFK,CLI-S21M6QBBQ32X,Email,template_CMP-LRYA6O66IDFK_3,¡Oferta especial en Cuenta Ahorro!,Sent,True,True,2026-02-19 23:50:32,False,,,False,,,Mobile,Argentina,,0.0079

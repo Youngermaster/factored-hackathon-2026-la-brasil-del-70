@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-RU01148RWWLBFLYP,2025-10-27 11:58:03,2025-10-27,CLI-1PQOJNHN9ASF,AGT-GV8AQYD95Q,Inbound Call,Phone,Transaccional,Transaccional,180.0,110.0,True,True,Neutral,-0.15,,,False,,False,True

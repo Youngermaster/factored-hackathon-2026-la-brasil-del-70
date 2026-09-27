@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-45E6F5QMVEXTOFQVLGML,2025-10-15 05:36:03,2025-10-14,CMP-IGH5RBBAIJDT,CLI-JRCTRZ2GTFG8,Push,template_CMP-IGH5RBBAIJDT_4,,Sent,True,False,,False,,,False,,,,,,

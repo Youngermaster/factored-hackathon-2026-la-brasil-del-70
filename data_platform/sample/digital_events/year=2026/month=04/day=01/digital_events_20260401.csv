@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-AFR3WAEHBKTXTQ31EXVR,2026-04-01 18:23:34,2026-04-01,CLI-IMCRTKL094T5,SES-N4JJDJEGOH6KC84MN5OY1XZ0GWOH,Click,Navigation,Android App,Android,,2.3.0,/help,Ayuda,view_help,help_page,,,,198.51.100.234,México,Querétaro,True,,,,
+EVT-XQ84G6Z979TY4ZDQSBEK,2026-04-01 18:22:35,2026-04-01,CLI-IMCRTKL094T5,SES-N4JJDJEGOH6KC84MN5OY1XZ0GWOH,Login,Authentication,Android App,Android,,2.3.0,,Iniciar Sesión,login,login_form,,,,,México,Querétaro,True,https://email.marketing.com,email,,

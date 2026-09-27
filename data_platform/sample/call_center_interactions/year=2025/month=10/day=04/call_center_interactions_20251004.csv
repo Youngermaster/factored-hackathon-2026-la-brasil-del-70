@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-0TFM3DDFC0B3CE0K,2025-10-04 21:48:12,2025-10-04,CLI-J9EWXIOYWJ7R,AGT-T0RCZNZEMA,Inbound Call,Phone,Producto,Producto,248.0,122.0,False,True,Neutral,0.2,mexican,mexican,False,,True,True

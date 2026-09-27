@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-WC2DEU1607TXHK27DEYD,2026-03-15 02:52:27,2026-03-14,PRD-KA2VRTUQG3JR,CLI-K0GJBJFDKIBO,Transfer,,13680876.26,COP,3420.22,ATM,SUC-8YXNMWZ7,,,Colombia,Bogotá,Approved,00,False,15.22,,

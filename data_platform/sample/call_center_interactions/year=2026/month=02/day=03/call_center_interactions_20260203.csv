@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-JA2E5HDPAOU593R8,2026-02-04 04:02:14,2026-02-03,CLI-P2CRX7C6QTWG,AGT-4FZILKK4KX,Inbound Call,Phone,Transaccional,Transaccional,171.0,78.0,False,True,Neutral,0.22,mexican,mexican,False,,False,True

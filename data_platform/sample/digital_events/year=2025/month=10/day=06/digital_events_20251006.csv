@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-51UBW94IFVRIYBD9FZ43,2025-10-07 03:47:32,2025-10-06,CLI-KKSHE4CEJ1IT,SES-72XKDV87MHM3BY8QT1JOPH25VMS8,FormSubmit,Transaction,iOS App,iOS,,1.4.4,/payments,Pagar Servicios,,payment_form,,584.38,,203.0.113.123,Colombia,,True,,,,
+EVT-FNVYA6BY9F1XIK9AA2O8,2025-10-07 03:49:57,2025-10-06,CLI-KKSHE4CEJ1IT,SES-72XKDV87MHM3BY8QT1JOPH25VMS8,Logout,Authentication,iOS App,,,1.4.4,/logout,Cerrar Sesión,logout,logout_btn,,,,203.0.113.96,Colombia,,True,,,,
+EVT-P2LMW7D7TCGY7GJ08P91,2025-10-07 03:48:24,2025-10-06,CLI-KKSHE4CEJ1IT,SES-72XKDV87MHM3BY8QT1JOPH25VMS8,PageView,Navigation,iOS App,iOS,,1.4.4,/help,Ayuda,view_help,help_page,,,108.0,198.51.100.54,Colombia,Cali,True,,,,

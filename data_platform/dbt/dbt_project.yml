@@ -1,0 +1,54 @@
+# dbt project for the bank data platform: bronze (sources) -> silver (stg_, silver_) -> gold (serving, ml, marts).
+# Run through `bank-data build` / `bank-data test`, which set the paths and variables below.
+name: bank_data
+version: "1.0.0"
+config-version: 2
+profile: bank_data
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target"]
+
+flags:
+  send_anonymous_usage_stats: false
+  use_colors: false
+  partial_parse: true
+
+vars:
+  # Overridden by `bank-data build`; defaults keep `dbt parse` working without the CLI.
+  gold_dir: "gold"
+  snapshot_date: "2026-06-17"
+  lookback_days: 7
+  sample_customers: 0
+  sample_seed: "bank-data-sample-v1"
+
+seeds:
+  bank_data:
+    +schema: seeds
+    canonical_values:
+      +column_types:
+        domain: varchar
+        source_value: varchar
+        canonical: varchar
+
+models:
+  bank_data:
+    silver:
+      +schema: silver
+      +materialized: table
+    gold:
+      +schema: gold
+      serving:
+        +materialized: external
+        +format: parquet
+      ml:
+        +materialized: table
+      marts:
+        +materialized: table
+
+data_tests:
+  bank_data:
+    +schema: test_results

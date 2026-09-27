@@ -1,0 +1,4 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-B3CSBNDW94GR0A29FTXT,INT-0TFM3DDFC0B3CE0K,2025-10-04,CLI-J9EWXIOYWJ7R,AGT-T0RCZNZEMA,"Cliente: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
+
+Agente: Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}.","Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.","Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}.",es,mexican,0.89,"banco, servicio, cuenta","{""account_numbers"": 2, ""dates"": 0, ""amounts"": 0, ""products"": null}",,Producto,AWS Transcribe,High,248.0

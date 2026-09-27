@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: dispute_status
+seeds:
+  es-MX:
+    - "¿Cómo va mi aclaración del cargo en {merchant}?"
+    - "Hola, levanté una aclaración hace dos semanas y no me han dicho nada"
+    - "Quiero saber en qué quedó mi reclamo por el cajero que no me dio el dinero"
+    - "¿Ya resolvieron la disputa que abrí {date}?"
+    - "estatus de mi aclaración"
+    - "Oigan, ¿ya me van a regresar la lana del cargo que reporté o todavía lo están revisando?"
+    - "Tengo un folio de aclaración abierto, ¿me pueden decir si ya avanzó?"
+    - "Buenas, no quiero abrir otra queja, solo saber cómo va la que ya puse"
+  es-CO:
+    - "Buenas tardes, ¿me regala el estado de mi reclamo?"
+    - "Hace un mes puse una reclamación por un cobro de {amount} y nada que me responden"
+    - "¿Ya hay respuesta sobre la transacción que desconocí?"
+    - "Quisiera saber si ya aprobaron el reclamo del cobro doble"
+    - "¿En qué va la solicitud que radiqué por lo del cajero?"
+    - "Me colabora revisando si mi reclamación ya fue resuelta, por favor"
+    - "Listo, ya puse la queja la semana pasada, ¿cuándo me contestan?"
+    - "seguimiento reclamo {merchant}"
+  es-AR:
+    - "Hola, ¿cómo viene el reclamo que hice por el consumo de {merchant}?"
+    - "Che, desconocí un consumo hace veinte días y todavía no tengo novedades"
+    - "¿Me decís en qué estado está mi desconocimiento?"
+    - "Quiero saber si ya me devolvieron la guita del reclamo del cajero"
+    - "Hice un reclamo {date}, ¿ya lo resolvieron?"
+    - "estado del reclamo"
+    - "Fijate si avanzó mi reclamo por el débito duplicado, por favor"
+    - "No te pido que abras uno nuevo, solo decime si el que tengo ya salió"
+  pt-BR:
+    - "Oi, como está minha contestação da compra na {merchant}?"
+    - "Abri uma contestação há duas semanas e até agora nada"
+    - "Queria saber se já analisaram meu pedido de estorno"
+    - "Tem alguma novidade sobre a reclamação que fiz {date}?"
+    - "cadê a resposta da minha contestação?"
+    - "Minha contestação daquele saque que não saiu já foi resolvida?"
+    - "Boa tarde, gostaria de acompanhar o andamento da disputa de {amount}"
+    - "Não quero abrir outra, só saber se a contestação que já fiz foi aprovada"

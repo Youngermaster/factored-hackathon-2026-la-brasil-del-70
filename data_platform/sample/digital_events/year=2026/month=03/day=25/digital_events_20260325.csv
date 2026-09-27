@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-MG5DHGDOIJG5IUWS9PSR,2026-03-25 17:16:15,2026-03-25,CLI-P22FY6SYK6NO,SES-ZS0BY46X5X5IUWWJ979K91JX6T40,PageView,Product,Desktop Web,Linux,Chrome,,/products/savings,Cuenta de Ahorro,view_product,,,,101.0,198.51.100.197,Argentina,Mendoza,False,,,,
+EVT-W1TDXBIR3T94YSWU38WO,2026-03-25 17:18:27,2026-03-25,CLI-P22FY6SYK6NO,SES-ZS0BY46X5X5IUWWJ979K91JX6T40,Logout,Authentication,Desktop Web,Linux,Chrome,,/logout,Cerrar Sesión,logout,logout_btn,,,,203.0.113.30,Argentina,Mendoza,False,,,,

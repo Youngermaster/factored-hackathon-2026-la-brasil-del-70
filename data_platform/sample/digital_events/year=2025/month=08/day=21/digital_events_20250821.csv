@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-6MTW6C7E8Y6Y992D9YFZ,2025-08-21 14:41:38,2025-08-21,CLI-3XGV18QB96P9,SES-DKFXRFVI0D048OWJWHPX56N8104C,Logout,Authentication,iOS App,iOS,,2.9.0,/login,Iniciar Sesión,login,,,,,,México,Monterrey,True,,,,
+EVT-HGDP7Z8DFXRX1FH1D6XI,2025-08-21 14:40:40,2025-08-21,CLI-3XGV18QB96P9,SES-DKFXRFVI0D048OWJWHPX56N8104C,Login,Authentication,iOS App,iOS,,2.9.0,/login,Iniciar Sesión,,login_form,,,,192.0.2.213,México,Monterrey,True,,,,
+EVT-UVD3EX1WH6FFT3HLR9FR,2025-08-21 14:38:59,2025-08-21,CLI-3XGV18QB96P9,SES-DKFXRFVI0D048OWJWHPX56N8104C,Login,Authentication,iOS App,iOS,,2.9.0,/login,Iniciar Sesión,login,login_form,,,,192.0.2.147,México,,True,https://www.facebook.com,,,

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-WFDS809I4V4PG8M40SWM,2025-11-16 03:40:36,2025-11-15,PRD-H1DSUO9VXK9H,CLI-S21M6QBBQ32X,Transfer,,229798.29,ARS,656.57,ATM,SUC-GTAY0XHL,,,Argentina,Rosario,Approved,00,False,12.74,,

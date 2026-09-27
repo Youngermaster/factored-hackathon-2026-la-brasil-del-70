@@ -1,0 +1,2 @@
+﻿campaign_id,campaign_name,description,campaign_type,campaign_objective,promoted_product,target_segment,target_country,start_date,end_date,budget,campaign_status,expected_conversion_rate
+CMP-FIX-0001,CMP_FIX_CC_Jan2024_0001,Campaña de prueba para Tarjeta Crédito,Email,Cross-sell,Tarjeta Crédito,Basic,Mexico,2023-12-15,2024-02-15,10000.00,Completed,2.5

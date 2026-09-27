@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9W4T3206R7C6O9L12OE5,2026-05-23 17:00:37,2026-05-23,PRD-3O2QE02Z3F4B,CLI-KKSHE4CEJ1IT,Payment,Services,3681037.59,COP,,ATM,SUC-HAC1OZ8F,,,Colombia,Cali,Approved,,False,,,

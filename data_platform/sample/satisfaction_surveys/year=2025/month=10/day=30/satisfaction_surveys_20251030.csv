@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-G88QBIN5XW665NZC02ES,2025-10-31 08:51:13,2025-10-30,INT-N6G7VFXE4TZH84WH,CLI-1AS0INHPK43M,AGT-1HI8LTU9QQ,CSAT,Email,3,,,,¿El tiempo de espera fue aceptable?,5.0,¿Volvería a contactarnos por este canal?,2.0,,,20.14,29.81

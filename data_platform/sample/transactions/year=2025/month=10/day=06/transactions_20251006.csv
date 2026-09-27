@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CZ1XSILQXWJKKJ7QUOV4,2025-10-06 12:20:44,2025-10-06,PRD-90JNLYT1FQAP,CLI-1AS0INHPK43M,Withdrawal,,475.61,USD,,ATM,SUC-9J6GQRJ4,,,México,Querétaro,Approved,00,False,18.04,,

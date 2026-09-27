@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0P92ZY2DEF98P51GGALB,2025-08-28 10:44:10,2025-08-28,PRD-KOP86ODYWL99,CLI-VHBEU7EEMIV1,Withdrawal,,144767.85,ARS,413.62,ATM,SUC-5S93Z8YS,,,Argentina,Buenos Aires,Approved,00,False,23.16,,
+TRX-2W4A7POBDYQ8MIRQ85LQ,2025-08-28 08:53:36,2025-08-28,PRD-Y9NH496IDU4N,CLI-VZJTC6LU907T,Transfer,,706.72,USD,,ATM,SUC-RDJC9IH3,,,México,Guadalajara,Approved,00,False,4.08,,
+TRX-J3WM19AK208ALSU0KLDI,2025-08-29 00:54:37,2025-08-28,PRD-KABMG8XKP7HG,CLI-3XGV18QB96P9,Withdrawal,,298.15,USD,,ATM,SUC-M3Y8BT51,,,México,Monterrey,Declined,14,False,15.66,,
+TRX-PK9HRQP2R8RF6G68NC2A,2025-08-28 15:16:00,2025-08-28,PRD-3MW9MQVBAPP0,CLI-7P0ZUEV7Y4EH,Transfer,,4892.17,USD,,App,,,,México,Puebla,Approved,00,False,,,
+TRX-X9OCKD08KIF8ZI2VPPG7,2025-08-29 02:50:36,2025-08-28,PRD-C5C8XA6Z0A3X,CLI-3XGV18QB96P9,Purchase,Entertainment,225.89,USD,,POS,,Teatro Nacional,Entertainment,México,Monterrey,Approved,00,False,6.28,,

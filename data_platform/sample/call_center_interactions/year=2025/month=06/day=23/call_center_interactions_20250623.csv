@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-NCVMQKV7K65WMDPK,2025-06-24 06:50:01,2025-06-23,CLI-3LBRN1SGWSLJ,AGT-LY2T10AXT8,Inbound Call,Phone,Transaccional,Transaccional,136.0,94.0,True,False,Neutral,0.04,,,False,,False,True

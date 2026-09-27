@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-PH2Z6IXFZXAYQ0RCRYHB,2025-06-26 17:45:58,2025-06-26,CMP-5S6E6XSEOQ85,CLI-KKSHE4CEJ1IT,Push,template_CMP-5S6E6XSEOQ85_1,,Sent,True,False,,False,,,False,,,,,,0.001

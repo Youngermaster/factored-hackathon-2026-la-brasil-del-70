@@ -1,0 +1,4 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-063CHCXVIKWU8UHW710V,2025-07-28 14:24:33,2025-07-28,CMP-8PAOSSK1JN2N,CLI-JHN3W46AKAVA,WhatsApp,template_CMP-8PAOSSK1JN2N_3,,Sent,True,,,False,,,False,,,,,,0.0501
+SND-A1EGEVP6RTG5T236LUQO,2025-07-28 22:41:52,2025-07-28,CMP-5S6E6XSEOQ85,CLI-IZX582QFYSNH,Push,template_CMP-5S6E6XSEOQ85_3,,Sent,True,False,,False,,,False,,,,,,0.0002
+SND-P0HSSMSDW4P9RAP3GP94,2025-07-28 06:16:28,2025-07-28,CMP-4Z5J0NFQM5EO,CLI-8QOOAQN2VSCE,Email,template_CMP-4Z5J0NFQM5EO_1,¡Oferta especial en Cuenta Corriente!,Sent,True,False,,False,,,False,,,,,,0.0026

@@ -1,0 +1,49 @@
+# Bound policy: the clauses each workflow state depends on, fetched by id, never by open retrieval.
+# `common` applies to every state. `{country}` resolves from the verified customer profile, never from text.
+# `auth` is the authentication level the state needs before the evaluator allows anything.
+# The state names are the canonical names for the phase 09 state machines.
+common: [SCOPE-ALL-1, AUTH-ALL-1, AUTH-ALL-2, PRV-ALL-1, PRV-ALL-2, ESC-ALL-1, ESC-ALL-3]
+workflows:
+  account_inquiry:
+    START: {auth: none, clauses: [SCOPE-ALL-2]}
+    IDENTIFY_PRODUCT: {auth: otp_verified, clauses: [ACC-ALL-3]}
+    ANSWER_BALANCE: {auth: otp_verified, clauses: [ACC-ALL-1, ACC-ALL-3]}
+    ANSWER_PAYMENT_STATUS: {auth: otp_verified, clauses: [ACC-ALL-1, ACC-ALL-3]}
+    ANSWER_STATEMENT: {auth: otp_verified, clauses: [ACC-ALL-1, ACC-ALL-2, ACC-ALL-3]}
+    ESCALATE: {auth: none, clauses: ["ESC-{country}-2"]}
+  card_support:
+    START: {auth: none, clauses: [SCOPE-ALL-2]}
+    IDENTIFY_CARD: {auth: otp_verified, clauses: [CRD-ALL-1, CRD-ALL-3]}
+    ANSWER_CARD_STATUS: {auth: otp_verified, clauses: [CRD-ALL-1, CRD-ALL-3]}
+    CONFIRM_BLOCK: {auth: otp_verified, clauses: [CRD-ALL-1, CRD-ALL-2]}
+    EXECUTE_BLOCK: {auth: otp_verified, clauses: [CRD-ALL-1, CRD-ALL-2, INF-ALL-2]}
+    CARD_REQUEST_HANDOFF: {auth: otp_verified, clauses: [CRD-ALL-3, "ESC-{country}-2"]}
+    ESCALATE: {auth: none, clauses: ["ESC-{country}-2"]}
+  dispute:
+    START: {auth: none, clauses: [SCOPE-ALL-2]}
+    LOCATE_TRANSACTION: {auth: otp_verified, clauses: [DSP-ALL-5]}
+    COLLECT_DETAILS:
+      auth: otp_verified
+      clauses: [DSP-ALL-5, "DSP-{country}-1", DSP-ALL-1, DSP-ALL-4, DSP-ALL-3, DSP-ALL-2]
+    CONFIRM_DISPUTE:
+      auth: otp_verified
+      clauses: [DSP-ALL-5, "DSP-{country}-1", DSP-ALL-1, DSP-ALL-4, DSP-ALL-3, DSP-ALL-2, "DSP-{country}-3", "DSP-{country}-2"]
+    CREATE_CASE:
+      auth: otp_verified
+      clauses: [DSP-ALL-5, "DSP-{country}-1", DSP-ALL-1, DSP-ALL-4, DSP-ALL-3, DSP-ALL-2, "DSP-{country}-3", "DSP-{country}-2", INF-ALL-1]
+    OFFER_CARD_BLOCK: {auth: otp_verified, clauses: [CRD-ALL-1, CRD-ALL-2]}
+    EXECUTE_BLOCK: {auth: otp_verified, clauses: [CRD-ALL-1, CRD-ALL-2, INF-ALL-2]}
+    ANSWER_CASE_STATUS: {auth: otp_verified, clauses: ["DSP-{country}-2", INF-ALL-1]}
+    ESCALATE: {auth: none, clauses: ["ESC-{country}-2"]}
+  credit:
+    START: {auth: none, clauses: [SCOPE-ALL-2]}
+    LIST_PRODUCTS: {auth: otp_verified, clauses: [CRE-ALL-1, "CRE-{country}-1", CRE-ALL-3]}
+    PRODUCT_DETAIL: {auth: otp_verified, clauses: [CRE-ALL-1, CRE-ALL-2, "CRE-{country}-1", CRE-ALL-3]}
+    COLLECT_APPLICATION: {auth: otp_verified, clauses: [CRE-ALL-1, CRE-ALL-2, ELG-ALL-1]}
+    PRESENT_ELIGIBILITY:
+      auth: otp_verified
+      clauses: [CRE-ALL-1, CRE-ALL-2, ELG-ALL-1, ELG-ALL-2, ELG-ALL-3, "ELG-{country}-1.1", "ELG-{country}-1.2", ESC-ALL-4]
+    CONFIRM_APPLICATION: {auth: otp_verified, clauses: [CRE-ALL-1, CRE-ALL-2, INF-ALL-3]}
+    SUBMIT_APPLICATION: {auth: otp_verified, clauses: [CRE-ALL-1, CRE-ALL-2, INF-ALL-3]}
+    ANSWER_APPLICATION_STATUS: {auth: otp_verified, clauses: [CRE-ALL-1, INF-ALL-3]}
+    ESCALATE: {auth: none, clauses: ["ESC-{country}-2", ESC-ALL-4]}

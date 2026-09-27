@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-C8GP5AWZ3O5FDOY4T4B2,2025-08-07 21:03:00,2025-08-07,PRD-GAXFHHF40562,CLI-7HIH47RP95JX,Payment,Food,521226.66,ARS,1489.22,Web,,,,Argentina,,Approved,00,False,5.99,,
+TRX-EZ663D70JC4099O5YLH7,2025-08-07 18:09:41,2025-08-07,PRD-NLZ79H62LNBZ,CLI-FY5RJI3Q5D6U,Transfer,,9835.09,USD,,POS,,,,México,Puebla,Approved,00,False,29.74,,
+TRX-IV59AOC6REQSLZUMT2FL,2025-08-07 23:05:53,2025-08-07,PRD-TX0R0F8IPBEI,CLI-EJXBYCD0J96O,Payment,Other,1007.89,USD,,POS,,,,México,Puebla,Pending,05,False,19.68,-0.9313213,0.1690814
+TRX-PGN6QKPE6P5ULHSJOVGU,2025-08-07 16:18:44,2025-08-07,PRD-KHOX2UG0S8DT,CLI-M78UJJ6XFNOT,Transfer,,1161814.97,ARS,3319.47,ATM,SUC-10TO2Y3U,,,Argentina,,Approved,00,False,8.59,,
+TRX-R6V1O78J76RA1NB5D0U6,2025-08-08 01:19:58,2025-08-07,PRD-FU9DT1YQGFNS,CLI-1AS0INHPK43M,Purchase,Food,420.48,USD,,ATM,SUC-KNGCTTUB,Mercado Central,Food,México,Querétaro,Approved,00,False,,0.3665255,
+TRX-T29ZTHTHWLY8AXB7N8Z3,2025-08-07 07:12:08,2025-08-07,PRD-FZL0CHC2XU4Z,CLI-SZ2W0R1BX8S0,Withdrawal,,584954.11,COP,,App,,,,Colombia,Bogotá,Approved,00,False,20.89,,

@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-U24EOUEMY0QH052F,2025-12-02 16:25:41,2025-12-02,CLI-P2CRX7C6QTWG,AGT-ROT1G7EATP,Inbound Call,Phone,Queja,Queja,113.0,76.0,True,False,Negativo,-0.56,mexican,mexican,False,,False,True

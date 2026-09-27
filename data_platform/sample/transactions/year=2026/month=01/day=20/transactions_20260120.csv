@@ -1,0 +1,8 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3JEJUVV35M7YK6SFAIRN,2026-01-20 06:26:28,2026-01-20,PRD-5OAKISYUKZUZ,CLI-VU58CMFRCIP7,Transfer,,992.78,USD,,ATM,,,,México,Querétaro,Approved,00,False,,,
+TRX-92C62ANTW3WK3Z208NO1,2026-01-20 16:11:59,2026-01-20,PRD-KW6U7QA6AVNU,CLI-VHBEU7EEMIV1,Purchase,Food,164530.42,ARS,470.09,ATM,SUC-5YFUX3Z6,,Food,Mexico,Ciudad de México,Approved,00,False,8.03,,
+TRX-DFO1G5NP58LBGBPZ5WU6,2026-01-20 13:16:45,2026-01-20,PRD-DIDXZB6DYPSB,CLI-CTY661KC9RAS,Transfer,,32951337.82,COP,8237.83,ATM,SUC-4IFX1CUR,,,Colombia,Medellín,Approved,00,False,28.29,4.8295164,-74.6183085
+TRX-H9WKZ3O31OO5UHWQM4U6,2026-01-20 06:08:50,2026-01-20,PRD-U0YYWRU0JEEI,CLI-9MNRLM8SP9QI,Deposit,,298.62,USD,,POS,,,,México,Ciudad de México,Approved,00,False,16.87,-0.4059356,-0.2273093
+TRX-TAWBLYC3ZNVBPRCSMMR3,2026-01-20 11:33:33,2026-01-20,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Transfer,,2039765.27,ARS,5827.9,POS,,,,Argentina,Córdoba,Approved,00,False,29.27,,
+TRX-U30JEVI1BIAU2SLUR2QJ,2026-01-20 17:29:34,2026-01-20,PRD-EI4T0TUL807P,CLI-6VCS2LIRSE4Y,Deposit,,4645022.53,COP,1161.26,POS,,,,Argentina,Córdoba,Approved,00,False,22.47,3.8741418,
+TRX-XSOVBDP7JDFA6YV0054E,2026-01-20 08:58:00,2026-01-20,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Payment,Services,865.16,USD,,POS,,,,México,,Approved,00,False,,,

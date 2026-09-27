@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-CB9SIX44Y6XDKRXBUHV0,2026-03-12 22:38:05,2026-03-12,CLI-AMN80XXN1DT6,SES-I54R2ZSFGNQK6FIV7SMHG84CO8Z8,PageView,Transaction,Desktop Web,Windows,Edge,,/payments,Pagar Servicios,initiate_payment,payment_form,,,296.0,192.0.2.228,México,Querétaro,False,,,,
+EVT-F40HLBLBR5SLNQ6IY0MZ,2026-03-12 22:43:04,2026-03-12,CLI-AMN80XXN1DT6,SES-I54R2ZSFGNQK6FIV7SMHG84CO8Z8,Logout,Authentication,Desktop Web,Windows,Edge,,/logout,Cerrar Sesión,logout,,,,,198.51.100.221,México,Querétaro,False,,,,

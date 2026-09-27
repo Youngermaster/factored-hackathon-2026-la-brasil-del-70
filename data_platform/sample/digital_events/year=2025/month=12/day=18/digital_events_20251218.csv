@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-15FW8LO80TJ70TEZXAEZ,2025-12-18 10:25:51,2025-12-18,CLI-Y15WQL0D9JH4,SES-705OL6Q60U7ITHRU8VK6UOEQ101Y,Logout,Authentication,Android App,Android,,3.3.1,/logout,Cerrar Sesión,,logout_btn,,,,192.0.2.42,Argentina,Buenos Aires,True,,,,
+EVT-NBBYTEL4I6F1RI2TZ5JG,2025-12-18 10:23:16,2025-12-18,CLI-Y15WQL0D9JH4,SES-705OL6Q60U7ITHRU8VK6UOEQ101Y,Click,Product,Android App,Android,,3.3.1,/products/credit-card,Tarjeta de Crédito,view_product,cc_product,,,,192.0.2.226,Argentina,,True,,,,

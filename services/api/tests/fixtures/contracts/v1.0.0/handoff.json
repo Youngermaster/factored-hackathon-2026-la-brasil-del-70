@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "handoff_id": "ho-000001",
+  "created_at": "2026-06-10T15:00:00Z",
+  "conversation_ref": "conv-000001",
+  "case_ref": "case-000001",
+  "state_at_escalation": "CHECK_ELIGIBILITY",
+  "language": "es",
+  "jurisdiction": "MX",
+  "customer_ref": "CUS-A-0001",
+  "auth": {
+    "level": "otp_verified",
+    "expires_at": "2026-06-10T15:45:00Z"
+  },
+  "request": {
+    "summary": "Customer disputes an unrecognized card purchase.",
+    "intent": "dispute_new"
+  },
+  "verified_facts": [
+    {
+      "fact": "Purchase of 1250.00 MXN on 2026-06-07",
+      "source": "transactions:TXN-A-0001"
+    }
+  ],
+  "actions_taken": [
+    {
+      "action": "create_dispute_case",
+      "target": "transactions:TXN-A-0001",
+      "confirmed": true,
+      "status": "executed",
+      "verification": "verified",
+      "evidence": "dispute_cases:case-000001"
+    }
+  ],
+  "policy_basis": [
+    "ESC-MX-1.2@1"
+  ],
+  "escalation_reason": {
+    "code": "legal_or_regulator_mention",
+    "detail": "Customer mentioned the regulator."
+  },
+  "open_questions": [
+    "Whether the customer still holds the physical card."
+  ],
+  "customer_sentiment": "unknown",
+  "priority": "high",
+  "sla_due": "2026-06-11T15:00:00Z"
+}

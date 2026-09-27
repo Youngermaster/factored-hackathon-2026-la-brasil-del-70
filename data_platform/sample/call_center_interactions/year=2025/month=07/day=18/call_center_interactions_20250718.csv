@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-JVUP8O45QCV9GUX9,2025-07-18 18:40:07,2025-07-18,CLI-IZX582QFYSNH,AGT-JPMUUWJV12,Inbound Call,Phone,Retención,Retención,420.0,207.0,True,False,Neutral,-0.2,argentine,argentine,False,"PRD-AH8884PQ6X0G,PRD-EZRAPP02EGL4,PRD-R7BOX3IDN0KZ",False,True

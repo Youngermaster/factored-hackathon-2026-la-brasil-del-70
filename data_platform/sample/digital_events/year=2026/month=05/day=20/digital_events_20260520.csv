@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-9XQOKBZF1KMHZDD5BZA1,2026-05-20 19:25:17,2026-05-20,CLI-P22FY6SYK6NO,SES-GKPYDWJVIBWOS5E93KPW2XOT82TW,Error,Transaction,Desktop Web,Windows,Chrome,,/transactions,Mis Movimientos,view_transactions,transactions_page,,,,192.0.2.229,Argentina,Mendoza,False,,,,

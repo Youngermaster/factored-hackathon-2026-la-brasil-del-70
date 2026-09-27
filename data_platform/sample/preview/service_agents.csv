@@ -1,0 +1,11 @@
+agent_id,employee_code,first_name,last_name,email,phone,native_accent,country_of_origin,assigned_branch_id,agent_type,experience_level,languages,specialty,hire_date,avg_csat,total_monthly_interactions,agent_status,work_shift
+AGT-06AWFQDRXK,E94095,Lefe Rezasi,Rito Vabeme,lefe.rito08@example.com,+54 9 42 2667 4345,mexican,Mexico,,Phone,Specialist,"español, inglés",,2015-07-27,4.66,383.0,Active,Afternoon
+AGT-0HSFPWDJF1,E67185,Mame,Femi Zabe,mame.femi46@example.com,+54 8 31 0728 5123,mexican,Mexico,SUC-PTY454ZL,Phone,Mid-Senior,español,,2024-07-12,3.74,780.0,Active,Afternoon
+AGT-0O9BVZZ68Z,E54251,Latafa,Tave Sejo,latafa.tave29@example.com,+54 5 78 6710 7887,argentine,Argentina,SUC-UY6EQAUH,In-Person,Specialist,español,,2014-12-06,4.85,326.0,Active,Rotating
+AGT-1HI8LTU9QQ,E19434,Farizo Reli,Luvita Tonome,farizo.luvita20@example.com,+57 136 084 3521,colombian,Colombia,SUC-GQD7QHK3,Phone,Specialist,español,,2020-10-09,4.55,694.0,Active,Morning
+AGT-1JJ2DET54K,E98617,Letiri,Defeto Vava,letiri.defeto05@example.com,+57 501 945 8693,colombian,Colombia,SUC-383LA1MY,In-Person,Specialist,español,Cobranza,2018-01-13,3.85,741.0,Active,Morning
+AGT-2TAGK048H3,E72107,Jorite,Bebe Sazafe,jorite.bebe81@example.com,+54 7 24 6429 0600,argentine,Argentina,,Hybrid,Senior,"español, inglés, portugués",Retención,2022-10-29,4.26,,Active,Morning
+AGT-2Z4O3TCODK,E25401,Datode,Nemi Mojo,datode.nemi77@example.com,+57 552 624 9731,colombian,Colombia,SUC-FBF261GB,Phone,Specialist,español,,2019-10-16,4.45,592.0,Active,Night
+AGT-34TVYJH4ZG,E24331,Lesojo,Veza Sifate,lesojo.veza19@example.com,+54 6 82 0424 0642,mexican,Mexico,SUC-X9OXEJAK,Phone,Specialist,español,Quejas y Reclamos,2020-10-21,4.65,615.0,Active,Morning
+AGT-3QD3LV3C23,E76632,Figa,Vame Tomiva,figa.vame86@example.com,+54 8 44 4061 4450,mexican,Mexico,,Phone,Senior,"español, inglés",Soporte Técnico,2022-09-19,4.93,304.0,Active,Night
+AGT-3QQOA60CO9,E93797,Zoro,Sojano Leta,zoro.sojano84@example.com,,argentine,Argentina,SUC-F4DCVKDX,Phone,Specialist,español,Soporte Técnico,2015-01-06,4.47,537.0,Active,Afternoon

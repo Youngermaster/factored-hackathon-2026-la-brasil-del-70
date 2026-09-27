@@ -1,0 +1,4 @@
+﻿branch_id,branch_code,branch_name,branch_type,address,city,state,country,postal_code,geographic_zone,phone,email,opening_time,closing_time,has_atms,atm_count,has_teller_windows,teller_window_count,latitude,longitude,branch_opening_date,branch_status
+BR-FIX-001,S9001,Fixture Branch Centro,Main,Calle Fixture 1,Ciudad de México,Ciudad de México,México,01000,Urbana,+52 55 0000 0001,branch1@example.com,09:00:00,17:00:00,True,2,True,3,19.4326077,-99.1332080,2001-01-01,Active
+BR-FIX-002,S9002,Fixture Branch Norte,Express,Carrera Fixture 2,Bogotá,Cundinamarca,Colombia,110111,Urbana,+57 1 000 0002,branch2@example.com,08:00:00,18:00:00,True,1,True,2,4.7109886,-74.0720920,2005-05-05,Active
+BR-FIX-003,S9003,Fixture Branch Sur,Premium,Avenida Fixture 3,Buenos Aires,Ciudad Autónoma de Buenos Aires,Argentina,C1000,Urbana,+54 11 0000 0003,,09:30:00,17:30:00,True,3,True,4,-34.6036844,-58.3815591,2010-10-10,Temporarily Closed

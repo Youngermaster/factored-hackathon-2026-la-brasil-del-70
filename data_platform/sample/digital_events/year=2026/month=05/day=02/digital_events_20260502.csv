@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-8G7BHNL6224J1U6PANOC,2026-05-02 21:12:11,2026-05-02,CLI-S21M6QBBQ32X,SES-91KFJEAZF6GS631DYWKQGNIKQ37F,Click,Navigation,Android App,Android,,5.4.3,/home,Inicio,view_home,home_page,,,,203.0.113.3,Argentina,Rosario,True,,,,
+EVT-SMIC0FJ6K21P2BPTGLQH,2026-05-02 21:09:54,2026-05-02,CLI-S21M6QBBQ32X,SES-91KFJEAZF6GS631DYWKQGNIKQ37F,Login,Authentication,Android App,Android,,5.4.3,,Iniciar Sesión,login,login_form,,,,203.0.113.250,Argentina,Rosario,True,,,,
+EVT-Z4HEW7VHBWPOUG6DNCNP,2026-05-02 21:11:26,2026-05-02,CLI-S21M6QBBQ32X,SES-91KFJEAZF6GS631DYWKQGNIKQ37F,Click,Navigation,Android App,Android,,5.4.3,/home,Inicio,view_home,home_page,,,,198.51.100.208,Argentina,Rosario,True,,,,

@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-U5FXGAIPXC9H43Y5RZ1H,2026-02-19 06:38:52,2026-02-19,CLI-J9EWXIOYWJ7R,SES-BVVWDFKXBGBJKX8PCBS61UMWCX4M,Logout,Authentication,iOS App,iOS,,4.8.6,/login,Iniciar Sesión,login,login_form,,,,192.0.2.188,México,Puebla,True,,,,

@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-FIX-0001,2024-01-01 15:30:00,2024-01-01,CLI-FIX-0001,AGT-FIX-01,Inbound Call,Phone,Transaccional,Transaccional,300.0,30.0,True,False,Neutral,0.1,mexican,mexican,False,PRD-FIX-CC01,True,True
+INT-FIX-0002,2024-01-01 17:00:00,2024-01-01,CLI-FIX-0002,AGT-FIX-01,Chat,Web Chat,Queja,Queja,,30.0,False,True,Negativo,-0.6,colombian,colombian,True,,True,True

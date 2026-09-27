@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3NZ8LDJ7FTHHKK3FRG0Y,2025-09-07 20:17:18,2025-09-07,PRD-KA2VRTUQG3JR,CLI-K0GJBJFDKIBO,Transfer,,34468892.65,COP,8617.22,Web,,,,Colombia,Bogotá,Approved,00,False,11.14,,
+TRX-5GLBVQ52XZEVQ51HNU45,2025-09-07 12:04:45,2025-09-07,PRD-P6L336LQ1NDM,CLI-ZJCPKZZRXUR8,Purchase,Services,665979.42,COP,166.49,ATM,SUC-HAC1OZ8F,Servicios Públicos,Services,Colombia,,Approved,00,False,20.39,,
+TRX-GTOF567OP7EKDF90STTC,2025-09-07 07:03:49,2025-09-07,PRD-AUH9G8MO202D,CLI-ZJCPKZZRXUR8,Transfer,,24661697.65,COP,6165.42,Web,,,,Colombia,Medellín,Approved,00,False,11.39,,
+TRX-PI7LP6KW3QA7BV36LM6F,2025-09-07 06:24:32,2025-09-07,PRD-KSTY237L1T0W,CLI-VZJTC6LU907T,Purchase,Food,339.89,USD,,ATM,SUC-QMYSBASD,Tienda Don José,Food,México,Guadalajara,Approved,00,False,,0.8583311,
+TRX-V0ZYOAUKQ52B1LHGYCNQ,2025-09-07 10:00:19,2025-09-07,PRD-W0SEEA2Y41Q1,CLI-AKACM6D5362F,Withdrawal,,52.47,USD,,POS,,,,México,Ciudad de México,Approved,00,False,5.62,,

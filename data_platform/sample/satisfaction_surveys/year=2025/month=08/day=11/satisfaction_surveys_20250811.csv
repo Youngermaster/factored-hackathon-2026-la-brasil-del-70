@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-KDIDALLDC8AZANXFFUSU,2025-08-12 04:07:47,2025-08-11,INT-76RJN6Y25D9XHAMP,CLI-3XGV18QB96P9,AGT-L9LMIGUHNZ,CSAT,SMS,3,,¿Cómo calificaría la atención brindada?,3.0,¿El tiempo de espera fue aceptable?,2.0,,,,,21.71,18.33

@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-BPO0RWBAHASYRRI3LBGH,2025-10-15 12:36:01,2025-10-15,CLI-5L6EGAWYR2Q2,SES-1BVJFAZV5FFTWXK20GH4AY3R1JWS,Login,Authentication,Android App,Android,,5.2.0,/logout,Cerrar Sesión,logout,logout_btn,,,,198.51.100.229,Argentina,,True,https://email.marketing.com,email,email,spring_promo

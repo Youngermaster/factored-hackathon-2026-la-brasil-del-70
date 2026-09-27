@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-6BB23OEM3N7L8SFD97BL,2026-01-18 21:04:06,2026-01-18,PRD-1F6D9RZUC9QO,CLI-DMSDCHOBUHLX,Payment,Entertainment,908.05,USD,,Branch,SUC-F1BZEJXJ,,,México,Querétaro,Approved,00,False,15.54,,
+TRX-IZ0WOKY0LHSM1V6XGANN,2026-01-18 10:30:40,2026-01-18,PRD-9NHF15DY0HLK,CLI-J9EWXIOYWJ7R,Purchase,Services,360.25,USD,,App,,Cable TV,,México,Puebla,Approved,00,False,10.09,,
+TRX-OA8ICBNWPYQ59YF1GA0O,2026-01-18 13:41:50,2026-01-18,PRD-ODJLM09U1GII,CLI-IMCRTKL094T5,Purchase,Health,180.8,USD,,POS,,Farmacia Salud,Health,México,Querétaro,Approved,00,False,5.97,,

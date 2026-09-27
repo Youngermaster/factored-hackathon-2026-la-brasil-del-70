@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-A54HL8XEL2QEZ1HYNQCB,2025-11-12 13:17:11,2025-11-12,PRD-H4DCLYJJ62SW,CLI-5L6EGAWYR2Q2,Payment,Transport,84419.62,ARS,241.2,Web,,,,Argentina,Córdoba,Declined,54,False,25.67,,
+TRX-AUDK51VSOOSWMM69SQM5,2025-11-12 20:37:49,2025-11-12,PRD-7N3R25GSYY9B,CLI-ODH9G3RG7J9J,Purchase,Food,230949.06,COP,57.74,Web,,Tienda Don José,Food,Colombia,Cali,Approved,00,False,1.05,,
+TRX-PZOCN6KT6HH147D0U7KS,2025-11-12 10:39:52,2025-11-12,PRD-YHFXDS3BPTK6,CLI-6VCS2LIRSE4Y,Transfer,,11263756.83,COP,2815.94,POS,,,,Colombia,Medellín,Approved,00,False,16.78,,
+TRX-V0G1ENQECYDEHCCPO8WT,2025-11-12 09:00:23,2025-11-12,PRD-OSL49HPKW0E1,CLI-7HIH47RP95JX,Purchase,Transport,99202.0,ARS,283.43,POS,,Gasolinera Express,Transport,Argentina,Rosario,Approved,00,False,6.98,-34.060124,-58.3104504
+TRX-Z5HB31M6M34VPYBVXRZW,2025-11-12 14:29:11,2025-11-12,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Withdrawal,,108216.35,ARS,309.19,ATM,SUC-XHNP3DLP,,,Argentina,Córdoba,Approved,00,False,27.72,,

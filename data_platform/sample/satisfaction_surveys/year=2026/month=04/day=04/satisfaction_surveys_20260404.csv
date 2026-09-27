@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-BN3FDSLIDPYTESYOPZY8,2026-04-04 23:01:38,2026-04-04,INT-2GMPVLDZJHFJ9GTT,CLI-7HT38ZKBZB3M,AGT-785O4C5VDM,NPS,App,3,Detractor,,,¿El tiempo de espera fue aceptable?,3.0,,,El agente no fue muy claro en sus explicaciones.,Negative,17.91,19.67

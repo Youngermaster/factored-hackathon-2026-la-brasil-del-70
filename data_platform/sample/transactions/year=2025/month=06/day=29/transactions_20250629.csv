@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-O176Z0CO53P4XTO3499D,2025-06-29 22:50:58,2025-06-29,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Withdrawal,,1358888.74,COP,339.72,POS,,,,Colombia,,Approved,00,False,28.7,5.2929424,-74.0478252

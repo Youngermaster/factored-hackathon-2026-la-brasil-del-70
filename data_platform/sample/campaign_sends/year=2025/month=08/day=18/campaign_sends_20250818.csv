@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-VTRQ1Y9ZX59KUMKA758Q,2025-08-18 17:47:52,2025-08-18,CMP-IGH5RBBAIJDT,CLI-1DC1593XLI10,Push,,,Sent,True,True,2025-08-22 05:37:48,False,,,False,,,Desktop,México,,0.0005

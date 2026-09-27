@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3GFZSP1RA5P9DFAZ4NOK,2026-03-13 22:46:56,2026-03-13,PRD-90JNLYT1FQAP,CLI-1AS0INHPK43M,Purchase,Food,232.47,USD,,Transfer,,Super Ahorro,Food,México,Querétaro,Approved,00,False,19.6,,
+TRX-J4GI7A00R4VU63U983N3,2026-03-13 22:32:59,2026-03-13,PRD-RYP56C9I3NDP,CLI-VU58CMFRCIP7,Withdrawal,,437.38,USD,,App,,,,Spain,,Approved,00,False,3.16,,
+TRX-OFUZ3BI2UC1LOO7BNH1W,2026-03-13 12:43:57,2026-03-13,PRD-HVNGK4YXZUS5,CLI-7P0ZUEV7Y4EH,Withdrawal,,78.29,USD,,POS,,,,México,Puebla,Approved,00,False,,,

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-787ZWI8N8EL87AZJ32QB,2025-09-18 00:19:06,2025-09-17,PRD-6522F5GP0394,CLI-END66G0XIF95,Payment,Entertainment,348.98,USD,,POS,,,,México,Ciudad de México,Approved,00,False,17.57,0.9314564,0.0501535

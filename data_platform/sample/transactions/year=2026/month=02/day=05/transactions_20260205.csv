@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-RV4GXTWOJ109KABVA0U6,2026-02-05 22:25:52,2026-02-05,PRD-LRKH4MK5OK2V,CLI-N9ZXVIIXZ6JN,Purchase,Other,95430.84,ARS,272.66,ATM,SUC-OSJVEL9O,Ferretería,Other,Argentina,Córdoba,Approved,,False,0.3,,

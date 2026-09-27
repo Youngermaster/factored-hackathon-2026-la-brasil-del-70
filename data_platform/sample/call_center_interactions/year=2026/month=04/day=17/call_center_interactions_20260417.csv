@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-YN1R6WQDX3MKFPKB,2026-04-17 10:46:37,2026-04-17,CLI-898HYDPSE4K6,AGT-JMDX6MHRX7,Inbound Call,Phone,Producto,Producto,156.0,42.0,True,False,Neutral,0.01,mexican,mexican,False,,False,True

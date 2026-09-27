@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-BW95O6QWUQR96GHNZXM6,2025-09-20 17:44:51,2025-09-20,PRD-9HIQLRR3F9Y1,CLI-CGS8YGQUFDAN,Withdrawal,,1519915.95,COP,379.98,POS,,,,Colombia,Barranquilla,Approved,00,False,2.11,3.8947324,-74.4193761
+TRX-E82I2KGDM92KC0OX6PNS,2025-09-20 20:35:09,2025-09-20,PRD-DIDXZB6DYPSB,CLI-CTY661KC9RAS,Deposit,,10181536.73,COP,2545.38,ATM,SUC-H2ROE7C8,,,Colombia,Medellín,Approved,00,False,28.67,4.07615,-73.7187691
+TRX-PI7Q66XXSAF53IJZMI36,2025-09-20 07:31:56,2025-09-20,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Deposit,,846.59,USD,,POS,,,,México,Ciudad de México,Approved,00,False,12.77,0.9960973,0.3964519
+TRX-ZCMRALT20292WT5U1YC0,2025-09-20 18:29:58,2025-09-20,PRD-83SYEXZILUH3,CLI-3XGV18QB96P9,Purchase,Food,496.68,USD,,POS,,Tienda Don José,Food,México,Monterrey,Approved,00,False,20.25,,

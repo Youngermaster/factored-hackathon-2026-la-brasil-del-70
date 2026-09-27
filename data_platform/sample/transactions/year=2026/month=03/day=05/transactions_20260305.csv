@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-WS8TQ3D7243DWU0D9IJH,2026-03-05 10:07:02,2026-03-05,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Transfer,,1348130.74,ARS,3851.8,POS,,,,Argentina,Córdoba,Approved,00,False,27.69,-34.1921634,-58.631421

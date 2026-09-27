@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FL4N876GOCG4RUYE6E6Y,2025-12-27 16:26:19,2025-12-27,PRD-J5YQWDINGEK5,CLI-BH1ZBAHAHTEN,Withdrawal,,231.3,USD,,ATM,,,,México,,Approved,00,False,2.42,0.2883446,-0.25

@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-BAGCS4VVIHG1PSYVGGBT,2026-04-06 15:33:56,2026-04-06,PRD-KRZVMYL7PDFC,CLI-FY5RJI3Q5D6U,Withdrawal,,393.71,USD,,ATM,SUC-8XAGRKOC,,,Mexico,Guadalajara,Approved,00,False,0.35,0.3075706,0.3460067
+TRX-FZU36T0B7S5YXF0AIP79,2026-04-07 04:58:11,2026-04-06,PRD-P1QA1JICBGAH,CLI-WKR4P95O4ZKE,Payment,Services,924.94,USD,,ATM,SUC-P3KNB4PY,,,México,,Approved,00,False,29.59,,
+TRX-GVBEGUE121K9VS18W17S,2026-04-07 01:20:12,2026-04-06,PRD-RVCJMMI3EZIU,CLI-TRSQ3XMFRJAC,Purchase,Food,190.94,USD,,POS,,Restaurante El Buen Sabor,,México,,Approved,00,False,,,
+TRX-QPXMWH6GY6PI262NR0A5,2026-04-06 11:54:31,2026-04-06,PRD-ODJLM09U1GII,CLI-IMCRTKL094T5,Purchase,Services,56.07,USD,,ATM,SUC-KX44GJKB,Cable TV,Services,México,Querétaro,Approved,00,False,6.15,,

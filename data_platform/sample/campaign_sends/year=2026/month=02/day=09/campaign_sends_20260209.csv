@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-9F4U4NCX8BJIOJ8NJ1BE,2026-02-09 22:34:20,2026-02-09,CMP-KTY6BSPN9COB,CLI-7HIH47RP95JX,Email,template_CMP-KTY6BSPN9COB_5,¡Oferta especial en Seguro!,Sent,True,False,,False,,,False,,,,,,0.0081
+SND-VSCHY9C75CQP78DE7FG2,2026-02-10 02:30:53,2026-02-09,CMP-KTY6BSPN9COB,CLI-S21M6QBBQ32X,Email,template_CMP-KTY6BSPN9COB_4,¡Oferta especial en Seguro!,Bounced,False,,,False,,,False,,,,,Invalid email address,0.0015

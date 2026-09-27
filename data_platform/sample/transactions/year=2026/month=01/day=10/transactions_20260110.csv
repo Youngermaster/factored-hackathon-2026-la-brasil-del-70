@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5EGOT2E909V9C8DJG7J9,2026-01-10 20:45:03,2026-01-10,PRD-FJB80FBRBO6Y,CLI-QZGUG3KBZ2ZG,Withdrawal,,487.15,USD,,ATM,SUC-JRR5Z8WK,,,México,Tijuana,Approved,00,False,6.66,,

@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-30S7O3WK8FFT4WW5Z8CS,2026-06-03 00:21:52,2026-06-02,PRD-YWV4A7OL3R5I,CLI-AKACM6D5362F,Transfer,,1884.13,USD,,ATM,SUC-5FDGLKJX,,,Colombia,Cali,Approved,00,False,20.36,,
+TRX-3NDNP7EPGVHOYC1WK7M5,2026-06-02 14:54:26,2026-06-02,PRD-3AITDB3MSAZP,CLI-1DC1593XLI10,Withdrawal,,294.93,USD,,POS,,,,México,Monterrey,Approved,00,False,29.92,,
+TRX-CPGSR1GCBEUNUX9AF61S,2026-06-02 17:17:54,2026-06-02,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Purchase,Food,113.77,USD,,POS,,,Food,Colombia,Cali,Declined,14,False,,,
+TRX-HPQIS6Q4Q0YNIZKQS4VA,2026-06-03 04:53:30,2026-06-02,PRD-KHOX2UG0S8DT,CLI-M78UJJ6XFNOT,Transfer,,2267030.22,ARS,6477.23,POS,,,,Argentina,Córdoba,Approved,00,False,,,
+TRX-STA04TG3HS8U9LJ3BLAL,2026-06-02 06:45:16,2026-06-02,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Purchase,Health,118525.22,ARS,338.64,ATM,SUC-F321UEME,Laboratorio Central,Health,Argentina,Rosario,Approved,00,False,17.83,,
+TRX-UI1GL9H8ZV9SJK5RBGX2,2026-06-02 10:51:17,2026-06-02,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Payment,Food,3814506.43,COP,953.63,Web,,,,Colombia,Bogotá,Approved,00,False,13.02,,

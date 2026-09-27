@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-0HYS310B3LTCZT6Z3GCG,2026-04-10 03:56:34,2026-04-09,INT-VDARVTHGQJ40K1TX,CLI-6VCS2LIRSE4Y,AGT-WTHHY9FLGT,CSAT,Email,3,,¿Cómo calificaría la atención brindada?,1.0,¿El tiempo de espera fue aceptable?,,,,El agente no fue muy claro en sus explicaciones.,Negative,18.35,31.79

@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-G9YQIJ6XVK5Y8W3ZMMR6,2025-12-29 16:37:34,2025-12-29,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Purchase,Entertainment,483.27,USD,,ATM,SUC-1C51KLB3,Streaming Music,Entertainment,Colombia,Medellín,Approved,00,False,5.82,,
+TRX-M22NFGG5EHKVMJCY95C8,2025-12-30 00:12:10,2025-12-29,PRD-D7JD396B6UQP,CLI-END66G0XIF95,Transfer,,3225.71,USD,,ATM,SUC-8XAGRKOC,,,México,Ciudad de México,Approved,00,False,16.87,,
+TRX-U85NFJA7RU8XB9DIVVTP,2025-12-29 06:36:10,2025-12-29,PRD-HJ6YW9W9KFHD,CLI-KDRMF6UI68X1,Withdrawal,,201.09,USD,,Web,,,,México,Monterrey,Approved,00,False,16.11,,
+TRX-ZKFKGN55V1IX9CTKME6H,2025-12-29 13:47:49,2025-12-29,PRD-REOLVWO77SRZ,CLI-OTYTZE2FLKFL,Transfer,,6852.64,USD,,Web,,,,Spain,Barcelona,Approved,00,False,6.83,,

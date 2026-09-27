@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
-LAYERS = ("domain", "ports", "policy", "application", "adapters", "api", "bootstrap")
+LAYERS = ("domain", "ports", "policy", "application", "adapters", "api", "bootstrap", "testing")
 
 VIOLATIONS = {
     # Layers: the domain must not import the API.
@@ -23,6 +23,10 @@ VIOLATIONS = {
     "policy/imports_fastapi.py": "import fastapi\n",
     # Entry points: a layer must not import the ASGI entry point.
     "adapters/imports_entry_point.py": "import bank_agent.asgi\n",
+    # Test doubles: production code must not import them.
+    "application/imports_testing.py": "import bank_agent.testing\n",
+    # Test doubles: they must not depend on adapters.
+    "testing/imports_adapters.py": "import bank_agent.adapters\n",
 }
 
 

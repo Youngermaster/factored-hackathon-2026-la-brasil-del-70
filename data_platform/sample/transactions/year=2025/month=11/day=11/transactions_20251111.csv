@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-A350BSWHDD7AQDH6BD6S,2025-11-11 16:13:10,2025-11-11,PRD-RYP56C9I3NDP,CLI-VU58CMFRCIP7,Deposit,,3444.69,USD,,Web,,,,México,Querétaro,Approved,00,False,13.39,,

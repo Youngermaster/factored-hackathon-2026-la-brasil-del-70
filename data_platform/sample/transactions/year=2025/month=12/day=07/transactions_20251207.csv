@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2PZ414AZFL421WBR3V2E,2025-12-07 16:02:31,2025-12-07,PRD-KEQ6Z5NBVLLH,CLI-OTYTZE2FLKFL,Transfer,,6048.21,USD,,ATM,SUC-HFPBAT4U,,,México,Tijuana,Approved,00,False,13.92,,
+TRX-F44HJO710RXN99PDS7Y2,2025-12-07 14:43:50,2025-12-07,PRD-H1DSUO9VXK9H,CLI-S21M6QBBQ32X,Transfer,,1598667.93,ARS,4567.62,Transfer,,,,Argentina,Rosario,Approved,00,False,,,

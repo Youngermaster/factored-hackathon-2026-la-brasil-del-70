@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-3ZFW6C4502QQXG770TNH,2025-06-21 17:56:02,2025-06-21,CLI-7HT38ZKBZB3M,SES-NZ8B73HEO9J2IPD9QH0TIE2NI7PE,PageView,Transaction,iOS App,iOS,,1.8.3,/transfer,Transferir,initiate_transfer,transfer_form,,,44.0,198.51.100.49,Colombia,,True,,,,
+EVT-L4OPFF0LNH23OL8MTMZ4,2025-06-21 17:56:28,2025-06-21,CLI-7HT38ZKBZB3M,SES-NZ8B73HEO9J2IPD9QH0TIE2NI7PE,Click,Navigation,iOS App,iOS,,1.8.3,/products,Productos,view_products,products_page,,,,198.51.100.111,Colombia,Cali,True,,,,

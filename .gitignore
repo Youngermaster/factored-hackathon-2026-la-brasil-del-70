@@ -12,12 +12,22 @@ kit/
 # Organizer and derived data (never commit)
 **/data/*
 !data/.gitkeep
+# Documentation about the data is not data.
+!docs/data/
+!docs/data/*.md
+# Team-written evaluation inputs (relevance judgments), not organizer data.
+!evals/data/
+!evals/data/*.jsonl
+# The pitch deck's metric registry (team-written numbers with sources), not organizer data.
+!slides/data/
+!slides/data/*.yml
 *.parquet
 *.duckdb
 *.duckdb.wal
 
 # ML tracking and artifacts
 mlruns/
+mlruns.db
 mlartifacts/
 models/artifacts/
 *.pkl

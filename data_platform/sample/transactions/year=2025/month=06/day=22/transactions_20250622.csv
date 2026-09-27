@@ -1,0 +1,8 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-46123E8WCCYF17GOXYZD,2025-06-22 08:32:20,2025-06-22,PRD-RVCJMMI3EZIU,CLI-TRSQ3XMFRJAC,Withdrawal,,471.89,USD,,POS,,,,México,Puebla,Approved,00,False,24.71,,
+TRX-5Y0TWHFMAUVR0V1LRXWC,2025-06-23 04:35:55,2025-06-22,PRD-K3DB9XORNLET,CLI-7P0ZUEV7Y4EH,Transfer,,9611.75,USD,,POS,,,,México,Puebla,Approved,00,False,28.15,,
+TRX-BTP6MQB24O8J9NOUZ178,2025-06-23 05:03:46,2025-06-22,PRD-WAMDFJPLRRJX,CLI-EJXBYCD0J96O,Purchase,Transport,405.78,USD,,Transfer,,Gasolinera Express,Transport,México,,Approved,00,False,,,
+TRX-D0TKVTL2AHFO3DAGSEFL,2025-06-23 02:58:49,2025-06-22,PRD-9FETOE2N31SC,CLI-U8JZASBAZZ8W,Withdrawal,,256.19,USD,,POS,,,,México,Tijuana,Approved,00,False,11.55,,
+TRX-KY7W42YFFI585CHK8I7O,2025-06-22 09:24:31,2025-06-22,PRD-C9SCYXRRUZO1,CLI-TJIM7P52K5F7,Withdrawal,,138.78,USD,,Transfer,,,,México,Guadalajara,Approved,00,False,20.25,,
+TRX-Q81WN4TX2DB84X1A7EZP,2025-06-22 17:52:10,2025-06-22,PRD-YKE9XTBUECW9,CLI-ZJCPKZZRXUR8,Purchase,Food,91145.25,COP,22.79,ATM,SUC-AXEH5GB0,Mercado Central,Food,Colombia,Medellín,Approved,00,False,16.14,,
+TRX-YX3ZHSPUU218V7PFDU12,2025-06-22 08:08:21,2025-06-22,PRD-YQQ674NN35JQ,CLI-ZJCPKZZRXUR8,Purchase,Food,1804246.58,COP,451.06,POS,,Tienda Don José,Food,Colombia,Medellín,Declined,54,False,9.75,4.2223003,-73.4771105

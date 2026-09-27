@@ -1,0 +1,4 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-NMXWNW5QIYXKX10RAO0W,INT-K7QVZ1S5AG9AMZT6,2025-09-15,CLI-R53C8RPXD32P,AGT-4FZILKK4KX,"Cliente: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
+
+Agente: Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}.","Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.","Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}.",es,colombian,0.99,"banco, servicio, cuenta",,consulta_general,Técnico,Azure Speech,High,380.0

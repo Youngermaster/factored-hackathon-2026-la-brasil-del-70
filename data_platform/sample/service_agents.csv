@@ -1,0 +1,108 @@
+﻿agent_id,employee_code,first_name,last_name,email,phone,native_accent,country_of_origin,assigned_branch_id,agent_type,experience_level,languages,specialty,hire_date,avg_csat,total_monthly_interactions,agent_status,work_shift
+AGT-06AWFQDRXK,E94095,Lefe Rezasi,Rito Vabeme,lefe.rito08@example.com,+54 9 42 2667 4345,mexican,Mexico,,Phone,Specialist,"español, inglés",,2015-07-27,4.66,383.0,Active,Afternoon
+AGT-0HSFPWDJF1,E67185,Mame,Femi Zabe,mame.femi46@example.com,+54 8 31 0728 5123,mexican,Mexico,SUC-PTY454ZL,Phone,Mid-Senior,español,,2024-07-12,3.74,780.0,Active,Afternoon
+AGT-0O9BVZZ68Z,E54251,Latafa,Tave Sejo,latafa.tave29@example.com,+54 5 78 6710 7887,argentine,Argentina,SUC-UY6EQAUH,In-Person,Specialist,español,,2014-12-06,4.85,326.0,Active,Rotating
+AGT-1HI8LTU9QQ,E19434,Farizo Reli,Luvita Tonome,farizo.luvita20@example.com,+57 136 084 3521,colombian,Colombia,SUC-GQD7QHK3,Phone,Specialist,español,,2020-10-09,4.55,694.0,Active,Morning
+AGT-1JJ2DET54K,E98617,Letiri,Defeto Vava,letiri.defeto05@example.com,+57 501 945 8693,colombian,Colombia,SUC-383LA1MY,In-Person,Specialist,español,Cobranza,2018-01-13,3.85,741.0,Active,Morning
+AGT-2TAGK048H3,E72107,Jorite,Bebe Sazafe,jorite.bebe81@example.com,+54 7 24 6429 0600,argentine,Argentina,,Hybrid,Senior,"español, inglés, portugués",Retención,2022-10-29,4.26,,Active,Morning
+AGT-2Z4O3TCODK,E25401,Datode,Nemi Mojo,datode.nemi77@example.com,+57 552 624 9731,colombian,Colombia,SUC-FBF261GB,Phone,Specialist,español,,2019-10-16,4.45,592.0,Active,Night
+AGT-34TVYJH4ZG,E24331,Lesojo,Veza Sifate,lesojo.veza19@example.com,+54 6 82 0424 0642,mexican,Mexico,SUC-X9OXEJAK,Phone,Specialist,español,Quejas y Reclamos,2020-10-21,4.65,615.0,Active,Morning
+AGT-3QD3LV3C23,E76632,Figa,Vame Tomiva,figa.vame86@example.com,+54 8 44 4061 4450,mexican,Mexico,,Phone,Senior,"español, inglés",Soporte Técnico,2022-09-19,4.93,304.0,Active,Night
+AGT-3QQOA60CO9,E93797,Zoro,Sojano Leta,zoro.sojano84@example.com,,argentine,Argentina,SUC-F4DCVKDX,Phone,Specialist,español,Soporte Técnico,2015-01-06,4.47,537.0,Active,Afternoon
+AGT-3Z0BAXO1P6,E13118,Toluro,Feli Vava,toluro.feli66@example.com,+54 8 76 6381 6455,mexican,Mexico,SUC-NLW333SX,Digital,Specialist,español,Soporte Técnico,2020-05-28,4.85,,Active,Night
+AGT-4FZILKK4KX,E10975,Tinado,Ganota Tarate,tinado.ganota15@example.com,+54 3 64 6510 7972,argentine,Argentina,SUC-TZOKLT59,Phone,Specialist,"español, inglés, portugués",Retención,2014-11-24,4.36,,Active,Afternoon
+AGT-5ANM4NA6WN,E13728,Tigode,Zote Sovevi,tigode.zote98@example.com,+54 6 90 6677 7820,mexican,Mexico,SUC-HTALHQ8S,In-Person,Specialist,español,,2019-12-16,,365.0,Active,Morning
+AGT-5CXS2WPVJF,E90297,Jozora,Zoma Loba,jozora.zoma96@example.com,+57 067 217 3257,colombian,Colombia,SUC-QW96OFCS,Phone,Specialist,español,,2015-05-23,4.38,205.0,Active,Afternoon
+AGT-5PP7O7ZE96,E83488,Liva,Vidana Fisase,liva.vidana26@example.com,+54 6 77 8441 2733,mexican,Mexico,SUC-T360CH7U,Phone,Specialist,español,,2018-12-11,4.16,736.0,Active,Night
+AGT-60O1TBJA6T,E63116,Zana Vefive,Vagofe Todo,zana.vagofe95@example.com,+54 7 64 3953 8655,argentine,Argentina,SUC-VOIIDOSQ,Phone,Senior,"español, inglés",,2022-11-04,4.84,339.0,Active,Afternoon
+AGT-6UU2ZTXHKF,E52317,Veti,Tini Tazo,veti.tini07@example.com,+54 3 54 5329 4247,mexican,Mexico,SUC-E5XOVHXK,Phone,Specialist,español,,2014-11-02,4.38,311.0,Active,Afternoon
+AGT-6ZZW9BKBOC,E66499,Senaso,Fibaso Dojate,senaso.fibaso69@example.com,+57 694 729 4490,colombian,Colombia,SUC-T3O9NCYE,Digital,Specialist,"español, inglés",,2014-12-09,4.06,460.0,Active,Rotating
+AGT-785O4C5VDM,E47287,Milale,Mosa Gola,milale.mosa83@example.com,+54 5 54 5221 4911,mexican,Mexico,SUC-OEMOFDTM,In-Person,Specialist,"español, inglés, portugués",Retención,2018-12-24,4.0,683.0,Active,Afternoon
+AGT-78UF97BVDP,E72004,Fave Mitega,Nova Sivafa,fave.nova15@example.com,+57 939 935 1887,colombian,Colombia,SUC-BEZ9VHM7,In-Person,Specialist,español,,2015-12-08,4.11,442.0,Active,Afternoon
+AGT-824XMWYTET,E29805,Momada,Bidati Sademo,momada.bidati39@example.com,+57 433 097 7299,colombian,Colombia,SUC-TP1SYC2B,Phone,Specialist,español,Créditos,2015-05-03,3.89,440.0,Active,Morning
+AGT-8KFHE6XRQ4,E70142,Gala,Tesira Nilo,gala.tesira44@example.com,+54 2 94 6756 9840,mexican,Mexico,SUC-0HQM7QH5,Digital,Specialist,español,Fraudes,2020-12-06,4.78,178.0,Active,Afternoon
+AGT-8QYBQ76ZD2,E13934,Bazati,Lobava Monigo,bazati.lobava29@example.com,+54 6 70 1568 4840,mexican,Mexico,SUC-GS17088M,Phone,Specialist,español,,2017-02-07,4.83,447.0,Active,Morning
+AGT-9G892RO3CJ,E87296,More Lide,Livalo Sode,more.livalo61@example.com,+54 1 63 1381 0344,mexican,Mexico,SUC-HN3J6VDG,Hybrid,Senior,español,,2022-05-19,4.85,614.0,Active,Afternoon
+AGT-9OUCPLC2FI,E41061,Bidoba Fadesa,Sabago Ravama,bidoba.sabago83@example.com,+54 2 82 0872 5994,mexican,Mexico,SUC-OUK1P2P9,Phone,Specialist,"español, inglés",Soporte Técnico,2014-04-30,4.85,401.0,Active,Morning
+AGT-9PZ6W3LDGU,E16818,Resi Begona,Rini Bido,resi.rini25@example.com,+54 4 99 7151 6363,mexican,Mexico,SUC-WRQZY29D,Phone,Specialist,español,,2015-07-10,3.87,756.0,Active,Morning
+AGT-9Q63425XXI,E25364,Tema Bera,Sane Revedo,tema.sane22@example.com,+54 2 05 3544 0985,argentine,Argentina,,Digital,Senior,"español, inglés, portugués",Cobranza,2021-10-18,4.2,195.0,Active,Afternoon
+AGT-9XK11HDKY2,E78997,Lotima,Toga Seda,lotima.toga66@example.com,+54 2 80 2886 4750,mexican,Mexico,,Phone,Senior,español,Inversiones,2022-12-23,4.31,,Active,Night
+AGT-AG11M1NVUG,E62705,Fisofe,Nifere Vade,fisofe.nifere22@example.com,+54 1 43 6387 1424,mexican,Mexico,SUC-B7G1HXZE,Phone,Mid-Senior,español,Créditos,2024-12-04,4.27,447.0,Active,Afternoon
+AGT-BHMTTUAA05,E44016,Deza Rola,Somo Mide,deza.somo70@example.com,+57 278 233 9142,colombian,Colombia,,Digital,Specialist,"español, inglés, portugués",,2016-04-25,4.91,212.0,Active,Morning
+AGT-BT05WAA543,E51665,Noda,Vabona Sada,noda.vabona58@example.com,,mexican,Mexico,SUC-PWCZ19K3,Phone,Specialist,"español, inglés",Cobranza,2018-04-01,,628.0,Active,Afternoon
+AGT-BTCYXRD64J,E52974,Nosasa,Fajami Rabe,nosasa.fajami70@example.com,+54 3 74 2185 6398,mexican,Mexico,SUC-2O0CD9YF,Hybrid,Specialist,español,,2018-01-11,4.71,213.0,Active,Afternoon
+AGT-C0S7V2IHHG,E78325,Lidoro,Nito Lile,lidoro.nito56@example.com,+57 308 414 6583,colombian,Colombia,,Phone,Senior,"español, portugués",Inversiones,2021-11-16,,351.0,Active,Night
+AGT-CG3PF9BZHZ,E46831,Somara,Rore Gavizo,somara.rore92@example.com,+54 9 72 4150 5056,mexican,Mexico,SUC-ZO4W166H,Phone,Senior,español,Quejas y Reclamos,2022-01-03,4.88,,Active,Morning
+AGT-CVMX70X6Z4,E68995,Garofi,Detali Dedeme,garofi.detali47@example.com,+54 9 43 0639 5732,argentine,Argentina,,Digital,Specialist,español,Inversiones,2016-07-09,4.43,263.0,Active,Morning
+AGT-DWXSXT9OP1,E16648,Tanajo,Vita Gode,tanajo.vita26@example.com,+57 050 960 2337,colombian,Colombia,SUC-NK0U3GN8,Digital,Specialist,"español, inglés",,2017-04-08,4.45,,Active,Morning
+AGT-E46F2FQTOO,E75598,Lugaga Besi,Mana Sibo,lugaga.mana72@example.com,+54 0 33 7330 0737,mexican,Mexico,,Phone,Specialist,español,Cobranza,2015-04-09,4.91,606.0,Active,Afternoon
+AGT-E9GHB6WK02,E62345,Biga,Bazo Laja,biga.bazo35@example.com,+54 4 39 9824 1816,mexican,Mexico,SUC-9P6FN5VQ,Hybrid,Senior,"español, inglés",,2023-07-08,4.8,520.0,Active,Morning
+AGT-EI5HV76G6F,E82689,Nafelu,Sonera Move,nafelu.sonera71@example.com,+54 2 69 6348 7670,mexican,Mexico,,Phone,Specialist,"español, inglés",Fraudes,2016-04-10,4.03,670.0,Active,Morning
+AGT-EKGNQCKBSX,E14261,Tiba,Vaba Romi,tiba.vaba14@example.com,+57 539 979 6988,colombian,Colombia,,Digital,Senior,"español, inglés",Fraudes,2024-04-24,4.61,750.0,Active,Afternoon
+AGT-ERRAQZDJDY,E26186,Ganiva,Deti Labado,ganiva.deti50@example.com,+54 9 17 7508 9910,mexican,Mexico,,Digital,Mid-Senior,español,,2025-05-05,3.83,385.0,Active,Morning
+AGT-F19RDFACNQ,E28800,Dofi,Nafali Liza,dofi.nafali58@example.com,+57 070 486 5197,colombian,Colombia,SUC-W6XT9W93,Digital,Senior,español,Retención,2022-12-24,4.73,360.0,Active,Afternoon
+AGT-FDD67YH842,E23256,Nejo,Lerota Leniva,nejo.lerota85@example.com,+54 7 83 0045 7615,mexican,Mexico,,In-Person,Senior,español,,2021-11-29,4.05,554.0,Active,Night
+AGT-FXUY55EOMM,E11880,Semoma,Nirome Gago,semoma.nirome98@example.com,+54 3 80 3427 2619,argentine,Argentina,SUC-RF8D8NMA,Digital,Specialist,"español, inglés",,2019-02-11,4.62,610.0,Active,Morning
+AGT-G4VQ2XMN69,E83928,Lofali,Jatare Mini,lofali.jatare94@example.com,+57 026 276 6625,colombian,Colombia,SUC-NJ9ZYAI5,Hybrid,Specialist,español,,2016-05-10,4.59,800.0,Active,Rotating
+AGT-GDSRHZRHQ7,E73789,Boba,Lome Rozo,boba.lome92@example.com,+54 6 58 2366 7914,mexican,Mexico,,Phone,Senior,"español, inglés",Cobranza,2021-10-04,4.07,276.0,Active,Afternoon
+AGT-GF86DSKF59,E57588,Rotota,Rara Febisa,rotota.rara71@example.com,+57 043 129 9084,colombian,Colombia,,Digital,Senior,español,,2022-01-03,4.43,577.0,Active,Night
+AGT-GV8AQYD95Q,E66588,Botife,Miti Lanalo,botife.miti29@example.com,+54 9 91 8713 6288,mexican,Mexico,SUC-W8H9ZMHW,Phone,Senior,español,,2022-02-20,4.11,571.0,Active,Afternoon
+AGT-H1P9MYTVXZ,E92868,Nivi,Talifa Neza,nivi.talifa41@example.com,,mexican,Mexico,,Digital,Specialist,"español, inglés",,2013-08-03,4.75,554.0,Active,Morning
+AGT-HKU44IP108,E90080,Gone,Rajofi Lagova,gone.rajofi16@example.com,+54 2 53 5889 2199,mexican,Mexico,,In-Person,Specialist,español,,2020-01-11,4.58,509.0,Active,Afternoon
+AGT-HVHI1T24CL,E37270,Tebe Liraso,Deve Virave,tebe.deve26@example.com,+54 8 09 5340 8472,argentine,Argentina,SUC-ABW3N94M,Phone,Specialist,"español, inglés",Fraudes,2016-04-29,3.56,496.0,Active,Morning
+AGT-HWATBOOPXF,E72115,Zoloro Vavezo,Salili Tata,zoloro.salili23@example.com,+54 8 50 1257 4889,mexican,Mexico,SUC-MF1LW283,Hybrid,Specialist,"español, inglés, portugués",Soporte Técnico,2015-04-07,4.06,270.0,Active,Morning
+AGT-I1ZHCVFEX1,E79913,Befera,Tegome Tedo,befera.tegome34@example.com,+57 224 687 6753,colombian,Colombia,SUC-BHMKX04M,Hybrid,Specialist,"español, inglés, portugués",Retención,2014-03-17,3.79,,Active,Morning
+AGT-IB1X9BWBN2,E84273,Jariso,Jolu Venana,jariso.jolu03@example.com,+54 5 18 8776 3529,argentine,Argentina,SUC-3NE077IP,In-Person,Specialist,español,Cobranza,2020-03-25,4.44,312.0,Active,Morning
+AGT-ISFC80OYCB,E58469,Vato,Galesi Tizo,vato.galesi87@example.com,+57 635 840 9847,colombian,Colombia,,Digital,Specialist,español,,2020-03-01,4.04,737.0,Active,Afternoon
+AGT-JI2PI1E2KY,E76502,Lasa,Rano Lisido,lasa.rano54@example.com,+54 6 96 9660 6726,argentine,Argentina,,Phone,Mid-Senior,español,,2025-06-22,4.19,798.0,Active,Afternoon
+AGT-JMDX6MHRX7,E63754,Mesi Dovene,Daseme Josani,mesi.daseme85@example.com,+57 101 747 9494,colombian,Colombia,SUC-MJ2ECCDZ,In-Person,Senior,español,,2021-11-26,,,Active,Afternoon
+AGT-JPATDOZLSQ,E92478,Dodo Naveme,Zasoda Gabi,dodo.zasoda39@example.com,+54 3 80 5454 9932,mexican,Mexico,,In-Person,Mid-Senior,español,Quejas y Reclamos,2025-01-10,3.86,212.0,Active,Afternoon
+AGT-JPMUUWJV12,E32421,Feme,Sotosi Mala,feme.sotosi09@example.com,+57 978 552 8453,colombian,Colombia,SUC-96PT5FNH,Phone,Specialist,español,Fraudes,2016-10-29,,103.0,Active,Morning
+AGT-K11V6ZB5VS,E67375,Bimaro,Golo Soro,bimaro.golo94@example.com,+57 899 630 9704,colombian,Colombia,SUC-LX04DH8E,Phone,Specialist,español,,2014-12-15,4.53,736.0,Active,Morning
+AGT-KTWAJKP7QW,E22126,Masira,Sofare Mile,masira.sofare46@example.com,+54 4 91 9942 6545,argentine,Argentina,SUC-72AR38LY,Digital,Specialist,"español, inglés, portugués",Quejas y Reclamos,2016-08-13,4.38,232.0,Active,Morning
+AGT-L9LMIGUHNZ,E92111,Lobe,Vina Telada,lobe.vina90@example.com,+54 4 74 1341 8319,mexican,Mexico,SUC-NUBF2NR0,Phone,Senior,"español, portugués",Fraudes,2023-05-13,3.55,685.0,Active,Afternoon
+AGT-LBM4G3WHV5,E52829,Donire,Saga Rorino,donire.saga89@example.com,+54 2 56 2563 6668,argentine,Argentina,SUC-UKQDK94Y,Digital,Senior,español,Inversiones,2023-01-04,4.5,433.0,Active,Afternoon
+AGT-LY2T10AXT8,E75061,Bete,Babore Fari,bete.babore62@example.com,+54 3 23 7904 2332,mexican,Mexico,,In-Person,Mid-Senior,"español, inglés",Soporte Técnico,2024-10-17,4.43,152.0,Active,Afternoon
+AGT-N766EWP73G,E11941,Jobo Fijo,Nago Moza,jobo.nago26@example.com,+57 992 412 0911,colombian,Colombia,,In-Person,Senior,español,Inversiones,2022-08-20,3.66,653.0,Active,Afternoon
+AGT-NRP3DGI0C2,E82432,Sivi,Sida Fera,sivi.sida29@example.com,+54 0 55 4565 3718,mexican,Mexico,SUC-6OBA2ISO,In-Person,Senior,español,Ventas,2021-10-24,4.91,786.0,Active,Morning
+AGT-O0IO8DF56E,E55652,Taso Doli,Nali Denami,taso.nali08@example.com,+57 126 071 9092,colombian,Colombia,SUC-H73LKIFG,Phone,Specialist,español,,2013-09-08,,136.0,Active,Afternoon
+AGT-O8NXZF1HJ6,E82983,Tosi,Zola Silori,tosi.zola78@example.com,+54 7 98 4351 5151,mexican,Mexico,,Digital,Specialist,español,,2018-01-08,3.68,518.0,Active,Rotating
+AGT-OK1RZJN2O9,E35875,Lefa Marosa,Vamile Zobi,lefa.vamile01@example.com,+54 6 35 4287 9285,mexican,Mexico,SUC-7WU56M94,Hybrid,Specialist,"español, inglés",Ventas,2018-03-05,3.73,423.0,Active,Morning
+AGT-OU23TB8G0R,E41054,Luna,Solada Derile,luna.solada47@example.com,+54 3 89 8289 4525,argentine,Argentina,SUC-8F37IFSE,Digital,Specialist,español,,2020-03-31,4.18,709.0,Active,Afternoon
+AGT-OU7FAUBSD0,E18815,Bojode Todo,Tolu Rifare,bojode.tolu66@example.com,+54 2 97 4336 5798,argentine,Argentina,,Digital,Specialist,"español, inglés",Quejas y Reclamos,2018-02-26,4.35,689.0,Active,Rotating
+AGT-OXGDKDP90E,E18951,Fabo Rilijo,Lofene Rona,fabo.lofene48@example.com,+57 488 996 6843,colombian,Colombia,SUC-KXR9NXTH,Hybrid,Specialist,español,Inversiones,2016-06-27,,212.0,Active,Night
+AGT-P32K9GW5NX,E97111,Nila,Balo Bomi,nila.balo41@example.com,+54 2 72 6292 6608,mexican,Mexico,SUC-L6H5R7NW,Phone,Mid-Senior,español,Inversiones,2024-06-29,3.5,593.0,Active,Rotating
+AGT-P3D79O30AU,E84684,Tevavi,Gaba Lurolu,tevavi.gaba07@example.com,+57 176 770 7268,colombian,Colombia,SUC-KNLJTEFG,Digital,Mid-Senior,español,Fraudes,2024-08-27,3.52,316.0,Active,Rotating
+AGT-P7EOOA2P5S,E81002,Lojare,Nade Bema,lojare.nade41@example.com,+54 9 24 8880 9599,mexican,Mexico,,Digital,Specialist,"español, inglés",,2014-09-14,3.65,,Active,Afternoon
+AGT-PE3Z64L6KA,E33029,Noneja Tavira,Bova Zade,noneja.bova41@example.com,+57 531 202 7125,colombian,Colombia,SUC-M0OCZGRR,Digital,Specialist,"español, inglés",Ventas,2017-07-01,3.64,381.0,Active,Night
+AGT-PLUMVDKU8D,E10696,Famafe,Galife Jataga,famafe.galife23@example.com,+57 282 610 7773,colombian,Colombia,SUC-YR92PBNE,Phone,Junior,español,,2026-02-07,4.18,216.0,Active,Rotating
+AGT-PTWKYK487N,E68954,Resase,Dame Tafaja,resase.dame22@example.com,+54 6 78 5481 3756,mexican,Mexico,SUC-BE5DRHUA,In-Person,Senior,español,Retención,2022-01-05,4.8,115.0,Active,Night
+AGT-PX17SVBBET,E72049,Sisilo,Mefi Rilu,sisilo.mefi34@example.com,+54 6 59 3838 1692,mexican,Mexico,SUC-CNTOZH64,Digital,Specialist,"español, inglés",Soporte Técnico,2021-05-14,4.1,495.0,Active,Afternoon
+AGT-Q4SXP4EG6L,E36467,Luro,Nete Tisiri,luro.nete49@example.com,+54 1 13 0156 7520,mexican,Mexico,,Phone,Specialist,español,Fraudes,2020-04-17,4.96,263.0,Active,Night
+AGT-Q8AGV9WXXS,E41084,Fijara,Sode Rime,fijara.sode67@example.com,,colombian,Colombia,SUC-9QNJ61V5,In-Person,Senior,español,,2021-09-02,3.58,483.0,Active,Rotating
+AGT-QJDRG08QEG,E51969,Doga,Rago Gono,doga.rago94@example.com,+57 070 630 3869,colombian,Colombia,,In-Person,Mid-Senior,español,Retención,2025-06-02,4.91,652.0,Active,Morning
+AGT-QTX61K7PE2,E44720,Nomiza,Riro Taboja,nomiza.riro60@example.com,+57 181 355 8455,colombian,Colombia,,Hybrid,Specialist,"español, inglés",Soporte Técnico,2014-01-14,3.83,634.0,Active,Morning
+AGT-R1TFEUGKSY,E91721,Vava,Lilara Jamite,vava.lilara86@example.com,,colombian,Colombia,SUC-M6Z0OSS3,In-Person,Specialist,"español, inglés",Ventas,2020-11-06,4.06,152.0,Active,Rotating
+AGT-R5961LOEMU,E10422,Jozani,File Lese,jozani.file64@example.com,+54 0 39 2622 2704,mexican,Mexico,SUC-PD0NEO26,Phone,Specialist,"español, portugués",,2017-04-05,3.63,741.0,Active,Night
+AGT-R6BH0F3DT7,E70667,Sosibi,Govifa Tida,sosibi.govifa26@example.com,+57 416 396 1577,colombian,Colombia,SUC-MSS58MAV,Hybrid,Mid-Senior,"español, portugués",,2025-02-12,3.8,764.0,Active,Morning
+AGT-RM928J5EOG,E14278,Mibi,Sotodo Rose,mibi.sotodo49@example.com,+54 1 48 4233 5745,mexican,Mexico,SUC-WALFK2Y3,Digital,Senior,español,Retención,2021-12-30,4.32,372.0,Active,Morning
+AGT-ROT1G7EATP,E90991,Loba,Nisi Tarare,loba.nisi41@example.com,+54 5 02 6410 8031,mexican,Mexico,SUC-NRMRGNF7,In-Person,Senior,español,Inversiones,2024-02-16,3.59,674.0,Active,Morning
+AGT-T0RCZNZEMA,E89752,Desa,Bidele Sivime,desa.bidele62@example.com,+54 5 18 8647 0989,argentine,Argentina,,Digital,Senior,español,,2021-09-24,3.8,129.0,Active,Night
+AGT-T8LM02ABDZ,E81751,Rezame,Vesa Zobe,rezame.vesa11@example.com,+57 680 130 1267,colombian,Colombia,SUC-VDV47GUQ,Phone,Senior,español,Soporte Técnico,2021-10-23,4.49,257.0,Active,Morning
+AGT-V0731LP1QE,E40715,Dereso,Boremo Tibo,dereso.boremo38@example.com,+54 7 99 7074 9836,mexican,Mexico,,Hybrid,Specialist,español,,2019-01-06,4.81,633.0,Active,Morning
+AGT-VEXQ0NMZLH,E46601,Nomo,Nasane Vagate,nomo.nasane14@example.com,+57 822 993 0099,colombian,Colombia,SUC-V5SJSXR1,In-Person,Specialist,español,Cobranza,2015-01-11,4.6,155.0,Active,Afternoon
+AGT-VM8IH2LFKP,E29079,Tejomo,Melo Bemase,tejomo.melo21@example.com,+54 6 85 9913 6456,mexican,Mexico,SUC-GU8WHYIE,Hybrid,Senior,"español, inglés",Soporte Técnico,2021-11-05,4.78,599.0,Active,Afternoon
+AGT-VSNRM7IQIT,E82602,Lubi,Benata Rato,lubi.benata36@example.com,+54 8 02 8044 5534,argentine,Argentina,SUC-9MN8LEH8,Hybrid,Mid-Senior,"español, inglés",Fraudes,2025-04-23,3.65,456.0,Active,Morning
+AGT-VTWBPCIYQU,E16729,Mozode,Mijaza Teso,mozode.mijaza69@example.com,+54 9 97 5876 4425,mexican,Mexico,SUC-ARWOQKFK,Digital,Mid-Senior,español,Ventas,2025-01-02,3.78,562.0,Active,Rotating
+AGT-WCPI68FFI5,E58870,Tisi,Migata Nafe,tisi.migata49@example.com,+54 7 38 2924 8480,mexican,Mexico,SUC-GTNBH523,Phone,Mid-Senior,"español, inglés",,2025-11-23,4.78,717.0,Active,Afternoon
+AGT-WTHHY9FLGT,E81834,Nimano,Fanabo Delibo,nimano.fanabo43@example.com,+57 856 426 3112,colombian,Colombia,,Digital,Specialist,"español, inglés",Ventas,2021-04-30,4.16,518.0,Active,Afternoon
+AGT-XFI8BBQDEY,E62336,Luzori,Logaba Sadofi,luzori.logaba16@example.com,+54 0 93 7855 0952,mexican,Mexico,SUC-ZRUO1DKI,Phone,Senior,"español, inglés",,2022-03-14,,,Active,Morning
+AGT-XUBJTI8AW5,E67027,Labora Batema,Fisoga Faga,labora.fisoga89@example.com,+54 2 82 6232 9393,mexican,Mexico,SUC-2Z7NMCLC,Hybrid,Senior,español,,2021-09-27,4.11,281.0,Active,Morning
+AGT-XVTFWL1STE,E79533,Tefebi Lazo,Tasi Simete,tefebi.tasi83@example.com,+54 1 17 7956 1529,argentine,Argentina,,Hybrid,Mid-Senior,español,Cobranza,2025-02-19,3.99,694.0,Active,Afternoon
+AGT-Y8O10JEBE3,E52220,Zona Rojo,Togo Felura,zona.togo83@example.com,+57 549 629 7668,colombian,Colombia,SUC-6RG82N1H,Hybrid,Specialist,español,Fraudes,2013-11-04,4.45,705.0,Active,Morning
+AGT-YBP5UDK1VN,E94755,Javago Fisoga,Fabele Vatimo,javago.fabele21@example.com,+54 2 63 5787 5477,mexican,Mexico,SUC-QONSJ1JW,Phone,Senior,"español, portugués",Retención,2022-10-15,4.69,148.0,Active,Afternoon
+AGT-YF9RO3EJZU,E79547,Ridale,Rifi Feteja,ridale.rifi07@example.com,+57 583 427 0119,colombian,Colombia,SUC-OSZS8PRG,Phone,Specialist,español,,2015-06-12,4.87,569.0,Active,Morning
+AGT-YK02JUZBDO,E26555,Mati,Lurebo Jarono,mati.lurebo68@example.com,+54 6 51 5042 7770,mexican,Mexico,SUC-33QXQ4DU,Digital,Specialist,"español, inglés",,2016-01-22,3.93,135.0,Active,Rotating
+AGT-Z32DMC1N4A,E10683,Maza,Romo Lutona,maza.romo97@example.com,+54 0 86 3983 7653,mexican,Mexico,,Digital,Mid-Senior,español,Fraudes,2025-02-26,3.87,696.0,Active,Afternoon
+AGT-ZGD5FBXG7L,E47324,Lenole Fiba,Retezo Bavito,lenole.retezo51@example.com,+54 8 11 4852 3230,mexican,Mexico,SUC-A7A1NFDR,Phone,Senior,"español, inglés",Créditos,2022-12-14,4.47,434.0,Active,Afternoon
+AGT-ZVS0XWYET1,E82406,Befi,Garebe Dazova,befi.garebe83@example.com,+54 0 27 6977 9755,mexican,Mexico,SUC-G4L3CWTB,Phone,Specialist,español,Fraudes,2017-10-03,4.41,,Active,Afternoon

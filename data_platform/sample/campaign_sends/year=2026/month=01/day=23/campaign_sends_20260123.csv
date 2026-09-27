@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-SFAK76G3VK7BBELZLA5E,2026-01-23 22:40:36,2026-01-23,CMP-523WCPI68FFI,CLI-5L6EGAWYR2Q2,Email,template_CMP-523WCPI68FFI_1,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0051

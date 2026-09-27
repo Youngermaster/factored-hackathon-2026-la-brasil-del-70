@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: dispute_new
+seeds:
+  es-MX:
+    - "No reconozco un cargo de {amount} en {merchant}"
+    - "Hola, buenas tardes. Me aparece una compra rara en mi tarjeta que yo no hice, ¿me pueden ayudar?"
+    - "Me cobraron dos veces lo mismo en {merchant}, quiero que lo revisen porfa"
+    - "Fui al cajero {date}, no me dio la lana pero sí me la descontaron"
+    - "Cancelé mi suscripción de streaming hace un mes y me siguen cobrando, quiero reclamarlo"
+    - "Pagué una compra en línea y nunca me llegó el producto, quiero levantar una aclaración"
+    - "cargo desconocido en mi tarjeta terminación {last4}"
+    - "Oigan, me cobraron {amount} y la cuenta era mucho menor, quiero reportarlo ahorita"
+  es-CO:
+    - "Buenos días, me colabora con un cobro que no hice en {merchant}"
+    - "En mi extracto sale una transacción que yo no reconozco, quiero hacer el reclamo"
+    - "Pagué un servicio que nunca me prestaron y quiero que me devuelvan esa plata"
+    - "El cajero no me entregó la plata y sí me la debitaron de la cuenta"
+    - "Me descontaron {amount} dos veces por la misma compra"
+    - "Quiero reclamar un cobro de {merchant}, yo ya había cancelado esa suscripción"
+    - "Sumercé, alguien usó mi tarjeta {date} y yo no fui"
+    - "Me cobraron más de lo que marcaba el datáfono, ¿dónde pongo la queja?"
+  es-AR:
+    - "Che, me aparece un consumo de {amount} en {merchant} que no hice yo"
+    - "Hola, quiero desconocer un consumo de la tarjeta"
+    - "Fui al cajero y no me dio la guita, pero en el home banking figura la extracción"
+    - "Me debitaron la cuota del gimnasio aunque la di de baja hace dos meses"
+    - "Compré unas zapatillas por internet, nunca llegaron y quiero hacer el reclamo"
+    - "Mirá, en el resumen me figura dos veces la misma compra {date}"
+    - "Me cobraron treinta lucas cuando la compra era de tres, quiero reclamarlo"
+    - "Buenas, hay un débito en mi tarjeta terminada en {last4} que no reconozco para nada"
+  pt-BR:
+    - "Oi, apareceu uma compra de {amount} na {merchant} que eu não fiz"
+    - "Tem uma cobrança estranha no meu cartão, quero contestar"
+    - "Fui cobrado duas vezes pela mesma compra, como faço pra contestar?"
+    - "O caixa eletrônico não liberou o dinheiro mas debitou da minha conta"
+    - "Cancelei a assinatura e continuam cobrando na fatura, quero abrir uma contestação"
+    - "Comprei um celular pela internet {date} e nunca chegou, quero reclamar a cobrança"
+    - "Cobraram um valor maior do que o combinado na maquininha"
+    - "Boa noite, alguém usou meu cartão final {last4} numa loja que eu nunca fui"

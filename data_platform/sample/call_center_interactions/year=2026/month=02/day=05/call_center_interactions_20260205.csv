@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-0UW5V4C1D2PJ1Z17,2026-02-06 04:33:00,2026-02-05,CLI-VHBEU7EEMIV1,AGT-R6BH0F3DT7,Chat,App,Comercial,Comercial,,,True,False,Muy Negativo,-0.83,argentine,argentine,False,,True,False

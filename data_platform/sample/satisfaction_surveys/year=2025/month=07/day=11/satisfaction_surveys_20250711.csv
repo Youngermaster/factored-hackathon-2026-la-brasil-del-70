@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-WJUO13T0L56N42UDL4ID,2025-07-12 19:37:19,2025-07-11,INT-M11WYLHZI7PQA0FP,CLI-C9F3EFNAUCRP,AGT-FDD67YH842,NPS,Email,7,Passive,,,¿El tiempo de espera fue aceptable?,2.0,,,,,23.71,15.17

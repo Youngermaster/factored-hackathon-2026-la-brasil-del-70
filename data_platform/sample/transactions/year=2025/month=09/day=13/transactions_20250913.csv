@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FBK1EX8BAAXUTC87796J,2025-09-14 01:31:24,2025-09-13,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Payment,Other,556.36,USD,,ATM,SUC-GPTCLR0Q,,,Colombia,Cali,Approved,00,False,15.87,,
+TRX-I2D5O3FYU61O52UA6XT2,2025-09-14 02:11:27,2025-09-13,PRD-TB7LHRJWMJTL,CLI-6VCS2LIRSE4Y,Purchase,Entertainment,327905.35,COP,81.98,POS,,,Entertainment,Colombia,Medellín,Approved,00,False,6.8,,
+TRX-KQ5CQMMF98SXBIFXG3QT,2025-09-14 01:48:46,2025-09-13,PRD-UT1ZRNBI00C5,CLI-KKSHE4CEJ1IT,Transfer,,15031976.44,COP,3757.99,App,,,,Colombia,Cali,Approved,00,False,24.22,,

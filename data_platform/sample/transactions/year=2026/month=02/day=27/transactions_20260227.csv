@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-Q1Z6ZRTPP4S657D5MZ4U,2026-02-27 09:20:48,2026-02-27,PRD-FZL0CHC2XU4Z,CLI-SZ2W0R1BX8S0,Deposit,,15195140.22,COP,3798.79,POS,,,,Colombia,Bogotá,Approved,00,False,,,

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3WQ7EFWZKRIVYYXM6VNG,2026-01-02 08:46:24,2026-01-02,PRD-X5FSZQXZPPAJ,CLI-EJXBYCD0J96O,Purchase,Services,179.18,USD,,Web,,Cable TV,Services,México,,Approved,00,False,29.36,,

@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1SHCB6D3KJ6TXAJDZ7LU,2026-04-09 16:50:54,2026-04-09,PRD-6D7E5ILZ8XI5,CLI-TJIM7P52K5F7,Purchase,Entertainment,264.32,USD,,POS,,Conciertos Live,Entertainment,México,Guadalajara,Approved,00,False,,0.9548755,-0.1852402
+TRX-7FYNATMP87WM5ELNTSZQ,2026-04-09 22:41:01,2026-04-09,PRD-SJZANIHFDNPM,CLI-9MNRLM8SP9QI,Transfer,,7136.16,USD,,Web,,,,México,Ciudad de México,Approved,00,False,7.75,,
+TRX-BOXYUIS6471AITZC1VXB,2026-04-10 00:32:13,2026-04-09,PRD-HJ6YW9W9KFHD,CLI-KDRMF6UI68X1,Transfer,,9059.03,USD,,ATM,SUC-033KHYS2,,,México,Monterrey,Approved,00,False,27.38,,
+TRX-GMBBZCSDVPBFJUZN5RS4,2026-04-10 02:01:46,2026-04-09,PRD-OSQT4EJGX3F3,CLI-3XGV18QB96P9,Transfer,,4196.98,USD,,App,,,,Argentina,Mendoza,Approved,00,False,5.91,,
+TRX-P98LVD49NCW1Z033KEWL,2026-04-10 05:19:30,2026-04-09,PRD-4F35QITC0WOH,CLI-END66G0XIF95,Payment,Services,1842.1,USD,,Web,,,,México,Ciudad de México,Approved,00,False,,,

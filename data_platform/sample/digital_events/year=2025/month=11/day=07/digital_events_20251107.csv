@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-JUE5QITX1FULY3FHQ8TR,2025-11-07 08:33:04,2025-11-07,CLI-5L6EGAWYR2Q2,SES-TPGXJS9BJO0LR4U0YT5XSB9GROIY,PageView,Product,Android App,Android,,,/products/savings,Cuenta de Ahorro,view_product,savings_product,,,118.0,203.0.113.123,Argentina,Córdoba,True,,,,
+EVT-NURXQLBE41T6SSHRENU4,2025-11-07 08:33:49,2025-11-07,CLI-5L6EGAWYR2Q2,SES-TPGXJS9BJO0LR4U0YT5XSB9GROIY,Click,Navigation,Android App,Android,,4.9.8,/products,Productos,view_products,products_page,,,,192.0.2.64,Argentina,Córdoba,True,,,,

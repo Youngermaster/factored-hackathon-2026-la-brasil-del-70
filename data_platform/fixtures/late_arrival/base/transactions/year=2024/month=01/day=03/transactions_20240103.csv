@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FIX-0003,2024-01-01 18:00:00,2024-01-03,PRD-FIX-CK02,CLI-FIX-0002,Transfer,,150000.00,COP,,Web,,,,Colombia,Bogotá,Approved,00,False,3.5,,
+TRX-FIX-0010,2024-01-03 11:00:00,2024-01-03,PRD-FIX-CC03,CLI-FIX-0003,Purchase,Entertainment,12000.00,ARS,14.40,POS,,Cine Fixture,Entertainment,Argentina,Buenos Aires,Approved,00,False,3.5,,
+TRX-FIX-0011,2024-01-03 12:00:00,2024-01-03,PRD-FIX-SV01,CLI-FIX-0001,Deposit,,500.00,USD,,Branch,BR-FIX-001,,,México,Ciudad de México,Approved,00,False,3.5,,
+TRX-FIX-0012,2024-01-03 13:00:00,2024-01-03,PRD-FIX-PL02,CLI-FIX-0002,Payment,,300000.00,COP,,App,,,,Colombia,Bogotá,Reversed,00,False,3.5,,

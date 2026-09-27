@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2LEGC5B585AAYSN4JRFK,2026-03-26 12:18:05,2026-03-26,PRD-BRNTPHAHNIOT,CLI-6VCS2LIRSE4Y,Deposit,,10111988.93,COP,2528.0,ATM,SUC-P6VSAH4U,,,Colombia,Medellín,Approved,00,False,,3.7506296,-73.8628724
+TRX-UR7LTGM1TZ3TWHCZ1ZDO,2026-03-26 09:41:18,2026-03-26,PRD-FU9DT1YQGFNS,CLI-1AS0INHPK43M,Payment,Other,684.27,USD,,Web,,,,México,Querétaro,Approved,00,False,25.76,,

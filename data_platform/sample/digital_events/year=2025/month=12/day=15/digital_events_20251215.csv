@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-5Q4AY2WS2F4QNCJ2SWTP,2025-12-15 15:06:55,2025-12-15,CLI-WKR4P95O4ZKE,SES-WHR2KWUVB2SW2W0IDQMQRYASU6HX,Login,Authentication,Android App,Android,,1.9.3,/login,Iniciar Sesión,login,,,,,203.0.113.125,México,Guadalajara,True,https://www.instagram.com,,,

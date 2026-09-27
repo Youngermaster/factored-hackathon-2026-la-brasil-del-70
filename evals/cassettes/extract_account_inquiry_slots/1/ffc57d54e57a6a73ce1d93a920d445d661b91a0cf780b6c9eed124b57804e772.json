@@ -1,0 +1,32 @@
+{
+  "cassette_id": "ffc57d54e57a6a73ce1d93a920d445d661b91a0cf780b6c9eed124b57804e772",
+  "kind": "structured",
+  "labels": {
+    "case": "out_of_scope",
+    "workflow": "account_inquiry"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "¿A qué hora juega la selección el domingo?",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-09-26"
+  }
+}

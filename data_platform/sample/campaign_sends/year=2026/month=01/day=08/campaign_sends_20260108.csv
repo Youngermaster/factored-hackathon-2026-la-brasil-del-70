@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-KZM3ZUU0HR256AASQUCL,2026-01-09 03:18:07,2026-01-08,CMP-523WCPI68FFI,CLI-EJXBYCD0J96O,Email,template_CMP-523WCPI68FFI_3,,Sent,True,False,,False,,,False,,,,,,0.0095

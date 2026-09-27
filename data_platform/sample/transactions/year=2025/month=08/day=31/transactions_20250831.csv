@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-GYAUNYUE7U38PQVD405F,2025-08-31 10:58:25,2025-08-31,PRD-KP7HKFLTK3U5,CLI-1DC1593XLI10,Transfer,,5171.6,USD,,ATM,SUC-KKZOCIP3,,,México,Monterrey,Approved,00,False,11.2,,

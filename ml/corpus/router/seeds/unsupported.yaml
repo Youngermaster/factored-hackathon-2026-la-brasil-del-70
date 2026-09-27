@@ -1,0 +1,72 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: unsupported
+seeds:
+  es-MX:
+    - text: "Quiero invertir en acciones, ¿qué me recomiendan?"
+      scope: banking_unsupported
+    - text: "¿Va a llover mañana en Monterrey?"
+      scope: off_domain
+    - text: "Quiero transferir {amount} a otra cuenta ahorita"
+      scope: banking_unsupported
+    - text: "¿Quién ganó el partido de anoche de la Liga MX?"
+      scope: off_domain
+    - text: "Necesito pagar el recibo de la luz desde aquí"
+      scope: banking_unsupported
+    - text: "Pásame una receta de chilaquiles verdes"
+      scope: off_domain
+    - text: "¿Me pueden aumentar el límite de mi tarjeta?"
+      scope: banking_unsupported
+    - text: "Cuéntame un chiste"
+      scope: off_domain
+  es-CO:
+    - text: "Me regala una certificación bancaria"
+      scope: banking_unsupported
+    - text: "¿Cómo quedó el partido de Nacional?"
+      scope: off_domain
+    - text: "Quiero cambiar la fecha de pago de la tarjeta de crédito"
+      scope: banking_unsupported
+    - text: "¿Qué temperatura va a hacer en Bogotá este fin de semana?"
+      scope: off_domain
+    - text: "¿Me pueden refinanciar la deuda del crédito?"
+      scope: banking_unsupported
+    - text: "Ayúdeme con la tarea de matemáticas de mi hijo"
+      scope: off_domain
+    - text: "Quiero abrir una cuenta de ahorros nueva"
+      scope: banking_unsupported
+    - text: "¿Cómo se prepara un ajiaco?"
+      scope: off_domain
+  es-AR:
+    - text: "¿Conviene comprar bitcoin ahora?"
+      scope: banking_unsupported
+    - text: "¿A qué hora juega Boca hoy?"
+      scope: off_domain
+    - text: "Quiero pagar la factura del gas"
+      scope: banking_unsupported
+    - text: "Pasame la receta de las empanadas salteñas"
+      scope: off_domain
+    - text: "Necesito contratar un seguro para el auto"
+      scope: banking_unsupported
+    - text: "Che, contame un chiste"
+      scope: off_domain
+    - text: "Exijo que me devuelvan la guita ya, quiero un contracargo garantizado"
+      scope: banking_unsupported
+    - text: "¿Va a hacer frío el finde en Córdoba?"
+      scope: off_domain
+  pt-BR:
+    - text: "Quero fazer um Pix de {amount}"
+      scope: banking_unsupported
+    - text: "Vai chover amanhã em São Paulo?"
+      scope: off_domain
+    - text: "Queria renegociar minha dívida do cartão"
+      scope: banking_unsupported
+    - text: "Qual foi o placar do Flamengo ontem?"
+      scope: off_domain
+    - text: "Vocês podem aumentar o limite do meu cartão?"
+      scope: banking_unsupported
+    - text: "Me passa uma receita de brigadeiro"
+      scope: off_domain
+    - text: "Preciso de uma declaração da conta pra apresentar no trabalho"
+      scope: banking_unsupported
+    - text: "Me ajuda a fazer a lição de casa de história"
+      scope: off_domain

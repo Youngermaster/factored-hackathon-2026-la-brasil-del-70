@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-AL9N3Q73P4DJ4B6CC05M,2026-03-27 18:42:19,2026-03-27,CMP-DLVIDZWR9YYG,CLI-Y15WQL0D9JH4,Email,template_CMP-DLVIDZWR9YYG_2,¡Oferta especial en Préstamo Personal!,Sent,True,False,,False,,,False,,,,,,0.0094

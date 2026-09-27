@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-AYDBCF4L1L7L4MBCQ58D,2025-12-20 00:58:28,2025-12-19,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Purchase,Food,215.74,USD,,Web,,Super Ahorro,Food,Colombia,Medellín,Approved,,False,1.79,,
+TRX-MBOXSJWG8CWDS4Q7CBBN,2025-12-19 06:51:51,2025-12-19,PRD-UQW1R8JQZQ1V,CLI-TP8JBA2IK7EJ,Withdrawal,,460.81,USD,,ATM,SUC-Y18NE8GS,,,México,Guadalajara,Approved,00,False,16.55,,
+TRX-Q8XV5QQA1SM44Y3UTF48,2025-12-19 06:52:31,2025-12-19,PRD-OSL49HPKW0E1,CLI-7HIH47RP95JX,Withdrawal,,58972.86,ARS,168.49,POS,,,,Argentina,Rosario,Approved,00,False,2.21,,
+TRX-VOUALRRT5M933L34LTR3,2025-12-20 04:55:05,2025-12-19,PRD-OB1ZSVSO4LSD,CLI-RKIFX1G2SP3M,Payment,Food,484.48,USD,,App,,,,México,Ciudad de México,Approved,00,False,7.85,,

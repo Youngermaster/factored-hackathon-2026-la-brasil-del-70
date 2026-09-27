@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-Y1H5E2H6M2Z5LWVSYAFJ,2026-06-13 02:37:31,2026-06-12,CMP-GPFD8G56VR1N,CLI-1DC1593XLI10,Email,template_CMP-GPFD8G56VR1N_2,¡Oferta especial en Cuenta Ahorro!,Failed,False,,,False,,,False,,,,,SMTP error,0.0092

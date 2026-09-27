@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-2GMPVLDZJHFJ9GTT,2026-04-04 15:08:25,2026-04-04,CLI-7HT38ZKBZB3M,AGT-785O4C5VDM,Outbound Call,Phone,Producto,Producto,227.0,,False,True,Negativo,-0.45,,,False,"PRD-WZ5MFLYL7ED1,PRD-77H2UWBCW1T6,PRD-A2AZFMG67NSU",False,True

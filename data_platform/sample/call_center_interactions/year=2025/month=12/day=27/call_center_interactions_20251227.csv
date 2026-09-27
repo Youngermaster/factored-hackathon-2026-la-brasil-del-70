@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-KC16F87UQT9OS7E5,2025-12-27 11:59:17,2025-12-27,CLI-1DC1593XLI10,AGT-FXUY55EOMM,Inbound Call,Phone,Producto,Producto,291.0,115.0,True,False,Neutral,0.19,mexican,mexican,False,,False,True

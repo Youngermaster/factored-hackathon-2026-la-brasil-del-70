@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-69XN5OXIUQVYII7C6JB0,2026-01-30 23:38:10,2026-01-30,PRD-REOLVWO77SRZ,CLI-OTYTZE2FLKFL,Transfer,,9427.52,USD,,POS,,,,México,Tijuana,Approved,00,False,18.85,,
+TRX-FTS6DFM9AT6ELOX152MM,2026-01-30 15:02:45,2026-01-30,PRD-FXHZQUXYRDHZ,CLI-P2CRX7C6QTWG,Payment,Entertainment,1018.57,USD,,App,,,,México,Puebla,Approved,00,False,13.65,,
+TRX-MKJYXA7WH0XQ292EZFR0,2026-01-30 20:26:11,2026-01-30,PRD-7OJ4LO02QADD,CLI-AKACM6D5362F,Payment,Food,942.17,USD,,App,,,,México,,Approved,00,False,18.32,,
+TRX-SCV0URDOW4C965VBUIN8,2026-01-30 06:38:34,2026-01-30,PRD-Z098FMDQQBRD,CLI-YC4WNTUC93XN,Transfer,,2406080.74,ARS,6874.52,ATM,SUC-V5DT47YR,,,Argentina,Buenos Aires,Approved,00,False,,,

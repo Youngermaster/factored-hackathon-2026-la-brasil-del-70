@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-J4GNWXKLENB4730D235Z,2025-11-30 16:20:44,2025-11-30,PRD-D9Y29R9CRRY3,CLI-4QR1L5H7FKTD,Withdrawal,,1252122.19,COP,313.03,POS,,,,Colombia,Medellín,Approved,00,False,8.31,,

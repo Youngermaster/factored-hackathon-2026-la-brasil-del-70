@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-ABW342S4FB9OPAAHJV0X,2025-09-05 13:24:14,2025-09-04,INT-U5XVO9TYKTKWRFTT,CLI-BH1ZBAHAHTEN,AGT-RM928J5EOG,NPS,Email,6,Detractor,,,¿El tiempo de espera fue aceptable?,5.0,,,,,19.46,36.15

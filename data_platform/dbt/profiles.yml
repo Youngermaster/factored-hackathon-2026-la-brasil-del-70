@@ -1,0 +1,14 @@
+# Profile for dbt-duckdb. `bank-data build` sets every environment variable; nothing here is a secret.
+bank_data:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('BANK_DATA_WAREHOUSE_DB') }}"
+      schema: main
+      threads: "{{ env_var('BANK_DATA_DBT_THREADS', '4') | int }}"
+      settings:
+        memory_limit: "{{ env_var('BANK_DATA_DUCKDB_MEMORY_LIMIT', '4GB') }}"
+        threads: "{{ env_var('BANK_DATA_DUCKDB_THREADS', '4') | int }}"
+        preserve_insertion_order: false
+        TimeZone: UTC

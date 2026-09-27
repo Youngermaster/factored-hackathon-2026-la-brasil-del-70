@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-L27EBCZY6TR7A3U6,2026-04-28 19:20:03,2026-04-28,CLI-U8JZASBAZZ8W,AGT-6ZZW9BKBOC,Inbound Call,Phone,Producto,Producto,254.0,142.0,True,False,Neutral,-0.14,,,False,,False,True

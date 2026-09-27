@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FIX-0040,2024-01-04 10:00:00,2024-01-04,PRD-FIX-CC01,CLI-FIX-0001,Purchase,,"10,50 EUR",USD,,App,,,,México,Ciudad de México,Approved,00,False,3.5,,
+TRX-FIX-0041,2024-01-04 11:00:00,2024-01-04,PRD-FIX-CC01,CLI-FIX-0001,Purchase,,"11,50 EUR",USD,,App,,,,México,Ciudad de México,Approved,00,False,3.5,,
+TRX-FIX-0042,2024-01-04 12:00:00,2024-01-04,PRD-FIX-CC01,CLI-FIX-0001,Purchase,,"12,50 EUR",USD,,App,,,,México,Ciudad de México,Approved,00,False,3.5,,

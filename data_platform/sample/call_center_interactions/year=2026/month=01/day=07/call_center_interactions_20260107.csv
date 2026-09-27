@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-S8RYZONJCCWKPVKP,2026-01-07 11:53:20,2026-01-07,CLI-7P0ZUEV7Y4EH,AGT-R1TFEUGKSY,Inbound Call,Phone,Producto,Producto,256.0,115.0,True,False,Neutral,-0.08,,,False,"PRD-91D76KEBNQUG,PRD-E3N7TBE2E8CG",False,True

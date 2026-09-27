@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-5B1X2279I0H0CICH0UL0,2026-04-18 13:06:13,2026-04-18,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Payment,Transport,694634.97,ARS,1984.67,ATM,SUC-ZVPEMWQP,,,Argentina,Córdoba,Approved,00,False,12.05,,

@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3CMBNOYK8NY9GSRG49EG,2025-06-21 01:31:30,2025-06-20,PRD-2TS623577SIL,CLI-DMSDCHOBUHLX,Withdrawal,,381.44,USD,,POS,,,,México,Querétaro,Approved,00,False,10.18,,
+TRX-RRSLYB4GB9H933QRNEB8,2025-06-20 11:50:23,2025-06-20,PRD-F79U22FT7RJU,CLI-1AS0INHPK43M,Withdrawal,,33.94,USD,,ATM,SUC-ECJP9AEQ,,,México,Querétaro,Approved,00,False,28.55,,0.3810089

@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-QR22LG0SACN3H5DYWMYF,2026-03-04 10:16:26,2026-03-04,CLI-NOC612SZ8VKJ,SES-N5NZ01ZHNEUMKL53GNMV5SMPR94F,PageView,Navigation,Android App,Android,,4.2.6,/home,Inicio,view_home,home_page,,,50.0,192.0.2.209,Colombia,Cali,True,,,,

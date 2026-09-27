@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-444DSQJGIMUXJYIUW062,2025-10-21 08:38:41,2025-10-21,PRD-9NHF15DY0HLK,CLI-J9EWXIOYWJ7R,Withdrawal,,384.25,USD,,POS,,,,México,Puebla,Approved,00,False,4.91,,
+TRX-NZWA1DTN04IHLRC1FBKC,2025-10-21 19:45:57,2025-10-21,PRD-HJ6YW9W9KFHD,CLI-KDRMF6UI68X1,Withdrawal,,59.53,USD,,ATM,SUC-DN1V9J1Z,,,México,,Approved,00,False,0.44,,
+TRX-O3PMFKV3ICH8580OE5IT,2025-10-22 02:20:43,2025-10-21,PRD-H6F1F3YENJIR,CLI-Y15WQL0D9JH4,Payment,Services,501301.67,ARS,1432.29,ATM,SUC-4ICHM641,,,Argentina,Buenos Aires,Approved,00,False,6.89,,
+TRX-YJE2H8ZHJ9OMUBQHTXDY,2025-10-21 17:36:12,2025-10-21,PRD-REOLVWO77SRZ,CLI-OTYTZE2FLKFL,Deposit,,3528.32,USD,,Branch,SUC-XSMNXFJN,,,México,Tijuana,Approved,00,False,4.21,,

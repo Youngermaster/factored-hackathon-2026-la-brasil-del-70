@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-AZQZ97689X32GE7UD5Q8,2025-12-06 05:08:51,2025-12-05,CMP-J48OP2EJE7FW,CLI-C0RXL4J0SXGR,Push,template_CMP-J48OP2EJE7FW_4,,Sent,True,True,2025-12-12 09:09:26,True,2025-12-12 09:17:35,4.0,False,,,Desktop,México,,0.0001

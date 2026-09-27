@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-5DQ1H7AZ1T4MX2E00HPS,2026-05-04 12:44:07,2026-05-04,CLI-C9F3EFNAUCRP,SES-WFRXEZ64CEBTTBDFI2DE7HK22D8K,Logout,Authentication,Mobile Web,iOS,Samsung Internet,,/logout,Cerrar Sesión,logout,,,,,203.0.113.247,Colombia,Barranquilla,True,,,,

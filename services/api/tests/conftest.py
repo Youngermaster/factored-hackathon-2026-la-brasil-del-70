@@ -15,6 +15,9 @@ _SETTINGS_PREFIXES = (
     "CORS_ALLOWED_ORIGINS",
     "LLM_",
     "OTEL_",
+    "POLICY_",
+    "RETRIEVAL_",
+    "WORKFLOW_",
 )
 
 

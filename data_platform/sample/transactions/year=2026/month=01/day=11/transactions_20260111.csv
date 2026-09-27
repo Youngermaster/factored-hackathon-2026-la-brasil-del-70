@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-7BEN5WU0Q07M87HRXHJQ,2026-01-11 21:48:04,2026-01-11,PRD-DCO6NUOXQ046,CLI-P22FY6SYK6NO,Purchase,Transport,159946.47,ARS,456.99,POS,,Taxi Seguro,Transport,Argentina,Mendoza,Approved,00,False,,-34.4034142,-59.2862612

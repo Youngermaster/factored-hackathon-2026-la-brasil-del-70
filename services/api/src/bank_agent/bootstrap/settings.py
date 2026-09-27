@@ -8,16 +8,20 @@ set, long enough, and not a known default. Violations raise ``SettingsError``, w
 offending variables and never their values.
 """
 
+from datetime import date
 from decimal import Decimal
 from pathlib import Path
 from typing import Annotated, Literal
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+
+from bank_agent.adapters.retrieval.embedding import DEFAULT_EMBEDDING_MODEL
 
 Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 LLMProvider = Literal["fake", "cassette", "litellm"]
+LLMCassetteMode = Literal["replay", "record"]
 
 MIN_SECRET_LENGTH = 32
 
@@ -42,6 +46,25 @@ KNOWN_DEFAULT_SECRETS: frozenset[str] = frozenset(
 )
 
 _ENV_FILE = Path(".env")
+# settings.py -> bootstrap -> bank_agent -> src -> services/api -> services -> repository root
+_SERVICE_ROOT = Path(__file__).resolve().parents[3]
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[5]
+DEFAULT_PRICES_FILE = _SERVICE_ROOT / "config" / "llm_prices.yaml"
+DEFAULT_CASSETTE_DIR = _REPOSITORY_ROOT / "evals" / "cassettes"
+DEFAULT_POLICY_DIR = _REPOSITORY_ROOT / "policies"
+DEFAULT_DATA_AS_OF = date(2026, 6, 17)
+"""The organizer snapshot date (``data_platform/config/sources.yml``), the end of the seeded data."""
+DEFAULT_INDEX_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "indexes"
+DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "embeddings"
+DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
+DEFAULT_MODEL_REGISTRY_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "models"
+_SELECTION = r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}"
+ROUTER_SELECTION = rf"^(keyword@1|(tfidf|embeddings)@{_SELECTION})$"
+RESOLVER_SELECTION = rf"^(rules@1|lgbm@{_SELECTION})$"
+DEFAULT_THRESHOLD_BM25 = 3.6292
+"""Tuned on the dev split of retrieval_judgments.v1 (docs/evaluation/retrieval.md); rerun `make eval-retrieval`."""
+DEFAULT_THRESHOLD_DENSE = 0.8275
+"""Cosine similarity with intfloat/multilingual-e5-small, tuned on the same dev split."""
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:
@@ -101,7 +124,12 @@ class SecuritySettings(BaseSettings):
 
 
 class LLMSettings(BaseSettings):
-    """Language model gateway settings. Provider and model are chosen by evaluation."""
+    """Language model gateway settings. Provider and model are chosen by evaluation.
+
+    ``provider``: ``fake`` uses a client injected by tests or the evaluation harness, or, when none is injected,
+    a client that refuses every call so workflows take their deterministic fallbacks; ``cassette`` replays (or
+    records) cassettes; ``litellm`` calls a live provider through the optional ``litellm`` extra.
+    """
 
     model_config = _config("LLM_")
 
@@ -112,6 +140,131 @@ class LLMSettings(BaseSettings):
     api_key_fallback: SecretStr | None = None
     daily_budget_usd: Decimal = Field(default=Decimal(5), ge=0)
     session_token_limit: int = Field(default=20000, gt=0)
+    conversation_budget_usd: Decimal = Field(default=Decimal("0.50"), ge=0)
+    timeout_seconds: float = Field(default=20.0, gt=0, le=300)
+    max_retries: int = Field(default=2, ge=0, le=2)
+    retry_base_delay_seconds: float = Field(default=0.5, ge=0, le=30)
+    retry_max_delay_seconds: float = Field(default=4.0, ge=0, le=60)
+    circuit_failure_threshold: int = Field(default=5, ge=1, le=100)
+    circuit_reset_seconds: float = Field(default=30.0, gt=0, le=3600)
+    circuit_half_open_max_calls: int = Field(default=1, ge=1, le=10)
+    prices_file: Path = DEFAULT_PRICES_FILE
+    cassette_mode: LLMCassetteMode = "replay"
+    cassette_dir: Path = DEFAULT_CASSETTE_DIR
+    trace_content: bool = False
+
+    @field_validator("prices_file", "cassette_dir", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return DEFAULT_PRICES_FILE if info.field_name == "prices_file" else DEFAULT_CASSETTE_DIR
+        return value
+
+
+class PolicySettings(BaseSettings):
+    """The synthetic policy pack and the reference date of policy time windows.
+
+    ``data_as_of`` is the as-of date of the records (the organizer snapshot, 2026-06-17): dispute windows and
+    complaint lookbacks count to it, never to the wall clock, because the data ends months before the demo.
+    """
+
+    model_config = _config("POLICY_")
+
+    dir: Path = DEFAULT_POLICY_DIR
+    data_as_of: date = DEFAULT_DATA_AS_OF
+
+    @field_validator("dir", "data_as_of", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return DEFAULT_POLICY_DIR if info.field_name == "dir" else DEFAULT_DATA_AS_OF
+        return value
+
+
+RetrieverName = Literal["bm25", "dense", "hybrid"]
+IndexSource = Literal["build", "stored"]
+
+
+class RetrievalSettings(BaseSettings):
+    """Open retrieval for informational questions (``docs/evaluation/retrieval.md`` justifies the defaults).
+
+    ``index_source=build`` builds the BM25 index from the loaded pack at startup, so it matches by construction;
+    ``stored`` loads ``<index_dir>/<pack version>/`` and refuses a mismatch; production requires ``stored``.
+    ``dense`` and ``hybrid`` need the optional ``ml`` extra, which the API image never installs. The thresholds
+    were tuned on the development split of the relevance judgments; the hybrid retriever uses them as the
+    floors of its components.
+    """
+
+    model_config = _config("RETRIEVAL_")
+
+    retriever: RetrieverName = "bm25"
+    index_source: IndexSource = "build"
+    index_dir: Path = DEFAULT_INDEX_DIR
+    embedding_model: str = DEFAULT_EMBEDDING_MODEL
+    model_cache_dir: Path = DEFAULT_MODEL_CACHE_DIR
+    embedding_cache_dir: Path = DEFAULT_EMBEDDING_CACHE_DIR
+    rrf_k: int = Field(default=60, ge=0, le=1000)
+    threshold_bm25: float = Field(default=DEFAULT_THRESHOLD_BM25, ge=0)
+    threshold_dense: float = Field(default=DEFAULT_THRESHOLD_DENSE, ge=-1, le=1)
+    answer_k: int = Field(default=3, ge=1, le=20)
+
+    @field_validator(
+        "index_dir",
+        "model_cache_dir",
+        "embedding_cache_dir",
+        "embedding_model",
+        "threshold_bm25",
+        "threshold_dense",
+        mode="before",
+    )
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
+
+
+class WorkflowSettings(BaseSettings):
+    """The workflow engine: which workflows are enabled and whether the language model helps understanding.
+
+    ``enabled`` lists the workflows the router may dispatch to (all four by default; for example
+    ``WORKFLOW_ENABLED=dispute,card_support`` cuts the other two back);
+    intents of any other workflow get the out-of-scope answer, which is also how a workflow is cut back
+    (CLAUDE.md section 1). Model phrasing and handoff summaries are off by default and, when on, must pass the
+    grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations:
+    ``WORKFLOW_ROUTER`` is ``keyword@1`` (default), ``tfidf@<version or alias>``, or ``embeddings@<version or alias>``;
+    ``WORKFLOW_RESOLVER`` is ``rules@1`` (default) or ``lgbm@<version or alias>``. Learned models load from the
+    filesystem registry at ``WORKFLOW_MODEL_REGISTRY_DIR``; without an artifact the rule baseline serves.
+    """
+
+    model_config = _config("WORKFLOW_")
+
+    enabled: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["account_inquiry", "card_support", "dispute", "credit"]
+    )
+    llm_understanding: bool = True
+    llm_phrasing: bool = False
+    llm_handoff_summary: bool = False
+    max_turns: int = Field(default=40, ge=1, le=500)
+    router: Annotated[str, Field(pattern=ROUTER_SELECTION)] = "keyword@1"
+    resolver: Annotated[str, Field(pattern=RESOLVER_SELECTION)] = "rules@1"
+    model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
+    language_detector: Literal["lexical@1"] = "lexical@1"
+    risk_estimator: Literal["score_band@1"] = "score_band@1"
+
+    @field_validator("router", "resolver", "model_registry_dir", mode="before")
+    @classmethod
+    def _empty_model_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
+
+    @field_validator("enabled", mode="before")
+    @classmethod
+    def _split_enabled(cls, value: object) -> object:
+        if isinstance(value, str):
+            return [item.strip() for item in value.split(",") if item.strip()]
+        return value
 
 
 class ObservabilitySettings(BaseSettings):
@@ -133,12 +286,18 @@ class AppSettings:
         security: SecuritySettings,
         llm: LLMSettings,
         observability: ObservabilitySettings,
+        policy: PolicySettings | None = None,
+        retrieval: RetrievalSettings | None = None,
+        workflow: WorkflowSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
         self.security = security
         self.llm = llm
         self.observability = observability
+        self.policy = policy if policy is not None else PolicySettings()
+        self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
+        self.workflow = workflow if workflow is not None else WorkflowSettings()
 
     @property
     def is_production(self) -> bool:
@@ -184,6 +343,12 @@ def production_problems(settings: AppSettings) -> list[str]:
     ]
     if settings.llm.provider == "litellm":
         secrets.append(("LLM_API_KEY_PRIMARY", settings.llm.api_key_primary))
+    if settings.llm.trace_content:
+        problems.append("LLM_TRACE_CONTENT must be false in production")
+    if settings.llm.provider == "cassette" and settings.llm.cassette_mode == "record":
+        problems.append("LLM_CASSETTE_MODE=record is not allowed in production")
+    if settings.retrieval.index_source != "stored":
+        problems.append("RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:
@@ -202,6 +367,9 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         security=SecuritySettings(_env_file=env_file),
         llm=LLMSettings(_env_file=env_file),
         observability=ObservabilitySettings(_env_file=env_file),
+        policy=PolicySettings(_env_file=env_file),
+        retrieval=RetrievalSettings(_env_file=env_file),
+        workflow=WorkflowSettings(_env_file=env_file),
     )
     problems = production_problems(settings)
     if problems:

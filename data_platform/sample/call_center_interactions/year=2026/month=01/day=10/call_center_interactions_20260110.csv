@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-REQVHZK0Q7SPEKWS,2026-01-10 18:36:11,2026-01-10,CLI-RKIFX1G2SP3M,AGT-XVTFWL1STE,Inbound Call,Phone,Queja,Queja,556.0,198.0,True,False,Positivo,0.31,mexican,mexican,False,,False,True

@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: greeting_or_other
+seeds:
+  es-MX:
+    - "Hola"
+    - "Buenas tardes"
+    - "Gracias, eso era todo"
+    - "Necesito ayuda"
+    - "¿Qué onda? ¿Cómo estás?"
+    - "Muchas gracias por la ayuda, que tengas buen día"
+    - "Oye, ¿me ayudas con algo?"
+    - "Ok, bye"
+  es-CO:
+    - "Buenos días"
+    - "Hola, ¿cómo le va?"
+    - "Mil gracias, muy amable"
+    - "Tengo una duda"
+    - "Listo, hasta luego"
+    - "Qué más, ¿todo bien?"
+    - "¿Me puede ayudar con algo, por favor?"
+    - "Perfecto, gracias sumercé"
+  es-AR:
+    - "Hola, buenas"
+    - "Buen día"
+    - "Gracias, genio"
+    - "Che, necesito una mano"
+    - "¿Todo bien?"
+    - "Chau, gracias"
+    - "Buenas noches, quería consultar algo"
+    - "Joya, eso era todo"
+  pt-BR:
+    - "Oi"
+    - "Bom dia"
+    - "Obrigado, era só isso"
+    - "Preciso de ajuda"
+    - "E aí, tudo bem?"
+    - "Valeu, tchau"
+    - "Olá, podem me ajudar?"
+    - "Beleza, muito obrigada"

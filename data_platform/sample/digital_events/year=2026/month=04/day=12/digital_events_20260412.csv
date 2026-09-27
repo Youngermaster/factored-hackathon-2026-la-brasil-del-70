@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-9F1OTZU6V6X9NGMZRSRZ,2026-04-13 05:36:38,2026-04-12,CLI-WKR4P95O4ZKE,SES-K9ZK3R9SJOSHOQTDQASW50B7TY47,FormSubmit,Transaction,Desktop Web,MacOS,Safari,,/payments,Pagar Servicios,initiate_payment,payment_form,,4956.33,,203.0.113.157,México,Guadalajara,False,,,,
+EVT-VFNSLB5SWF6JPWN1BMR0,2026-04-13 05:37:18,2026-04-12,CLI-WKR4P95O4ZKE,SES-K9ZK3R9SJOSHOQTDQASW50B7TY47,Logout,Authentication,Desktop Web,MacOS,Safari,,/login,Iniciar Sesión,login,login_form,,,,192.0.2.196,México,,False,,,,

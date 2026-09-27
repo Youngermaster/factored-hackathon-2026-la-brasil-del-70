@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3M61WJE2OS0A0SAT3XUO,2025-08-26 18:09:58,2025-08-26,PRD-90JNLYT1FQAP,CLI-1AS0INHPK43M,Purchase,Other,494.93,USD,,POS,,Ferretería,Other,México,Querétaro,Approved,00,False,10.09,,
+TRX-5O6EFA3NJHFDKPA6JRBC,2025-08-26 20:38:38,2025-08-26,PRD-XB5OTWQQ6V1D,CLI-H6OV6I0CT5IX,Transfer,,5057.66,USD,,Web,,,,México,Querétaro,Approved,00,False,9.83,,
+TRX-PQL93LQ164D8CWHH2ZSI,2025-08-27 00:13:57,2025-08-26,PRD-BGC7KENP311C,CLI-9MNRLM8SP9QI,Adjustment,,826.66,USD,,POS,,,,México,Ciudad de México,Approved,00,False,26.87,-0.1812368,-0.9551928

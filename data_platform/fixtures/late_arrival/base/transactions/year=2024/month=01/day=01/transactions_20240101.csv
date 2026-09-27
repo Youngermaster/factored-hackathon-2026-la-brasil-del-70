@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-FIX-0001,2024-01-01 15:00:00,2024-01-01,PRD-FIX-CC01,CLI-FIX-0001,Purchase,Food,45.90,USD,,POS,,Super Fixture,Food,México,Ciudad de México,Approved,00,False,3.5,,
+TRX-FIX-0001,2024-01-01 15:00:00,2024-01-01,PRD-FIX-CC01,CLI-FIX-0001,Purchase,Food,45.90,USD,,POS,,Super Fixture,Food,México,Ciudad de México,Approved,00,False,3.5,,
+TRX-FIX-0002,2024-01-01 16:30:00,2024-01-01,PRD-FIX-CC01,CLI-FIX-0001,Payment,,200.00,USD,,App,,,,México,Ciudad de México,Approved,00,False,3.5,,
+TRX-FIX-0003,2024-01-01 18:00:00,2024-01-01,PRD-FIX-CK02,CLI-FIX-0002,Transfer,,150000.00,COP,,Web,,,,Colombia,Bogotá,Pending,00,False,3.5,,
+TRX-FIX-0004,2024-01-01 20:00:00,2024-01-01,PRD-FIX-DC01,CLI-FIX-0001,Withdrawal,,60.00,USD,,ATM,,,,México,Ciudad de México,Declined,51,False,3.5,,
+TRX-FIX-0005,2024-01-02 03:00:00,2024-01-01,PRD-FIX-SV01,CLI-FIX-0001,Deposit,,75.00,USD,,Web,,,,México,Ciudad de México,Approved,00,False,3.5,,

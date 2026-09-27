@@ -1,0 +1,9 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1GLRA00YNTDL7VDGMA6P,2025-07-22 00:40:15,2025-07-21,PRD-57LZ4Y4KBJ4T,CLI-2LQL5P2NJS9B,Purchase,Services,449.07,USD,,ATM,SUC-YOXS8L6B,Internet Plus,Services,México,Querétaro,Approved,00,False,20.65,,
+TRX-4Q00VFNEJVQTLL7L3DTB,2025-07-21 23:06:26,2025-07-21,PRD-DOKA3EN20VKO,CLI-IZX582QFYSNH,Transfer,,797087.81,ARS,2277.39,ATM,SUC-3JIR51SL,,,Argentina,Córdoba,Approved,00,False,9.24,,
+TRX-DPX9X10NMVYXA28B709H,2025-07-22 04:14:02,2025-07-21,PRD-ODJLM09U1GII,CLI-IMCRTKL094T5,Withdrawal,,72.43,USD,,POS,,,,México,,Declined,51,False,0.41,,
+TRX-F9AXXBUYZSJE7IMJ7Q64,2025-07-21 10:48:22,2025-07-21,PRD-1JMI57ZE86FN,CLI-NOC612SZ8VKJ,Deposit,,19064598.18,COP,4766.15,Web,,,,Colombia,Cali,Approved,00,False,6.4,,
+TRX-IKAIW3XESPB6QTM41TT5,2025-07-22 05:52:17,2025-07-21,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Deposit,,3380.21,USD,,Web,,,,México,Ciudad de México,Approved,00,False,3.66,,
+TRX-TOP2LAXIMAQUJXH65AWE,2025-07-21 07:06:07,2025-07-21,PRD-80A6GGEE741P,CLI-4QR1L5H7FKTD,Withdrawal,,94.39,USD,,POS,,,,USA,Miami,Approved,00,False,20.58,,
+TRX-X1UI0SZ5WJ1VWYDJEW49,2025-07-22 04:11:19,2025-07-21,PRD-H6F1F3YENJIR,CLI-Y15WQL0D9JH4,Withdrawal,,8532.89,ARS,24.38,POS,,,,Argentina,Buenos Aires,Declined,51,False,27.32,-34.6079943,-59.1670759
+TRX-YDEGOY2T9MQ6I6KPG0YU,2025-07-21 17:41:13,2025-07-21,PRD-J5YQWDINGEK5,CLI-BH1ZBAHAHTEN,Purchase,Other,466.33,USD,,POS,,Tienda General,Other,México,Tijuana,Approved,,False,,-0.8877034,0.9555213

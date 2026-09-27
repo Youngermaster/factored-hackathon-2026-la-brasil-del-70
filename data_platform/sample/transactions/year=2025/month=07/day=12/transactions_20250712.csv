@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-G13LCVKNOLP8QH076HCA,2025-07-12 09:11:23,2025-07-12,PRD-OB1ZSVSO4LSD,CLI-RKIFX1G2SP3M,Purchase,Transport,74.73,USD,,ATM,SUC-XSMNXFJN,Estación de Servicio,Transport,México,Ciudad de México,Approved,00,False,11.27,,
+TRX-O94Y8A5XF4NC955FMYBB,2025-07-12 08:28:35,2025-07-12,PRD-J5YQWDINGEK5,CLI-BH1ZBAHAHTEN,Purchase,Food,284.83,USD,,Web,,Mercado Central,Food,México,Tijuana,Approved,00,False,16.85,,
+TRX-SGDR3AAZ6RKCVO9SOQ4K,2025-07-13 04:47:15,2025-07-12,PRD-18FMCIAXL72C,CLI-OTYTZE2FLKFL,Withdrawal,,360.75,USD,,POS,,,,México,Tijuana,Approved,00,False,4.74,-0.5945974,-0.2356895
+TRX-UPMTAAECC6INC274DEXU,2025-07-12 15:30:44,2025-07-12,PRD-P1QA1JICBGAH,CLI-WKR4P95O4ZKE,Transfer,,9767.8,USD,,POS,,,,México,Guadalajara,Approved,00,False,0.94,,

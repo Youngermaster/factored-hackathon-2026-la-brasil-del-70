@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-9OJOIFSPWL4TG6AJ1W5H,2025-10-14 14:03:25,2025-10-14,CLI-IX877AHQ2942,SES-5JQZQ8A6B7VF2A8JXX2AJIQCDBSA,PageView,Navigation,Desktop Web,MacOS,,,/accounts,Mis Cuentas,,accounts_page,,,,203.0.113.192,México,Puebla,False,,,,

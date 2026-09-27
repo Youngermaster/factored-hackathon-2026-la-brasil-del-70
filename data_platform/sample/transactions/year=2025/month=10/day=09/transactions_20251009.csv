@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-4K43LHWQW88EOBAQ7H7C,2025-10-09 07:15:57,2025-10-09,PRD-T65J6M8T8FD6,CLI-IMCRTKL094T5,Payment,Services,691.16,USD,,Web,,,,México,Querétaro,Approved,00,False,26.45,,
+TRX-A3FEPTYTRDPH0X6APV3B,2025-10-09 18:03:07,2025-10-09,PRD-W23AA9WQQYUM,CLI-1PQOJNHN9ASF,Deposit,,2764.85,USD,,Web,,,,México,Tijuana,Approved,00,False,,,

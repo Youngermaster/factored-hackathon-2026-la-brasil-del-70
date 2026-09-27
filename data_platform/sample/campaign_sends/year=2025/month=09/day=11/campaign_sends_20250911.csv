@@ -1,0 +1,4 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-J3VBLM1XOJ9Z5PSPFL84,2025-09-12 03:38:13,2025-09-11,CMP-IGH5RBBAIJDT,CLI-N9ZXVIIXZ6JN,Push,template_CMP-IGH5RBBAIJDT_3,,Sent,True,False,,False,,,False,,,,,,0.0009
+SND-LYFKF9QWV5PWWUVLMGWT,2025-09-11 22:47:19,2025-09-11,CMP-IGH5RBBAIJDT,CLI-ODH9G3RG7J9J,Push,,,Failed,False,,,False,,,False,,,,,SMTP error,0.0006
+SND-SSA8ML2KNJBBHRJCWO61,2025-09-11 18:38:16,2025-09-11,CMP-QWHHVF2N0VIQ,CLI-FKPNY8NAT22F,SMS,template_CMP-QWHHVF2N0VIQ_2,,Sent,True,True,2025-09-16 22:09:39,False,,,False,,,Tablet,México,,0.136

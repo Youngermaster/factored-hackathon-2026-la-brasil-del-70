@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-JQ1EV3MV1LTHA2U5TF2Y,2026-02-19 08:02:52,2026-02-19,PRD-AVRKCC2QDBYN,CLI-3XGV18QB96P9,Withdrawal,,342.49,USD,,POS,,,,México,,Approved,00,False,24.63,,
+TRX-PNIYIPNUKUY9RIMB858Q,2026-02-19 15:52:38,2026-02-19,PRD-PNC66PY0CYPP,CLI-CTY661KC9RAS,Deposit,,12676699.97,COP,3169.17,POS,,,,Colombia,Medellín,Approved,00,False,,,
+TRX-XBTA75A8CG94THPF5581,2026-02-19 23:40:08,2026-02-19,PRD-UE1FN7KCWVYP,CLI-W6CYG2XGJXVX,Purchase,Transport,239.87,USD,,App,,Uber,Transport,México,,Approved,00,False,6.36,,

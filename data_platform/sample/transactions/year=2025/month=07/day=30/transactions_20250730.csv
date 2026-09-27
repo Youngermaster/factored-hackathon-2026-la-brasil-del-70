@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-7L5HGEQ77C0JASDRLVQV,2025-07-30 20:12:04,2025-07-30,PRD-PNC66PY0CYPP,CLI-CTY661KC9RAS,Deposit,,15325261.69,COP,3831.32,ATM,SUC-4USRLC45,,,Colombia,Medellín,Approved,00,False,22.14,,
+TRX-FVAJCJPPEG5ANBROW1LU,2025-07-30 20:03:06,2025-07-30,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Transfer,,7296.95,USD,,ATM,SUC-OZH64PX1,,,México,Guadalajara,Approved,00,False,,-0.0691381,-0.9175938
+TRX-Q602P9VQPUR5FN3M58JR,2025-07-31 00:57:58,2025-07-30,PRD-Q33HTSW9L1AE,CLI-END66G0XIF95,Transfer,,9171.89,USD,,Branch,SUC-8RYAQ0NO,,,México,Ciudad de México,Approved,00,False,27.91,,
+TRX-TVN8Y5E5PH6WNWJFX8PR,2025-07-30 19:52:57,2025-07-30,PRD-UQW1R8JQZQ1V,CLI-TP8JBA2IK7EJ,Deposit,,1192.96,USD,,ATM,SUC-7SL55GEJ,,,México,Guadalajara,Approved,00,False,22.98,,

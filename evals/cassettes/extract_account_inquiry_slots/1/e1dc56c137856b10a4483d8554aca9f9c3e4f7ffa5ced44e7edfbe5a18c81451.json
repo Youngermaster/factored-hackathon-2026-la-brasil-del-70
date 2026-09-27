@@ -1,0 +1,37 @@
+{
+  "cassette_id": "e1dc56c137856b10a4483d8554aca9f9c3e4f7ffa5ced44e7edfbe5a18c81451",
+  "kind": "structured",
+  "labels": {
+    "case": "ambiguous",
+    "workflow": "account_inquiry"
+  },
+  "language": "pt",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "payment": {
+      "amount": null,
+      "currency_hint": null,
+      "date_expression": null,
+      "payee_text": null
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Fiz um pagamento e não sei se caiu.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-09-26"
+  }
+}

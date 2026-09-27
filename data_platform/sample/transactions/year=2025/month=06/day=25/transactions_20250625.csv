@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-9Q74SVUG93HYJEEB2ZNG,2025-06-25 06:39:19,2025-06-25,PRD-KABMG8XKP7HG,CLI-3XGV18QB96P9,Deposit,,4237.99,USD,,POS,,,,México,Monterrey,Approved,00,False,17.14,,

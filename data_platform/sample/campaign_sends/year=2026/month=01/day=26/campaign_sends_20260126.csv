@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-JE573HRF7RKIJC2WBFXG,2026-01-26 07:36:45,2026-01-26,CMP-INJLXWJZUEMT,CLI-4QR1L5H7FKTD,WhatsApp,,,Sent,True,,,False,,,False,,,,,,0.0626

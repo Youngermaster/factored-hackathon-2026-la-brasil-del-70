@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-W3JVYNJ8UNJ5VECX,2026-01-31 01:56:38,2026-01-30,CLI-7HT38ZKBZB3M,AGT-V0731LP1QE,Inbound Call,Phone,Queja,Queja,579.0,103.0,False,True,Negativo,-0.64,,,False,PRD-L94S5NGG60BD,False,True

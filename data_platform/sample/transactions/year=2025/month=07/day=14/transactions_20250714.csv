@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-8V5NEZXG4D7LX9NFBEKE,2025-07-14 09:50:22,2025-07-14,PRD-R0IP9I97ABLL,CLI-NOC612SZ8VKJ,Deposit,,7668779.57,COP,1917.19,ATM,,,,Colombia,Cali,Approved,00,False,8.32,,

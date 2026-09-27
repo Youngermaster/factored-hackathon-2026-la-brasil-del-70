@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2JXGVNTG8APXPU3HCU7G,2026-01-22 14:41:36,2026-01-22,PRD-MVDXKLB9BFHS,CLI-5N42HUM8D4H6,Deposit,,545831.24,ARS,1559.52,POS,,,,Argentina,Rosario,Approved,00,False,29.43,,
+TRX-BAG5A5S3NQI47UQHFDC6,2026-01-22 21:14:15,2026-01-22,PRD-KOP86ODYWL99,CLI-VHBEU7EEMIV1,Payment,Entertainment,480534.28,ARS,1372.96,ATM,SUC-RRCPMD2D,,,Argentina,Buenos Aires,Approved,00,False,23.98,,
+TRX-BNVN4WEDIJT50WJ56G2F,2026-01-22 18:29:41,2026-01-22,PRD-YQQ674NN35JQ,CLI-ZJCPKZZRXUR8,Purchase,Health,1380328.46,COP,345.08,App,,Farmacia Salud,Health,Colombia,Medellín,Approved,00,False,15.05,,

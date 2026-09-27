@@ -1,0 +1,19 @@
+---
+clause_id: ELG-MX-1.2
+version: 1
+jurisdiction: MX
+language: es
+effective_from: 2026-09-27
+synthetic: true
+params:
+  product_type: personal_loan
+  min_credit_score: 650
+  max_payment_to_income_pct: 35
+  max_days_past_due: 0
+  min_tenure_months: 12
+  acceptable_risk_bands: [low, medium]
+  review_amount_threshold: {amount: "200000.00", currency: MXN}
+bound_rules: [ELG.credit_score_minimum, ELG.payment_to_income_max, ELG.days_past_due_max, ELG.tenure_minimum, ELG.amount_within_product_range, ELG.risk_band_acceptable]
+summary: Reglas sintéticas de elegibilidad para préstamo personal en México.
+---
+Reglas sintéticas de demostración para préstamo personal en México. La orientación es favorable cuando tu puntaje de crédito es de al menos {min_credit_score}; la cuota mensual estimada a la tasa máxima del producto no supera el {max_payment_to_income_pct} % de tu ingreso mensual; no tienes días de atraso en tus productos de crédito; tienes al menos {min_tenure_months} meses como cliente; la estimación de riesgo sintética está en una banda baja o media; y el monto está dentro del rango del producto. Si el monto supera {review_amount_threshold}, o si tienes algún atraso, una persona del equipo revisa el caso. Estas reglas no son una política real de crédito y no toman ninguna decisión.

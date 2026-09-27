@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-OGA6VERU9XNRDS46GMWH,2025-12-11 15:44:44,2025-12-11,CMP-OZ3ECV86GFA8,CLI-CGS8YGQUFDAN,Email,template_CMP-OZ3ECV86GFA8_5,¡Oferta especial en Tarjeta Crédito!,Sent,True,False,,False,,,False,,,,,,0.0067

@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-46ZLHTOMCGOYNMET,2025-10-11 00:37:36,2025-10-10,CLI-ZJCPKZZRXUR8,AGT-9Q63425XXI,Inbound Call,Phone,Producto,Producto,321.0,207.0,False,True,Neutral,0.1,,,False,,True,True

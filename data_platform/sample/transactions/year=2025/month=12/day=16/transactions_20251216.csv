@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0F156Y7IVADKHRTI9HXZ,2025-12-16 20:23:15,2025-12-16,PRD-9I54B0DPLJ3T,CLI-UWPSMKLGJ4HM,Payment,Entertainment,569.03,USD,,ATM,SUC-1PYKK6ZV,,,México,Ciudad de México,Approved,00,False,15.58,0.3866839,-0.5516575
+TRX-C3ZCZ5IM0QWDOWH01NN2,2025-12-16 12:19:41,2025-12-16,PRD-FQW23YXXO9I2,CLI-R53C8RPXD32P,Withdrawal,,1754004.27,COP,438.5,ATM,SUC-85YWBJ74,,,Colombia,,Approved,00,False,23.39,,
+TRX-FFL6LB1ZKKRG1TH2CX29,2025-12-17 00:23:48,2025-12-16,PRD-XBKCHOHY8ACB,CLI-FKPNY8NAT22F,Purchase,Entertainment,8.42,USD,,ATM,SUC-GV2TU3NJ,Streaming Music,Entertainment,México,Querétaro,Approved,,False,,0.2489575,0.2916344
+TRX-G2UVHGO3S5UB1IQV51PT,2025-12-16 15:10:42,2025-12-16,PRD-EG3OR9572TN1,CLI-898HYDPSE4K6,Purchase,Food,469.47,USD,,POS,,Restaurante El Buen Sabor,Food,México,Guadalajara,Approved,00,False,17.3,,-0.6337136
+TRX-GC8P6T5ZEQAK1LYO6NRW,2025-12-16 13:05:24,2025-12-16,PRD-HRVKK5EBRHP1,CLI-UWPSMKLGJ4HM,Withdrawal,,37.23,USD,,App,,,,México,Ciudad de México,Approved,00,False,,,
+TRX-P2V49PXNH0JERBY9Z4C5,2025-12-16 22:00:20,2025-12-16,PRD-9FETOE2N31SC,CLI-U8JZASBAZZ8W,Withdrawal,,290.07,USD,,Web,,,,México,Tijuana,Approved,00,False,10.9,,

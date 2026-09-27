@@ -14,6 +14,9 @@ from pathlib import Path
 
 import pytest
 
+# Shared PostgreSQL fixtures (one migrated container per session) for the service and data platform suites.
+from bank_agent_postgres import migrated_postgres, postgres  # noqa: F401
+
 _DIRECTORY_MARKERS = {"unit": pytest.mark.unit, "integration": pytest.mark.integration}
 
 

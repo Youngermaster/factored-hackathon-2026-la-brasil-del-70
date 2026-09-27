@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-NJUI3VEXWG188IJ1I3IA,2025-08-08 11:17:46,2025-08-08,PRD-3MW9MQVBAPP0,CLI-7P0ZUEV7Y4EH,Deposit,,4919.66,USD,,Transfer,,,,México,Puebla,Approved,00,False,,,
+TRX-RRJZGNWA9HIGS7OLZ20E,2025-08-08 19:34:46,2025-08-08,PRD-W23AA9WQQYUM,CLI-1PQOJNHN9ASF,Deposit,,1786.74,USD,,ATM,SUC-MGUQPIKZ,,,México,Tijuana,Approved,00,False,,,
+TRX-SMJSH3GDDWCHLGP7D3IC,2025-08-08 15:08:45,2025-08-08,PRD-YLXNXD6H5Y0G,CLI-NOC612SZ8VKJ,Withdrawal,,291.37,USD,,Web,,,,Colombia,Cali,Approved,00,False,,,
+TRX-UU8ARIY34Z35994VDTEX,2025-08-08 07:04:50,2025-08-08,PRD-FJB80FBRBO6Y,CLI-QZGUG3KBZ2ZG,Purchase,Food,163.72,USD,,App,,,Food,México,Tijuana,Approved,00,False,17.38,,

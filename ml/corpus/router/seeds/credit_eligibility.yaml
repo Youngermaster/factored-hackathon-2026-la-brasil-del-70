@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: credit_eligibility
+seeds:
+  es-MX:
+    - "¿Califico para un préstamo personal?"
+    - "Hola, ¿me darían {product} si gano el mínimo?"
+    - "¿Puedo sacar una tarjeta de crédito aunque esté en el buró?"
+    - "¿Soy candidato para un crédito de auto?"
+    - "Tengo seis meses en mi chamba nueva, ¿me aprobarían un préstamo?"
+    - "¿Cuánto me podrían prestar a mí con mi historial?"
+    - "¿Tengo algún crédito preaprobado?"
+    - "Todavía no quiero solicitar, solo saber si podría acceder a {product}"
+  es-CO:
+    - "¿Yo aplico para un crédito de libre inversión?"
+    - "Buenos días, ¿me aprobarían {product} siendo independiente?"
+    - "Estoy reportado en centrales de riesgo, ¿igual me pueden prestar?"
+    - "¿Tengo cupo preaprobado para tarjeta de crédito?"
+    - "Quisiera saber si con mi sueldo me alcanza para un crédito de vivienda"
+    - "¿Cumplo los requisitos para {product}?"
+    - "Soy pensionado, ¿me dan crédito de libranza?"
+    - "¿Hasta cuánto me prestarían a mí?"
+  es-AR:
+    - "¿Me dan un préstamo personal?"
+    - "Che, ¿califico para {product} siendo monotributista?"
+    - "¿Tengo algún préstamo preaprobado en el home banking?"
+    - "Cobro el sueldo en el banco hace un año, ¿puedo sacar un crédito?"
+    - "¿Podría acceder a una tarjeta de crédito con mis ingresos?"
+    - "Estoy en el Veraz, ¿hay chance de que me aprueben algo?"
+    - "¿Cuánta plata me prestarían con mi recibo de sueldo?"
+    - "No te pido que me lo tramites, solo decime si me correspondería {product}"
+  pt-BR:
+    - "Eu consigo um empréstimo pessoal?"
+    - "Oi, tenho direito a {product}?"
+    - "Tô com o nome sujo, ainda dá pra conseguir crédito?"
+    - "Tenho algum crédito pré-aprovado?"
+    - "Sou autônomo, vocês aprovariam um financiamento pra mim?"
+    - "Com minha renda, quanto eu conseguiria de empréstimo?"
+    - "Será que meu perfil é aprovado pra {product}?"
+    - "Ainda não quero pedir, só saber se eu seria elegível pro cartão de crédito"

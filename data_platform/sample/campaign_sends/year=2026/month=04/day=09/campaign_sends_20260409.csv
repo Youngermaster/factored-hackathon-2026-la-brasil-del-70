@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-TK56XQOUA6YC6D7XYRBI,2026-04-10 00:55:22,2026-04-09,CMP-OSQUXZJWLN3F,CLI-K0GJBJFDKIBO,SMS,template_CMP-OSQUXZJWLN3F_1,,Sent,True,True,2026-04-13 13:25:58,True,2026-04-13 13:35:15,1.0,False,,,Desktop,Colombia,,0.1396

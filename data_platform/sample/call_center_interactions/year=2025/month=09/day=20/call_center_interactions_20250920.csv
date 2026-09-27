@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-KAVBNDGUCJIMOGNF,2025-09-21 02:24:43,2025-09-20,CLI-Q6CL8Y1VMVSB,AGT-9PZ6W3LDGU,Outbound Call,Phone,Transaccional,Transaccional,168.0,,True,False,Neutral,0.04,colombian,mexican,False,,False,True

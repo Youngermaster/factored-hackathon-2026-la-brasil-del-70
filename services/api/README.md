@@ -40,6 +40,7 @@ An arrow means "may import". A layer may import any layer below it, not only the
 | `api` | FastAPI app factory, routers, middleware, problem details | [api](src/bank_agent/api/README.md) |
 | `bootstrap` | Settings, logging, and the composition root | [bootstrap](src/bank_agent/bootstrap/README.md) |
 | `prompts` | Versioned prompt files | [prompts](src/bank_agent/prompts/README.md) |
+| `testing` | Deterministic test doubles (not a layer; production code never imports it) | [testing](src/bank_agent/testing/README.md) |
 
 Three contracts apply:
 
@@ -59,7 +60,7 @@ The API layer declares what it needs as the `ServiceProvider` Protocol in `api/p
 ## Public interfaces
 
 - HTTP: `GET /health/live` and `GET /health/ready`. Errors are RFC 9457 problem details (`application/problem+json`). Every response carries `X-Request-ID`.
-- CLI: `bank-agent version` and `bank-agent --help`. Phase 07 adds `bank-agent index build`.
+- CLI: `bank-agent version`, `bank-agent db upgrade`, `bank-agent policy lock|catalog`, and `bank-agent index build` (the retrieval index for the current pack version), with `bank-agent --help`.
 - Configuration: environment variables documented in the root `.env.example`, read only by `bootstrap/settings.py`.
 
 Run the API locally:
@@ -72,7 +73,7 @@ make up PROFILES=api
 
 ## Dependencies and extras
 
-Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra, which holds sentence-transformers for the dense retriever, is added in phase 07 and is never installed in the API runtime image.
+Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013).
 
 ## How to extend
 

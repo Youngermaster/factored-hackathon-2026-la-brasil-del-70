@@ -1,0 +1,4 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-07DY42LO2SW3EKVTAJWS,INT-M5OSQPOM5TKQJXF8,2026-04-07,CLI-1AS0INHPK43M,AGT-3QQOA60CO9,"Cliente: Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+
+Agente: Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.","Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.","Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.",es,,0.81,"cuenta, banco","{""account_numbers"": 1, ""dates"": 0, ""amounts"": 1, ""products"": ""Tarjeta Crédito""}",consulta_general,Producto,Whisper v3,High,379.0

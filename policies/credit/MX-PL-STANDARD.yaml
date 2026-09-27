@@ -1,0 +1,27 @@
+# Synthetic credit catalog entry for the demonstration. Not an offer and not any real bank's product.
+product_code: MX-PL-STANDARD
+product_type: personal_loan
+jurisdiction: MX
+currency: MXN
+min_amount: {amount: "10000.00", currency: MXN}
+max_amount: {amount: "350000.00", currency: MXN}
+min_term_months: 6
+max_term_months: 60
+min_annual_rate: "28.00"
+max_annual_rate: "65.00"
+purposes: [general_purpose, debt_consolidation, home_improvement, education]
+required_information: [declared_monthly_income]
+eligibility_clause_ids: [ELG-ALL-1, ELG-ALL-2, ELG-ALL-3, ELG-MX-1.2]
+self_service_eligibility: true
+catalog_version: synthetic-catalog-2026.09.1
+synthetic: true
+display:
+  es:
+    name: "Préstamo personal Estándar"
+    summary: "Préstamo en cuotas fijas mensuales para propósitos personales. Producto sintético de demostración."
+  pt:
+    name: "Empréstimo pessoal Padrão"
+    summary: "Empréstimo em parcelas mensais fixas para finalidades pessoais. Produto sintético de demonstração."
+  en:
+    name: "Standard personal loan"
+    summary: "Loan repaid in fixed monthly installments for personal purposes. Synthetic demonstration product."

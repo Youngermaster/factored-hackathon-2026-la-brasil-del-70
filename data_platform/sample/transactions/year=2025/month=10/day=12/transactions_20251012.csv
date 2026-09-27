@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-K0JSSQYN9D6EVT4BHVHJ,2025-10-13 01:47:30,2025-10-12,PRD-HVNGK4YXZUS5,CLI-7P0ZUEV7Y4EH,Deposit,,875.15,USD,,POS,,,,México,Puebla,Declined,51,False,0.29,,
+TRX-MUQZWEL8ENURL5JWWIVP,2025-10-12 22:35:46,2025-10-12,PRD-9V9RN2VYGM2G,CLI-6VCS2LIRSE4Y,Transfer,,9031578.34,COP,,ATM,SUC-U7NNFMS6,,,Colombia,Medellín,Approved,00,False,17.94,,
+TRX-W0UQW866BNEENRRIFWA9,2025-10-13 00:36:40,2025-10-12,PRD-0WS8606X5ZOX,CLI-7P0ZUEV7Y4EH,Withdrawal,,443.96,USD,,Web,,,,México,Puebla,Approved,00,False,28.31,,

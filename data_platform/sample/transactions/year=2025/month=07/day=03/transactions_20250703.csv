@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1QVJ2SRAJRKTQYDL81K8,2025-07-03 17:21:46,2025-07-03,PRD-FXHZQUXYRDHZ,CLI-P2CRX7C6QTWG,Adjustment,,871.63,USD,,POS,,,,México,Puebla,Approved,00,False,15.06,0.8423263,-0.2673845
+TRX-DA8MMF5ANSUPEG3KUH2D,2025-07-03 13:48:29,2025-07-03,PRD-GFAT7F4QBKJS,CLI-KDRMF6UI68X1,Deposit,,2858.83,USD,,ATM,SUC-YOXS8L6B,,,México,Monterrey,Approved,00,False,5.42,-0.7288345,-0.3721361
+TRX-F9SPWIXF91JED9I7QI44,2025-07-03 21:00:12,2025-07-03,PRD-ENIMR71PNJWG,CLI-4QR1L5H7FKTD,Deposit,,11498743.42,COP,2874.69,POS,,,,Colombia,,Approved,00,False,,,
+TRX-RE512NWJ50HWS8Q240A6,2025-07-03 17:49:27,2025-07-03,PRD-U0YYWRU0JEEI,CLI-9MNRLM8SP9QI,Deposit,,1734.8,USD,,ATM,SUC-I4AA1FSG,,,México,Ciudad de México,Declined,05,False,14.47,,

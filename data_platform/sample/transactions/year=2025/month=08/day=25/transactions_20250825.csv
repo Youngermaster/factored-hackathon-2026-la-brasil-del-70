@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-DW8EVGRR11L6DZ3X6UPH,2025-08-25 11:10:47,2025-08-25,PRD-9COI86X98YC7,CLI-EJXBYCD0J96O,Purchase,Services,479.84,USD,,ATM,SUC-KX44GJKB,Cable TV,Services,México,Puebla,Approved,00,False,5.6,0.7855394,0.0426617
+TRX-VQ2WY2OAGHYEBQEPTDZ5,2025-08-25 12:34:44,2025-08-25,PRD-DOKA3EN20VKO,CLI-IZX582QFYSNH,Deposit,,833300.73,ARS,2380.86,App,,,,Argentina,Córdoba,Approved,00,False,2.13,,
+TRX-WRQR84SKX3NGFRN6ACHB,2025-08-26 01:39:31,2025-08-25,PRD-4Q97UDZVE4MS,CLI-UHMB1J1GBKG4,Withdrawal,,1052642.36,COP,263.16,App,,,,Colombia,Cali,Approved,00,False,0.27,,

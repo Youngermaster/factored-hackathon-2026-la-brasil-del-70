@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-7S4TFOZ6KDSFJ7H079I1,2025-06-24 20:11:09,2025-06-24,PRD-3XM5BPA6BZ9O,CLI-VU58CMFRCIP7,Deposit,,1769.53,USD,,App,,,,México,Querétaro,Approved,00,False,,,
+TRX-LLDG3YCF3RBJS3MM6QRH,2025-06-25 01:10:39,2025-06-24,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Purchase,Food,93.33,USD,,Web,,Mercado Central,Food,Colombia,Medellín,Approved,00,False,2.03,,
+TRX-O9TYVP3WL07F3UMUART7,2025-06-24 22:36:48,2025-06-24,PRD-OSQT4EJGX3F3,CLI-3XGV18QB96P9,Deposit,,1239.78,USD,,ATM,SUC-9W1MT1C4,,,México,Monterrey,Approved,00,False,17.4,,
+TRX-OZJ0Z6IG2KGOM0N1MF19,2025-06-25 02:54:10,2025-06-24,PRD-7N3R25GSYY9B,CLI-ODH9G3RG7J9J,Purchase,Entertainment,1862322.02,COP,465.58,POS,,Teatro Nacional,Entertainment,Colombia,Cali,Approved,00,False,1.92,4.2410478,-74.6585683
+TRX-PDZAZBMYPABUC25IO9UB,2025-06-24 17:45:15,2025-06-24,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Purchase,Services,125435.04,ARS,358.39,App,,Cable TV,Services,Argentina,Córdoba,Approved,00,False,7.2,,

@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "turn_id": "9b2f0d1e-0000-4000-8000-000000000001",
+  "conversation_id": "conv-000001",
+  "customer_ref": "CUS-A-0001",
+  "session_ref": null,
+  "workflow": {
+    "id": "dispute",
+    "version": 1
+  },
+  "recorded_at": "2026-06-10T15:00:00Z",
+  "channel": "web_chat",
+  "language": "es",
+  "language_detection": null,
+  "auth_level": "otp_verified",
+  "state_before": "UNDERSTAND",
+  "state_after": "LOCATE_TRANSACTION",
+  "outcome": "in_progress",
+  "intent": null,
+  "decisions": [
+    {
+      "schema_version": "1.0.0",
+      "state": "CHECK_ELIGIBILITY",
+      "action": "create_dispute_case",
+      "kind": "allow",
+      "rule_results": [
+        {
+          "rule_id": "DSP.within_window",
+          "rule_version": 1,
+          "passed": true,
+          "effect": null,
+          "reason_code": "within_window",
+          "params": {
+            "window_days": 60,
+            "days_since": 3
+          },
+          "clause_refs": [
+            "DSP-MX-2.1@1"
+          ],
+          "missing_facts": []
+        }
+      ],
+      "decisive_rule_ids": [],
+      "clause_refs": [
+        "DSP-MX-2.1@1"
+      ],
+      "policy_pack_version": "pack-fixture-1"
+    }
+  ],
+  "clause_refs": [],
+  "tool_calls": [],
+  "llm_calls": [],
+  "models": [],
+  "prompts": [],
+  "policy_pack_version": "pack-fixture-1",
+  "latency": {
+    "total_ms": 120,
+    "stages": {
+      "understand": 80
+    }
+  },
+  "token_usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "cost_usd": "0",
+  "trace_id": null,
+  "risk_tier": "low",
+  "trust_events_added": [],
+  "grounding": {
+    "llm_phrasing_used": false,
+    "template_id": null,
+    "violations": []
+  },
+  "safety_interventions": [],
+  "handoff_ref": null,
+  "case_refs": []
+}

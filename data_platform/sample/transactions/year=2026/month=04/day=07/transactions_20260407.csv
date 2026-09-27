@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-B7RXRYW290KLRCOSOWGV,2026-04-08 01:10:27,2026-04-07,PRD-TX0R0F8IPBEI,CLI-EJXBYCD0J96O,Payment,Health,409.89,USD,,App,,,,México,Puebla,Approved,00,False,,,
+TRX-ODHZEDGICHJF2KL14HYM,2026-04-07 07:51:29,2026-04-07,PRD-FJ63L0Y4KOBB,CLI-H6OV6I0CT5IX,Transfer,,9434.94,USD,,ATM,SUC-F03D129S,,,México,Querétaro,Declined,,False,,-0.8449545,0.8820848
+TRX-U9SSDYX36CSONKZAUCRI,2026-04-07 22:09:39,2026-04-07,PRD-R0IP9I97ABLL,CLI-NOC612SZ8VKJ,Transfer,,26948945.29,COP,6737.24,ATM,SUC-CBL7ISR7,,,Colombia,Cali,Approved,00,False,10.23,,

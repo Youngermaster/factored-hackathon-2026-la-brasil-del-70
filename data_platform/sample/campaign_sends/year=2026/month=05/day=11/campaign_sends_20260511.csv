@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-1VQKA0S9LQG423MXN3MK,2026-05-11 18:03:14,2026-05-11,CMP-Y0KZ3A1FLMPE,CLI-FKPNY8NAT22F,Push,template_CMP-Y0KZ3A1FLMPE_4,,Sent,True,True,2026-05-13 04:12:06,False,,,False,,,Tablet,México,,0.0002

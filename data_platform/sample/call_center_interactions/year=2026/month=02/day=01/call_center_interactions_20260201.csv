@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-8KQJJU3EPEFUGT4U,2026-02-02 03:52:23,2026-02-01,CLI-H6OV6I0CT5IX,AGT-OK1RZJN2O9,Email,Email,Técnico,Técnico,,,True,False,Muy Negativo,-0.77,mexican,mexican,False,"PRD-6AF0KF2676UO,PRD-ZIOVPG4YPMN0,PRD-F9FX8X1MEKYS",False,False

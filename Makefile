@@ -13,8 +13,17 @@ WEB := pnpm --dir apps/web
 PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts
 PROFILES ?=
 PROFILE_FLAGS := $(foreach profile,$(PROFILES),--profile $(profile))
+# Data source for the pipeline: sample (committed, offline) or s3 (organizer bucket). Empty means the
+# BANK_DATA_SOURCE setting, which defaults to sample. See data_platform/README.md.
+DATA_SOURCE ?=
+SOURCE_FLAG := $(if $(DATA_SOURCE),--source $(DATA_SOURCE),)
+SAMPLE_CUSTOMERS ?= 2000
+SEED_CUSTOMERS ?= 200
+BANK_DATA := $(UV_RUN) bank-data
 
-.PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check
+.PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
+	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed \
+	policy-lock policy-catalog index eval-retrieval train promote
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -61,6 +70,67 @@ test-web: ## Web tests with coverage
 env-check: ## Report set or unset for every documented environment variable, never a value
 	$(GUARD_PY) scripts/checks/check_env_keys.py
 
+contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
+	$(UV_RUN) python scripts/generate_contracts.py
+
+policy-lock: ## Rewrite policies/versions.lock.yaml after a clause change (refuses a change without a version bump)
+	$(UV_RUN) bank-agent policy lock
+
+policy-catalog: ## Regenerate docs/policy/catalog.md from the policy pack and the credit catalog
+	$(UV_RUN) bank-agent policy catalog
+
+index: ## Build the retrieval index for the current pack under data/artifacts (DENSE=1 embeds too; needs the ml extra)
+	$(UV_RUN) bank-agent index build $(if $(DENSE),--dense,)
+
+eval-retrieval: ## Compare BM25, dense, and hybrid on the relevance judgments; writes docs/evaluation/retrieval.md
+	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) bank-eval retrieval
+
+train: ## Train, register as candidates, and evaluate the router and resolver; writes docs/evaluation (resolver needs the s3 gold)
+	$(UV_RUN) bank-ml router train
+	$(UV_RUN) bank-ml router evaluate
+	$(UV_RUN) bank-ml resolver train
+	$(UV_RUN) bank-ml resolver evaluate
+
+promote: ## Move 'champion' to the candidates that win on dev, recording APPROVED_BY (required)
+	@test -n "$(APPROVED_BY)" || { echo "APPROVED_BY=<name> is required: promotion records who approved it"; exit 1; }
+	$(UV_RUN) bank-ml router promote --approved-by "$(APPROVED_BY)"
+	$(UV_RUN) bank-ml resolver promote --approved-by "$(APPROVED_BY)"
+
+data-download: ## Incremental, manifest-driven download of the organizer bucket into data/warehouse (needs S3 credentials)
+	$(BANK_DATA) ingest --source s3 --download-only
+
+pipeline: ## Ingest, build, and test bronze, silver, gold (DATA_SOURCE=sample|s3; default BANK_DATA_SOURCE or sample)
+	$(BANK_DATA) ingest $(SOURCE_FLAG)
+	$(BANK_DATA) build $(SOURCE_FLAG)
+	$(BANK_DATA) test $(SOURCE_FLAG)
+
+pipeline-sample: ## Ingest, then build silver and gold for SAMPLE_CUSTOMERS customers chosen by a seeded hash
+	$(BANK_DATA) ingest $(SOURCE_FLAG)
+	$(BANK_DATA) build $(SOURCE_FLAG) --sample-customers $(SAMPLE_CUSTOMERS)
+	$(BANK_DATA) test $(SOURCE_FLAG) --sample-customers $(SAMPLE_CUSTOMERS)
+
+data-sample: ## Regenerate the committed, bounded, pseudonymized sample in data_platform/sample (reads the s3 warehouse)
+	$(BANK_DATA) sample
+	$(GUARD_PY) scripts/checks/check_data_sample.py
+
+data-report: ## Write the data-quality report (docs/data/quality-report.md for the s3 source)
+	$(BANK_DATA) report $(SOURCE_FLAG)
+
+analysis: ## Demand evidence, pre-registered scores, figures, and labeling files (docs/analysis for the s3 source)
+	$(BANK_DATA) analysis $(SOURCE_FLAG)
+
+lineage: ## Run dbt docs generate and write the Mermaid lineage (docs/data/lineage.md for the s3 source)
+	$(BANK_DATA) lineage $(SOURCE_FLAG)
+
+data-codegen: ## Regenerate the dbt sources, silver contracts, and canonical seed from the table specs
+	$(BANK_DATA) codegen
+
+db-upgrade: ## Apply the PostgreSQL migrations as the owner role (reads .env through the service settings)
+	$(UV_RUN) bank-agent db upgrade
+
+seed: ## Migrate, then load the demo personas and SEED_CUSTOMERS customers from gold into the compose PostgreSQL
+	$(BANK_DATA) seed $(SOURCE_FLAG) --customers $(SEED_CUSTOMERS)
+
 docs-check: ## Markdown lint and Mermaid validation
 	apps/web/node_modules/.bin/markdownlint-cli2
 	node scripts/checks/check_mermaid.mjs
@@ -77,6 +147,8 @@ check: ## Everything: lint, types, boundaries, tests with coverage gates, docs, 
 	$(GUARD_PY) scripts/checks/check_coverage_gates.py
 	@$(MAKE) test-web
 	@$(MAKE) docs-check
+	$(GUARD_PY) scripts/checks/check_data_sample.py
+	$(UV_RUN) bank-data codegen --check
 	$(GUARD_PY) scripts/checks/check_no_emoji.py
 	scripts/checks/check_no_ai_attribution.sh
 	gitleaks git --redact --no-banner .

@@ -1,0 +1,31 @@
+{
+  "cassette_id": "59164617c4a63ff2a5da1c9bca52281cbb92654a7248e959c2e27f24554c66c5",
+  "kind": "structured",
+  "labels": {
+    "case": "out_of_scope",
+    "workflow": "card_support"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Quiero cambiar la contraseña de la app del banco.",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-3C4L0M27IL841IW8OP43,2025-06-26 08:20:53,2025-06-26,CLI-VU58CMFRCIP7,SES-UESMKOO3QGRSD04VXO4K32WFYPZK,FormSubmit,Transaction,iOS App,iOS,,3.8.5,/transfer,Transferir,,transfer_form,,349.17,,203.0.113.43,México,Querétaro,True,,,,
+EVT-LLULPT12UM5QOU0QDBIV,2025-06-26 08:18:02,2025-06-26,CLI-VU58CMFRCIP7,SES-UESMKOO3QGRSD04VXO4K32WFYPZK,Login,Authentication,iOS App,iOS,,3.8.5,/login,Iniciar Sesión,login,,,,,,México,,True,,,,
+EVT-P5A6NWTB0OJ77BLYJ5DV,2025-06-26 08:19:10,2025-06-26,CLI-VU58CMFRCIP7,SES-UESMKOO3QGRSD04VXO4K32WFYPZK,PageView,Navigation,iOS App,iOS,,3.8.5,/accounts,Mis Cuentas,view_accounts,accounts_page,,,47.0,192.0.2.23,México,Querétaro,True,,,,

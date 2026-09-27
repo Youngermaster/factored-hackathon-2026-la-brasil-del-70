@@ -1,0 +1,34 @@
+{
+  "cassette_id": "2665c9b8f97ac42af67f209cee8f05dfbad6bacb4448b1cea6be561b1f4f1c16",
+  "kind": "structured",
+  "labels": {
+    "case": "normal",
+    "workflow": "credit"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": "18000",
+    "product_of_interest": "personal_loan",
+    "purpose": "remodelar mi casa",
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Quiero un préstamo personal de 50000 pesos a 24 meses para remodelar mi casa. Gano 18000 al mes.",
+    "dialect_hint": "es-MX"
+  }
+}

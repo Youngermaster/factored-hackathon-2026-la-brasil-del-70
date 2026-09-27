@@ -1,0 +1,8 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-RU74379VUR7F779NCJ9H,INT-X5GW9LBN5MONCWM2,2025-09-14,CLI-VHBEU7EEMIV1,AGT-QTX61K7PE2,"Cliente: Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
+
+Agente: Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}.
+
+Cliente: Perfecto, eso es lo que necesitaba.
+
+Agente: Perfecto, ¿necesita algo más?","Hola, buenos días. Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros. Perfecto, eso es lo que necesitaba.","Buenos días, con gusto le ayudo. Permítame un momento para verificar su saldo. Su saldo actual es de {monto} {moneda}. Perfecto, ¿necesita algo más?",es,argentine,0.97,"servicio, banco, cuenta",,consulta_general,Queja,Azure Speech,,538.0

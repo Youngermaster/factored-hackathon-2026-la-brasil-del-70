@@ -1,0 +1,3611 @@
+{
+ "meta": {
+  "bootstrap_resamples": 1000,
+  "dataset_version": "organizer-v1.0.0-2026-08-31",
+  "first_day": "2023-06-17",
+  "generated_at": "2026-09-27T00:29:19+00:00",
+  "git_sha": "2d71a25-dirty",
+  "last_day": "2026-06-17",
+  "preregistration_version": 1,
+  "source": "s3",
+  "source_description": "full organizer delivery"
+ },
+ "results": {
+  "automatable": {
+   "account_inquiry": {
+    "label_share": null,
+    "label_status": "pending human labels",
+    "proxy": {
+     "estimate": 0.7013155263771786,
+     "high": 0.7030318967240976,
+     "low": 0.699674138534342,
+     "n": 240056
+    }
+   },
+   "card_support": {
+    "label_share": null,
+    "label_status": "pending human labels",
+    "proxy": {
+     "estimate": 0.6859733665643664,
+     "high": 0.6881675758801031,
+     "low": 0.6838784194931826,
+     "n": 150863
+    }
+   },
+   "credit": {
+    "label_share": null,
+    "label_status": "pending human labels",
+    "proxy": {
+     "estimate": 0.49997266714043626,
+     "high": 0.5037090690428032,
+     "low": 0.4960535906266514,
+     "n": 54879
+    }
+   },
+   "dispute": {
+    "label_share": null,
+    "label_status": "pending human labels",
+    "proxy": {
+     "estimate": 0.33243605848522917,
+     "high": 0.3348546414746071,
+     "low": 0.3299063843241811,
+     "n": 117021
+    }
+   }
+  },
+  "costs": {
+   "annual_window_end": "2026-06-17",
+   "currency": "USD",
+   "workflows": {
+    "account_inquiry": {
+     "annual_volume": 80024,
+     "contacts": 240056,
+     "contacts_with_duration": 206465,
+     "mean_handle_minutes": 3.680047062052487,
+     "resolved": 219671,
+     "scenarios": {
+      "0.5": {
+       "addressable_ceiling": 27759.578220968528,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 19468.223212047007,
+       "annual_handle_cost": 27759.578220968528,
+       "cost_per_contact": 0.3468906605639374,
+       "cost_per_resolved_contact": 0.3790813735647243,
+       "total_cost": 83273.18441233656
+      },
+      "1": {
+       "addressable_ceiling": 55519.156441937055,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 38936.446424094014,
+       "annual_handle_cost": 55519.156441937055,
+       "cost_per_contact": 0.6937813211278748,
+       "cost_per_resolved_contact": 0.7581627471294486,
+       "total_cost": 166546.36882467312
+      },
+      "1.5": {
+       "addressable_ceiling": 83278.73466290558,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 58404.66963614102,
+       "annual_handle_cost": 83278.73466290558,
+       "cost_per_contact": 1.0406719816918122,
+       "cost_per_resolved_contact": 1.137244120694173,
+       "total_cost": 249819.55323700968
+      }
+     }
+    },
+    "card_support": {
+     "annual_volume": 50483,
+     "contacts": 150863,
+     "contacts_with_duration": 129644,
+     "mean_handle_minutes": 4.439699998971542,
+     "resolved": 135213,
+     "scenarios": {
+      "0.5": {
+       "addressable_ceiling": 21123.8663878831,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 14490.409740952031,
+       "annual_handle_cost": 21123.8663878831,
+       "cost_per_contact": 0.41843524330731335,
+       "cost_per_resolved_contact": 0.4668663228467027,
+       "total_cost": 63126.39611107121
+      },
+      "1": {
+       "addressable_ceiling": 42247.7327757662,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 28980.819481904062,
+       "annual_handle_cost": 42247.7327757662,
+       "cost_per_contact": 0.8368704866146267,
+       "cost_per_resolved_contact": 0.9337326456934054,
+       "total_cost": 126252.79222214242
+      },
+      "1.5": {
+       "addressable_ceiling": 63371.599163649305,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 43471.2292228561,
+       "annual_handle_cost": 63371.599163649305,
+       "cost_per_contact": 1.2553057299219401,
+       "cost_per_resolved_contact": 1.4005989685401081,
+       "total_cost": 189379.18833321365
+      }
+     }
+    },
+    "credit": {
+     "annual_volume": 18495,
+     "contacts": 54879,
+     "contacts_with_duration": 47082,
+     "mean_handle_minutes": 8.998917491468784,
+     "resolved": 35786,
+     "scenarios": {
+      "0.5": {
+       "addressable_ceiling": 15699.57495605008,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 7849.358363747556,
+       "annual_handle_cost": 15699.57495605008,
+       "cost_per_contact": 0.8488550935955708,
+       "cost_per_resolved_contact": 1.301747015073809,
+       "total_cost": 46584.31868143133
+      },
+      "1": {
+       "addressable_ceiling": 31399.14991210016,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 15698.716727495112,
+       "annual_handle_cost": 31399.14991210016,
+       "cost_per_contact": 1.6977101871911415,
+       "cost_per_resolved_contact": 2.603494030147618,
+       "total_cost": 93168.63736286266
+      },
+      "1.5": {
+       "addressable_ceiling": 47098.724868150246,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 23548.07509124267,
+       "annual_handle_cost": 47098.724868150246,
+       "cost_per_contact": 2.5465652807867123,
+       "cost_per_resolved_contact": 3.9052410452214272,
+       "total_cost": 139752.956044294
+      }
+     }
+    },
+    "dispute": {
+     "annual_volume": 39189,
+     "contacts": 117021,
+     "contacts_with_duration": 100727,
+     "mean_handle_minutes": 7.243431916632746,
+     "resolved": 51021,
+     "scenarios": {
+      "0.5": {
+       "addressable_ceiling": 26758.6270208869,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 8895.532497299992,
+       "annual_handle_cost": 26758.6270208869,
+       "cost_per_contact": 0.6828096409933119,
+       "cost_per_resolved_contact": 1.5660819466235147,
+       "total_cost": 79903.06699867835
+      },
+      "1": {
+       "addressable_ceiling": 53517.2540417738,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 17791.064994599983,
+       "annual_handle_cost": 53517.2540417738,
+       "cost_per_contact": 1.3656192819866237,
+       "cost_per_resolved_contact": 3.1321638932470295,
+       "total_cost": 159806.1339973567
+      },
+      "1.5": {
+       "addressable_ceiling": 80275.88106266072,
+       "addressable_label_based": "pending human labels",
+       "addressable_proxy": 26686.59749189998,
+       "annual_handle_cost": 80275.88106266072,
+       "cost_per_contact": 2.048428922979936,
+       "cost_per_resolved_contact": 4.698245839870546,
+       "total_cost": 239709.2009960351
+      }
+     }
+    }
+   }
+  },
+  "data_support": {
+   "items": {
+    "card_blocked_status_observed": {
+     "description": "At least one blocked card (1 or 0)",
+     "value": 1.0
+    },
+    "card_expiry_present": {
+     "description": "Credit and debit cards with an expiration date",
+     "value": 0.9508783204798629
+    },
+    "card_status_present": {
+     "description": "Credit and debit cards with a status",
+     "value": 1.0
+    },
+    "complaint_claimed_amount_present": {
+     "description": "Dispute-mapped complaints with a claimed amount",
+     "value": 0.33011462057273433
+    },
+    "complaint_own_product_reference": {
+     "description": "Complaint product references that name the complainant's own product",
+     "value": 0.0
+    },
+    "complaint_status_present": {
+     "description": "Dispute-mapped complaints with a status",
+     "value": 1.0
+    },
+    "complaint_transaction_link_present": {
+     "description": "Complaints with a transaction reference (no such column exists)",
+     "value": 0.0
+    },
+    "credit_product_days_past_due_present": {
+     "description": "Credit cards, personal loans, and mortgages with days past due",
+     "value": 0.9498226896614433
+    },
+    "credit_product_interest_rate_present": {
+     "description": "Credit cards, personal loans, and mortgages with an interest rate",
+     "value": 0.9000015154729791
+    },
+    "customer_credit_score_present": {
+     "description": "Customers with a credit score",
+     "value": 0.8500533333333333
+    },
+    "customer_income_present": {
+     "description": "Customers with an estimated monthly income",
+     "value": 0.79978
+    },
+    "forward_risk_label_available": {
+     "description": "More than one snapshot of customers and products (1 or 0)",
+     "value": 0.0
+    },
+    "payment_transfer_status_present": {
+     "description": "Payments and transfers with a status",
+     "value": 1.0
+    },
+    "product_balance_present": {
+     "description": "Non-closed products with a balance",
+     "value": 1.0
+    },
+    "purchase_merchant_present": {
+     "description": "Purchases with a merchant name",
+     "value": 0.9499984308744829
+    },
+    "system_owned_record": {
+     "description": "The record is created by the system itself (1)",
+     "value": 1.0
+    },
+    "transaction_status_present": {
+     "description": "Transactions with a status",
+     "value": 1.0
+    },
+    "transactions_classifiable_for_totals": {
+     "description": "Transactions whose direction is encoded (not transfer or adjustment)",
+     "value": 0.7675583863351207
+    }
+   },
+   "workflows": {
+    "account_inquiry": 0.9225194621117069,
+    "card_support": 0.983626106826621,
+    "credit": 0.6999315076935512,
+    "dispute": 0.3200282628618043
+   }
+  },
+  "dataset": {
+   "complaints": 67095,
+   "first_day": "2023-06-17",
+   "interactions": 686296,
+   "last_day": "2026-06-17",
+   "surveys": 212759
+  },
+  "labeling_export": {
+   "items": 600,
+   "path": "data/labeling/automatable_sample.csv",
+   "per_workflow": {
+    "account_inquiry": 150,
+    "card_support": 150,
+    "credit": 150,
+    "dispute": 150
+   },
+   "prelabel_path": "data/labeling/automatable_prelabels.csv",
+   "prelabel_summary": [
+    [
+     "account_inquiry",
+     "balance_inquiry",
+     "yes",
+     150
+    ],
+    [
+     "card_support",
+     "balance_inquiry",
+     "no",
+     150
+    ],
+    [
+     "credit",
+     "balance_inquiry",
+     "no",
+     150
+    ],
+    [
+     "dispute",
+     "balance_inquiry",
+     "no",
+     150
+    ]
+   ],
+   "status": "written"
+  },
+  "labels": {
+   "file_present": true,
+   "workflows": {
+    "account_inquiry": {
+     "adjudicated": 0,
+     "double_labeled": 0,
+     "invalid": 0,
+     "items": 150,
+     "kappa_resolvable": null,
+     "matching": 0,
+     "no": 0,
+     "share": null,
+     "status": "pending human labels",
+     "unclear": 0,
+     "yes": 0
+    },
+    "card_support": {
+     "adjudicated": 0,
+     "double_labeled": 0,
+     "invalid": 0,
+     "items": 150,
+     "kappa_resolvable": null,
+     "matching": 0,
+     "no": 0,
+     "share": null,
+     "status": "pending human labels",
+     "unclear": 0,
+     "yes": 0
+    },
+    "credit": {
+     "adjudicated": 0,
+     "double_labeled": 0,
+     "invalid": 0,
+     "items": 150,
+     "kappa_resolvable": null,
+     "matching": 0,
+     "no": 0,
+     "share": null,
+     "status": "pending human labels",
+     "unclear": 0,
+     "yes": 0
+    },
+    "dispute": {
+     "adjudicated": 0,
+     "double_labeled": 0,
+     "invalid": 0,
+     "items": 150,
+     "kappa_resolvable": null,
+     "matching": 0,
+     "no": 0,
+     "share": null,
+     "status": "pending human labels",
+     "unclear": 0,
+     "yes": 0
+    }
+   }
+  },
+  "lag": {
+   "baseline": {
+    "contact_within_window": {
+     "estimate": 0.0041665373246553465,
+     "high": 0.004316617171790335,
+     "low": 0.004006110116614757,
+     "n": 579858
+    },
+    "contact_workflows": [
+     [
+      "account_inquiry",
+      833,
+      0.34478476821192056
+     ],
+     [
+      "card_support",
+      485,
+      0.2007450331125828
+     ],
+     [
+      "dispute",
+      443,
+      0.1833609271523179
+     ],
+     [
+      "other",
+      440,
+      0.18211920529801323
+     ],
+     [
+      "credit",
+      215,
+      0.08899006622516556
+     ]
+    ],
+    "events": 579858,
+    "histogram": [
+     96,
+     102,
+     101,
+     97,
+     99,
+     103,
+     105,
+     107,
+     122,
+     83,
+     118,
+     105,
+     102,
+     103,
+     96,
+     110,
+     104,
+     90,
+     87,
+     103,
+     83,
+     101,
+     104,
+     95
+    ]
+   },
+   "error": {
+    "contact_within_window": {
+     "estimate": 0.004294678779298988,
+     "high": 0.004514730638187066,
+     "low": 0.0040598651082105015,
+     "n": 272663
+    },
+    "contact_workflows": [
+     [
+      "account_inquiry",
+      431,
+      0.36806148590947907
+     ],
+     [
+      "card_support",
+      230,
+      0.1964133219470538
+     ],
+     [
+      "other",
+      210,
+      0.17933390264731
+     ],
+     [
+      "dispute",
+      204,
+      0.17421007685738685
+     ],
+     [
+      "credit",
+      96,
+      0.08198121263877028
+     ]
+    ],
+    "events": 272663,
+    "histogram": [
+     49,
+     55,
+     57,
+     48,
+     30,
+     41,
+     63,
+     41,
+     66,
+     47,
+     47,
+     45,
+     44,
+     55,
+     52,
+     50,
+     50,
+     38,
+     49,
+     43,
+     50,
+     53,
+     54,
+     44
+    ]
+   },
+   "error_pages": [
+    [
+     "/transactions",
+     43322,
+     0.004385762430174045
+    ],
+    [
+     "/payments",
+     43108,
+     0.004500324765704742
+    ],
+    [
+     "/transfer",
+     43092,
+     0.00464123271140815
+    ],
+    [
+     "/help",
+     32634,
+     0.004044861187718331
+    ],
+    [
+     "/home",
+     32493,
+     0.00455482719354938
+    ],
+    [
+     "/products",
+     32388,
+     0.0037977028529084847
+    ],
+    [
+     "/accounts",
+     32180,
+     0.004288377874456184
+    ],
+    [
+     "(none)",
+     13446,
+     0.003421091774505429
+    ]
+   ],
+   "rate_ratio": 1.030754903810742,
+   "window_hours": 24
+  },
+  "mapping": {
+   "complaint_categories": [
+    {
+     "category": "Branch",
+     "complaints": 1469,
+     "sub_intent": "",
+     "subcategory": "",
+     "workflow": "other"
+    },
+    {
+     "category": "Branch",
+     "complaints": 11892,
+     "sub_intent": "",
+     "subcategory": "Atenci\u00f3n en sucursal",
+     "workflow": "other"
+    },
+    {
+     "category": "Fees",
+     "complaints": 1359,
+     "sub_intent": "dispute_new",
+     "subcategory": "",
+     "workflow": "dispute"
+    },
+    {
+     "category": "Fees",
+     "complaints": 12194,
+     "sub_intent": "dispute_new",
+     "subcategory": "Cobro indebido",
+     "workflow": "dispute"
+    },
+    {
+     "category": "Service",
+     "complaints": 1308,
+     "sub_intent": "",
+     "subcategory": "",
+     "workflow": "other"
+    },
+    {
+     "category": "Service",
+     "complaints": 11886,
+     "sub_intent": "",
+     "subcategory": "Calidad de servicio",
+     "workflow": "other"
+    },
+    {
+     "category": "Technical",
+     "complaints": 1279,
+     "sub_intent": "",
+     "subcategory": "",
+     "workflow": "other"
+    },
+    {
+     "category": "Technical",
+     "complaints": 12128,
+     "sub_intent": "",
+     "subcategory": "Problema con app",
+     "workflow": "other"
+    },
+    {
+     "category": "Transactions",
+     "complaints": 1283,
+     "sub_intent": "dispute_new",
+     "subcategory": "",
+     "workflow": "dispute"
+    },
+    {
+     "category": "Transactions",
+     "complaints": 12297,
+     "sub_intent": "dispute_new",
+     "subcategory": "Cargo no reconocido",
+     "workflow": "dispute"
+    }
+   ],
+   "contact_reasons": [
+    {
+     "alternative": "account_inquiry",
+     "contact_reason": "Transaccional",
+     "interactions": 240056,
+     "strict": "account_inquiry",
+     "workflow": "account_inquiry"
+    },
+    {
+     "alternative": "credit",
+     "contact_reason": "Producto",
+     "interactions": 150863,
+     "strict": "other",
+     "workflow": "card_support"
+    },
+    {
+     "alternative": "dispute",
+     "contact_reason": "Queja",
+     "interactions": 117021,
+     "strict": "other",
+     "workflow": "dispute"
+    },
+    {
+     "alternative": "other",
+     "contact_reason": "T\u00e9cnico",
+     "interactions": 102899,
+     "strict": "other",
+     "workflow": "other"
+    },
+    {
+     "alternative": "credit",
+     "contact_reason": "Comercial",
+     "interactions": 54879,
+     "strict": "other",
+     "workflow": "credit"
+    },
+    {
+     "alternative": "other",
+     "contact_reason": "Retenci\u00f3n",
+     "interactions": 20578,
+     "strict": "other",
+     "workflow": "other"
+    }
+   ],
+   "reason_category_conflicts": 0,
+   "unmapped_complaint_share": 0.0,
+   "unmapped_complaints": 0,
+   "unmapped_interaction_share": 0.0,
+   "unmapped_interactions": 0,
+   "unmapped_values": []
+  },
+  "outcomes": {
+   "account_inquiry": {
+    "ces_mean": {
+     "estimate": 2.9129725319553983,
+     "high": 2.927797797117215,
+     "low": 2.9004623334239867,
+     "n": 7354
+    },
+    "channel_mix": [
+     [
+      "phone",
+      204040,
+      0.8499683407204985
+     ],
+     [
+      "email",
+      9597,
+      0.03997817175992269
+     ],
+     [
+      "app",
+      9274,
+      0.03863265238111108
+     ],
+     [
+      "web_chat",
+      7997,
+      0.03331306028593328
+     ],
+     [
+      "whatsapp",
+      7960,
+      0.033158929583097276
+     ],
+     [
+      "web",
+      1188,
+      0.004948845269437131
+     ]
+    ],
+    "complaints": 0,
+    "country_mix": [
+     [
+      "MX",
+      119885,
+      0.4994043056620122
+     ],
+     [
+      "CO",
+      72511,
+      0.3020586863065285
+     ],
+     [
+      "AR",
+      47660,
+      0.19853700803145932
+     ]
+    ],
+    "csat_low_share": {
+     "estimate": 0.2080870709458706,
+     "high": 0.21147768583981977,
+     "low": 0.20458438343332516,
+     "n": 44837
+    },
+    "csat_mean": {
+     "estimate": 2.9130628721814573,
+     "high": 2.9185962486339405,
+     "low": 2.906973035662511,
+     "n": 44837
+    },
+    "escalation": {
+     "estimate": 0.09931432665711334,
+     "high": 0.10038105692005199,
+     "low": 0.09819344236344853,
+     "n": 240056
+    },
+    "first_contact_resolution": {
+     "estimate": 0.9150823141267038,
+     "high": 0.9161240502216149,
+     "low": 0.9140781734262006,
+     "n": 240056
+    },
+    "handle_time_seconds": {
+     "estimate": 220.8028237231492,
+     "high": 221.22052636040007,
+     "low": 220.40524858934927,
+     "n": 206465
+    },
+    "interactions": 240056,
+    "nps": {
+     "n": 22341,
+     "promoters": 0,
+     "score": -69.86706056129985
+    },
+    "requires_followup": {
+     "estimate": 0.2213525177458593,
+     "high": 0.22283977488585996,
+     "low": 0.21979860949111873,
+     "n": 240056
+    },
+    "wait_time_seconds": {
+     "estimate": 119.65022549591251,
+     "high": 119.9212766400514,
+     "low": 119.37727682449396,
+     "n": 168074
+    }
+   },
+   "card_support": {
+    "ces_mean": {
+     "estimate": 2.9122541603630863,
+     "high": 2.9306245947698293,
+     "low": 2.8938837259563432,
+     "n": 4627
+    },
+    "channel_mix": [
+     [
+      "phone",
+      128233,
+      0.8499963543082134
+     ],
+     [
+      "email",
+      6084,
+      0.04032797969018248
+     ],
+     [
+      "app",
+      5872,
+      0.0389227312197159
+     ],
+     [
+      "web_chat",
+      4993,
+      0.03309625289169644
+     ],
+     [
+      "whatsapp",
+      4980,
+      0.033010081994922544
+     ],
+     [
+      "web",
+      701,
+      0.004646599895269218
+     ]
+    ],
+    "complaints": 0,
+    "country_mix": [
+     [
+      "MX",
+      75351,
+      0.499466403293054
+     ],
+     [
+      "CO",
+      45564,
+      0.30202236466197807
+     ],
+     [
+      "AR",
+      29948,
+      0.19851123204496796
+     ]
+    ],
+    "csat_low_share": {
+     "estimate": 0.22167346646625152,
+     "high": 0.2260047598597094,
+     "low": 0.21712565313864432,
+     "n": 27942
+    },
+    "csat_mean": {
+     "estimate": 2.8954620284875814,
+     "high": 2.9019755207214946,
+     "low": 2.887803306849903,
+     "n": 27942
+    },
+    "escalation": {
+     "estimate": 0.09956715695697421,
+     "high": 0.10093279995757741,
+     "low": 0.0981549485294605,
+     "n": 150863
+    },
+    "first_contact_resolution": {
+     "estimate": 0.8962634973452736,
+     "high": 0.8976952599378244,
+     "low": 0.8948715059358491,
+     "n": 150863
+    },
+    "handle_time_seconds": {
+     "estimate": 266.38199993829255,
+     "high": 266.8293343695042,
+     "low": 265.90723172688286,
+     "n": 129644
+    },
+    "interactions": 150863,
+    "nps": {
+     "n": 13997,
+     "promoters": 0,
+     "score": -70.04358076730728
+    },
+    "requires_followup": {
+     "estimate": 0.23811670190835393,
+     "high": 0.24003930718598995,
+     "low": 0.2361009657768969,
+     "n": 150863
+    },
+    "wait_time_seconds": {
+     "estimate": 119.96317583562163,
+     "high": 120.31008356216267,
+     "low": 119.61383510084272,
+     "n": 105610
+    }
+   },
+   "credit": {
+    "ces_mean": {
+     "estimate": 2.6664772727272728,
+     "high": 2.7011363636363637,
+     "low": 2.6352272727272728,
+     "n": 1760
+    },
+    "channel_mix": [
+     [
+      "phone",
+      46543,
+      0.8481021884509558
+     ],
+     [
+      "email",
+      2185,
+      0.03981486543122142
+     ],
+     [
+      "app",
+      2099,
+      0.03824778148289874
+     ],
+     [
+      "web_chat",
+      1906,
+      0.034730953552360645
+     ],
+     [
+      "whatsapp",
+      1869,
+      0.03405674301645438
+     ],
+     [
+      "web",
+      277,
+      0.005047468066109076
+     ]
+    ],
+    "complaints": 0,
+    "country_mix": [
+     [
+      "MX",
+      27639,
+      0.5036352703219811
+     ],
+     [
+      "CO",
+      16508,
+      0.30080723045244995
+     ],
+     [
+      "AR",
+      10732,
+      0.19555749922556898
+     ]
+    ],
+    "csat_low_share": {
+     "estimate": 0.39148686908132385,
+     "high": 0.3996900322171239,
+     "low": 0.382212242507078,
+     "n": 10243
+    },
+    "csat_mean": {
+     "estimate": 2.6592795079566534,
+     "high": 2.673049887728205,
+     "low": 2.6455140095675094,
+     "n": 10243
+    },
+    "escalation": {
+     "estimate": 0.09836185061681153,
+     "high": 0.10051294666448003,
+     "low": 0.09592011516244829,
+     "n": 54879
+    },
+    "first_contact_resolution": {
+     "estimate": 0.6520891415659906,
+     "high": 0.6558077771096412,
+     "low": 0.6485349587273821,
+     "n": 54879
+    },
+    "handle_time_seconds": {
+     "estimate": 539.9350494881271,
+     "high": 541.4747015844696,
+     "low": 538.5003918695043,
+     "n": 47082
+    },
+    "interactions": 54879,
+    "nps": {
+     "n": 5144,
+     "promoters": 0,
+     "score": -78.36314152410576
+    },
+    "requires_followup": {
+     "estimate": 0.4454527232639079,
+     "high": 0.44917044771223963,
+     "low": 0.44155277975181767,
+     "n": 54879
+    },
+    "wait_time_seconds": {
+     "estimate": 120.20650529500756,
+     "high": 120.78764932964683,
+     "low": 119.61033700245187,
+     "n": 38338
+    }
+   },
+   "dispute": {
+    "case_type_mix": [
+     [
+      "complaint",
+      16410,
+      0.6047985847491983
+     ],
+     [
+      "claim",
+      6692,
+      0.24663693657170235
+     ],
+     [
+      "request",
+      2696,
+      0.09936240002948439
+     ],
+     [
+      "suggestion",
+      1335,
+      0.04920207864961486
+     ]
+    ],
+    "ces_mean": {
+     "estimate": 2.4348767939344707,
+     "high": 2.4584348767939344,
+     "low": 2.4121310587598157,
+     "n": 3693
+    },
+    "channel_mix": [
+     [
+      "phone",
+      99554,
+      0.8507361926491827
+     ],
+     [
+      "email",
+      4637,
+      0.03962536638722964
+     ],
+     [
+      "app",
+      4399,
+      0.03759154339819348
+     ],
+     [
+      "web_chat",
+      3946,
+      0.03372044333922971
+     ],
+     [
+      "whatsapp",
+      3897,
+      0.03330171507678109
+     ],
+     [
+      "web",
+      588,
+      0.005024739149383444
+     ]
+    ],
+    "claimed_amount_present_share": 0.33011462057273433,
+    "compensation_granted_share": 0.07149964987284856,
+    "complaint_channel_mix": [
+     [
+      "call_center",
+      13695,
+      0.5047359304168356
+     ],
+     [
+      "email",
+      5285,
+      0.19478126266907456
+     ],
+     [
+      "web",
+      4012,
+      0.14786422437622085
+     ],
+     [
+      "app",
+      2780,
+      0.10245826115799948
+     ],
+     [
+      "branch",
+      1065,
+      0.03925109645081635
+     ],
+     [
+      "regulator",
+      296,
+      0.010909224929053182
+     ]
+    ],
+    "complaint_country_mix": [
+     [
+      "MX",
+      13409,
+      0.4941952603840342
+     ],
+     [
+      "CO",
+      8294,
+      0.30567943095124017
+     ],
+     [
+      "AR",
+      5430,
+      0.2001253086647256
+     ]
+    ],
+    "complaints": 27133,
+    "country_mix": [
+     [
+      "MX",
+      58372,
+      0.49881645174797684
+     ],
+     [
+      "CO",
+      35257,
+      0.30128780304389813
+     ],
+     [
+      "AR",
+      23392,
+      0.19989574520812503
+     ]
+    ],
+    "csat_low_share": {
+     "estimate": 0.5453463352103649,
+     "high": 0.5514821682003388,
+     "low": 0.5394394085061576,
+     "n": 21843
+    },
+    "csat_mean": {
+     "estimate": 2.4340978803277937,
+     "high": 2.4436203818156845,
+     "low": 2.424391109279861,
+     "n": 21843
+    },
+    "escalation": {
+     "estimate": 0.10026405516958495,
+     "high": 0.10181933157296554,
+     "low": 0.09865707864400407,
+     "n": 117021
+    },
+    "first_contact_resolution": {
+     "estimate": 0.43599866690593997,
+     "high": 0.43854543201647567,
+     "low": 0.43333247878585895,
+     "n": 117021
+    },
+    "handle_time_seconds": {
+     "estimate": 434.6059149979648,
+     "high": 435.42122246269616,
+     "low": 433.71679663843855,
+     "n": 100727
+    },
+    "interactions": 117021,
+    "nps": {
+     "n": 10821,
+     "promoters": 0,
+     "score": -85.31559005637187
+    },
+    "repeat_complainer": {
+     "estimate": 0.14948586591972873,
+     "high": 0.1531723362694873,
+     "low": 0.14532027420484284,
+     "n": 27133
+    },
+    "requires_followup": {
+     "estimate": 0.6296818519752865,
+     "high": 0.6322796762974167,
+     "low": 0.6272034506627016,
+     "n": 117021
+    },
+    "resolution_days": {
+     "estimate": 15.490868311438641,
+     "high": 15.704437680230695,
+     "low": 15.26173502082666,
+     "n": 6242
+    },
+    "sla_breach": {
+     "estimate": 0.19971989827884865,
+     "high": 0.20384863450410937,
+     "low": 0.1951111193012199,
+     "n": 27133
+    },
+    "status_mix": [
+     [
+      "in_process",
+      10875,
+      0.4008034496738289
+     ],
+     [
+      "open",
+      8068,
+      0.29735009029594955
+     ],
+     [
+      "resolved",
+      5518,
+      0.20336859175174143
+     ],
+     [
+      "escalated",
+      1377,
+      0.050750009213872405
+     ],
+     [
+      "closed",
+      1037,
+      0.038219142741311316
+     ],
+     [
+      "rejected",
+      258,
+      0.009508716323296355
+     ]
+    ],
+    "wait_time_seconds": {
+     "estimate": 119.98211789304774,
+     "high": 120.38564477699032,
+     "low": 119.59373214524501,
+     "n": 82261
+    }
+   }
+  },
+  "patterns": {
+   "workflows": {
+    "account_inquiry": {
+     "channel": [
+      [
+       "phone",
+       204040,
+       0.8499683407204985
+      ],
+      [
+       "email",
+       9597,
+       0.03997817175992269
+      ],
+      [
+       "app",
+       9274,
+       0.03863265238111108
+      ],
+      [
+       "web_chat",
+       7997,
+       0.03331306028593328
+      ],
+      [
+       "whatsapp",
+       7960,
+       0.033158929583097276
+      ],
+      [
+       "web",
+       1188,
+       0.004948845269437131
+      ]
+     ],
+     "country": [
+      [
+       "MX",
+       119885,
+       0.4994043056620122
+      ],
+      [
+       "CO",
+       72511,
+       0.3020586863065285
+      ],
+      [
+       "AR",
+       47660,
+       0.19853700803145932
+      ]
+     ],
+     "daily_mean": 218.82953509571558,
+     "days": 1097,
+     "hour_of_day": [
+      10035,
+      9943,
+      9990,
+      10054,
+      10013,
+      10009,
+      9902,
+      10030,
+      10003,
+      10109,
+      9797,
+      10143,
+      10006,
+      10046,
+      10111,
+      9944,
+      9864,
+      9972,
+      10152,
+      9901,
+      9961,
+      10114,
+      10082,
+      9875
+     ],
+     "hour_peak_to_trough": 1.0362355823211187,
+     "month_of_year": [
+      19947,
+      18605,
+      20770,
+      20366,
+      20118,
+      19570,
+      20281,
+      20625,
+      19733,
+      20269,
+      19466,
+      20306
+     ],
+     "spikes": 0,
+     "top_spikes": [],
+     "weekday": [
+      37970,
+      39839,
+      39712,
+      40015,
+      39763,
+      22485,
+      20272
+     ],
+     "weekday_peak_to_trough": 1.9739048934490924
+    },
+    "card_support": {
+     "channel": [
+      [
+       "phone",
+       128233,
+       0.8499963543082134
+      ],
+      [
+       "email",
+       6084,
+       0.04032797969018248
+      ],
+      [
+       "app",
+       5872,
+       0.0389227312197159
+      ],
+      [
+       "web_chat",
+       4993,
+       0.03309625289169644
+      ],
+      [
+       "whatsapp",
+       4980,
+       0.033010081994922544
+      ],
+      [
+       "web",
+       701,
+       0.004646599895269218
+      ]
+     ],
+     "country": [
+      [
+       "MX",
+       75351,
+       0.499466403293054
+      ],
+      [
+       "CO",
+       45564,
+       0.30202236466197807
+      ],
+      [
+       "AR",
+       29948,
+       0.19851123204496796
+      ]
+     ],
+     "daily_mean": 137.5232452142206,
+     "days": 1097,
+     "hour_of_day": [
+      6250,
+      6387,
+      6293,
+      6398,
+      6260,
+      6243,
+      6342,
+      6270,
+      6199,
+      6232,
+      6298,
+      6573,
+      6420,
+      6282,
+      6186,
+      6176,
+      6207,
+      6387,
+      6301,
+      6167,
+      6116,
+      6306,
+      6228,
+      6342
+     ],
+     "hour_peak_to_trough": 1.0747220405493787,
+     "month_of_year": [
+      12704,
+      11909,
+      12907,
+      12642,
+      12670,
+      12496,
+      12848,
+      12940,
+      12385,
+      12688,
+      12078,
+      12596
+     ],
+     "spikes": 0,
+     "top_spikes": [],
+     "weekday": [
+      23850,
+      25373,
+      25237,
+      24667,
+      24987,
+      14094,
+      12655
+     ],
+     "weekday_peak_to_trough": 2.004978269458712
+    },
+    "credit": {
+     "channel": [
+      [
+       "phone",
+       46543,
+       0.8481021884509558
+      ],
+      [
+       "email",
+       2185,
+       0.03981486543122142
+      ],
+      [
+       "app",
+       2099,
+       0.03824778148289874
+      ],
+      [
+       "web_chat",
+       1906,
+       0.034730953552360645
+      ],
+      [
+       "whatsapp",
+       1869,
+       0.03405674301645438
+      ],
+      [
+       "web",
+       277,
+       0.005047468066109076
+      ]
+     ],
+     "country": [
+      [
+       "MX",
+       27639,
+       0.5036352703219811
+      ],
+      [
+       "CO",
+       16508,
+       0.30080723045244995
+      ],
+      [
+       "AR",
+       10732,
+       0.19555749922556898
+      ]
+     ],
+     "daily_mean": 50.02643573381951,
+     "days": 1097,
+     "hour_of_day": [
+      2169,
+      2297,
+      2204,
+      2351,
+      2288,
+      2283,
+      2248,
+      2302,
+      2330,
+      2234,
+      2181,
+      2317,
+      2274,
+      2283,
+      2273,
+      2265,
+      2354,
+      2329,
+      2298,
+      2378,
+      2271,
+      2275,
+      2430,
+      2245
+     ],
+     "hour_peak_to_trough": 1.120331950207469,
+     "month_of_year": [
+      4538,
+      4255,
+      4704,
+      4717,
+      4640,
+      4450,
+      4697,
+      4590,
+      4590,
+      4589,
+      4380,
+      4729
+     ],
+     "spikes": 0,
+     "top_spikes": [],
+     "weekday": [
+      8738,
+      9190,
+      9075,
+      8977,
+      9063,
+      5194,
+      4642
+     ],
+     "weekday_peak_to_trough": 1.979750107712193
+    },
+    "dispute": {
+     "channel": [
+      [
+       "phone",
+       99554,
+       0.8507361926491827
+      ],
+      [
+       "email",
+       4637,
+       0.03962536638722964
+      ],
+      [
+       "app",
+       4399,
+       0.03759154339819348
+      ],
+      [
+       "web_chat",
+       3946,
+       0.03372044333922971
+      ],
+      [
+       "whatsapp",
+       3897,
+       0.03330171507678109
+      ],
+      [
+       "web",
+       588,
+       0.005024739149383444
+      ]
+     ],
+     "country": [
+      [
+       "MX",
+       58372,
+       0.49881645174797684
+      ],
+      [
+       "CO",
+       35257,
+       0.30128780304389813
+      ],
+      [
+       "AR",
+       23392,
+       0.19989574520812503
+      ]
+     ],
+     "daily_mean": 131.40747493163173,
+     "days": 1097,
+     "hour_of_day": [
+      5009,
+      4817,
+      4871,
+      4832,
+      4882,
+      4859,
+      4871,
+      4854,
+      4869,
+      4941,
+      4872,
+      4935,
+      4967,
+      4883,
+      4912,
+      4844,
+      4939,
+      4835,
+      4844,
+      4859,
+      4739,
+      4854,
+      4889,
+      4844
+     ],
+     "hour_peak_to_trough": 1.056974045157206,
+     "month_of_year": [
+      9812,
+      9116,
+      10009,
+      9636,
+      9672,
+      9783,
+      10115,
+      9951,
+      9836,
+      9825,
+      9349,
+      9917
+     ],
+     "spikes": 0,
+     "top_spikes": [],
+     "weekday": [
+      18568,
+      19552,
+      19528,
+      19249,
+      19196,
+      11048,
+      9880
+     ],
+     "weekday_peak_to_trough": 1.9789473684210526
+    }
+   }
+  },
+  "scores": {
+   "criteria_order": [
+    "demand",
+    "pain",
+    "automatable_share",
+    "harm_inverse",
+    "data_support",
+    "demo_depth"
+   ],
+   "scenarios": {
+    "alternative": {
+     "criteria": {
+      "account_inquiry": {
+       "automatable_share": 0.7013155263771786,
+       "data_support": 0.9225194621117069,
+       "demand": 1.0,
+       "demo_depth": 0.6,
+       "harm_inverse": 0.75,
+       "pain": 0.37370200114901325
+      },
+      "card_support": {
+       "automatable_share": 0.0,
+       "data_support": 0.983626106826621,
+       "demand": 0.0,
+       "demo_depth": 0.8,
+       "harm_inverse": 0.5,
+       "pain": 0.0
+      },
+      "credit": {
+       "automatable_share": 0.6363601014863275,
+       "data_support": 0.6999315076935512,
+       "demand": 0.8570583530509548,
+       "demo_depth": 1.0,
+       "harm_inverse": 0.0,
+       "pain": 0.5461900309526336
+      },
+      "dispute": {
+       "automatable_share": 0.33243605848522917,
+       "data_support": 0.3200282628618043,
+       "demand": 0.6005015496384177,
+       "demo_depth": 1.0,
+       "harm_inverse": 0.5,
+       "pain": 1.0
+      }
+     },
+     "ranking": [
+      "account_inquiry",
+      "credit",
+      "dispute",
+      "card_support"
+     ],
+     "raw": {
+      "account_inquiry": {
+       "automatable_proxy": 0.7013155263771786,
+       "automatable_share": 0.7013155263771786,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.31863401606868147,
+       "interactions": 240056,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.09931432665711334,
+        "low_csat": 0.2080870709458706,
+        "relative_handle_time": 0.5080529650043607,
+        "unresolved_first_contact": 0.08491768587329618
+       },
+       "pain_raw": 0.18007440969612815
+      },
+      "card_support": {
+       "automatable_proxy": null,
+       "automatable_share": 0.0,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.0,
+       "interactions": 0,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.0,
+        "low_csat": 0.0,
+        "relative_handle_time": 0.0,
+        "unresolved_first_contact": 0.0
+       },
+       "pain_raw": 0.0
+      },
+      "credit": {
+       "automatable_proxy": 0.6363601014863275,
+       "automatable_share": 0.6363601014863275,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.2730879450378356,
+       "interactions": 205742,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.09924565718229628,
+        "low_csat": 0.26722535026843003,
+        "relative_handle_time": 0.7806150723913241,
+        "unresolved_first_contact": 0.16886683321830254
+       },
+       "pain_raw": 0.26319058261207057
+      },
+      "dispute": {
+       "automatable_proxy": 0.33243605848522917,
+       "automatable_share": 0.33243605848522917,
+       "automatable_source": "proxy",
+       "complaints": 27133,
+       "demand_raw": 0.19134022041675572,
+       "interactions": 117021,
+       "pain_components": {
+        "complaint_sla_breach": 0.19971989827884865,
+        "escalated": 0.10026405516958495,
+        "low_csat": 0.5453463352103649,
+        "relative_handle_time": 1.0,
+        "unresolved_first_contact": 0.5640013330940601
+       },
+       "pain_raw": 0.4818663243505717
+      }
+     },
+     "scores": {
+      "account_inquiry": 70.70665248794451,
+      "card_support": 27.754391602399313,
+      "credit": 64.02209247996475,
+      "dispute": 63.459176105400005
+     }
+    },
+    "primary": {
+     "criteria": {
+      "account_inquiry": {
+       "automatable_share": 0.7013155263771786,
+       "data_support": 0.9225194621117069,
+       "demand": 1.0,
+       "demo_depth": 0.6,
+       "harm_inverse": 0.75,
+       "pain": 0.36186558288244813
+      },
+      "card_support": {
+       "automatable_share": 0.6859733665643664,
+       "data_support": 0.983626106826621,
+       "demand": 0.6284491951877895,
+       "demo_depth": 0.8,
+       "harm_inverse": 0.5,
+       "pain": 0.4147384994847512
+      },
+      "credit": {
+       "automatable_share": 0.49997266714043626,
+       "data_support": 0.6999315076935512,
+       "demand": 0.22860915786316527,
+       "demo_depth": 1.0,
+       "harm_inverse": 0.0,
+       "pain": 0.829967748828575
+      },
+      "dispute": {
+       "automatable_share": 0.33243605848522917,
+       "data_support": 0.3200282628618043,
+       "demand": 0.6005015496384177,
+       "demo_depth": 1.0,
+       "harm_inverse": 0.5,
+       "pain": 1.0
+      }
+     },
+     "ranking": [
+      "account_inquiry",
+      "card_support",
+      "dispute",
+      "credit"
+     ],
+     "raw": {
+      "account_inquiry": {
+       "automatable_proxy": 0.7013155263771786,
+       "automatable_share": 0.7013155263771786,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.31863401606868147,
+       "interactions": 240056,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.09931432665711334,
+        "low_csat": 0.2080870709458706,
+        "relative_handle_time": 0.40894330518545924,
+        "unresolved_first_contact": 0.08491768587329618
+       },
+       "pain_raw": 0.16025247773234788
+      },
+      "card_support": {
+       "automatable_proxy": 0.6859733665643664,
+       "automatable_share": 0.6859733665643664,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.20024529095781607,
+       "interactions": 150863,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.09956715695697421,
+        "low_csat": 0.22167346646625152,
+        "relative_handle_time": 0.49335934051851205,
+        "unresolved_first_contact": 0.10373650265472645
+       },
+       "pain_raw": 0.18366729331929282
+      },
+      "credit": {
+       "automatable_proxy": 0.49997266714043626,
+       "automatable_share": 0.49997266714043626,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.07284265408001954,
+       "interactions": 54879,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.09836185061681153,
+        "low_csat": 0.39148686908132385,
+        "relative_handle_time": 1.0,
+        "unresolved_first_contact": 0.3479108584340094
+       },
+       "pain_raw": 0.36755191562642897
+      },
+      "dispute": {
+       "automatable_proxy": 0.33243605848522917,
+       "automatable_share": 0.33243605848522917,
+       "automatable_source": "proxy",
+       "complaints": 27133,
+       "demand_raw": 0.19134022041675572,
+       "interactions": 117021,
+       "pain_components": {
+        "complaint_sla_breach": 0.19971989827884865,
+        "escalated": 0.10026405516958495,
+        "low_csat": 0.5453463352103649,
+        "relative_handle_time": 0.8049225835773819,
+        "unresolved_first_contact": 0.5640013330940601
+       },
+       "pain_raw": 0.44285084106604805
+      }
+     },
+     "scores": {
+      "account_inquiry": 70.41074203128038,
+      "card_support": 64.41130532456121,
+      "credit": 55.81980283618967,
+      "dispute": 63.459176105400005
+     }
+    },
+    "strict": {
+     "criteria": {
+      "account_inquiry": {
+       "automatable_share": 0.7013155263771786,
+       "data_support": 0.9225194621117069,
+       "demand": 1.0,
+       "demo_depth": 0.6,
+       "harm_inverse": 0.75,
+       "pain": 1.0
+      },
+      "card_support": {
+       "automatable_share": 0.0,
+       "data_support": 0.983626106826621,
+       "demand": 0.0,
+       "demo_depth": 0.8,
+       "harm_inverse": 0.5,
+       "pain": 0.0
+      },
+      "credit": {
+       "automatable_share": 0.0,
+       "data_support": 0.6999315076935512,
+       "demand": 0.0,
+       "demo_depth": 1.0,
+       "harm_inverse": 0.0,
+       "pain": 0.0
+      },
+      "dispute": {
+       "automatable_share": 0.0,
+       "data_support": 0.3200282628618043,
+       "demand": 0.11302779351484654,
+       "demo_depth": 1.0,
+       "harm_inverse": 0.5,
+       "pain": 0.14344405722012865
+      }
+     },
+     "ranking": [
+      "account_inquiry",
+      "card_support",
+      "dispute",
+      "credit"
+     ],
+     "raw": {
+      "account_inquiry": {
+       "automatable_proxy": 0.7013155263771786,
+       "automatable_share": 0.7013155263771786,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.31863401606868147,
+       "interactions": 240056,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.09931432665711334,
+        "low_csat": 0.2080870709458706,
+        "relative_handle_time": 1.0,
+        "unresolved_first_contact": 0.08491768587329618
+       },
+       "pain_raw": 0.27846381669525605
+      },
+      "card_support": {
+       "automatable_proxy": null,
+       "automatable_share": 0.0,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.0,
+       "interactions": 0,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.0,
+        "low_csat": 0.0,
+        "relative_handle_time": 0.0,
+        "unresolved_first_contact": 0.0
+       },
+       "pain_raw": 0.0
+      },
+      "credit": {
+       "automatable_proxy": null,
+       "automatable_share": 0.0,
+       "automatable_source": "proxy",
+       "complaints": 0,
+       "demand_raw": 0.0,
+       "interactions": 0,
+       "pain_components": {
+        "complaint_sla_breach": 0.0,
+        "escalated": 0.0,
+        "low_csat": 0.0,
+        "relative_handle_time": 0.0,
+        "unresolved_first_contact": 0.0
+       },
+       "pain_raw": 0.0
+      },
+      "dispute": {
+       "automatable_proxy": null,
+       "automatable_share": 0.0,
+       "automatable_source": "proxy",
+       "complaints": 27133,
+       "demand_raw": 0.03601449977501722,
+       "interactions": 0,
+       "pain_components": {
+        "complaint_sla_breach": 0.19971989827884865,
+        "escalated": 0.0,
+        "low_csat": 0.0,
+        "relative_handle_time": 0.0,
+        "unresolved_first_contact": 0.0
+       },
+       "pain_raw": 0.03994397965576973
+      }
+     },
+     "scores": {
+      "account_inquiry": 86.36410245921917,
+      "card_support": 27.754391602399313,
+      "credit": 20.498972615403268,
+      "dispute": 25.64708124372721
+     }
+    }
+   },
+   "sensitivity": {
+    "changed_variants": 1,
+    "ranges": {
+     "account_inquiry": {
+      "rank_max": 1,
+      "rank_min": 1,
+      "score_max": 72.2120148598612,
+      "score_min": 68.78101899589774
+     },
+     "card_support": {
+      "rank_max": 3,
+      "rank_min": 2,
+      "score_max": 66.02803415113745,
+      "score_min": 62.624394516240116
+     },
+     "credit": {
+      "rank_max": 4,
+      "rank_min": 4,
+      "score_max": 58.757687195989135,
+      "score_min": 53.16171698684732
+     },
+     "dispute": {
+      "rank_max": 3,
+      "rank_min": 2,
+      "score_max": 65.1992153384762,
+      "score_min": 61.535974847789475
+     }
+    },
+    "variants": [
+     {
+      "changed": false,
+      "label": "demand +5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 71.81975431550512,
+       "card_support": 64.33671552428586,
+       "credit": 54.250332024290955,
+       "dispute": 63.2968417653258
+      }
+     },
+     {
+      "changed": false,
+      "label": "demand -5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 68.85341266450567,
+       "card_support": 64.49374668276027,
+       "credit": 57.55448110197247,
+       "dispute": 63.63859827074517
+      }
+     },
+     {
+      "changed": false,
+      "label": "pain +5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 68.78101899589774,
+       "card_support": 63.319045544747595,
+       "credit": 57.113944362221474,
+       "dispute": 65.1992153384762
+      }
+     },
+     {
+      "changed": false,
+      "label": "pain -5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 72.2120148598612,
+       "card_support": 65.61853981803944,
+       "credit": 54.38943588636506,
+       "dispute": 61.53597484778948
+      }
+     },
+     {
+      "changed": false,
+      "label": "automatable_share +5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 70.3974472982536,
+       "card_support": 64.61064014988861,
+       "credit": 55.542539211325575,
+       "dispute": 62.020339426501096
+      }
+     },
+     {
+      "changed": false,
+      "label": "automatable_share -5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 70.42543620988893,
+       "card_support": 64.19098788604146,
+       "credit": 56.12625210577631,
+       "dispute": 65.04946927681459
+      }
+     },
+     {
+      "changed": false,
+      "label": "harm_inverse +5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 70.62927812502893,
+       "card_support": 63.7250526900583,
+       "credit": 53.16171698684732,
+       "dispute": 62.818262957523814
+      }
+     },
+     {
+      "changed": false,
+      "label": "harm_inverse -5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 70.16920213818987,
+       "card_support": 65.16979507848549,
+       "credit": 58.757687195989135,
+       "dispute": 64.1675537951579
+      }
+     },
+     {
+      "changed": false,
+      "label": "data_support +5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 71.45079937317992,
+       "card_support": 66.02803415113745,
+       "credit": 56.49472416634041,
+       "dispute": 61.96125468543717
+      }
+     },
+     {
+      "changed": true,
+      "label": "data_support -5",
+      "ranking": [
+       "account_inquiry",
+       "dispute",
+       "card_support",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 69.2612049691809,
+       "card_support": 62.624394516240116,
+       "credit": 55.07383715549676,
+       "dispute": 65.1147734643063
+      }
+     },
+     {
+      "changed": false,
+      "label": "demo_depth +5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 69.91499241074322,
+       "card_support": 65.15362411862974,
+       "credit": 57.92362174875207,
+       "dispute": 65.1992153384762
+      }
+     },
+     {
+      "changed": false,
+      "label": "demo_depth -5",
+      "ranking": [
+       "account_inquiry",
+       "card_support",
+       "dispute",
+       "credit"
+      ],
+      "scores": {
+       "account_inquiry": 70.95867582240041,
+       "card_support": 63.59084771006444,
+       "credit": 53.4945293012523,
+       "dispute": 61.535974847789475
+      }
+     }
+    ]
+   },
+   "sub_intents": {
+    "balance_inquiry": {
+     "automation_order": 1,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.7013155263771786,
+      "data_support": 1.0,
+      "demand": 1.0,
+      "demo_depth": 0.6,
+      "harm_inverse": 0.75,
+      "pain": 0.36186558288244813
+     },
+     "data_support_items": [
+      "product_balance_present"
+     ],
+     "harm": 2,
+     "score": 71.57295009960478,
+     "workflow": "account_inquiry"
+    },
+    "card_block": {
+     "automation_order": 2,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.6859733665643664,
+      "data_support": 1.0,
+      "demand": 0.6284491951877895,
+      "demo_depth": 0.8,
+      "harm_inverse": 0.5,
+      "pain": 0.4147384994847512
+     },
+     "data_support_items": [
+      "card_status_present"
+     ],
+     "harm": 3,
+     "score": 64.6569137221619,
+     "workflow": "card_support"
+    },
+    "card_replacement_request": {
+     "capability": 0.0,
+     "class": "hand_off",
+     "criteria": {
+      "automatable_share": 0.0,
+      "data_support": 0.9508783204798629,
+      "demand": 0.6284491951877895,
+      "demo_depth": 0.8,
+      "harm_inverse": 0.25,
+      "pain": 0.4147384994847512
+     },
+     "data_support_items": [
+      "card_expiry_present"
+     ],
+     "harm": 4,
+     "score": 47.70062119807251,
+     "workflow": "card_support"
+    },
+    "card_status": {
+     "automation_order": 1,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.6859733665643664,
+      "data_support": 0.9754391602399315,
+      "demand": 0.6284491951877895,
+      "demo_depth": 0.8,
+      "harm_inverse": 0.75,
+      "pain": 0.4147384994847512
+     },
+     "data_support_items": [
+      "card_expiry_present",
+      "card_status_present"
+     ],
+     "harm": 2,
+     "score": 66.78850112576087,
+     "workflow": "card_support"
+    },
+    "card_unblock_request": {
+     "capability": 0.0,
+     "class": "hand_off",
+     "criteria": {
+      "automatable_share": 0.0,
+      "data_support": 1.0,
+      "demand": 0.6284491951877895,
+      "demo_depth": 0.8,
+      "harm_inverse": 0.0,
+      "pain": 0.4147384994847512
+     },
+     "data_support_items": [
+      "card_blocked_status_observed"
+     ],
+     "harm": 5,
+     "score": 45.93744639087456,
+     "workflow": "card_support"
+    },
+    "credit_application": {
+     "automation_order": 3,
+     "capability": 0.5,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.24998633357021813,
+      "data_support": 0.79978,
+      "demand": 0.22860915786316527,
+      "demo_depth": 1.0,
+      "harm_inverse": 0.25,
+      "pain": 0.829967748828575
+     },
+     "data_support_items": [
+      "customer_income_present"
+     ],
+     "harm": 4,
+     "score": 54.81780354938205,
+     "workflow": "credit"
+    },
+    "credit_application_status": {
+     "automation_order": 1,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.49997266714043626,
+      "data_support": 1.0,
+      "demand": 0.22860915786316527,
+      "demo_depth": 1.0,
+      "harm_inverse": 0.75,
+      "pain": 0.829967748828575
+     },
+     "data_support_items": [
+      "system_owned_record"
+     ],
+     "harm": 2,
+     "score": 67.8208302207864,
+     "workflow": "credit"
+    },
+    "credit_eligibility": {
+     "automation_order": 4,
+     "capability": 0.5,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.24998633357021813,
+      "data_support": 0.8665520076649256,
+      "demand": 0.22860915786316527,
+      "demo_depth": 1.0,
+      "harm_inverse": 0.0,
+      "pain": 0.829967748828575
+     },
+     "data_support_items": [
+      "customer_credit_score_present",
+      "customer_income_present",
+      "credit_product_days_past_due_present"
+     ],
+     "harm": 5,
+     "score": 53.319383664355925,
+     "workflow": "credit"
+    },
+    "credit_product_info": {
+     "automation_order": 2,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.49997266714043626,
+      "data_support": 0.9000015154729791,
+      "demand": 0.22860915786316527,
+      "demo_depth": 1.0,
+      "harm_inverse": 0.75,
+      "pain": 0.829967748828575
+     },
+     "data_support_items": [
+      "credit_product_interest_rate_present"
+     ],
+     "harm": 2,
+     "score": 66.3208529528811,
+     "workflow": "credit"
+    },
+    "dispute_new": {
+     "automation_order": 2,
+     "capability": 0.5,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.16621802924261458,
+      "data_support": 0.9749992154372414,
+      "demand": 0.6005015496384177,
+      "demo_depth": 1.0,
+      "harm_inverse": 0.5,
+      "pain": 1.0
+     },
+     "data_support_items": [
+      "purchase_merchant_present",
+      "transaction_status_present"
+     ],
+     "harm": 3,
+     "score": 69.95937980917927,
+     "workflow": "dispute"
+    },
+    "dispute_status": {
+     "automation_order": 1,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.33243605848522917,
+      "data_support": 1.0,
+      "demand": 0.6005015496384177,
+      "demo_depth": 1.0,
+      "harm_inverse": 0.75,
+      "pain": 1.0
+     },
+     "data_support_items": [
+      "complaint_status_present"
+     ],
+     "harm": 2,
+     "score": 76.15875216247294,
+     "workflow": "dispute"
+    },
+    "payment_status": {
+     "automation_order": 2,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.7013155263771786,
+      "data_support": 1.0,
+      "demand": 1.0,
+      "demo_depth": 0.6,
+      "harm_inverse": 0.75,
+      "pain": 0.36186558288244813
+     },
+     "data_support_items": [
+      "payment_transfer_status_present"
+     ],
+     "harm": 2,
+     "score": 71.57295009960478,
+     "workflow": "account_inquiry"
+    },
+    "statement_request": {
+     "automation_order": 3,
+     "capability": 1.0,
+     "class": "automate",
+     "criteria": {
+      "automatable_share": 0.7013155263771786,
+      "data_support": 0.7675583863351207,
+      "demand": 1.0,
+      "demo_depth": 0.6,
+      "harm_inverse": 0.75,
+      "pain": 0.36186558288244813
+     },
+     "data_support_items": [
+      "transactions_classifiable_for_totals"
+     ],
+     "harm": 2,
+     "score": 68.08632589463159,
+     "workflow": "account_inquiry"
+    }
+   },
+   "weights": {
+    "automatable_share": 20.0,
+    "data_support": 15.0,
+    "demand": 20.0,
+    "demo_depth": 10.0,
+    "harm_inverse": 10.0,
+    "pain": 25.0
+   }
+  },
+  "segments": {
+   "country": [
+    {
+     "csat_mean": 2.785152338721213,
+     "csat_surveys": 20973,
+     "escalation": 0.09803816274657215,
+     "first_contact_resolution": 0.7843321519349873,
+     "group": "all_in_scope",
+     "interactions": 111732,
+     "small_cell": false,
+     "value": "AR"
+    },
+    {
+     "csat_mean": 2.788674691142376,
+     "csat_surveys": 31487,
+     "escalation": 0.1009185115402732,
+     "first_contact_resolution": 0.785032972209138,
+     "group": "all_in_scope",
+     "interactions": 169840,
+     "small_cell": false,
+     "value": "CO"
+    },
+    {
+     "csat_mean": 2.7803644690392137,
+     "csat_surveys": 52405,
+     "escalation": 0.09919750255113832,
+     "first_contact_resolution": 0.7848119268827757,
+     "group": "all_in_scope",
+     "interactions": 281247,
+     "small_cell": false,
+     "value": "MX"
+    },
+    {
+     "csat_mean": 2.915514935354436,
+     "csat_surveys": 8972,
+     "escalation": 0.09762903902643727,
+     "first_contact_resolution": 0.9156735207721359,
+     "group": "account_inquiry",
+     "interactions": 47660,
+     "small_cell": false,
+     "value": "AR"
+    },
+    {
+     "csat_mean": 2.918946901345955,
+     "csat_surveys": 13522,
+     "escalation": 0.10041235122946864,
+     "first_contact_resolution": 0.9150473721228504,
+     "group": "account_inquiry",
+     "interactions": 72511,
+     "small_cell": false,
+     "value": "CO"
+    },
+    {
+     "csat_mean": 2.908517208969252,
+     "csat_surveys": 22343,
+     "escalation": 0.09932018184093089,
+     "first_contact_resolution": 0.9148684155649164,
+     "group": "account_inquiry",
+     "interactions": 119885,
+     "small_cell": false,
+     "value": "MX"
+    },
+    {
+     "csat_mean": 2.8967625899280574,
+     "csat_surveys": 5560,
+     "escalation": 0.09957259249365567,
+     "first_contact_resolution": 0.8957860291171363,
+     "group": "card_support",
+     "interactions": 29948,
+     "small_cell": false,
+     "value": "AR"
+    },
+    {
+     "csat_mean": 2.9020668108627734,
+     "csat_surveys": 8322,
+     "escalation": 0.10069352997980863,
+     "first_contact_resolution": 0.8975068036168905,
+     "group": "card_support",
+     "interactions": 45564,
+     "small_cell": false,
+     "value": "CO"
+    },
+    {
+     "csat_mean": 2.8910384068278807,
+     "csat_surveys": 14060,
+     "escalation": 0.09888389006118034,
+     "first_contact_resolution": 0.8957014505447838,
+     "group": "card_support",
+     "interactions": 75351,
+     "small_cell": false,
+     "value": "MX"
+    },
+    {
+     "csat_mean": 2.4339152119700747,
+     "csat_surveys": 4411,
+     "escalation": 0.09759746922024624,
+     "first_contact_resolution": 0.43437927496580025,
+     "group": "dispute",
+     "interactions": 23392,
+     "small_cell": false,
+     "value": "AR"
+    },
+    {
+     "csat_mean": 2.4384557153671462,
+     "csat_surveys": 6605,
+     "escalation": 0.1025895566837791,
+     "first_contact_resolution": 0.4358850724678787,
+     "group": "dispute",
+     "interactions": 35257,
+     "small_cell": false,
+     "value": "CO"
+    },
+    {
+     "csat_mean": 2.4315138080724115,
+     "csat_surveys": 10827,
+     "escalation": 0.09992804769409991,
+     "first_contact_resolution": 0.43671623381073116,
+     "group": "dispute",
+     "interactions": 58372,
+     "small_cell": false,
+     "value": "MX"
+    },
+    {
+     "csat_mean": 2.6665024630541874,
+     "csat_surveys": 2030,
+     "escalation": 0.09653373089824822,
+     "first_contact_resolution": 0.6528140141632501,
+     "group": "credit",
+     "interactions": 10732,
+     "small_cell": false,
+     "value": "AR"
+    },
+    {
+     "csat_mean": 2.6596445029624753,
+     "csat_surveys": 3038,
+     "escalation": 0.1001938454082869,
+     "first_contact_resolution": 0.6492003876908166,
+     "group": "credit",
+     "interactions": 16508,
+     "small_cell": false,
+     "value": "CO"
+    },
+    {
+     "csat_mean": 2.656231884057971,
+     "csat_surveys": 5175,
+     "escalation": 0.09797749556785701,
+     "first_contact_resolution": 0.6535330511234125,
+     "group": "credit",
+     "interactions": 27639,
+     "small_cell": false,
+     "value": "MX"
+    }
+   ],
+   "customer_detected_accent": [
+    {
+     "csat_mean": 2.7821601941747574,
+     "csat_surveys": 14832,
+     "escalation": 0.09794364051789795,
+     "first_contact_resolution": 0.7834602691038335,
+     "group": "all_in_scope",
+     "interactions": 78780,
+     "small_cell": false,
+     "value": "argentine"
+    },
+    {
+     "csat_mean": 2.7897400820793434,
+     "csat_surveys": 21930,
+     "escalation": 0.10108801832451915,
+     "first_contact_resolution": 0.7865816687438947,
+     "group": "all_in_scope",
+     "interactions": 118748,
+     "small_cell": false,
+     "value": "colombian"
+    },
+    {
+     "csat_mean": 2.778849288275562,
+     "csat_surveys": 36812,
+     "escalation": 0.09917836808299395,
+     "first_contact_resolution": 0.7838733207707738,
+     "group": "all_in_scope",
+     "interactions": 197412,
+     "small_cell": false,
+     "value": "mexican"
+    },
+    {
+     "csat_mean": 2.7862963791505546,
+     "csat_surveys": 31291,
+     "escalation": 0.09944066857677256,
+     "first_contact_resolution": 0.7852024374698443,
+     "group": "all_in_scope",
+     "interactions": 167879,
+     "small_cell": false,
+     "value": "unknown"
+    },
+    {
+     "csat_mean": 2.9139124960654708,
+     "csat_surveys": 6354,
+     "escalation": 0.09753922967189729,
+     "first_contact_resolution": 0.9158048026628626,
+     "group": "account_inquiry",
+     "interactions": 33648,
+     "small_cell": false,
+     "value": "argentine"
+    },
+    {
+     "csat_mean": 2.919279661016949,
+     "csat_surveys": 9440,
+     "escalation": 0.10104919836529393,
+     "first_contact_resolution": 0.916044482867023,
+     "group": "account_inquiry",
+     "interactions": 50896,
+     "small_cell": false,
+     "value": "colombian"
+    },
+    {
+     "csat_mean": 2.907892210202906,
+     "csat_surveys": 15623,
+     "escalation": 0.09905199723697687,
+     "first_contact_resolution": 0.9141676392825667,
+     "group": "account_inquiry",
+     "interactions": 83966,
+     "small_cell": false,
+     "value": "mexican"
+    },
+    {
+     "csat_mean": 2.9143070044709387,
+     "csat_surveys": 13420,
+     "escalation": 0.09922287758924328,
+     "first_contact_resolution": 0.915131523774914,
+     "group": "account_inquiry",
+     "interactions": 71546,
+     "small_cell": false,
+     "value": "unknown"
+    },
+    {
+     "csat_mean": 2.8921370967741935,
+     "csat_surveys": 3968,
+     "escalation": 0.0985728509790906,
+     "first_contact_resolution": 0.8942676971219952,
+     "group": "card_support",
+     "interactions": 21091,
+     "small_cell": false,
+     "value": "argentine"
+    },
+    {
+     "csat_mean": 2.8995700773860706,
+     "csat_surveys": 5815,
+     "escalation": 0.10130513898475246,
+     "first_contact_resolution": 0.898443872748949,
+     "group": "card_support",
+     "interactions": 31874,
+     "small_cell": false,
+     "value": "colombian"
+    },
+    {
+     "csat_mean": 2.8892257934101475,
+     "csat_surveys": 9894,
+     "escalation": 0.09941277543853023,
+     "first_contact_resolution": 0.8951681425954948,
+     "group": "card_support",
+     "interactions": 52961,
+     "small_cell": false,
+     "value": "mexican"
+    },
+    {
+     "csat_mean": 2.901633393829401,
+     "csat_surveys": 8265,
+     "escalation": 0.09898302067338718,
+     "first_contact_resolution": 0.8969446113447715,
+     "group": "card_support",
+     "interactions": 44937,
+     "small_cell": false,
+     "value": "unknown"
+    },
+    {
+     "csat_mean": 2.4222150048717115,
+     "csat_surveys": 3079,
+     "escalation": 0.09736073947944539,
+     "first_contact_resolution": 0.43170761371928973,
+     "group": "dispute",
+     "interactions": 16444,
+     "small_cell": false,
+     "value": "argentine"
+    },
+    {
+     "csat_mean": 2.440958605664488,
+     "csat_surveys": 4590,
+     "escalation": 0.10267275097783572,
+     "first_contact_resolution": 0.4358702737940026,
+     "group": "dispute",
+     "interactions": 24544,
+     "small_cell": false,
+     "value": "colombian"
+    },
+    {
+     "csat_mean": 2.431126778952866,
+     "csat_surveys": 7659,
+     "escalation": 0.0996890033529326,
+     "first_contact_resolution": 0.43619709412507895,
+     "group": "dispute",
+     "interactions": 41158,
+     "small_cell": false,
+     "value": "mexican"
+    },
+    {
+     "csat_mean": 2.4383729854182654,
+     "csat_surveys": 6515,
+     "escalation": 0.10061648745519713,
+     "first_contact_resolution": 0.43787813620071686,
+     "group": "dispute",
+     "interactions": 34875,
+     "small_cell": false,
+     "value": "unknown"
+    },
+    {
+     "csat_mean": 2.6666666666666665,
+     "csat_surveys": 1431,
+     "escalation": 0.09924970383045939,
+     "first_contact_resolution": 0.6510464657101488,
+     "group": "credit",
+     "interactions": 7597,
+     "small_cell": false,
+     "value": "argentine"
+    },
+    {
+     "csat_mean": 2.664748201438849,
+     "csat_surveys": 2085,
+     "escalation": 0.09725380444288963,
+     "first_contact_resolution": 0.6513031310127689,
+     "group": "credit",
+     "interactions": 11434,
+     "small_cell": false,
+     "value": "colombian"
+    },
+    {
+     "csat_mean": 2.6564906490649065,
+     "csat_surveys": 3636,
+     "escalation": 0.09799761990997051,
+     "first_contact_resolution": 0.653231230920474,
+     "group": "credit",
+     "interactions": 19327,
+     "small_cell": false,
+     "value": "mexican"
+    },
+    {
+     "csat_mean": 2.6554513102555806,
+     "csat_surveys": 3091,
+     "escalation": 0.09914654076629743,
+     "first_contact_resolution": 0.651776526844622,
+     "group": "credit",
+     "interactions": 16521,
+     "small_cell": false,
+     "value": "unknown"
+    }
+   ],
+   "segment": [
+    {
+     "csat_mean": 2.785613562798449,
+     "csat_surveys": 62406,
+     "escalation": 0.0999593865892739,
+     "first_contact_resolution": 0.7849771883068951,
+     "group": "all_in_scope",
+     "interactions": 337327,
+     "small_cell": false,
+     "value": "basic"
+    },
+    {
+     "csat_mean": 2.7826315591781543,
+     "csat_surveys": 26623,
+     "escalation": 0.09876062322946176,
+     "first_contact_resolution": 0.7835056657223796,
+     "group": "all_in_scope",
+     "interactions": 141200,
+     "small_cell": false,
+     "value": "plus"
+    },
+    {
+     "csat_mean": 2.77399468892261,
+     "csat_surveys": 10544,
+     "escalation": 0.09933821833472313,
+     "first_contact_resolution": 0.7860653265440094,
+     "group": "all_in_scope",
+     "interactions": 56363,
+     "small_cell": false,
+     "value": "premium"
+    },
+    {
+     "csat_mean": 2.7881708238851095,
+     "csat_surveys": 5292,
+     "escalation": 0.09774786064663969,
+     "first_contact_resolution": 0.7863152995094704,
+     "group": "all_in_scope",
+     "interactions": 27929,
+     "small_cell": false,
+     "value": "student"
+    },
+    {
+     "csat_mean": 2.9142792860356983,
+     "csat_surveys": 26668,
+     "escalation": 0.09957330697535204,
+     "first_contact_resolution": 0.9153992329270585,
+     "group": "account_inquiry",
+     "interactions": 143663,
+     "small_cell": false,
+     "value": "basic"
+    },
+    {
+     "csat_mean": 2.9106799510575074,
+     "csat_surveys": 11442,
+     "escalation": 0.09807953829314404,
+     "first_contact_resolution": 0.9138114033632956,
+     "group": "account_inquiry",
+     "interactions": 60298,
+     "small_cell": false,
+     "value": "plus"
+    },
+    {
+     "csat_mean": 2.9048682447521217,
+     "csat_surveys": 4478,
+     "escalation": 0.10091213009203846,
+     "first_contact_resolution": 0.9162161046679599,
+     "group": "account_inquiry",
+     "interactions": 24229,
+     "small_cell": false,
+     "value": "premium"
+    },
+    {
+     "csat_mean": 2.9270787016451756,
+     "csat_surveys": 2249,
+     "escalation": 0.09919096578459465,
+     "first_contact_resolution": 0.9153885049721895,
+     "group": "account_inquiry",
+     "interactions": 11866,
+     "small_cell": false,
+     "value": "student"
+    },
+    {
+     "csat_mean": 2.8970711799303803,
+     "csat_surveys": 16662,
+     "escalation": 0.10035327886950762,
+     "first_contact_resolution": 0.8961691322587768,
+     "group": "card_support",
+     "interactions": 90580,
+     "small_cell": false,
+     "value": "basic"
+    },
+    {
+     "csat_mean": 2.89851169383416,
+     "csat_surveys": 7055,
+     "escalation": 0.09847239166180449,
+     "first_contact_resolution": 0.8969925210841776,
+     "group": "card_support",
+     "interactions": 37706,
+     "small_cell": false,
+     "value": "plus"
+    },
+    {
+     "csat_mean": 2.868967946460021,
+     "csat_surveys": 2839,
+     "escalation": 0.09850606909430439,
+     "first_contact_resolution": 0.8924903294651194,
+     "group": "card_support",
+     "interactions": 14994,
+     "small_cell": false,
+     "value": "premium"
+    },
+    {
+     "csat_mean": 2.914862914862915,
+     "csat_surveys": 1386,
+     "escalation": 0.09771858103652908,
+     "first_contact_resolution": 0.9012264275352763,
+     "group": "card_support",
+     "interactions": 7583,
+     "small_cell": false,
+     "value": "student"
+    },
+    {
+     "csat_mean": 2.4385614385614387,
+     "csat_surveys": 13013,
+     "escalation": 0.10054433013195019,
+     "first_contact_resolution": 0.4358345920373906,
+     "group": "dispute",
+     "interactions": 70178,
+     "small_cell": false,
+     "value": "basic"
+    },
+    {
+     "csat_mean": 2.428082808280828,
+     "csat_surveys": 5555,
+     "escalation": 0.10080549230194066,
+     "first_contact_resolution": 0.4353057132175509,
+     "group": "dispute",
+     "interactions": 29423,
+     "small_cell": false,
+     "value": "plus"
+    },
+    {
+     "csat_mean": 2.442095588235294,
+     "csat_surveys": 2176,
+     "escalation": 0.09827232295586726,
+     "first_contact_resolution": 0.4379062606910708,
+     "group": "dispute",
+     "interactions": 11692,
+     "small_cell": false,
+     "value": "premium"
+    },
+    {
+     "csat_mean": 2.3958143767060966,
+     "csat_surveys": 1099,
+     "escalation": 0.0981145251396648,
+     "first_contact_resolution": 0.4376745810055866,
+     "group": "dispute",
+     "interactions": 5728,
+     "small_cell": false,
+     "value": "student"
+    },
+    {
+     "csat_mean": 2.658254989279235,
+     "csat_surveys": 6063,
+     "escalation": 0.09931319516197654,
+     "first_contact_resolution": 0.6541056342308393,
+     "group": "credit",
+     "interactions": 32906,
+     "small_cell": false,
+     "value": "basic"
+    },
+    {
+     "csat_mean": 2.660832360949047,
+     "csat_surveys": 2571,
+     "escalation": 0.0981630726784288,
+     "first_contact_resolution": 0.6461918245843317,
+     "group": "credit",
+     "interactions": 13773,
+     "small_cell": false,
+     "value": "plus"
+    },
+    {
+     "csat_mean": 2.6470028544243576,
+     "csat_surveys": 1051,
+     "escalation": 0.09691629955947137,
+     "first_contact_resolution": 0.6615271659324523,
+     "group": "credit",
+     "interactions": 5448,
+     "small_cell": false,
+     "value": "premium"
+    },
+    {
+     "csat_mean": 2.686379928315412,
+     "csat_surveys": 558,
+     "escalation": 0.09084302325581395,
+     "first_contact_resolution": 0.6388081395348837,
+     "group": "credit",
+     "interactions": 2752,
+     "small_cell": false,
+     "value": "student"
+    }
+   ]
+  },
+  "stop_conditions": {
+   "blocked": [],
+   "checks": [
+    {
+     "check": "account_inquiry read path",
+     "detail": "1,635,402 payment or transfer transactions",
+     "passed": true,
+     "workflows": "account_inquiry"
+    },
+    {
+     "check": "card_support read path",
+     "detail": "140,040 card products",
+     "passed": true,
+     "workflows": "card_support"
+    },
+    {
+     "check": "dispute read path",
+     "detail": "1,083,406 purchases",
+     "passed": true,
+     "workflows": "dispute"
+    },
+    {
+     "check": "credit read path",
+     "detail": "131,284 credit products with a limit or an interest rate",
+     "passed": true,
+     "workflows": "credit"
+    },
+    {
+     "check": "mapped volume",
+     "detail": "unmapped: 0.00% of interactions, 0.00% of complaints (limit 5%)",
+     "passed": true,
+     "workflows": "all"
+    },
+    {
+     "check": "credit profile columns",
+     "detail": "credit_score 85.0% and income 80.0% of customers; days_past_due 95.0% of credit products",
+     "passed": true,
+     "workflows": "credit"
+    }
+   ],
+   "counts": {
+    "card_products": 140040,
+    "credit_products": 131972,
+    "credit_products_with_days_past_due": 125350,
+    "credit_products_with_limit_or_rate": 131284,
+    "customers": 150000,
+    "customers_with_credit_score": 127508,
+    "customers_with_income": 119967,
+    "payment_or_transfer_transactions": 1635402,
+    "purchase_transactions": 1083406
+   }
+  },
+  "transcripts": {
+   "cramers_v_reason_by_opening": 0.008202255991089155,
+   "detected_intents": [
+    [
+     "consulta_general",
+     140039
+    ],
+    [
+     "(null)",
+     7253
+    ]
+   ],
+   "facts": {
+    "distinct_customer_texts": 42,
+    "distinct_detected_intents": 1,
+    "distinct_main_topics": 6,
+    "main_topics_equal_contact_reason": 147292,
+    "transcripts": 147292
+   },
+   "openings": [
+    [
+     "Comercial",
+     "Buenas tardes, necesito consultar el saldo de mi tarjeta de cr\u00e9dito.",
+     6058
+    ],
+    [
+     "Comercial",
+     "Quisiera saber cu\u00e1l es mi saldo actual en mi cuenta de ahorros.",
+     5819
+    ],
+    [
+     "Producto",
+     "Buenas tardes, necesito consultar el saldo de mi tarjeta de cr\u00e9dito.",
+     16026
+    ],
+    [
+     "Producto",
+     "Quisiera saber cu\u00e1l es mi saldo actual en mi cuenta de ahorros.",
+     16261
+    ],
+    [
+     "Queja",
+     "Buenas tardes, necesito consultar el saldo de mi tarjeta de cr\u00e9dito.",
+     12695
+    ],
+    [
+     "Queja",
+     "Quisiera saber cu\u00e1l es mi saldo actual en mi cuenta de ahorros.",
+     12442
+    ],
+    [
+     "Retenci\u00f3n",
+     "Buenas tardes, necesito consultar el saldo de mi tarjeta de cr\u00e9dito.",
+     2264
+    ],
+    [
+     "Retenci\u00f3n",
+     "Quisiera saber cu\u00e1l es mi saldo actual en mi cuenta de ahorros.",
+     2180
+    ],
+    [
+     "Transaccional",
+     "Buenas tardes, necesito consultar el saldo de mi tarjeta de cr\u00e9dito.",
+     25726
+    ],
+    [
+     "Transaccional",
+     "Quisiera saber cu\u00e1l es mi saldo actual en mi cuenta de ahorros.",
+     25726
+    ],
+    [
+     "T\u00e9cnico",
+     "Buenas tardes, necesito consultar el saldo de mi tarjeta de cr\u00e9dito.",
+     11043
+    ],
+    [
+     "T\u00e9cnico",
+     "Quisiera saber cu\u00e1l es mi saldo actual en mi cuenta de ahorros.",
+     11052
+    ]
+   ]
+  },
+  "trend": {
+   "first_window": [
+    "2023-07",
+    "2024-06"
+   ],
+   "full_months": [
+    "2023-07",
+    "2023-08",
+    "2023-09",
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05"
+   ],
+   "last_window": [
+    "2025-06",
+    "2026-05"
+   ],
+   "months": [
+    "2023-06",
+    "2023-07",
+    "2023-08",
+    "2023-09",
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06"
+   ],
+   "workflows": {
+    "account_inquiry": {
+     "change": -0.002603840664980847,
+     "first_12_full_months": 79882,
+     "last_12_full_months": 79674,
+     "monthly": [
+      3197,
+      6703,
+      6982,
+      6309,
+      6769,
+      6655,
+      6688,
+      6707,
+      6393,
+      6670,
+      6969,
+      6677,
+      6360,
+      6875,
+      6992,
+      6626,
+      6880,
+      6227,
+      6602,
+      6831,
+      6056,
+      6868,
+      6713,
+      6855,
+      6246,
+      6723,
+      6610,
+      6809,
+      6640,
+      6584,
+      7001,
+      6418,
+      6161,
+      7225,
+      6699,
+      6558,
+      3778
+     ]
+    },
+    "card_support": {
+     "change": 0.006410641665164173,
+     "first_12_full_months": 49917,
+     "last_12_full_months": 50237,
+     "monthly": [
+      2020,
+      4230,
+      4326,
+      3997,
+      4223,
+      4040,
+      4166,
+      4171,
+      4139,
+      4117,
+      4389,
+      4185,
+      3934,
+      4347,
+      4418,
+      4218,
+      4275,
+      3881,
+      4212,
+      4300,
+      3809,
+      4274,
+      4184,
+      4334,
+      4085,
+      4304,
+      4168,
+      4178,
+      4198,
+      4136,
+      4235,
+      4220,
+      3976,
+      4514,
+      4071,
+      4152,
+      2437
+     ]
+    },
+    "credit": {
+     "change": 0.006226105953031131,
+     "first_12_full_months": 18310,
+     "last_12_full_months": 18424,
+     "monthly": [
+      686,
+      1509,
+      1556,
+      1513,
+      1515,
+      1490,
+      1593,
+      1529,
+      1459,
+      1537,
+      1605,
+      1598,
+      1406,
+      1582,
+      1546,
+      1502,
+      1534,
+      1361,
+      1507,
+      1498,
+      1364,
+      1557,
+      1588,
+      1547,
+      1486,
+      1600,
+      1492,
+      1576,
+      1541,
+      1528,
+      1634,
+      1502,
+      1433,
+      1614,
+      1526,
+      1492,
+      873
+     ]
+    },
+    "dispute": {
+     "change": 0.0035162627150571394,
+     "first_12_full_months": 47778,
+     "last_12_full_months": 47946,
+     "monthly": [
+      1979,
+      4096,
+      4091,
+      3934,
+      4018,
+      3866,
+      3991,
+      4005,
+      3863,
+      3953,
+      4139,
+      3964,
+      3858,
+      4145,
+      4060,
+      4070,
+      4097,
+      3682,
+      4078,
+      4161,
+      3667,
+      4090,
+      3956,
+      4081,
+      3816,
+      4196,
+      4086,
+      4072,
+      4013,
+      3935,
+      4158,
+      3986,
+      3712,
+      4264,
+      3841,
+      3867,
+      2364
+     ]
+    },
+    "other": {
+     "change": 0.0093209546134111,
+     "first_12_full_months": 54179,
+     "last_12_full_months": 54684,
+     "monthly": [
+      2198,
+      4588,
+      4673,
+      4313,
+      4599,
+      4504,
+      4606,
+      4492,
+      4355,
+      4501,
+      4636,
+      4567,
+      4345,
+      4692,
+      4656,
+      4373,
+      4646,
+      4345,
+      4587,
+      4704,
+      4060,
+      4473,
+      4533,
+      4693,
+      4429,
+      4834,
+      4548,
+      4549,
+      4602,
+      4553,
+      4651,
+      4479,
+      4213,
+      4905,
+      4511,
+      4410,
+      2616
+     ]
+    }
+   }
+  },
+  "volume": {
+   "alternative": {
+    "account_inquiry": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.31863401606868147,
+     "interaction_share": 0.34978493244897246,
+     "interactions": 240056
+    },
+    "card_support": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.0,
+     "interaction_share": 0.0,
+     "interactions": 0
+    },
+    "credit": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.2730879450378356,
+     "interaction_share": 0.29978609812675583,
+     "interactions": 205742
+    },
+    "dispute": {
+     "complaint_share": 0.4043967508756241,
+     "complaints": 27133,
+     "contact_share": 0.19134022041675572,
+     "interaction_share": 0.1705109748563302,
+     "interactions": 117021
+    },
+    "other": {
+     "complaint_share": 0.5956032491243759,
+     "complaints": 39962,
+     "contact_share": 0.21693781847672722,
+     "interaction_share": 0.17991799456794152,
+     "interactions": 123477
+    }
+   },
+   "primary": {
+    "account_inquiry": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.31863401606868147,
+     "interaction_share": 0.34978493244897246,
+     "interactions": 240056
+    },
+    "card_support": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.20024529095781607,
+     "interaction_share": 0.21982205928637205,
+     "interactions": 150863
+    },
+    "credit": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.07284265408001954,
+     "interaction_share": 0.07996403884038374,
+     "interactions": 54879
+    },
+    "dispute": {
+     "complaint_share": 0.4043967508756241,
+     "complaints": 27133,
+     "contact_share": 0.19134022041675572,
+     "interaction_share": 0.1705109748563302,
+     "interactions": 117021
+    },
+    "other": {
+     "complaint_share": 0.5956032491243759,
+     "complaints": 39962,
+     "contact_share": 0.21693781847672722,
+     "interaction_share": 0.17991799456794152,
+     "interactions": 123477
+    }
+   },
+   "strict": {
+    "account_inquiry": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.31863401606868147,
+     "interaction_share": 0.34978493244897246,
+     "interactions": 240056
+    },
+    "card_support": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.0,
+     "interaction_share": 0.0,
+     "interactions": 0
+    },
+    "credit": {
+     "complaint_share": 0.0,
+     "complaints": 0,
+     "contact_share": 0.0,
+     "interaction_share": 0.0,
+     "interactions": 0
+    },
+    "dispute": {
+     "complaint_share": 0.4043967508756241,
+     "complaints": 27133,
+     "contact_share": 0.03601449977501722,
+     "interaction_share": 0.0,
+     "interactions": 0
+    },
+    "other": {
+     "complaint_share": 0.5956032491243759,
+     "complaints": 39962,
+     "contact_share": 0.6453514841563013,
+     "interaction_share": 0.6502150675510275,
+     "interactions": 446240
+    }
+   }
+  }
+ }
+}

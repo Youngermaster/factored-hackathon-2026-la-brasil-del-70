@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: informational
+seeds:
+  es-MX:
+    - "¿Cuántos días tengo para levantar una aclaración?"
+    - "¿Cómo funciona el bloqueo de tarjeta?"
+    - "¿Qué pasa si no pago el mínimo de mi tarjeta?"
+    - "¿Cuánto tarda en resolverse una aclaración normalmente?"
+    - "Hola, si bloqueo mi tarjeta, ¿después la puedo desbloquear?"
+    - "¿En qué horario atienden las sucursales?"
+    - "Oigan, una duda: ¿qué es el CAT y cómo se calcula?"
+    - "¿Me cobran comisión si retiro en cajeros de otro banco?"
+  es-CO:
+    - "¿Cuánto tiempo tengo para reclamar un cobro?"
+    - "¿Cómo es el proceso de un reclamo por transacción no reconocida?"
+    - "¿Qué pasa si me atraso en una cuota del crédito?"
+    - "Buenas, ¿cuánto se demora el banco en responder un reclamo?"
+    - "¿El bloqueo de la tarjeta es temporal o definitivo?"
+    - "Una pregunta, ¿qué es la tasa de usura?"
+    - "¿Cobran cuota de manejo por la tarjeta débito?"
+    - "¿Qué diferencia hay entre bloquear y cancelar una tarjeta?"
+  es-AR:
+    - "¿Cuántos días tengo para desconocer un consumo?"
+    - "¿Cómo funciona la pausa de la tarjeta?"
+    - "¿Qué pasa si pago menos del mínimo del resumen?"
+    - "¿Cuánto tarda un reclamo en resolverse, más o menos?"
+    - "Che, una consulta general: ¿qué es el CFT?"
+    - "Si denuncio la tarjeta por robo, ¿los débitos automáticos se siguen cobrando?"
+    - "¿Me cobran algo por extraer en cajeros de otra red?"
+    - "¿Qué documentación suelen pedir para un reclamo?"
+  pt-BR:
+    - "Quantos dias eu tenho pra contestar uma compra?"
+    - "Como funciona o bloqueio temporário do cartão?"
+    - "O que acontece se eu pagar só o mínimo da fatura?"
+    - "Quanto tempo demora pra analisar uma contestação?"
+    - "Oi, uma dúvida: o que é o CET?"
+    - "Se eu bloquear o cartão, as assinaturas recorrentes param de ser cobradas?"
+    - "Vocês cobram tarifa pra sacar em caixa de outro banco?"
+    - "Qual a diferença entre cancelar e bloquear o cartão?"

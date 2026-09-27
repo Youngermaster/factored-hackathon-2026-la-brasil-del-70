@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1UD1A3IOG0YQYAOGNWWN,2025-11-13 12:25:57,2025-11-13,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Deposit,,4192.16,USD,,POS,,,,México,,Approved,00,False,20.15,0.7646805,
+TRX-7H0C2PNJS2ER1CKJU2RZ,2025-11-13 23:05:59,2025-11-13,PRD-H4DCLYJJ62SW,CLI-5L6EGAWYR2Q2,Purchase,Food,162603.74,ARS,464.58,POS,,Tienda Don José,Food,Argentina,Córdoba,Approved,00,False,,,
+TRX-IDTXKY07GHT7OCE3Y23A,2025-11-13 19:11:52,2025-11-13,PRD-NLZ79H62LNBZ,CLI-FY5RJI3Q5D6U,Deposit,,1915.91,USD,,ATM,SUC-COPO2MJ8,,,México,Puebla,Approved,00,False,13.9,,

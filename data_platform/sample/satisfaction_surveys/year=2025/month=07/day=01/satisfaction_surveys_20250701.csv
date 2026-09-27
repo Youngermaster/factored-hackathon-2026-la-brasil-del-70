@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-ESUG1CDWAV1LVG9OYFKT,2025-07-02 10:14:46,2025-07-01,INT-ZF7JBR8W8X9C6D3D,CLI-FY5RJI3Q5D6U,AGT-P32K9GW5NX,CSAT,SMS,3,,¿Qué tan satisfecho está con el servicio recibido?,4.0,,,,,Tuve que esperar demasiado tiempo.,Negative,10.15,38.03

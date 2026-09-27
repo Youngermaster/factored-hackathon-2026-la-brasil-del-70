@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-NQWWVBPCROQ9J8F47PWO,2025-09-10 17:55:57,2025-09-10,CMP-E4QIOVOFKFBL,CLI-M78UJJ6XFNOT,Email,template_CMP-E4QIOVOFKFBL_5,¡Oferta especial en Préstamo Personal!,Sent,True,False,,False,,,False,,,,,,

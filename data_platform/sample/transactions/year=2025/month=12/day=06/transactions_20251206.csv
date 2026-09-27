@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-646I8F0EG2INBKU12DE6,2025-12-06 21:33:56,2025-12-06,PRD-J6A0T7IU5FFE,CLI-TJIM7P52K5F7,Withdrawal,,55.55,USD,,ATM,,,,México,Guadalajara,Pending,14,False,23.6,,
+TRX-7IH5H2GUQ729O479AVBO,2025-12-07 00:37:11,2025-12-06,PRD-1WZ2UVHOSXLC,CLI-SZ2W0R1BX8S0,Adjustment,,89286.8,COP,22.32,POS,,,,Argentina,Buenos Aires,Approved,00,False,25.17,,
+TRX-RUUQQZU2MIE8S2EV40EQ,2025-12-06 16:44:48,2025-12-06,PRD-R0IP9I97ABLL,CLI-NOC612SZ8VKJ,Deposit,,3300753.57,COP,825.19,App,,,,Colombia,Cali,Approved,00,False,19.9,,

@@ -1,0 +1,3 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-S6S0JW5PW5FP3W16,2025-10-09 05:41:06,2025-10-08,CLI-NSTPTDK3BPGH,AGT-YK02JUZBDO,Inbound Call,Phone,Producto,Producto,355.0,132.0,True,True,Negativo,-0.4,argentine,mexican,False,"PRD-APOVS4E2ANXJ,PRD-4TRFIRTD6XSE",True,True
+INT-YL2YB9GWE2YYZD48,2025-10-09 05:38:49,2025-10-08,CLI-7A9F4VIGPO6R,AGT-OXGDKDP90E,Inbound Call,Phone,Transaccional,Transaccional,182.0,68.0,True,False,Neutral,-0.3,,,False,,False,True

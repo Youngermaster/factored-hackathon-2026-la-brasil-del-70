@@ -1,0 +1,6 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2S8V4IFN4V3OYN7KYSRU,2025-09-05 17:07:28,2025-09-05,PRD-REOLVWO77SRZ,CLI-OTYTZE2FLKFL,Withdrawal,,353.06,USD,,ATM,SUC-XUG645G9,,,Brazil,Brasília,Approved,00,False,19.68,0.6132652,0.4515172
+TRX-3YEH0K9BBMJ9CPYZ68O1,2025-09-05 09:42:57,2025-09-05,PRD-VX09B0EAAI90,CLI-IMCRTKL094T5,Deposit,,2704.15,USD,,ATM,SUC-N8LPAX0U,,,México,Querétaro,Approved,00,False,17.1,,
+TRX-FI7AX6KVLIVIIBXOYE5C,2025-09-06 04:09:29,2025-09-05,PRD-U9SPV3HRCHVD,CLI-3XGV18QB96P9,Withdrawal,,94.56,USD,,ATM,SUC-YZKP5AYK,,,México,Monterrey,Approved,00,False,19.44,,
+TRX-FLNY8RTW1D0U08C1JEHH,2025-09-06 04:15:52,2025-09-05,PRD-OSL49HPKW0E1,CLI-7HIH47RP95JX,Withdrawal,,110523.12,ARS,315.78,ATM,SUC-FXWYIOXF,,,Argentina,Rosario,Approved,00,False,,-34.7149121,-58.1135882
+TRX-FVK84P6IIXL9631SAPZ5,2025-09-06 01:24:40,2025-09-05,PRD-KAS76D9EAK3G,CLI-7P0ZUEV7Y4EH,Purchase,,24.47,USD,,Web,,Clínica Médica,Health,Spain,Sevilla,Approved,00,False,19.13,,

@@ -1,10 +1,10 @@
 # factored-hackathon-2026-la-brasil-del-70
 
-An AI-first banking customer-service system for the Factored AI & Data Hackathon 2026. The chosen workflow is transaction-dispute intake and dispute status, with a protective card block as a sub-action, in Spanish and Portuguese.
+An AI-first banking customer-service system for the Factored AI & Data Hackathon 2026. It covers four workflows, each built in depth: account and payment inquiries, card support (including a protective card block), transaction-dispute intake and status, and credit-product information with an indicative, synthetic eligibility service, in Spanish and Portuguese.
 
 Design thesis: the language model understands, deterministic code decides, and evidence proves it. Permissions and policy are enforced in code, identity comes from a trusted session, and the system reports only outcomes it has verified.
 
-Status: under construction. Phase 01 (monorepo scaffold and quality gates) is complete; the domain, data platform, policy, workflows, and user interface arrive in later phases. Progress is tracked in [docs/PROGRESS.md](docs/PROGRESS.md).
+Status: under construction. The scaffold, the domain model and contracts, the LLM gateway, and the data platform are in place; policy, workflows, and the user interface arrive in later phases. Progress is tracked in [docs/PROGRESS.md](docs/PROGRESS.md).
 
 ## Repository map
 
@@ -45,6 +45,19 @@ make down
 ```
 
 `make help` lists every target. `make env-check` reports which documented variables are set without printing any value.
+
+## Data
+
+The organizer dataset (synthetic, 13 tables, about 23.5 million rows) is never committed. What is in git is a bounded, pseudonymized sample of it: [data_platform/sample/README.md](data_platform/sample/README.md) shows every table's columns with example rows, and `data_platform/sample/preview/` has ten rows per table. The source is explicit and never mixed:
+
+```bash
+make pipeline                        # bronze, silver, gold from the committed sample: no network, no credentials
+make data-download                   # with the organizer S3 values in .env: download the full 5.3 GB delivery
+make pipeline DATA_SOURCE=s3         # build from it (or set BANK_DATA_SOURCE=s3 in .env)
+make data-report && make lineage     # quality report and lineage (docs/data/ for the s3 source)
+```
+
+The [data card](docs/data/data-card.md) lists provenance, personal data handling, and the known issues found by profiling; the [data platform README](data_platform/README.md) has the commands and runtimes.
 
 ## Documentation
 

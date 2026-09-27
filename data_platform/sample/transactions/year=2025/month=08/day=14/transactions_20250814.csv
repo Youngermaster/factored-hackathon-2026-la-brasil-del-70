@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-4QG89MCIXXNZYDCQ9BHF,2025-08-14 17:54:15,2025-08-14,PRD-OSDOMQC8A1GW,CLI-EJXBYCD0J96O,Adjustment,,605.72,USD,,App,,,,México,Puebla,Approved,00,False,5.37,,
+TRX-7YNBFSW4FHZNMK84VKPJ,2025-08-15 02:50:25,2025-08-14,PRD-9COI86X98YC7,CLI-EJXBYCD0J96O,Withdrawal,,322.05,USD,,App,,,,México,Puebla,Approved,00,False,22.45,,
+TRX-DLXA9S7NPDBK9LWEI1ZQ,2025-08-14 11:57:54,2025-08-14,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Withdrawal,,430.6,USD,,POS,,,,México,Ciudad de México,Approved,00,False,,,
+TRX-G62F9V26E1MSSQXJN7X0,2025-08-14 18:48:50,2025-08-14,PRD-LXTGL6WOIY5S,CLI-IA17OMLTE32I,Transfer,,15594715.86,COP,3898.68,POS,,,,Colombia,Bogotá,Approved,,False,13.81,,

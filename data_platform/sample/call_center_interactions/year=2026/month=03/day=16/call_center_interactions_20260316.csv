@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-G9NLH45X0TUSHUBH,2026-03-16 14:35:27,2026-03-16,CLI-9MNRLM8SP9QI,AGT-H1P9MYTVXZ,Inbound Call,Phone,Producto,Producto,418.0,126.0,True,False,Neutral,0.24,mexican,mexican,False,,False,True

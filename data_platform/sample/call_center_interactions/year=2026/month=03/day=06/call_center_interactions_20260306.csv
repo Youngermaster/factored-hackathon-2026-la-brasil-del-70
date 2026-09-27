@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-NB9REUXS6CQ2TDVT,2026-03-07 07:14:04,2026-03-06,CLI-C0RXL4J0SXGR,AGT-9OUCPLC2FI,Inbound Call,Phone,Técnico,Técnico,377.0,242.0,True,False,Neutral,0.21,mexican,mexican,False,,False,True

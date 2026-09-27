@@ -1,0 +1,44 @@
+{
+  "cassette_id": "579769e5380afca9fd46b1a4654d53ed5837eee3e9ea596c183923c994df8531",
+  "kind": "structured",
+  "labels": {
+    "case": "ambiguous",
+    "workflow": "dispute"
+  },
+  "language": "es",
+  "latency_ms": 0,
+  "model_id": "fixture/hand-authored",
+  "note": "Hand-authored fixture for tests, not a model reply. Replace with a recorded cassette once the provider and key are chosen.",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 0.55,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.2,
+        "intent": "payment_status"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "other"
+    ],
+    "transaction": null
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "hand_authored_fixture",
+  "recorded_at": "2026-09-26T00:00:00Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "variables": {
+    "customer_message": "Hay un cobro raro en mi cuenta, no sé bien de qué es.",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-09-26"
+  }
+}

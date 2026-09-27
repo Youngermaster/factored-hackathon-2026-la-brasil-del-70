@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CGQEXPEBQJ17KG8FLJ18,2025-09-09 01:19:46,2025-09-08,PRD-1F6D9RZUC9QO,CLI-DMSDCHOBUHLX,Transfer,,5070.02,USD,,ATM,SUC-8GXP9TIM,,,México,Querétaro,Approved,00,False,29.1,,

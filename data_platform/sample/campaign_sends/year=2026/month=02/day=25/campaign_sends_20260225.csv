@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-ZZPUX7LM14JGH4MUUGE2,2026-02-25 16:11:49,2026-02-25,CMP-0SCQMRQB1JT6,CLI-WKR4P95O4ZKE,SMS,template_CMP-0SCQMRQB1JT6_1,,Sent,True,True,2026-03-03 16:51:35,False,,,False,,,Tablet,México,,0.092

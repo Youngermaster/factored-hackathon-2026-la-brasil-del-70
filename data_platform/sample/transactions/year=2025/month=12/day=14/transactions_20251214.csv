@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-4O4GI8JXKYQR7I0VC9LM,2025-12-14 18:26:28,2025-12-14,PRD-0FF2K4AGLWFX,CLI-C0RXL4J0SXGR,Deposit,,1204.73,USD,,POS,,,,México,Tijuana,Approved,00,False,27.33,,
+TRX-JMFQYBOAUUCBEP6F23GA,2025-12-14 23:02:58,2025-12-14,PRD-83SYEXZILUH3,CLI-3XGV18QB96P9,Purchase,Entertainment,449.7,USD,,ATM,SUC-QE974U7T,Teatro Nacional,Entertainment,México,Monterrey,Approved,00,False,17.01,0.5960781,0.7192628

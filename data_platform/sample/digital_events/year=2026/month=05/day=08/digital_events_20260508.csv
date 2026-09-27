@@ -1,0 +1,4 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-L67HYV0718PNLINLTR7C,2026-05-09 01:59:19,2026-05-08,CLI-1PQOJNHN9ASF,SES-AVQO08GUFMZCEUR6Y5UXU2PQ43G5,PageView,Transaction,Mobile Web,iOS,Safari,,/transactions,Mis Movimientos,view_transactions,transactions_page,,,169.0,203.0.113.125,México,Tijuana,True,,,,
+EVT-PQDW18NLBCZJDS1NIYS8,2026-05-09 01:58:12,2026-05-08,CLI-1PQOJNHN9ASF,SES-AVQO08GUFMZCEUR6Y5UXU2PQ43G5,Click,Navigation,Mobile Web,iOS,Safari,,/help,Ayuda,view_help,help_page,,,,,México,Tijuana,True,,,,
+EVT-ZZ1AKRCLYS86O1C82MRO,2026-05-09 01:56:37,2026-05-08,CLI-1PQOJNHN9ASF,SES-AVQO08GUFMZCEUR6Y5UXU2PQ43G5,Click,Navigation,Mobile Web,iOS,Safari,,,Productos,view_products,products_page,,,,203.0.113.236,México,Tijuana,True,,,,

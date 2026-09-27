@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0Y33LZJQDUCV6GSMDLPM,2025-08-11 14:10:16,2025-08-11,PRD-H6F1F3YENJIR,CLI-Y15WQL0D9JH4,Payment,Services,249229.58,ARS,712.08,POS,,,,Argentina,Buenos Aires,Approved,00,False,19.9,,
+TRX-E21ITB0ZJVP3ZW4YMKZH,2025-08-12 04:23:30,2025-08-11,PRD-KABMG8XKP7HG,CLI-3XGV18QB96P9,Transfer,,1018.69,USD,,ATM,SUC-KKZOCIP3,,,México,Monterrey,Approved,00,False,0.71,,
+TRX-EZAMCDK6Z14FVJWDEE27,2025-08-11 23:37:23,2025-08-11,PRD-3MW9MQVBAPP0,CLI-7P0ZUEV7Y4EH,Withdrawal,,254.69,USD,,ATM,SUC-FV69BGCV,,,México,Puebla,Approved,00,False,9.69,,
+TRX-MN8QHFNLXHMEZUS4MVPB,2025-08-11 22:03:58,2025-08-11,PRD-KSTY237L1T0W,CLI-VZJTC6LU907T,Purchase,Food,403.89,USD,,App,,,Food,México,,Approved,00,False,3.35,,
+TRX-SX156QSE6BDQ7C3FOUD2,2025-08-12 04:48:38,2025-08-11,PRD-5OAKISYUKZUZ,CLI-VU58CMFRCIP7,Payment,Services,912.09,USD,,POS,,,,México,Querétaro,Approved,00,False,,,0.6253854
+TRX-YKS3SWPA0HHMDL58OA2N,2025-08-12 03:38:20,2025-08-11,PRD-7FPVYQQCC7E3,CLI-5L6EGAWYR2Q2,Purchase,Food,74419.66,ARS,212.63,POS,,Restaurante El Buen Sabor,Food,Argentina,Córdoba,Approved,00,False,,,

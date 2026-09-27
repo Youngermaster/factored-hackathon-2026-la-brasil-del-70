@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-N5MYMUCVMJ58IGUH,2026-01-30 05:30:26,2026-01-29,CLI-1PQOJNHN9ASF,AGT-06AWFQDRXK,Inbound Call,Phone,Producto,Producto,315.0,103.0,False,True,Neutral,-0.12,,,False,"PRD-TQQ45S9N0QBV,PRD-SVSYKLBKAGRO",False,True

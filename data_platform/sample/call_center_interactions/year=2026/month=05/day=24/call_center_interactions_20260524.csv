@@ -1,0 +1,2 @@
+﻿interaction_id,interaction_date,process_date,customer_id,agent_id,interaction_type,channel,contact_reason,reason_category,duration_seconds,wait_time_seconds,was_resolved,requires_followup,detected_sentiment,sentiment_score,customer_detected_accent,agent_used_accent,was_escalated,mentioned_products,has_transcript,has_recording
+INT-DMOHNZWQ7JRWEPWD,2026-05-25 07:23:30,2026-05-24,CLI-TRFWX6YMZG7G,AGT-3QQOA60CO9,Inbound Call,Phone,Transaccional,Transaccional,201.0,225.0,True,False,Neutral,-0.28,,,False,PRD-XOLXYOUX8VK6,True,True

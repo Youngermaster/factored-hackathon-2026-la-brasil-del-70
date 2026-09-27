@@ -1,0 +1,2 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-2VQVEHT67BA0ZMREHJFV,2025-12-16 11:00:57,2025-12-16,CMP-IZHOBBM1XI9M,CLI-WKR4P95O4ZKE,WhatsApp,template_CMP-IZHOBBM1XI9M_4,,Sent,True,,,False,,,False,,,,,,0.0491

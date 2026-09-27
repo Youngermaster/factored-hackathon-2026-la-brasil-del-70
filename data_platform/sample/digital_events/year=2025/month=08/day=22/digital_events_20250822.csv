@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-IH6RJD1UJNIECMNODA78,2025-08-22 11:30:43,2025-08-22,CLI-VU58CMFRCIP7,SES-TNB5ZLZBBBBQHTDWEZVBWFA8ARQQ,Click,Product,Android App,Android,,3.6.9,/products/credit-card,,view_product,cc_product,,,,198.51.100.148,México,Querétaro,True,,,,

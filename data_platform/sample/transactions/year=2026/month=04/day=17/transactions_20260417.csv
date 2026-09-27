@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-2DMV527SJIZQHIDR87JA,2026-04-18 04:26:08,2026-04-17,PRD-Y9NH496IDU4N,CLI-VZJTC6LU907T,Transfer,,2825.81,USD,,ATM,SUC-HVN55QJQ,,,México,Guadalajara,Approved,00,False,,-0.6816208,-0.911601
+TRX-597K15W5QLLM27SWGNQ7,2026-04-18 02:52:39,2026-04-17,PRD-35NHBV4A37N1,CLI-K0GJBJFDKIBO,Deposit,,4704387.17,COP,1176.1,ATM,,,,Argentina,Córdoba,Approved,00,False,7.72,,
+TRX-9Q6QXWIBWEST9ZZ2PWJG,2026-04-17 11:44:29,2026-04-17,PRD-XB5OTWQQ6V1D,CLI-H6OV6I0CT5IX,Withdrawal,,473.76,USD,,POS,,,,México,Querétaro,Approved,00,False,25.05,0.9229186,0.0099025
+TRX-9SSHDW5UV0NYYJMJMPMF,2026-04-17 15:23:33,2026-04-17,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Withdrawal,,146840.69,ARS,419.54,ATM,SUC-ZVFW3M23,,,Argentina,Córdoba,Approved,00,False,,,
+TRX-U9M9AQ8GU5EK9RRIS03K,2026-04-17 13:07:22,2026-04-17,PRD-D9Y29R9CRRY3,CLI-4QR1L5H7FKTD,Deposit,,5821626.1,COP,1455.41,POS,,,,Colombia,Medellín,Approved,,False,4.01,5.1282968,-73.8035827
+TRX-Y1OPQ8YONCGXC0FY9K41,2026-04-17 12:16:09,2026-04-17,PRD-EKBD6XZY054O,CLI-W6CYG2XGJXVX,Deposit,,2476.9,USD,,App,,,,México,Monterrey,Approved,00,False,21.89,,

@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-J1R91F31EV7SG93NJAJB,2026-03-11 22:15:28,2026-03-11,PRD-FZL0CHC2XU4Z,CLI-SZ2W0R1BX8S0,Transfer,,14651146.81,COP,3662.79,ATM,SUC-UH461R09,,,Colombia,Bogotá,Approved,00,False,,,
+TRX-L6N5NXX1ABWSWCW7HSUG,2026-03-11 15:19:27,2026-03-11,PRD-7N3R25GSYY9B,CLI-ODH9G3RG7J9J,Purchase,Other,916531.74,COP,229.13,ATM,SUC-RFQLK7RX,Centro Comercial,Other,Colombia,Cali,Approved,00,False,,,

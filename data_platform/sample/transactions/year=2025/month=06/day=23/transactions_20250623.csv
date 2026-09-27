@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-CIZ8HZEC81RFJ4S2S6CQ,2025-06-23 15:26:53,2025-06-23,PRD-PNC66PY0CYPP,CLI-CTY661KC9RAS,Withdrawal,,419644.61,COP,104.91,Branch,SUC-KY2QIURA,,,Colombia,Medellín,Approved,00,False,5.02,,
+TRX-M7DSZDTMBW055X0OXDM9,2025-06-23 07:54:13,2025-06-23,PRD-UE1FN7KCWVYP,CLI-W6CYG2XGJXVX,Purchase,Services,85.1,USD,,ATM,SUC-KUOJDQSO,Internet Plus,Services,México,Monterrey,Approved,00,False,18.12,-0.8690645,0.540903
+TRX-P3WMGUDMIWUXLHUFU6EO,2025-06-23 18:34:25,2025-06-23,PRD-IDU5Q8YZ1O6T,CLI-AKACM6D5362F,Withdrawal,,159.99,USD,,POS,,,,México,Ciudad de México,Approved,00,False,7.06,,

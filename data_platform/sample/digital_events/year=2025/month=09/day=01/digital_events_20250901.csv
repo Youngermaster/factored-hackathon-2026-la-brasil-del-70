@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-6GWVGMOZIZ4QS31OWM0K,2025-09-01 06:12:43,2025-09-01,CLI-1DC1593XLI10,SES-HNGBHFGO5FI0TAM9VV6MSKY6CGU4,Login,Authentication,iOS App,iOS,,1.2.0,/login,Iniciar Sesión,login,login_form,,,,198.51.100.89,México,Monterrey,True,,,,

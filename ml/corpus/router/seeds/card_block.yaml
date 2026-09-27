@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: card_block
+seeds:
+  es-MX:
+    - "Perdí mi tarjeta, bloquéenla por favor"
+    - "Me robaron la cartera ahorita en el metro, necesito bloquear todas mis tarjetas"
+    - "Quiero bloquear la tarjeta terminación {last4}"
+    - "Hola, vi movimientos raros en mi tarjeta, ¿me la pueden congelar mientras?"
+    - "bloquear tarjeta urgente"
+    - "No encuentro mi tarjeta de débito desde {date}, mejor la bloqueo por si acaso"
+    - "Oye, ¿me ayudas a apagar mi tarjeta de crédito? Creo que la dejé en un restaurante"
+    - "Me clonaron la tarjeta, necesito que la bloqueen ya"
+  es-CO:
+    - "Buenas noches, me robaron el celular con la tarjeta adentro, necesito bloquearla"
+    - "Regáleme el bloqueo de la tarjeta débito, se me perdió"
+    - "Quiero congelar mi tarjeta de crédito por seguridad"
+    - "Me colabora bloqueando la tarjeta que termina en {last4}, por favor"
+    - "Se me quedó la tarjeta en el cajero, ¿la pueden bloquear?"
+    - "Me llegaron alertas sospechosas, prefiero bloquear la tarjeta ya mismo"
+    - "Por precaución quiero dejar bloqueada la tarjeta mientras estoy de viaje"
+    - "tarjeta perdida, bloquear"
+  es-AR:
+    - "Che, me afanaron la billetera, bloqueame la tarjeta"
+    - "Hola, perdí la tarjeta de débito {date}, ¿podés bloquearla?"
+    - "Necesito pausar la tarjeta de crédito ya, creo que me la copiaron"
+    - "Bloqueá la tarjeta terminada en {last4} por favor"
+    - "Me robaron en el colectivo y tenía la tarjeta en la mochila, quiero bloquearla"
+    - "Hay consumos que me hacen ruido, prefiero que la congelen hasta revisar"
+    - "quiero bloquear mi tarjeta"
+    - "Dejé la tarjeta en un bar anoche y no la encuentro, bloqueala antes de que la usen"
+  pt-BR:
+    - "Perdi meu cartão, preciso bloquear agora"
+    - "Roubaram minha carteira hoje de manhã, bloqueiem meu cartão por favor"
+    - "Quero bloquear o cartão final {last4}"
+    - "Tô vendo umas movimentações estranhas, dá pra congelar o cartão?"
+    - "bloqueio de cartão"
+    - "Esqueci o cartão no caixa eletrônico {date}, bloqueia pra mim?"
+    - "Oi, acho que clonaram meu cartão de crédito, quero bloquear urgente"
+    - "Por segurança, queria deixar o cartão bloqueado temporariamente"

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3JCXAXS0J3MRKAYMLWOO,2025-08-01 00:32:28,2025-07-31,PRD-0WS8606X5ZOX,CLI-7P0ZUEV7Y4EH,Deposit,,2754.01,USD,,App,,,,México,Puebla,Approved,00,False,28.59,,

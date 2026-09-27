@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1H4LX7S2B2Y7A2A8TPE6,2026-05-04 18:04:59,2026-05-04,PRD-X5FSZQXZPPAJ,CLI-EJXBYCD0J96O,Purchase,Services,455.03,USD,,App,,Servicios Públicos,Services,México,Puebla,Approved,00,False,12.51,,
+TRX-7XZJPPP55ZLOXG6HP0Q8,2026-05-04 09:48:56,2026-05-04,PRD-KTS7M76I4ESO,CLI-Q6CL8Y1VMVSB,Payment,Services,3529094.36,COP,882.27,Web,,,,Colombia,Barranquilla,Approved,00,False,18.14,,
+TRX-CUVFQOY8ZQO4WTN4O9PF,2026-05-04 20:44:16,2026-05-04,PRD-63RBJOML9YC4,CLI-DMSDCHOBUHLX,Payment,,994.83,USD,,POS,,,,México,Querétaro,Approved,00,False,0.8,,
+TRX-TT5LPIXJJQ5EG4MUNC0R,2026-05-04 11:49:44,2026-05-04,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Payment,Food,152509.47,ARS,435.74,ATM,SUC-0N077NAM,,,Argentina,Rosario,Approved,00,False,24.02,,

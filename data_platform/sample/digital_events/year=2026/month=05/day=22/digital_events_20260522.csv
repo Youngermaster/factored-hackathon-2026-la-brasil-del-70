@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-LL6F3XG1W28KJLGCH8BW,2026-05-22 23:52:47,2026-05-22,CLI-7A9F4VIGPO6R,SES-VZXTN0IOSB5NTGTO9F5R55DNAC6F,Login,Authentication,Android App,Android,,4.9.3,/logout,Cerrar Sesión,logout,logout_btn,,,,198.51.100.92,Colombia,Cartagena,True,https://www.instagram.com,direct,cpc,retention

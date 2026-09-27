@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0WYDE1GIR84V5RMU1GVF,2025-08-29 18:02:53,2025-08-29,PRD-FU9DT1YQGFNS,CLI-1AS0INHPK43M,Purchase,Food,20.54,USD,,POS,,Tienda Don José,Food,México,Querétaro,Approved,,False,29.09,-0.271703,-0.1370913
+TRX-3060GZIR28Y2KCP7DPR6,2025-08-29 23:01:56,2025-08-29,PRD-74NPJF1GQBK6,CLI-5N42HUM8D4H6,Adjustment,,267405.01,ARS,,POS,,,,Argentina,Rosario,Approved,00,False,,,
+TRX-5FUNMG62GW8FDEHATMQB,2025-08-29 08:23:08,2025-08-29,PRD-OFTSOVSTRW2D,CLI-A4SWQDV7XTYM,Withdrawal,,90823.02,ARS,259.49,ATM,SUC-F321UEME,,,Argentina,Córdoba,Approved,00,False,,,
+TRX-ABQPFR7S0OMVEEM3PU3T,2025-08-30 02:33:10,2025-08-29,PRD-9HIQLRR3F9Y1,CLI-CGS8YGQUFDAN,Withdrawal,,784139.67,COP,196.03,POS,,,,Colombia,Barranquilla,Approved,00,False,,,
+TRX-C74IOTNEZG9RA8CUM1ZC,2025-08-29 21:22:31,2025-08-29,PRD-HVNGK4YXZUS5,CLI-7P0ZUEV7Y4EH,Deposit,,4896.95,USD,,App,,,,México,Puebla,Approved,00,False,5.04,,
+TRX-Z72ZW7TGPEA50V82LYL9,2025-08-29 18:47:55,2025-08-29,PRD-J6A0T7IU5FFE,CLI-TJIM7P52K5F7,Deposit,,1770.54,USD,,App,,,,México,Guadalajara,Approved,00,False,8.97,,

@@ -1,0 +1,3 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-9SV2F4KOSLGQBKL6JOJX,2025-07-02 19:16:32,2025-07-02,CLI-CGS8YGQUFDAN,SES-M2KI0EHN456AD7QHS10AB0EDPPQJ,FormSubmit,Transaction,Desktop Web,Linux,Edge,,/transfer,Transferir,initiate_transfer,transfer_form,,4371.3,,198.51.100.50,Colombia,Barranquilla,False,,,,
+EVT-JEBUZTK3QC6LSVX9ONKV,2025-07-02 19:15:45,2025-07-02,CLI-CGS8YGQUFDAN,SES-M2KI0EHN456AD7QHS10AB0EDPPQJ,Login,Authentication,Desktop Web,,Edge,,/logout,Cerrar Sesión,logout,,,,,192.0.2.50,Colombia,,False,,,,

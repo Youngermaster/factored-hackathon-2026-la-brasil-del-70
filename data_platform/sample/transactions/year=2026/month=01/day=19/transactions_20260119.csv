@@ -1,0 +1,3 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0C0DW0HQSPH566LMFQ2W,2026-01-19 06:05:11,2026-01-19,PRD-TX0R0F8IPBEI,CLI-EJXBYCD0J96O,Payment,Entertainment,601.01,USD,,App,,,,México,Puebla,Approved,00,False,10.33,,
+TRX-TPDZ5AF0XBMDUTZLLORJ,2026-01-20 02:44:15,2026-01-19,PRD-UYH4RRQWIKYC,CLI-W6CYG2XGJXVX,Withdrawal,,284.55,USD,,App,,,,México,,Approved,00,False,25.11,,

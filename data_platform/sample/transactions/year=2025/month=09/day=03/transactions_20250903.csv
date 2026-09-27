@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-ASA2QVRPZNP6HMM6TKVM,2025-09-03 06:30:36,2025-09-03,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Withdrawal,,447.12,USD,,POS,,,,México,Querétaro,Approved,00,False,15.9,,
+TRX-RF4AZM9WICS10R7WMUNI,2025-09-03 21:18:38,2025-09-03,PRD-73R0SSM38Y1K,CLI-YC4WNTUC93XN,Payment,Entertainment,529786.17,ARS,1513.67,ATM,SUC-3JIR51SL,,,Argentina,Buenos Aires,Approved,00,False,18.7,,
+TRX-YX3SSWQWXI1LGNWRGCEE,2025-09-04 01:53:42,2025-09-03,PRD-83SYEXZILUH3,CLI-3XGV18QB96P9,Purchase,Transport,488.25,USD,,POS,,Gasolinera Express,Transport,México,Monterrey,Approved,00,False,,,
+TRX-ZXPXHHMRLDR8SC9HXLC2,2025-09-04 04:54:53,2025-09-03,PRD-J6A0T7IU5FFE,CLI-TJIM7P52K5F7,Deposit,,3707.26,USD,,POS,,,,México,Guadalajara,Approved,00,False,10.84,-0.2631987,0.302735

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-52NJTVT3O84I13VT7GGR,2026-05-16 03:31:44,2026-05-15,PRD-K1C4P980WMUK,CLI-H6OV6I0CT5IX,Deposit,,2981.26,USD,,POS,,,,México,Querétaro,Approved,00,False,29.78,,

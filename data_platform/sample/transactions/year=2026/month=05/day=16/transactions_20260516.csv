@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-7GOXJMC2DWD0YLY5WFZ4,2026-05-17 03:52:32,2026-05-16,PRD-TX0R0F8IPBEI,CLI-EJXBYCD0J96O,Adjustment,,680.77,USD,,ATM,,,,México,Puebla,Approved,,False,1.48,,
+TRX-B3U3TY3PGNWZJNJ9EBRM,2026-05-17 03:36:19,2026-05-16,PRD-9V9RN2VYGM2G,CLI-6VCS2LIRSE4Y,Withdrawal,,612709.14,COP,153.18,POS,,,,Colombia,Medellín,Approved,00,False,2.16,,
+TRX-UXHLG3AZ56B1S3FUO5SK,2026-05-17 03:52:03,2026-05-16,PRD-6MXVORJTLXV6,CLI-TJIM7P52K5F7,Adjustment,,511.34,USD,,App,,,,México,Guadalajara,Approved,00,False,13.63,,
+TRX-YCZXY9TOH14TD0YYBGGD,2026-05-16 10:43:25,2026-05-16,PRD-RYP56C9I3NDP,CLI-VU58CMFRCIP7,Transfer,,4012.77,USD,,Web,,,,México,Querétaro,Approved,00,False,28.11,,

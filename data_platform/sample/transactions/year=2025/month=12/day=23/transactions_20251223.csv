@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-48MHV1HXU4NHXBD69RQS,2025-12-23 17:20:06,2025-12-23,PRD-RYP56C9I3NDP,CLI-VU58CMFRCIP7,Deposit,,273.02,USD,,POS,,,,México,Querétaro,Approved,00,True,5.54,,
+TRX-E0XRBAK0XHW0JCJEE39N,2025-12-23 21:53:09,2025-12-23,PRD-FU9DT1YQGFNS,CLI-1AS0INHPK43M,Purchase,Transport,360.69,USD,,Web,,Estación de Servicio,Transport,México,,Approved,00,False,24.16,,
+TRX-EXF50UTIDIBGDDSUO37Y,2025-12-23 10:20:20,2025-12-23,PRD-DZJMG6ZCQELX,CLI-5N42HUM8D4H6,Purchase,Entertainment,139717.73,ARS,399.19,POS,,Streaming Music,Entertainment,Argentina,Rosario,Approved,00,False,2.52,-34.3041461,-58.9575062

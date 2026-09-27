@@ -1,0 +1,7 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-0A25RV46ZKR33QDO0PHK,2026-02-09 09:26:42,2026-02-09,PRD-6MXVORJTLXV6,CLI-TJIM7P52K5F7,Payment,Transport,1884.07,USD,,POS,,,,México,Guadalajara,Approved,00,False,15.09,0.0111191,-0.1143079
+TRX-9XFAZ01FJZBHLEEOAGK3,2026-02-09 10:46:09,2026-02-09,PRD-IRPW2E27DXWK,CLI-NOC612SZ8VKJ,Purchase,Other,1553077.29,COP,388.27,POS,,,Other,Colombia,Cali,Approved,00,False,14.96,,
+TRX-EO9DJF1CTWGQB1OCVHBO,2026-02-09 07:18:43,2026-02-09,PRD-J6A0T7IU5FFE,CLI-TJIM7P52K5F7,Deposit,,1930.01,USD,,POS,,,,México,Guadalajara,Approved,00,False,,,
+TRX-IOQQ27KNM60UUE7EZCS2,2026-02-10 05:39:04,2026-02-09,PRD-ZSI20YNRH5UA,CLI-WKR4P95O4ZKE,Deposit,,532.72,USD,,POS,,,,México,Guadalajara,Approved,00,False,1.06,,
+TRX-LBVIU79TAA761T54EQPJ,2026-02-09 10:40:50,2026-02-09,PRD-GWK096DWRZ3O,CLI-8QOOAQN2VSCE,Withdrawal,,167.32,USD,,ATM,SUC-5NGX1P46,,,Colombia,Medellín,Approved,00,False,,3.8073782,-73.2649457
+TRX-N11721B45V6O8CACOBOF,2026-02-10 03:06:09,2026-02-09,PRD-FQW23YXXO9I2,CLI-R53C8RPXD32P,Withdrawal,,732865.1,COP,183.22,App,,,,Colombia,,Declined,05,False,9.59,,

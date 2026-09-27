@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: credit_application
+seeds:
+  es-MX:
+    - "Quiero solicitar un préstamo personal"
+    - "Hola, me interesa tramitar {product}, ¿cómo empezamos?"
+    - "Quiero sacar una tarjeta de crédito, ¿me ayudan a pedirla?"
+    - "Necesito un crédito de {amount}, quiero hacer la solicitud ahorita"
+    - "Porfa, inicien mi solicitud de crédito automotriz"
+    - "Ya vi las condiciones y quiero solicitar {product}"
+    - "¿Dónde meto la solicitud del préstamo? Ya tengo mis papeles listos"
+    - "Me urge lana para la colegiatura, quiero pedir un préstamo"
+  es-CO:
+    - "Quiero pedir un crédito de libre inversión"
+    - "Buenas, ya me decidí: quiero radicar la solicitud de {product}"
+    - "Me colabora con la solicitud de una tarjeta de crédito"
+    - "Necesito que me presten {amount} para arreglar la casa, ¿me ayudan a solicitarlo?"
+    - "Quiero aplicar al crédito de vivienda"
+    - "Listo, envíenme el formulario del préstamo que lo lleno de una"
+    - "Sumercé, quiero tramitar un crédito de libranza"
+    - "solicitar {product}"
+  es-AR:
+    - "Quiero sacar un préstamo personal"
+    - "Hola, ¿me cargás la solicitud de {product}?"
+    - "Che, quiero pedir la tarjeta de crédito"
+    - "Necesito {amount} para el auto, quiero tramitar el préstamo ya"
+    - "Ya junté la documentación, quiero presentar la solicitud del hipotecario"
+    - "Dale, quiero pedir el préstamo preaprobado que me aparece"
+    - "Me quiero anotar para {product}"
+    - "Mandame el formulario que quiero solicitar un crédito"
+  pt-BR:
+    - "Quero pedir um empréstimo pessoal"
+    - "Oi, gostaria de solicitar {product}"
+    - "Quero fazer a proposta do cartão de crédito"
+    - "Preciso de {amount} emprestado, quero fazer o pedido agora"
+    - "Já decidi, quero contratar o financiamento do carro"
+    - "Me manda o formulário que eu quero dar entrada no empréstimo"
+    - "Tô precisando de grana, quero solicitar crédito hoje"
+    - "Beleza, pode seguir com a minha solicitação de {product}"

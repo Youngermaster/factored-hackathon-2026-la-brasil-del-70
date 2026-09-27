@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-AJTAC157A8VX1FJ8ZA4G,2026-03-21 05:57:30,2026-03-20,CMP-OSQUXZJWLN3F,CLI-7P0ZUEV7Y4EH,SMS,template_CMP-OSQUXZJWLN3F_1,,Sent,True,False,,False,,,False,,,,,,0.0898
+SND-I9RPWUDWEMGRX7ZRTQTM,2026-03-20 15:14:39,2026-03-20,CMP-SIJQINVML56O,CLI-END66G0XIF95,SMS,template_CMP-SIJQINVML56O_4,,Sent,True,True,2026-03-24 21:31:13,False,,,False,,,Tablet,México,,0.0805

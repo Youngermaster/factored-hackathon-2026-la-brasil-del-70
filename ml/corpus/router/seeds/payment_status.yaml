@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: payment_status
+seeds:
+  es-MX:
+    - "¿Ya se reflejó el pago de mi tarjeta que hice {date}?"
+    - "Hice una transferencia de {amount} y la otra persona dice que no le ha llegado"
+    - "Hola, pagué mi tarjeta de crédito por SPEI y no veo el abono, ¿ya entró?"
+    - "¿Me confirman si pasó mi pago?"
+    - "estatus de mi transferencia"
+    - "Le mandé lana a mi hermano anoche, ¿ya le cayó?"
+    - "Oigan, hice el depósito para pagar el crédito y sigue saliendo como pendiente"
+    - "No quiero hacer otra transferencia, solo saber si la primera sí se fue"
+  es-CO:
+    - "¿Ya les llegó el pago de la tarjeta?"
+    - "Buenas tardes, hice una transferencia {date} y no aparece en la otra cuenta"
+    - "Me colabora verificando si el pago de {amount} quedó aplicado"
+    - "Pagué la cuota del crédito por PSE, ¿ya se registró?"
+    - "¿La transferencia que mandé ya fue exitosa o sigue en proceso?"
+    - "confirmar pago tarjeta de crédito"
+    - "Le giré plata a mi mamá y dice que no le ha llegado nada"
+    - "Sumercé, ¿me confirma si el abono que hice esta mañana entró?"
+  es-AR:
+    - "¿Se acreditó el pago de la tarjeta que hice {date}?"
+    - "Che, le transferí {amount} a un amigo y no le llegó, ¿qué onda?"
+    - "Hola, pagué el resumen por home banking, ¿ya impactó?"
+    - "Decime si la transferencia salió bien"
+    - "Hice un pago y en la app figura como pendiente, ¿se hizo o no?"
+    - "estado de la transferencia de ayer"
+    - "¿Le llegó al dueño la guita del alquiler que transferí esta mañana?"
+    - "Fijate si impactó el pago mínimo que hice, no quiero que me cobren intereses"
+  pt-BR:
+    - "O Pix que fiz {date} caiu?"
+    - "Paguei a fatura e ainda não baixou, podem ver?"
+    - "Oi, fiz uma transferência de {amount} e a pessoa diz que não recebeu"
+    - "Meu pagamento foi confirmado?"
+    - "Paguei o boleto ontem, já foi compensado?"
+    - "status da transferência"
+    - "Cadê o Pix que mandei pra minha mãe? Até agora nada"
+    - "Não quero pagar de novo, só confirmar se o primeiro pagamento entrou"

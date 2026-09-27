@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-LA8I287J4APRUT7IWJAH,2025-12-02 22:44:50,2025-12-02,PRD-ILT9MDP7D7IA,CLI-RKIFX1G2SP3M,Deposit,,1916.38,USD,,POS,,,,México,Ciudad de México,Approved,00,False,5.48,,

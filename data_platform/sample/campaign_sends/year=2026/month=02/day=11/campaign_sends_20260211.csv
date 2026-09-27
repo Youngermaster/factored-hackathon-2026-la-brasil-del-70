@@ -1,0 +1,3 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-9I6UX31MTPVI1IORSCBX,2026-02-11 13:40:03,2026-02-11,CMP-L08OUL0RTKR6,CLI-TRSQ3XMFRJAC,Push,template_CMP-L08OUL0RTKR6_4,,Sent,True,True,2026-02-12 09:46:34,False,,,False,,,Mobile,México,,0.0003
+SND-QG1K84XELNOZAT9PVGZ1,2026-02-11 15:12:19,2026-02-11,CMP-H5R7NWP32K9G,CLI-1PQOJNHN9ASF,SMS,template_CMP-H5R7NWP32K9G_3,,Sent,True,False,,False,,,False,,,,,,0.1322

@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-EU5IBKVVTIKPIZQ70TXX,2025-11-08 03:57:08,2025-11-07,PRD-KAS76D9EAK3G,CLI-7P0ZUEV7Y4EH,Purchase,Health,44.21,USD,,POS,,Laboratorio Central,Health,México,Puebla,Approved,00,False,26.68,,

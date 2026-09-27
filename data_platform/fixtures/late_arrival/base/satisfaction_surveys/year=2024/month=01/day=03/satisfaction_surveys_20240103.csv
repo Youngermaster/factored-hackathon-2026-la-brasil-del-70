@@ -1,0 +1,2 @@
+﻿survey_id,survey_date,process_date,interaction_id,customer_id,agent_id,survey_type,send_channel,main_score,nps_category,question_1_text,question_1_response,question_2_text,question_2_response,question_3_text,question_3_response,open_comments,comment_sentiment,response_time_hours,campaign_response_rate
+SRV-FIX-0002,2024-01-04 02:00:00,2024-01-03,INT-FIX-0003,CLI-FIX-0003,AGT-FIX-02,NPS,Email,9,Promoter,,,,,,,,,16.0,

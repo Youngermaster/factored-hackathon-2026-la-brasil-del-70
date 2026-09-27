@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-QN0JJ91YFCQ6WK1PV4EN,2026-04-04 11:41:54,2026-04-04,CLI-AKACM6D5362F,SES-57S25JZLOTUPESOOULTI48FK113O,Click,Navigation,Android App,Android,,3.5.7,/home,Inicio,view_home,home_page,,,,192.0.2.107,México,,True,,,,

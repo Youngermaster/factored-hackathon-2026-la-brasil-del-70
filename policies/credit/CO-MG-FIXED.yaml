@@ -1,0 +1,27 @@
+# Synthetic credit catalog entry for the demonstration. Not an offer and not any real bank's product.
+product_code: CO-MG-FIXED
+product_type: mortgage
+jurisdiction: CO
+currency: COP
+min_amount: {amount: "60000000.00", currency: COP}
+max_amount: {amount: "1200000000.00", currency: COP}
+min_term_months: 60
+max_term_months: 240
+min_annual_rate: "11.00"
+max_annual_rate: "15.00"
+purposes: [home_purchase, home_construction]
+required_information: [declared_monthly_income, property_value, down_payment]
+eligibility_clause_ids: [ELG-ALL-3]
+self_service_eligibility: false
+catalog_version: synthetic-catalog-2026.09.1
+synthetic: true
+display:
+  es:
+    name: "Crédito hipotecario a tasa fija"
+    summary: "Financiamiento para comprar o construir vivienda; solo informativo por este medio. Producto sintético de demostración."
+  pt:
+    name: "Financiamento imobiliário a taxa fixa"
+    summary: "Financiamento para comprar ou construir moradia; apenas informativo por este canal. Produto sintético de demonstração."
+  en:
+    name: "Fixed-rate mortgage"
+    summary: "Financing to buy or build a home; information only through this channel. Synthetic demonstration product."

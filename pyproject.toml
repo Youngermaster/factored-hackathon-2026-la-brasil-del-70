@@ -7,13 +7,25 @@ required-version = ">=0.11.17"
 [tool.uv.workspace]
 members = ["services/api", "data_platform", "ml", "evals"]
 
+# torch (through the optional `ml` extra of bank-agent) comes from the PyTorch CPU index on Linux, so installing
+# the extra on a Linux machine or CI runner never pulls the CUDA wheels. macOS wheels on PyPI are CPU builds.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
 [dependency-groups]
 dev = [
   "bandit==1.9.4",
   "httpx==0.28.1",
   "hypothesis==6.168.1",
   "import-linter==2.15",
+  "jsonschema==4.26.0",
   "mypy==2.3.1",
+  "pandas-stubs>=3.0",
   "pip-audit==2.10.1",
   "pytest==9.1.1",
   "pytest-asyncio==1.4.0",
@@ -21,6 +33,7 @@ dev = [
   "pytest-socket==0.8.1",
   "ruff==0.16.9",
   "testcontainers==4.15.0",
+  "types-pyyaml==6.0.12.20260906",
 ]
 
 # ---------------------------------------------------------------------------
@@ -93,7 +106,7 @@ warn_unreachable = true
 plugins = ["pydantic.mypy"]
 # Module names come from these bases, so the several tests/ directories and conftest.py files never collide.
 explicit_package_bases = true
-mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "ml/src", "evals/src"]
+mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "data_platform/tests", "ml/src", "evals/src"]
 files = [
   "services/api/src",
   "services/api/tests",
@@ -109,7 +122,7 @@ files = [
 # checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["asyncpg", "asyncpg.*", "importlinter.*", "pytest_socket", "testcontainers.*"]
+module = ["asyncpg", "asyncpg.*", "boto3", "boto3.*", "botocore", "botocore.*", "datasketch", "datasketch.*", "importlinter.*", "jsonschema", "jsonschema.*", "lightgbm", "lightgbm.*", "litellm", "litellm.*", "mlflow", "mlflow.*", "pytest_socket", "sentence_transformers", "sentence_transformers.*", "sklearn", "sklearn.*", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]
@@ -157,6 +170,39 @@ source_modules = [
 ]
 forbidden_modules = ["bank_agent.asgi", "bank_agent.cli"]
 
+[[tool.importlinter.contracts]]
+name = "Production code never imports the test doubles"
+type = "forbidden"
+source_modules = [
+  "bank_agent.domain",
+  "bank_agent.ports",
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.api",
+  "bank_agent.bootstrap",
+]
+forbidden_modules = ["bank_agent.testing"]
+
+[[tool.importlinter.contracts]]
+name = "Test doubles depend only on the domain and the ports"
+type = "forbidden"
+source_modules = ["bank_agent.testing"]
+forbidden_modules = [
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.api",
+  "bank_agent.bootstrap",
+  "bank_agent.asgi",
+  "bank_agent.cli",
+  "fastapi",
+  "sqlalchemy",
+  "httpx",
+  "boto3",
+  "litellm",
+]
+
 # ---------------------------------------------------------------------------
 # pytest
 # ---------------------------------------------------------------------------
@@ -165,7 +211,7 @@ forbidden_modules = ["bank_agent.asgi", "bank_agent.cli"]
 minversion = "9.0"
 testpaths = ["services/api/tests", "data_platform/tests", "ml/tests", "evals/tests", "scripts/tests"]
 # Shared test-support modules; each has a package-unique name so paths never collide.
-pythonpath = ["services/api/tests"]
+pythonpath = ["services/api/tests", "data_platform/tests"]
 addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib", "--allow-unix-socket"]
 markers = [
   "unit: fast tests with no network, database, or filesystem access outside tmp_path",
@@ -204,6 +250,7 @@ exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]
 "services/api/src/bank_agent/adapters" = 80
 "services/api/src/bank_agent/api" = 80
 "services/api/src/bank_agent/bootstrap" = 80
+"services/api/src/bank_agent/testing" = 90
 "data_platform/src" = 80
 "ml/src" = 80
 "evals/src" = 80

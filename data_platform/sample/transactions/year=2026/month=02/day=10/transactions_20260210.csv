@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-1GGOLRMKA4DJ3ERL96H1,2026-02-10 22:46:19,2026-02-10,PRD-YKE9XTBUECW9,CLI-ZJCPKZZRXUR8,Purchase,Services,250222.87,COP,62.56,POS,,Servicios Públicos,Services,Colombia,Medellín,Approved,00,False,20.59,3.9556529,-73.4719057
+TRX-P5XXD9TPF5JOM9EC8H0Q,2026-02-11 04:53:29,2026-02-10,PRD-3KXA0I8UHFHO,CLI-NSTPTDK3BPGH,Adjustment,,311190.63,ARS,889.12,App,,,,Argentina,Córdoba,Approved,00,False,6.06,,
+TRX-TZ7EKBA45B6FZPZ4790P,2026-02-11 03:35:16,2026-02-10,PRD-EMVTLIJGPZLP,CLI-AMN80XXN1DT6,Adjustment,,449.71,USD,,POS,,,,México,Querétaro,Approved,00,False,6.64,,

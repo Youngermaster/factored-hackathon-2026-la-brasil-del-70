@@ -1,0 +1,4 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-NZ3AX6RFNJOXJ6GXO4KE,2025-12-11 18:45:21,2025-12-11,PRD-FQW23YXXO9I2,CLI-R53C8RPXD32P,Payment,Health,4196464.82,COP,1049.12,Web,,,,Colombia,Barranquilla,Approved,00,False,7.66,,
+TRX-OQAQ7908E1THTSEEJEUX,2025-12-11 09:13:56,2025-12-11,PRD-KOP86ODYWL99,CLI-VHBEU7EEMIV1,Purchase,Transport,70215.18,ARS,200.61,Web,,Uber,Transport,Argentina,Buenos Aires,Approved,00,False,20.62,,
+TRX-XI7CY3VBJ4AVA42762PW,2025-12-11 14:18:19,2025-12-11,PRD-GAXFHHF40562,CLI-7HIH47RP95JX,Adjustment,,314587.52,ARS,898.82,Web,,,,Argentina,Rosario,Approved,00,False,15.42,,

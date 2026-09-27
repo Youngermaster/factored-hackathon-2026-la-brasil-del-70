@@ -1,0 +1,8 @@
+﻿transcript_id,interaction_id,process_date,customer_id,agent_id,full_text,customer_text,agent_text,detected_language,detected_accent,accent_confidence,detected_keywords,mentioned_entities,detected_intents,main_topics,transcription_model,audio_quality,duration_seconds
+TRS-O90XCOKNKNL8DDURW4XI,INT-6BEKGIZGBSYA9JJV,2026-05-16,CLI-898HYDPSE4K6,AGT-OU23TB8G0R,"Cliente: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
+
+Agente: Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}.
+
+Cliente: Perfecto, eso es lo que necesitaba.
+
+Agente: Con gusto. ¿Hay algo más en lo que pueda ayudarle?","Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito. Perfecto, eso es lo que necesitaba.","Buenas tardes, claro que sí. Déjeme revisar esa información. Su saldo actual es {monto} {moneda} y su límite disponible es de {limite} {moneda}. Con gusto. ¿Hay algo más en lo que pueda ayudarle?",es,mexican,0.8,"banco, servicio, cuenta","{""account_numbers"": 2, ""dates"": 0, ""amounts"": 1, ""products"": ""Tarjeta Crédito""}",consulta_general,Producto,Google STT,High,354.0

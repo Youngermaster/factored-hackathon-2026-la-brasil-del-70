@@ -1,0 +1,5 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-3PP4SBM0AXFEFMU58H6L,2026-01-16 14:39:21,2026-01-16,PRD-01XLXEVPBCYX,CLI-8QOOAQN2VSCE,Adjustment,,562390.37,COP,140.6,POS,,,,Colombia,Medellín,Declined,54,False,22.49,,
+TRX-DAGNLHVT7TDOTWQ7O9N5,2026-01-16 17:36:00,2026-01-16,PRD-5AO0416HM0WF,CLI-H6OV6I0CT5IX,Transfer,,6270.1,USD,,ATM,SUC-FGQWMFNS,,,México,Querétaro,Approved,00,False,,0.9406267,-0.3013891
+TRX-E5VKXD88D53R0DKIE6YU,2026-01-16 12:20:13,2026-01-16,PRD-7OJ4LO02QADD,CLI-AKACM6D5362F,Transfer,,583.95,USD,,Web,,,,México,Ciudad de México,Approved,00,False,17.03,,
+TRX-MO21BKVL9E394FPC78DZ,2026-01-16 06:09:37,2026-01-16,PRD-P6L336LQ1NDM,CLI-ZJCPKZZRXUR8,Purchase,Health,152903.68,COP,38.23,ATM,SUC-TQX7379E,Óptica Visión,Health,Colombia,Medellín,Approved,00,False,11.52,,

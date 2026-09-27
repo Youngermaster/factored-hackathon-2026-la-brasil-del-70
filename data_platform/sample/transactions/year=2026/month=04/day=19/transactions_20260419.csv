@@ -1,0 +1,2 @@
+﻿transaction_id,transaction_date,process_date,product_id,customer_id,transaction_type,transaction_category,amount,currency,amount_usd,channel,branch_id,merchant_name,merchant_category,transaction_country,transaction_city,transaction_status,response_code,is_fraud,fraud_score,latitude,longitude
+TRX-I6TJBZ3AS2D90J3JKEAS,2026-04-19 12:01:23,2026-04-19,PRD-9I54B0DPLJ3T,CLI-UWPSMKLGJ4HM,Payment,Entertainment,410.7,USD,,ATM,SUC-RZNFZDVW,,,México,Ciudad de México,Approved,00,False,1.71,,

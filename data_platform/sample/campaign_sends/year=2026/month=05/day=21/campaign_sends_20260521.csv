@@ -1,0 +1,4 @@
+﻿send_id,send_date,process_date,campaign_id,customer_id,send_channel,template_used,subject,send_status,was_delivered,was_opened,open_date,was_clicked,click_date,click_count,had_conversion,conversion_date,conversion_value,open_device,open_country,failure_reason,send_cost
+SND-JXHCKW5F7C3COH74UG6X,2026-05-22 04:49:52,2026-05-21,CMP-IB0OD3DV699Y,CLI-VU58CMFRCIP7,Push,,,Sent,True,True,2026-05-27 10:11:12,False,,,False,,,Mobile,,,0.0004
+SND-KXM6NF57YO1SZ4NVZ7UL,2026-05-21 12:00:34,2026-05-21,CMP-IB0OD3DV699Y,CLI-2LQL5P2NJS9B,Push,template_CMP-IB0OD3DV699Y_5,,Failed,False,,,False,,,False,,,,,SMTP error,0.0003
+SND-VD8M4XNGZHQ829VATBAE,2026-05-22 04:05:45,2026-05-21,CMP-IB0OD3DV699Y,CLI-P2CRX7C6QTWG,Push,template_CMP-IB0OD3DV699Y_3,,Sent,True,False,,False,,,False,,,,,,0.0005

@@ -6,14 +6,20 @@ Bootstrap turns the environment into a running process: typed settings, logging,
 
 | Module | Content |
 |---|---|
-| `settings.py` | `RuntimeSettings`, `DatabaseSettings`, `SecuritySettings`, `LLMSettings`, `ObservabilitySettings`, and `load_settings()` with the production rules |
+| `settings.py` | `RuntimeSettings`, `DatabaseSettings`, `SecuritySettings`, `LLMSettings`, `ObservabilitySettings`, `PolicySettings` (`POLICY_DIR`, `POLICY_DATA_AS_OF`), `RetrievalSettings` (`RETRIEVAL_*`), and `load_settings()` with the production rules |
+| `policy.py` | `build_policy()`: the policy pack, the synthetic credit catalog checked against it, the synthetic eligibility service, the tool parameters, and the data as-of date for policy windows, as `PolicyServices` |
+| `retrieval.py` | `build_grounding()`: the bound clause lookup (every state resolved at startup), the grounding verifier, the retrieval index (built from the pack or loaded and checked), the retriever chosen by `RETRIEVAL_RETRIEVER`, and informational retrieval with its thresholds, as `GroundingServices` |
 | `logging.py` | `configure_logging()`: structlog JSON output for structlog and standard-library loggers, with `RedactionProcessor` |
-| `container.py` | `Container`: builds the database engine and readiness checks; satisfies `ServiceProvider` structurally |
+| `container.py` | `Container`: builds the database engine, readiness checks, the prompt registry, and the language model gateway; satisfies `ServiceProvider` structurally. Tests and the evaluation harness pass a clock, a telemetry double, and `LlmOverrides` (an injected base client) |
+| `llm.py` | `build_llm_client()`: the provider chosen by `LLM_PROVIDER` wrapped in the decorator stack in the order `STACK_ORDER` documents (`docs/architecture/llm-gateway.md`) |
 
 ## Settings rules
 
 - Variable names match the root `.env.example`; every new variable is documented there in the same commit.
-- Secrets are `SecretStr`. In production (`APP_ENV=production`), `load_settings()` refuses `DEMO_MODE=true` and any session, CSRF, or database secret that is empty, shorter than 32 characters, or a known default. With `LLM_PROVIDER=litellm`, the primary key is also required. Error messages name variables, never values.
+- Secrets are `SecretStr`. In production (`APP_ENV=production`), `load_settings()` refuses `DEMO_MODE=true` and any session, CSRF, or database secret that is empty, shorter than 32 characters, or a known default. With `LLM_PROVIDER=litellm`, the primary key is also required, and `LLM_TRACE_CONTENT=true` and cassette recording are refused. Error messages name variables, never values.
+- `POLICY_DIR` defaults to the repository `policies/` and `POLICY_DATA_AS_OF` to 2026-06-17, the organizer snapshot date; a malformed pack stops startup.
+- `RETRIEVAL_INDEX_SOURCE` must be `stored` in production (a stored index must match the pack version); `dense` and `hybrid` need the optional `ml` extra, or an embedder injected into `Container` (tests and evaluations).
+- `LLM_PRICES_FILE` and `LLM_CASSETTE_DIR` default to `services/api/config/llm_prices.yaml` and `evals/cassettes/` (an empty value means the default). Outside tests, `LLM_PROVIDER=fake` without an injected client yields a client that refuses every call; the composition root never imports the test doubles.
 
 ## Redaction rules
 

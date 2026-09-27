@@ -1,0 +1,2 @@
+﻿event_id,event_date,process_date,customer_id,session_id,event_type,event_category,channel,platform,browser,app_version,page_url,page_title,action,element_id,product_id,event_value,duration_seconds,ip_address,ip_country,ip_city,is_mobile,referrer,utm_source,utm_medium,utm_campaign
+EVT-VN5OIYEU0XLRP90VBT0P,2025-08-23 21:50:29,2025-08-23,CLI-UWPSMKLGJ4HM,SES-LX46R5YRHOPZMOW70SEPRIIWLJGI,Logout,Authentication,Mobile Web,Android,Chrome,,/logout,Cerrar Sesión,logout,logout_btn,,,,192.0.2.49,México,Ciudad de México,True,,,,
