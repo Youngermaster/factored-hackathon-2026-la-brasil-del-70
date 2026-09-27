@@ -207,8 +207,8 @@ evidence:
   dispute: dispute
   credit: credit
   legend: normal, ambiguous, escalation
-  same: The same held-out cases for the baseline and the system
-  b0: "Baseline B0: a keyword menu, the same tools, no language model"
+  same: Same held-out cases, baseline and system
+  b0: "B0: a keyword menu, no language model"
   cases: held-out cases
   stress: Stress cases from the brief, held out
   f1: prompt injection
@@ -220,14 +220,15 @@ evidence:
   sys: system
   base: B0 baseline
   m_safe: safe automated resolution
-  m_attempted: automation attempted
+  attempted: attempted
+  missed: missed
+  unneeded: unneeded
   m_contain: containment
-  m_containNote: never reported alone as success
-  m_missed: missed escalations
-  m_unneeded: unneeded escalations
-  m_unsafe: unsafe outcomes, of all cases
-  gridH: Safe automated resolution, per workflow and language
-  gridNote: No aggregate is shown without these cells next to it. Small cells are labeled as small.
+  m_containNote: never reported alone
+  m_escal: escalations, missed and unneeded
+  m_unsafe: unsafe outcomes
+  gridH: Safe resolution, per workflow and language
+  gridNote: No aggregate without these cells.
   effH: Operating efficiency
   e_p50: latency p50
   e_p95: latency p95
@@ -238,7 +239,7 @@ evidence:
   r1: recall at 1, test split
   abst: abstention precision and recall
   p95: p95 latency, hybrid
-  retNote: test queries, team-written labels pending review
+  retNote: test queries, labels pending review
   cite: offline measurement  |  docs/evaluation/ (phase 14)
 
 close:
