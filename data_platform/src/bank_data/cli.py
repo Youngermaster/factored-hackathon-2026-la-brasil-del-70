@@ -179,6 +179,45 @@ def lineage(source: SourceOption = None, local_dir: LocalDirOption = None, outpu
 
 
 @app.command()
+def analysis(
+    source: SourceOption = None,
+    local_dir: LocalDirOption = None,
+    output_dir: Annotated[
+        Path | None, typer.Option("--output-dir", help="Where to write the reports and figures.")
+    ] = None,
+    labeling_dir: Annotated[
+        Path | None, typer.Option("--labeling-dir", help="Where to write and read the labeling files.")
+    ] = None,
+) -> None:
+    """Write the demand evidence, the pre-registered scores, the figures, and the labeling files."""
+    from bank_data.analysis.runner import AnalysisRun, run_analysis
+
+    try:
+        workspace = _workspace(source, local_dir)
+        organizer = workspace.source_kind == "s3"
+        run = AnalysisRun(
+            warehouse_db=workspace.dbt_target().warehouse_db,
+            output_dir=output_dir
+            or (REPOSITORY_ROOT / "docs" / "analysis" if organizer else workspace.warehouse_dir / "analysis"),
+            labeling_dir=labeling_dir
+            or (workspace.pipeline.bank_data_dir / "labeling" if organizer else workspace.warehouse_dir / "labeling"),
+            source=workspace.source_kind,
+            dataset_version=workspace.config.dataset.version,
+            generated_at=generated_now(),
+            git_sha=git_sha(),
+        )
+        outcome = run_analysis(run)
+    except DataPlatformError as error:
+        raise _fail(error) from None
+    for path in outcome.written:
+        typer.echo(f"wrote {_shown(path)}")
+    typer.echo(f"labeling file: {outcome.labeling_status}")
+    typer.echo("order: " + ", ".join(f"{name} {outcome.scores[name]:.1f}" for name in outcome.ranking))
+    for check in outcome.blocked:
+        typer.echo(f"stop condition fired: {check} (record it under Blocked in docs/PROGRESS.md)", err=True)
+
+
+@app.command()
 def sample(
     output: Annotated[Path, typer.Option("--output", help="Directory of the committed sample.")] = DEFAULT_SAMPLE_DIR,
     seed: SeedOption = DEFAULT_SAMPLE_SEED,

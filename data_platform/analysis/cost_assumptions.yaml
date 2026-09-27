@@ -1,0 +1,41 @@
+# Cost assumptions for the phase 04 cost baseline. EVERY VALUE IS AN ASSUMPTION, NOT A MEASUREMENT.
+# None of these figures comes from the organizer data or from a published source that the team verified.
+# They are stated team assumptions, derived as written below, so the cost-per-resolution arithmetic can be
+# reproduced and challenged. Replace them with sourced figures (and set verified: true) before any cost or
+# savings number is presented as more than an illustration. Cost figures never enter the workflow score.
+version: 1
+currency: USD
+countries:
+  # Customer country codes as served by silver (MX, CO, AR).
+  MX:
+    loaded_cost_per_handled_minute: 0.18
+    assumption: true
+    verified: false
+    source: >-
+      Team assumption. Fully loaded monthly cost of one contact-center seat (salary, statutory benefits,
+      facilities, technology, supervision) taken as 1,300 USD, divided by 7,200 handled minutes a month
+      (160 paid hours at 75% occupancy): 1,300 / 7,200 = 0.18 USD per handled minute.
+  CO:
+    loaded_cost_per_handled_minute: 0.14
+    assumption: true
+    verified: false
+    source: >-
+      Team assumption. Fully loaded monthly seat cost taken as 1,000 USD, over 7,200 handled minutes a
+      month: 1,000 / 7,200 = 0.14 USD per handled minute.
+  AR:
+    loaded_cost_per_handled_minute: 0.16
+    assumption: true
+    verified: false
+    source: >-
+      Team assumption. Fully loaded monthly seat cost taken as 1,150 USD, over 7,200 handled minutes a
+      month: 1,150 / 7,200 = 0.16 USD per handled minute. The peso's volatility makes this the least stable
+      of the three.
+after_call_work_factor:
+  value: 1.15
+  assumption: true
+  verified: false
+  source: >-
+    Team assumption. duration_seconds measures the conversation only; wrap-up work after a contact is taken
+    as 15% of handle time. Applied as a multiplier on every handled minute.
+# Cost figures are also reported at these multiples of the assumed loaded cost.
+sensitivity_multipliers: [0.5, 1.0, 1.5]

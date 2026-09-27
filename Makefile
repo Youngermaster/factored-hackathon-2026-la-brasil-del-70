@@ -21,7 +21,7 @@ SAMPLE_CUSTOMERS ?= 2000
 BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
-	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen
+	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -90,6 +90,9 @@ data-sample: ## Regenerate the committed, bounded, pseudonymized sample in data_
 
 data-report: ## Write the data-quality report (docs/data/quality-report.md for the s3 source)
 	$(BANK_DATA) report $(SOURCE_FLAG)
+
+analysis: ## Demand evidence, pre-registered scores, figures, and labeling files (docs/analysis for the s3 source)
+	$(BANK_DATA) analysis $(SOURCE_FLAG)
 
 lineage: ## Run dbt docs generate and write the Mermaid lineage (docs/data/lineage.md for the s3 source)
 	$(BANK_DATA) lineage $(SOURCE_FLAG)
