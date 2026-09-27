@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: statement_request
+seeds:
+  es-MX:
+    - "Quiero mi estado de cuenta del mes pasado"
+    - "Hola, ¿me pueden mandar mis movimientos de la tarjeta de los últimos tres meses?"
+    - "estado de cuenta tarjeta de crédito"
+    - "Necesito los movimientos de mi cuenta desde {date} para comprobar unos gastos"
+    - "Porfa, envíenme el estado de cuenta de la tarjeta terminación {last4}"
+    - "¿Me pasan un resumen de lo que he gastado este mes?"
+    - "Para mi declaración necesito los estados de cuenta del año"
+    - "Oye, ¿me das el detalle de movimientos de mi cuenta de nómina de marzo?"
+  es-CO:
+    - "Regáleme el extracto del mes pasado"
+    - "Buenos días, necesito los movimientos de la cuenta de ahorros de este trimestre"
+    - "Me colabora enviándome el extracto de la tarjeta de crédito"
+    - "Quiero ver todas las transacciones de la tarjeta que termina en {last4} en abril"
+    - "extracto cuenta de ahorros"
+    - "¿Me pueden sacar un reporte de los movimientos desde {date}?"
+    - "Sumercé, necesito el histórico de mi cuenta para presentarlo en la declaración de renta"
+    - "Mándeme el detalle de lo que gasté en la tarjeta la última quincena"
+  es-AR:
+    - "Pasame el resumen de la tarjeta del mes pasado"
+    - "Hola, necesito los movimientos de la caja de ahorro de los últimos 60 días"
+    - "resumen de cuenta"
+    - "¿Me mandás el resumen de la tarjeta terminada en {last4}?"
+    - "Quiero ver en qué se me fue la plata este mes, ¿tenés el detalle de consumos?"
+    - "Che, necesito un listado de movimientos desde {date}"
+    - "Para el contador necesito los resúmenes del año pasado"
+    - "Decime todos los movimientos de la cuenta sueldo de junio"
+  pt-BR:
+    - "Quero o extrato do mês passado"
+    - "Oi, podem me mandar a fatura do cartão de março?"
+    - "extrato da conta corrente"
+    - "Preciso das movimentações da conta desde {date}"
+    - "Me envia o extrato do cartão final {last4}, por favor"
+    - "Queria ver tudo que gastei no cartão nos últimos 90 dias"
+    - "Pro imposto de renda preciso do extrato do ano inteiro"
+    - "Boa tarde, dá pra me passar um resumo das transações da poupança?"

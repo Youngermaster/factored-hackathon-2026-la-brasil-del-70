@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: credit_product_info
+seeds:
+  es-MX:
+    - "¿Qué tipos de préstamos tienen?"
+    - "Hola, quiero información sobre {product}"
+    - "¿Qué tasa de interés manejan en {product}?"
+    - "¿A cuántos meses me pueden prestar en un crédito personal?"
+    - "¿Cuáles son los requisitos para sacar una tarjeta de crédito con ustedes?"
+    - "Oigan, ¿tienen créditos para carro? ¿Cómo funcionan?"
+    - "¿Cuál es el monto máximo que prestan en {product}?"
+    - "Solo estoy viendo opciones, ¿qué créditos ofrecen y qué comisiones tienen?"
+  es-CO:
+    - "Buenas tardes, ¿qué créditos manejan?"
+    - "Me regala información de las condiciones de {product}"
+    - "¿Cuál es la tasa efectiva anual del crédito de libre inversión?"
+    - "¿Qué plazos tienen para {product}?"
+    - "¿Qué papeles piden para un crédito de vivienda?"
+    - "Quisiera conocer los beneficios de sus tarjetas de crédito"
+    - "¿Hasta cuánta plata prestan en un crédito de libranza?"
+    - "No voy a pedir nada todavía, solo quiero saber cómo es lo de {product}"
+  es-AR:
+    - "¿Qué préstamos tienen disponibles?"
+    - "Hola, ¿me pasás info sobre {product}?"
+    - "¿Qué tasa tienen los préstamos personales?"
+    - "¿En cuántas cuotas se puede sacar {product}?"
+    - "¿Qué requisitos piden para la tarjeta de crédito?"
+    - "Che, ¿los préstamos son a tasa fija o variable?"
+    - "¿Hasta cuánto te dan con {product}?"
+    - "Estoy averiguando, ¿qué opciones de crédito hipotecario tienen?"
+  pt-BR:
+    - "Quais tipos de empréstimo vocês oferecem?"
+    - "Oi, queria informações sobre {product}"
+    - "Qual é a taxa de juros de {product}?"
+    - "Em quantas parcelas dá pra pagar o empréstimo pessoal?"
+    - "Quais são os requisitos pra ter um cartão de crédito com vocês?"
+    - "Vocês têm financiamento de carro? Como funciona?"
+    - "Qual o valor máximo liberado em {product}?"
+    - "Só tô pesquisando, quais linhas de crédito existem e quanto custam?"

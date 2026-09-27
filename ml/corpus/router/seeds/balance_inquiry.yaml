@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: balance_inquiry
+seeds:
+  es-MX:
+    - "¿Cuánto tengo en mi cuenta?"
+    - "saldo tarjeta"
+    - "Hola, buenas tardes, ¿me pueden decir mi saldo disponible?"
+    - "¿Cuánto crédito me queda en la tarjeta terminación {last4}?"
+    - "Quiero saber cuánta lana tengo en la cuenta de nómina antes de hacer una compra"
+    - "¿Me alcanza para gastar {amount} con lo que tengo en débito?"
+    - "Porfa, ¿cuánto debo ahorita en mi tarjeta de crédito?"
+    - "Consultar saldo de mi cuenta de ahorro"
+  es-CO:
+    - "¿Cuánta plata tengo disponible?"
+    - "Buenas, regáleme el saldo de la cuenta de ahorros"
+    - "¿Cuál es el cupo disponible de mi tarjeta de crédito?"
+    - "Me colabora consultando el saldo de la tarjeta que termina en {last4}"
+    - "Quiero saber cuánto me queda en la cuenta antes del pago de la quincena"
+    - "saldo disponible"
+    - "Sumercé, ¿cuánto tengo en la cuenta corriente?"
+    - "No necesito el extracto, solo el saldo actual"
+  es-AR:
+    - "¿Cuánta guita me queda en la caja de ahorro?"
+    - "Hola, decime el saldo de la cuenta"
+    - "¿Cuánto disponible tengo en la tarjeta de crédito para compras?"
+    - "Che, ¿cuánto tengo en la cuenta sueldo?"
+    - "Quiero saber el saldo de la tarjeta terminada en {last4}"
+    - "Antes de cobrar el laburo quiero ver cuánta plata tengo"
+    - "saldo caja de ahorro en pesos"
+    - "¿Tengo saldo suficiente para una compra de {amount}?"
+  pt-BR:
+    - "Qual é o meu saldo?"
+    - "saldo da conta corrente"
+    - "Oi, quanto tenho disponível na conta?"
+    - "Quanto de limite ainda tenho no cartão de crédito?"
+    - "Queria ver o saldo do cartão final {last4}"
+    - "Tô querendo saber quanta grana sobrou na poupança"
+    - "Boa noite, podem me informar o saldo atual, por favor?"
+    - "Quero conferir se tenho saldo pra uma compra de {amount}"

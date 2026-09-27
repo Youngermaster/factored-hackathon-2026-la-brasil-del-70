@@ -22,8 +22,6 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-from pydantic import JsonValue
-
 from bank_agent.domain.errors import ModelArtifactIntegrityError, ModelArtifactNotFoundError
 from bank_agent.domain.intelligence import ModelComponent, ModelRef, ResolvedArtifact
 
@@ -145,7 +143,7 @@ class FilesystemModelStore:
         component, short = split_name(name)
         return self._root / component.value / short
 
-    def register(self, name: str, artifact: Mapping[str, Any], metadata: Mapping[str, JsonValue]) -> ResolvedArtifact:
+    def register(self, name: str, artifact: Mapping[str, Any], metadata: Mapping[str, Any]) -> ResolvedArtifact:
         """Store ``artifact`` under its content version (idempotent) and return it resolved."""
         payload = canonical_json(artifact)
         sha = digest(payload)
@@ -160,16 +158,23 @@ class FilesystemModelStore:
         path = self._model_dir(name) / "aliases" / f"{alias}.json"
         return _read_json(path) if path.is_file() else None
 
-    def set_alias(self, name: str, alias: str, version: str, record: Mapping[str, JsonValue]) -> None:
+    def set_alias(self, name: str, alias: str, version: str, record: Mapping[str, Any]) -> None:
         """Point ``alias`` at an existing ``version`` and append the move to the promotion history."""
         if alias not in ALIASES:
             raise ModelArtifactNotFoundError(f"unknown alias {alias!r}; use one of {', '.join(ALIASES)}")
         self.registry.resolve(name, version)
         entry = {"alias": alias, "version": version, **dict(record)}
-        model_dir = self._model_dir(name)
-        _atomic_write(model_dir / "aliases" / f"{alias}.json", json.dumps(entry, indent=2, sort_keys=True).encode())
-        with (model_dir / PROMOTIONS_FILE).open("a", encoding="utf-8") as stream:
-            stream.write(json.dumps(entry, sort_keys=True) + "\n")
+        _atomic_write(
+            self._model_dir(name) / "aliases" / f"{alias}.json", json.dumps(entry, indent=2, sort_keys=True).encode()
+        )
+        self.log_decision(name, entry)
+
+    def log_decision(self, name: str, entry: Mapping[str, Any]) -> None:
+        """Append ``entry`` to the promotion history (alias moves and refused promotions alike)."""
+        path = self._model_dir(name) / PROMOTIONS_FILE
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(dict(entry), sort_keys=True) + "\n")
 
     def history(self, name: str) -> list[dict[str, Any]]:
         path = self._model_dir(name) / PROMOTIONS_FILE

@@ -1,0 +1,40 @@
+# Team-authored router seed utterances (phase 10a). Synthetic text written by the team; not organizer data.
+# pt-BR seeds are pending native review.
+intent: human_request
+seeds:
+  es-MX:
+    - "Quiero hablar con una persona"
+    - "¿Me pueden comunicar con un asesor, porfa?"
+    - "Hola, prefiero que me atienda un humano"
+    - "No me estás entendiendo, pásame con alguien de verdad"
+    - "ejecutivo"
+    - "¿Hay algún agente disponible ahorita?"
+    - "Ya me cansé del bot, quiero un asesor"
+    - "Buenas tardes, necesito atención personalizada con un ejecutivo, por favor"
+  es-CO:
+    - "Me comunica con un asesor, por favor"
+    - "Quiero hablar con alguien del banco"
+    - "Regáleme un agente humano"
+    - "Sumercé, ¿me puede pasar con una persona?"
+    - "asesor"
+    - "Esto no me sirve, necesito que me atienda un funcionario"
+    - "Buenos días, ¿hay forma de hablar con un asesor en línea?"
+    - "Prefiero explicarle esto a una persona real"
+  es-AR:
+    - "Quiero hablar con un operador"
+    - "Che, pasame con una persona"
+    - "¿Me atiende alguien humano?"
+    - "No quiero seguir con el bot, derivame con un representante"
+    - "operador por favor"
+    - "Hola, ¿puedo hablar con un asesor de carne y hueso?"
+    - "Necesito que me atienda alguien del banco, esto es complicado"
+    - "Decime cómo hago para hablar con una persona"
+  pt-BR:
+    - "Quero falar com um atendente"
+    - "Me transfere pra um humano, por favor"
+    - "Oi, tem alguém de verdade aí?"
+    - "atendente"
+    - "Não tô conseguindo resolver com o robô, quero falar com uma pessoa"
+    - "Posso falar com um gerente?"
+    - "Preciso de atendimento humano"
+    - "Boa tarde, gostaria de ser atendido por um especialista"
