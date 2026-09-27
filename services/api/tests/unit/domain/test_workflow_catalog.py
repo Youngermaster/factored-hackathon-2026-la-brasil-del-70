@@ -21,6 +21,7 @@ def descriptor(workflow: WorkflowId = WorkflowId.DISPUTE, **overrides: Any) -> W
         "version": 1,
         "intents": [Intent.DISPUTE_NEW],
         "entry_state": "START",
+        "states": ["START", "ESCALATE"],
         "clause_families": [ClauseFamily.DSP],
     }
     return WorkflowDescriptor.model_validate({**fields, **overrides})
@@ -34,6 +35,22 @@ def test_every_intent_is_cross_workflow_or_owned_by_exactly_one_workflow() -> No
             assert owners == [], intent
         else:
             assert len(owners) == 1, intent
+
+
+def test_the_entry_state_must_be_one_of_the_states() -> None:
+    with pytest.raises(ValidationError, match="entry state"):
+        descriptor(states=["ESCALATE"])
+
+
+def test_states_must_not_repeat() -> None:
+    with pytest.raises(ValidationError, match="states must not repeat"):
+        descriptor(states=["START", "START"])
+
+
+def test_every_workflow_starts_at_start_and_can_escalate() -> None:
+    for item in WORKFLOW_CATALOG.descriptors:
+        assert item.states[0] == item.entry_state == "START"
+        assert "ESCALATE" in item.states
 
 
 def test_the_catalog_names_the_four_workflows() -> None:

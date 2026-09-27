@@ -165,6 +165,11 @@ def mutated(path: str, old: str, new: str) -> dict[str, str]:
         (mutated("clauses/acc/ACC-ALL-1.es.md", "ACC.as_of_disclosed]", "ACC.nonexistent]"), "unregistered rule"),
         (mutated("matrix.yaml", "credit: [CONFIRM_APPLICATION", "dispute: [CONFIRM_APPLICATION"), "does not own"),
         (mutated("bindings.yaml", "[ACC-ALL-1, ACC-ALL-2, ACC-ALL-3]", "[ACC-ALL-9]"), "unknown clause"),
+        (
+            mutated("bindings.yaml", "    ANSWER_CASE_STATUS:", "    RETIRED_STATUS:"),
+            "no binding for its state ANSWER_CASE_STATUS",
+        ),
+        (mutated("bindings.yaml", "    ANSWER_CASE_STATUS:", "    RETIRED_STATUS:"), "has no state RETIRED_STATUS"),
         (mutated("clauses/elg/ELG-AR-1.2.es.md", "min_credit_score: 650", "min_credit_score: yes"), "of type int"),
         ({k: v for k, v in FILES.items() if k != "clauses/esc/ESC-AR-2.en.md"}, "no en twin"),
     ],

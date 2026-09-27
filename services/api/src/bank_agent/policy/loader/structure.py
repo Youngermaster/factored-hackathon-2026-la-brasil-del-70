@@ -44,7 +44,7 @@ def parse_info(files: Mapping[str, str], problems: PackProblems) -> PackInfo | N
 
 
 def parse_bindings(files: Mapping[str, str], known: set[str], problems: PackProblems) -> Bindings | None:
-    """Parse the bindings; every workflow, its entry state, and every resolved clause id must exist."""
+    """Parse the bindings: exactly the registered states of every workflow, and every resolved clause id exists."""
     if BINDINGS_PATH not in files:
         problems.add(BINDINGS_PATH, "missing")
         return None
@@ -56,9 +56,12 @@ def parse_bindings(files: Mapping[str, str], known: set[str], problems: PackProb
         if states is None:
             problems.add(BINDINGS_PATH, f"workflow {descriptor.id} has no bindings")
             continue
-        if descriptor.entry_state not in states:
-            problems.add(BINDINGS_PATH, f"workflow {descriptor.id} has no binding for its entry state")
+        for state in descriptor.states:
+            if state not in states:
+                problems.add(BINDINGS_PATH, f"workflow {descriptor.id} has no binding for its state {state}")
         for state in states:
+            if state not in descriptor.states:
+                problems.add(BINDINGS_PATH, f"workflow {descriptor.id} has no state {state}")
             for country in Country:
                 for clause_id in bindings.clause_ids(descriptor.id, state, country):
                     if clause_id not in known:

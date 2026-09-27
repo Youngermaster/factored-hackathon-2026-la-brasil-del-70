@@ -35,6 +35,8 @@ class WorkflowDescriptor(DomainModel):
     version: PositiveInt
     intents: Annotated[tuple[Intent, ...], Field(min_length=1)]
     entry_state: StateName
+    states: Annotated[tuple[StateName, ...], Field(min_length=1)]
+    """The canonical state names of the workflow's state machine; ``policies/bindings.yaml`` binds each one."""
     clause_families: Annotated[tuple[ClauseFamily, ...], Field(min_length=1)]
     write_actions: tuple[ActionKind, ...] = ()
     escalation_only_intents: tuple[Intent, ...] = ()
@@ -43,12 +45,15 @@ class WorkflowDescriptor(DomainModel):
     def _validate(self) -> Self:
         for name, values in (
             ("intents", self.intents),
+            ("states", self.states),
             ("clause_families", self.clause_families),
             ("write_actions", self.write_actions),
             ("escalation_only_intents", self.escalation_only_intents),
         ):
             if len(set(values)) != len(values):
                 raise ValueError(f"{name} must not repeat a value")
+        if self.entry_state not in self.states:
+            raise ValueError("the entry state must be one of the workflow's states")
         if CROSS_WORKFLOW_INTENTS & set(self.intents):
             raise ValueError("a workflow cannot own a cross-workflow intent")
         if not set(self.escalation_only_intents) <= set(self.intents):
@@ -103,6 +108,14 @@ WORKFLOW_CATALOG = WorkflowCatalog(
             version=1,
             intents=(Intent.BALANCE_INQUIRY, Intent.PAYMENT_STATUS, Intent.STATEMENT_REQUEST),
             entry_state="START",
+            states=(
+                "START",
+                "IDENTIFY_PRODUCT",
+                "ANSWER_BALANCE",
+                "ANSWER_PAYMENT_STATUS",
+                "ANSWER_STATEMENT",
+                "ESCALATE",
+            ),
             clause_families=(*_COMMON_FAMILIES, ClauseFamily.ACC, ClauseFamily.ESC),
         ),
         WorkflowDescriptor(
@@ -115,6 +128,15 @@ WORKFLOW_CATALOG = WorkflowCatalog(
                 Intent.CARD_REPLACEMENT_REQUEST,
             ),
             entry_state="START",
+            states=(
+                "START",
+                "IDENTIFY_CARD",
+                "ANSWER_CARD_STATUS",
+                "CONFIRM_BLOCK",
+                "EXECUTE_BLOCK",
+                "CARD_REQUEST_HANDOFF",
+                "ESCALATE",
+            ),
             clause_families=(*_COMMON_FAMILIES, ClauseFamily.CRD, ClauseFamily.ESC),
             write_actions=(ActionKind.BLOCK_CARD,),
             escalation_only_intents=(Intent.CARD_UNBLOCK_REQUEST, Intent.CARD_REPLACEMENT_REQUEST),
@@ -124,6 +146,17 @@ WORKFLOW_CATALOG = WorkflowCatalog(
             version=1,
             intents=(Intent.DISPUTE_NEW, Intent.DISPUTE_STATUS),
             entry_state="START",
+            states=(
+                "START",
+                "LOCATE_TRANSACTION",
+                "COLLECT_DETAILS",
+                "CONFIRM_DISPUTE",
+                "CREATE_CASE",
+                "OFFER_CARD_BLOCK",
+                "EXECUTE_BLOCK",
+                "ANSWER_CASE_STATUS",
+                "ESCALATE",
+            ),
             clause_families=(*_COMMON_FAMILIES, ClauseFamily.DSP, ClauseFamily.CRD, ClauseFamily.ESC),
             write_actions=(ActionKind.CREATE_DISPUTE_CASE, ActionKind.BLOCK_CARD),
         ),
@@ -137,12 +170,23 @@ WORKFLOW_CATALOG = WorkflowCatalog(
                 Intent.CREDIT_APPLICATION_STATUS,
             ),
             entry_state="START",
+            states=(
+                "START",
+                "LIST_PRODUCTS",
+                "PRODUCT_DETAIL",
+                "COLLECT_APPLICATION",
+                "PRESENT_ELIGIBILITY",
+                "CONFIRM_APPLICATION",
+                "SUBMIT_APPLICATION",
+                "ANSWER_APPLICATION_STATUS",
+                "ESCALATE",
+            ),
             clause_families=(*_COMMON_FAMILIES, ClauseFamily.CRE, ClauseFamily.ELG, ClauseFamily.ESC),
             write_actions=(ActionKind.SUBMIT_CREDIT_APPLICATION,),
         ),
     )
 )
-"""The four supported workflows, version 1 each. Phase 09 may change entry states with its state machines."""
+"""The four supported workflows, version 1 each. Phase 09 builds its state machines from ``states``."""
 
 
 class CardActionHandlingKind(StrEnum):
