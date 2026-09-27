@@ -16,6 +16,8 @@ Versioned prompt files for every language model call. Code references a prompt b
 | `detect_escalation_signals@1` | `EscalationSignals` | Legal or regulator mention, distress, a request for a human, third-party admission |
 | `phrase_response@1` | plain text | The customer-facing reply in Spanish or natural Brazilian Portuguese, from given facts and clause texts only |
 | `summarize_for_handoff@1` | `HandoffSummaryDraft` | One paragraph for the agent, citing numbered verified facts; re-checked by the grounding verifier |
+| `paraphrase_router_seed@1` | `UtteranceParaphrases` | Offline only (`bank-ml router paraphrase --purpose train`): paraphrases of team-authored train seeds for router training |
+| `paraphrase_router_eval@1` | `UtteranceParaphrases` | Offline only (`--purpose eval`): rewrites of held-out test seeds for the paraphrase robustness set; a different prompt, so evaluation text never comes from the prompt that produced training text |
 
 The output models live in `bank_agent/domain/llm_outputs.py`. Extraction fields have no defaults, so the model must write `null` explicitly for anything the customer did not say.
 

@@ -19,6 +19,8 @@ EXPECTED_PROMPTS = {
     "detect_escalation_signals@1",
     "phrase_response@1",
     "summarize_for_handoff@1",
+    "paraphrase_router_seed@1",
+    "paraphrase_router_eval@1",
 }
 DISPUTE = PromptRef.model_validate("extract_dispute_slots@1")
 PHRASE = PromptRef.model_validate("phrase_response@1")

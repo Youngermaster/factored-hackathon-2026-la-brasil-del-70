@@ -192,6 +192,16 @@ class HandoffSummaryDraft(DomainModel):
     cited_fact_ids: Annotated[tuple[FactId, ...], Field(min_length=1, max_length=20)]
 
 
+ParaphraseText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=2, max_length=300)]
+
+
+class UtteranceParaphrases(DomainModel):
+    """``paraphrase_router_seed`` and ``paraphrase_router_eval``: rewrites of one team-authored router seed with
+    the same goal, used offline by ``bank-ml`` only (never at runtime and never with customer text)."""
+
+    paraphrases: Annotated[tuple[ParaphraseText, ...], Field(min_length=1, max_length=5)]
+
+
 OUTPUT_MODELS: dict[str, type[BaseModel]] = {
     model.__name__: model
     for model in (
@@ -202,6 +212,7 @@ OUTPUT_MODELS: dict[str, type[BaseModel]] = {
         IntentClassification,
         EscalationSignals,
         HandoffSummaryDraft,
+        UtteranceParaphrases,
     )
 }
 """Every structured output a prompt may name, by class name."""
