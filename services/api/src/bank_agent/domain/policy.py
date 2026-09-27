@@ -17,7 +17,7 @@ from bank_agent.domain.actions import ActionKind
 from bank_agent.domain.base import DomainModel
 from bank_agent.domain.decision import ClauseId, ClauseRef, ParamValue, RuleId
 from bank_agent.domain.locale import Language
-from bank_agent.domain.workflow import StateName
+from bank_agent.domain.workflow import StateName, WorkflowId
 
 
 class ClauseFamily(StrEnum):
@@ -86,10 +86,27 @@ class PolicyClause(DomainModel):
 
 
 class ActionRequirement(DomainModel):
-    """One row of ``policies/matrix.yaml``."""
+    """One row of ``policies/matrix.yaml``.
+
+    ``allowed_states`` maps each workflow that may perform the action to the states it may perform it in.
+    State names repeat across workflows (every workflow starts at ``START``), so a state is only meaningful
+    together with its workflow.
+    """
 
     action: ActionKind
     requires_confirmation: bool
     required_auth_level: AuthLevel
     requires_step_up: bool
-    allowed_states: tuple[StateName, ...]
+    allowed_states: Annotated[dict[WorkflowId, tuple[StateName, ...]], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if any(not states for states in self.allowed_states.values()):
+            raise ValueError("every allowed workflow names at least one state")
+        if self.requires_step_up and not self.requires_confirmation:
+            raise ValueError("an action that needs step-up also needs the customer's confirmation")
+        return self
+
+    def allows(self, workflow: WorkflowId, state: str) -> bool:
+        """True when ``workflow`` may perform the action in ``state``."""
+        return state in self.allowed_states.get(workflow, ())
