@@ -35,3 +35,11 @@ The depth bar and the cut rule that manage the scoring risk:
 - Every later phase carries four times the vocabulary, fixtures, scenarios, and documentation; the per-workflow reporting makes a shallow workflow visible instead of hiding it in an aggregate.
 - The deviation from the brief's "depth over breadth" note is deliberate and recorded; if the depth bar cannot be met, the cut rule shrinks scope without shipping a shallow flow.
 - Entry states in the catalog are placeholders for phase 09, which may change them together with the state machines.
+
+## Follow-up decision (2026-09-27)
+
+- **Demo access:** Verify one fixed demo credential and bind its session to one fixed demo customer and synthetic dataset.
+- **Tuesday scope:** Automate account inquiry only. Card support, disputes, and credit invoke the escalation tool; a mock human service agent joins the same chat and sends a randomized, clearly labeled demo response.
+- **Assistant profile:** Let the user change the assistant's name and choose another persisted PNG from the mock image service; show both in the chat header.
+- **Chat limits:** Persist a unique ID per chat, allow multiple chats, and limit the fixed demo customer to five new chats per rolling 60-minute window. Keep finalized chats readable.
+- **Later:** Add full customer identity and multiple profiles, plus a real human service agent who can join and exchange messages in the existing chat. See [ADR 0026](0026-live-agent-joins-escalated-conversation.md). The four-workflow scope and safe escalation requirements above remain unchanged.
