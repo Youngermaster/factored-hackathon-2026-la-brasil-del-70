@@ -22,7 +22,8 @@ SEED_CUSTOMERS ?= 200
 BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
-	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed
+	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed \
+	policy-lock policy-catalog
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -71,6 +72,12 @@ env-check: ## Report set or unset for every documented environment variable, nev
 
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
 	$(UV_RUN) python scripts/generate_contracts.py
+
+policy-lock: ## Rewrite policies/versions.lock.yaml after a clause change (refuses a change without a version bump)
+	$(UV_RUN) bank-agent policy lock
+
+policy-catalog: ## Regenerate docs/policy/catalog.md from the policy pack and the credit catalog
+	$(UV_RUN) bank-agent policy catalog
 
 data-download: ## Incremental, manifest-driven download of the organizer bucket into data/warehouse (needs S3 credentials)
 	$(BANK_DATA) ingest --source s3 --download-only

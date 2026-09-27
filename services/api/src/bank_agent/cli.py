@@ -1,14 +1,17 @@
 """Command-line entry point `bank-agent`."""
 
 import asyncio
+from pathlib import Path
 
 import typer
 
 from bank_agent import DISTRIBUTION_NAME, __version__
 from bank_agent.adapters.persistence.postgres import migrate
 from bank_agent.adapters.persistence.postgres.database import create_engine
+from bank_agent.adapters.policy.tasks import write_catalog, write_lock
 from bank_agent.bootstrap.persistence import owner_database_url
-from bank_agent.bootstrap.settings import load_settings
+from bank_agent.bootstrap.settings import DEFAULT_POLICY_DIR, load_settings
+from bank_agent.domain.errors import PolicyPackInvalidError
 
 app = typer.Typer(
     name="bank-agent",
@@ -50,3 +53,30 @@ def db_upgrade() -> None:
             await engine.dispose()
 
     typer.echo(f"schema at revision {asyncio.run(_run())}")
+
+
+policy_app = typer.Typer(help="Synthetic policy pack commands (they never read the environment).", no_args_is_help=True)
+app.add_typer(policy_app, name="policy")
+DEFAULT_CATALOG_PAGE = DEFAULT_POLICY_DIR.parent / "docs" / "policy" / "catalog.md"
+
+
+@policy_app.command("lock")
+def policy_lock(policy_dir: Path = DEFAULT_POLICY_DIR) -> None:
+    """Rewrite the version lock after a clause change; refuses a changed clause that kept its version."""
+    try:
+        target = write_lock(policy_dir)
+    except (ValueError, PolicyPackInvalidError) as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(2) from error
+    typer.echo(f"wrote {target.name}")
+
+
+@policy_app.command("catalog")
+def policy_catalog(policy_dir: Path = DEFAULT_POLICY_DIR, output: Path = DEFAULT_CATALOG_PAGE) -> None:
+    """Regenerate the policy catalog page (clauses, rules, bindings, matrix, credit catalog)."""
+    try:
+        target = write_catalog(policy_dir, output)
+    except PolicyPackInvalidError as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(2) from error
+    typer.echo(f"wrote {target.name}")
