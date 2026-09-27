@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 05, core banking, identity, and customer isolation: PostgreSQL schema with forced RLS, adapters passing every shared suite, the mock identity service and sessions, banking tools with read-back verification, the demo seed |
-| Next phase | 06, policy pack and kernel (`kit/prompts/06-policy.md`). It must also publish the synthetic credit catalog (with the product codes the seed uses) and replace the tool defaults phase 05 left (statement cap, dispute SLA); see `docs/BACKLOG.md` |
+| Last completed phase | 06, policy pack and kernel: a synthetic, trilingual policy pack (50 clauses in es, pt, en, jurisdiction-specific for MX, CO, AR), the pure evaluator with its rules, the explanation renderer, the synthetic eligibility service, the synthetic credit catalog, and the tool parameters from the pack |
+| Next phase | 07, grounding and retrieval (`kit/prompts/07-grounding-retrieval.md`). The bound lookup can use `PolicyRepository.get_bound` over the phase 06 pack; the workflow engine (phase 09) must build `PolicyFacts` and call the evaluator (`docs/BACKLOG.md`) |
 | Blocked | None |
 
-Pending human actions (none blocks phase 06):
+Pending human actions (none blocks phase 07):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -29,8 +29,94 @@ Pending human actions (none blocks phase 06):
 13. **Review the matplotlib footprint.** matplotlib 3.11.2 with pillow, fonttools, kiwisolver, contourpy, cycler, and pyparsing adds about 54 MB to the development environment (matplotlib 24 MB, fontTools 14 MB, PIL 13 MB), at the 50 MB guideline. It was added without asking because the phase prompt names it; it is a `bank-data` dependency only and never enters the API image.
 14. **Decide whether `docs/adr/0000-team-alignment-and-hackathon-strategy.md` belongs in the ADR index.** It was merged from the team repository during phase 05 (only its whitespace was changed so `make docs-check` passes). It is not listed in `docs/adr/README.md`, and parts of it (for example a ten-day deadline and a feature lock on day 1) are team statements the phase log does not record elsewhere.
 15. **Review the phase 05 security design before phase 11 exposes it**: `docs/security/identity-and-sessions.md`, `docs/security/data-isolation.md`, and ADRs 0008 to 0010. Identity lookups and one-time codes derive their keys from `SESSION_SECRET`, so rotating it requires `make seed` again.
+16. **Review the policy clauses for plausibility and bilingual quality before phase 09, workflow by workflow** (`policies/clauses/`, the rendered texts in `services/api/tests/integration/policy/golden/`, and `docs/policy/catalog.md`). A Spanish speaker and a Portuguese speaker review each workflow's clauses (account_inquiry, card_support, dispute, credit, and the common SCOPE, AUTH, PRV, ESC, INF clauses); record the reviewers and the date here. Reviewers: pending. Date: pending. This is not a blocker for phase 07.
+17. **Review the synthetic eligibility thresholds and the credit catalog separately** (`docs/policy/eligibility.md`, `policies/clauses/elg/`, `policies/credit/`): score minimums, payment-to-income maximums, review thresholds, acceptable bands, cut points, and product ranges. Record the reviewers and the date here. Reviewers: pending. Date: pending.
+18. **Confirm step-up on every write.** Phase 06 follows CLAUDE.md section 7 ("Write actions require step-up"), so opening a dispute case and recording a credit application now need a step-up code, like the card block. CLAUDE.md section 1 lists step-up only for the card block; if the team prefers the section 1 reading, set `requires_step_up: false` for those rows in `policies/matrix.yaml` (the tools follow the matrix).
 
 ## Phase log
+
+### Phase 06: policy pack and deterministic policy kernel (2026-09-27)
+
+Plan: `docs/plans/phase-06.md`. The prompt asks for plan mode; the human delegated plan approval to the orchestrator, which pre-approved a plan that follows the prompt, CLAUDE.md, and the existing contracts. Every open question was decided by the session under that pre-approval and is recorded in the plan.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `324dd72` | The plan: pack format, clause families, rule list, precedence, decided open questions |
+| `7c5a6ed` | `bank_agent/policy`: the in-memory `PolicyPack` (implements `PolicyRepository`), the pure loader (schema, parity, placeholders, version lock, bindings, matrix, rule parameters, messages), `EvaluationRequest` and `PolicyFacts`, the rule registry and 47 rules (36 conversation, 11 ELG), the evaluator, the explanation renderer, the approval lexicon, `SyntheticEligibilityService` and its renderer; `ActionRequirement.allowed_states` keyed by workflow |
+| `a3b003b` | The synthetic pack: 50 clauses in es, pt, and en (150 files), `pack.yaml`, `matrix.yaml`, `bindings.yaml`, the eligibility messages, `versions.lock.yaml` |
+| `1e64f4b` | The synthetic credit catalog (9 products) and the filesystem adapters (`FilesystemPolicyRepository`, `FilesystemCreditCatalog`) |
+| `b93846e` | Unit tests over an in-memory fixture pack, with Hypothesis properties |
+| `f6fe917` | Composition root: `PolicySettings` (`POLICY_DIR`, `POLICY_DATA_AS_OF`), `bootstrap/policy.py`, `ToolPolicy` from the pack, step-up on every write in the tools, the seeded case's SLA from the pack |
+| `034b18c` | `bank-agent policy lock` and `bank-agent policy catalog` (`make policy-lock`, `make policy-catalog`), the generated `docs/policy/catalog.md`, the real-pack integration tests |
+| `76390e9` | The situation table, golden es and pt texts, the synthetic service and filesystem catalog in the contract suites |
+| `ada2bbb` | `policies/README.md`, the policy package README, `docs/workflows/policy-evaluation.md`, `docs/policy/eligibility.md`, ADR 0011, index and README updates, BACKLOG |
+| This commit | The regenerated catalog page and this entry |
+
+The human's commit `d204363` (ADR 0000 citation markers) landed on `main` during the phase; it is not part of the phase.
+
+#### Review summary
+
+- **Pack.** One file per clause per language, front matter validated by `ClauseMetadata` and, in the tests, by `contracts/schemas/policy_clause.v1.json`. Families SCOPE, AUTH, PRV, ACC, CRD, DSP, ESC, INF, CRE, ELG. Country-specific values: dispute window MX 90, CO 60, AR 30 days (counted to the data as-of date); resolution SLA MX 45, CO 15, AR 30 days; automatic intake limit 10,000 MXN, 2,000,000 COP, 600,000 ARS; handoff SLA MX 24, CO 24, AR 48 hours; rate disclosure basis CAT, EA, CFTEA; ELG thresholds per country and product (`docs/policy/eligibility.md`). Every file is `synthetic: true`, and `policies/README.md` states that nothing is a real regulation or any bank's terms.
+- **Kernel.** The rules that run are the bound rules of the clauses bound to the workflow state, so rules and explanations come from the same files; a rule's parameters and citations are the clauses of the customer's jurisdiction (or `ALL`) that bind it. Order AUTH, PRV, SCOPE, ACC, CRD, DSP, CRE, ESC. Precedence: authentication failures (deny before step-up), refuse, escalate, deny, step-up, abstain, clarify, then confirmation, then allow. No I/O, no clock; every window counts to `PolicyFacts.data_as_of`.
+- **Eligibility.** First match wins: a product without self-service eligibility, then a missing fact (`insufficient_data`), then a review trigger (`review_required`), then a failed hard rule (`not_eligible`), then `indicatively_eligible`. Labeled `eligibility:synthetic@<pack version>`; the estimate is an input; rendered texts carry the `CRE-ALL-1` disclaimer and are refused if they contain approval wording in any language.
+- **Catalog.** `{MX,CO,AR}-CC-CLASSIC`, `{MX,CO,AR}-PL-STANDARD` (the seeded codes), `MX-MG-FIXED`, `CO-MG-FIXED`, `AR-MG-UVA` (mortgages are information only), version `synthetic-catalog-2026.09.1`, with es, pt, and en display text; each self-service product lists exactly the ELG clauses the service applies.
+- **Versioning.** Clause versions only grow (`versions.lock.yaml`, checked at load; `make policy-lock` refuses a content change without a bump). The pack version (`pack-` plus 16 hex digits over every pack file but the README) is in every decision and assessment.
+
+#### Decisions
+
+- [ADR 0011](adr/0011-policy-as-data-and-pure-rule-functions.md): policy as data plus pure rule functions, with the synthetic eligibility service on the same kernel; OPA noted as a future adapter.
+- Every write requires confirmation and step-up (CLAUDE.md section 7), in the matrix and in the tools (pending action 18 asks the team to confirm).
+- Escalation outranks a policy denial, and refusal outranks escalation; authentication failures outrank everything.
+- Review outranks a failed hard rule in the eligibility mapping, so uncertainty reaches a person.
+- The loader parses text only; `adapters/policy/` reads the files.
+- The data as-of date is a setting (`POLICY_DATA_AS_OF`, default 2026-06-17, the snapshot date) passed to the kernel as a fact.
+- The borderline persona band (640 to 660) stays: it brackets the Argentine personal loan minimum of 650. A score near a threshold is not a separate review reason (the contracts have none).
+- Trust severities and tier thresholds stay in the domain (ADR 0005 allowed moving them; the team did not ask for it).
+- No dependency was added (PyYAML was already a runtime dependency; `jsonschema` is the existing dev dependency).
+
+Deviations from the prompt and plan, found during implementation:
+
+- `PolicyPack` itself implements `PolicyRepository`; the filesystem adapter wraps it (no separate `PackPolicyRepository`).
+- Rules beyond the minimum set: `SCOPE.action_allowed_in_state`, `ESC.tool_failure_exhausted`, `ESC.verification_mismatch`, `ELG.self_service_product`.
+- Income for eligibility is the profile's estimate, else the income the customer declares; a loan payment is the annuity at the product's maximum rate, a card payment a clause percentage of the limit.
+- Pack content tests read the repository, so they are integration tests; the rule tests use an in-memory fixture pack.
+- The eligibility text lists a reason once with every clause that cites it (the view repeats a reason when two rules report it).
+- Golden files regenerate with `UPDATE_POLICY_GOLDEN=1` (a `POLICY_` prefix would be cleared by the test settings isolation).
+
+#### How to verify
+
+```bash
+make check                                                              # needs Docker; never reads .env
+uv run pytest services/api/tests/unit/policy -q                         # rules, evaluator, properties, eligibility, loader parts
+uv run pytest services/api/tests/integration/policy -q                  # the real pack, the situation table, golden texts
+uv run pytest services/api/tests/contracts -q -k "catalog or eligibility"
+make policy-lock && make policy-catalog && git diff --stat              # only the catalog page header changes
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1,553 unit and 449 integration tests pass (1,387 and 208 before) |
+| Coverage gates | All 11 pass: policy 96.4% (no statements before), application 95.2%, adapters 98.0%, bootstrap 99.8%, domain 99.7%, `data_platform/src` 96.7% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 29 mermaid blocks in 250 files parse (the clause files count as Markdown) |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+
+#### Known limitations
+
+- The pack is synthetic and unreviewed by humans (pending actions 16 and 17); values are plausible, not real regulation, and the ELG thresholds are not calibrated to any portfolio.
+- The kernel has no caller yet: the workflow engine (phase 09) must build the facts from verified records and detectors, pass the data as-of date, and store decisions in execution records (BACKLOG). Detector quality bounds escalation quality.
+- State names are fixed in `bindings.yaml` before the phase 09 machines exist; a change is a data change caught by the tests.
+- With no risk estimator yet (phases 09 and 10), every self-service eligibility request ends in `review_required`.
+- Customer-facing Spanish in `ALL` clauses uses a neutral register; only the Argentine country clauses use voseo.
+
+#### Next phase
+
+Phase 07, grounding and retrieval (`kit/prompts/07-grounding-retrieval.md`): bound clause lookup over this pack by workflow, state, and verified jurisdiction, and open retrieval for informational questions. Pending actions 16 to 18 should be done before phase 09 wires the kernel into the workflows.
 
 ### Phase 05: mock core banking, identity, and customer isolation (2026-09-27)
 
