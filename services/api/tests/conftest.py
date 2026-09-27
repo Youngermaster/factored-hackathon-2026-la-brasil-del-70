@@ -16,6 +16,7 @@ _SETTINGS_PREFIXES = (
     "LLM_",
     "OTEL_",
     "POLICY_",
+    "RETRIEVAL_",
 )
 
 

@@ -24,6 +24,7 @@ def test_refuses_to_start_with_unsafe_production_settings(monkeypatch: pytest.Mo
 
 def test_production_hides_api_docs(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("RETRIEVAL_INDEX_SOURCE", "stored")
     for name in ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_ADMIN_PASSWORD", "POSTGRES_APP_PASSWORD"):
         monkeypatch.setenv(name, secrets.token_urlsafe(48))
 

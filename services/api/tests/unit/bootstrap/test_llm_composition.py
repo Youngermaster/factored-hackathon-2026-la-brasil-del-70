@@ -227,6 +227,7 @@ def test_production_refuses_content_capture_and_recording(
     for name in ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_ADMIN_PASSWORD", "POSTGRES_APP_PASSWORD"):
         monkeypatch.setenv(name, _key())
     monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("RETRIEVAL_INDEX_SOURCE", "stored")
     monkeypatch.setenv("LLM_PROVIDER", "cassette")
     monkeypatch.setenv(variable, value)
 

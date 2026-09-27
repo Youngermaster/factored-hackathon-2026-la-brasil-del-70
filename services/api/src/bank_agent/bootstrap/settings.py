@@ -16,6 +16,8 @@ from typing import Annotated, Literal
 from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
+from bank_agent.adapters.retrieval.embedding import DEFAULT_EMBEDDING_MODEL
+
 Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 LLMProvider = Literal["fake", "cassette", "litellm"]
@@ -52,6 +54,11 @@ DEFAULT_CASSETTE_DIR = _REPOSITORY_ROOT / "evals" / "cassettes"
 DEFAULT_POLICY_DIR = _REPOSITORY_ROOT / "policies"
 DEFAULT_DATA_AS_OF = date(2026, 6, 17)
 """The organizer snapshot date (``data_platform/config/sources.yml``), the end of the seeded data."""
+DEFAULT_INDEX_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "indexes"
+DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "embeddings"
+DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
+DEFAULT_THRESHOLD_BM25 = 3.0
+DEFAULT_THRESHOLD_DENSE = 0.80
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:
@@ -168,6 +175,49 @@ class PolicySettings(BaseSettings):
         return value
 
 
+RetrieverName = Literal["bm25", "dense", "hybrid"]
+IndexSource = Literal["build", "stored"]
+
+
+class RetrievalSettings(BaseSettings):
+    """Open retrieval for informational questions (``docs/evaluation/retrieval.md`` justifies the defaults).
+
+    ``index_source=build`` builds the BM25 index from the loaded pack at startup, so it matches by construction;
+    ``stored`` loads ``<index_dir>/<pack version>/`` and refuses a mismatch; production requires ``stored``.
+    ``dense`` and ``hybrid`` need the optional ``ml`` extra, which the API image never installs. The thresholds
+    were tuned on the development split of the relevance judgments; the hybrid retriever uses them as the
+    floors of its components.
+    """
+
+    model_config = _config("RETRIEVAL_")
+
+    retriever: RetrieverName = "bm25"
+    index_source: IndexSource = "build"
+    index_dir: Path = DEFAULT_INDEX_DIR
+    embedding_model: str = DEFAULT_EMBEDDING_MODEL
+    model_cache_dir: Path = DEFAULT_MODEL_CACHE_DIR
+    embedding_cache_dir: Path = DEFAULT_EMBEDDING_CACHE_DIR
+    rrf_k: int = Field(default=60, ge=0, le=1000)
+    threshold_bm25: float = Field(default=DEFAULT_THRESHOLD_BM25, ge=0)
+    threshold_dense: float = Field(default=DEFAULT_THRESHOLD_DENSE, ge=-1, le=1)
+    answer_k: int = Field(default=3, ge=1, le=20)
+
+    @field_validator(
+        "index_dir",
+        "model_cache_dir",
+        "embedding_cache_dir",
+        "embedding_model",
+        "threshold_bm25",
+        "threshold_dense",
+        mode="before",
+    )
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
+
+
 class ObservabilitySettings(BaseSettings):
     """OpenTelemetry export settings."""
 
@@ -188,6 +238,7 @@ class AppSettings:
         llm: LLMSettings,
         observability: ObservabilitySettings,
         policy: PolicySettings | None = None,
+        retrieval: RetrievalSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
@@ -195,6 +246,7 @@ class AppSettings:
         self.llm = llm
         self.observability = observability
         self.policy = policy if policy is not None else PolicySettings()
+        self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
 
     @property
     def is_production(self) -> bool:
@@ -244,6 +296,8 @@ def production_problems(settings: AppSettings) -> list[str]:
         problems.append("LLM_TRACE_CONTENT must be false in production")
     if settings.llm.provider == "cassette" and settings.llm.cassette_mode == "record":
         problems.append("LLM_CASSETTE_MODE=record is not allowed in production")
+    if settings.retrieval.index_source != "stored":
+        problems.append("RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:
@@ -263,6 +317,7 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         llm=LLMSettings(_env_file=env_file),
         observability=ObservabilitySettings(_env_file=env_file),
         policy=PolicySettings(_env_file=env_file),
+        retrieval=RetrievalSettings(_env_file=env_file),
     )
     problems = production_problems(settings)
     if problems:

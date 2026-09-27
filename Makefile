@@ -23,7 +23,7 @@ BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed \
-	policy-lock policy-catalog
+	policy-lock policy-catalog index eval-retrieval
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -78,6 +78,12 @@ policy-lock: ## Rewrite policies/versions.lock.yaml after a clause change (refus
 
 policy-catalog: ## Regenerate docs/policy/catalog.md from the policy pack and the credit catalog
 	$(UV_RUN) bank-agent policy catalog
+
+index: ## Build the retrieval index for the current pack under data/artifacts (DENSE=1 embeds too; needs the ml extra)
+	$(UV_RUN) bank-agent index build $(if $(DENSE),--dense,)
+
+eval-retrieval: ## Compare BM25, dense, and hybrid on the relevance judgments; writes docs/evaluation/retrieval.md
+	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) bank-eval retrieval
 
 data-download: ## Incremental, manifest-driven download of the organizer bucket into data/warehouse (needs S3 credentials)
 	$(BANK_DATA) ingest --source s3 --download-only

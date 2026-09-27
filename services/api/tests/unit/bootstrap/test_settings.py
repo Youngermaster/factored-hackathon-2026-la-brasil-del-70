@@ -16,7 +16,7 @@ def _strong_secret() -> str:
 @pytest.fixture
 def production_environment(monkeypatch: pytest.MonkeyPatch) -> dict[str, str]:
     """A complete, valid production environment with secrets generated for this test."""
-    values = {"APP_ENV": "production", "DEMO_MODE": "false"}
+    values = {"APP_ENV": "production", "DEMO_MODE": "false", "RETRIEVAL_INDEX_SOURCE": "stored"}
     values.update({name: _strong_secret() for name in SECRET_VARIABLES})
     for name, value in values.items():
         monkeypatch.setenv(name, value)
@@ -115,7 +115,23 @@ def test_production_reports_every_problem_at_once(monkeypatch: pytest.MonkeyPatc
     with pytest.raises(SettingsError) as raised:
         load_settings(env_file=None)
 
-    assert len(raised.value.problems) == 1 + len(SECRET_VARIABLES)
+    assert len(raised.value.problems) == 2 + len(SECRET_VARIABLES)
+    assert any(problem.startswith("RETRIEVAL_INDEX_SOURCE must be stored") for problem in raised.value.problems)
+
+
+def test_retrieval_defaults_and_production_rule(monkeypatch: pytest.MonkeyPatch) -> None:
+    settings = load_settings(env_file=None)
+    assert settings.retrieval.retriever == "bm25"
+    assert settings.retrieval.index_source == "build"
+    assert settings.retrieval.embedding_model == "intfloat/multilingual-e5-small"
+    assert settings.retrieval.index_dir.is_absolute()
+    monkeypatch.setenv("RETRIEVAL_INDEX_DIR", "")
+    monkeypatch.setenv("RETRIEVAL_THRESHOLD_BM25", "")
+    monkeypatch.setenv("RETRIEVAL_RETRIEVER", "hybrid")
+    reloaded = load_settings(env_file=None)
+    assert reloaded.retrieval.index_dir == settings.retrieval.index_dir
+    assert reloaded.retrieval.retriever == "hybrid"
+    assert reloaded.retrieval.threshold_bm25 == settings.retrieval.threshold_bm25
 
 
 def test_settings_error_never_contains_the_secret_value(

@@ -5,7 +5,9 @@ The container turns settings into wired services. The HTTP layer consumes it thr
 directly, and tests build it with their own settings. The language model gateway is built here from settings
 (``bootstrap/llm.py``); tests and the evaluation harness inject a base client through ``LlmOverrides``. Later
 phases add model clients here. Persistence, identity, and the banking tools come from ``bootstrap/persistence.py``;
-the policy pack, the synthetic credit catalog, and the eligibility service from ``bootstrap/policy.py``.
+the policy pack, the synthetic credit catalog, and the eligibility service from ``bootstrap/policy.py``; the bound
+clause lookup, open retrieval, and the grounding verifier from ``bootstrap/retrieval.py`` (tests and the evaluation
+harness may inject an embedder so dense retrieval runs without the optional ``ml`` extra).
 """
 
 from collections.abc import Sequence
@@ -15,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
 from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
+from bank_agent.adapters.retrieval.embedding import Embedder
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.system.ids import RandomIdGenerator
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
@@ -28,6 +31,7 @@ from bank_agent.bootstrap.persistence import (
     build_session_service,
 )
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
+from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.health import ReadinessCheck
@@ -60,6 +64,7 @@ class Container:
         telemetry: Telemetry | None = None,
         llm_overrides: LlmOverrides | None = None,
         ids: IdGenerator | None = None,
+        embedder: Embedder | None = None,
     ) -> None:
         self.settings = settings
         self._clock: Clock = clock if clock is not None else SystemClock()
@@ -84,6 +89,7 @@ class Container:
         self._persistence = build_persistence(self._engine)
         self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
         self._policy = build_policy(settings.policy, clock=self._clock, ids=self._ids)
+        self._grounding = build_grounding(settings.retrieval, self._policy.repository, embedder=embedder)
         self._banking_tools = build_banking_tools(
             self._persistence,
             clock=self._clock,
@@ -130,6 +136,11 @@ class Container:
     def policy(self) -> PolicyServices:
         """The policy pack, the synthetic catalog, the eligibility service, and the data as-of date."""
         return self._policy
+
+    @property
+    def grounding(self) -> GroundingServices:
+        """The bound clause lookup, informational retrieval with abstention, and the grounding verifier."""
+        return self._grounding
 
     @property
     def banking_tools(self) -> BankingTools:

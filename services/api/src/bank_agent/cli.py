@@ -9,9 +9,16 @@ from bank_agent import DISTRIBUTION_NAME, __version__
 from bank_agent.adapters.persistence.postgres import migrate
 from bank_agent.adapters.persistence.postgres.database import create_engine
 from bank_agent.adapters.policy.tasks import write_catalog, write_lock
+from bank_agent.adapters.retrieval.embedding import DEFAULT_EMBEDDING_MODEL
 from bank_agent.bootstrap.persistence import owner_database_url
-from bank_agent.bootstrap.settings import DEFAULT_POLICY_DIR, load_settings
-from bank_agent.domain.errors import PolicyPackInvalidError
+from bank_agent.bootstrap.settings import (
+    DEFAULT_EMBEDDING_CACHE_DIR,
+    DEFAULT_INDEX_DIR,
+    DEFAULT_MODEL_CACHE_DIR,
+    DEFAULT_POLICY_DIR,
+    load_settings,
+)
+from bank_agent.domain.errors import ConfigurationError, PolicyPackInvalidError
 
 app = typer.Typer(
     name="bank-agent",
@@ -80,3 +87,38 @@ def policy_catalog(policy_dir: Path = DEFAULT_POLICY_DIR, output: Path = DEFAULT
         typer.echo(str(error), err=True)
         raise typer.Exit(2) from error
     typer.echo(f"wrote {target.name}")
+
+
+index_app = typer.Typer(help="Retrieval index commands (they never read the environment).", no_args_is_help=True)
+app.add_typer(index_app, name="index")
+
+
+@index_app.command("build")
+def index_build(
+    policy_dir: Path = DEFAULT_POLICY_DIR,
+    output: Path = DEFAULT_INDEX_DIR,
+    dense: bool = typer.Option(False, help="Also embed every clause (needs the optional ml extra)."),
+    model: str = DEFAULT_EMBEDDING_MODEL,
+    model_cache: Path = DEFAULT_MODEL_CACHE_DIR,
+    embedding_cache: Path = DEFAULT_EMBEDDING_CACHE_DIR,
+) -> None:
+    """Build the open-retrieval index for the pack's current version under OUTPUT/<pack version>/."""
+    from bank_agent.adapters.policy.filesystem import FilesystemPolicyRepository
+    from bank_agent.adapters.retrieval.index_store import build_index, write_index
+    from bank_agent.bootstrap.retrieval import build_embedder
+
+    try:
+        repository = FilesystemPolicyRepository.from_directory(policy_dir)
+        embedder = (
+            build_embedder(model, model_cache_dir=model_cache, embedding_cache_dir=embedding_cache) if dense else None
+        )
+        index = build_index(repository, embedder=embedder)
+    except ConfigurationError as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(2) from error
+    directory = write_index(index, output)
+    manifest = index.manifest
+    typer.echo(
+        f"wrote {directory} ({manifest.document_count} documents, tokenizer {manifest.tokenizer}, "
+        f"dense {manifest.embedding_model or 'no'})"
+    )
