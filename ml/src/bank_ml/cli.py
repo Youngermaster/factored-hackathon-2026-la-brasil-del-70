@@ -3,6 +3,7 @@
 import typer
 
 from bank_ml import DISTRIBUTION_NAME, __version__
+from bank_ml.resolver.command import app as resolver_app
 from bank_ml.router.command import app as router_app
 
 app = typer.Typer(
@@ -12,6 +13,7 @@ app = typer.Typer(
     add_completion=False,
 )
 app.add_typer(router_app, name="router")
+app.add_typer(resolver_app, name="resolver")
 
 
 @app.callback()

@@ -1,9 +1,11 @@
 """``resolver:lgbm``: a LightGBM lambdarank model over the shared candidate features, evaluated in pure Python.
 
-Ranking: candidates that pass the evidence gate (``resolver_features.plausible``) are scored by the tree ensemble,
-the scores become per-query softmax probabilities, and candidates are ordered by score, then the most recent, then
-the id (the rules baseline's tie order). ``clear_winner`` is set when the top probability beats the runner-up (zero
-for a single plausible candidate) by the artifact's ``margin``, chosen on the dev split by ``bank-ml``. A descriptor
+Ranking: candidates that pass the evidence gate (``resolver_features.plausible``) are scored by the tree ensemble
+and ordered by score, then the most recent, then the id (the rules baseline's tie order). Scores become softmax
+probabilities over the candidates plus a "none of these" option with the artifact's ``null_score``, so a lone or
+weakly matching candidate does not look certain. ``clear_winner`` is set when the top probability beats both the
+runner-up and the none option by the artifact's ``margin``. ``bank-ml`` chooses ``null_score`` and ``margin`` on the
+dev split. A descriptor
 with no clue at all yields an empty ranking, so the workflow asks for more detail. The resolver never fetches data.
 """
 
@@ -43,6 +45,7 @@ class LgbmResolverArtifact(BaseModel):
     feature_names: tuple[str, ...]
     trees: Annotated[tuple[TreeNode, ...], Field(min_length=1)]
     margin: Annotated[float, Field(ge=0.0, le=1.0, allow_inf_nan=False)]
+    null_score: Annotated[float, Field(allow_inf_nan=False)]
 
     @model_validator(mode="after")
     def _features(self) -> Self:
@@ -74,6 +77,10 @@ class LgbmTransactionResolver:
     def margin(self) -> float:
         return self._artifact.margin
 
+    @property
+    def null_score(self) -> float:
+        return self._artifact.null_score
+
     def score_rows(self, rows: Sequence[Sequence[float]]) -> list[float]:
         return [sum(tree.evaluate(row) for tree in self._artifact.trees) for row in rows]
 
@@ -88,7 +95,8 @@ class LgbmTransactionResolver:
         if not kept:
             return TransactionResolution(ranked=(), model=self.model)
         scores = self.score_rows([row for _, row in kept])
-        probabilities = softmax(scores)
+        with_none = softmax([*scores, self._artifact.null_score])
+        probabilities, none = with_none[:-1], with_none[-1]
         order = sorted(
             range(len(kept)),
             key=lambda i: (-scores[i], -kept[i][0].occurred_at.timestamp(), kept[i][0].transaction_id),
@@ -97,7 +105,7 @@ class LgbmTransactionResolver:
             RankedCandidate(transaction_id=kept[i][0].transaction_id, score=round(probabilities[i], 6), rank=rank)
             for rank, i in enumerate(order, start=1)
         )
-        runner_up = ranked[1].score if len(ranked) > 1 else 0.0
+        runner_up = max(ranked[1].score if len(ranked) > 1 else 0.0, none)
         margin = round(ranked[0].score - runner_up, 6)
         winner: TransactionId | None = ranked[0].transaction_id if margin >= self._artifact.margin else None
         return TransactionResolution(ranked=ranked, margin=margin, clear_winner=winner, model=self.model)

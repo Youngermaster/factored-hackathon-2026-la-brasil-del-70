@@ -7,6 +7,8 @@ from bank_ml.router.evaluate import WORKFLOW_LABELS
 
 
 def ci(value: dict[str, float], digits: int = 3) -> str:
+    if value["estimate"] != value["estimate"]:  # NaN: no item in the cell
+        return "n/a"
     return f"{value['estimate']:.{digits}f} [{value['low']:.{digits}f}, {value['high']:.{digits}f}]"
 
 

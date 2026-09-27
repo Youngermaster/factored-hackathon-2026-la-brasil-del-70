@@ -131,7 +131,18 @@ def test_lgbm_resolver_ranks_plausible_candidates_with_a_margin(tmp_path: Path) 
     assert resolution.clear_winner == "T1"
     assert resolution.margin is not None
     assert resolution.margin >= resolver.margin
-    assert sum(candidate.score for candidate in resolution.ranked) == pytest.approx(1.0, abs=1e-5)
+    assert sum(candidate.score for candidate in resolution.ranked) < 1.0
+    assert resolver.null_score == -2.0
+
+
+def test_the_none_option_keeps_a_weak_lone_candidate_from_winning(tmp_path: Path) -> None:
+    cautious = publish(tmp_path, "resolver:lgbm", {**LGBM_ARTIFACT, "null_score": 5.0})
+    resolver = LgbmTransactionResolver.load(cautious)
+    lone = resolver.rank(described(amount=Decimal("1000")), [transaction("T1", amount="1000.00")], now=NOW)
+    assert [candidate.transaction_id for candidate in lone.ranked] == ["T1"]
+    assert lone.clear_winner is None
+    assert lone.margin is not None
+    assert lone.margin < 0
 
 
 def test_lgbm_resolver_returns_nothing_without_evidence_or_plausible_candidates(tmp_path: Path) -> None:
@@ -150,7 +161,7 @@ def test_lgbm_resolver_ties_go_to_the_most_recent(tmp_path: Path) -> None:
     assert resolution.clear_winner is None
 
 
-@pytest.mark.parametrize("change", [{"feature_names": ["x"]}, {"trees": []}, {"margin": 2.0}])
+@pytest.mark.parametrize("change", [{"feature_names": ["x"]}, {"trees": []}, {"margin": 2.0}, {"null_score": "high"}])
 def test_malformed_lgbm_artifacts_are_refused(tmp_path: Path, change: dict[str, object]) -> None:
     with pytest.raises(ModelArtifactIntegrityError):
         LgbmTransactionResolver.load(publish(tmp_path, "resolver:lgbm", {**LGBM_ARTIFACT, **change}))

@@ -57,6 +57,7 @@ LGBM_ARTIFACT: dict[str, Any] = {
         },
     ],
     "margin": 0.3,
+    "null_score": -2.0,
 }
 
 
