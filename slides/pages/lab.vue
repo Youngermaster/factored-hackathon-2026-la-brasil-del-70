@@ -116,6 +116,8 @@ function fitReport() {
           const B = boxes[b]
           const ox = Math.min(A.x1, B.x1) - Math.max(A.x0, B.x0)
           const oy = Math.min(A.y1, B.y1) - Math.max(A.y0, B.y0)
+          // the same string redrawn in place (a colour wipe clips a second pass) is not a collision
+          if (A.s === B.s && Math.abs(A.x0 - B.x0) < 2 && Math.abs(A.y0 - B.y0) < 2) continue
           // overlapping, or touching when they are not neighbouring words of one line
           if ((ox > 6 && oy > 6) || (b !== a + 1 && ox > -3 && oy > 4)) out.push(`${n} cue ${i}: "${A.s}" overlaps or touches "${B.s}"`)
         }

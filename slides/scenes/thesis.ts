@@ -13,9 +13,10 @@
  * The turn is illustrative; clause ids and parameters are the synthetic pack's.
  */
 import { defineScene } from '../lib/scene/types'
-import { C, MX } from '../lib/scene/kit'
+import { C, MX, W } from '../lib/scene/kit'
 import { outCubic, outExpo, presence, seg } from '../lib/scene/math'
 import { bubble, check, cross, tab, tag } from '../lib/scene/bank'
+import { clipWipe, field, packet, ring } from '../lib/scene/fx'
 
 const X = [MX, 560, 1000, 1440] as const
 const CW = 360
@@ -28,8 +29,12 @@ export default defineScene({
   draw({ t, L, M, K }) {
     const fin = outCubic(seg(t, 17.7, 18.3))
     const dimAll = 1 - fin
-    const heading = (i: number, key: string, color: string, t0: number) =>
-      K.words(L(key), X[i], HY, { t, t0, size: 34, weight: 700, fam: 'display', color, stagger: 0.03 })
+    // each phase owns a filled header in its colour, ink text on top (AA: ink on blue 4.8,
+    // on yellow 13.0, on red 4.4 at 30 px bold, which is large text)
+    const heading = (i: number, key: string, fill: string, t0: number) => {
+      field(K, X[i], HY - 52, 400, 72, fill, seg(t, t0 - 0.1, t0 + 0.35), 'left', 8)
+      K.words(L(key), X[i] + 22, HY - 4, { t, t0: t0 + 0.12, size: 30, weight: 700, fam: 'display', color: C.bg, accent: C.bg, stagger: 0.03 })
+    }
     const caption = (i: number, s: string, color: string, t0: number) =>
       K.wrap(s, 410, 22, 500, 'mono').forEach((ln, j) =>
         K.label(ln, X[i], CAPY + j * 30, { color, size: 22, alpha: outCubic(seg(t, t0, t0 + 0.4)) }))
@@ -48,12 +53,15 @@ export default defineScene({
           const w = K.measure(s, 32, 500, 'sans')
           const k = outExpo(seg(t, t0, t0 + 0.4))
           if (k > 0) K.line(x0, base, x0 + w * k, base, C.blue, 4)
+          // the underlined words travel down into the understand header
+          const cx = x0 + w / 2
+          packet(K, [{ x: cx, y: base + 6 }, { x: cx, y: 360 }, { x: 250, y: 410 }], seg(t, t0 + 0.35, t0 + 0.95), C.blue, 9)
         }
       })
       K.fade(outCubic(seg(t, 1.4, 1.9)), () => K.cite(L('footnote')))
 
       // ── 1 understand ─────────────────────────────────────────────────────
-      K.arrow(250, BY + 100, 250, 432, { color: C.blue, k: outCubic(seg(t, 2.9, 3.3)) })
+      K.arrow(250, BY + 100, 250, 414, { color: C.blue, k: outCubic(seg(t, 2.9, 3.3)) })
       heading(0, 'understand', C.blue, 3.2)
       ;(['x_intent', 'x_reason', 'x_amount', 'x_lang'] as const).forEach((key, i) =>
         tag(K, L(key), X[0], 530 + i * 64, { tone: 'blue', k: seg(t, 3.6 + i * 0.15, 4.0 + i * 0.15), size: 24 }))
@@ -61,6 +69,7 @@ export default defineScene({
 
       // ── 2 decide ─────────────────────────────────────────────────────────
       K.arrow(X[0] + CW + 10, 640, X[1] - 16, 640, { color: C.yellow, k: outCubic(seg(t, 5.5, 5.8)) })
+      packet(K, [{ x: X[0] + CW + 10, y: 640 }, { x: X[1] - 10, y: 640 }], seg(t, 5.55, 6.0), C.blue, 8)
       heading(1, 'decide', C.yellow, 5.6)
       const rules = [
         [L('r_status'), L('r_statusId')],
@@ -82,17 +91,31 @@ export default defineScene({
       // ── 3 act and verify ─────────────────────────────────────────────────
       K.arrow(X[1] + CW + 10, 640, X[2] - 16, 640, { color: C.yellow, k: outCubic(seg(t, 8.5, 8.8)) })
       heading(2, 'act', C.yellow, 8.6)
-      tab(K, L('tool'), X[2], 520, { tone: 'yellow', k: seg(t, 9.0, 9.4), size: 24 })
-      const lk = outCubic(seg(t, 9.3, 9.7))
-      if (lk > 0) {
-        K.line(X[2] + 20, 575, X[2] + 20, 575 + 70 * lk, C.yellow, 3)
-        K.dot(X[2] + 20, 575 + 70 * lk, 7, C.yellow)
+      packet(K, [{ x: X[1] + CW + 10, y: 640 }, { x: X[2] - 10, y: 640 }], seg(t, 8.55, 9.0), C.yellow, 8)
+      // the act column, drawn twice: on the dark ground, then in ink inside the
+      // yellow field that floods the column the moment the read-back verifies
+      const act = (inked: boolean) => {
+        const fg = inked ? C.bg : C.yellow
+        const chip = (s: string, y: number, k: number, size: number, x: number = X[2]) => inked
+          ? K.chip(s, x, y, { bg: C.bg, fg: C.yellow, k, size, weight: 700 })
+          : tab(K, s, x, y, { tone: 'yellow', k, size })
+        chip(L('tool'), 520, seg(t, 9.0, 9.4), 24)
+        const lk = outCubic(seg(t, 9.3, 9.7))
+        if (lk > 0) {
+          K.line(X[2] + 20, 575, X[2] + 20, 575 + 70 * lk, fg, 3)
+          K.dot(X[2] + 20, 575 + 70 * lk, 7, fg)
+        }
+        check(K, X[2] + 18, 680, 26, seg(t, 9.8, 10.1), fg, 5)
+        K.fade(outCubic(seg(t, 9.9, 10.2)), () => K.text(L('readback'), X[2] + 48, 690, { size: 26, weight: 500, color: inked ? C.bg : C.paper }))
+        chip(L('verified'), 716, seg(t, 10.2, 10.6), 22, X[2] + 48)
+        K.fade(outCubic(seg(t, 10.5, 10.9)), () =>
+          K.text(`${L('reply')} ${M('policy.dispute_sla_ar').text}`, X[2], 830, { size: 24, weight: 500, color: inked ? C.inkDim : C.dim }))
       }
-      check(K, X[2] + 18, 680, 26, seg(t, 9.8, 10.1), C.yellow, 5)
-      K.fade(outCubic(seg(t, 9.9, 10.2)), () => K.text(L('readback'), X[2] + 48, 690, { size: 26, weight: 500 }))
-      tab(K, L('verified'), X[2] + 48, 716, { tone: 'yellow', k: seg(t, 10.2, 10.6), size: 22 })
-      K.fade(outCubic(seg(t, 10.5, 10.9)), () =>
-        K.text(`${L('reply')} ${M('policy.dispute_sla_ar').text}`, X[2], 830, { size: 24, weight: 500, color: C.dim }))
+      act(false)
+      ring(K, X[2] + 18, 680, seg(t, 9.85, 10.45), C.yellow, 10, 110)
+      const fk = seg(t, 10.0, 10.5)
+      field(K, X[2] - 16, 504, 400, 360, C.yellow, fk, 'bottom', 12)
+      clipWipe(K, X[2] - 16, 504, 400, 360, fk, 'bottom', () => act(true))
       caption(2, L('capAct'), C.yellow, 10.8)
 
       // ── 4 injection: bounces off the allowlist ──────────────────────────
@@ -100,16 +123,17 @@ export default defineScene({
         bubble(K, L('injMsg'), 1800, BY, { typed: seg(t, 11.7, 12.5), k: seg(t, 11.6, 12.1), size: 32, maxW: 760, align: 'right', tone: 'red', label: L('who') }))
       const bk = outCubic(seg(t, 12.5, 12.9))
       if (bk > 0) {
-        K.line(560, 405, 560 + 1240 * bk, 405, C.yellow, 4)
-        K.label(L('barrier'), 1800, 388, { color: C.yellow, align: 'right', alpha: outCubic(seg(t, 12.8, 13.1)) })
+        K.fillRR(560, 398, 1240 * bk, 12, 6, C.yellow)
+        K.label(L('barrier'), 1800, 384, { color: C.yellow, align: 'right', alpha: outCubic(seg(t, 12.8, 13.1)) })
       }
       // the packet: falls, hits the barrier at 13.0, recoils and fades
       if (t > 12.6 && t < 13.6) {
         const down = outCubic(seg(t, 12.6, 13.0))
         const up = outCubic(seg(t, 13.0, 13.5))
         const y = 350 + 48 * down - 70 * up
-        K.fade(1 - seg(t, 13.2, 13.6), () => K.dot(1300, y, 11, C.red))
+        K.fade(1 - seg(t, 13.2, 13.6), () => K.dot(1300, y, 14, C.red))
       }
+      ring(K, 1300, 398, seg(t, 13.0, 13.6), C.red, 10, 90)
       cross(K, 1300, 405, 34, seg(t, 13.0, 13.3) * (1 - seg(t, 14.7, 15.0)), C.red, 6)
       K.fade(presence(t, 13.3, 14.7, 0.3, 0.3), () => {
         const w = tab(K, L('injTag'), 560, 344, { tone: 'red', k: seg(t, 13.3, 13.7), size: 24 })
@@ -138,9 +162,12 @@ export default defineScene({
       caption(3, `${L('capEscalate')} ${M('policy.handoff_sla_ar').text}`, C.redText, 17.1)
     })
 
-    // ── 6 the thesis ───────────────────────────────────────────────────────
-    const lines = [['t1', C.blue], ['t2', C.yellow], ['t3', C.paper]] as const
-    lines.forEach(([key, accent], i) =>
-      K.words(L(key), MX, 520 + i * 120, { t, t0: 17.9 + i * 0.45, size: 64, weight: 700, fam: 'display', accent, stagger: 0.05 }))
+    // ── 6 the thesis: three full-width bands, one per clause ───────────────
+    const bands = [['t1', C.blue], ['t2', C.yellow], ['t3', C.paper]] as const
+    bands.forEach(([key, fill], i) => {
+      const y = 250 + i * 180
+      field(K, -4, y, W + 8, 180, fill, seg(t, 17.8 + i * 0.3, 18.4 + i * 0.3), 'left')
+      K.words(L(key), MX, y + 112, { t, t0: 18.05 + i * 0.3, size: 64, weight: 800, fam: 'display', color: C.bg, accent: C.bg, stagger: 0.04 })
+    })
   },
 })
