@@ -5,14 +5,14 @@ Each builds a ``Step`` from verified state and clause references; none writes cu
 
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import evaluate, explanation
-from bank_agent.application.engine.definition import ABSTAINED, ESCALATED, REFUSED
+from bank_agent.application.engine.definition import ABSTAINED, AUTH_REQUIRED, ESCALATED, REFUSED
 from bank_agent.application.engine.handoff import HandoffBuilder, HandoffPlan
 from bank_agent.application.engine.reply import Param, Reply
 from bank_agent.application.engine.templates.labels import CAPABILITIES, join
 from bank_agent.application.grounding.retrieval import RetrievalDecision
 from bank_agent.domain.cards import CardRequest
-from bank_agent.domain.conversation import EscalationNotice
-from bank_agent.domain.decision import ClauseRef, Decision
+from bank_agent.domain.conversation import EscalationNotice, NoticeCode
+from bank_agent.domain.decision import ClauseRef, Decision, DecisionKind
 from bank_agent.domain.errors import ConfigurationError
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.execution_record import RetrievalDecisionCode, RetrievalRecord
@@ -21,6 +21,7 @@ from bank_agent.domain.locale import Language
 from bank_agent.domain.workflow import Intent, Outcome
 
 BUILDER = HandoffBuilder()
+REAUTH_NOTICES = (NoticeCode.SESSION_EXPIRED, NoticeCode.REAUTHENTICATION_REQUIRED)
 
 
 def capabilities(ctx: TurnContext) -> str:
@@ -176,3 +177,19 @@ def escalate_decision(
         card_request=card_request,
         case_ref=case_ref,
     )
+
+
+def blocking_step(ctx: TurnContext, decision: Decision, *, state: str, step_up_ok: bool = False) -> Step | None:
+    """The step a decision forces (refusal, escalation, re-authentication, step-up), or ``None`` to go on."""
+    kind = decision.kind
+    auth = any(rule_id.startswith("AUTH.") for rule_id in decision.decisive_rule_ids)
+    if kind is DecisionKind.REFUSE:
+        return refuse(ctx, decision)
+    if kind is DecisionKind.ESCALATE:
+        return escalate_decision(ctx, decision)
+    if kind is DecisionKind.DENY and auth:
+        ctx.engine = ctx.engine.evolve(resume_state=state)
+        return Step(AUTH_REQUIRED, Reply(template="common.auth_required", notices=REAUTH_NOTICES))
+    if kind is DecisionKind.REQUIRE_STEP_UP and not step_up_ok:
+        return step_up(ctx, state)
+    return None
