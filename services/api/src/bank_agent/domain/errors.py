@@ -90,6 +90,12 @@ class InvalidApplicationTransitionError(StateTransitionError):
     code = "credit_application_transition_invalid"
 
 
+class WorkflowTransitionError(StateTransitionError):
+    """A workflow definition does not allow the move between two of its states, or names an unknown state."""
+
+    code = "workflow_transition_invalid"
+
+
 # --- Not found -----------------------------------------------------------------------------------------------
 
 
@@ -181,6 +187,12 @@ class InsufficientAuthLevelError(AuthorizationError):
 
 class StepUpRequiredError(AuthorizationError):
     code = "step_up_required"
+
+
+class ToolNotAllowedError(AuthorizationError):
+    """The current workflow state's allowlist does not include the tool; the engine refuses the call."""
+
+    code = "tool_not_allowed"
 
 
 class AccessContextError(AuthorizationError):
@@ -302,6 +314,12 @@ class ModelArtifactIntegrityError(DependencyError):
 
 class ConfigurationError(DomainError):
     code = "configuration_error"
+
+
+class WorkflowRegistryError(ConfigurationError):
+    """The workflow registry is incomplete or inconsistent with the catalog, bindings, matrix, or tools."""
+
+    code = "workflow_registry_invalid"
 
 
 class PromptNotFoundError(ConfigurationError):

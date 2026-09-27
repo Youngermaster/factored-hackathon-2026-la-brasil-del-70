@@ -79,6 +79,11 @@ class BoundPolicyLookup:
     def pack_version(self) -> str:
         return self._pack_version
 
+    def covers(self, workflow: WorkflowId, state: str) -> bool:
+        """True when ``state`` of ``workflow`` resolved for every country and language at construction."""
+        keys = {(w, s, c, lang) for (w, s, c, lang) in self._bound if w is workflow and s == state}
+        return bool(keys) and len(keys) == len({(c, lang) for (_, _, c, lang) in self._bound})
+
     def for_state(self, workflow: WorkflowId, state: str, customer: Customer, language: Language) -> BoundPolicy:
         """The clauses bound to ``state`` of ``workflow`` for the verified customer's jurisdiction."""
         clauses = self._bound.get((workflow, state, customer.country, language))
