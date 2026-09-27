@@ -72,7 +72,8 @@ def _upsert(table: str, columns: Sequence[str], key: Sequence[str], *, update: b
     values = ", ".join(f"CAST(:{name} AS {casts[name]})" if name in casts else f":{name}" for name in columns)
     conflict = f"ON CONFLICT ({', '.join(key)}) "
     changed = [name for name in columns if name not in key]
-    action = "DO UPDATE SET " + ", ".join(f"{name} = EXCLUDED.{name}" for name in changed) if update else "DO NOTHING"
+    assignments = ", ".join(f"{name} = EXCLUDED.{name}" for name in changed)
+    action = f"DO UPDATE SET {assignments}" if update else "DO NOTHING"  # nosec B608
     return f"INSERT INTO app.{table} ({', '.join(columns)}) VALUES ({values}) {conflict}{action}"  # noqa: S608  # nosec B608 (fixed names)
 
 
