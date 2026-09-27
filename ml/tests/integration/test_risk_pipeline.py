@@ -34,7 +34,7 @@ MEMBERS = 4
 
 
 def _settings(registry: Path, selection: str) -> WorkflowSettings:
-    return WorkflowSettings(_env_file=None, model_registry_dir=registry, risk_estimator=selection)  # type: ignore[call-arg]
+    return WorkflowSettings(_env_file=None, model_registry_dir=registry, risk_estimator=selection)
 
 
 def _features(count: int) -> CreditRiskFeatures:
@@ -64,7 +64,9 @@ def test_train_evaluate_promote_and_serve(risk_gold: Path, tmp_path: Path) -> No
     assert set(refs) == {"logreg", "lgbm"}
     for kind in refs:
         manifest = store.registry.resolve(f"risk_estimator:{kind}", "candidate").metadata
-        assert manifest["interval_choice"]["chosen"] in {"bootstrap", "venn_abers"}
+        choice = manifest["interval_choice"]
+        assert isinstance(choice, dict)
+        assert choice["chosen"] in {"bootstrap", "venn_abers"}
         assert manifest["cuts"] == list(policy_cuts())
     stale = tmp_path / "stale.json"
     stale.write_text(json.dumps({"learned": {"logreg": {"artifact": "x"}, "lgbm": {"artifact": "y"}}}))
