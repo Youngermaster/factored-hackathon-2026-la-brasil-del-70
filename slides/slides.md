@@ -89,3 +89,16 @@ EVIDENCE. Narration: script.md, section "evidence". Click 1 stress cases,
 2 outcomes against B0, 3 per workflow and language, 4 efficiency and retrieval.
 Pending values render as dashed boxes until phase 14 fills data/metrics.yml.
 -->
+
+---
+layout: scene
+routeAlias: close
+clicks: 3
+---
+
+<Scene name="close" />
+
+<!--
+CLOSE. Narration: script.md, section "close". Click 1 route to operation,
+2 team, 3 the thesis and the links.
+-->
