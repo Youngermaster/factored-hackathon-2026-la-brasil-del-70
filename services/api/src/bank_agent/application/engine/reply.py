@@ -16,12 +16,13 @@ from bank_agent.domain.conversation import (
     CardActionConfirmation,
     Clarification,
     ConfirmationCard,
+    CreditIntakeConfirmation,
     EscalationNotice,
     NoticeCode,
 )
 from bank_agent.domain.credit import CreditProduct, CreditProfile
 from bank_agent.domain.decision import ClauseRef
-from bank_agent.domain.eligibility import EligibilityAssessment, RiskEstimate
+from bank_agent.domain.eligibility import EligibilityAssessment, EligibilityView, RiskEstimate
 from bank_agent.domain.money import Money
 
 
@@ -80,6 +81,10 @@ class Reply:
     clarification: Clarification | None = None
     confirmation: ConfirmationCard | None = None
     card_action_confirmation: CardActionConfirmation | None = None
+    credit_intake_confirmation: CreditIntakeConfirmation | None = None
+    credit_products: tuple[CreditProduct, ...] = ()
+    eligibility: EligibilityView | None = None
+    """The customer-facing view only: outcome, reasons, uncertainty, review path, disclaimer; never the estimate."""
     action_statuses: tuple[ActionStatusView, ...] = ()
     escalation: EscalationNotice | None = None
     step_up_required: bool = False

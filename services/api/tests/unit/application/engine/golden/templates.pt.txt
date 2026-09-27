@@ -159,6 +159,86 @@ Certo, seguimos com a sua contestação.
 [common.unsupported_in_workflow]
 Isso eu não consigo fazer nesta conversa. Se quiser, transfiro você para uma pessoa da equipe.
 
+[credit.anything_else]
+Posso ajudar com mais alguma coisa sobre produtos de crédito?
+
+[credit.application_status]
+A sua solicitação app-000001 de empréstimo pessoal está aberto.
+
+[credit.ask_amount]
+Qual valor interessa a você?
+
+[credit.ask_amount_term]
+Qual valor interessa a você e em qual prazo, em meses?
+
+[credit.ask_term]
+Em qual prazo, em meses?
+
+[credit.ask_which_product]
+Sobre qual deles você quer mais detalhes?
+
+[credit.clarify_product]
+Qual produto interessa a você?
+1) empréstimo pessoal
+2) empréstimo pessoal
+
+[credit.confirm_intake]
+Vou registrar a sua solicitação de empréstimo pessoal de 1.250,00 MXN (uso geral) para que uma pessoa da equipe de crédito a analise. Nesta conversa nenhuma decisão é tomada e nenhum dinheiro é movimentado. Confirma? Responda sim ou não.
+
+[credit.eligibility]
+Orientação sintética de elegibilidade (demonstração): não é uma decisão de crédito.
+
+[credit.intake_not_possible]
+Não consigo registrar essa solicitação por este canal.
+
+[credit.intake_recorded]
+Pronto: registramos a sua solicitação app-000001 para que uma pessoa da equipe de crédito a analise, e conferimos nos registros. Não é uma oferta nem uma decisão de crédito.
+
+[credit.mortgage_info_only]
+Os financiamentos imobiliários são somente informativos por este canal: uma pessoa da equipe de crédito analisa cada caso. Se quiser, peça para falar com uma pessoa.
+
+[credit.no_decision]
+Nesta conversa não são tomadas decisões de crédito. Posso dar uma orientação indicativa de elegibilidade com regras sintéticas ou, se preferir, pedir que uma pessoa da equipe de crédito analise o seu caso.
+
+[credit.offer_guide]
+Se quiser uma orientação indicativa para este produto, pergunte pela sua elegibilidade e diga o valor que interessa a você.
+
+[credit.offer_intake]
+Quer que eu registre a sua solicitação para que uma pessoa da equipe de crédito a analise? Responda sim ou não.
+
+[credit.offer_missing_income]
+Você pode me dizer a sua renda mensal para eu refazer a orientação, ou responder sim para que uma pessoa da equipe de crédito analise o seu caso.
+
+[credit.offer_review]
+Quer que uma pessoa da equipe de crédito analise o seu caso? Responda sim ou não.
+
+[credit.product_detail]
+empréstimo pessoal: valores de 10.000,00 MXN a 350.000,00 MXN; prazos de 6 a 60 meses; taxa anual de 28 % a 65 %.
+
+[credit.product_detail_card]
+empréstimo pessoal: limites de 10.000,00 MXN a 350.000,00 MXN; taxa anual de 28 % a 65 %.
+
+[credit.product_line]
+- empréstimo pessoal: de 10.000,00 MXN a 350.000,00 MXN
+
+[credit.product_line_info_only]
+- empréstimo pessoal: de 10.000,00 MXN a 350.000,00 MXN (somente informação)
+
+[credit.product_list]
+Estes são os produtos do catálogo sintético de crédito para o seu país:
+
+[credit.product_option]
+1) empréstimo pessoal
+
+[credit.status_need_reference]
+Não encontrei uma solicitação nesta conversa. Escreva o número da sua solicitação ou peça para falar com uma pessoa.
+
+[credit.status_not_found]
+Não encontrei essa solicitação entre as suas.
+
+[credit.term_line]
+Prazo solicitado, em meses: 24.
+
 [dispute.ask_details]
 Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.
 

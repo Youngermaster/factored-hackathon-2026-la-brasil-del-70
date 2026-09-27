@@ -7,10 +7,11 @@ figure in a reply comes from a verified record or a bound clause parameter.
 from bank_agent.application.engine.templates.account import ACCOUNT
 from bank_agent.application.engine.templates.card import CARD
 from bank_agent.application.engine.templates.common import COMMON
+from bank_agent.application.engine.templates.credit import CREDIT
 from bank_agent.application.engine.templates.dispute import DISPUTE
 from bank_agent.domain.locale import Language
 
-TEMPLATES: dict[str, dict[Language, str]] = {**COMMON, **DISPUTE, **CARD, **ACCOUNT}
+TEMPLATES: dict[str, dict[Language, str]] = {**COMMON, **DISPUTE, **CARD, **ACCOUNT, **CREDIT}
 
 
 def register(extra: dict[str, dict[Language, str]]) -> None:

@@ -161,6 +161,9 @@ class TurnContext:
     resumed: bool = False
     reprompt: bool = False
     """Ask the state's question again without parsing the text (after a resume or a declined switch)."""
+    turn_values: dict[str, object] = field(default_factory=dict)
+    """Values that live for this turn only and are never persisted (the credit profile and the risk estimate between
+    ESTIMATE_RISK and ASSESS_ELIGIBILITY); nothing here reaches the conversation data, a prompt, or a reply."""
 
     @property
     def locale(self) -> Locale:

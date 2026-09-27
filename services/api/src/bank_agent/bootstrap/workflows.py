@@ -23,6 +23,7 @@ from bank_agent.application.workflows.account_inquiry.definition import build_ac
 from bank_agent.application.workflows.baseline.definitions import BASELINE_DEFINITIONS
 from bank_agent.application.workflows.baseline.menu import MenuRouter
 from bank_agent.application.workflows.card_support.definition import build_card_support
+from bank_agent.application.workflows.credit.definition import build_credit
 from bank_agent.application.workflows.dispute.definition import build_dispute
 from bank_agent.bootstrap.policy import PolicyServices
 from bank_agent.bootstrap.retrieval import GroundingServices
@@ -43,6 +44,7 @@ PROPOSED_DEFINITIONS: Mapping[WorkflowId, Callable[[], WorkflowDefinition]] = {
     WorkflowId.ACCOUNT_INQUIRY: build_account_inquiry,
     WorkflowId.DISPUTE: build_dispute,
     WorkflowId.CARD_SUPPORT: build_card_support,
+    WorkflowId.CREDIT: build_credit,
 }
 
 

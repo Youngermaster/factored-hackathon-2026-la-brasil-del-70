@@ -223,7 +223,8 @@ class RetrievalSettings(BaseSettings):
 class WorkflowSettings(BaseSettings):
     """The workflow engine: which workflows are enabled and whether the language model helps understanding.
 
-    ``enabled`` lists the workflows the router may dispatch to (``WORKFLOW_ENABLED=dispute,card_support``);
+    ``enabled`` lists the workflows the router may dispatch to (all four by default; for example
+    ``WORKFLOW_ENABLED=dispute,card_support`` cuts the other two back);
     intents of any other workflow get the out-of-scope answer, which is also how a workflow is cut back
     (CLAUDE.md section 1). Model phrasing and handoff summaries are off by default and, when on, must pass the
     grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations.
@@ -231,7 +232,9 @@ class WorkflowSettings(BaseSettings):
 
     model_config = _config("WORKFLOW_")
 
-    enabled: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["dispute", "card_support"])
+    enabled: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["account_inquiry", "card_support", "dispute", "credit"]
+    )
     llm_understanding: bool = True
     llm_phrasing: bool = False
     llm_handoff_summary: bool = False

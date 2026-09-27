@@ -118,7 +118,7 @@ def build_harness(
     *,
     llm: LLMClient | None = None,
     failures: Mapping[ToolName, ToolFailureMode] | None = None,
-    enabled: tuple[str, ...] = ("dispute", "card_support"),
+    enabled: tuple[str, ...] = ("account_inquiry", "card_support", "dispute", "credit"),
     llm_understanding: bool = True,
     phrasing: bool = False,
     handoff_summary: bool = False,

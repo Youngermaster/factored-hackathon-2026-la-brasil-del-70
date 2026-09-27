@@ -52,7 +52,9 @@ async def test_an_uncertain_request_offers_two_workflows_and_the_choice_is_follo
     session = harness.session(MX)
     asked = await harness.say("necesito ayuda con algo del banco", session)
     assert asked.outcome is Outcome.CLARIFIED
-    assert "reclamación por un cargo" in asked.response.text
+    # With all four workflows enabled, the two offered are the first enabled in catalog order.
+    assert "tus saldos y pagos" in asked.response.text
+    assert "tus tarjetas" in asked.response.text
     chosen = await harness.say("con mis tarjetas", session, asked.conversation_id)
     assert chosen.state in {"CLARIFY", "CARD_STATUS"}
     greeting = await harness.say("hola", harness.session(CO))

@@ -6,6 +6,7 @@ Regenerate with ``UPDATE_TEMPLATE_GOLDEN=1`` after an intended wording change, a
 import os
 import re
 from datetime import UTC, date, datetime
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -23,10 +24,12 @@ from bank_agent.application.grounding.draft import (
 from bank_agent.application.grounding.verifier import GroundingVerifier
 from bank_agent.application.workflows.baseline import templates as baseline_templates
 from bank_agent.domain.actions import ActionKind, ActionResult, ActionStatus, Verification
+from bank_agent.domain.credit import CreditProductType
 from bank_agent.domain.identifiers import IdempotencyKey, SourceRef
 from bank_agent.domain.locale import Country, Language, Locale
 from bank_agent.domain.money import Currency, Money
 from bank_agent.domain.workflow import WorkflowId
+from bank_agent_credit import credit_product
 from bank_agent_policy import fixture_pack
 
 GOLDEN = Path(__file__).parent / "golden"
@@ -62,7 +65,23 @@ SAMPLES: dict[str, Param] = {
     "credits": Money.of("1500.00", Currency.MXN),
     "unclassified": 0,
     "unsettled": 1,
+    "name": "préstamo personal",
+    "min": Money.of("10000.00", Currency.MXN),
+    "max": Money.of("350000.00", Currency.MXN),
+    "min_term": 6,
+    "max_term": 60,
+    "min_rate": "28 %",
+    "max_rate": "65 %",
+    "explanation": "Orientación sintética de elegibilidad (demostración): no es una decisión de crédito.",
+    "application": "app-000001",
+    "term": 24,
+    "purpose": "uso general",
 }
+PRODUCT = credit_product(
+    "MX-PL-FIXTURE", CreditProductType.PERSONAL_LOAN, Country.MX, "10000", "350000",
+    max_term_months=60, min_annual_rate=Decimal("28"), max_annual_rate=Decimal("65"),
+)  # fmt: skip
+"""The catalog entry credit templates are verified against (their figures come only from it)."""
 KIND_FACTS = (
     RecordFact(fact_id="k1", kind=FactKind.AS_OF, day=date(2026, 6, 17)),
     RecordFact(fact_id="k2", kind=FactKind.BALANCE, money=Money.of("52300.50", Currency.MXN)),
@@ -75,6 +94,7 @@ KIND_FACTS = (
 UNDER_HEADING = {"account.balance_item": "account.balances", "account.balance_item_credit": "account.balances"}
 """Line templates that always follow a heading stating the as-of date; they are verified under that heading."""
 LIST_ITEMS = {
+    "credit.clarify_product": ("options", "credit.product_option"),
     "account.clarify_product": ("options", "account.product_option"),
     "account.clarify_payment": ("options", "account.payment_option"),
     "card.clarify_options": ("options", "card.option"),
@@ -94,6 +114,9 @@ LOCALIZED: dict[Language, dict[str, Param]] = {
         "status": "aberto",
         "type": "cartão de crédito",
         "kind": "da sua transferência",
+        "name": "empréstimo pessoal",
+        "explanation": "Orientação sintética de elegibilidade (demonstração): não é uma decisão de crédito.",
+        "purpose": "uso geral",
     },
 }
 AT = datetime(2026, 6, 18, 15, 0, tzinfo=UTC)
@@ -131,14 +154,20 @@ def verified(action: ActionKind) -> VerifiedAction:
 def test_every_template_matches_its_golden_text_and_passes_the_verifier(language: Language) -> None:
     locale = Locale.ES_MX if language is Language.ES else Locale.PT_BR
     verifier = GroundingVerifier(fixture_pack())
-    actions = (verified(ActionKind.CREATE_DISPUTE_CASE), verified(ActionKind.BLOCK_CARD))
+    actions = (
+        verified(ActionKind.CREATE_DISPUTE_CASE),
+        verified(ActionKind.BLOCK_CARD),
+        verified(ActionKind.SUBMIT_CREDIT_APPLICATION),
+    )
     lines: list[str] = []
     for template in sorted(TEMPLATES):
         assert TEMPLATES[template].keys() >= {Language.ES, Language.PT, Language.EN}
         filled = fill(template, params_for(template, language), language, locale)
         assert "{" not in filled.text, template
+        credit = template.startswith("credit.")
         context = GroundingContext(
-            workflow=WorkflowId.DISPUTE,
+            workflow=WorkflowId.CREDIT if credit else WorkflowId.DISPUTE,
+            catalog_product=PRODUCT if credit else None,
             language=language,
             jurisdiction=Country.MX,
             currency=Currency.MXN,

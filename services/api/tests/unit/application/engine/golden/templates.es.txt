@@ -159,6 +159,86 @@ De acuerdo, seguimos con tu reclamación.
 [common.unsupported_in_workflow]
 Eso no lo puedo hacer en esta conversación. Si quieres, te comunico con una persona del equipo.
 
+[credit.anything_else]
+¿Hay algo más en lo que te ayude con productos de crédito?
+
+[credit.application_status]
+Tu solicitud app-000001 de préstamo personal está abierto.
+
+[credit.ask_amount]
+¿Qué monto te interesa?
+
+[credit.ask_amount_term]
+¿Qué monto te interesa y a qué plazo, en meses?
+
+[credit.ask_term]
+¿A qué plazo, en meses?
+
+[credit.ask_which_product]
+¿Sobre cuál quieres más detalle?
+
+[credit.clarify_product]
+¿Qué producto te interesa?
+1) préstamo personal
+2) préstamo personal
+
+[credit.confirm_intake]
+Voy a registrar tu solicitud de préstamo personal por 1,250.00 MXN (uso general) para que la revise una persona del equipo de crédito. En esta conversación no se toma ninguna decisión y no se mueve dinero. ¿Confirmas? Responde sí o no.
+
+[credit.eligibility]
+Orientación sintética de elegibilidad (demostración): no es una decisión de crédito.
+
+[credit.intake_not_possible]
+No puedo registrar esa solicitud por este medio.
+
+[credit.intake_recorded]
+Listo: registramos tu solicitud app-000001 para que la revise una persona del equipo de crédito, y lo comprobamos en los registros. No es una oferta ni una decisión de crédito.
+
+[credit.mortgage_info_only]
+Las hipotecas son solo informativas por este canal: una persona del equipo de crédito revisa cada caso. Si quieres, pide hablar con una persona.
+
+[credit.no_decision]
+En esta conversación no se toman decisiones de crédito. Puedo darte una orientación indicativa de elegibilidad con reglas sintéticas o, si prefieres, pedir que una persona del equipo de crédito revise tu caso.
+
+[credit.offer_guide]
+Si quieres una orientación indicativa para este producto, pregúntame por tu elegibilidad y dime el monto que te interesa.
+
+[credit.offer_intake]
+¿Quieres que registre tu solicitud para que la revise una persona del equipo de crédito? Responde sí o no.
+
+[credit.offer_missing_income]
+Puedes decirme tu ingreso mensual para darte la orientación de nuevo, o responder sí para que una persona del equipo de crédito revise tu caso.
+
+[credit.offer_review]
+¿Quieres que una persona del equipo de crédito revise tu caso? Responde sí o no.
+
+[credit.product_detail]
+préstamo personal: montos de 10,000.00 MXN a 350,000.00 MXN; plazos de 6 a 60 meses; tasa anual de 28 % a 65 %.
+
+[credit.product_detail_card]
+préstamo personal: límites de 10,000.00 MXN a 350,000.00 MXN; tasa anual de 28 % a 65 %.
+
+[credit.product_line]
+- préstamo personal: de 10,000.00 MXN a 350,000.00 MXN
+
+[credit.product_line_info_only]
+- préstamo personal: de 10,000.00 MXN a 350,000.00 MXN (solo información)
+
+[credit.product_list]
+Estos son los productos del catálogo sintético de crédito para tu país:
+
+[credit.product_option]
+1) préstamo personal
+
+[credit.status_need_reference]
+No encontré una solicitud en esta conversación. Escríbeme el número de tu solicitud o pide hablar con una persona.
+
+[credit.status_not_found]
+No encontré esa solicitud entre las tuyas.
+
+[credit.term_line]
+Plazo solicitado, en meses: 24.
+
 [dispute.ask_details]
 Para encontrar la transacción, dime la fecha aproximada, el monto y el comercio.
 

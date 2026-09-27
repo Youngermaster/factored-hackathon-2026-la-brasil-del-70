@@ -2,6 +2,7 @@
 
 from collections.abc import Sequence
 
+from bank_agent.domain.credit import ApplicationStatus, CreditProductType
 from bank_agent.domain.dispute import DisputeReason, DisputeStatus
 from bank_agent.domain.locale import Language
 from bank_agent.domain.product import ProductStatus, ProductType
@@ -111,6 +112,27 @@ PAYMENT_STATUSES: dict[TransactionStatus, Labels] = {
     TransactionStatus.DECLINED: {ES: "rechazado", PT: "recusada", EN: "declined"},
     TransactionStatus.REVERSED: {ES: "revertido", PT: "estornada", EN: "reversed"},
 }
+CREDIT_TYPES: dict[CreditProductType, Labels] = {
+    CreditProductType.CREDIT_CARD: {ES: "tarjeta de crédito", PT: "cartão de crédito", EN: "credit card"},
+    CreditProductType.PERSONAL_LOAN: {ES: "préstamo personal", PT: "empréstimo pessoal", EN: "personal loan"},
+    CreditProductType.MORTGAGE: {ES: "crédito hipotecario", PT: "financiamento imobiliário", EN: "mortgage"},
+}
+PURPOSES: dict[str, Labels] = {
+    "general_purpose": {ES: "uso general", PT: "uso geral", EN: "general purpose"},
+    "debt_consolidation": {ES: "consolidar deudas", PT: "consolidar dívidas", EN: "debt consolidation"},
+    "home_improvement": {ES: "mejoras del hogar", PT: "reformas da casa", EN: "home improvement"},
+    "education": {ES: "educación", PT: "educação", EN: "education"},
+    "home_purchase": {ES: "compra de vivienda", PT: "compra de imóvel", EN: "home purchase"},
+    "home_construction": {ES: "construcción de vivienda", PT: "construção de imóvel", EN: "home construction"},
+}
+APPLICATION_STATUSES: dict[ApplicationStatus, Labels] = {
+    ApplicationStatus.SUBMITTED: {ES: "registrada, en espera de revisión", PT: "registrada, aguardando análise",
+                                  EN: "recorded, awaiting review"},
+    ApplicationStatus.UNDER_HUMAN_REVIEW: {ES: "en revisión por una persona del equipo",
+                                           PT: "em análise por uma pessoa da equipe", EN: "under human review"},
+    ApplicationStatus.WITHDRAWN: {ES: "retirada", PT: "retirada", EN: "withdrawn"},
+    ApplicationStatus.CLOSED: {ES: "cerrada", PT: "encerrada", EN: "closed"},
+}  # fmt: skip
 _AND = {ES: "y", PT: "e", EN: "and"}
 
 

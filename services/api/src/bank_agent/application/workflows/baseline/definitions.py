@@ -10,6 +10,7 @@ from bank_agent.application.workflows.account_inquiry.unsupported import recogni
 from bank_agent.application.workflows.baseline import account as account_b0
 from bank_agent.application.workflows.baseline import handlers
 from bank_agent.application.workflows.baseline import templates as _templates
+from bank_agent.application.workflows.baseline.credit import build_credit_b0
 from bank_agent.application.workflows.card_support import definition as card
 from bank_agent.application.workflows.dispute import definition as dispute
 from bank_agent.domain.workflow import WorkflowId
@@ -74,6 +75,7 @@ def build_account_inquiry_b0() -> WorkflowDefinition:
 
 BASELINE_DEFINITIONS: Mapping[WorkflowId, Callable[[], WorkflowDefinition]] = {
     WorkflowId.ACCOUNT_INQUIRY: build_account_inquiry_b0,
+    WorkflowId.CREDIT: build_credit_b0,
     WorkflowId.DISPUTE: build_dispute_b0,
     WorkflowId.CARD_SUPPORT: build_card_support_b0,
 }
