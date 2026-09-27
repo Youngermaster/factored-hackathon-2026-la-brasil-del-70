@@ -1,0 +1,182 @@
+# Pre-registered scoring for the phase 04 workflow prioritization.
+# docs/analysis/workflow-scoring-preregistration.md explains every value. This file was committed before any
+# score was computed. Changing a weight or rubric value after results are seen needs a new version with the
+# reason recorded in the pre-registration document; both results are kept.
+version: 1
+preregistered_on: "2026-09-26"
+
+weights:
+  demand: 20
+  pain: 25
+  automatable_share: 20
+  harm_inverse: 10
+  data_support: 15
+  demo_depth: 10
+
+sensitivity:
+  # Each weight moves by plus and minus this many points; the six weights are then renormalized to 100.
+  delta_points: 5
+
+prioritization:
+  # Scores closer than this (in points out of 100) are a tie, broken by higher data support, then lower harm.
+  tie_margin_points: 2.0
+  # A sub-intent the system may handle is classed "clarify first" when its data support is below this.
+  subintent_data_support_threshold: 0.5
+
+statistics:
+  bootstrap_resamples: 1000
+  bootstrap_seed: 20260926
+  confidence: 0.95
+  # Segment cells below these sizes are flagged as small.
+  small_cell_interactions: 100
+  small_cell_surveys: 30
+
+labels:
+  target_per_workflow: 150
+  documented_floor_per_workflow: 75
+  # The human label share replaces the proxy for a workflow once this many adjudicated items match it.
+  min_matching_labels_per_workflow: 75
+  seed: labeling-v1
+
+demand_patterns:
+  spike_window_days: 28
+  spike_robust_z: 3.5
+  error_contact_window_hours: 24
+  # Non-error digital events used as the baseline, as a deterministic hash sample.
+  baseline_sample_share: 0.05
+  baseline_seed: lag-baseline-v1
+
+# Harm if wrong, 1 (low) to 5 (high). The score uses (5 - harm) / 4.
+harm:
+  account_inquiry:
+    score: 2
+    reason: Read only; a wrong or stale figure misleads but moves nothing
+  card_support:
+    score: 3
+    reason: A verified protective block is a write; blocking the wrong card disrupts the customer until a human reverses it
+  dispute:
+    score: 3
+    reason: Opening a case is a write; a wrong transaction or a missed window affects the customer's money, although a human investigates
+  credit:
+    score: 5
+    reason: Regulatory and fair-lending exposure; an indicative result can be read as a decision
+
+# Demo depth: one point per behavior the workflow can demonstrate with verified evidence, out of five.
+demo_depth:
+  account_inquiry:
+    read_path: true
+    verified_write: false
+    clause_abstention: true
+    human_escalation: true
+    workflow_learned_component: false
+  card_support:
+    read_path: true
+    verified_write: true
+    clause_abstention: true
+    human_escalation: true
+    workflow_learned_component: false
+  dispute:
+    read_path: true
+    verified_write: true
+    clause_abstention: true
+    human_escalation: true
+    workflow_learned_component: true
+  credit:
+    read_path: true
+    verified_write: true
+    clause_abstention: true
+    human_escalation: true
+    workflow_learned_component: true
+
+# Data support: the mean of measured coverage ratios (0 to 1). The item definitions are in the
+# pre-registration document and in bank_data.analysis.evidence.DATA_SUPPORT_ITEMS.
+data_support:
+  account_inquiry:
+    - product_balance_present
+    - transactions_classifiable_for_totals
+    - payment_transfer_status_present
+  card_support:
+    - card_expiry_present
+    - card_status_present
+    - card_blocked_status_observed
+  dispute:
+    - purchase_merchant_present
+    - complaint_transaction_link_present
+    - complaint_own_product_reference
+    - complaint_claimed_amount_present
+  credit:
+    - customer_credit_score_present
+    - customer_income_present
+    - credit_product_interest_rate_present
+    - credit_product_days_past_due_present
+    - forward_risk_label_available
+
+# Sub-intents: capability is the share of the request the system may complete under CLAUDE.md section 1
+# (1 = self-service read or verified write; 0.5 = intake or indicative result recorded for human review;
+# 0 = escalation only by design). Harm uses the same 1 to 5 scale.
+sub_intents:
+  balance_inquiry:
+    workflow: account_inquiry
+    capability: 1.0
+    harm: 2
+    data_support: [product_balance_present]
+  payment_status:
+    workflow: account_inquiry
+    capability: 1.0
+    harm: 2
+    data_support: [payment_transfer_status_present]
+  statement_request:
+    workflow: account_inquiry
+    capability: 1.0
+    harm: 2
+    data_support: [transactions_classifiable_for_totals]
+  card_status:
+    workflow: card_support
+    capability: 1.0
+    harm: 2
+    data_support: [card_expiry_present, card_status_present]
+  card_block:
+    workflow: card_support
+    capability: 1.0
+    harm: 3
+    data_support: [card_status_present]
+  card_unblock_request:
+    workflow: card_support
+    capability: 0.0
+    harm: 5
+    data_support: [card_blocked_status_observed]
+  card_replacement_request:
+    workflow: card_support
+    capability: 0.0
+    harm: 4
+    data_support: [card_expiry_present]
+  dispute_new:
+    workflow: dispute
+    capability: 0.5
+    harm: 3
+    data_support: [purchase_merchant_present, transaction_status_present]
+  dispute_status:
+    workflow: dispute
+    capability: 1.0
+    harm: 2
+    data_support: [complaint_status_present]
+  credit_product_info:
+    workflow: credit
+    capability: 1.0
+    harm: 2
+    data_support: [credit_product_interest_rate_present]
+  credit_eligibility:
+    workflow: credit
+    capability: 0.5
+    harm: 5
+    data_support: [customer_credit_score_present, customer_income_present, credit_product_days_past_due_present]
+  credit_application:
+    workflow: credit
+    capability: 0.5
+    harm: 4
+    data_support: [customer_income_present]
+  credit_application_status:
+    workflow: credit
+    capability: 1.0
+    harm: 2
+    data_support: [system_owned_record]
