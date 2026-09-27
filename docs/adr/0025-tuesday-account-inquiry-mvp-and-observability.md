@@ -14,6 +14,29 @@ The current web app renders only the product name and the API exposes a health r
 
 This is a hackathon project using the organizer's synthetic data. Customer and product records represent the 2026-06-17 snapshot; customer-facing answers must say when the underlying data is as of.
 
+### Tuesday interaction flow
+
+```mermaid
+flowchart TD
+    C[Customer message] --> S[Verify demo session and load conversation]
+    S --> A[AI assistant returns typed intent and slots]
+    A --> V[Validate output against versioned JSON Schema]
+    V --> R{Recognized intent}
+    R -->|Account inquiry| Q[Read customer-scoped account records]
+    Q --> G[Ground answer in verified records]
+    G --> CHAT[Reply in the same conversation]
+    R -->|Card support, dispute, or credit| T[Application calls escalate_to_human]
+    T --> H[Persist handoff for this conversation]
+    H --> M[Mock human service agent joins the same chat]
+    M --> X[Send a bounded randomized demo response]
+    X --> L[Label the join and reply as simulated]
+    L --> CHAT
+    CHAT --> P[Persist messages, tool events, execution and model-call records in PostgreSQL]
+    P --> O[Export correlated model traces to Langfuse]
+```
+
+The model supplies a validated intent; application code calls services and the escalation tool using the authenticated customer and conversation context. The mock service agent and its randomized reply are visible in the existing conversation and clearly labeled as simulation.
+
 ## Considered options
 
 1. **Keep the existing shell and demonstrate workflows through scripts.** Fastest, but it is not a working customer-facing product and cannot demonstrate escalation.
@@ -104,3 +127,22 @@ Choose option 3. Tuesday's release includes verified, read-only account inquiry 
 - [Langfuse OpenTelemetry support and compatibility](https://langfuse.com/docs/compatibility)
 - [Langfuse model usage and cost tracking](https://langfuse.com/docs/observability/features/token-and-cost-tracking)
 - [Langfuse prompt-to-trace linking](https://langfuse.com/docs/prompt-management/features/link-to-traces)
+
+## Product path after Tuesday
+
+```mermaid
+flowchart LR
+    MVP[Tuesday MVP<br/>Account inquiry automation<br/>Mock human escalation for card, dispute, credit]
+    OBS[Review customer outcomes,<br/>handoffs, PostgreSQL records<br/>and Langfuse traces]
+    NEXT[Select well-supported,<br/>low-risk intents to automate]
+    AUTO[Add automation in small steps<br/>with validation and human fallback]
+    LIVE[Build authenticated human-service inbox<br/>and real same-chat join<br/>(ADR 0026)]
+    PERSONAL[Optional financial memory,<br/>tips and assistant personalization<br/>(ADR 0027)]
+    MOCKS[Mocked LATAM bank connectors<br/>and coming-soon digital-asset tabs<br/>(ADR 0028)]
+
+    MVP --> OBS --> NEXT --> AUTO
+    AUTO --> OBS
+    MVP --> LIVE
+    OBS --> PERSONAL
+    OBS --> MOCKS
+```
