@@ -1,7 +1,7 @@
 """Turn an ``EligibilityView`` into customer-facing text in es, pt, or en, from the pack's messages and clauses.
 
-The text states that the service is synthetic, the outcome in plain words, each reason with its clause
-citation, any missing information, the uncertainty statement, the review path, and the ``CRE-ALL-1``
+The text states that the service is synthetic, the outcome in plain words, each reason once with the clauses
+that cite it, any missing information, the uncertainty statement, the review path, and the ``CRE-ALL-1``
 disclaimer. No language model is involved, and the text is refused if it contains approval wording.
 """
 
@@ -26,9 +26,13 @@ def render_eligibility(
     citations: list[ClauseRef] = []
     if view.reasons:
         lines.append(message("heading", "reasons"))
+        grouped: dict[str, list[ClauseRef]] = {}
         for reason in view.reasons:
-            lines.append(f"- {message('reason', reason.reason_code)} ({reason.clause})")
+            grouped.setdefault(reason.reason_code, []).append(reason.clause)
             citations.append(reason.clause)
+        for code, clauses in grouped.items():
+            cited = ", ".join(str(clause) for clause in dict.fromkeys(clauses))
+            lines.append(f"- {message('reason', code)} ({cited})")
     if view.missing_facts:
         lines.append(message("heading", "missing"))
         lines.extend(f"- {message('missing_fact', fact)}" for fact in view.missing_facts)

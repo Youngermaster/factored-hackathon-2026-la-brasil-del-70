@@ -1,0 +1,20 @@
+Orientação sintética de elegibilidade (demonstração): não é uma decisão de crédito.
+Faltam informações para darmos uma orientação.
+Motivos, com a regra que os sustenta:
+- O produto permite uma orientação automática. (ELG-ALL-3@1)
+- Há uma pontuação de crédito registrada. (ELG-ALL-1@1)
+- A pontuação de crédito atinge o mínimo do produto. (ELG-CO-1.2@1)
+- Não há uma renda mensal disponível. (ELG-ALL-1@1, ELG-CO-1.2@1)
+- Não há atrasos nos seus produtos de crédito. (ELG-CO-1.2@1)
+- O seu tempo como cliente atinge o mínimo. (ELG-CO-1.2@1)
+- O valor e o prazo estão dentro da faixa do produto. (ELG-CO-1.2@1)
+- Há uma estimativa de risco disponível. (ELG-ALL-2@1)
+- A estimativa de risco está em uma faixa aceitável. (ELG-CO-1.2@1)
+- A incerteza da estimativa não está perto de um limite entre níveis. (ELG-ALL-2@1)
+Informações que faltam:
+- A sua renda mensal (você pode declará-la nesta conversa).
+Sem as informações que faltam, não podemos dar uma orientação.
+Se você nos passar as informações que faltam, podemos dar a orientação novamente; você também pode pedir para falar com uma pessoa.
+Esta informação é indicativa e vem de um catálogo e de regras sintéticas de demonstração. Não é uma oferta nem uma decisão de crédito, e as condições finais, se houver, são definidas por uma pessoa da equipe de crédito depois da sua própria análise.
+
+ELG-ALL-3@1 ELG-ALL-1@1 ELG-CO-1.2@1 ELG-ALL-2@1 CRE-ALL-1@1

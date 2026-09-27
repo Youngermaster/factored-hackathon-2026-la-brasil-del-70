@@ -1,0 +1,131 @@
+# Representative situations evaluated against the real policy pack (fixture table, team-authored, synthetic).
+# Every workflow has at least one normal, one unsupported, and one escalation row per jurisdiction (MX, CO, AR).
+# session: none | identified | otp | step_up | expired. trust: low | elevated | high. Dates count to 2026-06-17.
+# credit.product_code is resolved through the synthetic catalog; an unknown code leaves the product empty.
+decisions:
+  # account_inquiry
+  - {id: acc-mx-normal, workflow: account_inquiry, state: ANSWER_BALANCE, country: MX, expect: allow,
+     facts: {intent: balance_inquiry, account: {product_owned_by_session_customer: true, answer_as_of: "2026-06-17T05:00:00Z"}}}
+  - {id: acc-co-normal-statement, workflow: account_inquiry, state: ANSWER_STATEMENT, country: CO, expect: allow,
+     facts: {intent: statement_request, account: {product_owned_by_session_customer: true, statement_period_days: 92, answer_as_of: "2026-06-17T05:00:00Z"}}}
+  - {id: acc-ar-normal, workflow: account_inquiry, state: ANSWER_PAYMENT_STATUS, country: AR, expect: allow,
+     facts: {intent: payment_status, account: {product_owned_by_session_customer: true, answer_as_of: "2026-06-17T05:00:00Z"}}}
+  - {id: acc-mx-unsupported, workflow: account_inquiry, state: IDENTIFY_PRODUCT, country: MX, expect: abstain,
+     facts: {intent: unsupported}}
+  - {id: acc-co-unsupported-period, workflow: account_inquiry, state: ANSWER_STATEMENT, country: CO, expect: clarify,
+     facts: {intent: statement_request, account: {product_owned_by_session_customer: true, statement_period_days: 93, answer_as_of: "2026-06-17T05:00:00Z"}}}
+  - {id: acc-ar-unsupported-no-as-of, workflow: account_inquiry, state: ANSWER_BALANCE, country: AR, expect: abstain,
+     facts: {intent: balance_inquiry, account: {product_owned_by_session_customer: true}}}
+  - {id: acc-mx-escalation-legal, workflow: account_inquiry, state: ANSWER_PAYMENT_STATUS, country: MX, expect: escalate,
+     facts: {intent: payment_status, escalation: {legal_or_regulator_mention: true}, account: {product_owned_by_session_customer: true, answer_as_of: "2026-06-17T05:00:00Z"}}}
+  - {id: acc-co-escalation-distress, workflow: account_inquiry, state: IDENTIFY_PRODUCT, country: CO, expect: escalate,
+     facts: {intent: balance_inquiry, escalation: {distress_signal: true}}}
+  - {id: acc-ar-escalation-human, workflow: account_inquiry, state: START, country: AR, session: none, expect: escalate,
+     facts: {intent: human_request, escalation: {human_requested: true}}}
+  - {id: acc-mx-auth-denied, workflow: account_inquiry, state: ANSWER_BALANCE, country: MX, session: identified, expect: deny,
+     facts: {intent: balance_inquiry, escalation: {human_requested: true}}}
+  - {id: acc-co-elevated-step-up, workflow: account_inquiry, state: ANSWER_BALANCE, country: CO, trust: elevated, expect: require_step_up,
+     facts: {intent: balance_inquiry, account: {product_owned_by_session_customer: true, answer_as_of: "2026-06-17T05:00:00Z"}}}
+  # card_support
+  - {id: crd-mx-normal-block, workflow: card_support, state: EXECUTE_BLOCK, country: MX, session: step_up, expect: allow,
+     action: {kind: block_card, confirmed: true},
+     facts: {intent: card_block, card: {owned_by_session_customer: true, is_card: true, status: active}}}
+  - {id: crd-co-normal-status, workflow: card_support, state: ANSWER_CARD_STATUS, country: CO, expect: allow,
+     facts: {intent: card_status, card: {owned_by_session_customer: true, is_card: true, status: blocked}}}
+  - {id: crd-ar-normal-confirm, workflow: card_support, state: CONFIRM_BLOCK, country: AR, session: step_up, expect: require_confirmation,
+     action: {kind: block_card, confirmed: false},
+     facts: {intent: card_block, card: {owned_by_session_customer: true, is_card: true, status: active}}}
+  - {id: crd-mx-unsupported, workflow: card_support, state: START, country: MX, session: none, expect: abstain,
+     facts: {intent: unsupported}}
+  - {id: crd-co-unsupported-already-blocked, workflow: card_support, state: EXECUTE_BLOCK, country: CO, session: step_up, expect: abstain,
+     action: {kind: block_card, confirmed: true},
+     facts: {intent: card_block, card: {owned_by_session_customer: true, is_card: true, status: blocked}}}
+  - {id: crd-ar-unsupported-no-step-up, workflow: card_support, state: CONFIRM_BLOCK, country: AR, expect: require_step_up,
+     action: {kind: block_card, confirmed: false},
+     facts: {intent: card_block, card: {owned_by_session_customer: true, is_card: true, status: active}}}
+  - {id: crd-mx-escalation-unblock, workflow: card_support, state: IDENTIFY_CARD, country: MX, expect: escalate,
+     facts: {intent: card_unblock_request, card: {owned_by_session_customer: true, is_card: true, status: blocked, request: unblock_request}}}
+  - {id: crd-co-escalation-replacement, workflow: card_support, state: CARD_REQUEST_HANDOFF, country: CO, expect: escalate,
+     facts: {intent: card_replacement_request, card: {owned_by_session_customer: true, is_card: true, status: blocked, request: replacement_request}}}
+  - {id: crd-ar-escalation-risk-high, workflow: card_support, state: ANSWER_CARD_STATUS, country: AR, trust: high, session: step_up, expect: escalate,
+     facts: {intent: card_status, card: {owned_by_session_customer: true, is_card: true, status: active}}}
+  - {id: crd-mx-refuse-other-card, workflow: card_support, state: ANSWER_CARD_STATUS, country: MX, expect: refuse,
+     facts: {intent: card_status, card: {owned_by_session_customer: false, is_card: true, status: active}}}
+  # dispute
+  - {id: dsp-mx-normal, workflow: dispute, state: CREATE_CASE, country: MX, session: step_up, expect: allow,
+     action: {kind: create_dispute_case, confirmed: true},
+     facts: {intent: dispute_new, dispute: {reason: unrecognized, disputed_amount: {amount: "1500.00", currency: MXN},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-03-20, amount: {amount: "1500.00", currency: MXN}}}}}
+  - {id: dsp-co-normal, workflow: dispute, state: CONFIRM_DISPUTE, country: CO, session: step_up, expect: require_confirmation,
+     action: {kind: create_dispute_case, confirmed: false},
+     facts: {intent: dispute_new, dispute: {reason: duplicate, disputed_amount: {amount: "150000.00", currency: COP},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-04-18, amount: {amount: "150000.00", currency: COP}}}}}
+  - {id: dsp-ar-normal, workflow: dispute, state: COLLECT_DETAILS, country: AR, expect: allow,
+     facts: {intent: dispute_new, dispute: {reason: not_received, disputed_amount: {amount: "50000.00", currency: ARS},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-05-18, amount: {amount: "80000.00", currency: ARS}}}}}
+  - {id: dsp-mx-unsupported-pending, workflow: dispute, state: COLLECT_DETAILS, country: MX, expect: abstain,
+     facts: {intent: dispute_new, dispute: {reason: unrecognized, disputed_amount: {amount: "900.00", currency: MXN},
+       transaction: {owned_by_session_customer: true, status: pending, occurred_on: 2026-06-10, amount: {amount: "900.00", currency: MXN}}}}}
+  - {id: dsp-co-unsupported-window-closed, workflow: dispute, state: COLLECT_DETAILS, country: CO, expect: deny, decisive: [DSP.within_window],
+     facts: {intent: dispute_new, dispute: {reason: unrecognized, disputed_amount: {amount: "150000.00", currency: COP},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-04-17, amount: {amount: "150000.00", currency: COP}}}}}
+  - {id: dsp-ar-unsupported-already-disputed, workflow: dispute, state: COLLECT_DETAILS, country: AR, expect: deny,
+     facts: {intent: dispute_new, dispute: {reason: duplicate, disputed_amount: {amount: "5000.00", currency: ARS},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-06-01, amount: {amount: "5000.00", currency: ARS}, has_open_dispute: true}}}}
+  - {id: dsp-mx-escalation-amount, workflow: dispute, state: CONFIRM_DISPUTE, country: MX, session: step_up, expect: escalate,
+     action: {kind: create_dispute_case, confirmed: false},
+     facts: {intent: dispute_new, dispute: {reason: unrecognized, disputed_amount: {amount: "12000.00", currency: MXN},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-05-01, amount: {amount: "12000.00", currency: MXN}}}}}
+  - {id: dsp-co-escalation-repeat, workflow: dispute, state: COLLECT_DETAILS, country: CO, expect: escalate, decisive: [ESC.repeat_complainer],
+     facts: {intent: dispute_new, escalation: {prior_complaints_in_lookback: 3}, dispute: {reason: wrong_amount, disputed_amount: {amount: "10000.00", currency: COP},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-06-01, amount: {amount: "30000.00", currency: COP}}}}}
+  - {id: dsp-ar-escalation-other-reason, workflow: dispute, state: COLLECT_DETAILS, country: AR, expect: escalate,
+     facts: {intent: dispute_new, dispute: {reason: other, disputed_amount: {amount: "5000.00", currency: ARS},
+       transaction: {owned_by_session_customer: true, status: approved, occurred_on: 2026-06-01, amount: {amount: "5000.00", currency: ARS}}}}}
+  - {id: dsp-mx-clarify-missing, workflow: dispute, state: LOCATE_TRANSACTION, country: MX, expect: clarify,
+     facts: {intent: dispute_new}}
+  # credit
+  - {id: cre-mx-normal, workflow: credit, state: PRODUCT_DETAIL, country: MX, expect: allow,
+     facts: {intent: credit_product_info, credit: {product_code: MX-CC-CLASSIC, disclaimer_included: true}}}
+  - {id: cre-co-normal-submit, workflow: credit, state: SUBMIT_APPLICATION, country: CO, session: step_up, expect: allow,
+     action: {kind: submit_credit_application, confirmed: true},
+     facts: {intent: credit_application, credit: {product_code: CO-PL-STANDARD, disclaimer_included: true}}}
+  - {id: cre-ar-normal-list, workflow: credit, state: LIST_PRODUCTS, country: AR, expect: allow,
+     facts: {intent: credit_product_info, credit: {disclaimer_included: true}}}
+  - {id: cre-mx-unsupported, workflow: credit, state: LIST_PRODUCTS, country: MX, expect: abstain,
+     facts: {intent: unsupported, credit: {disclaimer_included: true}}}
+  - {id: cre-co-unsupported-foreign-product, workflow: credit, state: PRODUCT_DETAIL, country: CO, expect: deny,
+     facts: {intent: credit_product_info, credit: {product_code: AR-PL-STANDARD, disclaimer_included: true}}}
+  - {id: cre-ar-unsupported-unknown-product, workflow: credit, state: PRODUCT_DETAIL, country: AR, expect: clarify,
+     facts: {intent: credit_product_info, credit: {product_code: AR-XX-NONE, disclaimer_included: true}}}
+  - {id: cre-mx-escalation-review, workflow: credit, state: PRESENT_ELIGIBILITY, country: MX, expect: escalate,
+     facts: {intent: credit_eligibility, credit: {product_code: MX-PL-STANDARD, disclaimer_included: true, eligibility_outcome: review_required}}}
+  - {id: cre-co-escalation-contested, workflow: credit, state: PRESENT_ELIGIBILITY, country: CO, expect: escalate,
+     facts: {intent: credit_eligibility, escalation: {eligibility_contested: true}, credit: {product_code: CO-PL-STANDARD, disclaimer_included: true, eligibility_outcome: not_eligible}}}
+  - {id: cre-ar-escalation-human, workflow: credit, state: ESCALATE, country: AR, expect: escalate,
+     facts: {intent: human_request, escalation: {human_requested: true}}}
+  - {id: cre-mx-deny-no-disclaimer, workflow: credit, state: PRODUCT_DETAIL, country: MX, expect: deny,
+     facts: {intent: credit_product_info, credit: {product_code: MX-CC-CLASSIC}}}
+# The synthetic eligibility service on the real ELG clauses and catalog. Amounts are in the product currency;
+# income null means the profile has no income; estimate null means the estimator was unavailable.
+eligibility:
+  - {id: elg-mx-complete, product: MX-PL-STANDARD, amount: "60000.00", term: 24, expect: indicatively_eligible,
+     profile: {credit_score: 720, income: "35000.00", tenure_months: 40, max_days_past_due: 0}, estimate: {low: "0.05", high: "0.12", band: low}}
+  - {id: elg-co-no-income, product: CO-PL-STANDARD, amount: "20000000.00", term: 36, expect: insufficient_data, reasons: [missing_income],
+     profile: {credit_score: 700, income: null, tenure_months: 60, max_days_past_due: 0}, estimate: {low: "0.05", high: "0.12", band: low}}
+  - {id: elg-ar-borderline-score-below, product: AR-PL-STANDARD, amount: "3000000.00", term: 24, expect: not_eligible,
+     profile: {credit_score: 645, income: "2500000.00", tenure_months: 30, max_days_past_due: 0}, estimate: {low: "0.05", high: "0.10", band: low}}
+  - {id: elg-ar-borderline-score-above, product: AR-PL-STANDARD, amount: "3000000.00", term: 24, expect: indicatively_eligible,
+     profile: {credit_score: 655, income: "2500000.00", tenure_months: 30, max_days_past_due: 0}, estimate: {low: "0.05", high: "0.10", band: low}}
+  - {id: elg-mx-past-due, product: MX-PL-STANDARD, amount: "60000.00", term: 24, expect: review_required, reasons: [days_past_due_present],
+     profile: {credit_score: 720, income: "35000.00", tenure_months: 40, max_days_past_due: 15}, estimate: {low: "0.05", high: "0.12", band: low}}
+  - {id: elg-co-mortgage, product: CO-MG-FIXED, amount: "200000000.00", term: 180, expect: review_required, reasons: [product_requires_human_assessment],
+     profile: null, estimate: null}
+  - {id: elg-mx-borderline-interval, product: MX-PL-STANDARD, amount: "60000.00", term: 24, expect: review_required, reasons: [borderline_risk_interval],
+     profile: {credit_score: 720, income: "35000.00", tenure_months: 40, max_days_past_due: 0}, estimate: {low: "0.15", high: "0.22", band: medium}}
+  - {id: elg-co-high-band, product: CO-CC-CLASSIC, amount: "5000000.00", term: 12, expect: not_eligible,
+     profile: {credit_score: 700, income: "6000000.00", tenure_months: 60, max_days_past_due: 0}, estimate: {low: "0.40", high: "0.50", band: high}}
+  - {id: elg-ar-no-estimate, product: AR-CC-CLASSIC, amount: "1000000.00", term: 12, expect: review_required, reasons: [risk_estimate_unavailable],
+     profile: {credit_score: 700, income: "2500000.00", tenure_months: 30, max_days_past_due: 0}, estimate: null}
+  - {id: elg-mx-card-above-review, product: MX-CC-CLASSIC, amount: "100000.00", term: 12, expect: review_required, reasons: [amount_above_review_threshold],
+     profile: {credit_score: 720, income: "35000.00", tenure_months: 40, max_days_past_due: 0}, estimate: {low: "0.05", high: "0.12", band: low}}

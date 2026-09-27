@@ -1,7 +1,7 @@
 """Contract suites for the credit model ports: the risk estimator and the eligibility policy.
 
-They run against the test doubles now. Phase 06 adds the synthetic eligibility service, phase 09 the
-score-band baseline estimator, and phase 10 the learned estimators, each to the same parameter lists.
+The eligibility suite runs against the fake and the synthetic eligibility service (phase 06, on the real pack);
+phase 09 adds the score-band baseline estimator and phase 10 the learned estimators to the same lists.
 """
 
 from collections.abc import Callable
@@ -10,6 +10,8 @@ from decimal import Decimal
 
 import pytest
 
+from bank_agent.adapters.policy.filesystem import FilesystemPolicyRepository
+from bank_agent.bootstrap.settings import DEFAULT_POLICY_DIR
 from bank_agent.domain.credit import CreditProductType, CreditProfile
 from bank_agent.domain.eligibility import (
     CreditRiskFeatures,
@@ -22,6 +24,7 @@ from bank_agent.domain.identifiers import CreditProductCode, CustomerId
 from bank_agent.domain.intelligence import ModelComponent
 from bank_agent.domain.locale import Country
 from bank_agent.domain.money import Currency, Money
+from bank_agent.policy.eligibility import SyntheticEligibilityService
 from bank_agent.ports.eligibility import CreditApplicationFacts, EligibilityPolicy, EligibilityRequest
 from bank_agent.ports.models import RiskEstimator
 from bank_agent.testing.clock import FixedClock
@@ -33,10 +36,18 @@ from bank_agent_credit import catalog_products
 RISK_ESTIMATORS = [
     pytest.param(lambda: FakeRiskEstimator(FixedClock(T0), SequentialIdGenerator()), marks=pytest.mark.unit, id="fake")
 ]
+
+
+def _synthetic_service() -> EligibilityPolicy:
+    pack = FilesystemPolicyRepository.from_directory(DEFAULT_POLICY_DIR).pack
+    return SyntheticEligibilityService(pack, FixedClock(T0), SequentialIdGenerator())
+
+
 ELIGIBILITY_POLICIES = [
     pytest.param(
         lambda: FakeEligibilityPolicy(FixedClock(T0), SequentialIdGenerator()), marks=pytest.mark.unit, id="fake"
-    )
+    ),
+    pytest.param(_synthetic_service, marks=pytest.mark.integration, id="synthetic"),
 ]
 
 FEATURES = CreditRiskFeatures(
