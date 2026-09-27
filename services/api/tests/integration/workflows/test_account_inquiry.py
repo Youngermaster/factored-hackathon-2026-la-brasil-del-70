@@ -29,6 +29,8 @@ async def test_19_es_ar_balances_state_the_as_of_date_in_the_account_currency(ba
     assert "250.000,00 ARS" in text
     assert "45.000,00 ARS" in text
     assert "crédito disponible 255.000,00 ARS" in text
+    assert reply.response.balances
+    assert {balance.product_ref.table.value for balance in reply.response.balances} == {"products"}
     assert "ACC-ALL-1@1" in [str(c.clause) for c in reply.response.citations]
     record = await harness.record(session, reply.turn_id)
     assert record.workflow == ACCOUNT
@@ -66,6 +68,8 @@ async def test_20_pt_br_two_similar_transfers_are_clarified_then_answered(backen
     assert (answered.state, answered.outcome) == ("PAYMENT_STATUS", Outcome.RESOLVED)
     assert "Situação da sua transferência de 1.500,00 MXN de 15 de junho de 2026" in answered.response.text
     assert ": pendente. Dados de 17 de junho de 2026." in answered.response.text
+    (payment,) = answered.response.payment_statuses
+    assert (payment.status.value, str(payment.amount.amount)) == ("pending", "1500.00")
     record = await harness.record(session, answered.turn_id)
     assert "get_payment_status" in [call.tool.value for call in record.tool_calls]
     assert record.grounding.violations == ()
@@ -82,6 +86,8 @@ async def test_21_es_mx_statement_for_last_month_has_totals_and_no_balances(back
     assert "Totales en MXN: cargos 1,550.00 MXN; abonos 1,500.00 MXN." in text
     assert "Pendientes, rechazadas o revertidas: 1." in text
     assert "saldo" not in text.split("\n\n")[0].lower()
+    assert reply.response.statement is not None
+    assert reply.response.statement.transaction_count == 4
     record = await harness.record(session, reply.turn_id)
     assert record.grounding.violations == ()
     assert any(r.rule_id == "ACC.statement_period_within_limit" and r.passed
