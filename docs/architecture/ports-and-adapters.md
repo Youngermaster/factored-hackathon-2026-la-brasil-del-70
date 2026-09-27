@@ -96,7 +96,7 @@ The read side of each customer-data repository is its own Protocol (`CustomerRea
 | `IntentRouter` | sync | `FakeIntentRouter` (testing) | `router:keyword@1` (09), `router:tfidf` and `router:embeddings` (10) |
 | `TransactionResolver` | sync | `FakeTransactionResolver` (testing) | `resolver:rules@1` (09), `resolver:lgbm` (10) |
 | `LanguageDetector` | sync | `FakeLanguageDetector` (testing) | lingua adapter (09) |
-| `ModelRegistry` | sync | none | filesystem registry (10), MLflow registry (10, optional) |
+| `ModelRegistry` | sync | none | `FilesystemModelRegistry` (10a, the default); an MLflow registry adapter is optional and not built (BACKLOG) |
 | `Telemetry` | sync | `NoopTelemetry`; `RecordingTelemetry` (testing) | OpenTelemetry (15) |
 | `ReadinessCheck` | async | `PostgresReadinessCheck` | further dependencies (15) |
 

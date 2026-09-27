@@ -20,6 +20,8 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0012](0012-bound-policies-and-informational-retrieval.md) | Bound policies for workflow states, with open retrieval only for informational questions | Accepted | 2026-09-27 |
 | [0013](0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators | Accepted | 2026-09-26 |
 | [0014](0014-explicit-state-machine-over-an-agent-framework.md) | An explicit state machine over an agent framework | Accepted | 2026-09-27 |
+| [0015](0015-router-model-choice.md) | Learned routers (TF-IDF and embeddings) behind the port, rule baseline as the default until end-to-end evaluation | Accepted | 2026-09-27 |
+| [0016](0016-resolver-approach.md) | A LightGBM lambdarank resolver with labels by construction, an evidence gate, and a none-of-these option | Accepted | 2026-09-27 |
 | [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
 | [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |
 | [0022](0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source | Accepted | 2026-09-26 |

@@ -94,6 +94,17 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [evaluation/retrieval-labeling.md](evaluation/retrieval-labeling.md) | The relevance judgment format and the labeling and review protocol |
 | [evaluation/retrieval.md](evaluation/retrieval.md) | Generated comparison of BM25, dense, and hybrid retrieval, by workflow, language, and jurisdiction |
 
+## Learned components
+
+| Document | Purpose |
+|---|---|
+| [../ml/README.md](../ml/README.md) | How to add, train, evaluate, promote, retrain, and compare a learned model |
+| [models/router.md](models/router.md) | Model card of the intent router (TF-IDF and embeddings against the keyword baseline) |
+| [models/resolver.md](models/resolver.md) | Model card of the transaction resolver (LightGBM ranker against the rule baseline) |
+| [evaluation/router.md](evaluation/router.md) | Generated router evaluation: per intent, language, locale, and workflow, calibration, robustness, transfer |
+| [evaluation/resolver.md](evaluation/resolver.md) | Generated resolver evaluation: per use, language, country, candidate count, clue, silver labels |
+| [evaluation/router-labeling.md](evaluation/router-labeling.md) | The protocol for the 200-item router validation sample |
+
 ## Workflow engine and workflows
 
 | Document | Purpose |

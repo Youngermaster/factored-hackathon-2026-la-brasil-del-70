@@ -79,6 +79,6 @@ B0 runs on the same engine with its own registry (`baseline_b0`), one definition
 
 ## Limitations
 
-- The keyword router (`router:keyword@1`) is a baseline until phase 10; its tables cover the phrasings in the tests and the scenario set, not every paraphrase.
+- The keyword router (`router:keyword@1`) stays the default until phase 14 measures the learned routers end to end; its tables cover the phrasings in the tests and the scenario set, not every paraphrase (test accuracy 0.381 on the router corpus against 0.749 for `router:embeddings` and 0.677 for `router:tfidf`, [`docs/evaluation/router.md`](../evaluation/router.md), [ADR 0015](../adr/0015-router-model-choice.md)). `WORKFLOW_ROUTER=tfidf@champion` or `embeddings@champion` switches the engine to a learned router with no workflow change.
 - The lexical language detector needs marker words; very short texts fall back to the stored preference.
 - The informational threshold was tuned on provisional relevance judgments (`docs/evaluation/retrieval.md`).
