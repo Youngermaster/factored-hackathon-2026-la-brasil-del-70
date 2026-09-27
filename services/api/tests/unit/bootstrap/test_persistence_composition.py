@@ -20,10 +20,8 @@ def test_without_a_database_the_memory_adapters_serve_and_identity_needs_a_secre
     assert isinstance(container.persistence.uow_factory, InMemoryUnitOfWorkFactory)
     assert container.session_service is None
     catalog = container.banking_tools.dependencies.catalog
-    assert (catalog.catalog_version(), catalog.get(CreditProductCode("MX-CC-FIXTURE"))) == (
-        "catalog-unconfigured",
-        None,
-    )
+    assert catalog is container.policy.catalog
+    assert catalog.get(CreditProductCode("CO-PL-STANDARD")) is not None
 
 
 async def test_database_settings_select_postgres(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -8,6 +8,7 @@ set, long enough, and not a known default. Violations raise ``SettingsError``, w
 offending variables and never their values.
 """
 
+from datetime import date
 from decimal import Decimal
 from pathlib import Path
 from typing import Annotated, Literal
@@ -48,6 +49,9 @@ _SERVICE_ROOT = Path(__file__).resolve().parents[3]
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[5]
 DEFAULT_PRICES_FILE = _SERVICE_ROOT / "config" / "llm_prices.yaml"
 DEFAULT_CASSETTE_DIR = _REPOSITORY_ROOT / "evals" / "cassettes"
+DEFAULT_POLICY_DIR = _REPOSITORY_ROOT / "policies"
+DEFAULT_DATA_AS_OF = date(2026, 6, 17)
+"""The organizer snapshot date (``data_platform/config/sources.yml``), the end of the seeded data."""
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:
@@ -144,6 +148,26 @@ class LLMSettings(BaseSettings):
         return value
 
 
+class PolicySettings(BaseSettings):
+    """The synthetic policy pack and the reference date of policy time windows.
+
+    ``data_as_of`` is the as-of date of the records (the organizer snapshot, 2026-06-17): dispute windows and
+    complaint lookbacks count to it, never to the wall clock, because the data ends months before the demo.
+    """
+
+    model_config = _config("POLICY_")
+
+    dir: Path = DEFAULT_POLICY_DIR
+    data_as_of: date = DEFAULT_DATA_AS_OF
+
+    @field_validator("dir", "data_as_of", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return DEFAULT_POLICY_DIR if info.field_name == "dir" else DEFAULT_DATA_AS_OF
+        return value
+
+
 class ObservabilitySettings(BaseSettings):
     """OpenTelemetry export settings."""
 
@@ -163,12 +187,14 @@ class AppSettings:
         security: SecuritySettings,
         llm: LLMSettings,
         observability: ObservabilitySettings,
+        policy: PolicySettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
         self.security = security
         self.llm = llm
         self.observability = observability
+        self.policy = policy if policy is not None else PolicySettings()
 
     @property
     def is_production(self) -> bool:
@@ -236,6 +262,7 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         security=SecuritySettings(_env_file=env_file),
         llm=LLMSettings(_env_file=env_file),
         observability=ObservabilitySettings(_env_file=env_file),
+        policy=PolicySettings(_env_file=env_file),
     )
     problems = production_problems(settings)
     if problems:

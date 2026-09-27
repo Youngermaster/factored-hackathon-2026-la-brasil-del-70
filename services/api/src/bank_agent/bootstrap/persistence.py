@@ -15,7 +15,6 @@ from bank_agent.adapters.identity.provider import MockIdentityProvider
 from bank_agent.adapters.identity.sender import DemoOtpSender
 from bank_agent.adapters.identity.store import ChallengeStore, InMemoryChallengeStore
 from bank_agent.adapters.persistence.duckdb.gold import DATASET_CREDIT_BALANCE_CONVENTION
-from bank_agent.adapters.persistence.memory.credit_catalog import InMemoryCreditProductCatalog
 from bank_agent.adapters.persistence.memory.sessions import InMemorySessionStore
 from bank_agent.adapters.persistence.memory.store import InMemoryStore
 from bank_agent.adapters.persistence.memory.unit_of_work import InMemoryUnitOfWorkFactory, standalone_audit_log
@@ -27,7 +26,7 @@ from bank_agent.adapters.persistence.postgres.unit_of_work import PostgresUnitOf
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.tools.banking import BankingTools, SessionToolset
 from bank_agent.application.tools.base import ToolDependencies
-from bank_agent.application.tools.context import SessionContext, ToolSettings
+from bank_agent.application.tools.context import SessionContext, ToolPolicy, ToolSettings
 from bank_agent.application.tools.failure_injection import ToolFailureInjector
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
 from bank_agent.domain.actions import ToolFailureMode, ToolName
@@ -36,9 +35,6 @@ from bank_agent.ports.credit_catalog import CreditProductCatalog
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
-
-UNCONFIGURED_CATALOG_VERSION = "catalog-unconfigured"
-"""The empty catalog served until phase 06 loads the synthetic credit catalog from ``policies/``."""
 
 
 def owner_database_url(database: DatabaseSettings) -> URL:
@@ -93,15 +89,21 @@ def build_session_service(
 
 
 def build_banking_tools(
-    persistence: PersistenceServices, *, clock: Clock, ids: IdGenerator, catalog: CreditProductCatalog | None = None
+    persistence: PersistenceServices,
+    *,
+    clock: Clock,
+    ids: IdGenerator,
+    catalog: CreditProductCatalog,
+    tool_policy: ToolPolicy,
 ) -> BankingTools:
+    """The banking tools over the synthetic catalog, with their policy parameters from the pack."""
     return BankingTools(
         ToolDependencies(
             uow_factory=persistence.uow_factory,
-            catalog=catalog or InMemoryCreditProductCatalog((), UNCONFIGURED_CATALOG_VERSION),
+            catalog=catalog,
             clock=clock,
             ids=ids,
-            settings=ToolSettings(balance_convention=DATASET_CREDIT_BALANCE_CONVENTION),
+            settings=ToolSettings(policy=tool_policy, balance_convention=DATASET_CREDIT_BALANCE_CONVENTION),
         )
     )
 

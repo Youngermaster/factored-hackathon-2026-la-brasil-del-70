@@ -43,13 +43,22 @@ def _block_digest(product_id: ProductId, reason: CardBlockReason | None) -> str:
 
 
 class WriteTools(ToolCalls):
+    def _require_step_up(self, action: ActionKind) -> None:
+        """Writes the policy matrix marks as step-up need a valid step-up window (CLAUDE.md section 7)."""
+        if action in self._deps.settings.policy.step_up_actions and not self._context.step_up_valid:
+            raise StepUpRequiredError()
+
     async def create_dispute_case(
         self, request: CreateDisputeArguments, idempotency_key: IdempotencyKey
     ) -> DisputeCase:
-        """Open a case for one of the customer's transactions; the same key returns the same case."""
+        """Open a case for one of the customer's transactions, with the SLA of the customer's country.
+
+        Needs step-up when the policy matrix says so; the same key returns the same case.
+        """
         deps, at = self._deps, self._context.at
 
         async def work(uow: UnitOfWork) -> DisputeCase:
+            self._require_step_up(ActionKind.CREATE_DISPUTE_CASE)
             existing = await uow.cases.find_by_idempotency_key(idempotency_key)
             if existing is not None:
                 same = (existing.transaction_id, existing.reason, existing.disputed_amount) == (
@@ -63,12 +72,13 @@ class WriteTools(ToolCalls):
             transaction = await uow.transactions.get(request.transaction_id)
             if transaction is None:
                 raise TransactionNotFoundError()
+            country = (await uow.customers.get_current()).country
             case = DisputeCase.open(
                 case_id=CaseId(deps.ids.new(IdKind.CASE)),
                 transaction=transaction,
                 reason=request.reason,
                 opened_at=at,
-                sla_due_at=at + deps.settings.dispute_sla,
+                sla_due_at=at + deps.settings.policy.dispute_sla(country),
                 idempotency_key=idempotency_key,
                 disputed_amount=request.disputed_amount,
             )
@@ -89,8 +99,7 @@ class WriteTools(ToolCalls):
         digest = _block_digest(product_id, reason)
 
         async def work(uow: UnitOfWork) -> Product:
-            if not self._context.step_up_valid:
-                raise StepUpRequiredError()
+            self._require_step_up(ActionKind.BLOCK_CARD)
             recorded = await uow.action_ledger.find(ActionKind.BLOCK_CARD, idempotency_key)
             if recorded is not None and recorded.request_digest != digest:
                 raise IdempotencyConflictError()
@@ -126,10 +135,14 @@ class WriteTools(ToolCalls):
     async def submit_credit_application(
         self, request: SubmitCreditApplicationArguments, idempotency_key: IdempotencyKey
     ) -> CreditApplicationIntake:
-        """Record an intake with status ``submitted`` for human review. It never decides and never moves money."""
+        """Record an intake with status ``submitted`` for human review. It never decides and never moves money.
+
+        Needs step-up when the policy matrix says so.
+        """
         deps, at = self._deps, self._context.at
 
         async def work(uow: UnitOfWork) -> CreditApplicationIntake:
+            self._require_step_up(ActionKind.SUBMIT_CREDIT_APPLICATION)
             customer = await uow.customers.get_current()
             product = deps.catalog.get(request.product_code)
             if product is None or product.jurisdiction is not customer.country:

@@ -1,5 +1,7 @@
 """Write tools over every write backend: idempotency, step-up, verification, audit, and failure injection."""
 
+from datetime import timedelta
+
 import pytest
 
 from bank_agent.application.tools.banking import BankingTools
@@ -48,8 +50,11 @@ APPLICATION = SubmitCreditApplicationArguments(
 
 class TestWriteToolsContract:
     async def test_create_dispute_case_is_idempotent_and_verified(self, write_backend: WriteBackend) -> None:
-        tools = tools_for(write_backend.uow_factory())
+        with pytest.raises(StepUpRequiredError):
+            await tools_for(write_backend.uow_factory()).create_dispute_case(DISPUTE, KEY)
+        tools = tools_for(write_backend.uow_factory(), step_up=True)
         first = await tools.create_dispute_case(DISPUTE, KEY)
+        assert first.sla_due_at - first.opened_at == timedelta(days=45)
         again = await tools.create_dispute_case(DISPUTE, KEY)
         assert again.case_id == first.case_id
         with pytest.raises(IdempotencyConflictError):
@@ -94,7 +99,9 @@ class TestWriteToolsContract:
         ]
 
     async def test_submit_credit_application_is_idempotent_and_verified(self, write_backend: WriteBackend) -> None:
-        tools = tools_for(write_backend.uow_factory())
+        with pytest.raises(StepUpRequiredError):
+            await tools_for(write_backend.uow_factory()).submit_credit_application(APPLICATION, KEY)
+        tools = tools_for(write_backend.uow_factory(), step_up=True)
         intake = await tools.submit_credit_application(APPLICATION, KEY)
         assert intake.status.value == "submitted"
         assert (await tools.submit_credit_application(APPLICATION, KEY)).application_id == intake.application_id

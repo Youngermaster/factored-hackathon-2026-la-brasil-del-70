@@ -6,7 +6,7 @@ event. ``commit=False`` exists only for the test and evaluation failure injector
 """
 
 from collections.abc import Awaitable, Callable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from bank_agent.application.tools.auditing import record_call
 from bank_agent.application.tools.context import SessionContext, ToolSettings
@@ -25,7 +25,7 @@ class ToolDependencies:
     catalog: CreditProductCatalog
     clock: Clock
     ids: IdGenerator
-    settings: ToolSettings = field(default_factory=ToolSettings)
+    settings: ToolSettings
 
 
 class ToolCalls:

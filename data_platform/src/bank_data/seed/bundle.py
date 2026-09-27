@@ -7,6 +7,7 @@ because the organizer data has neither; both are labeled ``seed`` in their ident
 """
 
 import re
+from collections.abc import Mapping
 from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
 from typing import Any
@@ -34,7 +35,6 @@ from bank_data.seed.selection import Selection
 SEEDED_APPLICATION_PRODUCTS = {Country.MX: "MX-PL-STANDARD", Country.CO: "CO-PL-STANDARD", Country.AR: "AR-PL-STANDARD"}
 """Product codes of seeded application intakes; phase 06 must publish these codes in the synthetic catalog."""
 SEEDED_APPLICATION_AMOUNTS = {Country.MX: "60000.00", Country.CO: "20000000.00", Country.AR: "3000000.00"}
-DISPUTE_SLA = timedelta(days=15)
 
 
 def _rows(connection: duckdb.DuckDBPyConnection, table: str, ids: list[str]) -> list[dict[str, Any]]:
@@ -60,7 +60,7 @@ def _phone_last4(phone: str) -> str:
     return re.sub(r"[^0-9]", "", phone)[-4:]
 
 
-def _seeded_case(customer_id: str, transactions: list[Transaction]) -> DisputeCase:
+def _seeded_case(customer_id: str, transactions: list[Transaction], sla: timedelta) -> DisputeCase:
     purchases = [
         txn
         for txn in transactions
@@ -75,7 +75,7 @@ def _seeded_case(customer_id: str, transactions: list[Transaction]) -> DisputeCa
         transaction=latest,
         reason=DisputeReason.UNRECOGNIZED,
         opened_at=opened_at,
-        sla_due_at=opened_at + DISPUTE_SLA,
+        sla_due_at=opened_at + sla,
         idempotency_key=IdempotencyKey(f"seed-open-case-{customer_id}"),
     )
 
@@ -101,7 +101,9 @@ def build_bundle(
     keys: IdentityKeys,
     *,
     snapshot: date,
+    dispute_sla_days: Mapping[Country, int],
 ) -> SeedBundle:
+    """The seed bundle; the seeded case's SLA is the policy pack's target for the customer's country."""
     ids = selection.customers
     customer_rows = _rows(connection, "customers_serving", ids)
     customers = [_customer(row) for row in customer_rows]
@@ -125,7 +127,7 @@ def build_bundle(
     by_id: dict[str, Customer] = {customer.customer_id: customer for customer in customers}
     flagged = {persona.id: persona for persona in personas.customers}
     cases = [
-        _seeded_case(customer_id, transactions)
+        _seeded_case(customer_id, transactions, timedelta(days=dispute_sla_days[by_id[customer_id].country]))
         for persona_id, customer_id in selection.personas.items()
         if flagged[persona_id].seeded_case
     ]

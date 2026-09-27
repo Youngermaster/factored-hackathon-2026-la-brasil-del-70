@@ -4,8 +4,11 @@ from pathlib import Path
 
 from bank_agent.adapters.identity.codes import IdentityKeys
 from bank_agent.adapters.persistence.postgres.database import create_engine
+from bank_agent.adapters.policy.filesystem import FilesystemPolicyRepository
+from bank_agent.application.tools.context import ToolPolicy
 from bank_agent.bootstrap.persistence import owner_database_url
 from bank_agent.bootstrap.settings import AppSettings, load_settings
+from bank_agent.domain.locale import Country
 from bank_data.errors import ConfigurationError
 from bank_data.seed.config import DEFAULT_PERSONAS_FILE, load_personas
 from bank_data.seed.runner import SeedReport, run_seed
@@ -55,4 +58,11 @@ def seed(
         target=customers,
         snapshot=workspace.config.dataset.snapshot_date,
         app_role=app_role,
+        dispute_sla_days=dispute_sla_days(service),
     )
+
+
+def dispute_sla_days(settings: AppSettings) -> dict[Country, int]:
+    """The dispute resolution target per country from the policy pack (``DSP-<country>-2``)."""
+    policy = ToolPolicy.from_policy(FilesystemPolicyRepository.from_directory(settings.policy.dir))
+    return dict(policy.dispute_sla_days)

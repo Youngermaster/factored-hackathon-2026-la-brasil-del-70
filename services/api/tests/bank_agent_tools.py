@@ -6,14 +6,23 @@ from bank_agent.adapters.persistence.memory.credit_catalog import InMemoryCredit
 from bank_agent.adapters.system.ids import RandomIdGenerator
 from bank_agent.application.tools.banking import BankingTools, SessionTools
 from bank_agent.application.tools.base import ToolDependencies
-from bank_agent.application.tools.context import SessionContext, ToolSettings
+from bank_agent.application.tools.context import SessionContext, ToolPolicy, ToolSettings
 from bank_agent.domain.accounts import CreditBalanceConvention
+from bank_agent.domain.actions import ActionKind
+from bank_agent.domain.locale import Country
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 from bank_agent.testing.clock import FixedClock
 from bank_agent_builders import CUSTOMER_A, T0, session
 from bank_agent_credit import CATALOG_VERSION, catalog_products
 
 NOW = T0 + timedelta(minutes=1)
+TOOL_POLICY = ToolPolicy(
+    max_statement_days=92,
+    dispute_sla_days={Country.MX: 45, Country.CO: 15, Country.AR: 30},
+    step_up_actions=frozenset(ActionKind),
+    pack_version="pack-fixture-0001",
+)
+"""Fixture tool parameters, equal to the synthetic pack's values; the real pack is loaded in integration tests."""
 
 
 def tool_dependencies(uow_factory: UnitOfWorkFactory, clock: FixedClock | None = None) -> ToolDependencies:
@@ -22,7 +31,7 @@ def tool_dependencies(uow_factory: UnitOfWorkFactory, clock: FixedClock | None =
         catalog=InMemoryCreditProductCatalog(catalog_products(), CATALOG_VERSION),
         clock=clock or FixedClock(NOW),
         ids=RandomIdGenerator(),
-        settings=ToolSettings(balance_convention=CreditBalanceConvention.BALANCE_IS_AMOUNT_OWED),
+        settings=ToolSettings(policy=TOOL_POLICY, balance_convention=CreditBalanceConvention.BALANCE_IS_AMOUNT_OWED),
     )
 
 

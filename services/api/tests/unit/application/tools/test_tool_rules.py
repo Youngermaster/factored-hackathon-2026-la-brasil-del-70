@@ -19,7 +19,7 @@ from bank_agent.domain.transaction import Transaction, TransactionStatus
 from bank_agent.testing.clock import FixedClock
 from bank_agent_builders import CUSTOMER_A, T0, session, transaction
 from bank_agent_contracts import contract_dataset
-from bank_agent_tools import NOW, session_context, tool_dependencies
+from bank_agent_tools import NOW, TOOL_POLICY, session_context, tool_dependencies
 
 
 def _factory(extra_transactions: tuple[Transaction, ...] = ()) -> InMemoryUnitOfWorkFactory:
@@ -97,7 +97,7 @@ async def test_staff_sessions_cannot_use_customer_tools() -> None:
 
 
 def test_local_dates_use_the_customer_time_zone() -> None:
-    settings = ToolSettings()
+    settings = ToolSettings(policy=TOOL_POLICY)
     late_evening_utc = T0.replace(hour=3)
     assert settings.local_date(Country.MX, late_evening_utc) == date(2026, 6, 9)
     assert settings.local_date(Country.AR, late_evening_utc) == date(2026, 6, 10)

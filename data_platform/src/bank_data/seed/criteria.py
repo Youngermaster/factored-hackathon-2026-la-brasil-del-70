@@ -3,8 +3,8 @@
 Each predicate refers to the candidate customer as ``c``. ``$snapshot`` is the dataset snapshot date; "recent"
 means within 30 days before it. Two transfers are similar when their amounts differ by at most 5 percent within
 a week (amounts in the data are continuous, so equal amounts are rare). The borderline band (640 to 660)
-brackets 650, the value the synthetic eligibility threshold is expected to take; phase 06 owns the real
-parameter and may move the band.
+brackets 650, the synthetic minimum credit score of an Argentine personal loan (``ELG-AR-1.2`` in
+``policies/``), because the borderline persona is Argentine.
 """
 
 RECENT_DAYS = 30
