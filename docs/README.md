@@ -38,6 +38,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0006](adr/0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field |
 | [adr/0007](adr/0007-dbt-duckdb-and-pandera-for-the-data-platform.md) | dbt-duckdb and Pandera for the data platform |
 | [adr/0011](adr/0011-policy-as-data-and-pure-rule-functions.md) | Policy as data plus pure rule functions, with the synthetic eligibility service on the same kernel |
+| [adr/0012](adr/0012-bound-policies-and-informational-retrieval.md) | Bound policies for workflow states, with open retrieval only for informational questions |
 | [adr/0013](adr/0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators |
 | [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
@@ -78,6 +79,15 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [workflows/policy-evaluation.md](workflows/policy-evaluation.md) | Evaluation order and precedence (flowchart) and a decision end to end (sequence) |
 | [../services/api/src/bank_agent/policy/README.md](../services/api/src/bank_agent/policy/README.md) | The policy kernel package: interfaces, how to add a rule or a fact, how to test |
 
+## Grounding and retrieval
+
+| Document | Purpose |
+|---|---|
+| [workflows/grounding.md](workflows/grounding.md) | Bound lookup, drafting, verification, and fallback (sequence), the verifier checks, and which intents may use open retrieval |
+| [../services/api/src/bank_agent/adapters/retrieval/README.md](../services/api/src/bank_agent/adapters/retrieval/README.md) | The retrievers, the index store, how to add a retriever and how to re-index |
+| [evaluation/retrieval-labeling.md](evaluation/retrieval-labeling.md) | The relevance judgment format and the labeling and review protocol |
+| [evaluation/retrieval.md](evaluation/retrieval.md) | Generated comparison of BM25, dense, and hybrid retrieval, by workflow, language, and jurisdiction |
+
 ## Packages and apps
 
 | README | Scope |
@@ -102,4 +112,4 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
-Later phases add the workflow pages to `docs/workflows/`, and `docs/evaluation/`, `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.
+Later phases add the workflow pages to `docs/workflows/`, more of `docs/evaluation/`, and `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.

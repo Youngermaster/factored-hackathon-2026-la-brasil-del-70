@@ -35,6 +35,6 @@ flowchart LR
 
 ## Known gaps
 
-- The grounding verifier and the per-state tool enforcement are phase 09 work; until then the layers above them are not exercised end to end.
-- Retrieved clause text (phase 07) is trusted policy text written by the team and is not wrapped; if retrieval ever indexes customer-authored content, those passages must be declared `untrusted`.
+- The grounding verifier exists (phase 07, [grounding](../workflows/grounding.md)) but no workflow calls it yet; wiring it and the per-state tool enforcement is phase 09 work.
+- Retrieved clause text is trusted policy text written by the team (the retrieval corpus holds pack clauses only, never customer data) and is not wrapped; if retrieval ever indexes customer-authored content, those passages must be declared `untrusted`. Retrieval never selects a tool: it runs only for the informational intent and returns clause references.
 - Red-team scenarios (injection attempts in es and pt, including in merchant names) are part of the phase 14 evaluation set.

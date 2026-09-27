@@ -17,8 +17,10 @@ Offline measurements, simulations, and projected savings are always labeled sepa
 | `src/bank_evals/` | The Python package; `cli.py` is the `bank-eval` entry point |
 | `src/bank_evals/scenarios/model.py` | `Scenario`, version 1 of the scenario contract (`contracts/schemas/scenario.v1.json`) |
 | `src/bank_evals/language_checks.py` | `portuguese_problems` and `spanish_problems`: lexical checks that a reply is natural pt-BR or Spanish, run over cassettes |
+| `src/bank_evals/retrieval/` | Relevance judgments, ranking and abstention metrics, threshold tuning on the dev split, the report, and MLflow tracking (`bank-eval retrieval`) |
+| `data/retrieval_judgments.v1.jsonl` | Team-written relevance judgments, pending review ([protocol](../docs/evaluation/retrieval-labeling.md)) |
 | `cassettes/` | Language model cassettes replayed by `CassetteLLM`; hand-authored fixtures until a provider is chosen ([README](cassettes/README.md)) |
-| `tests/unit/` | Unit tests |
+| `tests/unit/`, `tests/integration/` | Unit tests; integration tests over the real pack and the committed judgments |
 
 Phase 14 adds scenario generators and loaders, `src/bank_evals/systems`, graders, and reports.
 
@@ -26,12 +28,15 @@ Phase 14 adds scenario generators and loaders, `src/bank_evals/systems`, graders
 
 ## Public interfaces
 
-- The `bank-eval` command. Today it exposes `version` and `--help`:
+- The `bank-eval` command: `version`, and `retrieval`, which compares BM25, dense, and hybrid retrieval on the judgments, writes `docs/evaluation/retrieval.md`, and logs the run to MLflow (`MLFLOW_TRACKING_URI`, default the gitignored file store `file:./mlruns`):
 
   ```bash
   uv run bank-eval --help
-  uv run bank-eval version
+  make eval-retrieval                                   # dense and hybrid only with the ml extra installed
+  uv run bank-eval retrieval --no-dense --no-mlflow     # BM25 only, nothing logged
   ```
+
+  `mlflow-skinny` (Apache-2.0, about 60 MB with its dependencies, most already present) is a `bank-evals` dependency and never enters the API image.
 
 - Phase 14 adds `run` and `publish`, wired to `make eval`.
 

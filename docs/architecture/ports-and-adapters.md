@@ -88,11 +88,11 @@ The read side of each customer-data repository is its own Protocol (`CustomerRea
 | `IdGenerator` | sync | `RandomIdGenerator`; `SequentialIdGenerator` (testing) | none |
 | `LLMClient` | async | `LiteLLMClient` (optional extra), `CassetteLLM`, `UnconfiguredLLMClient`, and the decorator stack ([llm-gateway.md](llm-gateway.md)); `FakeLLM` (testing) | provider chosen by evaluation (14) |
 | `PromptRegistry` | sync | `FilePromptRegistry` over `bank_agent/prompts/<id>/<version>.md` | none |
-| `PolicyRepository` | sync | none | filesystem policy pack (06), bound lookup per workflow and state (07) |
+| `PolicyRepository` | sync | `PolicyPack` (in memory), `FilesystemPolicyRepository` (06); `BoundPolicyLookup` resolves every state at startup (07) | none |
 | `CreditProductCatalog` | sync | memory (fixture entries) | filesystem catalog under `policies/credit/` (06) |
 | `EligibilityPolicy` | sync | `FakeEligibilityPolicy` (testing) | synthetic eligibility service over `ELG` rules in `bank_agent/policy/eligibility` (06) |
 | `RiskEstimator` | sync | `FakeRiskEstimator` (testing) | score-band baseline (09 part B), learned estimators through `ModelRegistry` (10) |
-| `Retriever` | sync | none | BM25, dense, hybrid (07) |
+| `Retriever` | sync | `Bm25Retriever`, `DenseRetriever` (optional `ml` extra), `HybridRetriever` (07, [grounding](../workflows/grounding.md)) | none |
 | `IntentRouter` | sync | `FakeIntentRouter` (testing) | `router:keyword@1` (09), `router:tfidf` and `router:embeddings` (10) |
 | `TransactionResolver` | sync | `FakeTransactionResolver` (testing) | `resolver:rules@1` (09), `resolver:lgbm` (10) |
 | `LanguageDetector` | sync | `FakeLanguageDetector` (testing) | lingua adapter (09) |

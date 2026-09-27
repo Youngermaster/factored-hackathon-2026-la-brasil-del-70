@@ -2,7 +2,7 @@
 
 Each record captures one choice between real alternatives, in the [MADR](https://adr.github.io/madr/) format: context, options, decision, and consequences. Records are numbered in order and never rewritten; a later record supersedes an earlier one and both link to each other.
 
-Numbers 0012 and 0014 to 0019 are reserved for the phases that already name them, so the table lists records by number, not by date.
+Numbers 0014 to 0019 are reserved for the phases that already name them, so the table lists records by number, not by date.
 
 | Number | Title | Status | Date |
 |---|---|---|---|
@@ -17,6 +17,7 @@ Numbers 0012 and 0014 to 0019 are reserved for the phases that already name them
 | [0009](0009-row-level-security-as-defense-in-depth.md) | Row-level security as defense in depth behind tool-layer scoping | Accepted | 2026-09-27 |
 | [0010](0010-idempotency-keys-and-read-back-verification.md) | Idempotency keys and read-back verification for writes | Accepted | 2026-09-27 |
 | [0011](0011-policy-as-data-and-pure-rule-functions.md) | Policy as data plus pure rule functions, with the synthetic eligibility service on the same kernel | Accepted | 2026-09-27 |
+| [0012](0012-bound-policies-and-informational-retrieval.md) | Bound policies for workflow states, with open retrieval only for informational questions | Accepted | 2026-09-27 |
 | [0013](0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators | Accepted | 2026-09-26 |
 | [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
 | [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |

@@ -4,10 +4,12 @@
 
 The application layer orchestrates: the workflow engine, the dispute intake and status workflows, the protective card block, handoffs, and execution records. It calls ports, asks the policy kernel for decisions, and reports only outcomes it has verified. It never knows which adapter sits behind a port.
 
-Phase 09 builds the workflow engine. Phase 05 added two use-case packages:
+Phase 09 builds the workflow engine. Phases 05 and 07 added three use-case packages:
 
 - `identity/`: `SessionService` (login, step-up with session rotation, resolution with idle and absolute expiry, logout, revocation) over the `IdentityProvider` and `SessionStore` ports, and `policy.py` with the fixed lifetimes (`docs/security/identity-and-sessions.md`).
 - `tools/`: the banking tools, the only operations a workflow may use. `BankingTools.for_session(SessionContext)` returns `SessionTools` (reads for all four workflows and the three idempotent writes); `engine_only()` returns the credit profile read that no allowlist may reach; `WriteVerifier` reads every write back into a `Verification`; `ToolFailureInjector` injects timeouts, transient and permanent errors, and partial writes for tests and evaluations and is refused in production. Every call appends an audit event with redacted arguments in the same unit of work as its writes. The tools hold no policy defaults: `ToolPolicy.from_policy` takes the statement period cap (`ACC-ALL-2`), the dispute resolution target per country (`DSP-<country>-2`), and the writes that need step-up (`policies/matrix.yaml`; all three) from the policy pack.
+
+- `grounding/` (phase 07, [grounding](../../../../../docs/workflows/grounding.md)): `BoundPolicyLookup` (the clauses of a workflow state for the verified customer's jurisdiction, every state resolved at construction), `InformationalRetrieval` and `RetrievalPolicy` (open retrieval only for the `informational` intent, threshold abstention, ELG never returned), and `GroundingVerifier` with its figure normalization (`numbers.py`), claim lexicons (`lexicon.py`), evidence collection (`evidence.py`), and models (`draft.py`: `ResponseDraft`, `GroundingContext`, `RecordFact`, `VerifiedAction`, `Violation`).
 
 ## Who may import it
 

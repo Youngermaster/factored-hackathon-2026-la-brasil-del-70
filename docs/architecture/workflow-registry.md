@@ -1,6 +1,6 @@
 # Workflow registry
 
-The system supports four workflows (CLAUDE.md section 1, [ADR 0020](../adr/0020-four-workflows-and-the-workflow-registry.md)). The registry is pure data in `services/api/src/bank_agent/domain/workflow_catalog.py`: `WORKFLOW_CATALOG` assigns every intent to exactly one workflow or marks it cross-workflow, and records each workflow's write actions, escalation-only intents, and bound clause families. The router uses it to dispatch an intent and to move a conversation between workflows (recorded as `workflow_before` in the execution record); the workflow engine (phase 09) builds its state machines keyed by it. A test fails when an intent has no owner.
+The system supports four workflows (CLAUDE.md section 1, [ADR 0020](../adr/0020-four-workflows-and-the-workflow-registry.md)). The registry is pure data in `services/api/src/bank_agent/domain/workflow_catalog.py`: `WORKFLOW_CATALOG` assigns every intent to exactly one workflow or marks it cross-workflow, and records each workflow's canonical states, write actions, escalation-only intents, and bound clause families. The router uses it to dispatch an intent and to move a conversation between workflows (recorded as `workflow_before` in the execution record); the workflow engine (phase 09) builds its state machines keyed by it. A test fails when an intent has no owner.
 
 ## Intent ownership
 
@@ -67,7 +67,7 @@ A write is allowed only when it is one of the current workflow's `write_actions`
 
 ## Limitations
 
-- Entry states are `START` everywhere; `policies/bindings.yaml` fixes the canonical state names phase 09 must use for its state machines ([policy evaluation](../workflows/policy-evaluation.md#what-each-workflow-binds)), and every write now requires confirmation and step-up (`policies/matrix.yaml`).
+- Entry states are `START` everywhere. `WorkflowDescriptor.states` lists the canonical state names phase 09 must use for its state machines; the pack loader rejects `policies/bindings.yaml` when it misses one or binds an unknown one, and the bound lookup resolves every state at startup ([grounding](../workflows/grounding.md), [policy evaluation](../workflows/policy-evaluation.md#what-each-workflow-binds)). Every write requires confirmation and step-up (`policies/matrix.yaml`).
 - The dataset's `response_code` has no code table, so declined card purchases are shown without a reason.
 - Transfers and adjustments stay `unclassified` in statement totals: phase 03 found every amount positive, so the data does not encode their direction. Available credit uses the profiled convention (`balance_is_amount_owed`) and applies to credit cards only, because a loan's limit is not a drawable line ([data card](../data/data-card.md)).
 - `complaints.affected_product_id` always names another customer's product in the delivery, so historical complaints are served without a product reference; dispute intake cannot rely on it.
