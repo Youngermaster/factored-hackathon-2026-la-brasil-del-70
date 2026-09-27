@@ -1,3 +1,58 @@
+[account.anything_else]
+¿Hay algo más en lo que te ayude con tus cuentas?
+
+[account.ask_payment_details]
+No encontré ese pago o transferencia. ¿Me das el monto, la fecha aproximada o el destinatario?
+
+[account.ask_period]
+¿De qué periodo quieres el resumen? Por ejemplo: el mes pasado, mayo o la semana pasada.
+
+[account.balance_item]
+- tarjeta de crédito **** 1234: saldo 52,300.50 MXN
+
+[account.balance_item_credit]
+- tarjeta de crédito **** 1234: saldo 52,300.50 MXN; crédito disponible 15,000.00 MXN de un límite de 30,000.00 MXN
+
+[account.balances]
+Estos son tus saldos, con datos al 17 de junio de 2026.
+
+[account.clarify_payment]
+Encontré varios pagos o transferencias parecidos. ¿Cuál es?
+1) 15 de junio de 2026, JOAO PEREIRA, 1,250.00 MXN, **** 1234
+2) 15 de junio de 2026, JOAO PEREIRA, 1,250.00 MXN, **** 1234
+
+[account.clarify_product]
+Tienes varios productos. ¿Sobre cuál me consultas?
+1) tarjeta de crédito **** 1234
+2) tarjeta de crédito **** 1234
+
+[account.no_balances]
+No encontré productos con saldo a tu nombre.
+
+[account.payment_option]
+1) 15 de junio de 2026, JOAO PEREIRA, 1,250.00 MXN, **** 1234
+
+[account.payment_status]
+Estado de tu transferencia de 1,250.00 MXN del 15 de junio de 2026 a JOAO PEREIRA: abierto. Datos al 17 de junio de 2026.
+
+[account.period_too_long]
+Ese periodo es más largo de lo que puedo resumir. ¿Me indicas uno más corto?
+
+[account.product_option]
+1) tarjeta de crédito **** 1234
+
+[account.statement]
+Resumen de tu tarjeta de crédito **** 1234 del 1 de mayo de 2026 al 31 de mayo de 2026, con datos al 17 de junio de 2026. Operaciones en el periodo: 4.
+
+[account.statement_empty]
+No hay operaciones de tu tarjeta de crédito **** 1234 del 1 de mayo de 2026 al 31 de mayo de 2026, con datos al 17 de junio de 2026.
+
+[account.statement_other]
+Sin clasificar como cargo o abono: 0. Pendientes, rechazadas o revertidas: 1.
+
+[account.statement_totals]
+Totales en MXN: cargos 1,550.00 MXN; abonos 1,500.00 MXN.
+
 [b0.menu]
 Menú principal. Escribe una opción: reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta o hablar con una persona.
 
@@ -100,6 +155,9 @@ Todavía tenemos pendiente tu reclamación. ¿Quieres dejarlo y pasar a tus tarj
 
 [common.switch_declined]
 De acuerdo, seguimos con tu reclamación.
+
+[common.unsupported_in_workflow]
+Eso no lo puedo hacer en esta conversación. Si quieres, te comunico con una persona del equipo.
 
 [dispute.ask_details]
 Para encontrar la transacción, dime la fecha aproximada, el monto y el comercio.

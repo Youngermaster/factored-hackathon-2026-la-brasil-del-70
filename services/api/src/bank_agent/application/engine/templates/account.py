@@ -57,9 +57,9 @@ ACCOUNT: dict[str, dict[Language, str]] = {
         EN: "Status of {kind} of {amount} on {date} to {payee}: {status}. Data as of {as_of}.",
     },
     "account.ask_period": {
-        ES: "¿De qué periodo quieres el resumen? Por ejemplo: el mes pasado, mayo o los últimos 30 días.",
-        PT: "De qual período você quer o resumo? Por exemplo: o mês passado, maio ou os últimos 30 dias.",
-        EN: "Which period do you want the summary for? For example: last month, May, or the last 30 days.",
+        ES: "¿De qué periodo quieres el resumen? Por ejemplo: el mes pasado, mayo o la semana pasada.",
+        PT: "De qual período você quer o resumo? Por exemplo: o mês passado, maio ou a semana passada.",
+        EN: "Which period do you want the summary for? For example: last month, May, or last week.",
     },
     "account.period_too_long": {
         ES: "Ese periodo es más largo de lo que puedo resumir. ¿Me indicas uno más corto?",

@@ -1,3 +1,58 @@
+[account.anything_else]
+Posso ajudar com mais alguma coisa sobre as suas contas?
+
+[account.ask_payment_details]
+Não encontrei esse pagamento ou transferência. Pode me dizer o valor, a data aproximada ou o destinatário?
+
+[account.ask_period]
+De qual período você quer o resumo? Por exemplo: o mês passado, maio ou a semana passada.
+
+[account.balance_item]
+- cartão de crédito **** 1234: saldo 52.300,50 MXN
+
+[account.balance_item_credit]
+- cartão de crédito **** 1234: saldo 52.300,50 MXN; limite disponível 15.000,00 MXN de um limite total de 30.000,00 MXN
+
+[account.balances]
+Estes são os seus saldos, com dados de 17 de junho de 2026.
+
+[account.clarify_payment]
+Encontrei vários pagamentos ou transferências parecidos. Qual deles é?
+1) 15 de junho de 2026, JOAO PEREIRA, 1.250,00 MXN, **** 1234
+2) 15 de junho de 2026, JOAO PEREIRA, 1.250,00 MXN, **** 1234
+
+[account.clarify_product]
+Você tem vários produtos. Sobre qual deles é o seu pedido?
+1) cartão de crédito **** 1234
+2) cartão de crédito **** 1234
+
+[account.no_balances]
+Não encontrei produtos com saldo em seu nome.
+
+[account.payment_option]
+1) 15 de junho de 2026, JOAO PEREIRA, 1.250,00 MXN, **** 1234
+
+[account.payment_status]
+Situação da sua transferência de 1.250,00 MXN de 15 de junho de 2026 para JOAO PEREIRA: aberto. Dados de 17 de junho de 2026.
+
+[account.period_too_long]
+Esse período é mais longo do que consigo resumir. Pode indicar um mais curto?
+
+[account.product_option]
+1) cartão de crédito **** 1234
+
+[account.statement]
+Resumo do seu cartão de crédito **** 1234 de 1 de maio de 2026 a 31 de maio de 2026, com dados de 17 de junho de 2026. Operações no período: 4.
+
+[account.statement_empty]
+Não há operações do seu cartão de crédito **** 1234 de 1 de maio de 2026 a 31 de maio de 2026, com dados de 17 de junho de 2026.
+
+[account.statement_other]
+Sem classificação como débito ou crédito: 0. Pendentes, recusadas ou estornadas: 1.
+
+[account.statement_totals]
+Totais em MXN: débitos 1.550,00 MXN; créditos 1.500,00 MXN.
+
 [b0.menu]
 Menu principal (somente em espanhol).
 
@@ -100,6 +155,9 @@ Ainda temos pendente a sua contestação. Quer deixar isso e passar para os seus
 
 [common.switch_declined]
 Certo, seguimos com a sua contestação.
+
+[common.unsupported_in_workflow]
+Isso eu não consigo fazer nesta conversa. Se quiser, transfiro você para uma pessoa da equipe.
 
 [dispute.ask_details]
 Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.
