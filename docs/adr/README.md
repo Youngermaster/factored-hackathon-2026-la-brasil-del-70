@@ -33,6 +33,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0028](0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces | Accepted | 2026-09-27 |
 | [0029](0029-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow | Accepted | 2026-09-27 |
 | [0030](0030-credit-risk-estimator.md) | A cross-sectional snapshot risk estimate: label, allowlisted features, dev-chosen intervals, and policy bands, kept apart from eligibility | Accepted | 2026-09-27 |
+| [0031](0031-cookie-sessions-with-signed-double-submit-csrf.md) | Cookie sessions with signed double-submit CSRF for a same-site single-page app | Accepted | 2026-09-27 |
 
 ## Adding a record
 
