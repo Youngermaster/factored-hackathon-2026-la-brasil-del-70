@@ -144,3 +144,58 @@ arch:
   port6: Repositories
   p5c: Swapping a model or a store never changes workflow code.
   cite: docs/architecture  |  ADR 0002, 0011, 0012, 0013
+
+workflows:
+  title: Four workflows, one depth bar
+  account_inquiry: account inquiry
+  card_support: card support
+  dispute: dispute
+  credit: credit
+  ofContacts: of contacts
+  normal: normal
+  ambiguous: ambiguous
+  escalate: escalate
+  # account_inquiry: read only
+  a_n: START|IDENTIFY_PRODUCT|ANSWER_BALANCE
+  a_nNote: Read only. Every balance states the as-of date of its data.
+  a_q: several accounts, which one?
+  a_qNote: Transfers carry no direction in the data, so totals list them as unclassified.
+  a_e: document request
+  a_eNote: Abstains with the clause that says why, or hands off on request.
+  # card_support: the first verified write
+  c_n: IDENTIFY_CARD|CONFIRM_BLOCK|step-up code|EXECUTE_BLOCK|read-back
+  c_nNote: A protective block needs confirmation, a step-up code and a verified read-back.
+  c_q: two cards, which one?
+  c_qNote: The system asks instead of guessing which card to block.
+  c_e: unblock or replacement
+  c_eNote: "Handed to a person: identity and fraud checks the prototype cannot verify."
+  # dispute: intake with a verified case
+  d_n: LOCATE_TRANSACTION|CONFIRM_DISPUTE|CREATE_CASE|OFFER_CARD_BLOCK
+  d_nNote: The case is reported only after the read-back finds it.
+  d_q: two similar charges, which one?
+  d_qNote: No complaint in the data names its transaction, so intake confirms it with the customer.
+  d_e: above the limit, legal mention
+  d_eNote: A structured handoff with verified facts and open questions.
+  # credit: separation of risk and eligibility
+  k_llm: language model
+  k_llmSub: phrasing only
+  k_wall: never sees the estimate or the credit profile
+  k_risk: RiskEstimator
+  k_riskSub: probability, interval, band
+  k_elg: EligibilityPolicy
+  k_elgSub: synthetic ELG rules
+  k_o1: indicatively_eligible
+  k_o2: not_eligible
+  k_o3: review_required
+  k_o4: insufficient_data
+  k_approved: approved
+  k_note: No approved outcome exists by design. An application is an intake for human review.
+  # the bar every workflow meets
+  bar_h: Every workflow meets the same bar
+  bar1: policy clauses, bound per state
+  bar2: an explicit state machine
+  bar3: verified actions only
+  bar4: a structured handoff
+  bar5: Spanish and Portuguese paths
+  bar6: its own evaluation slice
+  cite: docs/architecture/workflow-registry.md  |  docs/architecture/credit-separation.md

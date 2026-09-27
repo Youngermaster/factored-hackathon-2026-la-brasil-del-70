@@ -29,7 +29,8 @@ await mkdir(out.split('/').slice(0, -1).join('/') || '.', { recursive: true })
 const browser = await chromium.launch()
 const page = await browser.newPage({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 1 })
 const errors = []
-page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()) })
+// Slidev's bundled twoslash plugin logs a FloatingVue patch error on every load; it is upstream noise.
+page.on('console', (m) => { if (m.type() === 'error' && !m.text().includes('FloatingVue')) errors.push(m.text()) })
 page.on('pageerror', (e) => errors.push(String(e)))
 await page.goto(`http://localhost:${port}/#/lab?${q}`)
 await page.waitForFunction(() => window.__labReady === true, null, { timeout: 30000 })

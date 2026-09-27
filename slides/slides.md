@@ -62,3 +62,16 @@ clicks: 5
 ARCHITECTURE. Narration: script.md, section "architecture". Click 1 policy
 kernel, 2 LLM gateway, 3 grounding verifier, 4 data platform, 5 direction.
 -->
+
+---
+layout: scene
+routeAlias: workflows
+clicks: 5
+---
+
+<Scene name="workflows" />
+
+<!--
+WORKFLOWS. Narration: script.md, section "workflows". Click 1 account inquiry,
+2 card support, 3 dispute, 4 credit separation, 5 the depth bar.
+-->

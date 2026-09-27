@@ -60,7 +60,7 @@ export function node(
 
 /** A filled tab with ink text: the loudest label the deck has. Returns its width. */
 export const tab = (K: Kit, label: string, x: number, y: number, o: { tone: Tone; k?: number; size?: number; align?: 'left' | 'center' } = { tone: 'yellow' }) =>
-  K.chip(label, x, y, { bg: tone(o.tone).main, fg: C.bg, k: o.k ?? 1, size: o.size ?? 24, weight: 600, align: o.align })
+  K.chip(label, x, y, { bg: tone(o.tone).main, fg: C.bg, k: o.k ?? 1, size: o.size ?? 24, weight: 700, align: o.align })
 
 /** A tinted chip: accent text on its deep tint. Returns its width. */
 export const tag = (K: Kit, label: string, x: number, y: number, o: { tone: Tone; k?: number; size?: number; align?: 'left' | 'center' } = { tone: 'blue' }) =>
