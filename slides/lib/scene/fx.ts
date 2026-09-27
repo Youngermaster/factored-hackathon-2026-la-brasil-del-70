@@ -117,8 +117,8 @@ export function glyph(K: Kit, kind: GlyphKind, cx: number, cy: number, s: number
       K.arrow(-h, 0, -h * 0.1, 0, { color, lw, head: s * 0.22 })
     }
     else if (kind === 'lang') {
-      K.text('es', -h * 0.5, 0, { size: s * 0.46, weight: 700, fam: 'mono', color, align: 'center', base: 'middle' })
-      K.text('pt', h * 0.55, 0, { size: s * 0.46, weight: 700, fam: 'mono', color, align: 'center', base: 'middle' })
+      // text, not a pictogram: kept at the deck's 22 px minimum whatever the glyph size
+      K.text('es pt', 0, 0, { size: Math.max(22, s * 0.62), weight: 700, fam: 'mono', color, align: 'center', base: 'middle' })
     }
     else {
       for (let i = 0; i < 3; i++) {
