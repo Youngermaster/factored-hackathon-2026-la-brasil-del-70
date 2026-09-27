@@ -50,6 +50,8 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0026](adr/0026-live-agent-joins-escalated-conversation.md) | Human escalation progresses from simulated replies to a human service agent joining the conversation |
 | [adr/0027](adr/0027-opt-in-financial-memory-and-guidance.md) | Financial memory and guidance are opt-in and grounded |
 | [adr/0028](adr/0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces |
+| [adr/0029](adr/0029-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow |
+| [adr/0030](adr/0030-credit-risk-estimator.md) | The credit risk estimator: a cross-sectional snapshot label, allowlisted features, dev-chosen intervals, policy bands, kept apart from eligibility |
 
 ## Data
 
@@ -101,8 +103,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [../ml/README.md](../ml/README.md) | How to add, train, evaluate, promote, retrain, and compare a learned model |
 | [models/router.md](models/router.md) | Model card of the intent router (TF-IDF and embeddings against the keyword baseline) |
 | [models/resolver.md](models/resolver.md) | Model card of the transaction resolver (LightGBM ranker against the rule baseline) |
+| [models/risk-estimator.md](models/risk-estimator.md) | Model card of the credit risk estimator (snapshot risk estimate; logistic regression and LightGBM against the score-band baseline) |
 | [evaluation/router.md](evaluation/router.md) | Generated router evaluation: per intent, language, locale, and workflow, calibration, robustness, transfer |
 | [evaluation/resolver.md](evaluation/resolver.md) | Generated resolver evaluation: per use, language, country, candidate count, clue, silver labels |
+| [evaluation/risk-estimator.md](evaluation/risk-estimator.md) | Generated risk estimator evaluation: test metrics with intervals, calibration, bands, interval coverage, slices and disparities |
 | [evaluation/router-labeling.md](evaluation/router-labeling.md) | The protocol for the 200-item router validation sample |
 
 ## Workflow engine and workflows
