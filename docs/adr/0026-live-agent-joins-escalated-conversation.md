@@ -40,4 +40,4 @@ This decision preserves ADR 0020's four-workflow product scope. The initial rele
 
 - [ADR 0020: Four workflows and the workflow registry](0020-four-workflows-and-the-workflow-registry.md)
 - [ADR 0006: Handoff and execution record contracts](0006-handoff-and-execution-record-contracts.md)
-- [ADR 0025: Tuesday MVP is account inquiry plus tool-triggered mock human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0025: Tuesday MVP includes account inquiry, mock escalation, and assistant profile](0025-tuesday-account-inquiry-mvp-and-observability.md)

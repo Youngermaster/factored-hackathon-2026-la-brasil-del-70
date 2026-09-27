@@ -43,6 +43,6 @@ Choose option 2 as a later, mock-only product increment. Neither surface is part
 
 ## References
 
-- [ADR 0025: Tuesday MVP is account inquiry plus tool-triggered mock human escalation](0025-tuesday-account-inquiry-mvp-and-observability.md)
-- [ADR 0027: Personalized financial companion features are opt-in and grounded](0027-opt-in-financial-companion-and-agent-personalization.md)
+- [ADR 0025: Tuesday MVP includes account inquiry, mock escalation, and assistant profile](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0027: Financial memory and guidance are opt-in and grounded](0027-opt-in-financial-memory-and-guidance.md)
 - [Data card: provenance and intended use](../data/data-card.md)
