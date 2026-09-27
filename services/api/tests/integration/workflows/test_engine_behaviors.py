@@ -191,3 +191,24 @@ async def test_a_model_handoff_summary_is_kept_only_when_grounded(memory_only: B
         assert reply.response.escalation is not None
         handoff = (await harness.handoff(session, reply.response.escalation.handoff_id)).handoff
         assert (handoff.request.summary == output["summary"]) is kept
+
+
+async def test_a_new_sign_in_mid_write_asks_the_confirmation_again_and_a_step_up_does_not(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    first_login = harness.session(CO)
+    confirm = await harness.say("Perdí mi tarjeta, bloquéala por favor", first_login)
+    stepped = await harness.say("sí", first_login, confirm.conversation_id)
+    assert (stepped.state, stepped.response.step_up_required) == ("EXECUTE", True)
+    assert stepped.workflow is not None
+    assert stepped.workflow.id == "card_support"
+
+    second_login = harness.session(CO, session_id="ses-co-second", lineage="lin-co-second")
+    asked_again = await harness.say("sí", second_login, confirm.conversation_id)
+    assert asked_again.state == "CONFIRM_BLOCK"
+    assert asked_again.response.card_action_confirmation is not None
+    record = await harness.record(second_login, asked_again.turn_id)
+    assert "signed_in_again" in record.safety_interventions
+
+    step_up = harness.session(CO, step_up=True, session_id="ses-co-second-up", lineage="lin-co-second")
+    confirmed = await harness.say("sí", step_up, confirm.conversation_id)
+    assert (confirmed.state, confirmed.outcome) == ("RESOLVED", Outcome.RESOLVED)

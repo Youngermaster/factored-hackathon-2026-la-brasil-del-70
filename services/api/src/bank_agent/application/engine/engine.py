@@ -17,7 +17,7 @@ from pydantic import JsonValue
 from bank_agent.application.engine.context import EngineServices, EngineSettings, Step, TurnContext
 from bank_agent.application.engine.data import ENGINE_KEY, FLOW_KEY, dump, load_engine
 from bank_agent.application.engine.flow import route_and_run
-from bank_agent.application.engine.gate import inspect, pause, resolve_turn_language
+from bank_agent.application.engine.gate import inspect, pause, resolve_turn_language, resume_after_sign_in
 from bank_agent.application.engine.handoff import validate_handoff
 from bank_agent.application.engine.phrase import finish_reply
 from bank_agent.application.engine.recorder import TurnRecorder
@@ -98,7 +98,9 @@ class WorkflowEngine:
             return replayed
         loaded = await self._load(request)
         now = self._services.clock.now()
-        conversation = loaded.conversation or self._new_conversation(request, loaded.customer, now)
+        conversation = loaded.conversation or self.new_conversation(
+            request.session, loaded.customer, now, request.channel
+        )
         ctx = await self._context(request, conversation, loaded, now)
         step = await self._run(ctx)
         if step.next_state != ctx.state:
@@ -125,6 +127,7 @@ class WorkflowEngine:
             state=ctx.state,
             outcome=record.outcome,
             response=response,
+            workflow=record.workflow,
         )
 
     async def _replay(self, request: TurnRequest) -> TurnResult | None:
@@ -139,6 +142,7 @@ class WorkflowEngine:
             state=record.state_after,
             outcome=record.outcome,
             response=turn.response,
+            workflow=record.workflow,
             replayed=True,
         )
 
@@ -156,12 +160,15 @@ class WorkflowEngine:
             complaints = await uow.complaints.count_since(datetime.combine(start, time.min, UTC))
         return Loaded(conversation, customer, complaints)
 
-    def _new_conversation(self, request: TurnRequest, customer: Customer, now: datetime) -> Conversation:
+    def new_conversation(
+        self, session: Session, customer: Customer, now: datetime, channel: Channel = Channel.WEB_CHAT
+    ) -> Conversation:
+        """A new, empty conversation at the router's START, before any turn (phase 11 opens one explicitly)."""
         return Conversation(
             conversation_id=ConversationId(self._services.ids.new(IdKind.CONVERSATION)),
             customer_id=customer.customer_id,
-            lineage_id=request.session.lineage_id,
-            channel=request.channel,
+            lineage_id=session.lineage_id,
+            channel=channel,
             jurisdiction=customer.country,
             position=WorkflowPosition(workflow=ROUTER_REF, state="START"),
             created_at=now,
@@ -224,6 +231,7 @@ class WorkflowEngine:
         with recorder.stage("gate"):
             if ctx.session_context is None:
                 return pause(ctx)
+            resume_after_sign_in(ctx)
             if ctx.engine.sequence > self._settings.max_turns and ctx.state != ESCALATED_STATE:
                 return escalate(ctx, EscalationReasonCode.OTHER, "turn_limit_reached")
             asked = resolve_turn_language(ctx)
