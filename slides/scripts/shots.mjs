@@ -1,61 +1,48 @@
 /**
- * Screenshot every slide (optionally at every click step) from the running dev
- * server. Rehearsing a deck by clicking through it one slide at a time is how
- * layout bugs survive to the stage; this makes a full visual pass cheap.
+ * Screenshot every slide at every click step from the running dev server,
+ * through Slidev itself (not the lab), so the seams, the layout and the
+ * finished frame of each cue are what the recording and the PDF will show.
  *
- *   node scripts/shots.mjs [--clicks] [--lang es|en] [--port 3131]
+ *   node scripts/shots.mjs [--port 3131] [--last-only]
+ *
+ * Output: .shots/deck/NN-<alias>-cK.png
  */
 import { chromium } from 'playwright-chromium'
 import { mkdir, rm } from 'node:fs/promises'
-import { parse } from 'yaml'
 import { readFileSync } from 'node:fs'
+import { parse } from 'yaml'
 
-const arg = (n, d) => {
-  const i = process.argv.indexOf(`--${n}`)
-  return i > -1 ? process.argv[i + 1] : d
-}
-const withClicks = process.argv.includes('--clicks')
-const lang = arg('lang', 'es')
-const port = arg('port', '3131')
-const outDir = `.shots/${lang}`
+const i = process.argv.indexOf('--port')
+const port = i > -1 ? process.argv[i + 1] : '3131'
+const lastOnly = process.argv.includes('--last-only')
+const outDir = '.shots/deck'
 
-// Click counts come from the deck itself, so this never drifts from slides.md
-const md = readFileSync('slides.md', 'utf8')
-const blocks = md.split(/^---$/m)
+// Click budgets come from the deck itself, so this never drifts from slides.md.
+// The headmatter doubles as slide 1's frontmatter.
+const blocks = readFileSync('slides.md', 'utf8').split(/^---$/m)
 const slides = []
-for (let i = 0; i < blocks.length; i++) {
-  const fm = blocks[i]
-  if (!/^\s*(layout|routeAlias|clicks|transition):/m.test(fm)) continue
+for (const fm of blocks) {
+  if (!/^routeAlias:/m.test(fm)) continue
   let meta = {}
   try { meta = parse(fm) ?? {} } catch { meta = {} }
-  if (typeof meta !== 'object' || meta === null) continue
-  if (!('routeAlias' in meta) && !('layout' in meta)) continue
-  slides.push({ alias: meta.routeAlias ?? `slide`, clicks: meta.clicks ?? 0 })
+  if (meta.routeAlias) slides.push({ alias: meta.routeAlias, clicks: meta.clicks ?? 0 })
 }
-// The headmatter block doubles as slide 1's frontmatter. Once the title slide
-// gained a routeAlias it started matching the filter above, so unshifting a
-// synthetic entry would double-count it and shift every URL by one.
-if (slides[0]?.alias !== 'title') slides.unshift({ alias: 'title', clicks: 0 })
 
 await rm(outDir, { recursive: true, force: true })
 await mkdir(outDir, { recursive: true })
-
 const browser = await chromium.launch()
-const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 2 })
+const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 })
 
 let shot = 0
 for (let n = 1; n <= slides.length; n++) {
   const s = slides[n - 1]
-  const steps = withClicks ? [...Array(s.clicks + 1).keys()] : [s.clicks]
+  const steps = lastOnly ? [s.clicks] : [...Array(s.clicks + 1).keys()]
   for (const c of steps) {
-    await page.goto(`http://localhost:${port}/#/${n}?clicks=${c}&lang=${lang}&scene_snap`, { waitUntil: 'networkidle' })
-    // let entrance transitions and staggers settle before capturing
+    await page.goto(`http://localhost:${port}/#/${n}?clicks=${c}&scene_snap`, { waitUntil: 'networkidle' })
     await page.waitForTimeout(900)
-    const name = `${String(n).padStart(2, '0')}-${s.alias}${withClicks ? `-c${c}` : ''}.png`
-    await page.screenshot({ path: `${outDir}/${name}` })
+    await page.screenshot({ path: `${outDir}/${String(n).padStart(2, '0')}-${s.alias}-c${c}.png` })
     shot++
   }
 }
-
 await browser.close()
-console.log(`${shot} screenshots → ${outDir}/  (${slides.length} slides, lang=${lang})`)
+console.log(`${shot} screenshots in ${outDir}/ (${slides.length} slides)`)

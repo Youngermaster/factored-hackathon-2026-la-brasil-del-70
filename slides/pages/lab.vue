@@ -93,8 +93,7 @@ onMounted(async () => {
 
 /**
  * ?fit=1: render every scene at every cue with the kit's text probe on and
- * publish window.__fitReport: text outside the safe area (60 px sides, 30 px
- * top and bottom) or overlapping other text by more than 6 px on both axes.
+X * top and bottom) or overlapping other text by more than 6 px on both axes.
  */
 function fitReport() {
   const g = globalThis as unknown as { __fit?: FitBox[]; __fitReport?: string[] }
@@ -117,7 +116,8 @@ function fitReport() {
           const B = boxes[b]
           const ox = Math.min(A.x1, B.x1) - Math.max(A.x0, B.x0)
           const oy = Math.min(A.y1, B.y1) - Math.max(A.y0, B.y0)
-          if (ox > 6 && oy > 6) out.push(`${n} cue ${i}: "${A.s}" overlaps "${B.s}"`)
+          // overlapping, or touching when they are not neighbouring words of one line
+          if ((ox > 6 && oy > 6) || (b !== a + 1 && ox > -3 && oy > 4)) out.push(`${n} cue ${i}: "${A.s}" overlaps or touches "${B.s}"`)
         }
       }
     })

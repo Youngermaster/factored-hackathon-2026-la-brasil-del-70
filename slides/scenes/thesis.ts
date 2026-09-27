@@ -31,7 +31,7 @@ export default defineScene({
     const heading = (i: number, key: string, color: string, t0: number) =>
       K.words(L(key), X[i], HY, { t, t0, size: 34, weight: 700, fam: 'display', color, stagger: 0.03 })
     const caption = (i: number, s: string, color: string, t0: number) =>
-      K.wrap(s, CW, 22, 500, 'mono').forEach((ln, j) =>
+      K.wrap(s, 410, 22, 500, 'mono').forEach((ln, j) =>
         K.label(ln, X[i], CAPY + j * 30, { color, size: 22, alpha: outCubic(seg(t, t0, t0 + 0.4)) }))
 
     K.fade(dimAll, () => {
@@ -101,7 +101,7 @@ export default defineScene({
       const bk = outCubic(seg(t, 12.5, 12.9))
       if (bk > 0) {
         K.line(560, 405, 560 + 1240 * bk, 405, C.yellow, 4)
-        K.label(L('barrier'), 1800, 440, { color: C.yellow, align: 'right', alpha: outCubic(seg(t, 12.8, 13.1)) })
+        K.label(L('barrier'), 1800, 388, { color: C.yellow, align: 'right', alpha: outCubic(seg(t, 12.8, 13.1)) })
       }
       // the packet: falls, hits the barrier at 13.0, recoils and fades
       if (t > 12.6 && t < 13.6) {

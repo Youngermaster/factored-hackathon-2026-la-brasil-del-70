@@ -78,7 +78,7 @@ export default defineScene({
     // the dispute panel, right of the columns
     K.title(L('fcrTitle'), t, 6.8, { tout: 9.85 })
     K.fade(outBC, () => {
-      K.punch(L('fcrPunch'), t, 7.9, { x: 1320, y: 470, size: 48, maxW: 480, accent: C.red })
+      K.punch(L('fcrPunch'), t, 7.9, { x: 1320, y: 470, size: 48, maxW: 560, accent: C.red })
       const low = M('csat_low.dispute')
       const hd = M('handle.dispute')
       K.fade(outCubic(seg(t, 8.3, 8.8)), () => {
