@@ -63,3 +63,7 @@ flowchart LR
 | `insufficient_data` | A needed fact is missing (for example income) | Provide the missing information | Missing information |
 
 A submitted intake is a review item of its own, listed for agents in phase 13; its statuses are `submitted`, `under_human_review`, `withdrawn`, and `closed`. There is no approved or declined status.
+
+## Implementation
+
+The `EligibilityPolicy` port is implemented by `SyntheticEligibilityService` on the policy kernel (phase 06, [ADR 0011](../adr/0011-policy-as-data-and-pure-rule-functions.md)). Its rules, parameters per jurisdiction and product, outcome mapping, and customer-facing rendering are in [docs/policy/eligibility.md](../policy/eligibility.md); the synthetic catalog is under `policies/credit/` and listed in the [policy catalog](../policy/catalog.md#credit-catalog).

@@ -33,7 +33,7 @@ from bank_data.seed.config import PersonaFile
 from bank_data.seed.selection import Selection
 
 SEEDED_APPLICATION_PRODUCTS = {Country.MX: "MX-PL-STANDARD", Country.CO: "CO-PL-STANDARD", Country.AR: "AR-PL-STANDARD"}
-"""Product codes of seeded application intakes; phase 06 must publish these codes in the synthetic catalog."""
+"""Product codes of seeded application intakes, published in the synthetic catalog (``policies/credit/``)."""
 SEEDED_APPLICATION_AMOUNTS = {Country.MX: "60000.00", Country.CO: "20000000.00", Country.AR: "3000000.00"}
 
 

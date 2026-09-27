@@ -7,8 +7,8 @@
 - The persona file is `data_platform/seed/personas.yaml`; each persona names a criterion implemented in `data_platform/src/bank_data/seed/criteria.py` as a SQL predicate over the gold serving views.
 - Candidates are active customers with a phone on file (document identification needs its last four digits), ordered by `md5(seed || customer_id)` with the seed `bank-demo-personas-v1`. Each persona takes the first candidate that no earlier persona took, so the choice is deterministic for a given delivery and never hand-picked.
 - Coverage is added after the personas: at least two customers per country and at least one per segment (premium, plus, basic, student), then a seeded-hash fill up to `--customers` (default 200).
-- "Recent" means within 30 days before the dataset snapshot (2026-06-17). Demo conversations therefore talk about June 2026 data; phase 06 policy windows (for example the dispute window) must be evaluated against the data's as-of date, not the wall clock.
-- The organizer data has no dispute cases and no credit applications, so the seed synthesizes exactly two records, labeled `seed` in their ids and idempotency keys: one open dispute case on the latest approved card purchase of `dsp-mx-open-case`, and one submitted application intake for `cre-co-application` (product code `CO-PL-STANDARD`, which phase 06 must publish in the synthetic catalog).
+- "Recent" means within 30 days before the dataset snapshot (2026-06-17). Demo conversations therefore talk about June 2026 data; policy windows (for example the dispute window) are evaluated against the data's as-of date (`POLICY_DATA_AS_OF`, default 2026-06-17), not the wall clock.
+- The organizer data has no dispute cases and no credit applications, so the seed synthesizes exactly two records, labeled `seed` in their ids and idempotency keys: one open dispute case on the latest approved card purchase of `dsp-mx-open-case`, and one submitted application intake for `cre-co-application` (product code `CO-PL-STANDARD`, published in the synthetic catalog under `policies/credit/`). The seeded case's SLA is the Mexican dispute resolution target of the policy pack (`DSP-MX-2`, 45 days).
 - A persona that matches nobody stops the seed with an error naming it; nothing is loaded.
 
 ## Customer personas
@@ -47,7 +47,7 @@ Every path is played in Spanish and in Portuguese by the same persona: the organ
 |---|---|---|---|
 | `account_inquiry` | `acc-mx-accounts` (balances), `acc-co-payments` (payment status) | `acc-ar-similar-transfers` (which transfer), a request for a statement document (clause-backed abstention) | Any persona asking for a human, for example `acc-co-payments` about the reversed payment |
 | `card_support` | `crd-mx-two-cards` (status, then a protective block) and `crd-co-declined` | `crd-mx-two-cards` (which card) | `crd-mx-blocked` (unblock request) and `crd-ar-expired` (replacement request) |
-| `dispute` | `dsp-co-unrecognized` (intake), `dsp-mx-open-case` (status) | `dsp-mx-similar-purchases` (which transaction) | `dsp-ar-repeat-complainer`; an amount above the automatic limit (phase 06 parameter) with any card persona |
+| `dispute` | `dsp-co-unrecognized` (intake), `dsp-mx-open-case` (status) | `dsp-mx-similar-purchases` (which transaction) | `dsp-ar-repeat-complainer`; an amount above the automatic limit (`DSP-<country>-3`: 10,000 MXN, 2,000,000 COP, 600,000 ARS) with any card persona |
 | `credit` | `cre-mx-complete` (catalog and indicative eligibility), `cre-co-application` (status) | `cre-co-no-income` (missing income); a mortgage question (information only) | `cre-ar-borderline` and `cre-mx-past-due` (review required); a contested result |
 
 Cross-customer attempts are played by any persona asking about another customer's product, transaction, case, or application id: every tool treats it exactly like an unknown id, and the database would return nothing even if a tool did not (`docs/security/data-isolation.md`).

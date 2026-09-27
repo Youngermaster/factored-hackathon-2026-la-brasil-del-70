@@ -37,6 +37,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0005](adr/0005-trust-state-append-only.md) | Trust state as append-only evidence with a monotonic risk tier |
 | [adr/0006](adr/0006-handoff-and-execution-record-contracts.md) | Handoff and execution record contracts, with no chain-of-thought field |
 | [adr/0007](adr/0007-dbt-duckdb-and-pandera-for-the-data-platform.md) | dbt-duckdb and Pandera for the data platform |
+| [adr/0011](adr/0011-policy-as-data-and-pure-rule-functions.md) | Policy as data plus pure rule functions, with the synthetic eligibility service on the same kernel |
 | [adr/0013](adr/0013-litellm-behind-a-port-with-composable-decorators.md) | LiteLLM behind a port with composable decorators |
 | [adr/0020](adr/0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry |
 | [adr/0021](adr/0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service |
@@ -66,6 +67,16 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [analysis/labeling-protocol.md](analysis/labeling-protocol.md) | The automatable-share labeling task and the transcript limitation |
 | [decisions/workflow-prioritization.md](decisions/workflow-prioritization.md) | Build and depth order, sub-intent classes, breadth risk, and what would change the order |
 | [../data_platform/analysis/README.md](../data_platform/analysis/README.md) | The analysis inputs (scoring, cost assumptions, reason mapping) and code map |
+
+## Policy
+
+| Document | Purpose |
+|---|---|
+| [../policies/README.md](../policies/README.md) | The synthetic policy pack: format, synthetic disclaimer, how to add or change a clause, review, versioning |
+| [policy/catalog.md](policy/catalog.md) | Generated table of every clause, rule, binding, action matrix row, and credit product |
+| [policy/eligibility.md](policy/eligibility.md) | The synthetic eligibility rules per jurisdiction and product, the outcome mapping, and the review reasons |
+| [workflows/policy-evaluation.md](workflows/policy-evaluation.md) | Evaluation order and precedence (flowchart) and a decision end to end (sequence) |
+| [../services/api/src/bank_agent/policy/README.md](../services/api/src/bank_agent/policy/README.md) | The policy kernel package: interfaces, how to add a rule or a fact, how to test |
 
 ## Packages and apps
 

@@ -1,4 +1,4 @@
-"""In-memory credit product catalog, loaded from given entries (fixtures in tests; phase 06 adds the files)."""
+"""In-memory credit product catalog over given entries; the filesystem catalog (``adapters/policy``) builds on it."""
 
 from collections.abc import Iterable, Sequence
 

@@ -1,6 +1,6 @@
 """Scripted risk estimator and eligibility policy, for tests and the credit port contract suites.
 
-``FakeEligibilityPolicy`` stands in until the synthetic eligibility service arrives in phase 06. It implements
+``FakeEligibilityPolicy`` is a scripted stand-in for the synthetic eligibility service (phase 06). It implements
 the guard behavior the ``EligibilityPolicy`` port documents (missing data and missing estimates lead to review,
 never to an indicative yes), so it passes the same contract suite the real service must pass.
 """

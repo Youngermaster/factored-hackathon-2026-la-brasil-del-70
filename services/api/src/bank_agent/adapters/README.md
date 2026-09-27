@@ -67,7 +67,7 @@ The DuckDB readers (phase 03) read the gold serving Parquet that `bank-data buil
 
 The PostgreSQL adapters (phase 05) pass every read and write contract suite. A unit of work opens a connection, begins a transaction, and sets `app.role` and `app.customer_id` with `set_config(..., true)` before any other statement; row-level security then filters every table again behind the repositories' own `WHERE customer_id = ...` clauses (`docs/security/data-isolation.md`). Writes lock rows with `FOR NO KEY UPDATE NOWAIT`: when another open unit of work holds the row, the unit of work is marked conflicted and `commit` raises `ConcurrencyConflictError`, the same optimistic behavior as the memory adapter, without making a request wait on another request's lock. Aggregates with nested structure store their validated domain document as JSONB next to the scalar columns used by queries and policies, and check constraints keep the two in agreement.
 
-Later phases add `policy/` (phase 06), `retrieval/` (phase 07), `models/` (phases 09 and 10), and an OpenTelemetry adapter (phase 15). `docs/architecture/ports-and-adapters.md` has the full table.
+`policy/` (phase 06) reads the synthetic policy pack: `FilesystemPolicyRepository` implements `PolicyRepository`, `FilesystemCreditCatalog` implements `CreditProductCatalog` (with es, pt, and en display text), and `tasks.py` rewrites the version lock and the policy catalog page; the parsing and validation are the pure loader in `bank_agent.policy.loader`. Later phases add `retrieval/` (phase 07), `models/` (phases 09 and 10), and an OpenTelemetry adapter (phase 15). `docs/architecture/ports-and-adapters.md` has the full table.
 
 ## Who may import it
 

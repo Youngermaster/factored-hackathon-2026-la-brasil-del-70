@@ -67,7 +67,7 @@ A write is allowed only when it is one of the current workflow's `write_actions`
 
 ## Limitations
 
-- Entry states are placeholders (`START`) until phase 09 defines the state machines.
+- Entry states are `START` everywhere; `policies/bindings.yaml` fixes the canonical state names phase 09 must use for its state machines ([policy evaluation](../workflows/policy-evaluation.md#what-each-workflow-binds)), and every write now requires confirmation and step-up (`policies/matrix.yaml`).
 - The dataset's `response_code` has no code table, so declined card purchases are shown without a reason.
 - Transfers and adjustments stay `unclassified` in statement totals: phase 03 found every amount positive, so the data does not encode their direction. Available credit uses the profiled convention (`balance_is_amount_owed`) and applies to credit cards only, because a loan's limit is not a drawable line ([data card](../data/data-card.md)).
 - `complaints.affected_product_id` always names another customer's product in the delivery, so historical complaints are served without a product reference; dispute intake cannot rely on it.
