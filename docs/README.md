@@ -85,6 +85,9 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [security/prompt-injection.md](security/prompt-injection.md) | Prompt injection defense layers, their status, and their tests |
+| [security/identity-and-sessions.md](security/identity-and-sessions.md) | The mock identity service, one-time codes, sessions, step-up, lifetimes and limits |
+| [security/data-isolation.md](security/data-isolation.md) | Tool-layer scoping, row-level security, database roles and policies, and the tests that prove them |
+| [demo/personas.md](demo/personas.md) | Demo personas: selection criteria, what each demonstrates, and how to seed and log in |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
