@@ -30,6 +30,15 @@ class TestReadToolsContract:
         other = await tools_for(write_backend.uow_factory(), CUSTOMER_B).get_product_status(ProductId("PRD-A-CARD"))
         assert other is None
 
+    async def test_cards_are_listed_masked_and_scoped_by_the_session(self, write_backend: WriteBackend) -> None:
+        cards = await tools_for(write_backend.uow_factory()).list_my_cards()
+        assert [str(card.product_ref) for card in cards] == ["products:PRD-A-CARD", "products:PRD-A-DEBIT"]
+        assert [card.status for card in cards] == [ProductStatus.ACTIVE, ProductStatus.BLOCKED]
+        other = await tools_for(write_backend.uow_factory(), CUSTOMER_B).list_my_cards()
+        assert "products:PRD-A-CARD" not in [str(card.product_ref) for card in other]
+        listed = await write_backend.audit_log(EVALUATOR).list(AuditQuery())
+        assert "list_my_cards" in [event.action for event in listed]
+
     async def test_cases_are_scoped_by_the_session(self, write_backend: WriteBackend) -> None:
         tools = tools_for(write_backend.uow_factory())
         assert [case.case_id for case in await tools.list_my_cases()] == ["case-000001"]

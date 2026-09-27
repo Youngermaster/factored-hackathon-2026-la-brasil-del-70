@@ -78,6 +78,11 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 | decision | 1.1.0 | 2026-09-26 | Widens the clause family pattern (`ACC`, `CRE`, `ELG`) and `action` (`submit_credit_application`); new documents default to `1.1.0` |
 | scenario | 1.1.0 | 2026-09-26 | Adds `workflow`, `expected_workflow_path`, and `expected_eligibility_outcome`; the fixtures `credit_profile_override`, `existing_credit_application`, and `model_unavailable`; the assertions `credit_application_exists`, `credit_application_count`, and `eligibility_outcome`; the disclosure kinds `balance`, `as_of_date`, `eligibility_reason`, `review_path`, `credit_approval_claim`, `risk_estimate`, `credit_score`, and `income`; widens tool names and escalation codes; new documents default to `1.1.0` |
 | policy_clause | 1.1.0 | 2026-09-26 | Widens the clause family pattern (`ACC`, `CRE`, `ELG`) |
+| handoff | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
+| execution_record | 1.2.0 | 2026-09-27 | Adds optional `retrieval` (retriever, decision, threshold, top score, citations), marked `x-added-in`; widens tool names (`list_my_cards`); new documents default to `1.2.0` |
+| decision | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
+| scenario | 1.2.0 | 2026-09-27 | Widens tool names (`list_my_cards`); new documents default to `1.2.0` |
+| policy_clause | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
 
 ## How to change a contract
 

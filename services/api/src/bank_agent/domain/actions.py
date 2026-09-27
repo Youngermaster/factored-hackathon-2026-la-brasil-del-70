@@ -28,7 +28,8 @@ class ToolName(StrEnum):
     """Every banking tool (phase 05).
 
     Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
-    ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status. The
+    ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and
+    ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The
     risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
     select them.
     """
@@ -36,6 +37,8 @@ class ToolName(StrEnum):
     LIST_RECENT_TRANSACTIONS = "list_recent_transactions"
     GET_TRANSACTION = "get_transaction"
     GET_PRODUCT_STATUS = "get_product_status"
+    LIST_MY_CARDS = "list_my_cards"
+    """The session customer's credit and debit cards with status and expiry (added in 1.2.0)."""
     LIST_MY_CASES = "list_my_cases"
     GET_CASE_STATUS = "get_case_status"
     CREATE_DISPUTE_CASE = "create_dispute_case"

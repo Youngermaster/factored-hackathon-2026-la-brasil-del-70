@@ -8,6 +8,9 @@ reasoning field by design: the record explains a decision through rules, sources
 Version 1.1.0 adds ``workflow_before`` (set when the router moved the conversation in this turn), the risk
 estimates, and the eligibility assessments. Estimates and assessments are separate fields and are never merged,
 so the glass box shows them apart; the estimates are internal. The new fields are marked ``AddedIn``.
+
+Version 1.2.0 adds ``retrieval`` (the retriever, its decision, threshold, top score, and citations for an
+informational answer) and the ``list_my_cards`` tool name.
 """
 
 from decimal import Decimal
@@ -38,6 +41,7 @@ from bank_agent.domain.intelligence import (
     ModelId,
     ModelRef,
     PromptRef,
+    Score,
     TokenUsage,
 )
 from bank_agent.domain.locale import Language
@@ -112,8 +116,31 @@ class GroundingReport(DomainModel):
     violations: tuple[Code, ...] = ()
 
 
+class RetrievalDecisionCode(StrEnum):
+    ANSWER = "answer"
+    ABSTAIN = "abstain"
+
+
+class RetrievalRecord(DomainModel):
+    """What open retrieval did for an informational turn: which retriever, against which threshold, with what."""
+
+    retriever: ModelRef
+    decision: RetrievalDecisionCode
+    threshold: Score
+    top_score: Score | None = None
+    citations: tuple[ClauseRef, ...] = ()
+
+    @model_validator(mode="after")
+    def _validate(self) -> Self:
+        if self.decision is RetrievalDecisionCode.ANSWER and not self.citations:
+            raise ValueError("an answer from retrieval cites at least one clause")
+        if self.decision is RetrievalDecisionCode.ABSTAIN and self.citations:
+            raise ValueError("an abstention from retrieval cites no clause")
+        return self
+
+
 class ExecutionRecord(DomainModel):
-    schema_version: SchemaVersion = "1.1.0"
+    schema_version: SchemaVersion = "1.2.0"
     turn_id: TurnId
     conversation_id: ConversationId
     customer_ref: CustomerId | None = None
@@ -148,6 +175,7 @@ class ExecutionRecord(DomainModel):
     workflow_before: Annotated[WorkflowRef | None, AddedIn("1.1.0")] = None
     risk_estimates: Annotated[tuple[RiskEstimateRecord, ...], AddedIn("1.1.0"), Internal()] = ()
     eligibility_assessments: Annotated[tuple[EligibilityAssessmentRecord, ...], AddedIn("1.1.0")] = ()
+    retrieval: Annotated[RetrievalRecord | None, AddedIn("1.2.0")] = None
 
     @model_validator(mode="after")
     def _validate(self) -> Self:

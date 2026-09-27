@@ -18,7 +18,7 @@ from bank_agent.domain.actions import (
     ToolFailureMode,
     ToolName,
 )
-from bank_agent.domain.cards import CardBlockReason
+from bank_agent.domain.cards import CardBlockReason, CardStatusView
 from bank_agent.domain.credit import CreditApplicationIntake, CreditProduct
 from bank_agent.domain.dispute import DisputeCase
 from bank_agent.domain.errors import ConfigurationError, ToolPermanentError, ToolTimeoutError, ToolTransientError
@@ -83,6 +83,9 @@ class ToolFailureInjector:
 
     async def get_product_status(self, product_id: ProductId) -> ProductStatusView | None:
         return await self._target(ToolName.GET_PRODUCT_STATUS).get_product_status(product_id)
+
+    async def list_my_cards(self) -> Sequence[CardStatusView]:
+        return await self._target(ToolName.LIST_MY_CARDS).list_my_cards()
 
     async def list_my_cases(self) -> Sequence[DisputeCase]:
         return await self._target(ToolName.LIST_MY_CASES).list_my_cases()

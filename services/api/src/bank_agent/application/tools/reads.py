@@ -7,6 +7,7 @@ from bank_agent.application.tools.base import ToolCalls
 from bank_agent.application.tools.views import PaymentFilter, ProductStatusView
 from bank_agent.domain.accounts import PAYMENT_TYPES, BalanceView, PaymentStatusView, StatementPeriod, StatementSummary
 from bank_agent.domain.actions import ToolName
+from bank_agent.domain.cards import CardStatusView
 from bank_agent.domain.credit import CreditApplicationIntake, CreditProduct
 from bank_agent.domain.dispute import DisputeCase
 from bank_agent.domain.errors import ToolArgumentError
@@ -20,7 +21,7 @@ from bank_agent.domain.identifiers import (
     TransactionId,
 )
 from bank_agent.domain.intelligence import DateRange
-from bank_agent.domain.product import Product
+from bank_agent.domain.product import CARD_TYPES, Product
 from bank_agent.domain.transaction import Transaction
 from bank_agent.ports.repositories.transactions import MAX_TRANSACTION_PAGE, TransactionQuery
 from bank_agent.ports.unit_of_work import UnitOfWork
@@ -79,6 +80,15 @@ class ReadTools(ToolCalls):
             arguments={"product_id": product_id},
             target=lambda view: view.product_ref if view is not None else None,
         )
+
+    async def list_my_cards(self) -> Sequence[CardStatusView]:
+        """The session customer's credit and debit cards (status and expiry only), ordered by product id."""
+
+        async def work(uow: UnitOfWork) -> Sequence[CardStatusView]:
+            cards = await uow.products.list(types=CARD_TYPES)
+            return [CardStatusView.from_product(card) for card in sorted(cards, key=lambda card: card.product_id)]
+
+        return await self._run(ToolName.LIST_MY_CARDS, work)
 
     async def list_my_cases(self) -> Sequence[DisputeCase]:
         async def work(uow: UnitOfWork) -> Sequence[DisputeCase]:

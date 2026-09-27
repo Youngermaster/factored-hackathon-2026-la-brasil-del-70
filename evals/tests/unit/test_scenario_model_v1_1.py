@@ -67,7 +67,7 @@ def credit(**overrides: Any) -> Scenario:
 
 def test_parses_a_credit_scenario_with_every_new_kind() -> None:
     scenario = credit()
-    assert scenario.schema_version == "1.1.0"
+    assert scenario.schema_version == "1.2.0"
     assert scenario.workflow is WorkflowId.CREDIT
     assert scenario.expected_eligibility_outcome is EligibilityOutcome.INSUFFICIENT_DATA
     kinds = [type(item) for item in scenario.fixtures]
