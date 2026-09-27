@@ -54,7 +54,7 @@ Sin clasificar como cargo o abono: 0. Pendientes, rechazadas o revertidas: 1.
 Totales en MXN: cargos 1,550.00 MXN; abonos 1,500.00 MXN.
 
 [b0.menu]
-Menú principal. Escribe una opción: reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta o hablar con una persona.
+Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.
 
 [b0.reasons]
 Escribe el motivo: no reconozco, duplicado, monto distinto, no recibido, cajero o suscripción.

@@ -16,6 +16,10 @@ _MENU: tuple[tuple[Intent, str], ...] = (
     (Intent.CARD_STATUS, r"^estado de (mi )?tarjeta"),
     (Intent.CARD_BLOCK, r"^bloquear"),
     (Intent.HUMAN_REQUEST, r"^hablar con una persona"),
+    (Intent.BALANCE_INQUIRY, r"^saldo"),
+    (Intent.PAYMENT_STATUS, r"^estado de (un |mi )?pago"),
+    (Intent.STATEMENT_REQUEST, r"^estado de cuenta"),
+    (Intent.CREDIT_PRODUCT_INFO, r"^productos de credito"),
 )
 
 

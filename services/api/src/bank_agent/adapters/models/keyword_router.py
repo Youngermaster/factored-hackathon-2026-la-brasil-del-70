@@ -145,7 +145,8 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
     ),
     Intent.CREDIT_APPLICATION_STATUS: (
         (
-            r"(estado|status|situacao) de (mi|la|minha|a) (solicitud|solicitacao|pedido)|como va mi solicitud|"
+            r"(estado|status|situacao) d[aeo]l? (mi |la |minha |a |sua )?(solicitud|solicitacao|pedido de credito)|"
+            r"como va mi solicitud|como esta (a )?minha solicitacao|"
             r"\bapp-[0-9a-z]{6,}",
             0.9,
         ),
