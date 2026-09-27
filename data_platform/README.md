@@ -8,6 +8,7 @@
 - the dbt-duckdb project that builds silver (typed, deduplicated, flagged) and gold (serving Parquet for the API, ML inputs, and analytics marts), incrementally;
 - the data-quality report and the lineage page;
 - the phase 04 demand evidence and workflow prioritization analysis (`bank-data analysis`), with its inputs in `analysis/` and `mappings/`;
+- the phase 05 demo seed (`bank-data seed`, `make seed`): persona selection over gold and an idempotent load into PostgreSQL, with the persona file in `seed/personas.yaml` ([docs/demo/personas.md](../docs/demo/personas.md));
 - the committed, bounded, pseudonymized sample in `sample/` (CLAUDE.md rule 5) and the synthetic update-correctness fixture in `fixtures/`.
 
 Raw and derived data live under the repository `data/` directory, which is gitignored. The full dataset never enters git.
@@ -58,6 +59,8 @@ make pipeline DATA_SOURCE=s3       # or set BANK_DATA_SOURCE=s3 in .env and run 
 | `src/bank_data/transform/` | The dbt subprocess runner and the code generator for dbt sources, silver contracts, and the canonical seed |
 | `src/bank_data/reports/` | Quality report and lineage page |
 | `src/bank_data/sample/` | Committed-sample selection, pseudonyms, and the provenance README |
+| `src/bank_data/seed/` | The demo seed: persona file model, named SQL criteria, deterministic selection, gold-to-domain bundle, and the runner that migrates and loads through bank-agent's `PostgresSeeder` |
+| `seed/personas.yaml` | Persona criteria and coverage (no customer data) |
 | `src/bank_data/analysis/` | The phase 04 analysis: reason mapping, metrics, bootstrap statistics, pre-registered scoring, labeling export, figures, and reports |
 | `analysis/` | Analysis inputs: the pre-registered `scoring.yaml` and `cost_assumptions.yaml` (every value an assumption); see [`analysis/README.md`](analysis/README.md) |
 | `mappings/workflow_mapping.csv` | Every observed contact reason and complaint category mapped to a workflow or `other`, with scenarios and rationale |
@@ -78,6 +81,7 @@ The `bank-data` command. Every data command takes `--source sample|s3|local` (de
 | `bank-data test` | part of `make pipeline` | `dbt test` and `dbt source freshness` |
 | `bank-data report` | `make data-report` | The quality report (`docs/data/quality-report.md` for the S3 source) |
 | `bank-data lineage` | `make lineage` | `dbt docs generate` and the Mermaid lineage (`docs/data/lineage.md` for the S3 source) |
+| `bank-data seed [--customers N]` | `make seed` (`SEED_CUSTOMERS`, default 200) | Migrate the compose PostgreSQL, then load the personas and a deterministic subset from gold; idempotent. Needs `POSTGRES_ADMIN_PASSWORD` and `SESSION_SECRET` |
 | `bank-data analysis [--output-dir D] [--labeling-dir D]` | `make analysis` | Demand evidence, pre-registered scores, figures, and the labeling files (`docs/analysis/` and `data/labeling/` for the S3 source; next to the warehouse otherwise) |
 | `bank-data sample` | `make data-sample` | Regenerate `sample/` from the S3 warehouse, then run the guard |
 | `bank-data codegen [--check]` | `make data-codegen` | Regenerate (or check) the dbt files derived from the table specs |
@@ -92,6 +96,7 @@ The gold serving Parquet (`customers_serving`, `products_serving`, `transactions
 - **Add a data source adapter.** Implement the `DataSource` Protocol in `ingest/source.py` (`label`, `prefix`, `list_objects`, `download`), raising `SourceAccessError` with non-secret messages, and wire it in `workspace.py`. The manifest, contracts, and dbt layers do not change.
 - **Add a gold model.** Add SQL under `dbt/models/gold/<serving|ml|marts>/` and its tests in `_gold.yml`. A new serving table also needs a `GOLD_SCHEMAS` entry and a reader in bank-agent.
 - **Extend the analysis.** See [`analysis/README.md`](analysis/README.md): a new criterion or weight is a new pre-registration version; a new reason needs a mapping row with a rationale.
+- **Add a demo persona.** Add a named predicate to `seed/criteria.py` if none fits, add the persona to `seed/personas.yaml`, extend `tests/unit/test_seed_command.py` if it changes coverage, and document it in `docs/demo/personas.md`.
 - **Change a contract.** Edit the spec, run `make data-codegen`, bump `CONTRACT_VERSION`, and add a unit test for the new rule.
 
 ## How to test
