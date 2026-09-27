@@ -37,7 +37,13 @@ class Backend:
 async def memory_backend(request: pytest.FixtureRequest) -> AsyncIterator[Backend]:
     data = scenario_data()
     store = InMemoryStore()
-    store.seed(customers=data.customers, products=data.products, transactions=data.transactions, cases=data.cases)
+    store.seed(
+        customers=data.customers,
+        products=data.products,
+        transactions=data.transactions,
+        cases=data.cases,
+        credit_profiles=data.credit_profiles,
+    )
     yield Backend(InMemoryUnitOfWorkFactory(store), InMemorySessionStore())
 
 
@@ -48,7 +54,11 @@ async def postgres_backend(request: pytest.FixtureRequest) -> AsyncIterator[Back
     owner = owner_engine(instance)
     try:
         bundle = SeedBundle(
-            customers=data.customers, products=data.products, transactions=data.transactions, cases=data.cases
+            customers=data.customers,
+            products=data.products,
+            transactions=data.transactions,
+            cases=data.cases,
+            credit_profiles=data.credit_profiles,
         )
         await PostgresSeeder(owner).load(bundle)
     finally:

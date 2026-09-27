@@ -19,6 +19,7 @@ from bank_agent.application.engine.definition import WorkflowDefinition
 from bank_agent.application.engine.engine import WorkflowEngine
 from bank_agent.application.engine.registry import build_registry
 from bank_agent.application.engine.render import Renderer
+from bank_agent.application.workflows.account_inquiry.definition import build_account_inquiry
 from bank_agent.application.workflows.baseline.definitions import BASELINE_DEFINITIONS
 from bank_agent.application.workflows.baseline.menu import MenuRouter
 from bank_agent.application.workflows.card_support.definition import build_card_support
@@ -39,10 +40,10 @@ from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 PROPOSED = "proposed"
 BASELINE_B0 = "baseline_b0"
 PROPOSED_DEFINITIONS: Mapping[WorkflowId, Callable[[], WorkflowDefinition]] = {
+    WorkflowId.ACCOUNT_INQUIRY: build_account_inquiry,
     WorkflowId.DISPUTE: build_dispute,
     WorkflowId.CARD_SUPPORT: build_card_support,
 }
-"""Session 09b adds ``account_inquiry`` and ``credit`` here; the engine does not change."""
 
 
 @dataclass(frozen=True)

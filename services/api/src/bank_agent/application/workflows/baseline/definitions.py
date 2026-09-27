@@ -5,6 +5,9 @@ from collections.abc import Callable, Mapping
 from dataclasses import replace
 
 from bank_agent.application.engine.definition import WorkflowDefinition, build_definition
+from bank_agent.application.workflows.account_inquiry import definition as account
+from bank_agent.application.workflows.account_inquiry.unsupported import recognize
+from bank_agent.application.workflows.baseline import account as account_b0
 from bank_agent.application.workflows.baseline import handlers
 from bank_agent.application.workflows.baseline import templates as _templates
 from bank_agent.application.workflows.card_support import definition as card
@@ -55,7 +58,22 @@ def build_card_support_b0() -> WorkflowDefinition:
     )
 
 
+def build_account_inquiry_b0() -> WorkflowDefinition:
+    replaced = {"UNDERSTAND": account_b0.understand, "LOCATE_PAYMENT": account_b0.locate_payment}
+    return build_definition(
+        workflow=WorkflowId.ACCOUNT_INQUIRY,
+        version=1,
+        states=tuple(replace(s, handler=replaced[s.name]) if s.name in replaced else s for s in account.STATES),
+        transitions=account.TRANSITIONS,
+        intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.ACCOUNT_INQUIRY).intents),
+        variant=VARIANT,
+        open_questions=account.questions,
+        unsupported=recognize,
+    )
+
+
 BASELINE_DEFINITIONS: Mapping[WorkflowId, Callable[[], WorkflowDefinition]] = {
+    WorkflowId.ACCOUNT_INQUIRY: build_account_inquiry_b0,
     WorkflowId.DISPUTE: build_dispute_b0,
     WorkflowId.CARD_SUPPORT: build_card_support_b0,
 }

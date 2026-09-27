@@ -5,6 +5,7 @@ from collections.abc import Sequence
 from bank_agent.domain.dispute import DisputeReason, DisputeStatus
 from bank_agent.domain.locale import Language
 from bank_agent.domain.product import ProductStatus, ProductType
+from bank_agent.domain.transaction import TransactionStatus, TransactionType
 from bank_agent.domain.workflow import WorkflowId
 
 ES, PT, EN = Language.ES, Language.PT, Language.EN
@@ -90,6 +91,26 @@ CARD_STATUSES: dict[ProductStatus, Labels] = {
     ProductStatus.CLOSED: {ES: "cerrada", PT: "encerrado", EN: "closed"},
     ProductStatus.SUSPENDED: {ES: "suspendida", PT: "suspenso", EN: "suspended"},
 }
+PRODUCT_TYPES: dict[ProductType, Labels] = {
+    ProductType.CHECKING_ACCOUNT: {ES: "cuenta corriente", PT: "conta corrente", EN: "checking account"},
+    ProductType.SAVINGS_ACCOUNT: {ES: "cuenta de ahorro", PT: "conta poupança", EN: "savings account"},
+    ProductType.CREDIT_CARD: {ES: "tarjeta de crédito", PT: "cartão de crédito", EN: "credit card"},
+    ProductType.DEBIT_CARD: {ES: "tarjeta de débito", PT: "cartão de débito", EN: "debit card"},
+    ProductType.PERSONAL_LOAN: {ES: "préstamo personal", PT: "empréstimo pessoal", EN: "personal loan"},
+    ProductType.MORTGAGE: {ES: "crédito hipotecario", PT: "financiamento imobiliário", EN: "mortgage"},
+    ProductType.INVESTMENT: {ES: "inversión", PT: "investimento", EN: "investment"},
+    ProductType.OTHER: {ES: "producto", PT: "produto", EN: "product"},
+}
+PAYMENT_KINDS: dict[TransactionType, Labels] = {
+    TransactionType.TRANSFER: {ES: "tu transferencia", PT: "da sua transferência", EN: "your transfer"},
+    TransactionType.PAYMENT: {ES: "tu pago", PT: "do seu pagamento", EN: "your payment"},
+}
+PAYMENT_STATUSES: dict[TransactionStatus, Labels] = {
+    TransactionStatus.APPROVED: {ES: "completado", PT: "concluída", EN: "completed"},
+    TransactionStatus.PENDING: {ES: "pendiente", PT: "pendente", EN: "pending"},
+    TransactionStatus.DECLINED: {ES: "rechazado", PT: "recusada", EN: "declined"},
+    TransactionStatus.REVERSED: {ES: "revertido", PT: "estornada", EN: "reversed"},
+}
 _AND = {ES: "y", PT: "e", EN: "and"}
 
 
@@ -98,3 +119,8 @@ def join(items: Sequence[str], language: Language) -> str:
     if len(items) <= 1:
         return "".join(items)
     return f"{', '.join(items[:-1])} {_AND[language]} {items[-1]}"
+
+
+def pick(labels: Labels, language: Language) -> str:
+    """The label in ``language`` (Spanish when a label has no text in it)."""
+    return labels.get(language) or labels[ES]

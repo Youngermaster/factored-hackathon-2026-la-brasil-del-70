@@ -82,13 +82,74 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
         ),
         (r"garantiz\w* (el |que me )?(reembolso|devuelvan)|garant\w* (o )?estorno", _STRONG),
         (r"(hacer|haz|quiero) una transferencia|transferir|fazer uma transferencia|pagar (mi|a|la|o|minha)", _MEDIUM),
+        (
+            r"(fecha|dia) (limite )?de pago|vencimiento (de mi|del|de la) (pago|factura)|data de vencimento (da|do)|"
+            r"(cuando|quando) (tengo que|debo|devo) pagar|cambiar (la )?fecha de (corte|pago)",
+            0.95,
+        ),
+        (r"refinanc|reestructur|reestrutur|renegoci|desembols|portabilidad", _STRONG),
+        (r"certificad|constancia|carta bancaria|declaracao bancaria", _STRONG),
         (r"invest|increase my limit|transfer money", _STRONG),
     ),
-    Intent.BALANCE_INQUIRY: ((r"\bsaldo|cuanto tengo|quanto tenho|balance", _MEDIUM),),
-    Intent.PAYMENT_STATUS: ((r"(estado|status|situacao) de(l)? (mi |o |meu )?pago|meu pagamento", _MEDIUM),),
-    Intent.STATEMENT_REQUEST: ((r"extracto|estado de cuenta|extrato|movimientos del mes", _MEDIUM),),
-    Intent.CREDIT_PRODUCT_INFO: ((r"prestamo|emprestimo|credito personal|tarjeta de credito nueva|hipoteca", _MEDIUM),),
-    Intent.CREDIT_ELIGIBILITY: ((r"(me )?(aprueban|califico|puedo pedir)|sou elegivel|posso pedir", _MEDIUM),),
+    Intent.BALANCE_INQUIRY: (
+        (r"\bsaldos?\b|cuanto (dinero |plata )?tengo|quanto (dinheiro )?tenho|\bbalance\b", 0.8),
+        (r"credito disponible|limite disponivel|cupo disponible|available credit", 0.8),
+    ),
+    Intent.PAYMENT_STATUS: (
+        (
+            r"(estado|status|situacao) d[aeo]l? (mi |minha |meu |la |a |o |sua |seu )?(pago|pagamento|transferencia)",
+            0.85,
+        ),
+        (
+            r"(se )?(realizo|hizo|llego|acredito|reflejo) (mi|la|el) (transferencia|pago)|"
+            r"(minha|a) transferencia (foi|caiu|chegou|entrou)|(meu|o) pagamento (foi|caiu|entrou)",
+            0.85,
+        ),
+        (r"status of my (payment|transfer)", 0.85),
+    ),
+    Intent.STATEMENT_REQUEST: (
+        (
+            r"extracto|estado de cuenta|extrato|movimientos (del|de este|de) mes|resumen de (mi |la )?(cuenta|tarjeta)|"
+            r"resumo da (minha )?(conta|fatura)|movimentacoes|statement",
+            0.8,
+        ),
+    ),
+    Intent.CREDIT_PRODUCT_INFO: (
+        (
+            r"prestamo|emprestimo|credito personal|credito pessoal|tarjeta de credito nueva|hipoteca|"
+            r"financiamento imobiliario|credito hipotecario|productos de credito|produtos de credito",
+            0.75,
+        ),
+        (
+            r"que (creditos|prestamos|tarjetas) (ofrecen|tienen|hay)|quais (creditos|emprestimos|cartoes)|"
+            r"tasa de interes|taxa de juros|condiciones del|condicoes do|credit products",
+            0.75,
+        ),
+    ),
+    Intent.CREDIT_ELIGIBILITY: (
+        (
+            r"(me )?(aprueban|califico|puedo pedir)|sou elegivel|posso pedir|(soy|seria) elegible|elegibilidad|"
+            r"elegibilidade|puedo (sacar|solicitar|tener) (un|una)|me (dan|darian|daria) (un|una)|"
+            r"consigo (um|uma|tirar)|am i eligible",
+            0.85,
+        ),
+        (r"\baprob|\baprueb|\baprova|\bapprove", 0.85),
+    ),
+    Intent.CREDIT_APPLICATION: (
+        (
+            r"(solicitar|pedir|sacar) (un|una) (prestamo|tarjeta|credito)|(solicitar|pedir|contratar) (um|uma) "
+            r"(emprestimo|cartao)|registr(ar|a|en) (mi|la|a|minha) solicitud|registr(ar|e) (a|minha) solicitacao|"
+            r"apply for (a|an)",
+            0.85,
+        ),
+    ),
+    Intent.CREDIT_APPLICATION_STATUS: (
+        (
+            r"(estado|status|situacao) de (mi|la|minha|a) (solicitud|solicitacao|pedido)|como va mi solicitud|"
+            r"\bapp-[0-9a-z]{6,}",
+            0.9,
+        ),
+    ),
     Intent.GREETING_OR_OTHER: ((r"^(hola|buen[oa]s|ola|oi|bom dia|boa tarde|boa noite|gracias|obrigad)", 0.55),),
 }
 _COMPILED = {

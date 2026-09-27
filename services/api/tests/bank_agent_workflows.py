@@ -11,6 +11,7 @@ from functools import cache
 from pathlib import Path
 
 from bank_agent.adapters.llm.unconfigured import UnconfiguredLLMClient
+from bank_agent.adapters.persistence.duckdb.gold import DATASET_CREDIT_BALANCE_CONVENTION
 from bank_agent.application.engine.engine import TurnRequest, WorkflowEngine
 from bank_agent.application.tools.banking import BankingTools, EngineOnlyTools, SessionToolset
 from bank_agent.application.tools.base import ToolDependencies
@@ -130,7 +131,7 @@ def build_harness(
             catalog=policy.catalog,
             clock=clock,
             ids=ids,
-            settings=ToolSettings(policy=policy.tool_policy),
+            settings=ToolSettings(policy=policy.tool_policy, balance_convention=DATASET_CREDIT_BALANCE_CONVENTION),
         )
     )
     provider = FailingTools(tools, failures) if failures else tools
