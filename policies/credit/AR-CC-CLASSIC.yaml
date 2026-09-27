@@ -1,0 +1,27 @@
+# Synthetic credit catalog entry for the demonstration. Not an offer and not any real bank's product.
+product_code: AR-CC-CLASSIC
+product_type: credit_card
+jurisdiction: AR
+currency: ARS
+min_amount: {amount: "300000.00", currency: ARS}
+max_amount: {amount: "8000000.00", currency: ARS}
+min_term_months: 1
+max_term_months: 18
+min_annual_rate: "60.00"
+max_annual_rate: "110.00"
+purposes: [general_purpose]
+required_information: [declared_monthly_income]
+eligibility_clause_ids: [ELG-ALL-1, ELG-ALL-2, ELG-ALL-3, ELG-AR-1.1]
+self_service_eligibility: true
+catalog_version: synthetic-catalog-2026.09.1
+synthetic: true
+display:
+  es:
+    name: "Tarjeta de crédito Clásica"
+    summary: "Línea de crédito revolvente para compras y pagos a meses. Producto sintético de demostración."
+  pt:
+    name: "Cartão de crédito Clássico"
+    summary: "Limite de crédito rotativo para compras e parcelamentos. Produto sintético de demonstração."
+  en:
+    name: "Classic credit card"
+    summary: "Revolving credit line for purchases and installment payments. Synthetic demonstration product."

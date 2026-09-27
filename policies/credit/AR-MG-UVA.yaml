@@ -1,0 +1,27 @@
+# Synthetic credit catalog entry for the demonstration. Not an offer and not any real bank's product.
+product_code: AR-MG-UVA
+product_type: mortgage
+jurisdiction: AR
+currency: ARS
+min_amount: {amount: "20000000.00", currency: ARS}
+max_amount: {amount: "250000000.00", currency: ARS}
+min_term_months: 60
+max_term_months: 360
+min_annual_rate: "4.00"
+max_annual_rate: "9.00"
+purposes: [home_purchase, home_construction]
+required_information: [declared_monthly_income, property_value, down_payment]
+eligibility_clause_ids: [ELG-ALL-3]
+self_service_eligibility: false
+catalog_version: synthetic-catalog-2026.09.1
+synthetic: true
+display:
+  es:
+    name: "Crédito hipotecario UVA"
+    summary: "Financiamiento para comprar o construir vivienda; solo informativo por este medio. Producto sintético de demostración."
+  pt:
+    name: "Financiamento imobiliário UVA"
+    summary: "Financiamento para comprar ou construir moradia; apenas informativo por este canal. Produto sintético de demonstração."
+  en:
+    name: "UVA mortgage"
+    summary: "Financing to buy or build a home; information only through this channel. Synthetic demonstration product."
