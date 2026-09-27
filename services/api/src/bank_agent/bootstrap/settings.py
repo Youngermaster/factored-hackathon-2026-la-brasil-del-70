@@ -57,8 +57,10 @@ DEFAULT_DATA_AS_OF = date(2026, 6, 17)
 DEFAULT_INDEX_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "indexes"
 DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "embeddings"
 DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
-DEFAULT_THRESHOLD_BM25 = 3.0
-DEFAULT_THRESHOLD_DENSE = 0.80
+DEFAULT_THRESHOLD_BM25 = 3.6292
+"""Tuned on the dev split of retrieval_judgments.v1 (docs/evaluation/retrieval.md); rerun `make eval-retrieval`."""
+DEFAULT_THRESHOLD_DENSE = 0.8275
+"""Cosine similarity with intfloat/multilingual-e5-small, tuned on the same dev split."""
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:

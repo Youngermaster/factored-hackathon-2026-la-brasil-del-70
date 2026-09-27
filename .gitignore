@@ -15,6 +15,9 @@ kit/
 # Documentation about the data is not data.
 !docs/data/
 !docs/data/*.md
+# Team-written evaluation inputs (relevance judgments), not organizer data.
+!evals/data/
+!evals/data/*.jsonl
 *.parquet
 *.duckdb
 *.duckdb.wal
