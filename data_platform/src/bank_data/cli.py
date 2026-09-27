@@ -3,6 +3,7 @@
 import typer
 
 from bank_data import DISTRIBUTION_NAME, __version__
+from bank_data.eda.cli import app as eda_app
 
 app = typer.Typer(
     name="bank-data",
@@ -10,6 +11,8 @@ app = typer.Typer(
     no_args_is_help=True,
     add_completion=False,
 )
+
+app.add_typer(eda_app, name="eda")
 
 
 @app.callback()

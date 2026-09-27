@@ -8,7 +8,7 @@ The **Factored 2026 Hackathon Kick Off** internal alignment meeting brought toge
 
 ## 2. Key Hackathon Rules & Technical Constraints
 
-* **Challenge Requirements:** 
+* **Challenge Requirements:**
   * Develop an agentic banking solution capable of processing end-to-end customer workflows across four core domains: **Accounts & Payments**, **Credit Cards**, **Claims & Disputes**, and **Product Information**.
   * The solution must **not** be a static, prompt-only chatbot; it must actively execute backend tools, query databases, verify actions, and escalate complex cases to human review.
 * **Technical Stack Guidelines:**

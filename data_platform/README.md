@@ -33,6 +33,17 @@ Later phases add `dbt/`, `fixtures/`, `mappings/`, `seed/`, and `analysis/` besi
 
 - Later phases add `ingest`, `pipeline`, `report`, `analysis`, and `seed` subcommands, each wired to a Make target.
 
+## Local exploratory analysis
+
+The local EDA is implemented independently of the future S3 ingestion and dbt pipeline.
+See [the EDA guide](../docs/analysis/EDA.md) for reproducibility, quality policies, commands,
+and the read-only Streamlit viewer. The viewer includes a sanitized table explorer, a relationship
+map and workflow traffic lights. Install its optional dependencies with `make eda-setup`, run
+`make eda`, then launch `make eda-ui`.
+
+The `bank-data eda` group exposes `inventory`, `profile`, `curate`, `analyze`, `report`, and `run`.
+The other ingestion and seeding commands remain future work.
+
 ## How to extend
 
 - **New command:** add a function decorated with `@app.command()` in `src/bank_data/cli.py`, or a sub-application registered with `app.add_typer(...)` when a command group grows. Keep the command thin: parse arguments, resolve dependencies, call a function that is tested on its own.

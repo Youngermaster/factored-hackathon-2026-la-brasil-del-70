@@ -9,6 +9,7 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 | Last completed phase | 01, monorepo scaffold and quality gates |
 | Next phase | 02, domain model and contracts (`kit/prompts/02-domain-contracts.md`) |
 | Blocked | None |
+| Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
 Pending human actions (none blocks phase 02):
 
@@ -18,6 +19,54 @@ Pending human actions (none blocks phase 02):
 4. Run `/status` in Claude Code from the repository root and record the loaded setting sources in the phase 00 entry below.
 
 ## Phase log
+
+### Local EDA and progressive viewer (2026-09-27)
+
+Plan: [eda-local](plans/eda-local.md). Decision: [ADR 0004](adr/0004-local-eda-and-progressive-viewer.md).
+This is an independent analysis deliverable; it does not mark the future S3/dbt or domain phases complete.
+
+#### What changed
+
+- Added `bank-data eda` commands, DuckDB profiling, conservative curation, lineage and relationship checks.
+- Added content-addressed runs, transactional file checkpoints and independently published phase status.
+- Added demand cubes, text repetition and temporal leakage diagnostics, local review sampling and workflow evidence.
+- Added a local Streamlit viewer with aggregate process pages, Spanish and English labels and a Markdown report.
+- Extended the viewer with a sanitized table explorer, a relationship graph and evidence-preserving
+  workflow traffic lights; recorded the boundary in [ADR 0005](adr/0005-sanitized-eda-laboratory.md).
+- Added optional `eda` and `eda-ui` dependencies, Make targets, synthetic tests and CI installation of the extras.
+- Corrected two existing whitespace issues in kickoff notes so the documentation gate passes.
+
+#### Validation
+
+- `make check` passes: 170 unit tests, 30 integration tests, 17 web tests and all 10 coverage gates.
+- Data-platform line coverage: 95.8 percent before the laboratory extension. All eight Streamlit
+  pages pass synthetic-data checks; the latest data-platform suite has 36 passing tests.
+- Actual inventory and profile pages pass AppTest; the local HTTP health endpoint returns `ok`.
+- A built wheel includes the JSON contracts and the viewer. Gitleaks reports no leaks.
+- Streamlit requires `websockets<17`; the shared lockfile moves that dependency from 17.1 to 16.1.1.
+  All other previously locked versions are unchanged, and backend tests pass.
+
+#### Full-data run
+
+Run `372ff8010bafd0b4d802` loaded all 7,671 CSV files with no parse errors: 23,495,188 rows.
+All five phases completed: inventory, profiling, curation, analysis and aggregate report generation.
+The prior run `d970e99d520f204fc3ef` was interrupted during ingestion and is explicitly marked failed.
+Original input files are unchanged. Results remain under the ignored `data/eda/` tree.
+
+The curated layer retains 23,471,159 structurally eligible rows; it excludes 24,029 transcripts
+with a missing required duration. The shareable aggregate findings are recorded in
+[analysis/RESULTS.md](analysis/RESULTS.md).
+
+The full profile found no duplicate primary keys or identical parsed rows in this local snapshot.
+It found 24,029 missing required transcript durations, 772 resolved/closed complaints without
+resolution dates, 1,040 claimed amounts without currencies, six extra repeated product numbers
+and 13 extra repeated employee codes. Text repetition is evaluated separately from duplicate events.
+
+#### How to use
+
+See [the EDA guide](analysis/EDA.md): `make eda-setup`, `make eda`, then `make eda-ui`.
+The viewer binds to localhost. Process pages expose completed aggregate artifacts; the laboratory
+adds bounded samples using an explicit low-risk allowlist, with free text and sensitive values removed.
 
 ### Phase 01: monorepo scaffold and quality gates (2026-09-26)
 

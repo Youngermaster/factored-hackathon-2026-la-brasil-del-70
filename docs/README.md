@@ -27,6 +27,18 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
 | [adr/0002](adr/0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers |
 | [adr/0003](adr/0003-frontend-layering-and-state.md) | Frontend layering and state rules |
+| [adr/0004](adr/0004-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
+| [adr/0005](adr/0005-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
+
+## Exploratory data analysis
+
+| Document | Purpose |
+|---|---|
+| [analysis/EDA.md](analysis/EDA.md) | Reproducible local analysis, curation policies and Streamlit viewer |
+| [analysis/RESULTS.md](analysis/RESULTS.md) | Aggregate findings from the completed local snapshot |
+| [analysis/EDA_STANDARDS_REVIEW.md](analysis/EDA_STANDARDS_REVIEW.md) | EDA standards review and local-run provenance |
+| [design/EDA.md](design/EDA.md) | Phase viewer and sanitized laboratory design |
+| [plans/eda-local.md](plans/eda-local.md) | Approved implementation scope |
 
 ## Packages and apps
 

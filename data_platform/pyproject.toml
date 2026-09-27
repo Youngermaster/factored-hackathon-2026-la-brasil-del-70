@@ -8,6 +8,10 @@ dependencies = [
   "typer>=0.27.2,<1",
 ]
 
+[project.optional-dependencies]
+eda = ["duckdb>=1.4,<2"]
+eda-ui = ["duckdb>=1.4,<2", "streamlit>=1.45,<2"]
+
 [project.scripts]
 bank-data = "bank_data.cli:app"
 
