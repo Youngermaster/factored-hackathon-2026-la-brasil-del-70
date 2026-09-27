@@ -26,6 +26,9 @@ bank-agent = "bank_agent.cli:app"
 # Optional: 170 MB installed with its dependencies, so `make setup` does not install it.
 # Install with `uv sync --all-packages --extra litellm` once a provider is chosen (see ADR 0013).
 litellm = ["litellm==1.102.1"]
+# Optional: dense retrieval embeddings (sentence-transformers with torch, about 806 MB installed with their
+# dependencies). Never installed in the API runtime image or by `make setup`; see the retrieval adapter README.
+ml = ["sentence-transformers==6.1.0", "torch==2.14.0"]
 
 [build-system]
 requires = ["uv_build>=0.11.17,<0.13"]

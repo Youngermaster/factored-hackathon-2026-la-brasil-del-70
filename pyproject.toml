@@ -7,6 +7,16 @@ required-version = ">=0.11.17"
 [tool.uv.workspace]
 members = ["services/api", "data_platform", "ml", "evals"]
 
+# torch (through the optional `ml` extra of bank-agent) comes from the PyTorch CPU index on Linux, so installing
+# the extra on a Linux machine or CI runner never pulls the CUDA wheels. macOS wheels on PyPI are CPU builds.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
 [dependency-groups]
 dev = [
   "bandit==1.9.4",
@@ -112,7 +122,7 @@ files = [
 # checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["asyncpg", "asyncpg.*", "boto3", "boto3.*", "botocore", "botocore.*", "importlinter.*", "jsonschema", "jsonschema.*", "litellm", "litellm.*", "pytest_socket", "testcontainers.*"]
+module = ["asyncpg", "asyncpg.*", "boto3", "boto3.*", "botocore", "botocore.*", "importlinter.*", "jsonschema", "jsonschema.*", "litellm", "litellm.*", "mlflow", "mlflow.*", "pytest_socket", "sentence_transformers", "sentence_transformers.*", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]

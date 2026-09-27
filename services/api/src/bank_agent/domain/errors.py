@@ -324,6 +324,24 @@ class PolicyPackInvalidError(ConfigurationError):
     code = "policy_pack_invalid"
 
 
+class RetrievalIndexError(ConfigurationError):
+    """A retrieval index is missing, malformed, or built for another pack version, corpus, or model."""
+
+    code = "retrieval_index_invalid"
+
+
+class EmbeddingBackendUnavailableError(ConfigurationError):
+    """Dense retrieval was selected but the optional ``ml`` extra (sentence-transformers) is not installed."""
+
+    code = "embedding_backend_unavailable"
+
+
+class RetrievalNotAllowedError(ConfigurationError):
+    """Open retrieval was requested outside the informational intent, a programming error in the caller."""
+
+    code = "retrieval_not_allowed"
+
+
 def all_error_types() -> list[type[DomainError]]:
     """Every class in the taxonomy, depth first from ``DomainError``."""
     found: list[type[DomainError]] = []
