@@ -9,6 +9,7 @@ Every feature pipeline declares the source columns it reads (``SOURCE_COLUMNS``)
 dataset build time and a unit test runs it over every declared pipeline and scans the feature modules' source.
 """
 
+import ast
 import re
 from collections.abc import Iterable
 
@@ -46,5 +47,21 @@ def assert_no_leakage(pipeline: str, columns: Iterable[str], denylist: frozenset
 
 
 def referenced_identifiers(source: str) -> set[str]:
-    """Every quoted identifier-like string in Python ``source`` (what a SQL query or a column list names)."""
-    return set(re.findall(r"\b[a-z_][a-z0-9_]*\b", " ".join(re.findall(r"[\"']([^\"']*)[\"']", source))))
+    """Every identifier-like word inside the string literals of Python ``source`` (what SQL and column lists name).
+
+    Docstrings are prose, not queries, so they are skipped; comments are not string literals.
+    """
+    tree = ast.parse(source)
+    docstrings = {
+        id(node.body[0].value)
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Module | ast.ClassDef | ast.FunctionDef | ast.AsyncFunctionDef)
+        and node.body
+        and isinstance(node.body[0], ast.Expr)
+        and isinstance(node.body[0].value, ast.Constant)
+    }
+    words: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str) and id(node) not in docstrings:
+            words.update(re.findall(r"\b[a-z_][a-z0-9_]*\b", node.value.lower()))
+    return words
