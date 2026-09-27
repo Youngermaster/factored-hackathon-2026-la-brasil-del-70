@@ -17,3 +17,9 @@ async def backend(request: pytest.FixtureRequest) -> AsyncIterator[Backend]:
 async def postgres_only(request: pytest.FixtureRequest) -> AsyncIterator[Backend]:
     async for value in postgres_backend(request):
         yield value
+
+
+@pytest.fixture
+async def memory_only(request: pytest.FixtureRequest) -> AsyncIterator[Backend]:
+    async for value in BACKENDS["memory"](request):
+        yield value

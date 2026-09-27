@@ -230,8 +230,7 @@ async def confirm_summary(ctx: TurnContext) -> Step:
             save(ctx, data.evolve(summary_shown=False))
             return Step(RESOLVED, Reply(template="common.nothing_recorded"), Outcome.RESOLVED)
         return exhausted(ctx, data) or await _summary(ctx, data, txn, unanswered=True)
-    request = case_request(ctx, data, confirmed=False, state="CONFIRM_DISPUTE")
-    decision = evaluate(ctx, action=request, dispute=facts)
+    decision = evaluate(ctx, dispute=facts)
     stop = blocking_step(ctx, decision, state=CONFIRM, step_up_ok=True)
     if stop is not None:
         return stop

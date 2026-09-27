@@ -6,12 +6,13 @@ from dataclasses import replace
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.data import PendingSwitch, PendingWorkflowChoice
 from bank_agent.application.engine.decide import clarification_left, evaluate
-from bank_agent.application.engine.definition import StateKind
+from bank_agent.application.engine.definition import StateKind, StateSpec
 from bank_agent.application.engine.gate import pause
 from bank_agent.application.engine.registry import WorkflowRegistry
 from bank_agent.application.engine.reply import Param, Reply
 from bank_agent.application.engine.router import Route, RouteKind, dispatch
 from bank_agent.application.engine.shared import (
+    blocking_step,
     escalate,
     escalate_decision,
     greeting,
@@ -23,7 +24,9 @@ from bank_agent.application.engine.shared import (
 from bank_agent.application.engine.templates.labels import PENDING, TOPICS
 from bank_agent.application.understanding.answers import YesNo, parse_choice, parse_yes_no
 from bank_agent.application.understanding.text import fold
+from bank_agent.domain.access import AuthLevel
 from bank_agent.domain.base import UntrustedText
+from bank_agent.domain.decision import DecisionKind
 from bank_agent.domain.errors import AuthenticationError, StepUpRequiredError, ToolError, ToolNotAllowedError
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.locale import Language
@@ -49,10 +52,25 @@ def enter(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId, *, s
     ctx.engine = ctx.engine.evolve(pending_switch=None, pending_choice=None, resume_state=None)
 
 
+def auth_gate(ctx: TurnContext, spec: StateSpec) -> Step | None:
+    """Before a handler reads anything, the kernel checks the authentication its binding state needs (a higher
+    risk tier raises it to step-up); a deny or a step-up request stops here."""
+    if ctx.services.policy.pack.bindings.binding(ctx.workflow, spec.policy_state).auth is AuthLevel.NONE:
+        return None
+    decision = evaluate(ctx, policy_state=spec.policy_state)
+    auth = any(rule_id.startswith("AUTH.") for rule_id in decision.decisive_rule_ids)
+    if auth and decision.kind in (DecisionKind.DENY, DecisionKind.REQUIRE_STEP_UP):
+        return blocking_step(ctx, decision, state=ctx.state)
+    return None
+
+
 async def run_handlers(ctx: TurnContext) -> Step:
     steps = 0
     while True:
         spec = ctx.definition.spec(ctx.state)
+        stopped = auth_gate(ctx, spec)
+        if stopped is not None:
+            return stopped
         ctx.tools.allow(spec.allowed_tools)
         asked_again = ctx.reprompt
         try:
