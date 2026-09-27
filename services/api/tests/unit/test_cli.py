@@ -24,3 +24,10 @@ def test_version_prints_distribution_name_and_version() -> None:
 
     assert result.exit_code == 0
     assert result.output.strip() == f"bank-agent {__version__}"
+
+
+def test_db_upgrade_needs_the_owner_password() -> None:
+    result = runner.invoke(app, ["db", "upgrade"])
+
+    assert result.exit_code == 2
+    assert "POSTGRES_ADMIN_PASSWORD is not set" in result.output

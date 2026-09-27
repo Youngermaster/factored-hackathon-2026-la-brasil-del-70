@@ -4,7 +4,8 @@ The container turns settings into wired services. The HTTP layer consumes it thr
 ``bank_agent.api.provider.ServiceProvider`` Protocol, CLIs and the evaluation harness resolve from it
 directly, and tests build it with their own settings. The language model gateway is built here from settings
 (``bootstrap/llm.py``); tests and the evaluation harness inject a base client through ``LlmOverrides``. Later
-phases add repositories, the policy evaluator, and model clients here.
+phases add the policy evaluator and model clients here. Persistence, identity, and the banking tools come from
+``bootstrap/persistence.py``.
 """
 
 from collections.abc import Sequence
@@ -15,10 +16,19 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
 from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
 from bank_agent.adapters.system.clock import SystemClock
+from bank_agent.adapters.system.ids import RandomIdGenerator
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
+from bank_agent.application.identity.sessions import SessionService
+from bank_agent.application.tools.banking import BankingTools
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_client
+from bank_agent.bootstrap.persistence import (
+    PersistenceServices,
+    build_banking_tools,
+    build_persistence,
+    build_session_service,
+)
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
-from bank_agent.ports.determinism import Clock
+from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
@@ -48,6 +58,7 @@ class Container:
         clock: Clock | None = None,
         telemetry: Telemetry | None = None,
         llm_overrides: LlmOverrides | None = None,
+        ids: IdGenerator | None = None,
     ) -> None:
         self.settings = settings
         self._clock: Clock = clock if clock is not None else SystemClock()
@@ -68,6 +79,10 @@ class Container:
                 pool_size=5,
                 max_overflow=5,
             )
+        self._ids: IdGenerator = ids if ids is not None else RandomIdGenerator()
+        self._persistence = build_persistence(self._engine)
+        self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
+        self._banking_tools = build_banking_tools(self._persistence, clock=self._clock, ids=self._ids)
         self._readiness_checks: tuple[ReadinessCheck, ...] = (
             (PostgresReadinessCheck(self._engine),) if self._engine is not None else ()
         )
@@ -92,6 +107,20 @@ class Container:
     def llm_client(self) -> LLMClient:
         """The fully decorated language model gateway."""
         return self._llm_client
+
+    @property
+    def persistence(self) -> PersistenceServices:
+        """The unit of work factory, session store, audit log, and challenge store (PostgreSQL or memory)."""
+        return self._persistence
+
+    @property
+    def session_service(self) -> SessionService | None:
+        """Login, step-up, and sessions; ``None`` until ``SESSION_SECRET`` is set."""
+        return self._session_service
+
+    @property
+    def banking_tools(self) -> BankingTools:
+        return self._banking_tools
 
     @property
     def database_engine(self) -> AsyncEngine | None:
