@@ -25,6 +25,7 @@ from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.tools.banking import BankingTools
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_client
+from bank_agent.bootstrap.models import default_embedder
 from bank_agent.bootstrap.persistence import (
     PersistenceServices,
     build_banking_tools,
@@ -110,6 +111,7 @@ class Container:
             clock=self._clock,
             ids=self._ids,
             environment=settings.runtime.app_env,
+            embedder=(lambda: embedder) if embedder is not None else default_embedder(settings.retrieval),
         )
         self._readiness_checks: tuple[ReadinessCheck, ...] = (
             (PostgresReadinessCheck(self._engine),) if self._engine is not None else ()

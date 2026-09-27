@@ -1,2 +1,4 @@
-"""Rule-based implementations of the intelligence ports: the keyword router, the rule resolver, and the lexical
-language detector. Phase 10 adds learned implementations behind the same ports."""
+"""Implementations of the intelligence ports: the rule baselines (keyword router, rule resolver, lexical language
+detector, score-band risk estimator), the learned router and resolver adapters that load JSON artifacts through the
+filesystem ``ModelRegistry``, and the feature code they share with training (``text_features``,
+``resolver_features``)."""

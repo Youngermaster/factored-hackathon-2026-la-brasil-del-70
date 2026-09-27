@@ -57,6 +57,10 @@ DEFAULT_DATA_AS_OF = date(2026, 6, 17)
 DEFAULT_INDEX_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "indexes"
 DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retrieval" / "embeddings"
 DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
+DEFAULT_MODEL_REGISTRY_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "models"
+_SELECTION = r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}"
+ROUTER_SELECTION = rf"^(keyword@1|(tfidf|embeddings)@{_SELECTION})$"
+RESOLVER_SELECTION = rf"^(rules@1|lgbm@{_SELECTION})$"
 DEFAULT_THRESHOLD_BM25 = 3.6292
 """Tuned on the dev split of retrieval_judgments.v1 (docs/evaluation/retrieval.md); rerun `make eval-retrieval`."""
 DEFAULT_THRESHOLD_DENSE = 0.8275
@@ -227,7 +231,10 @@ class WorkflowSettings(BaseSettings):
     ``WORKFLOW_ENABLED=dispute,card_support`` cuts the other two back);
     intents of any other workflow get the out-of-scope answer, which is also how a workflow is cut back
     (CLAUDE.md section 1). Model phrasing and handoff summaries are off by default and, when on, must pass the
-    grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations.
+    grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations:
+    ``WORKFLOW_ROUTER`` is ``keyword@1`` (default), ``tfidf@<version or alias>``, or ``embeddings@<version or alias>``;
+    ``WORKFLOW_RESOLVER`` is ``rules@1`` (default) or ``lgbm@<version or alias>``. Learned models load from the
+    filesystem registry at ``WORKFLOW_MODEL_REGISTRY_DIR``; without an artifact the rule baseline serves.
     """
 
     model_config = _config("WORKFLOW_")
@@ -239,10 +246,18 @@ class WorkflowSettings(BaseSettings):
     llm_phrasing: bool = False
     llm_handoff_summary: bool = False
     max_turns: int = Field(default=40, ge=1, le=500)
-    router: Literal["keyword@1"] = "keyword@1"
-    resolver: Literal["rules@1"] = "rules@1"
+    router: Annotated[str, Field(pattern=ROUTER_SELECTION)] = "keyword@1"
+    resolver: Annotated[str, Field(pattern=RESOLVER_SELECTION)] = "rules@1"
+    model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
     language_detector: Literal["lexical@1"] = "lexical@1"
     risk_estimator: Literal["score_band@1"] = "score_band@1"
+
+    @field_validator("router", "resolver", "model_registry_dir", mode="before")
+    @classmethod
+    def _empty_model_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
 
     @field_validator("enabled", mode="before")
     @classmethod

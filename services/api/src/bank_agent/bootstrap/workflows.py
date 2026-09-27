@@ -3,16 +3,15 @@
 Both share the same ports, tools, policy kernel, grounding verifier, and handoff builder; only the definitions
 differ. Registry validation runs here, at startup, so an enabled workflow without a definition, an unbound state,
 or a tool the matrix does not allow stops the process. The router, resolver, language detector, and risk estimator
-(``risk_estimator:score_band@1`` until phase 10) are selected by name from ``WorkflowSettings``; the evaluation
-harness (phase 14) resolves ``engine("baseline_b0")``.
+(``risk_estimator:score_band@1`` until session 10b) are selected by name from ``WorkflowSettings``; learned routers
+and resolvers load through the model registry (``bootstrap/models.py``). The evaluation harness (phase 14) resolves
+``engine("baseline_b0")``.
 """
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, replace
 
-from bank_agent.adapters.models.keyword_router import KeywordIntentRouter
 from bank_agent.adapters.models.lexical_language import LexicalLanguageDetector
-from bank_agent.adapters.models.rules_resolver import RuleTransactionResolver
 from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
 from bank_agent.application.engine.context import CreditPorts, EngineServices, EngineSettings, ToolProvider
 from bank_agent.application.engine.definition import WorkflowDefinition
@@ -25,6 +24,7 @@ from bank_agent.application.workflows.baseline.menu import MenuRouter
 from bank_agent.application.workflows.card_support.definition import build_card_support
 from bank_agent.application.workflows.credit.definition import build_credit
 from bank_agent.application.workflows.dispute.definition import build_dispute
+from bank_agent.bootstrap.models import EmbedderFactory, build_model_registry, build_resolver, build_router
 from bank_agent.bootstrap.policy import PolicyServices
 from bank_agent.bootstrap.retrieval import GroundingServices
 from bank_agent.bootstrap.settings import WorkflowSettings
@@ -34,7 +34,7 @@ from bank_agent.domain.workflow import WorkflowId
 from bank_agent.domain.workflow_catalog import WORKFLOW_CATALOG
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.llm import LLMClient
-from bank_agent.ports.models import IntentRouter, LanguageDetector, RiskEstimator, TransactionResolver
+from bank_agent.ports.models import IntentRouter, LanguageDetector, ModelRegistry, RiskEstimator, TransactionResolver
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
@@ -79,8 +79,11 @@ def build_workflows(
     resolver: TransactionResolver | None = None,
     language_detector: LanguageDetector | None = None,
     risk_estimator: RiskEstimator | None = None,
+    model_registry: ModelRegistry | None = None,
+    embedder: EmbedderFactory | None = None,
 ) -> WorkflowServices:
     enabled = enabled_workflows(settings)
+    models = model_registry or build_model_registry(settings.model_registry_dir)
     credit = CreditPorts(
         catalog=policy.catalog,
         eligibility=policy.eligibility,
@@ -95,8 +98,8 @@ def build_workflows(
         verifier=grounding.verifier,
         informational=grounding.informational,
         llm=llm,
-        router=router or KeywordIntentRouter(),
-        resolver=resolver or RuleTransactionResolver(),
+        router=router or build_router(settings, models, embedder),
+        resolver=resolver or build_resolver(settings, models),
         language_detector=language_detector or LexicalLanguageDetector(),
         clock=clock,
         ids=ids,

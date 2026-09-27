@@ -309,6 +309,12 @@ class ModelArtifactIntegrityError(DependencyError):
     code = "model_artifact_integrity"
 
 
+class ModelUnavailableError(DependencyError):
+    """A registered model cannot serve in this process (for example its optional extra is not installed)."""
+
+    code = "model_unavailable"
+
+
 # --- Configuration -------------------------------------------------------------------------------------------
 
 
