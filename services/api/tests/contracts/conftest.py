@@ -13,8 +13,8 @@ from bank_agent_contracts import READ_BACKENDS, WRITE_BACKENDS, ReadBackend, Wri
 
 @pytest.fixture(params=READ_BACKENDS)
 async def read_backend(request: pytest.FixtureRequest) -> AsyncIterator[ReadBackend]:
-    factory: Callable[[], ReadBackend] = request.param
-    backend = factory()
+    factory: Callable[[pytest.FixtureRequest], ReadBackend] = request.param
+    backend = factory(request)
     await backend.seed(contract_dataset())
     yield backend
     await backend.aclose()
@@ -22,8 +22,8 @@ async def read_backend(request: pytest.FixtureRequest) -> AsyncIterator[ReadBack
 
 @pytest.fixture(params=WRITE_BACKENDS)
 async def write_backend(request: pytest.FixtureRequest) -> AsyncIterator[WriteBackend]:
-    factory: Callable[[], WriteBackend] = request.param
-    backend = factory()
+    factory: Callable[[pytest.FixtureRequest], WriteBackend] = request.param
+    backend = factory(request)
     await backend.seed(contract_dataset())
     yield backend
     await backend.aclose()

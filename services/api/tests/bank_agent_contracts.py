@@ -2,8 +2,8 @@
 
 Every adapter of a repository port runs the same suite. A backend seeds the dataset below and hands out
 readers and, if it can write, units of work. ``DuckDbBackend`` (phase 03, readers only, in ``bank_agent_duckdb``)
-reads the dataset as gold serving Parquet; phase 05 adds ``PostgresBackend`` to both lists with
-``marks=pytest.mark.integration``.
+reads the dataset as gold serving Parquet; ``PostgresBackend`` (phase 05, in ``bank_agent_postgres_backend``)
+loads it through the seeder into the session's migrated container.
 
 The dataset is a fixture: two synthetic customers with invented identifiers and values.
 """
@@ -236,14 +236,28 @@ class MemoryBackend:
         """Nothing to release."""
 
 
-def _duckdb_backend() -> ReadBackend:
+def _memory_backend(request: pytest.FixtureRequest) -> MemoryBackend:
+    return MemoryBackend()
+
+
+def _duckdb_backend(request: pytest.FixtureRequest) -> ReadBackend:
     from bank_agent_duckdb import DuckDbBackend
 
     return DuckDbBackend()
 
 
+def _postgres_backend(request: pytest.FixtureRequest) -> WriteBackend:
+    from bank_agent_postgres_backend import PostgresBackend
+
+    return PostgresBackend(request.getfixturevalue("migrated_postgres"))
+
+
 READ_BACKENDS: list[object] = [
-    pytest.param(MemoryBackend, marks=pytest.mark.unit, id="memory"),
+    pytest.param(_memory_backend, marks=pytest.mark.unit, id="memory"),
     pytest.param(_duckdb_backend, marks=pytest.mark.integration, id="duckdb"),
+    pytest.param(_postgres_backend, marks=pytest.mark.integration, id="postgres"),
 ]
-WRITE_BACKENDS: list[object] = [pytest.param(MemoryBackend, marks=pytest.mark.unit, id="memory")]
+WRITE_BACKENDS: list[object] = [
+    pytest.param(_memory_backend, marks=pytest.mark.unit, id="memory"),
+    pytest.param(_postgres_backend, marks=pytest.mark.integration, id="postgres"),
+]
