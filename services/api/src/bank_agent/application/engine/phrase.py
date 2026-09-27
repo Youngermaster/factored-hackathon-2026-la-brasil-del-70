@@ -49,6 +49,7 @@ def render_input(ctx: TurnContext) -> RenderInput:
 
 async def finish_reply(ctx: TurnContext, renderer: Renderer, reply: Reply) -> AssistantResponse:
     rendered = renderer.render(reply, render_input(ctx))
+    ctx.recorder.citations.extend(rendered.citations)
     kinds = [violation.kind.value for violation in rendered.violations]
     if kinds:
         ctx.recorder.intervention("grounding_violation")
