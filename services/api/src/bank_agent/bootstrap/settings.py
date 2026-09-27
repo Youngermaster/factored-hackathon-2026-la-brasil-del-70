@@ -220,6 +220,35 @@ class RetrievalSettings(BaseSettings):
         return value
 
 
+class WorkflowSettings(BaseSettings):
+    """The workflow engine: which workflows are enabled and whether the language model helps understanding.
+
+    ``enabled`` lists the workflows the router may dispatch to (``WORKFLOW_ENABLED=dispute,card_support``);
+    intents of any other workflow get the out-of-scope answer, which is also how a workflow is cut back
+    (CLAUDE.md section 1). Model phrasing and handoff summaries are off by default and, when on, must pass the
+    grounding verifier. Router, resolver, language detector, and risk estimator names select their implementations.
+    """
+
+    model_config = _config("WORKFLOW_")
+
+    enabled: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["dispute", "card_support"])
+    llm_understanding: bool = True
+    llm_phrasing: bool = False
+    llm_handoff_summary: bool = False
+    max_turns: int = Field(default=40, ge=1, le=500)
+    router: Literal["keyword@1"] = "keyword@1"
+    resolver: Literal["rules@1"] = "rules@1"
+    language_detector: Literal["lexical@1"] = "lexical@1"
+    risk_estimator: Literal["score_band@1"] = "score_band@1"
+
+    @field_validator("enabled", mode="before")
+    @classmethod
+    def _split_enabled(cls, value: object) -> object:
+        if isinstance(value, str):
+            return [item.strip() for item in value.split(",") if item.strip()]
+        return value
+
+
 class ObservabilitySettings(BaseSettings):
     """OpenTelemetry export settings."""
 
@@ -241,6 +270,7 @@ class AppSettings:
         observability: ObservabilitySettings,
         policy: PolicySettings | None = None,
         retrieval: RetrievalSettings | None = None,
+        workflow: WorkflowSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
@@ -249,6 +279,7 @@ class AppSettings:
         self.observability = observability
         self.policy = policy if policy is not None else PolicySettings()
         self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
+        self.workflow = workflow if workflow is not None else WorkflowSettings()
 
     @property
     def is_production(self) -> bool:
@@ -320,6 +351,7 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         observability=ObservabilitySettings(_env_file=env_file),
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
+        workflow=WorkflowSettings(_env_file=env_file),
     )
     problems = production_problems(settings)
     if problems:

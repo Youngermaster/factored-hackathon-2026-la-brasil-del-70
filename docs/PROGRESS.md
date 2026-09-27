@@ -6,11 +6,11 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 07, grounding and retrieval: the bound clause lookup verified at startup, open retrieval (BM25, dense, hybrid) only for informational questions with measured abstention, indexes keyed by the pack version, the deterministic grounding verifier, 100 pending relevance judgments, and the retrieval comparison |
-| Next phase | 09, session 09a (`kit/prompts/09-workflow-engine.md`, session 09a): engine, registry, router dispatch, `dispute`, `card_support`, baseline B0. It must wire the bound lookup, informational retrieval, and the verifier (`docs/BACKLOG.md`) |
+| Last completed phase | 09, session 09a: the generic workflow engine, the validated workflow registry, router dispatch with confirmed switches, the `dispute` and `card_support` workflows, and baseline B0, with scenarios 1 to 20 on memory and PostgreSQL |
+| Next phase | 09, session 09b (`kit/prompts/09-workflow-engine.md`, session 09b): `account_inquiry` and `credit` as definitions on the 09a engine, their B0 variants, and tasks 27 to 30 for them; after the team's 09a walkthrough (pending action 21) |
 | Blocked | None |
 
-Pending human actions (none blocks phase 09a):
+Pending human actions (none blocks phase 09b except action 21, the 09a walkthrough the prompt requires before 09b):
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
@@ -34,8 +34,97 @@ Pending human actions (none blocks phase 09a):
 18. **Confirm step-up on every write.** Phase 06 follows CLAUDE.md section 7 ("Write actions require step-up"), so opening a dispute case and recording a credit application now need a step-up code, like the card block. CLAUDE.md section 1 lists step-up only for the card block; if the team prefers the section 1 reading, set `requires_step_up: false` for those rows in `policies/matrix.yaml` (the tools follow the matrix).
 19. **Review the retrieval relevance judgments** (`evals/data/retrieval_judgments.v1.jsonl`, 100 lines, all `review_status: pending`) following `docs/evaluation/retrieval-labeling.md`: a Spanish and a Portuguese reviewer per line, adjudication of disagreements, a reviewed `v2` file, and `make eval-retrieval` again. Record the reviewers, the date, and the agreement here. Reviewers: pending. Date: pending. This is not a blocker; the results in `docs/evaluation/retrieval.md` are reported as provisional until then.
 20. **Review the optional `ml` extra footprint**: sentence-transformers 6.1.0 with torch 2.14.0 measured 806 MB installed (pre-approved, extra only, never in the API image), plus the 471 MB model `intfloat/multilingual-e5-small` (MIT) cached under `data/models/`. `make setup` does not install it; `uv sync --all-packages --extra ml` does.
+21. **Walk the team through phase 09a** (the prompt's human review): the router (`docs/workflows/workflow-router.md`), the dispute and card support state tables (`docs/workflows/dispute-intake.md`, `docs/workflows/card-support.md`, `docs/plans/phase-09a.md`), and scenario tests 1 to 18 (`services/api/tests/integration/workflows/`). Record the reviewers, the date, and any requested changes here. Reviewers: pending. Date: pending. Session 09b starts after this approval.
+22. **Decide the language detector.** The prompt names a lingua-language-detector adapter; its 2.2.0 wheels are about 170 MB (above the 50 MB rule, and it would enter the API image). Phase 09a ships the in-house `language_detector:lexical@1` behind the port. Approve lingua (and the image size) or keep the lexical detector (BACKLOG, phase 10).
+23. **Review the contract bump to 1.2.0** (`contracts/README.md` changelog): `execution_record` adds `retrieval` and the `list_my_cards` tool name, `scenario` widens tool names, and the other three contracts moved only to stay on the shared minor release.
+24. **Review the new SLA rule and its clause wording** (`DSP-{MX,CO,AR}-2`, version 2, one added sentence in es, pt, and en) together with pending action 16.
 
 ## Phase log
+
+### Phase 09, session 09a: workflow engine, registry, router, dispute, card support, baseline B0 (2026-09-27)
+
+Plan: `docs/plans/phase-09a.md`. The prompt asks for plan mode and a team walkthrough; the human delegated plan approval to the orchestrator, which pre-approved a plan that follows the prompt, CLAUDE.md, and the existing contracts and bindings. Every open question was decided by the session under that pre-approval (plan, "Decisions on open questions"). The walkthrough is pending human action 21, not a blocker. The pull at the start was a fast-forward no-op ("Already up to date"). Session 09b (`account_inquiry`, `credit`) was not implemented.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `810734b` | The plan: state tables per workflow, the execution-record flow, the router design, injection handling, B0, the scenario list, decided open questions |
+| `b38477b` | `list_my_cards` read tool (memory and PostgreSQL contract suites); `ExecutionRecord.retrieval` (`RetrievalRecord`); every contract on 1.2.0 (tool name widening), schemas regenerated, changelog |
+| `94fbbd5` | `DSP.case_within_sla` bound to `DSP-{MX,CO,AR}-2` (version 2, one added sentence in es, pt, en), `DisputeFacts.case_sla_breached`, lock, catalog page |
+| `fc678e4` | `adapters/models/`: `router:keyword@1`, `resolver:rules@1`, `language_detector:lexical@1`; `jsonschema` becomes a `bank-agent` runtime dependency |
+| `2dc0700` | `application/understanding/`: amounts and slang, relative dates, yes and no, option and language choices |
+| `1325d92` | `application/engine/`: definitions as data, registry, router dispatch, guarded toolset, recorder, templates (es, pt, en), renderer with the grounding verifier, handoff builder with schema validation, gate, flow, engine |
+| `96cb4a8` | The `dispute` workflow (understand, locate, clarify, eligibility, reason, protective block offer, confirmation, execute, verify, status) and `workflows/shared/writes.py` |
+| `811d462` | The `card_support` workflow, baseline B0 (definitions, menu router, fixed strings), `WorkflowSettings` (`WORKFLOW_*`), `bootstrap/workflows.py`, container wiring, `.env.example` |
+| `f9062e2` | The workflow harness, scenario fixtures, and the memory and PostgreSQL backends |
+| `75e3cd8`, `738b37d`, `d8f6789`, `69ecb6d`, `eca6fa0` | Scenario tests 1 to 20 and variants on both backends, engine behavior tests, the verification property, template goldens, registry checks, and the fixes they found (gate-level transitions, reprompts after resume, open questions in every handoff, an authentication check before every state, a pending step-up no longer hiding an abstention) |
+| `c879155` | Grounded model handoff summaries (off by default), readable verified facts, the dispute, card support, router, and handoff pages |
+| `d167775` | Execution records page, ADRs 0014 and 0024, indexes, prompt-injection layers, registry page, package READMEs, BACKLOG |
+| `525f27e` | Chargeback and guaranteed-refund requests routed out of scope; summary test typing |
+| This commit | This entry |
+
+#### Review summary (walk the team through these)
+
+- **Engine.** One `WorkflowEngine.process_turn` hosts every workflow: replay by turn id; session gate (an expired or revoked session runs nothing and moves to AUTH_REQUIRED with the last safe state); turn limit (40); per-turn language (question in es and pt when uncertain); injection heuristics (customer text adds a trust event; merchant names only a safety intervention); keyword plus optional model escalation signals; ids named in the text checked against the session's own records; the kernel's common rules at START (refuse or escalate); then router dispatch or the state's handler chain, each transition checked and each state's authentication checked by the kernel first; templates verified by the grounding verifier; one unit of work for the conversation, the turn, the handoff (schema-validated), and the execution record.
+- **States.** Engine states follow the prompt and map onto the canonical binding states of `bindings.yaml` (tables in `docs/workflows/dispute-intake.md` and `card-support.md`); `bindings.yaml` and `matrix.yaml` are unchanged. The registry refuses to start when a mapping, a binding, a tool, or a write does not line up.
+- **Router.** Uncertain predictions offer the two most likely enabled workflows (one clarification); shared intents are handled anywhere; unsupported or disabled intents get `SCOPE-ALL-1` and `SCOPE-ALL-2`; a request for another workflow mid-flow is confirmed first and recorded as `workflow_before`. `WORKFLOW_ENABLED=dispute,card_support` in 09a; removing a workflow cuts it back to the out-of-scope answer.
+- **Writes.** Confirmation, then step-up at EXECUTE (matrix), an idempotency key from the conversation, the target, and the action, bounded retries for transient failures only (2, from `ESC-ALL-1`), then `WriteVerifier`; success wording and verified statuses exist only after a positive read-back (Hypothesis property). A protective block during a dispute runs before the case.
+- **Baseline B0.** Same engine, tools, kernel, verifier, and handoffs; a fixed Spanish menu with one fixed Portuguese line, no model, the rule resolver's winner or a numbered list, a fixed reason menu, no block offer. `container.workflows.engine("baseline_b0")`.
+
+#### Decisions
+
+- [ADR 0014](adr/0014-explicit-state-machine-over-an-agent-framework.md): an explicit state machine over an agent framework (LangGraph noted as a possible adapter).
+- [ADR 0024](adr/0024-workflow-registry-with-router-dispatch.md): a workflow registry with router dispatch over one generic engine.
+- The prompt names a lingua-language-detector adapter; its 2.2.0 wheels are about 170 MB (above the 50 MB rule and in the API image), so the engine ships `language_detector:lexical@1` behind the port and the choice is pending human action 22 and a BACKLOG row.
+- A new read tool, `list_my_cards`, because no tool listed cards without a balance; `ToolName` widened, so every contract moved to 1.2.0 (the shared minor release); `ExecutionRecord.retrieval` records the retriever, threshold, top score, and citations.
+- SLA breaches escalate through a new rule, `DSP.case_within_sla`, bound to the resolution SLA clause of each country (version 2); the engine computes the breach from the clock because cases are live records.
+- `jsonschema` 4.26.0 (MIT, already locked as a dev dependency, a few MB) became a runtime dependency to validate handoffs before they are stored.
+- Record-text injection is a safety intervention, not a customer trust event (a trust event would raise the risk tier and change the flow).
+- A confirmation is not carried across a session expiry; the summary is asked again after re-authentication, with the same idempotency key.
+- Confirmation and offer decisions are evaluated without the pending action, and a pending step-up is looked beyond, because the kernel's authentication precedence would otherwise hide an escalation or an abstention.
+- Model phrasing and model handoff summaries are off by default; both must pass the verifier (summaries: supplied fact ids, no other figure, no unverified action claim).
+
+Deviations from the prompt and plan, found during implementation:
+
+- Workflow handlers need the real policy pack (the fixture pack binds only some states), so handler tests run in process over the in-memory adapters and PostgreSQL as integration tests rather than as unit tests; pure pieces (definitions, registry, router, language, guarded tools, security, rendering, templates, understanding tables) are unit tests.
+- The engine checks each state's binding authentication before its handler (not in the plan); the resulting decision is recorded without record facts (BACKLOG row for the glass box).
+- `Reply` gained `prefix` and `suffix` templates, and `WorkflowDefinition` an `open_questions` hook, so every handoff lists unresolved slots whichever step escalates.
+- The test `test_every_clause_has_es_pt_and_en_twins...` asserted every clause at version 1; it now asserts equal versions across language twins, and a new test pins which clauses moved (the three SLA clauses). The version tests for contracts now expect 1.2.0.
+
+#### How to verify
+
+```bash
+make check                                                               # needs Docker; never reads .env
+uv run pytest services/api/tests/unit/application services/api/tests/unit/adapters/models -q
+uv run pytest services/api/tests/integration/workflows -q                # scenarios 1 to 20 on memory and PostgreSQL
+UPDATE_TEMPLATE_GOLDEN=1 uv run pytest services/api/tests/unit/application/engine/test_template_golden.py -q   # after a wording change
+make contracts && git diff --exit-code contracts/                        # schemas current at 1.2.0
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 |
+| Python tests | 1,958 unit and 1,115 integration tests pass (1,758 and 1,034 before); the workflow scenarios run on the in-memory adapters and on PostgreSQL through testcontainers; no test calls a live model |
+| Coverage gates | All 11 pass: application 94.8%, adapters 98.1%, bootstrap 99.2%, policy 96.6%, domain 99.7%, ports 100% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 45 mermaid blocks in 264 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks |
+
+#### Known limitations
+
+- The router, resolver, and language detector are rule baselines until phase 10; routing quality bounds how often customers see the workflow question, and the merchant match is word overlap.
+- `LLM_PROVIDER=fake` refuses every model call, so the default runtime understands through the deterministic fallbacks; the model paths are tested only with scripted `FakeLLM` responses (no cassette recording, no live call).
+- Step-up and re-authentication are phase 11 routes; the engine asks for them, pauses, and resumes, but nothing in the API renews a session yet.
+- Portuguese scenarios use Mexican, Colombian, and Argentine personas and their currencies; the lexical detector needs marker words, so very short messages keep the stored preference.
+- The informational threshold comes from provisional relevance judgments; the injection heuristics are a closed list (the red-team slice is phase 14).
+- `account_inquiry` and `credit` are not enabled in 09a; their intents get the out-of-scope answer until session 09b.
+
+#### Next phase
+
+Phase 09, session 09b (`kit/prompts/09-workflow-engine.md`, session 09b): `account_inquiry` and `credit` (with the score-band risk baseline) as definitions on this engine, their B0 variants, and tasks 27 to 30 for them. It starts after the team's walkthrough of the 09a state tables and scenarios 1 to 18 (pending action 21).
 
 ### Phase 07: grounding with bound policies and measured retrieval (2026-09-27)
 

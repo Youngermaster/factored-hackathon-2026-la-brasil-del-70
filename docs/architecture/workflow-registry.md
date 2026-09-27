@@ -59,7 +59,7 @@ Cross-workflow intents (`informational`, `unsupported`, `human_request`, `greeti
 | `dispute` | Dispute status with the SLA | Opening a dispute case, optionally with a protective block | Ambiguous transaction, dispute window closed (clause-backed) | Amount above the automatic limit, repeat complainer, legal mention, verification mismatch |
 | `credit` | Synthetic catalog information; an indicative eligibility result with reasons, uncertainty, review path, and the disclaimer | Recording an application intake for human review (`submit_credit_application`) | Missing information (asks for it), mortgages (information only) | Borderline results (`credit_review_required`), contested results (`eligibility_contested`), products that need a human assessment |
 
-Every workflow has a normal path, an ambiguous or unsupported path, and a human-escalation path, each in Spanish and Portuguese; the per-workflow state machines, sequence diagrams, and state-to-rule tables land in `docs/workflows/` with phase 09.
+Every workflow has a normal path, an ambiguous or unsupported path, and a human-escalation path, each in Spanish and Portuguese. The engine, the router, and the enabled set are described in [workflow router](../workflows/workflow-router.md); the state machines are in [dispute intake](../workflows/dispute-intake.md) and [card support](../workflows/card-support.md) (session 09a), with `account_inquiry` and `credit` following in session 09b.
 
 ## Actions across workflows
 
@@ -67,7 +67,7 @@ A write is allowed only when it is one of the current workflow's `write_actions`
 
 ## Limitations
 
-- Entry states are `START` everywhere. `WorkflowDescriptor.states` lists the canonical state names phase 09 must use for its state machines; the pack loader rejects `policies/bindings.yaml` when it misses one or binds an unknown one, and the bound lookup resolves every state at startup ([grounding](../workflows/grounding.md), [policy evaluation](../workflows/policy-evaluation.md#what-each-workflow-binds)). Every write requires confirmation and step-up (`policies/matrix.yaml`).
+- Entry states are `START` everywhere. `WorkflowDescriptor.states` lists the canonical binding states; the phase 09 engine states map onto them (`StateSpec.policy_state`) and the registry checks the mapping at startup; the pack loader rejects `policies/bindings.yaml` when it misses one or binds an unknown one, and the bound lookup resolves every state at startup ([grounding](../workflows/grounding.md), [policy evaluation](../workflows/policy-evaluation.md#what-each-workflow-binds)). Every write requires confirmation and step-up (`policies/matrix.yaml`).
 - The dataset's `response_code` has no code table, so declined card purchases are shown without a reason.
 - Transfers and adjustments stay `unclassified` in statement totals: phase 03 found every amount positive, so the data does not encode their direction. Available credit uses the profiled convention (`balance_is_amount_owed`) and applies to credit cards only, because a loan's limit is not a drawable line ([data card](../data/data-card.md)).
 - `complaints.affected_product_id` always names another customer's product in the delivery, so historical complaints are served without a product reference; dispute intake cannot rely on it.
