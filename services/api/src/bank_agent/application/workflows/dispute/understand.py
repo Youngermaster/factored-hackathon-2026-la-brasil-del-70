@@ -72,5 +72,6 @@ async def understand(ctx: TurnContext) -> Step:
     data = await absorb(ctx, data, ctx.text)
     if data.intent is None:
         data = data.evolve(intent=Intent.DISPUTE_NEW)
+    ctx.engine = ctx.engine.evolve(intent=data.intent)
     save(ctx, data)
     return Step(STATUS_INQUIRY if data.intent is Intent.DISPUTE_STATUS else LOCATE_TRANSACTION)

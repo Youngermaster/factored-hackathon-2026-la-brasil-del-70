@@ -12,12 +12,11 @@ from dataclasses import dataclass, replace
 from bank_agent.adapters.models.keyword_router import KeywordIntentRouter
 from bank_agent.adapters.models.lexical_language import LexicalLanguageDetector
 from bank_agent.adapters.models.rules_resolver import RuleTransactionResolver
-from bank_agent.application.engine.context import EngineServices, EngineSettings
+from bank_agent.application.engine.context import EngineServices, EngineSettings, ToolProvider
 from bank_agent.application.engine.definition import WorkflowDefinition
 from bank_agent.application.engine.engine import WorkflowEngine
 from bank_agent.application.engine.registry import build_registry
 from bank_agent.application.engine.render import Renderer
-from bank_agent.application.tools.banking import BankingTools
 from bank_agent.application.workflows.baseline.definitions import BASELINE_DEFINITIONS
 from bank_agent.application.workflows.baseline.menu import MenuRouter
 from bank_agent.application.workflows.card_support.definition import build_card_support
@@ -64,7 +63,7 @@ def build_workflows(
     *,
     uow_factory: UnitOfWorkFactory,
     session_store: SessionStore,
-    tools: BankingTools,
+    tools: ToolProvider,
     policy: PolicyServices,
     grounding: GroundingServices,
     llm: LLMClient,

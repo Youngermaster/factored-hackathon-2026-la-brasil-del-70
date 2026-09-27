@@ -8,6 +8,7 @@ from bank_agent.application.engine.decide import evaluate, explanation
 from bank_agent.application.engine.definition import RESOLVED
 from bank_agent.application.engine.idempotency import derive_key
 from bank_agent.application.engine.reply import Masked, Param, RecordText, Reply
+from bank_agent.application.engine.security import detect_injection
 from bank_agent.application.engine.shared import abstain, blocking_step, escalate_decision
 from bank_agent.application.engine.templates.labels import REASONS
 from bank_agent.application.understanding.answers import YesNo, parse_yes_no
@@ -205,6 +206,8 @@ async def _summary(ctx: TurnContext, data: DisputeData, txn: Transaction, *, una
         planned_actions=planned,
         expected_resolution_by=due,
     )
+    if txn.merchant_name and detect_injection(txn.merchant_name):
+        ctx.recorder.intervention("record_text_injection_flagged")
     save(ctx, data.evolve(summary_shown=True))
     template = "dispute.confirm_with_block" if blocking else "dispute.confirm"
     reply = Reply(

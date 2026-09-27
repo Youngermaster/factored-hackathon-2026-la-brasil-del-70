@@ -14,7 +14,8 @@ from bank_agent.application.engine.tools import GuardedToolset
 from bank_agent.application.grounding.bound import BoundPolicy, BoundPolicyLookup
 from bank_agent.application.grounding.retrieval import InformationalRetrieval
 from bank_agent.application.grounding.verifier import GroundingVerifier
-from bank_agent.application.tools.banking import BankingTools
+from bank_agent.application.tools.banking import SessionToolset
+from bank_agent.application.tools.base import ToolDependencies
 from bank_agent.application.tools.context import SessionContext
 from bank_agent.application.tools.verification import WriteVerifier
 from bank_agent.domain.base import UntrustedText
@@ -36,6 +37,15 @@ from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.models import IntentRouter, LanguageDetector, TransactionResolver
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
+
+
+class ToolProvider(Protocol):
+    """``BankingTools`` satisfies it; tests and evaluations wrap it (the failure injector) the same way."""
+
+    def for_session(self, context: SessionContext) -> SessionToolset: ...
+
+    @property
+    def dependencies(self) -> ToolDependencies: ...
 
 
 class PolicyEvaluator(Protocol):
@@ -70,7 +80,7 @@ class EngineSettings:
 class EngineServices:
     uow_factory: UnitOfWorkFactory
     session_store: SessionStore
-    tools: BankingTools
+    tools: ToolProvider
     policy: PolicyEvaluator
     bound: BoundPolicyLookup
     verifier: GroundingVerifier

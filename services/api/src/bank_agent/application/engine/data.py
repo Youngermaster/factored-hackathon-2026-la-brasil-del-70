@@ -60,6 +60,8 @@ class EngineData(DomainModel):
     handoff_due: date | None = None
     executed: tuple[ExecutedAction, ...] = ()
     facts: Annotated[tuple[FactEntry, ...], Field(max_length=MAX_VERIFIED_FACTS)] = ()
+    intent: Intent | None = None
+    """The intent the current workflow is serving, for the kernel when no new prediction applies."""
     carried_card: SourceRef | None = None
     """A card chosen in ``card_support``, carried into ``dispute`` after a switch as a verified fact."""
 

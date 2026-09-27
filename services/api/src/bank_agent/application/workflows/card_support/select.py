@@ -21,7 +21,7 @@ from bank_agent.domain.identifiers import ProductId, SourceRef, SourceTable
 from bank_agent.domain.llm_outputs import CardSupportSlotExtraction
 from bank_agent.domain.locale import Language
 from bank_agent.domain.product import ProductStatus
-from bank_agent.domain.workflow import Outcome
+from bank_agent.domain.workflow import Intent, Outcome
 from bank_agent.policy.facts import CardFacts
 
 SELECT_CARD = "SELECT_CARD"
@@ -51,8 +51,14 @@ async def absorb(ctx: TurnContext, data: CardData) -> CardData:
     )
 
 
+ACTION_INTENTS = {action: intent for intent, action in INTENT_ACTIONS.items()}
+
+
 async def understand(ctx: TurnContext) -> Step:
-    save(ctx, await absorb(ctx, load(ctx).evolve(product_id=None, answered=False, confirm_shown=False)))
+    data = await absorb(ctx, load(ctx).evolve(product_id=None, answered=False, confirm_shown=False))
+    intent = ACTION_INTENTS.get(data.action) if data.action is not None else Intent.CARD_STATUS
+    ctx.engine = ctx.engine.evolve(intent=intent)
+    save(ctx, data)
     return Step(SELECT_CARD)
 
 

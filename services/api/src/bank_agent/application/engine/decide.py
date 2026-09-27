@@ -8,7 +8,7 @@ kernel is pure; this module only builds the request.
 from bank_agent.application.engine.context import TurnContext
 from bank_agent.domain.actions import ActionRequest
 from bank_agent.domain.decision import ClauseRef, Decision
-from bank_agent.domain.workflow import Intent
+from bank_agent.domain.workflow import CROSS_WORKFLOW_INTENTS, Intent
 from bank_agent.policy.explain import decision_refs
 from bank_agent.policy.facts import CardFacts, DisputeFacts, EvaluationRequest, PolicyFacts
 
@@ -25,7 +25,7 @@ def evaluate(
     tool_failures: int = 0,
     verification_mismatch: bool = False,
 ) -> Decision:
-    chosen_intent = intent if intent is not None else (ctx.prediction.intent if ctx.prediction else None)
+    chosen_intent = intent if intent is not None else current_intent(ctx)
     facts = PolicyFacts(
         jurisdiction=ctx.customer.country,
         data_as_of=ctx.services.policy.data_as_of,
@@ -48,6 +48,14 @@ def evaluate(
         facts=facts,
     )
     return ctx.recorder.decision(ctx.services.policy.evaluate(request))
+
+
+def current_intent(ctx: TurnContext) -> Intent | None:
+    """The newest prediction when this workflow owns it (or it is cross-workflow), else the served intent."""
+    predicted = ctx.prediction.intent if ctx.prediction is not None else None
+    if predicted is not None and (predicted in ctx.definition.intents or predicted in CROSS_WORKFLOW_INTENTS):
+        return predicted
+    return ctx.engine.intent
 
 
 def explanation(decision: Decision) -> tuple[ClauseRef, ...]:
