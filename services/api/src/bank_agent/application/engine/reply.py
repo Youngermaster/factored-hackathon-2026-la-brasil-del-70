@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from datetime import date
 
 from bank_agent.application.grounding.draft import RecordFact
+from bank_agent.domain.accounts import BalanceView, PaymentStatusView, StatementSummary
 from bank_agent.domain.cards import CardStatusView
 from bank_agent.domain.conversation import (
     ActionStatusView,
@@ -90,6 +91,10 @@ class Reply:
     step_up_required: bool = False
     notices: tuple[NoticeCode, ...] = ()
     card_status: tuple[CardStatusView, ...] = ()
+    balances: tuple[BalanceView, ...] = ()
+    """Balances with their as-of instant, as structured parts next to the rendered text (phase 11)."""
+    payment_statuses: tuple[PaymentStatusView, ...] = ()
+    statement: StatementSummary | None = None
     suffix: tuple[tuple[str, dict[str, "Param"]], ...] = ()
     """Further templates appended after the main one, each with its own parameters."""
     prefix: str | None = None

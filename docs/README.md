@@ -33,8 +33,8 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
 | [adr/0002](adr/0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers |
 | [adr/0003](adr/0003-frontend-layering-and-state.md) | Frontend layering and state rules |
-| [adr/0030](adr/0030-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
-| [adr/0031](adr/0031-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
+| [adr/0030](adr/0032-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
+| [adr/0031](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 
 ## Exploratory data analysis
 
@@ -63,6 +63,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0027](adr/0027-opt-in-financial-memory-and-guidance.md) | Financial memory and guidance are opt-in and grounded |
 | [adr/0028](adr/0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces |
 | [adr/0029](adr/0029-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow |
+| [adr/0030](adr/0030-credit-risk-estimator.md) | The credit risk estimator: a cross-sectional snapshot label, allowlisted features, dev-chosen intervals, policy bands, kept apart from eligibility |
 
 ## Data
 
@@ -114,8 +115,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [../ml/README.md](../ml/README.md) | How to add, train, evaluate, promote, retrain, and compare a learned model |
 | [models/router.md](models/router.md) | Model card of the intent router (TF-IDF and embeddings against the keyword baseline) |
 | [models/resolver.md](models/resolver.md) | Model card of the transaction resolver (LightGBM ranker against the rule baseline) |
+| [models/risk-estimator.md](models/risk-estimator.md) | Model card of the credit risk estimator (snapshot risk estimate; logistic regression and LightGBM against the score-band baseline) |
 | [evaluation/router.md](evaluation/router.md) | Generated router evaluation: per intent, language, locale, and workflow, calibration, robustness, transfer |
 | [evaluation/resolver.md](evaluation/resolver.md) | Generated resolver evaluation: per use, language, country, candidate count, clue, silver labels |
+| [evaluation/risk-estimator.md](evaluation/risk-estimator.md) | Generated risk estimator evaluation: test metrics with intervals, calibration, bands, interval coverage, slices and disparities |
 | [evaluation/router-labeling.md](evaluation/router-labeling.md) | The protocol for the 200-item router validation sample |
 
 ## Workflow engine and workflows

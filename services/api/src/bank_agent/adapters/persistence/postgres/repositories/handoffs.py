@@ -73,6 +73,9 @@ class PostgresHandoffRepository:
             if values[name]:
                 clauses.append(f"{column} = ANY(:{name})")
                 parameters[name] = values[name]
+        if query.workflows:
+            clauses.append("document -> 'workflow' ->> 'id' = ANY(:workflows)")
+            parameters["workflows"] = [item.value for item in query.workflows]
         rows = await self._tx.rows(
             "SELECT document, lifecycle FROM app.handoffs WHERE "  # noqa: S608  # nosec B608 (fixed columns)
             + " AND ".join(clauses)

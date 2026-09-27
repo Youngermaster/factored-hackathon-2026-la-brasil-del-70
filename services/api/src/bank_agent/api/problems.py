@@ -8,6 +8,7 @@ Typed errors from inner layers are mapped with ``ProblemRegistry.register``; pha
 domain errors here, so no router formats errors itself.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from http import HTTPStatus
 from typing import Any, Final
@@ -39,6 +40,9 @@ class ProblemType:
 
 VALIDATION_PROBLEM: Final = ProblemType(422, "validation-error", "Request validation failed")
 INTERNAL_PROBLEM: Final = ProblemType(HTTPStatus.INTERNAL_SERVER_ERROR, "internal-error", "Internal server error")
+PAYLOAD_TOO_LARGE_PROBLEM: Final = ProblemType(413, "payload-too-large", "The request body is too large")
+
+HeaderFactory = Callable[[Exception], dict[str, str]]
 
 
 def problem_response(
@@ -78,12 +82,32 @@ class ProblemRegistry:
 
     def __init__(self) -> None:
         self._problems: dict[type[Exception], ProblemType] = {}
+        self._headers: dict[type[Exception], HeaderFactory] = {}
 
-    def register(self, exception_type: type[Exception], problem: ProblemType) -> None:
-        """Present ``exception_type`` (and its subclasses) as ``problem``. Its message is never exposed."""
+    def register(
+        self, exception_type: type[Exception], problem: ProblemType, headers: HeaderFactory | None = None
+    ) -> None:
+        """Present ``exception_type`` (and its subclasses) as ``problem``. Its message is never exposed.
+
+        ``headers`` builds response headers from the exception, for example ``Retry-After``.
+        """
         if exception_type in self._problems:
             raise ValueError(f"a problem type is already registered for {exception_type.__name__}")
         self._problems[exception_type] = problem
+        if headers is not None:
+            self._headers[exception_type] = headers
+
+    def _headers_for(self, exception: Exception) -> dict[str, str] | None:
+        for klass in type(exception).__mro__:
+            if klass in self._problems:
+                factory = self._headers.get(klass)
+                return factory(exception) if factory is not None else None
+        return None
+
+    @property
+    def problem_types(self) -> tuple[ProblemType, ...]:
+        """Every registered problem type, in registration order, without duplicates."""
+        return tuple(dict.fromkeys(self._problems.values()))
 
     def problem_for(self, exception: Exception) -> ProblemType | None:
         """Return the problem for the most specific registered base class of ``exception``."""
@@ -118,7 +142,7 @@ class ProblemRegistry:
         problem = self.problem_for(exc)
         if problem is None:
             return await self._handle_unexpected(request, exc)
-        return problem_response(problem, request)
+        return problem_response(problem, request, headers=self._headers_for(exc))
 
     async def _handle_unexpected(self, request: Request, exc: Exception) -> JSONResponse:
         _logger.error(

@@ -3,16 +3,15 @@
 Both share the same ports, tools, policy kernel, grounding verifier, and handoff builder; only the definitions
 differ. Registry validation runs here, at startup, so an enabled workflow without a definition, an unbound state,
 or a tool the matrix does not allow stops the process. The router, resolver, language detector, and risk estimator
-(``risk_estimator:score_band@1`` until session 10b) are selected by name from ``WorkflowSettings``; learned routers
-and resolvers load through the model registry (``bootstrap/models.py``). The evaluation harness (phase 14) resolves
-``engine("baseline_b0")``.
+(``risk_estimator:score_band@1`` by default) are selected by name from ``WorkflowSettings``; learned routers,
+resolvers, and risk estimators load through the model registry (``bootstrap/models.py``). The evaluation harness
+(phase 14) resolves ``engine("baseline_b0")``.
 """
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, replace
 
 from bank_agent.adapters.models.lexical_language import LexicalLanguageDetector
-from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
 from bank_agent.application.engine.context import CreditPorts, EngineServices, EngineSettings, ToolProvider
 from bank_agent.application.engine.definition import WorkflowDefinition
 from bank_agent.application.engine.engine import WorkflowEngine
@@ -24,7 +23,13 @@ from bank_agent.application.workflows.baseline.menu import MenuRouter
 from bank_agent.application.workflows.card_support.definition import build_card_support
 from bank_agent.application.workflows.credit.definition import build_credit
 from bank_agent.application.workflows.dispute.definition import build_dispute
-from bank_agent.bootstrap.models import EmbedderFactory, build_model_registry, build_resolver, build_router
+from bank_agent.bootstrap.models import (
+    EmbedderFactory,
+    build_model_registry,
+    build_resolver,
+    build_risk_estimator,
+    build_router,
+)
 from bank_agent.bootstrap.policy import PolicyServices
 from bank_agent.bootstrap.retrieval import GroundingServices
 from bank_agent.bootstrap.settings import WorkflowSettings
@@ -87,7 +92,7 @@ def build_workflows(
     credit = CreditPorts(
         catalog=policy.catalog,
         eligibility=policy.eligibility,
-        risk_estimator=risk_estimator or ScoreBandRiskEstimator(clock, ids),
+        risk_estimator=risk_estimator or build_risk_estimator(settings, models, clock, ids),
     )
     services = EngineServices(
         uow_factory=uow_factory,

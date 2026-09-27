@@ -11,6 +11,7 @@ from bank_agent.domain.complaint import Priority
 from bank_agent.domain.handoff import EscalationReasonCode, Handoff, HandoffOutcomeCode, HandoffRecord, HandoffStatus
 from bank_agent.domain.identifiers import HandoffId
 from bank_agent.domain.locale import Language
+from bank_agent.domain.workflow import WorkflowId
 
 
 class HandoffQuery(DomainModel):
@@ -20,6 +21,8 @@ class HandoffQuery(DomainModel):
     priorities: tuple[Priority, ...] = ()
     reasons: tuple[EscalationReasonCode, ...] = ()
     languages: tuple[Language, ...] = ()
+    workflows: tuple[WorkflowId, ...] = ()
+    """Handoffs whose ``workflow`` is one of these; a handoff without a workflow (the router) never matches."""
     sla_due_before: UtcDatetime | None = None
     limit: Annotated[int, Field(ge=1, le=200)] = 50
 

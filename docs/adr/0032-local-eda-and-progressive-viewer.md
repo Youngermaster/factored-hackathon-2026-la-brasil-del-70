@@ -1,4 +1,4 @@
-# 0004: Local EDA with a progressive aggregate viewer
+# 0032: Local EDA with a progressive aggregate viewer
 
 - Status: accepted
 - Date: 2026-09-27

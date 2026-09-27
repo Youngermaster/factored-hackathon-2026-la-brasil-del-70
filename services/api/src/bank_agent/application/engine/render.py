@@ -198,6 +198,9 @@ class Renderer:
             step_up_required=reply.step_up_required,
             notices=reply.notices,
             card_status=reply.card_status,
+            balances=reply.balances,
+            payment_statuses=reply.payment_statuses,
+            statement=reply.statement,
         )
         return Rendered(response, full_check, context, cited, violations, tuple(paragraphs))
 

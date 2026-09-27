@@ -85,16 +85,19 @@ index: ## Build the retrieval index for the current pack under data/artifacts (D
 eval-retrieval: ## Compare BM25, dense, and hybrid on the relevance judgments; writes docs/evaluation/retrieval.md
 	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) bank-eval retrieval
 
-train: ## Train, register as candidates, and evaluate the router and resolver; writes docs/evaluation (resolver needs the s3 gold)
+train: ## Train, register as candidates, and evaluate the router, resolver, and risk estimator; writes docs/evaluation (resolver and risk need the s3 gold)
 	$(UV_RUN) bank-ml router train
 	$(UV_RUN) bank-ml router evaluate
 	$(UV_RUN) bank-ml resolver train
 	$(UV_RUN) bank-ml resolver evaluate
+	$(UV_RUN) bank-ml risk train
+	$(UV_RUN) bank-ml risk evaluate
 
-promote: ## Move 'champion' to the candidates that win on dev, recording APPROVED_BY (required)
+promote: ## Move 'champion' to the candidates that win (router and resolver on dev, risk on test), recording APPROVED_BY (required)
 	@test -n "$(APPROVED_BY)" || { echo "APPROVED_BY=<name> is required: promotion records who approved it"; exit 1; }
 	$(UV_RUN) bank-ml router promote --approved-by "$(APPROVED_BY)"
 	$(UV_RUN) bank-ml resolver promote --approved-by "$(APPROVED_BY)"
+	$(UV_RUN) bank-ml risk promote --approved-by "$(APPROVED_BY)"
 
 data-download: ## Incremental, manifest-driven download of the organizer bucket into data/warehouse (needs S3 credentials)
 	$(BANK_DATA) ingest --source s3 --download-only

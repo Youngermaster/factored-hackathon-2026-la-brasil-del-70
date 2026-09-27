@@ -6,7 +6,7 @@ from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
 from bank_agent.adapters.persistence.postgres.mappers.cases import application_from_row, application_to_row
-from bank_agent.adapters.persistence.postgres.repositories.access import customer_of
+from bank_agent.adapters.persistence.postgres.repositories.access import customer_of, staff_of
 from bank_agent.adapters.persistence.postgres.transaction import Tx
 from bank_agent.domain.access import Role
 from bank_agent.domain.credit import CUSTOMER_APPLICATION_TRANSITIONS, ApplicationStatus, CreditApplicationIntake
@@ -79,6 +79,19 @@ class PostgresCreditApplicationRepository:
                 "statuses": None if statuses is None else sorted(status.value for status in statuses),
                 "limit": limit,
             },
+        )
+        return [application_from_row(row) for row in rows]
+
+    async def list_for_review(
+        self, statuses: frozenset[ApplicationStatus] | None = None, limit: int = 50
+    ) -> Sequence[CreditApplicationIntake]:
+        staff_of(self._tx.context, Role.AGENT)
+        rows = await self._tx.rows(
+            "SELECT a.document FROM app.credit_applications a "
+            "WHERE EXISTS (SELECT 1 FROM app.handoffs h WHERE h.application_ref = a.application_id) "
+            "AND (CAST(:statuses AS text[]) IS NULL OR a.status = ANY(CAST(:statuses AS text[]))) "
+            "ORDER BY a.created_at DESC, a.application_id ASC LIMIT :limit",
+            {"statuses": None if statuses is None else sorted(status.value for status in statuses), "limit": limit},
         )
         return [application_from_row(row) for row in rows]
 

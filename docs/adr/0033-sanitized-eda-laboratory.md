@@ -1,4 +1,4 @@
-# 0005: Sanitized EDA laboratory in the local viewer
+# 0033: Sanitized EDA laboratory in the local viewer
 
 - Status: accepted
 - Date: 2026-09-27

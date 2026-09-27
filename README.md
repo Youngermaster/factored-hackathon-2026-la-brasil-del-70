@@ -13,7 +13,7 @@ Status: under construction. The scaffold, the domain model and contracts, the LL
 | [`services/api`](services/api/README.md) | `bank-agent`: FastAPI service with a hexagonal core (domain, ports, policy, application, adapters, api, bootstrap) |
 | [`apps/web`](apps/web/README.md) | Vite, React 19, and TypeScript client with layered folders (app, pages, features, entities, shared) |
 | [`data_platform`](data_platform/README.md) | `bank-data`: ingestion, contracts, dbt-duckdb transformations, data reports |
-| [`ml`](ml/README.md) | `bank-ml`: intent router and transaction resolver training |
+| [`ml`](ml/README.md) | `bank-ml`: intent router, transaction resolver, and credit risk estimator training |
 | [`evals`](evals/README.md) | `bank-evals`: evaluation harness comparing baselines and the proposed system |
 | [`deploy`](deploy/README.md) | PostgreSQL role bootstrap and observability configuration; production deployment later |
 | [`docs`](docs/README.md) | Architecture, ADRs, plans, progress, and organizer material |

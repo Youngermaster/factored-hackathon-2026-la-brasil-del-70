@@ -2,8 +2,9 @@
 
 ``data["engine"]`` holds engine state shared by every workflow: the conversation-wide turn counter, pending
 questions (language, workflow choice, a switch), the resume state after a session expiry, the executed writes
-keyed by idempotency key (so a resumed step never writes twice), the verified facts collected so far, and the
-handoff id once the conversation is escalated. ``data["flow"]`` holds the current workflow's own model.
+keyed by idempotency key (so a resumed step never writes twice), the verified facts collected so far, the
+handoff id once the conversation is escalated, and the session lineage of the last turn. ``data["flow"]`` holds
+the current workflow's own model.
 """
 
 from datetime import date
@@ -14,7 +15,7 @@ from pydantic import Field, JsonValue, NonNegativeInt
 from bank_agent.domain.actions import ActionKind
 from bank_agent.domain.base import Code, DomainModel, SingleLineText
 from bank_agent.domain.handoff import MAX_VERIFIED_FACTS
-from bank_agent.domain.identifiers import HandoffId, IdempotencyKey, SourceRef
+from bank_agent.domain.identifiers import HandoffId, IdempotencyKey, LineageId, SourceRef
 from bank_agent.domain.workflow import Intent, WorkflowId
 
 ENGINE_KEY = "engine"
@@ -64,6 +65,8 @@ class EngineData(DomainModel):
     """The intent the current workflow is serving, for the kernel when no new prediction applies."""
     carried_card: SourceRef | None = None
     """A card chosen in ``card_support``, carried into ``dispute`` after a switch as a verified fact."""
+    lineage: LineageId | None = None
+    """The session lineage of the last turn. A different one means the customer signed in again (phase 11)."""
 
     def executed_for(self, key: str) -> ExecutedAction | None:
         return next((item for item in self.executed if item.idempotency_key == key), None)
