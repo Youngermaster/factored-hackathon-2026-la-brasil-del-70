@@ -45,7 +45,9 @@ def test_the_real_registries_validate_against_the_pack_bindings_and_matrix() -> 
 
 def test_enabling_a_workflow_without_a_definition_stops_startup() -> None:
     policy, grounding = shared_policy()
-    definitions = {w: f() for w, f in PROPOSED_DEFINITIONS.items() if w is not WorkflowId.CREDIT}
+    definitions: dict[WorkflowId, WorkflowDefinition] = {
+        w: f() for w, f in PROPOSED_DEFINITIONS.items() if w is not WorkflowId.CREDIT
+    }
     with pytest.raises(WorkflowRegistryError, match="credit is enabled but has no definition"):
         build_registry(
             "test", definitions, catalog=WORKFLOW_CATALOG, bound=grounding.bound, pack=policy.pack, enabled=ENABLED

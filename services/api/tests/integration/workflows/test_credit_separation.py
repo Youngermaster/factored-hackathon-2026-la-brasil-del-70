@@ -8,6 +8,8 @@ with a recording ``FakeLLM`` and model understanding, phrasing, and handoff summ
 import json
 from decimal import Decimal
 
+from pydantic import JsonValue
+
 from bank_agent.domain.intelligence import PromptRef
 from bank_agent.testing.fake_llm import FakeLLM, ScriptedResponse
 from bank_agent_scenarios import MX, PT, PT2, scenario_data
@@ -25,7 +27,7 @@ def recording_llm() -> FakeLLM:
                "requested_term_months": None, "purpose": None, "declared_monthly_income": None}  # fmt: skip
     fake.script(CREDIT_SLOTS, ScriptedResponse(output=nothing))
     fake.script(PHRASE, ScriptedResponse(output="Uma pessoa da equipe continua com você."))
-    summary = {"summary": "El cliente pidió una revisión de crédito.", "cited_fact_ids": ["F1"]}
+    summary: dict[str, JsonValue] = {"summary": "El cliente pidió una revisión de crédito.", "cited_fact_ids": ["F1"]}
     fake.script(SUMMARY, ScriptedResponse(output=summary))
     return fake
 

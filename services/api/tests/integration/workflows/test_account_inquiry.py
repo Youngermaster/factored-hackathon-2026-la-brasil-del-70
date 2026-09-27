@@ -1,6 +1,8 @@
 """Account inquiry scenarios 19 to 23 with language variants: balances, payment status, statements, unsupported
 requests, and a contested balance, on the in-memory adapters and PostgreSQL."""
 
+from pydantic import JsonValue
+
 from bank_agent.domain.workflow import Outcome, WorkflowRef
 from bank_agent.testing.fake_llm import FakeLLM, ScriptedResponse
 from bank_agent_scenarios import AR, CO, MX, PT
@@ -38,7 +40,7 @@ async def test_19_es_ar_balances_state_the_as_of_date_in_the_account_currency(ba
 async def test_19b_pt_br_balance_with_the_model_extraction_scripted(backend: Backend) -> None:
     fake = FakeLLM()
     fake.script(SIGNALS, ScriptedResponse(output=NO_SIGNALS))
-    slots = {"product_hint": {"product_type": "savings_account", "last4": None},
+    slots: dict[str, JsonValue] = {"product_hint": {"product_type": "savings_account", "last4": None},
              "statement_period_expression": None, "payment": None}  # fmt: skip
     fake.script(ACCOUNT_SLOTS, ScriptedResponse(output=slots))
     harness = build_harness(backend.uow_factory, backend.session_store, llm=fake)

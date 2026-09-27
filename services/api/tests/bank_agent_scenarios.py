@@ -13,7 +13,7 @@ from datetime import UTC, date, datetime, timedelta
 from bank_agent.domain.credit import CreditProfile
 from bank_agent.domain.customer import Customer, CustomerSegment, CustomerStatus
 from bank_agent.domain.dispute import DisputeCase, DisputeReason
-from bank_agent.domain.identifiers import CaseId, CustomerId, IdempotencyKey
+from bank_agent.domain.identifiers import CaseId, CustomerId, IdempotencyKey, ProductId
 from bank_agent.domain.locale import Country
 from bank_agent.domain.masking import MaskedNumber
 from bank_agent.domain.money import Currency, Money
@@ -145,8 +145,8 @@ def scenario_data() -> ScenarioData:
 
 def account(product_id: str, owner: str, currency: Currency, number: str, balance: str) -> Product:
     return Product(
-        product_id=product_id,
-        customer_id=owner,
+        product_id=ProductId(product_id),
+        customer_id=CustomerId(owner),
         product_type=ProductType.SAVINGS_ACCOUNT,
         status=ProductStatus.ACTIVE,
         masked_number=MaskedNumber.from_full(number),
