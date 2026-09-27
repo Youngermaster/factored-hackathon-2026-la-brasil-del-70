@@ -22,14 +22,18 @@ app = typer.Typer(
 RegistryOption = Annotated[Path, typer.Option(help="Model registry root (WORKFLOW_MODEL_REGISTRY_DIR).")]
 GoldOption = Annotated[Path, typer.Option(help="Gold Parquet directory (make pipeline DATA_SOURCE=s3).")]
 TrackingOption = Annotated[str | None, typer.Option(help="MLflow URI; 'none' disables tracking.")]
+ArtifactsOption = Annotated[Path, typer.Option(help="Where dataset cards, runs, and evaluations are written.")]
 
 
 @app.command("train")
 def train_command(
-    registry_dir: RegistryOption = REGISTRY_DIR, gold_dir: GoldOption = GOLD_DIR, tracking_uri: TrackingOption = None
+    registry_dir: RegistryOption = REGISTRY_DIR,
+    gold_dir: GoldOption = GOLD_DIR,
+    tracking_uri: TrackingOption = None,
+    artifacts_dir: ArtifactsOption = ARTIFACTS_DIR,
 ) -> None:
     """Build the dataset, fit logistic regression and LightGBM, calibrate, attach intervals, register candidates."""
-    dataset, refs = train(FilesystemModelStore(registry_dir), tracker_for(tracking_uri), gold_dir)
+    dataset, refs = train(FilesystemModelStore(registry_dir), tracker_for(tracking_uri), gold_dir, artifacts_dir)
     typer.echo(f"dataset {dataset.card.content_hash[:12]}: {dict(dataset.card.rows_per_split)}")
     for ref in refs.values():
         typer.echo(f"registered {ref} as candidate")
@@ -42,11 +46,12 @@ def evaluate_command(
     tracking_uri: TrackingOption = None,
     alias: Annotated[str, typer.Option(help="Alias or version to evaluate.")] = "candidate",
     report: Annotated[bool, typer.Option(help="Rewrite docs/evaluation/risk-estimator.md.")] = True,
+    artifacts_dir: ArtifactsOption = ARTIFACTS_DIR,
 ) -> None:
     """Score the baselines and the registered models once on test; slices, disparities, and the report."""
     output = DOCS_EVALUATION_DIR / "risk-estimator.md" if report else None
     store, tracker = FilesystemModelStore(registry_dir), tracker_for(tracking_uri)
-    result = evaluate_all(store, tracker, alias=alias, gold_dir=gold_dir, report=output)
+    result = evaluate_all(store, tracker, alias=alias, gold_dir=gold_dir, report=output, artifacts=artifacts_dir)
     for name, model in result["models"].items():
         typer.echo(f"{name}: test ROC AUC {model['test']['roc_auc']['estimate']:.3f}")
 
@@ -55,12 +60,13 @@ def evaluate_command(
 def promote_command(
     approved_by: Annotated[str, typer.Option(help="Who approves the promotion (recorded).")],
     registry_dir: RegistryOption = REGISTRY_DIR,
+    artifacts_dir: ArtifactsOption = ARTIFACTS_DIR,
 ) -> None:
     """Move 'champion' to each candidate that beats every reference on test; record the decision either way."""
     store = FilesystemModelStore(registry_dir)
     decisions = promote_all(
         store,
-        ARTIFACTS_DIR / "evaluations" / EVALUATION_FILE,
+        artifacts_dir / "evaluations" / EVALUATION_FILE,
         approved_by=approved_by,
         now=generated_now(),
         commit=git_sha(),
