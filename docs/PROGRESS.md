@@ -69,7 +69,8 @@ Plan: `docs/plans/phase-10a.md` (not a plan-mode phase; the human delegated appr
 | `b45d8fe` | Resolver integration tests on a synthetic gold fixture, the leakage scan, `make train` and `make promote` |
 | `1d72ea8`, `2c19633` | The resolver dataset hash covers descriptors; report heading levels |
 | `abf0b2a` | Generated `docs/evaluation/router.md` and `docs/evaluation/resolver.md` |
-| This commit | Model cards, ADRs 0015 and 0016, the router labeling protocol, `ml/README.md`, README and index updates, BACKLOG, and this entry |
+| `1696274` | Model cards, ADRs 0015 and 0016, the router labeling protocol, `ml/README.md`, README and index updates |
+| `e083633` | BACKLOG and this entry |
 
 #### Headline results (test splits, never used for a choice; 95% bootstrap intervals)
 
