@@ -39,6 +39,8 @@ locales/en.yml          every word on screen, one block per scene
 data/metrics.yml        every number on screen, with its kind and source
 lib/scene/kit.ts        canvas kit: palette C, type, kinetic words, arrows, chips
 lib/scene/bank.ts       system primitives: node, tag, tab, bubble, check, hex, metricValue
+lib/scene/fx.ts         colour fields, wipes, packets, rings, depth glyphs
+scenes/parts/           helpers a scene splits out (<scene>-*.ts), read by check:content
 lib/scene/contrast.ts   the allowed text colour pairs and their WCAG ratios
 lib/metrics.ts          M('key') for scenes; lib/metric-kinds.ts for the labels
 components/Scene.vue    plays a scene to the current click's cue, snaps in print mode
@@ -51,12 +53,12 @@ VIDEO.md                how to record and export the video
 
 | Slide | Scene | Clicks |
 |---|---|---|
-| 1 hook | `hook` | 4: contact share, first-contact resolution, transcripts, scope |
+| 1 hook | `hook` | 4: the data field folds into the contact bar, first-contact resolution, transcripts, four workflow tiles |
 | 2 thesis | `thesis` | 6: understand, decide, act and verify, injection, escalate, thesis line |
-| 3 architecture | `arch` | 5: policy kernel, LLM gateway, grounding verifier, data platform, import direction |
-| 4 workflows | `workflows` | 5: account inquiry, card support, dispute, credit separation, depth bar |
-| 5 evidence | `evidence` | 4: stress cases, outcomes against B0, per workflow and language, efficiency and retrieval |
-| 6 close | `close` | 3: route to operation, team, thesis and links |
+| 3 architecture | `arch` | 5: clause to Decision, request through the decorator stack, draft sent or templated, rows to quarantine, inward packets |
+| 4 workflows | `workflows` | 5: account inquiry, card support, dispute, credit separation, depth grid |
+| 5 evidence | `evidence` | 4: stress cases fly into the matrix, outcome tiles against B0, per workflow and language, efficiency and retrieval |
+| 6 close | `close` | 3: route to operation, team on yellow, thesis bands and links |
 | appendix | `appendix` | 1: profiling findings, projected cost per resolved contact |
 
 ## Colour meaning
@@ -72,6 +74,10 @@ One accent per idea, never swapped between slides. The tokens are defined once i
 | ink | `#070707` | the ground |
 
 Body-size text in blue or red uses the lighter `blueText` and `redText` tints; saturated red text is for large type only (red on ink is 4.4:1). Every allowed pair is listed in `lib/scene/contrast.ts` and checked.
+
+The accents are used as fills, not only as strokes: filled phase headers and a yellow field that floods the verified action (thesis), filled workflow tiles and a colour grid (workflows), a half-bleed blue field for the retrieval results (evidence), a full-bleed yellow field for the team (close). One accent dominates each frame. Text on a fill is ink (`#070707`): 13.0:1 on yellow, 16.1:1 on paper, 4.8:1 on blue, and on red only at 24 px bold and up.
+
+Two moments use the light-gray paper as the ground: the arrival of the hook (the data field that folds into the chart) and the whole architecture slide (a blueprint beat between dark slides). On paper, secondary text uses `inkDim` (9.1:1) and captions `inkMute` (5.4:1). `lib/scene/fx.ts` holds the field, wipe, packet, ring and glyph helpers.
 
 ## Editing wording
 

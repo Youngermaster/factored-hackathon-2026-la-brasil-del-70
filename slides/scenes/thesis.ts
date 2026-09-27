@@ -94,28 +94,29 @@ export default defineScene({
       packet(K, [{ x: X[1] + CW + 10, y: 640 }, { x: X[2] - 10, y: 640 }], seg(t, 8.55, 9.0), C.yellow, 8)
       // the act column, drawn twice: on the dark ground, then in ink inside the
       // yellow field that floods the column the moment the read-back verifies
+      const AX = X[2] + 20
       const act = (inked: boolean) => {
         const fg = inked ? C.bg : C.yellow
-        const chip = (s: string, y: number, k: number, size: number, x: number = X[2]) => inked
+        const chip = (s: string, y: number, k: number, size: number, x: number = AX) => inked
           ? K.chip(s, x, y, { bg: C.bg, fg: C.yellow, k, size, weight: 700 })
           : tab(K, s, x, y, { tone: 'yellow', k, size })
         chip(L('tool'), 520, seg(t, 9.0, 9.4), 24)
         const lk = outCubic(seg(t, 9.3, 9.7))
         if (lk > 0) {
-          K.line(X[2] + 20, 575, X[2] + 20, 575 + 70 * lk, fg, 3)
-          K.dot(X[2] + 20, 575 + 70 * lk, 7, fg)
+          K.line(AX + 20, 575, AX + 20, 575 + 70 * lk, fg, 3)
+          K.dot(AX + 20, 575 + 70 * lk, 7, fg)
         }
-        check(K, X[2] + 18, 680, 26, seg(t, 9.8, 10.1), fg, 5)
-        K.fade(outCubic(seg(t, 9.9, 10.2)), () => K.text(L('readback'), X[2] + 48, 690, { size: 26, weight: 500, color: inked ? C.bg : C.paper }))
-        chip(L('verified'), 716, seg(t, 10.2, 10.6), 22, X[2] + 48)
+        check(K, AX + 18, 680, 26, seg(t, 9.8, 10.1), fg, 5)
+        K.fade(outCubic(seg(t, 9.9, 10.2)), () => K.text(L('readback'), AX + 48, 690, { size: 26, weight: 500, color: inked ? C.bg : C.paper }))
+        chip(L('verified'), 716, seg(t, 10.2, 10.6), 22, AX + 48)
         K.fade(outCubic(seg(t, 10.5, 10.9)), () =>
-          K.text(`${L('reply')} ${M('policy.dispute_sla_ar').text}`, X[2], 830, { size: 24, weight: 500, color: inked ? C.inkDim : C.dim }))
+          K.text(`${L('reply')} ${M('policy.dispute_sla_ar').text}`, AX, 830, { size: 24, weight: 500, color: inked ? C.inkDim : C.dim }))
       }
       act(false)
-      ring(K, X[2] + 18, 680, seg(t, 9.85, 10.45), C.yellow, 10, 110)
+      ring(K, AX + 18, 680, seg(t, 9.85, 10.45), C.yellow, 10, 110)
       const fk = seg(t, 10.0, 10.5)
-      field(K, X[2] - 16, 504, 400, 360, C.yellow, fk, 'bottom', 12)
-      clipWipe(K, X[2] - 16, 504, 400, 360, fk, 'bottom', () => act(true))
+      field(K, X[2], 504, 400, 360, C.yellow, fk, 'bottom', 12)
+      clipWipe(K, X[2], 504, 400, 360, fk, 'bottom', () => act(true))
       caption(2, L('capAct'), C.yellow, 10.8)
 
       // ── 4 injection: bounces off the allowlist ──────────────────────────

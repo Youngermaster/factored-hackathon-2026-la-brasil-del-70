@@ -196,7 +196,7 @@ workflows:
   bar2: states
   bar3: verified
   bar4: handoff
-  bar5: es + pt
+  bar5: languages
   bar6: evaluation
   cite: docs/architecture/workflow-registry.md  |  docs/architecture/credit-separation.md
 
