@@ -112,7 +112,7 @@ export function makeKit(ctx: CanvasRenderingContext2D) {
     const out: string[] = []
     for (const para of s.split('\n')) {
       let line = ''
-      for (const w of para.split(/\s+/).filter(Boolean)) {
+      for (const w of para.split(/[ \t]+/).filter(Boolean)) {
         const next = line ? `${line} ${w}` : w
         if (ctx.measureText(next.replace(/\*/g, '')).width > maxW && line) {
           out.push(line)

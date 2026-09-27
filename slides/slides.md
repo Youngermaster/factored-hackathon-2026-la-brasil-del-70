@@ -35,3 +35,17 @@ drawings:
 HOOK. Narration: script.md, section "hook". Click 1 share, 2 first-contact
 resolution, 3 transcripts, 4 scope.
 -->
+
+---
+layout: scene
+routeAlias: thesis
+clicks: 6
+transition: arrive
+---
+
+<Scene name="thesis" />
+
+<!--
+THESIS. Narration: script.md, section "thesis". Click 1 understand, 2 decide,
+3 act and verify, 4 injection, 5 escalate, 6 the thesis line.
+-->
