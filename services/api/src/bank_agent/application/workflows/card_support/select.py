@@ -92,7 +92,7 @@ async def _chosen(ctx: TurnContext, data: CardData, card: CardStatusView) -> Ste
         product_id=product, last4=card.masked_number.last4, card_type=card.card_type, status=card.status, option_ids=()
     )
     ctx.engine = ctx.engine.evolve(carried_card=card.product_ref).with_fact(
-        f"card ending {card.masked_number.last4} ({card.card_type}) is {card.status}", card.product_ref
+        f"card ending {card.masked_number.last4} ({card.card_type.value}) is {card.status.value}", card.product_ref
     )
     save(ctx, data)
     facts = CardFacts(owned_by_session_customer=True, is_card=True, status=card.status, request=data.action)

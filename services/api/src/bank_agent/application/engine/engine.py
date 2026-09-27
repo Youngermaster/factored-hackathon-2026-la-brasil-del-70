@@ -25,6 +25,7 @@ from bank_agent.application.engine.records import build_record
 from bank_agent.application.engine.registry import WorkflowRegistry
 from bank_agent.application.engine.render import Renderer
 from bank_agent.application.engine.shared import escalate
+from bank_agent.application.engine.summary import refine_summary
 from bank_agent.application.engine.tools import GuardedToolset
 from bank_agent.application.tools.context import SessionContext
 from bank_agent.domain.access import Channel
@@ -109,6 +110,7 @@ class WorkflowEngine:
         if ctx.resumed and reply.prefix is None:
             reply = replace(reply, prefix="common.resume")
         response = await finish_reply(ctx, self._renderer, reply)
+        await refine_summary(ctx)
         record = build_record(ctx, conversation, step, request.channel, now)
         try:
             await self._persist(ctx, conversation, loaded.conversation is None, request, response, record, now)

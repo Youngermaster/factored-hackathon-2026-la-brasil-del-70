@@ -38,7 +38,7 @@ async def status_inquiry(ctx: TurnContext) -> Step:
         cases = sorted([c for c in listed if c.is_open] or list(listed), key=lambda c: c.opened_at, reverse=True)
     for case in cases[:MAX_LISTED]:
         ctx.engine = ctx.engine.with_fact(
-            f"case {case.case_id} is {case.status} with SLA {case.sla_due_at.date()}",
+            f"case {case.case_id} is {case.status.value} with SLA {case.sla_due_at.date()}",
             SourceRef.of(SourceTable.DISPUTE_CASES, case.case_id),
         )
     breached = next((case for case in cases if case.is_open and case.sla_due_at < ctx.now), None)

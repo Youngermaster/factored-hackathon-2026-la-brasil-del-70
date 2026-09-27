@@ -68,7 +68,8 @@ async def check_eligibility(ctx: TurnContext) -> Step:
     facts, txn = found
     local_day = facts.transaction.occurred_on if facts.transaction else ctx.today
     source = SourceRef.of(SourceTable.TRANSACTIONS, txn.transaction_id)
-    ctx.engine = ctx.engine.with_fact(f"transaction of {txn.amount} on {local_day} with status {txn.status}", source)
+    amount = f"{txn.amount.amount} {txn.amount.currency.value}"
+    ctx.engine = ctx.engine.with_fact(f"transaction of {amount} on {local_day} with status {txn.status.value}", source)
     product = await ctx.tools.get_product_status(txn.product_id)
     active_card = product is not None and product.product_type in CARD_TYPES
     data = data.evolve(

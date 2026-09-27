@@ -5,6 +5,7 @@ from datetime import timedelta
 from bank_agent.application.engine.llm import PHRASE_RESPONSE
 from bank_agent.domain.conversation import NoticeCode
 from bank_agent.domain.execution_record import RetrievalDecisionCode
+from bank_agent.domain.intelligence import PromptRef
 from bank_agent.domain.locale import Language
 from bank_agent.domain.trust import RiskTier, TrustEventKind
 from bank_agent.domain.workflow import Outcome
@@ -104,6 +105,7 @@ async def test_amount_above_the_automatic_limit_escalates_at_confirmation(memory
     handoff = (await harness.handoff(session, reply.response.escalation.handoff_id)).handoff
     assert handoff.escalation_reason.code.value == "amount_above_auto_limit"
     assert any(fact.source.key == "TRX-FIXMX-0003" for fact in handoff.verified_facts)
+    assert "transaction of 15000.00 MXN on 2026-06-12 with status approved" in [f.fact for f in handoff.verified_facts]
 
 
 async def test_a_declined_confirmation_records_nothing(memory_only: Backend) -> None:
@@ -164,3 +166,21 @@ async def test_model_phrasing_is_used_only_when_it_passes_the_verifier(memory_on
     record = await harness.record(session, bad.turn_id)
     assert record.grounding.llm_phrasing_used is False
     assert "phrasing_rejected" in record.safety_interventions
+
+
+async def test_a_model_handoff_summary_is_kept_only_when_grounded(memory_only: Backend) -> None:
+    summarize = PromptRef(prompt_id="summarize_for_handoff", version=1)
+    good = {"summary": "El cliente disputa una transaccion de 15000.00 MXN del 2026-06-12.", "cited_fact_ids": ["F1"]}
+    bad = {"summary": "El cliente pide un reembolso de 99999 MXN.", "cited_fact_ids": ["F1"]}
+    for output, kept in ((good, True), (bad, False)):
+        fake = FakeLLM()
+        fake.script(SIGNALS, ScriptedResponse(output=NO_SIGNALS))
+        fake.script(summarize, ScriptedResponse(output=output))
+        harness = build_harness(memory_only.uow_factory, memory_only.session_store, llm=fake, handoff_summary=True,
+                                llm_understanding=False)  # fmt: skip
+        session = harness.session(MX, session_id=f"ses-summary-{kept}")
+        first = await harness.say("No reconozco un cargo de 15000 pesos en ELECTRONICA NORTE", session)
+        reply = await harness.say("no", session, first.conversation_id)
+        assert reply.response.escalation is not None
+        handoff = (await harness.handoff(session, reply.response.escalation.handoff_id)).handoff
+        assert (handoff.request.summary == output["summary"]) is kept

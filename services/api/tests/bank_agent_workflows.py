@@ -117,6 +117,7 @@ def build_harness(
     enabled: tuple[str, ...] = ("dispute", "card_support"),
     llm_understanding: bool = True,
     phrasing: bool = False,
+    handoff_summary: bool = False,
 ) -> Harness:
     clock, ids = FixedClock(NOW), SequentialIdGenerator()
     policy, grounding = shared_policy()
@@ -131,7 +132,12 @@ def build_harness(
     )
     provider = FailingTools(tools, failures) if failures else tools
     services = build_workflows(
-        WorkflowSettings(enabled=list(enabled), llm_understanding=llm_understanding, llm_phrasing=phrasing),
+        WorkflowSettings(
+            enabled=list(enabled),
+            llm_understanding=llm_understanding,
+            llm_phrasing=phrasing,
+            llm_handoff_summary=handoff_summary,
+        ),
         uow_factory=uow_factory,
         session_store=session_store,
         tools=provider,
