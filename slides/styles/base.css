@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Base: the stage ground and the few HTML surfaces the deck has
+   ========================================================================== */
+
+/* The stage ground. During a seam the two slides' summed opacity dips below
+   1; without an opaque ground the browser's white page shows through as a
+   flash at every slide change. */
+html,
+html body,
+#slidev-app,
+.slidev-page,
+.slidev-layout.slidev-layout {
+  background: var(--ink);
+}
+
+html {
+  color-scheme: dark;
+}
+
+html body {
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-variation-settings: 'wght' 460;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--blue-deep);
+  color: var(--blue-text);
+}
+:focus-visible {
+  outline: 2px solid var(--blue-text);
+  outline-offset: 3px;
+}
+
+/* Canvas scenes draw their own titles; the layout frame adds nothing. */
+.slidev-layout.slidev-layout {
+  padding: 0;
+  overflow: hidden;
+}

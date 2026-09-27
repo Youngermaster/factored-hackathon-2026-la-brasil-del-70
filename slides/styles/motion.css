@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Motion between slides (adapted from the VLA deck's house seams)
+   --------------------------------------------------------------------------
+   THE RULE THAT GOVERNS ALL OF IT: between keypresses, everything is at rest.
+   Motion is punctuation tied to a key, never an ambient state. No pulsing
+   glows, no floating cards, no breathing logos, no shimmer. Inside a slide
+   the canvas scene does the moving; these classes only handle the seam.
+   ========================================================================== */
+
+/* cut-left / cut-right: the house seam.
+   12% travel (reads as a camera move, not a card shuffle), a mirrored ease
+   pair so velocity is continuous at the cut, the exit fades early, the entry
+   ignites at 0.35 and composites on top. Pressing left reverses the current. */
+.cut-left-leave-active,
+.cut-right-leave-active {
+  transition:
+    translate var(--d-exit) var(--e-in-quint),
+    opacity   180ms         var(--e-linear);
+  z-index: 1;
+}
+.cut-left-enter-active,
+.cut-right-enter-active {
+  transition:
+    translate var(--d-enter) var(--e-out-quint),
+    opacity   200ms          var(--e-linear);
+  z-index: 2;
+}
+.cut-left-leave-to    { translate: -12% 0; opacity: 0; }
+.cut-left-enter-from  { translate:  12% 0; opacity: 0.35; }
+.cut-right-leave-to   { translate:  12% 0; opacity: 0; }
+.cut-right-enter-from { translate: -12% 0; opacity: 0.35; }
+
+/* arrive / depart: the inverse-zoom arrival, spent once, on the thesis.
+   The outgoing slide recedes, the incoming lands oversized and retracts. */
+.arrive-leave-active {
+  transition: scale 200ms var(--e-in-cubic), filter 200ms var(--e-linear), opacity 200ms var(--e-linear);
+  z-index: 1;
+}
+.arrive-leave-to { scale: 0.8; filter: blur(18px); opacity: 0; }
+.arrive-enter-active {
+  transition: scale 500ms var(--e-out-expo), filter 500ms var(--e-out-expo), opacity 500ms var(--e-linear);
+  z-index: 2;
+}
+.arrive-enter-from { scale: 1.25; filter: blur(18px); opacity: 0.15; }
+
+.depart-leave-active { transition: scale 200ms var(--e-in-cubic), filter 200ms var(--e-linear), opacity 200ms var(--e-linear); z-index: 1; }
+.depart-leave-to     { scale: 1.2; filter: blur(18px); opacity: 0; }
+.depart-enter-active { transition: scale 500ms var(--e-out-expo), filter 500ms var(--e-out-expo), opacity 500ms var(--e-linear); z-index: 2; }
+.depart-enter-from   { scale: 0.8; filter: blur(18px); opacity: 0.15; }
+
+/* Reduced motion: the fade-only path. Scenes also snap to their cues. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
