@@ -11,6 +11,7 @@ def test_help_lists_the_version_command() -> None:
 
     assert result.exit_code == 0
     assert "version" in result.output
+    assert "verify-seed" in result.output
 
 
 def test_no_arguments_shows_help() -> None:

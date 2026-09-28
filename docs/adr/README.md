@@ -34,6 +34,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0029](0029-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow | Accepted | 2026-09-27 |
 | [0030](0030-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer | Accepted | 2026-09-27 |
 | [0031](0031-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
+| [0032](0032-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |
 
 ## Adding a record
 

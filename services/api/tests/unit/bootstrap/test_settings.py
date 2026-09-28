@@ -196,6 +196,16 @@ def test_values_are_read_from_the_env_file(tmp_path: Path) -> None:
     assert settings.observability.service_name == "bank-agent-test"
 
 
+def test_example_env_file_can_be_copied_and_parsed(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("APP_ENV", "development")
+    example = Path(__file__).resolve().parents[5] / ".env.example"
+
+    settings = load_settings(env_file=example)
+
+    assert settings.retrieval.threshold_bm25 is not None
+    assert settings.database.port == 5432
+
+
 def test_database_is_configured_once_the_application_password_is_set(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("POSTGRES_APP_PASSWORD", _strong_secret())
 
