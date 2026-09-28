@@ -122,6 +122,13 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [workflows/execution-records.md](workflows/execution-records.md) | Execution record fields, storage, and explaining a decision without chain-of-thought |
 | [../services/api/src/bank_agent/application/README.md](../services/api/src/bank_agent/application/README.md) | How to add a state, a workflow, or a tool |
 
+## HTTP API
+
+| Document | Purpose |
+|---|---|
+| [api/README.md](api/README.md) | Endpoint catalog (method, path, role, CSRF, rate class), the auth model, error types, and versioning |
+| [../contracts/openapi.json](../contracts/openapi.json) | The committed OpenAPI contract (`make openapi`), source of the web client types |
+
 ## Packages and apps
 
 | README | Scope |
@@ -142,6 +149,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [security/prompt-injection.md](security/prompt-injection.md) | Prompt injection defense layers, their status, and their tests |
 | [security/identity-and-sessions.md](security/identity-and-sessions.md) | The mock identity service, one-time codes, sessions, step-up, lifetimes and limits |
 | [security/data-isolation.md](security/data-isolation.md) | Tool-layer scoping, row-level security, database roles and policies, and the tests that prove them |
+| [security/threat-model.md](security/threat-model.md) | STRIDE per component (web, API, engine, LLM gateway, database, identity) with mitigations and their tests |
 | [demo/personas.md](demo/personas.md) | Demo personas: selection criteria, what each demonstrates, and how to seed and log in |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
