@@ -10,7 +10,7 @@ from bank_agent.bootstrap.persistence import owner_database_url
 from bank_agent.bootstrap.settings import AppSettings, load_settings
 from bank_agent.domain.locale import Country
 from bank_data.errors import ConfigurationError
-from bank_data.seed.config import DEFAULT_PERSONAS_FILE, load_personas
+from bank_data.seed.config import DEFAULT_PERSONAS_FILE, DEFAULT_SAMPLE_PERSONAS_FILE, load_personas
 from bank_data.seed.runner import SeedReport, run_seed
 from bank_data.workspace import Workspace
 
@@ -38,7 +38,7 @@ def seed(
     workspace: Workspace,
     *,
     customers: int = DEFAULT_SEED_CUSTOMERS,
-    personas_file: Path = DEFAULT_PERSONAS_FILE,
+    personas_file: Path | None = None,
     settings: AppSettings | None = None,
 ) -> SeedReport:
     gold_dir = workspace.dbt_target().gold_dir
@@ -50,9 +50,12 @@ def seed(
         keys = IdentityKeys(secret)
     except ValueError as error:
         raise ConfigurationError("SESSION_SECRET must be at least 32 bytes long") from error
+    selected_personas = personas_file or (
+        DEFAULT_SAMPLE_PERSONAS_FILE if workspace.source_kind == "sample" else DEFAULT_PERSONAS_FILE
+    )
     return run_seed(
         gold_dir,
-        load_personas(personas_file),
+        load_personas(selected_personas),
         keys,
         create_engine(owner_database_url(service.database), pooled=False),
         target=customers,
