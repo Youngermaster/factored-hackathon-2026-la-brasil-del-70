@@ -23,6 +23,7 @@ Choose option 2 as a future product direction. These capabilities are not part o
 
 - Offer an explicit opt-in for personalized memory and explain what categories it uses, such as customer-approved account/product summaries and relevant prior service conversations. Do not describe the assistant as having unrestricted knowledge of a customer.
 - Use short-term conversation context for the current chat and, when the customer opts in, retrieve only the relevant user-scoped records or summaries for a later conversation (for example, through a bounded RAG layer). Do not load or send the entire financial history to the model by default.
+- For prior customer-service conversation retrieval, use the consented vector-index design in [ADR 0034](0034-customer-service-history-vector-retrieval.md).
 - Every retrieved fact carries its source and as-of time. The customer can inspect, correct, clear, or disable remembered context. Disabling or clearing memory stops future retrieval and removes the customer-controlled memory artifacts according to the retention policy; it does not erase immutable audit records required by the existing contracts.
 - Customer access remains enforced in the service and retrieval layer. Memory and retrieved material are evidence supplied to the assistant, not instructions; they cannot override policy or authorize an action.
 

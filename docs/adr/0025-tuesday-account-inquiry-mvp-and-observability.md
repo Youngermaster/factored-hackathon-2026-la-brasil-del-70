@@ -70,6 +70,7 @@ flowchart TD
 - Add an authenticated human-service inbox so a real human service agent can join and reply in the existing chat ([ADR 0026](0026-live-agent-joins-escalated-conversation.md)).
 - Use observed requests and traces to automate selected low-risk intents incrementally; keep human escalation for ambiguity, risk, and failures.
 - Add optional financial memory, tips, and planning ([ADR 0027](0027-opt-in-financial-memory-and-guidance.md)).
+- Add consented, customer-scoped retrieval of prior service conversations ([ADR 0034](0034-customer-service-history-vector-retrieval.md)).
 - Add mocked LATAM bank connectors and coming-soon crypto/xStocks surfaces ([ADR 0028](0028-mocked-multibank-and-digital-asset-surfaces.md)).
 - Replace the fixed demo credential/profile with full customer identity and user-specific data access.
 
@@ -96,10 +97,12 @@ flowchart TD
     NEXT{Choose next increment}
     HUMAN[Real human service agent joins the existing chat]
     AUTO[Automate supported low-risk intents with human fallback]
-    LATER[Optional financial memory and mocked bank/digital-asset surfaces]
+    MEMORY[Consented service-history RAG (ADR 0034)]
+    LATER[Financial guidance and mocked bank/digital-asset surfaces]
 
     MVP --> REVIEW --> NEXT
     NEXT --> HUMAN
     NEXT --> AUTO --> REVIEW
+    NEXT --> MEMORY
     NEXT --> LATER
 ```

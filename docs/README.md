@@ -64,6 +64,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0028](adr/0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces |
 | [adr/0029](adr/0029-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow |
 | [adr/0030](adr/0030-credit-risk-estimator.md) | The credit risk estimator: a cross-sectional snapshot label, allowlisted features, dev-chosen intervals, policy bands, kept apart from eligibility |
+| [adr/0034](adr/0034-customer-service-history-vector-retrieval.md) | Customer-service history uses consented vector retrieval |
 
 ## Data
 
