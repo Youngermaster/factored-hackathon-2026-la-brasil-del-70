@@ -135,7 +135,7 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
             r"consigo (um|uma|tirar)|am i eligible",
             0.85,
         ),
-        (r"\baprob|\baprueb|\baprova|\bapprove", 0.85),
+        (r"\baprob|\baprueb|\baprov[ae]|\bapprove", 0.85),
     ),
     Intent.CREDIT_APPLICATION: (
         (

@@ -7,6 +7,9 @@ import re
 from bank_agent.application.engine.definition import UnsupportedRequest
 from bank_agent.application.understanding.text import fold
 
+_NOW = r"(ya|ja|ahora|agora|logo|hoy|hoje|de una|ya mismo|right now|now)\b"
+"""An immediacy word: with an approval verb it asks for a decision now, not for the requirements."""
+
 _PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     (
         "limit_increase",
@@ -26,9 +29,11 @@ _PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     (
         "decision_now",
         re.compile(
-            r"\b(aprobame|aprobamelo|aprobalo|apruebame|apruebamelo|apruebelo|apruebenlo|apruebenmelo|aprueben|"
-            r"aprovem|aprove|me aprova|aprova (ja|logo|agora)|just approve|approve it)\b|"
-            r"\b(dame|denme|me den|me de|me da) (el |la |o |a )?(credito|prestamo|emprestimo|tarjeta|cartao) "
+            r"\b(aprobame|aprobamelo|aprobalo|apruebame|apruebamelo|apruebelo|apruebenlo|apruebenmelo|aproveme|"
+            r"aprove-me|me aprova|just approve|approve it)\b|"
+            r"\b(aproba|aprueba|aprueben|aprove|aprova|aprovem|approve)\b(?! .*\?)(\s+\w+){0,4}?\s+"
+            + _NOW
+            + r"|\b(dame|denme|me den|me de|me da) (el |la |o |a )?(credito|prestamo|emprestimo|tarjeta|cartao) "
             r"(ya|ahora|agora|de una)\b|\bdecid(an|ir|e) (ya|ahora|agora)\b|\bdecisao (agora|ja)\b"
         ),
     ),

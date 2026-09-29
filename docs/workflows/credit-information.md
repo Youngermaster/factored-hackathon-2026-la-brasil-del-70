@@ -164,7 +164,7 @@ sequenceDiagram
 | Estimator unavailable | `review_required` with `risk_estimate_unavailable`; no estimate recorded | `ELG-ALL-2` |
 | Mortgage eligibility | Information only: catalog figures, `ELG-ALL-3`, ask for a person | `CRE-ALL-2`, `ELG-ALL-3` |
 | Limit increase, restructuring, disbursement | Abstain with an offer of a person | `CRE-ALL-3`, `SCOPE-ALL-2` |
-| A decision now ("just approve it") | Abstain, disclaimer, and the review path; no approval wording | `CRE-ALL-3`, `CRE-ALL-1` |
+| A decision now ("just approve it", "Aprove o meu crédito agora", "Aprueba mi crédito ya": an approval verb in the imperative or with an immediacy word; asking what approval needs is not one) | Abstain, disclaimer, and the review path; no approval wording | `CRE-ALL-3`, `CRE-ALL-1` |
 | Distress or over-indebtedness | Escalate | `ESC.distress_signal` (`ESC-ALL-3`) |
 
 ## Tests
