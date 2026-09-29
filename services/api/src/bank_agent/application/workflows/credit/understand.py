@@ -53,8 +53,12 @@ async def absorb(ctx: TurnContext, data: CreditData, text: str, *, use_model: bo
         requested = model.requested_amount
     if slots.positive(requested) is not None:
         changes["amount"] = requested
+        # A figure the text states without a currency ("50.000 pesos", "50000") is in the customer's own currency;
+        # the model's currency is used only for an amount the text parser did not find (phase 14b: the local model
+        # said COP for a Mexican customer's "50.000 pesos", and the amount was dropped and asked again).
         explicit = found.requested.currency if found.requested is not None else None
-        changes["currency"] = explicit or (model.currency_hint if model is not None else None) or currency
+        guessed = model.currency_hint if model is not None and found.requested is None else None
+        changes["currency"] = explicit or guessed or currency
     term = slots.term_months(text) or (model.requested_term_months if model is not None else None)
     if term is not None:
         changes["term_months"] = term

@@ -11,7 +11,8 @@ APPROVAL_WORDS = ("aprobad", "aprovad", "approved", "garantizad", "garantid")
 
 
 def _phrase_cassettes() -> list[dict[str, Any]]:
-    documents = [json.loads(path.read_text(encoding="utf-8")) for path in sorted(CASSETTES.rglob("*.json"))]
+    fixtures = sorted(path for path in CASSETTES.rglob("*.json") if not path.is_relative_to(CASSETTES / "eval"))
+    documents = [json.loads(path.read_text(encoding="utf-8")) for path in fixtures]
     return [document for document in documents if document["prompt"] == "phrase_response@1"]
 
 

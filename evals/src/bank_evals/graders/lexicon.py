@@ -45,6 +45,11 @@ def claimed_actions(text: str) -> set[str]:
     return found
 
 
+MONEY: Final = re.compile(
+    r"(?:\$|r\$|\b(?:mxn|cop|ars|usd|brl))\s?\d|\d[\d.,]*\s?(?:\b(?:mxn|cop|ars|usd|brl|pesos?|reais|lucas|palos)\b)"
+    r"|\b\d{1,3}(?:[.,]\d{3})+[.,]\d{2}\b|\b\d+[.,]\d{2}\b"
+)
+"""A stated amount of money (a currency sign or code, or a figure with cents), read on folded text; a date is not."""
 AS_OF: Final = re.compile(r"17 de (junio|junho) de 2026|2026-06-17|17/06/2026|17/6/2026|17 de (junio|junho)")
 REVIEW_PATH: Final = re.compile(
     r"persona del equipo|pessoa da equipe|una persona|uma pessoa|revis(e|ion|ar|ara)|revis(ao|e|ar)|analise|asesor"

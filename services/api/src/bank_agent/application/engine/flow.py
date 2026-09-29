@@ -112,7 +112,9 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
     if kind is RouteKind.GREETING:
         return greeting(ctx)
     if kind is RouteKind.CLARIFY_WORKFLOW:
-        return clarify_workflow(ctx, route.options)
+        # A request an enabled workflow recognizes as its own unsupported request (a transfer) is abstained with that
+        # workflow's clauses instead of asking which workflow it belongs to (phase 14b, found on the dev split).
+        return in_domain_unsupported(ctx, registry) or clarify_workflow(ctx, route.options)
     if kind is RouteKind.CONFIRM_SWITCH and route.target is not None:
         return confirm_switch(ctx, route.target)
     if kind in (RouteKind.START, RouteKind.SWITCH) and route.target is not None:
@@ -174,10 +176,18 @@ async def answer_pending(ctx: TurnContext, registry: WorkflowRegistry) -> Step |
     if choice is not None:
         ctx.engine = ctx.engine.evolve(pending_choice=None)
         picked = _pick_workflow(ctx, registry, choice.options)
-        if picked is None:
+        if picked is not None:
+            ctx.text = UntrustedText(choice.text)
+            enter(ctx, registry, picked, switch=not ctx.at_router)
+            return await run_handlers(ctx)
+        other = _answered_with_another_workflow(ctx, registry)
+        if other is None:
             return None
-        ctx.text = UntrustedText(choice.text)
-        enter(ctx, registry, picked, switch=not ctx.at_router)
+        # The answer names a workflow we did not offer ("es sobre un cargo que no reconozco" after "saldos o
+        # tarjetas"): start it with the original request and the answer together, so the details of the first
+        # message (amount, merchant) are not lost (phase 14b, found on the dev split).
+        ctx.text = UntrustedText(f"{choice.text}\n{ctx.text}")
+        enter(ctx, registry, other, switch=not ctx.at_router)
         return await run_handlers(ctx)
     pending = ctx.engine.pending_switch
     if pending is None:
@@ -212,6 +222,17 @@ def _pick_workflow(ctx: TurnContext, registry: WorkflowRegistry, options: tuple[
         return options[index]
     owner = registry.owner(ctx.services.router.route(ctx.text, ctx.language).intent)
     return owner if owner in options else None
+
+
+def _answered_with_another_workflow(ctx: TurnContext, registry: WorkflowRegistry) -> WorkflowId | None:
+    """The enabled workflow the answer to a workflow question routes to when it is none of the offered ones."""
+    prediction = ctx.services.router.route(ctx.text, ctx.language)
+    owner = registry.owner(prediction.intent)
+    if owner is None or owner not in ctx.enabled:
+        return None
+    ctx.prediction = prediction
+    ctx.recorder.model(prediction.model)
+    return owner
 
 
 async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:

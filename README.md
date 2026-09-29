@@ -20,7 +20,7 @@ Status: under construction. The scaffold, the domain model and contracts, the LL
 | `scripts` | Repository checks and git hooks |
 | `data/` | Gitignored: raw data, warehouse, artifacts |
 
-The working agreement for contributors, human or automated, is [CLAUDE.md](CLAUDE.md). The organizer brief and dataset schema are in [docs/organizer](docs/organizer/).
+The working agreement for contributors, human or automated, is [CLAUDE.md](CLAUDE.md). Coding agents (and the people driving them) start at [AGENTS.md](AGENTS.md). The organizer brief and dataset schema are in [docs/organizer](docs/organizer/).
 
 ## Prerequisites
 

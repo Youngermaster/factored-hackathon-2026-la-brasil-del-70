@@ -13,6 +13,8 @@ from bank_agent.application.workflows.credit.unsupported import recognize as cre
         ("Quero fazer uma transferência de 500 pesos para o João", "transfer"),
         ("Quiero hacer una transferencia a mi hermana", "transfer"),
         ("necesito transferir dinero", "transfer"),
+        ("Transfiere 2000 pesos de mi cuenta de ahorro a la corriente", "transfer"),
+        ("Transfira 2000 pesos da poupança para a conta corrente", "transfer"),
         ("Quiero pagar mi tarjeta de crédito desde aquí", "bill_payment"),
         ("quero pagar o boleto", "bill_payment"),
         ("¿Puedo cambiar la fecha de corte?", "due_date_change"),
@@ -62,3 +64,10 @@ def test_credit_requests_the_workflow_does_not_handle(text: str, code: str) -> N
 def test_supported_requests_are_not_caught(text: str) -> None:
     assert account(text) is None
     assert credit(text) is None
+
+
+@pytest.mark.parametrize(
+    "text", ["Transfiérame con un asesor", "me transfiera a un asesor", "Me transfere para um atendente"]
+)
+def test_a_request_to_be_transferred_to_a_person_is_not_a_money_transfer(text: str) -> None:
+    assert account(text) is None

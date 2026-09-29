@@ -100,6 +100,7 @@ async def execute(options: RunOptions, *, settings: HarnessSettings | None = Non
                   injected: LLMClient | None = None) -> RunOutput:  # fmt: skip
     """Run ``options`` end to end and write the outputs."""
     started = time.perf_counter()
+    commit = git_sha()  # the code the run imported; a commit made while a long run plays is noted, not recorded
     base = settings or HarnessSettings()
     workflow = WorkflowSettings.model_validate({**base.workflow.model_dump(), **options.workflow_overrides})
     harness = HarnessSettings(workflow=workflow, policy=base.policy, retrieval=base.retrieval, llm=base.llm)
@@ -120,8 +121,11 @@ async def execute(options: RunOptions, *, settings: HarnessSettings | None = Non
     results = await run_cases(systems, plan, world, run_id=options.run_id, out_dir=directory, simulator=simulator,
                               resume=options.resume)  # fmt: skip
     metrics = {name: system_metrics([r for r in results if r.system == name]) for name in systems}
+    ended = git_sha()
+    if ended != commit:
+        notes.append(f"the checkout moved from {commit} to {ended} during the run; results come from {commit}")
     manifest = {
-        "run_id": options.run_id, "generated_at": generated_now().isoformat(), "git_sha": git_sha(),
+        "run_id": options.run_id, "generated_at": generated_now().isoformat(), "git_sha": commit,
         "split": options.split.value, "scenario_file": source.name, "scenario_set_hash": content_hash(source),
         "test_set_lock": locked, "scenarios": len(scenarios), "cases": len(results), "runs": options.runs,
         "repeat": options.repeat, "systems": {name: systems[name].model_label for name in systems},

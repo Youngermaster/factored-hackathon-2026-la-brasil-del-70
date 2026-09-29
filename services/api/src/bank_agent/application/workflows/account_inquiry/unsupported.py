@@ -14,7 +14,11 @@ _PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
         re.compile(
             r"\b(hacer|haz|hace|realizar|mandar|enviar|quiero|quisiera|necesito)\b.{0,20}\btransferencia\b|"
             r"\btransferir\b|\bfazer (uma )?transferencia|\b(quero|preciso) (fazer|mandar)\b.{0,15}\btransferencia|"
-            r"\b(mandar|enviar) (dinheiro|dinero|plata)\b|\bfazer um pix\b|\btransfer money\b"
+            r"\b(mandar|enviar) (dinheiro|dinero|plata)\b|\bfazer um pix\b|\btransfer money\b|"
+            # An imperative with money in it ("Transfiere 2000 pesos de mi cuenta de ahorro a la corriente", found on
+            # the dev split in phase 14b); "transfiérame con un asesor" names no money and is not a transfer.
+            r"\b(transfiere|transfiera|transferi|transfira|transfere|transfiri)\b.{0,25}"
+            r"(\d|\bpesos\b|\breais\b|\bdinero\b|\bdinheiro\b|\bplata\b|\blucas\b|\bde mi cuenta\b|\bda minha conta\b)"
         ),
     ),
     (

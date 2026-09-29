@@ -132,7 +132,10 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
         (
             r"(me )?(aprueban|califico|puedo pedir)|sou elegivel|posso pedir|(soy|seria) elegible|elegibilidad|"
             r"elegibilidade|puedo (sacar|solicitar|tener) (un|una)|me (dan|darian|daria) (un|una)|"
-            r"consigo (um|uma|tirar)|am i eligible",
+            r"consigo (um|uma|tirar)|am i eligible|"
+            # Found on the dev split in phase 14b ("Posso pegar um empréstimo pessoal de 1.000.000 em 24 meses?").
+            r"posso (pegar|tirar|conseguir|ter) (um|uma)|tenho direito a (um|uma)|tengo derecho a (un|una)|"
+            r"puedo (obtener|conseguir) (un|una)",
             0.85,
         ),
         (r"\baprob|\baprueb|\baprov[ae]|\bapprove", 0.85),

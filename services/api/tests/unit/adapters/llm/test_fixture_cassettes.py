@@ -45,8 +45,14 @@ CASES = ("normal", "ambiguous", "out_of_scope")
 LANGUAGES = ("es", "pt")
 
 
+EVALUATION_RECORDINGS = DEFAULT_CASSETTE_DIR / "eval"
+"""Recordings of evaluation runs (``bank-eval run --llm record``, session 14b): real model replies, not the
+hand-authored fixtures this module checks."""
+
+
 def _load_all() -> list[tuple[Path, Cassette]]:
-    return [(path, load_cassette(path)) for path in sorted(DEFAULT_CASSETTE_DIR.rglob("*.json"))]
+    paths = sorted(p for p in DEFAULT_CASSETTE_DIR.rglob("*.json") if not p.is_relative_to(EVALUATION_RECORDINGS))
+    return [(path, load_cassette(path)) for path in paths]
 
 
 ALL = _load_all()
