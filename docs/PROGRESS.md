@@ -122,11 +122,11 @@ Results recorded in this phase:
 
 | Check | Result |
 |---|---|
-| `make check` | Exit 0 (the final run, after this entry's docs; an earlier run found a Mermaid note with a semicolon, fixed here) |
-| Python tests | 2,448 unit and 1,261 integration tests pass (2,392 and 1,183 after 10b); the API suites run on the in-memory adapters and on PostgreSQL; Vitest 19 tests, including the generated-types staleness check |
+| `make check` | Exit 0 at `4ea1fd5` (after the merge of origin/main). Earlier runs found a Mermaid note with a semicolon (fixed) and, after the merge, missing `streamlit` stubs, because the merged EDA code needs the `eda-ui` extra that `make setup` now installs; the session installed it with `uv sync --inexact --all-packages --extra eda-ui --frozen`, which keeps the `ml` and `litellm` extras |
+| Python tests | 2,448 unit and 1,294 integration tests pass after the merge (1,261 before it; 2,392 and 1,183 after 10b); the API suites run on the in-memory adapters and on PostgreSQL; Vitest 19 tests, including the generated-types staleness check |
 | Coverage gates | All 11 pass: api 97.3%, application 93.3%, adapters 98.1%, bootstrap 99.4%, domain 99.6%, ports 100% |
 | Import contracts | 5 kept |
-| Docs check | markdownlint 0 issues; 66 mermaid blocks in 303 files parse |
+| Docs check | markdownlint 0 issues; 66 mermaid blocks in 301 files parse |
 | Guards | No emoji; attribution clean; gitleaks found no leaks (the dev-only placeholders need no allowlist) |
 
 #### Known limitations
