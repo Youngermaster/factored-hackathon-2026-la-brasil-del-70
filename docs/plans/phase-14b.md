@@ -70,5 +70,6 @@ uv run --frozen bank-eval publish reports/eval/test-local
 | Area | Files |
 |---|---|
 | Fixes | `services/api/src/bank_agent/application/engine/signals.py`, `gate.py`, `services/api/src/bank_agent/policy/lexicon.py` |
+| Dev-run fixes | `engine/flow.py`, `workflows/card_support/select.py`, `workflows/account_inquiry/unsupported.py`, `workflows/dispute/understand.py`, `workflows/credit/understand.py`, `adapters/models/keyword_router.py`; the grader's account check and the run manifest in `evals/src/bank_evals` |
 | Tests | `services/api/tests/unit/application/engine/test_signals_phase14b.py`, `services/api/tests/unit/policy/test_approval_lexicon.py`, `services/api/tests/unit/application/grounding/test_verifier_claims.py`, `services/api/tests/integration/workflows/test_third_party_requests.py`, `test_pending_answer_signals.py`, `evals/tests/unit/harness/test_graders_content.py` |
 | Docs | this plan, `docs/PROGRESS.md`, `docs/BACKLOG.md` |

@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 14, session 14a: the evaluation harness. 332 test and 122 dev scenarios in es and pt (locked test split), the synthetic evaluation world, B0, B1, P, and H, scripted and simulated customers, deterministic graders, the judge, statistics, reports, the `bank-eval` commands (run, compare, report, publish, estimate, judge, scenarios), `make eval`, `make eval-test`, the CI smoke suite; the three phase 14 engine fixes; a development run published on the dev split |
-| Next phase | 14, session 14b: the live runs on the local model and the published test numbers (`kit/prompts/14-evaluation.md`) |
+| Last completed phase | 14, session 14b, first part: the three 14a fixes (third-party requests phrased product first, plain answers to a pending question resolved without the model's signals, qualification wording in the approval lexicon), six more P fixes from a full live dev run on the local model `qwen2.5:7b-instruct`, and the test run protocol. Dev (local development run, not the results): P 74/112 safe automated resolution with 0/112 unsafe, B0 51/112, B1 9/112 with 32/112 unsafe |
+| Next phase | 14, session 14b, second part: the test run on the local model (about 4 hours; commands in the 14b entry), the judge, and publication; then phase 15 |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -61,9 +61,93 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 40. **Rate the judge sample after session 14b** following [the rating protocol](evaluation/judge-rubric.md#human-rating-protocol): two native raters per language on `judge_sample.jsonl`, adjudication, then `bank-eval judge --ratings`. Raters: pending. Date: pending. Not a blocker; the agreement is reported as pending until then.
 41. **Review the scenario set**: a native Portuguese review of the pt phrasings in `evals/src/bank_evals/scenarios/family_data/*.yaml`, and a review of a sample of situations per workflow against the policy documents (labels, required and forbidden disclosures). Record the result as `review_status: approved` on the reviewed situations and regenerate (`make eval-scenarios`, `--relock` for the test split); the reports state the reviewed share per workflow. Reviewers: pending. Date: pending.
-42. **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, measured size in the 14b entry): committed, they let anyone replay the published run without the model.
+42. **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, measured size in the 14b entry): committed, they let anyone replay the published run without the model. Measured: the dev recordings are 3.3 MB in 838 files; the test run will be roughly three times that.
 
 ## Phase log
+
+### Phase 14, session 14b, first part: the three fixes and the local dev run (2026-09-29)
+
+Plan: [phase-14b.md](plans/phase-14b.md), following [the evaluation plan](evaluation/plan.md#run-protocol-the-local-model-14b). The pull at the start was a fast-forward no-op ("Already up to date"). Other commits landed on `main` in this checkout during the session (the `AGENTS.md` merge); they touch documentation only. The test split was not read, run, or tuned on. The orchestrator runs the test split next.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `83c563f` | The approval lexicon (pack loader, eligibility renderer, grounding verifier, credit-safety grader) catches qualification and release wording in es, pt, and en ("estás calificado", "calificas para", "você se qualifica para", "seu crédito foi liberado", "you qualify for"); every engine template, clause, and eligibility message still passes |
+| `312e3d4` | Third-party requests phrased product first ("la tarjeta de crédito de mi mamá", "o cartão de crédito da minha mãe", "a conta dele") or through a representative ("em nome do meu pai", "apoderado de") are refused with `PRV-ALL-2` before any tool runs, even when the model reports no signal |
+| `05ed956` | A plain yes or no (six words or fewer) to a pending question is resolved by the deterministic parsers: the gate does not ask the model for escalation signals on it, so "Sí, quiero solicitarlo" records the intake; the keywords still run on it, and a longer turn at the same step still reaches the model |
+| `ca1a390`, `15c49ed` | The 14b plan and run protocol |
+| `ea5eb89` | Grader: a balance that was never stated (a refusal of an injection) is a task failure, not a materially incorrect outcome; a stated wrong amount still is |
+| `eecd295` | The fixture cassette checks skip `evals/cassettes/eval/` (real recordings) |
+| `f70c4ab`, `35b954a`, `800ee1b`, `a6e2372`, `c86932e`, `c69b1fb` | P bugs found on the dev run, each with regression tests on memory and PostgreSQL (below) |
+| `813a6dc` | The run manifest records the commit a run started from and notes a checkout that moved during it |
+| This commit | This entry, the plan's file list, and BACKLOG |
+
+P bugs found on the dev run and fixed (clear, deterministic, and cheap):
+
+- The answer to the workflow question named a workflow that was not offered ("es sobre un cargo que no reconozco" after "saldos o tarjetas"): the dispute started from the answer alone and lost the amount and merchant. It now starts with both messages.
+- A card ending that none of the customer's cards has was replaced by the model's card type guess; P now lists the cards.
+- A recognized unsupported request ("Transfiere 2000 pesos...") was asked the workflow question and then answered with balances; it is now abstained with `ACC-ALL-3` first, and imperative transfers with money are recognized.
+- The model's dispute date and currency were used when the customer never said them (an ISO date for a message with no date, MXN for an Argentine purchase), so the purchase was not found; they are now used only when the text holds them.
+- The model's credit currency (COP for a Mexican customer's "50.000 pesos") dropped a stated amount; a stated figure is now in the customer's currency.
+- "Posso pegar um empréstimo", "tenho direito a um", "puedo obtener un" route to credit eligibility.
+
+#### Development run on the dev split with the local model (development evidence, not the published results)
+
+Local development runs on `ollama/qwen2.5:7b-instruct` through LiteLLM (zero marginal cost; hardware and energy not counted), cassettes recorded in `evals/cassettes/eval/dev/` (3.3 MB, 838 files, not committed; action 42). Simulated, offline: scripted and model-played customers on the synthetic world.
+
+- `dev-local` (all three systems, code at `05ed956`, 366 cases, 57 min, 841 model calls, 0 cassette misses, 0 harness errors).
+- `dev-local-fixed` (B0 and P after the dev fixes, code at `c69b1fb`, 244 cases, 20 min). B1 did not change, so its numbers come from `dev-local`.
+
+Per workflow (safe automated resolution; unsafe outcomes; missed transfers; unnecessary transfers; latency per turn p50 / p95):
+
+| System | account_inquiry | card_support | dispute | credit | routing | aggregate |
+|---|---|---|---|---|---|---|
+| P (after fixes) | 17/28; 0/28; 0/4; 1/24; 3.3 / 8.9 s | 17/28; 0/28; 0/4; 5/24; 3.6 / 7.3 s | 20/28; 0/28; 0/4; 3/24; 1.9 / 14.3 s | 20/28; 0/28; 0/6; 1/22; 2.9 / 9.6 s | 0/4; 0/10; -; 2/10; 2.3 / 6.4 s | **74/112; 0/112; 0/18; 10/94; 2.7 / 13.4 s** |
+| P (before) | 16/28; 2/28; 0/4; 1/24 | 15/28; 0/28; 0/4; 6/24 | 13/28; 0/28; 1/4; 3/24 | 17/28; 0/28; 0/6; 2/22 | 0/4; 0/10; -; 2/10 | 61/112; 2/112; 1/18; 12/94; 2.9 / 10.5 s |
+| B0 (after fixes) | 14/28; 0/28; 0/4; 1/24 | 20/28; 0/28; 0/4; 0/24 | 9/28; 0/28; 0/4; 5/24 | 8/28; 0/28; 0/6; 12/22 | 2/4; 0/10; -; 0/10 | **51/112; 0/112; 0/18; 18/94; under 10 ms** |
+| B1 | 6/28; 7/28; 4/4; 1/24; 9.9 / 15.3 s | 2/28; 2/28; 4/4; 0/24; 9.8 / 13.5 s | 1/28; 6/28; 4/4; 0/24; 9.8 / 12.7 s | 0/28; 17/28; 5/6; 0/22; 10.6 / 17.8 s | 0/4; 0/10; -; 0/10 | **9/112; 32/112; 17/18; 1/94; 10.0 / 15.3 s** |
+
+- P's two unsafe cases before the fixes were the grader counting a refused injection's missing balance as a wrong balance (fixed in the grader; B1's four such cases also move to task failures). B1's 32 unsafe cases: 14 unexpected writes (cases and applications without confirmation), 10 credit scores and 4 incomes disclosed, 10 approval wordings (the extended lexicon), 7 account data errors, 2 wrong eligibility outcomes, one false block claim, one tool call on an expired session, one other customer's name.
+- P's remaining unnecessary transfers are mostly the model's false `distress` ("me robaron la tarjeta") and `human_requested` ("preciso bloquear uma carteira") signals (BACKLOG: prompt version 2, measured on dev); the routing misses are the keyword router asking the workflow question for out-of-scope requests (BACKLOG).
+- Every cell is small (28 or fewer); the P and B0 differences per workflow are not established unless the Wilson intervals separate. Aggregate P 74/112 (66%, Wilson 57 to 74) against B0 51/112 (46%, 37 to 55) and B1 9/112 (8%, 4 to 15).
+
+**Projection for the test run** (`bank-eval estimate reports/eval/dev-local`): P 2.48 calls per case (3.2 s per call), B1 2.98 (5.5 s), the simulated customer 2.9 per simulated case (2.6 s), the judge 300 calls. Run 1 on the full test split: about 2,700 calls, **about 3.0 hours**; runs 2 and 3 on the 48-scenario subset: about 0.8 hours more; the judge is inside the 3.0 hours. About 4 hours in all, inside the 6-hour target, so no lever is needed. The dev run's measured wall clock (57 min for 841 calls) matches the per-call projection. P's fixes cost no extra calls (the plain-answer gate removes one per confirmation).
+
+#### The test run (next; run by the orchestrator)
+
+Settings: `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 LLM_TIMEOUT_SECONDS=120 LLM_SESSION_TOKEN_LIMIT=1000000`; Ollama serving the model; the machine kept awake (`caffeinate -i` on macOS) and otherwise idle; a clean checkout (the manifest records the commit).
+
+```bash
+uv run --frozen bank-eval scenarios check
+uv run --frozen --extra litellm bank-eval run --run-id test-local --split test --llm record --runs 3 --repeat subset --mlflow
+# after an interruption, the same command with --resume (never rerun without it: a fresh run deletes results.jsonl)
+uv run --frozen --extra litellm bank-eval run --run-id test-local --split test --llm record --runs 3 --repeat subset --mlflow --resume
+uv run --frozen --extra litellm bank-eval judge reports/eval/test-local --llm record --sample 100
+uv run --frozen bank-eval publish reports/eval/test-local
+```
+
+The MLflow file store prints `Malformed experiment` warnings for two old experiment folders without `meta.yaml` under `mlruns/`; they are harmless and the run is logged.
+
+#### How to verify
+
+```bash
+make check
+uv run pytest services/api/tests/unit/policy/test_approval_lexicon.py services/api/tests/unit/application/engine/test_signals_phase14b.py -q
+uv run pytest services/api/tests/integration/workflows -q -k "third_party or pending_answer or choice_answers or unknown_ending or unsupported_before or model_guesses"
+uv run bank-eval estimate reports/eval/dev-local        # needs the local run outputs (gitignored)
+```
+
+| Check | Result |
+|---|---|
+| `make check` | MAKE_CHECK_RESULT |
+| Focused suites | Services unit and workflow integration tests pass on memory and PostgreSQL; `evals/tests` pass |
+
+#### Known limitations
+
+- Every number above is a local development number on the dev split; the test split has not been scored.
+- The dev fixes were chosen on dev failures, so P's dev numbers after the fixes are optimistic; the test run is the unbiased measurement.
+- The Portuguese scenarios still wait for a native review (action 41).
 
 ### Phase 14, session 14a: the evaluation harness (2026-09-29)
 
