@@ -61,7 +61,7 @@ Role rules every repository adapter implements identically:
 | Handoffs | Add and read own | Read, list, claim, resolve | Refused |
 | Audit log | Append | Append | Append and list |
 | Credit profiles | Read own | Refused | Refused |
-| Credit applications | Create, read, list own; withdraw only | `get` of an application a handoff's credit review references (review methods in phase 13) | Refused |
+| Credit applications | Create, read, list own; withdraw only | `get` and `list_for_review` of a reviewable application (`submitted`, `under_human_review`) or one a handoff's credit review references (status moves in phase 16) | Refused |
 
 The read side of each customer-data repository is its own Protocol (`CustomerReader`, `ProductReader`, `TransactionReader`, `HistoricalComplaintReader`, `CreditProfileReader`), so read-only backends implement it without a unit of work. The credit catalog is public information and is not customer-scoped.
 

@@ -12,6 +12,17 @@ from bank_agent.application.engine.templates.dispute import DISPUTE
 from bank_agent.domain.locale import Language
 
 TEMPLATES: dict[str, dict[Language, str]] = {**COMMON, **DISPUTE, **CARD, **ACCOUNT, **CREDIT}
+PERSON_OFFER_TEMPLATES = frozenset(
+    {
+        "common.out_of_scope",
+        "common.informational_abstain",
+        "common.unsupported_in_workflow",
+        "dispute.denied",
+        "credit.mortgage_info_only",
+        "credit.no_decision",
+    }
+)
+"""Replies that end by offering a person; a bare yes to one of them is a request for a person."""
 
 
 def register(extra: dict[str, dict[Language, str]]) -> None:

@@ -200,3 +200,32 @@ async def test_production_cookies_use_the_host_prefix_and_are_secure(api_backend
     assert "httponly" not in csrf_cookie
     assert me.status_code == 200
     assert "strict-transport-security" in me.headers
+
+
+async def test_a_lost_session_answer_also_deletes_the_stale_cookie(api_backend: ApiBackend) -> None:
+    harness = api_backend.build()
+    async with ApiClient(harness.app) as client:
+        await client.login("persona-mx")
+        harness.clock.advance(timedelta(minutes=16))
+        expired = await client.get("/v1/auth/me")
+        assert expired.json()["type"].endswith("/session-expired")
+        cleared = _set_cookies(expired.headers.multi_items())["session"]
+        assert cleared["max-age"] == "0"
+        assert client.http.cookies.get("session") is None
+    unknown = await _me_with(harness.app, "not-a-live-session-token")
+    assert unknown.json()["type"].endswith("/authentication-required")
+    assert "session" in _set_cookies(unknown.headers.multi_items())
+
+
+async def test_other_401s_keep_the_session_cookie(api_backend: ApiBackend) -> None:
+    harness = api_backend.build()
+    async with ApiClient(harness.app) as client:
+        assert "set-cookie" not in (await client.get("/v1/auth/me")).headers
+        await client.login("persona-mx")
+        challenge = await client.post("/v1/auth/step-up/start")
+        wrong = await client.post(
+            "/v1/auth/step-up/verify", {"challenge_id": challenge.json()["challenge_id"], "code": "000000"}
+        )
+        assert wrong.json()["type"].endswith("/verification-failed")
+        assert "session" not in _set_cookies(wrong.headers.multi_items())
+        assert (await client.get("/v1/auth/me")).status_code == 200

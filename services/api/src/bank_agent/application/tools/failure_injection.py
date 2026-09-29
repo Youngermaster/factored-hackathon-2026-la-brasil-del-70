@@ -111,6 +111,9 @@ class ToolFailureInjector:
     async def get_credit_application_status(self, application_id: ApplicationId) -> CreditApplicationIntake | None:
         return await self._target(ToolName.GET_CREDIT_APPLICATION_STATUS).get_credit_application_status(application_id)
 
+    async def list_my_credit_applications(self) -> Sequence[CreditApplicationIntake]:
+        return await self._target(ToolName.LIST_MY_CREDIT_APPLICATIONS).list_my_credit_applications()
+
     async def create_dispute_case(
         self, request: CreateDisputeArguments, idempotency_key: IdempotencyKey
     ) -> DisputeCase:

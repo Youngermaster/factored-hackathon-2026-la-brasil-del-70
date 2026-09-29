@@ -1,8 +1,8 @@
 # Language model prices, read by the cost accounting decorator and the budget guard.
 #
 # Prices are US dollars per million tokens, written as quoted strings so they parse as exact decimals.
-# No price exists anywhere in code. The provider has not been chosen (human decision pending), so every entry
-# below is a candidate with verified: false. Before relying on an entry, a person opens source_url, checks both
+# No price exists anywhere in code. The hosted provider has not been chosen (human decision pending), so every
+# hosted entry below is a candidate with verified: false. The local Ollama entry costs nothing and is verified. Before relying on an entry, a person opens source_url, checks both
 # prices for the exact model id, updates effective_date, and sets verified: true in the same commit.
 #
 # Unverified entries are charged at their price times unverified_price_multiplier, and a model missing from
@@ -37,3 +37,10 @@ models:
     source_url: https://openai.com/api/pricing/
     verified: false
     notes: Candidate fallback model from a second provider. Price taken from the provider's published list at launch; confirm it is still current.
+  - model_id: ollama/qwen2.5:7b-instruct
+    input_usd_per_million: "0"
+    output_usd_per_million: "0"
+    effective_date: 2026-09-27
+    source_url: https://ollama.com/library/qwen2.5
+    verified: true
+    notes: Local development model served by Ollama on the developer's machine, so there is no per-token charge. Opt-in only (LLM_PROVIDER=litellm with LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct); never a default and never a production provider.

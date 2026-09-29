@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://bank-agent.local/contracts/schemas/policy_clause.v1.json",
-  "x-schema-version": "1.2.0",
+  "x-schema-version": "1.4.0",
   "$defs": {
     "Currency": {
       "enum": [

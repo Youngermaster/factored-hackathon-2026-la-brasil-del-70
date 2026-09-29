@@ -14,6 +14,10 @@ from bank_agent.adapters.retrieval.ranking import DEFAULT_RRF_K
 from bank_agent.bootstrap.settings import DEFAULT_EMBEDDING_CACHE_DIR, DEFAULT_MODEL_CACHE_DIR, DEFAULT_POLICY_DIR
 from bank_agent.domain.errors import ConfigurationError
 from bank_evals import DISTRIBUTION_NAME, __version__
+from bank_evals.commands import judge as judge_commands
+from bank_evals.commands import publish as publish_commands
+from bank_evals.commands import run as run_commands
+from bank_evals.commands import scenarios as scenario_commands
 from bank_evals.meta import generated_now, git_sha
 from bank_evals.retrieval.command import DEFAULT_REPORT, display_path, run_retrieval_evaluation
 from bank_evals.retrieval.judgments import DEFAULT_JUDGMENTS, JudgmentsError
@@ -84,3 +88,12 @@ def retrieval(
             f"MRR {test.mrr or 0:.2f}, abstention recall {test.abstention_recall or 0:.2f}"
         )
     typer.echo(f"wrote {display_path(output)}" + (f"; MLflow run {run.run_id}" if run.run_id else ""))
+
+
+app.command("run")(run_commands.run)
+app.command("report")(run_commands.report)
+app.command("compare")(run_commands.compare)
+app.command("publish")(publish_commands.publish)
+app.command("estimate")(publish_commands.estimate)
+app.command("judge")(judge_commands.judge_command)
+app.add_typer(scenario_commands.app)

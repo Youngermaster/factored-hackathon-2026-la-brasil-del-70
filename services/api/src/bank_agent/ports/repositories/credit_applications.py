@@ -12,8 +12,9 @@ class CreditApplicationRepository(Protocol):
     """Stores credit application intakes recorded for human review.
 
     Preconditions: bound to an ``AccessContext``. Customers use every method except ``list_for_review`` on their
-    own applications. An agent may only ``get`` and ``list_for_review`` applications that a handoff's
-    ``credit_review.application_ref`` references (phase 13 adds the agent review moves). Other combinations raise
+    own applications. An agent may only ``get`` and ``list_for_review`` reviewable applications (status
+    ``submitted`` or ``under_human_review``, each a review item of its own) and any application that a handoff's
+    ``credit_review.application_ref`` references (phase 16 adds the agent review moves). Other combinations raise
     ``AccessContextError``.
     Postconditions: ``list_mine`` returns the customer's applications, most recent first, ties broken by
     ``application_id``. A stored application's ``version`` increases by one on every transition.

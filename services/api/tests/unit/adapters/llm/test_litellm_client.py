@@ -1,10 +1,10 @@
 """The LiteLLM adapter with an injected completion function: no network, and litellm is not installed."""
 
 import builtins
-import importlib.util
 import json
 import os
 import sys
+from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
@@ -199,8 +199,19 @@ async def test_client_runs_prompts_through_litellm() -> None:
     assert recorder.kwargs[0]["response_format"]["json_schema"]["name"] == "EscalationSignals"
 
 
-def test_the_litellm_extra_is_not_installed_in_the_development_environment() -> None:
-    assert importlib.util.find_spec("litellm") is None
+def test_setup_and_ci_install_the_python_packages_without_the_litellm_extra() -> None:
+    """The extra is opt-in (ADR 0013): `make setup` and the CI install never select it.
+
+    `make llm-smoke` and `make api-local-llm` install it on demand with `uv run --extra litellm`, and uv keeps it in
+    the developer's environment afterwards, so the check reads the install commands rather than the environment.
+    """
+    root = Path(__file__).resolve().parents[6]
+    makefile = (root / "Makefile").read_text(encoding="utf-8")
+    ci = (root / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    setup = makefile.split("\nsetup:", 1)[1].split("\n\n", 1)[0]
+    installs = [line for line in (setup + "\n" + ci).splitlines() if "uv sync" in line]
+    assert installs
+    assert all("litellm" not in line and "--all-extras" not in line for line in installs)
 
 
 def test_loading_litellm_without_the_extra_raises_a_typed_rejection(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -253,3 +264,16 @@ async def test_unconfigured_client_refuses_every_call() -> None:
             call_context=CONTEXT,
         )
     assert not LlmProviderRejectedError.retryable
+
+
+async def test_passes_the_configured_base_url_for_a_local_provider() -> None:
+    recorder = Recorder(_response("hola"))
+    completion = LiteLLMCompletion(
+        "ollama/qwen2.5:7b-instruct", api_key=None, timeout_seconds=5, acompletion=recorder,
+        api_base="http://localhost:11434",
+    )  # fmt: skip
+
+    await completion.complete(CompletionRequest(REQUEST.messages, 50, 0.0))
+
+    assert recorder.kwargs[0]["api_base"] == "http://localhost:11434"
+    assert "api_key" not in recorder.kwargs[0]

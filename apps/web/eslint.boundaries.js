@@ -18,6 +18,44 @@ const allowed = (fromType, toTypes) => ({
   allow: { to: { element: { types: { anyOf: toTypes } } } },
 });
 
+const policies = [
+  allowed('main', ['app']),
+  allowed('app', ['pages', 'feature', 'entities', 'shared']),
+  allowed('pages', ['feature', 'entities', 'shared']),
+  // Another feature is reachable only through its index.ts (see the last policy).
+  allowed('feature', ['feature', 'entities', 'shared']),
+  allowed('entities', ['shared']),
+  allowed('test', ['app', 'pages', 'feature', 'entities', 'shared']),
+  // Last policy wins: from outside a feature, only its index.ts is importable. Imports inside the
+  // same feature are internal and not checked.
+  {
+    disallow: { to: { element: { type: 'feature', fileInternalPath: '!(index.ts)' } } },
+    message: 'Import a feature through its public index.ts, never its internals.',
+  },
+];
+
+const dependenciesRule = (extraPolicies) => [
+  'error',
+  {
+    default: 'disallow',
+    message: 'Layer boundary: {{ from.element.type }} may not import {{ to.element.type }}.',
+    policies: [...extraPolicies, ...policies],
+  },
+];
+
+/**
+ * Colocated tests (*.test.ts, *.test.tsx) may also import the shared test infrastructure in src/test (render
+ * helpers, MSW handlers); every other boundary still applies to them.
+ * @type {import('eslint').Linter.Config}
+ */
+export const boundariesTestOverride = {
+  rules: {
+    'boundaries/dependencies': dependenciesRule(
+      ['app', 'pages', 'feature', 'entities', 'shared'].map((type) => allowed(type, ['test'])),
+    ),
+  },
+};
+
 /**
  * Flat-config block with the boundary settings and rules.
  * @type {import('eslint').Linter.Config}
@@ -32,27 +70,6 @@ export const boundariesConfig = {
     },
   },
   rules: {
-    'boundaries/dependencies': [
-      'error',
-      {
-        default: 'disallow',
-        message: 'Layer boundary: {{ from.element.type }} may not import {{ to.element.type }}.',
-        policies: [
-          allowed('main', ['app']),
-          allowed('app', ['pages', 'feature', 'entities', 'shared']),
-          allowed('pages', ['feature', 'entities', 'shared']),
-          // Another feature is reachable only through its index.ts (see the last policy).
-          allowed('feature', ['feature', 'entities', 'shared']),
-          allowed('entities', ['shared']),
-          allowed('test', ['app', 'pages', 'feature', 'entities', 'shared']),
-          // Last policy wins: from outside a feature, only its index.ts is importable. Imports inside the
-          // same feature are internal and not checked.
-          {
-            disallow: { to: { element: { type: 'feature', fileInternalPath: '!(index.ts)' } } },
-            message: 'Import a feature through its public index.ts, never its internals.',
-          },
-        ],
-      },
-    ],
+    'boundaries/dependencies': dependenciesRule([]),
   },
 };

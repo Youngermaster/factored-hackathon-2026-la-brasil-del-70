@@ -2,6 +2,7 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
+from pydantic import BaseModel
 
 from bank_agent.adapters.prompts.file_registry import DATA_INSTRUCTION, FilePromptRegistry, escape_data
 from bank_agent.domain.base import UntrustedText
@@ -252,3 +253,25 @@ def test_refuses_duplicate_templates(registry: FilePromptRegistry) -> None:
 
     with pytest.raises(ConfigurationError, match="loaded twice"):
         FilePromptRegistry([template, template])
+
+
+def test_a_caller_supplied_output_model_table_admits_its_own_models_only(tmp_path: Path) -> None:
+    class EvaluationOnly(BaseModel):
+        score: int
+
+    _write(tmp_path, "demo", 1, inputs={}, user="x", output_model="EvaluationOnly")
+
+    with pytest.raises(ConfigurationError, match="unknown output model"):
+        FilePromptRegistry.from_directory(tmp_path)
+    loaded = FilePromptRegistry.from_directory(tmp_path, output_models={"EvaluationOnly": EvaluationOnly})
+
+    assert loaded.get(PromptRef.model_validate("demo@1")).output_model == "EvaluationOnly"
+
+
+def test_templates_combine_two_registries(registry: FilePromptRegistry, tmp_path: Path) -> None:
+    _write(tmp_path, "demo", 1, inputs={}, user="x")
+    extra = FilePromptRegistry.from_directory(tmp_path)
+
+    combined = FilePromptRegistry([*registry.templates, *extra.templates])
+
+    assert {str(ref) for ref in combined.refs} == EXPECTED_PROMPTS | {"demo@1"}

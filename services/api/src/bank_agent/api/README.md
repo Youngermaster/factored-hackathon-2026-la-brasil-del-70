@@ -8,12 +8,19 @@ The HTTP layer: the FastAPI application factory, routers, request and response m
 
 | Module | Content |
 |---|---|
-| `app.py` | `create_app(provider, config, problems=None)`: builds the app, installs error handlers and middleware, closes the provider on shutdown |
-| `provider.py` | `ServiceProvider` Protocol (what the API needs from the composition root) and `ApiConfig` |
-| `middleware.py` | `RequestIdMiddleware`: validates or generates `X-Request-ID`, binds it to the log context, echoes it |
-| `problems.py` | `ProblemRegistry` and the handlers for HTTP, validation, registered, and unexpected errors |
-| `domain_problems.py` | `DOMAIN_PROBLEMS` and `domain_problem_registry()`: every domain error family mapped to a status and problem type (404 not found, 401 authentication with its own `session-expired` type, 403 authorization with its own `step-up-required` type, 409 conflict and state transition, 422 invariant violation, 503 dependency, 500 configuration and access context); `create_app` uses it by default |
-| `routers/health.py` | `GET /health/live` and `GET /health/ready` |
+| `app.py` | `create_app(provider, config, problems=None)`: middleware (request id, security headers, CORS, body limit), the problem handlers, the routers, the OpenAPI document; closes the provider on shutdown |
+| `provider.py` | `ServiceProvider` Protocol (clock, identity, conversations, agent inbox, evaluation summaries, credit product names, policy clauses, readiness) and `ApiConfig` |
+| `config.py` | `SecurityConfig`: production flag, CSRF secret, CORS allowlist, body limit, rate limits per class, cookie names per environment |
+| `dependencies.py` | Services, the session from the cookie, `role_dependency`, `require_csrf`, `rate_limit`, and `endpoint(...)`, which gives each route its dependencies and its `x-roles`, `x-rate-limit`, and `x-csrf` extensions |
+| `cookies.py`, `csrf.py`, `ratelimit.py` | Cookie flags, signed double-submit tokens, the sliding-window limiter per IP and per session |
+| `middleware.py` | `RequestIdMiddleware`, `SecurityHeadersMiddleware`, `BodySizeLimitMiddleware` |
+| `errors.py` | HTTP-layer errors (CSRF, not authenticated, role, payload, rate, service unavailable) |
+| `problems.py`, `domain_problems.py` | `ProblemRegistry` (with `Retry-After` headers) and the mapping of HTTP-layer errors, identity refinements, and every domain error family to RFC 9457 problem types |
+| `schemas/` | Request and response models: allowlists built from domain objects (`auth`, `conversations`, `trace`, `agent`, `evaluation`) |
+| `routers/` | `health`, `auth` (`/v1/auth`), `conversations` (`/v1/conversations`), `agent` (`/v1/agent`), `evaluation` (`/v1/eval`) |
+| `openapi.py` | The enriched OpenAPI document (security schemes, problem responses), `SchemaOnlyProvider` for the export, `render` |
+
+The endpoint catalog, the auth model, and the error types are in [docs/api/README.md](../../../../../docs/api/README.md).
 
 ## Who may import it
 
@@ -22,15 +29,16 @@ Only the entry point `bank_agent.asgi`. `api` and `bootstrap` are independent la
 ## Rules
 
 - Errors never leak internals: validation problems list locations and error types only, and unexpected exceptions become a generic 500 after being logged.
-- Every request body model sets explicit maximum lengths (phase 11 adds the security middleware, CSRF, CORS, and rate limits).
+- Every request body model sets explicit maximum lengths and rejects unknown keys; response models are allowlists.
+- Every state-changing route needs the CSRF token; every route declares its roles and rate class through `endpoint(...)`.
 - Cross-customer resource access returns 404, not 403.
 
 ## How to extend
 
-- **Endpoint:** add a router module under `routers/`, include it in `app.py`, and add request and response models with explicit limits.
+- **Endpoint:** add the route with `**endpoint(rate=..., roles=..., changes_state=..., operation_id=...)`, a session parameter from `role_dependency` for signed-in roles, and request and response models under `schemas/`; then run `make openapi` and add the row to `docs/api/README.md` (a test compares both with the code).
 - **Error type:** add domain errors to a family in `bank_agent/domain/errors.py`, which `domain_problems.py` already maps; give an error its own entry in `DOMAIN_PROBLEMS` only when clients must act on it differently. Other typed errors use `ProblemRegistry.register(ErrorType, ProblemType(status, slug, title))`; subclasses map through their registered base.
 - **Dependency:** add a property to `ServiceProvider` and implement it in `bootstrap/container.py`.
 
 ## How to test
 
-Unit tests drive the app through the httpx ASGI transport with `FakeProvider` from `tests/bank_agent_test_support.py`; integration tests use the real container and PostgreSQL. Coverage gate: 80% line coverage.
+Unit tests drive the app through the httpx ASGI transport with `FakeProvider` from `tests/bank_agent_test_support.py` (headers, limits, CORS, OpenAPI, credit data exposure). Integration tests in `tests/integration/api/` use the real container over the in-memory adapters and over PostgreSQL, with `ApiClient` from `tests/bank_agent_api.py`, which speaks the CSRF protocol. Coverage gate: 80% line coverage.

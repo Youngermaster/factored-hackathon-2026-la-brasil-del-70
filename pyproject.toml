@@ -106,7 +106,7 @@ warn_unreachable = true
 plugins = ["pydantic.mypy"]
 # Module names come from these bases, so the several tests/ directories and conftest.py files never collide.
 explicit_package_bases = true
-mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "data_platform/tests", "ml/src", "evals/src"]
+mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "data_platform/tests", "ml/src", "evals/src", "evals/tests/support"]
 files = [
   "services/api/src",
   "services/api/tests",
@@ -135,7 +135,7 @@ warn_required_dynamic_aliases = true
 # ---------------------------------------------------------------------------
 
 [tool.importlinter]
-root_packages = ["bank_agent"]
+root_packages = ["bank_agent", "bank_evals"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
@@ -203,6 +203,26 @@ forbidden_modules = [
   "litellm",
 ]
 
+[[tool.importlinter.contracts]]
+name = "The application never imports the evaluation harness"
+type = "forbidden"
+source_modules = ["bank_agent"]
+forbidden_modules = ["bank_evals"]
+
+[[tool.importlinter.contracts]]
+name = "Baseline B1 never reaches the kernel, the application, the adapters, or the API"
+type = "forbidden"
+source_modules = ["bank_evals.systems.naive_agent"]
+forbidden_modules = [
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.bootstrap",
+  "bank_agent.api",
+  "bank_evals.systems.engine_system",
+  "bank_evals.systems.failures",
+]
+
 # ---------------------------------------------------------------------------
 # pytest
 # ---------------------------------------------------------------------------
@@ -211,7 +231,7 @@ forbidden_modules = [
 minversion = "9.0"
 testpaths = ["services/api/tests", "data_platform/tests", "ml/tests", "evals/tests", "scripts/tests"]
 # Shared test-support modules; each has a package-unique name so paths never collide.
-pythonpath = ["services/api/tests", "data_platform/tests"]
+pythonpath = ["services/api/tests", "data_platform/tests", "evals/tests/support"]
 addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib", "--allow-unix-socket"]
 markers = [
   "unit: fast tests with no network, database, or filesystem access outside tmp_path",

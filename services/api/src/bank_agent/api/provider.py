@@ -14,6 +14,10 @@ from bank_agent.api.config import SecurityConfig
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
+from bank_agent.domain.identifiers import CreditProductCode
+from bank_agent.domain.locale import Language
+from bank_agent.domain.policy import PolicyClause
+from bank_agent.policy.loader.catalog import ProductDisplay
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
@@ -31,6 +35,24 @@ class ApiConfig:
     security: SecurityConfig = field(default_factory=SecurityConfig.development)
     monotonic: Callable[[], float] = time.monotonic
     """The clock of the rate limiter's windows; tests pass a controllable one."""
+
+
+class CreditProductNames(Protocol):
+    """The catalog's es, pt, and en product names and summaries (``FilesystemCreditCatalog`` satisfies it).
+
+    Display text stays out of the ``CreditProductCatalog`` port; only the HTTP layer names products for people.
+    """
+
+    def display(self, code: CreditProductCode, language: Language) -> ProductDisplay | None: ...
+
+
+class PolicyClauses(Protocol):
+    """Clause lookup in the loaded policy pack (``FilesystemPolicyRepository`` and ``PolicyPack`` satisfy it).
+
+    The agent console renders a handoff's policy basis with it; ``PolicyClauseNotFoundError`` for an unknown clause.
+    """
+
+    def get_clause(self, clause_id: str, language: Language, version: int | None = None) -> PolicyClause: ...
 
 
 class ServiceProvider(Protocol):
@@ -54,6 +76,16 @@ class ServiceProvider(Protocol):
 
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader: ...
+
+    @property
+    def credit_product_names(self) -> CreditProductNames:
+        """Product names for the credit product parts of assistant messages."""
+        ...
+
+    @property
+    def policy_clauses(self) -> PolicyClauses:
+        """The loaded policy pack's clauses, for the excerpts of a handoff's policy basis."""
+        ...
 
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:

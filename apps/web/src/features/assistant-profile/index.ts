@@ -1,9 +1,2 @@
-export {
-  ApiRequestError,
-  changeAssistantName,
-  createConversation,
-  getAssistantProfile,
-  getConversation,
-  mockAssistantImage,
-} from './client';
-export type { AssistantProfile } from './client';
+export { AssistantProfileControl } from './ui/AssistantProfileControl';
+export type { AssistantProfile } from './api/profile';

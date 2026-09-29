@@ -171,7 +171,7 @@ async def test_existing_turn_is_backfilled_when_upgrading_from_0008() -> None:
                     (1, "user", "Hola", "turn-legacy"),
                     (2, "assistant", "Buen día", "turn-legacy"),
                 ]
-                assert await migrate.current_revision(engine) == "0009"
+                assert await migrate.current_revision(engine) == migrate.head_revision()
             finally:
                 await owner.close()
         finally:

@@ -121,7 +121,33 @@ class TestCreditApplicationRepositoryContract:
         async with write_backend.uow_factory()(CONTEXT_A) as uow:
             assert await uow.credit_applications.get(ApplicationId("app-000002")) is None
 
-    async def test_an_agent_reads_only_applications_a_handoff_references(self, write_backend: WriteBackend) -> None:
+    async def test_an_agent_reads_every_reviewable_application_newest_first(self, write_backend: WriteBackend) -> None:
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.credit_applications.create(_intake(created_at=T0 - timedelta(days=1)))
+            await uow.commit()
+        async with write_backend.uow_factory()(AGENT) as uow:
+            application = await uow.credit_applications.get(EXISTING)
+            assert application is not None
+            assert application.customer_id == CUSTOMER_A
+            listed = await uow.credit_applications.list_for_review()
+            assert [item.application_id for item in listed] == ["app-000002", "app-000001"]
+            submitted = await uow.credit_applications.list_for_review(frozenset({ApplicationStatus.SUBMITTED}), 1)
+            assert [item.application_id for item in submitted] == ["app-000002"]
+            assert await uow.credit_applications.list_for_review(frozenset({ApplicationStatus.CLOSED})) == []
+            with pytest.raises(AccessContextError):
+                await uow.credit_applications.list_mine()
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            with pytest.raises(AccessContextError):
+                await uow.credit_applications.list_for_review()
+
+    async def test_an_agent_reads_a_withdrawn_application_only_when_a_handoff_references_it(
+        self, write_backend: WriteBackend
+    ) -> None:
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.credit_applications.transition(
+                EXISTING, ApplicationStatus.WITHDRAWN, expected_version=0, at=T0, reason_code="customer_request"
+            )
+            await uow.commit()
         async with write_backend.uow_factory()(AGENT) as uow:
             assert await uow.credit_applications.get(EXISTING) is None
             assert await uow.credit_applications.list_for_review() == []
@@ -144,15 +170,10 @@ class TestCreditApplicationRepositoryContract:
         async with write_backend.uow_factory()(AGENT) as uow:
             application = await uow.credit_applications.get(EXISTING)
             assert application is not None
-            assert application.customer_id == CUSTOMER_A
+            assert application.status is ApplicationStatus.WITHDRAWN
             listed = await uow.credit_applications.list_for_review()
             assert [item.application_id for item in listed] == [EXISTING]
-            assert await uow.credit_applications.list_for_review(frozenset({ApplicationStatus.CLOSED})) == []
-            with pytest.raises(AccessContextError):
-                await uow.credit_applications.list_mine()
-        async with write_backend.uow_factory()(CONTEXT_A) as uow:
-            with pytest.raises(AccessContextError):
-                await uow.credit_applications.list_for_review()
+            assert await uow.credit_applications.list_for_review(frozenset({ApplicationStatus.SUBMITTED})) == []
 
     async def test_evaluators_are_refused(self, write_backend: WriteBackend) -> None:
         async with write_backend.uow_factory()(EVALUATOR) as uow:

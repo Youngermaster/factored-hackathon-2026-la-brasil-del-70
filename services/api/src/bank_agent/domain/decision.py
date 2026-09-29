@@ -125,7 +125,7 @@ def ordered_clause_union(results: tuple[RuleResult, ...]) -> tuple[ClauseRef, ..
 class Decision(DomainModel):
     """Version 1 of the decision contract (``contracts/schemas/decision.v1.json``)."""
 
-    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.2.0"
+    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.4.0"
     state: StateName
     action: ActionKind | None = None
     kind: DecisionKind

@@ -9,6 +9,7 @@ at 0.2, so the engine asks what the customer needs. Phase 10 replaces this with 
 import re
 from collections.abc import Mapping
 
+from bank_agent.application.understanding.extraction import CARD_STATE_QUESTION
 from bank_agent.application.understanding.text import fold
 from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.intelligence import IntentPrediction, IntentScore, ModelComponent, ModelRef
@@ -42,7 +43,8 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
         (r"status of my (dispute|case)", _STRONG),
     ),
     Intent.CARD_BLOCK: (
-        (r"(?<!des)bloque(ar|a|en|ame|o)|(?<!des)bloquei[ao]|congel(ar|a)", _STRONG),
+        (r"(?<!des)bloque(?!ad[oa])(ar|a|en|ame|o)|(?<!des)bloquei[aoe]|congel(ar|a)", _STRONG),
+        (r"(?<!des)bloquead[oa]", _MEDIUM),
         (r"perdi (mi|la|meu|o)? ?(tarjeta|cartao)|extravi|me (la )?robaron|roubaram|robo de|roubo", _MEDIUM),
         (r"block (my|the) card|lost my card|stolen", _STRONG),
     ),
@@ -59,7 +61,7 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
     Intent.CARD_STATUS: (
         (r"estado de (mi|la|las|mis) tarjeta|vencimiento|cuando vence", _STRONG),
         (r"(situacao|status) do (meu )?cartao|validade do cartao|quando vence", _STRONG),
-        (r"(mi tarjeta|meu cartao) (no |nao )?(esta|funciona|sirve|passa|pasa)", _STRONG),
+        (r"(mi tarjeta|meu cartao) (no |nao )?(esta|funciona|sirve|passa|pasa)|" + CARD_STATE_QUESTION, _STRONG),
         (r"rechaz|recusad|declin", _MEDIUM),
         (r"card status|my card (is|works)", _STRONG),
     ),
@@ -133,7 +135,7 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
             r"consigo (um|uma|tirar)|am i eligible",
             0.85,
         ),
-        (r"\baprob|\baprueb|\baprova|\bapprove", 0.85),
+        (r"\baprob|\baprueb|\baprov[ae]|\bapprove", 0.85),
     ),
     Intent.CREDIT_APPLICATION: (
         (

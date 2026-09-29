@@ -6,7 +6,7 @@ Self-contained product capabilities, one folder per feature (for example `conver
 
 ```text
 features/<name>/
-├── api/        TanStack Query hooks over the typed client, plus MSW handlers for tests
+├── api/        TanStack Query hooks over the typed client (useApi, unwrap, queryKeys)
 ├── model/      feature-scoped context, reducers, and pure logic
 ├── ui/         compound components (for example Conversation.Root, Conversation.Messages)
 └── index.ts    the only module other code may import
@@ -20,7 +20,7 @@ features/<name>/
 
 ## How to extend
 
-Create the folder with the layout above, export the public components and hooks from `index.ts`, and add typed MSW handlers for every endpoint it calls.
+Create the folder with the layout above, export the public components and hooks from `index.ts`, and add typed MSW fakes for every endpoint it calls under `src/test/msw/`, built from the fixtures in `src/test/msw/api.ts`. `auth` is the reference for flows (sign-in, the session query, the route guard, step-up, sign-out); `conversation` is the reference for a compound component over one scoped context.
 
 ## How to test
 

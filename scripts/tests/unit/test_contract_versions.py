@@ -34,4 +34,4 @@ def test_file_version_matches_the_model_default(contract: Any) -> None:
 
 
 def test_every_contract_is_on_the_same_minor_release() -> None:
-    assert {contract.version for contract in contracts.CONTRACTS} == {"1.2.0"}
+    assert {contract.version for contract in contracts.CONTRACTS} == {"1.4.0"}

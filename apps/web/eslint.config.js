@@ -6,7 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-import { boundariesConfig } from './eslint.boundaries.js';
+import { boundariesConfig, boundariesTestOverride } from './eslint.boundaries.js';
 
 export default tseslint.config(
   {
@@ -15,6 +15,7 @@ export default tseslint.config(
       'coverage',
       'node_modules',
       'tooling/boundaries-fixture',
+      '.shots',
       'src/shared/api/generated',
     ],
   },
@@ -41,6 +42,12 @@ export default tseslint.config(
     rules: {
       'react-refresh/only-export-components': ['error', { allowConstantExport: true }],
       '@typescript-eslint/no-explicit-any': 'error',
+      // Scrollable regions (wide tables, long records) must be keyboard focusable (WCAG 2.1.1, axe
+      // scrollable-region-focusable); they carry role="region" and a name.
+      'jsx-a11y/no-noninteractive-tabindex': [
+        'error',
+        { tags: [], roles: ['tabpanel', 'region'], allowExpressionValues: true },
+      ],
       'no-restricted-syntax': [
         'error',
         {
@@ -75,8 +82,23 @@ export default tseslint.config(
     },
   },
   {
+    // The one module that stores per-viewer display preferences (theme and locale, never session data). It is the
+    // only place web storage may be touched; see src/shared/lib/preferences.ts.
+    // Tests may seed and inspect web storage to test that module and the pre-paint theme script.
+    files: ['src/shared/lib/preferences.ts', 'src/**/*.test.{ts,tsx}', 'src/test/setup.ts'],
+    rules: { 'no-restricted-globals': 'off', 'no-restricted-properties': 'off' },
+  },
+  {
     files: ['src/**/*.{ts,tsx}'],
     ...boundariesConfig,
+  },
+  {
+    files: ['src/**/*.test.{ts,tsx}'],
+    ...boundariesTestOverride,
+  },
+  {
+    files: ['public/**/*.js'],
+    languageOptions: { globals: globals.browser, sourceType: 'script' },
   },
   {
     files: ['*.{js,ts}'],

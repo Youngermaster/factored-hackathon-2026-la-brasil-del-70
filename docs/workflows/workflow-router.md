@@ -66,6 +66,7 @@ flowchart TD
 | Guarantee | Mechanism |
 |---|---|
 | Idempotent turns | The turn id is the key: a stored turn is replayed; a concurrent duplicate fails `append_turn` and is replayed |
+| Accepting the offer of a person | A reply that ends by offering a person (out of scope, in-domain unsupported, dispute denial, mortgage information, no decision now) sets `EngineData.person_offered` for the next turn only; a bare yes then ("sí", "sim", "claro, por favor", at most four words) is the keyword signal `human_requested`, so the kernel escalates through `ESC.human_requested` as for "Quiero hablar con una persona" |
 | Clarification budget of 2 | `ESC.clarification_exhausted` over `WorkflowPosition.clarifications_used` (`ESC-ALL-1`) |
 | Maximum turns | 40 per conversation, then a handoff |
 | Expired session mid-flow | Nothing privileged runs; AUTH_REQUIRED remembers the last safe state (the confirmation for a pending write); after re-authentication the question is asked again; writes are idempotent by a key derived from the conversation, the target, and the action, and executed writes are kept in the conversation data |

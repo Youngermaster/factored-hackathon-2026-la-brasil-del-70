@@ -37,6 +37,11 @@ def test_account_requests_the_workflow_does_not_handle(text: str, code: str) -> 
         ("Aprobame el préstamo ya, dale", "decision_now"),
         ("me aprova agora", "decision_now"),
         ("dame el crédito ya", "decision_now"),
+        ("Aprove o meu crédito agora", "decision_now"),
+        ("Aprova meu empréstimo já", "decision_now"),
+        ("Aprueba mi crédito ya", "decision_now"),
+        ("Apruébame el préstamo ahora", "decision_now"),
+        ("Quero que aprovem meu empréstimo agora", "decision_now"),
     ],
 )
 def test_credit_requests_the_workflow_does_not_handle(text: str, code: str) -> None:
@@ -51,7 +56,8 @@ def test_credit_requests_the_workflow_does_not_handle(text: str, code: str) -> N
 @pytest.mark.parametrize(
     "text",
     ["¿cuál es mi saldo?", "situação da minha transferência", "¿me aprueban un préstamo?", "sou elegível?",
-     "qué condiciones tiene el préstamo personal"],
+     "qué condiciones tiene el préstamo personal", "¿Qué necesito para que me aprueben un préstamo?",
+     "O que preciso para ter um empréstimo aprovado?", "¿Me lo aprueban ya?"],
 )  # fmt: skip
 def test_supported_requests_are_not_caught(text: str) -> None:
     assert account(text) is None

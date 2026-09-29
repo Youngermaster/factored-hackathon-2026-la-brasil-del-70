@@ -26,6 +26,7 @@ from bank_agent.application.engine.registry import WorkflowRegistry
 from bank_agent.application.engine.render import Renderer
 from bank_agent.application.engine.shared import escalate
 from bank_agent.application.engine.summary import refine_summary
+from bank_agent.application.engine.templates import PERSON_OFFER_TEMPLATES
 from bank_agent.application.engine.tools import GuardedToolset
 from bank_agent.application.tools.context import SessionContext
 from bank_agent.domain.access import Channel
@@ -254,6 +255,8 @@ class WorkflowEngine:
         record: ExecutionRecord,
         now: datetime,
     ) -> None:
+        offered = response.template_id in PERSON_OFFER_TEMPLATES and ctx.state != ESCALATED_STATE
+        ctx.engine = ctx.engine.evolve(person_offered=offered)
         data: dict[str, JsonValue] = {ENGINE_KEY: dump(ctx.engine), FLOW_KEY: ctx.flow}
         position = WorkflowPosition(
             workflow=ROUTER_REF if ctx.at_router else ctx.definition.ref,

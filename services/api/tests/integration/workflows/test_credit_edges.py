@@ -43,6 +43,29 @@ async def test_28_es_ar_just_approve_it_gets_no_approval_the_disclaimer_and_the_
     assert record.eligibility_assessments == ()
 
 
+async def test_28a_imperative_approval_requests_in_es_and_pt_are_abstained_without_approval(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    for customer, text in ((PT, "Aprove o meu crédito agora"), (PT, "Aprova meu empréstimo já"),
+                           (CO, "Aprueba mi crédito ya"), (CO, "Apruébame el préstamo ahora")):  # fmt: skip
+        session = harness.session(customer)
+        reply = await harness.say(text, session)
+        assert (reply.state, reply.outcome) == ("ABSTAINED", Outcome.ABSTAINED)
+        assert approval_terms(reply.response.text) == ()
+        assert {"CRE-ALL-1@1", "CRE-ALL-3@1"} <= set(cited(reply.response.citations))
+        record = await harness.record(session, reply.turn_id)
+        assert record.workflow == CREDIT
+        assert "unsupported_decision_now" in record.safety_interventions
+
+
+async def test_28a_asking_what_approval_needs_is_not_a_decision_request(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    for customer, text in ((CO, "¿Qué necesito para que me aprueben un préstamo?"),
+                           (PT, "O que preciso para ter um empréstimo aprovado?")):  # fmt: skip
+        reply = await harness.say(text, harness.session(customer))
+        assert reply.outcome is not Outcome.ABSTAINED
+        assert reply.workflow == CREDIT
+
+
 async def test_28b_pt_br_a_limit_increase_is_abstained_with_the_cre_clause(backend: Backend) -> None:
     harness = build_harness(backend.uow_factory, backend.session_store)
     session = harness.session(PT)

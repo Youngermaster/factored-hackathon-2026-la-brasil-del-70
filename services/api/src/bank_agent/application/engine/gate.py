@@ -143,7 +143,7 @@ async def inspect(ctx: TurnContext) -> Step | None:
         await add_trust_event(ctx, TrustEventKind.INJECTION_DETECTED, INJECTION_DETECTOR, "customer_text")
     variables = {"customer_message": ctx.text, "dialect_hint": ctx.locale.value}
     model = await structured(ctx, DETECT_SIGNALS, variables, ModelSignals)
-    signals = detect_signals(ctx.text).merged(model)
+    signals = detect_signals(ctx.text, person_offered=ctx.engine.person_offered).merged(model)
     ctx.escalation = ctx.escalation.evolve(
         human_requested=signals.human_requested,
         legal_or_regulator_mention=signals.legal_or_regulator_mention,

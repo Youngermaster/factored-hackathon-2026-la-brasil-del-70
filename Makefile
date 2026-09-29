@@ -23,7 +23,8 @@ BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
-	policy-lock policy-catalog index eval-retrieval train promote openapi
+	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
+	api-local-llm env
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -67,11 +68,26 @@ test-integration: ## Python integration tests against PostgreSQL (needs Docker),
 test-web: ## Web tests with coverage
 	$(WEB) run test:coverage
 
-env-check: ## Report set or unset for every documented environment variable, never a value
+env: ## Create .env from .env.example (only when absent) with freshly generated development secrets
+	$(GUARD_PY) scripts/make_env.py
+
+env-check: ## Report which variables the current configuration needs and whether each is set, never a value
 	$(GUARD_PY) scripts/checks/check_env_keys.py
 
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
 	$(UV_RUN) python scripts/generate_contracts.py
+
+# Opt-in local language model (never used by check or CI). The litellm extra is installed on demand for these runs.
+LLM_EXTRA_RUN := uv run --frozen --extra litellm --package bank-agent
+LOCAL_LLM_MODEL ?= ollama/qwen2.5:7b-instruct
+LOCAL_LLM_BASE ?= http://localhost:11434
+
+llm-smoke: ## Opt-in: run the fixture prompts (es, pt, four workflows) against the configured live provider; never in check or CI
+	$(LLM_EXTRA_RUN) python scripts/llm_smoke.py
+
+api-local-llm: ## Opt-in: run the API on :8000 with the local Ollama model through LiteLLM (LOCAL_LLM_MODEL, LOCAL_LLM_BASE)
+	LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=$(LOCAL_LLM_MODEL) LLM_API_BASE=$(LOCAL_LLM_BASE) \
+		$(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
 
 openapi: ## Export contracts/openapi.json and regenerate the web API types (apps/web/src/shared/api/generated)
 	$(UV_RUN) python scripts/export_openapi.py
@@ -88,6 +104,27 @@ index: ## Build the retrieval index for the current pack under data/artifacts (D
 
 eval-retrieval: ## Compare BM25, dense, and hybrid on the relevance judgments; writes docs/evaluation/retrieval.md
 	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) bank-eval retrieval
+
+# Scenario evaluation (phase 14). EVAL_LLM: replay (cassettes; the default), off (no model), or record (live, writes
+# cassettes; needs LLM_PROVIDER=litellm and the litellm extra). EVAL_MODEL names the model the cassettes hold.
+EVAL_LLM ?= replay
+EVAL_MODEL ?= ollama/qwen2.5:7b-instruct
+EVAL_RUN ?= $(shell date -u +%Y%m%dT%H%M%S)
+EVAL_ENV := LLM_PRIMARY_MODEL=$${LLM_PRIMARY_MODEL:-$(EVAL_MODEL)} MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns}
+
+eval: ## Run the dev suite with cassettes (EVAL_LLM=replay); writes reports/eval/dev-<time>/
+	$(EVAL_ENV) $(UV_RUN) $(if $(filter record,$(EVAL_LLM)),--extra litellm,) bank-eval run --run-id dev-$(EVAL_RUN) --split dev --llm $(EVAL_LLM) --mlflow
+
+eval-test: ## Run the frozen test suite with cassettes: P and B1 three times on the stratified subset
+	$(UV_RUN) bank-eval scenarios check
+	$(EVAL_ENV) $(UV_RUN) $(if $(filter record,$(EVAL_LLM)),--extra litellm,) bank-eval run --run-id test-$(EVAL_RUN) --split test --llm $(EVAL_LLM) --runs 3 --repeat subset --mlflow
+
+eval-smoke: ## The 12-scenario smoke suite with the scripted client (no model; what CI runs)
+	$(UV_RUN) bank-eval run --run-id smoke --split dev --smoke --llm fake
+
+eval-scenarios: ## Regenerate the scenario set deterministically and check lint, leakage, and the test set lock
+	$(UV_RUN) bank-eval scenarios generate
+	$(UV_RUN) bank-eval scenarios check
 
 train: ## Train, register as candidates, and evaluate the router, resolver, and risk estimator; writes docs/evaluation (resolver and risk need the s3 gold)
 	$(UV_RUN) bank-ml router train

@@ -257,3 +257,19 @@ def test_container_defaults_to_the_unconfigured_client() -> None:
     container = Container(load_settings(env_file=None))
 
     assert isinstance(_chain(container.llm_client)[-1], UnconfiguredLLMClient)
+
+
+def test_a_local_ollama_model_needs_no_key_and_gets_the_base_url() -> None:
+    settings = LLMSettings(
+        provider="litellm", primary_model="ollama/qwen2.5:7b-instruct", api_base="http://localhost:11434"
+    )
+
+    provider = _chain(_build(settings))[-1]
+
+    assert isinstance(provider, LiteLLMClient)
+    assert provider.model_id == "ollama/qwen2.5:7b-instruct"
+
+
+def test_a_hosted_model_without_a_key_is_still_refused() -> None:
+    with pytest.raises(ConfigurationError, match="no API key"):
+        _build(LLMSettings(provider="litellm", primary_model="openai/gpt-5-mini", api_base="https://example.test"))

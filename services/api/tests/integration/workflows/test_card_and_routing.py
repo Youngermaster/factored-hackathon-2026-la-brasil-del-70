@@ -38,6 +38,56 @@ async def test_13b_es_ar_one_card_status_lists_declined_purchases_without_a_reas
     assert "31 de marzo de 2028" in ar.response.text
 
 
+async def test_a_status_question_naming_bloqueada_answers_the_status_and_offers_no_block(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    for text in ("¿Mi tarjeta está activa o bloqueada?", "¿Está bloqueada mi tarjeta?"):
+        reply = await harness.say(text, harness.session(CO))
+        assert (reply.state, reply.outcome) == ("CARD_STATUS", Outcome.RESOLVED)
+        assert "Tu tarjeta de crédito **** 9999 está activa" in reply.response.text
+        assert reply.response.card_action_confirmation is None
+    mx = harness.session(MX)
+    asked = await harness.say("¿Está bloqueada mi tarjeta?", mx)
+    assert asked.state == "CLARIFY"
+    assert "**** 1234" in asked.response.text
+    assert "**** 5678" in asked.response.text
+    answered = await harness.say("la de débito", mx, asked.conversation_id)
+    assert (answered.state, answered.outcome) == ("CARD_STATUS", Outcome.RESOLVED)
+    assert "Tu tarjeta de débito **** 5678 está bloqueada" in answered.response.text
+    again = await harness.say("¿y la de crédito está bloqueada?", mx, asked.conversation_id)
+    assert again.state != "CONFIRM_BLOCK"
+    assert again.response.card_action_confirmation is None
+
+
+async def test_a_pt_status_question_naming_bloqueado_asks_which_card_and_answers_its_status(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    for text in ("Meu cartão está ativo ou bloqueado?", "Meu cartão está bloqueado?"):
+        session = harness.session(PT)
+        asked = await harness.say(text, session)
+        assert (asked.state, asked.outcome) == ("CLARIFY", Outcome.CLARIFIED)
+        assert asked.response.card_action_confirmation is None
+        answered = await harness.say("o de crédito", session, asked.conversation_id)
+        assert (answered.state, answered.outcome) == ("CARD_STATUS", Outcome.RESOLVED)
+        assert "O seu cartão de crédito **** 2468 está ativo" in answered.response.text
+        assert answered.response.card_action_confirmation is None
+
+
+async def test_a_block_request_still_asks_to_confirm_the_block(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    block = await harness.say("Bloquea mi tarjeta", harness.session(CO))
+    assert block.state == "CONFIRM_BLOCK"
+    assert block.response.card_action_confirmation is not None
+    lost = await harness.say("Quiero bloquear mi tarjeta, la perdí", harness.session(AR))
+    assert lost.state == "CONFIRM_BLOCK"
+    assert lost.response.card_action_confirmation is not None
+    assert lost.response.card_action_confirmation.reason is CardBlockReason.LOST
+    pt = harness.session(PT)
+    asked = await harness.say("Quero bloquear meu cartão", pt)
+    assert asked.state == "CLARIFY"
+    chosen = await harness.say("o de crédito", pt, asked.conversation_id)
+    assert chosen.state == "CONFIRM_BLOCK"
+    assert chosen.response.card_action_confirmation is not None
+
+
 async def test_14_es_co_lost_card_is_blocked_with_step_up_verified_and_reasoned(backend: Backend) -> None:
     harness = build_harness(backend.uow_factory, backend.session_store)
     session = harness.session(CO)

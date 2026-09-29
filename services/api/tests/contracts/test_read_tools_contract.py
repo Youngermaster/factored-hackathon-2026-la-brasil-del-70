@@ -87,6 +87,15 @@ class TestReadToolsContract:
         other = tools_for(write_backend.uow_factory(), CUSTOMER_B)
         assert await other.get_credit_application_status(ApplicationId("app-000001")) is None
 
+    async def test_credit_applications_are_listed_newest_first_and_scoped_by_the_session(
+        self, write_backend: WriteBackend
+    ) -> None:
+        mine = await tools_for(write_backend.uow_factory()).list_my_credit_applications()
+        assert [item.application_id for item in mine] == ["app-000001"]
+        assert await tools_for(write_backend.uow_factory(), CUSTOMER_B).list_my_credit_applications() == []
+        listed = await write_backend.audit_log(EVALUATOR).list(AuditQuery())
+        assert [event.action for event in listed].count("list_my_credit_applications") == 2
+
     async def test_every_read_is_audited_with_redacted_arguments(self, write_backend: WriteBackend) -> None:
         tools = tools_for(write_backend.uow_factory())
         await tools.get_transaction(TransactionId("TXN-A-0001"))

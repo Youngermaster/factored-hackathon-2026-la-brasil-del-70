@@ -261,6 +261,14 @@ class GuardedToolset:
             summarize=lambda intake: intake.status.value if intake is not None else None,
         )
 
+    async def list_my_credit_applications(self) -> Sequence[CreditApplicationIntake]:
+        inner = self._inner
+        return await self.run(
+            ToolName.LIST_MY_CREDIT_APPLICATIONS,
+            inner.list_my_credit_applications,
+            summarize=lambda found: f"count_{min(len(found), 999)}",
+        )
+
     async def submit_credit_application(
         self, request: SubmitCreditApplicationArguments, key: IdempotencyKey
     ) -> CreditApplicationIntake:

@@ -54,6 +54,8 @@ STACK_ORDER: Final = (
 """The documented decorator order, outermost first; ``FallbackDecorator`` is present only with a fallback."""
 
 FindSpec = Callable[[str], ModuleSpec | None]
+KEYLESS_PROVIDERS: Final = frozenset({"ollama", "ollama_chat"})
+"""LiteLLM providers that run on the developer's machine and take no API key (the opt-in local path)."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,9 +88,16 @@ def _litellm(
         raise ConfigurationError("LLM_PROVIDER=litellm needs the litellm extra: uv sync --all-packages --extra litellm")
     if not model:
         raise ConfigurationError("LLM_PROVIDER=litellm needs LLM_PRIMARY_MODEL (and a key for every model)")
-    if key is None or not key.get_secret_value().strip():
+    keyless = provider_name(model) in KEYLESS_PROVIDERS
+    if not keyless and (key is None or not key.get_secret_value().strip()):
         raise ConfigurationError(f"the model {model} has no API key configured")
-    return LiteLLMClient(registry, model=model, api_key=key, timeout_seconds=settings.timeout_seconds)
+    return LiteLLMClient(
+        registry,
+        model=model,
+        api_key=key if key is not None and key.get_secret_value().strip() else None,
+        timeout_seconds=settings.timeout_seconds,
+        api_base=settings.api_base or None,
+    )
 
 
 def _provider(

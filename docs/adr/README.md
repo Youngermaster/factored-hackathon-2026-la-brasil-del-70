@@ -22,6 +22,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0014](0014-explicit-state-machine-over-an-agent-framework.md) | An explicit state machine over an agent framework | Accepted | 2026-09-27 |
 | [0015](0015-router-model-choice.md) | Learned routers (TF-IDF and embeddings) behind the port, rule baseline as the default until end-to-end evaluation | Accepted | 2026-09-27 |
 | [0016](0016-resolver-approach.md) | A LightGBM lambdarank resolver with labels by construction, an evidence gate, and a none-of-these option | Accepted | 2026-09-27 |
+| [0018](0018-design-system.md) | Design system on Radix primitives, Tailwind tokens, Phosphor icons, and the deck's typefaces | Accepted | 2026-09-29 |
 | [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
 | [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |
 | [0022](0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source | Accepted | 2026-09-26 |
@@ -33,6 +34,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0028](0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces | Accepted | 2026-09-27 |
 | [0029](0029-in-domain-unsupported-requests.md) | In-domain unsupported requests are abstained by the owning workflow | Accepted | 2026-09-27 |
 | [0030](0030-credit-risk-estimator.md) | A cross-sectional snapshot risk estimate: label, allowlisted features, dev-chosen intervals, and policy bands, kept apart from eligibility | Accepted | 2026-09-27 |
+| [0031](0031-cookie-sessions-with-signed-double-submit-csrf.md) | Cookie sessions with signed double-submit CSRF for a same-site single-page app | Accepted | 2026-09-27 |
 | [0032](0032-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer | Accepted | 2026-09-27 |
 | [0033](0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
 | [0034](0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |

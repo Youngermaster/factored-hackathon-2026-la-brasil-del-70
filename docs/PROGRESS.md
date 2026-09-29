@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 10, session 10b: the learned credit risk estimator. `risk_estimator:logreg` (promoted on test) and `risk_estimator:lgbm` (promotion refused: no gain over logistic regression) are cross-sectional snapshot risk estimates on synthetic data, behind the `RiskEstimator` port and loaded through the filesystem `ModelRegistry`. The score-band baseline stays the default |
-| Next phase | 11, API and security (`kit/prompts/11-api-security.md`). The phase 09 prompt still asks that phase 11 start after the 09a and 09b walkthroughs (pending actions 21 and 25) |
+| Last completed phase | 13: product surfaces. The customer chat with every turn part and quick replies, the glass box beside it (and on its own route, and for evaluators with the internal section), the agent inbox with credit review items, the evaluation view, the demo guide, and the About page, in es and pt for customers and en and es for the console; agents read every reviewable credit intake, credit status works without an application id, and evaluation summaries are at schema 1.1.0 |
+| Next phase | 14, evaluation (`kit/prompts/14-evaluation.md`) |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -22,7 +22,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 5. **Choose the language model provider** (phase 08 left it undecided). Until then `LLM_PROVIDER=fake` refuses every model call and workflows will run on their deterministic fallbacks.
 6. **Record real cassettes once the provider and key are chosen.** Every cassette in `evals/cassettes/` is a hand-authored fixture (`provenance: hand_authored_fixture`, model `fixture/hand-authored`); `evals/cassettes/README.md` has the recording steps. This is not a blocker.
 7. **Verify the price table.** `services/api/config/llm_prices.yaml` lists candidate prices (Anthropic `claude-sonnet-5` 2.00/10.00 and `claude-haiku-4-5-20251001` 1.00/5.00, OpenAI `gpt-5-mini` 0.25/2.00, USD per million tokens) with `verified: false`. Open each `source_url`, correct the numbers and date, and set `verified: true`; until then the budget guard charges 1.5 times the listed price.
-8. **Review the optional `litellm` extra before enabling it.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup`; check its advisories before `uv sync --extra litellm`.
+8. **Review the optional `litellm` extra.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup` or CI. Phase 11 used it, as asked, for the opt-in local Ollama path (`make llm-smoke`, `make api-local-llm` run `uv run --extra litellm`), so it is now installed in this checkout's `.venv`; `uv sync --frozen --all-packages --extra ml` removes it and keeps the `ml` extra. Check its advisories before any hosted use.
 9. **Review the data platform dependency footprint.** DuckDB, dbt-duckdb, and Pandera are named in the CLAUDE.md stack and boto3 in the phase prompt, so they were added without asking; together with their dependencies (dbt-core, pandas, numpy, botocore, agate) the development environment grew by about 340 MB. Individually the largest are the DuckDB binary (44 MB), pandas (41 MB), and botocore (25 MB). The API image needs only DuckDB (for the gold readers).
 10. **Review the workflow prioritization** (`docs/decisions/workflow-prioritization.md`): confirm the build and depth order (`account_inquiry`, `card_support`, `dispute`, `credit`), read the "Breadth risk" section (`credit` is the weakest candidate for depth; `card_support` has no demand evidence under the strict mapping; `dispute` has the weakest data support), and decide whether the pre-registered weights stand. A weight change is a new pre-registration version (`docs/analysis/workflow-scoring-preregistration.md`); rerun `make analysis DATA_SOURCE=s3`.
 11. **Start the automatable-share labeling task** (`docs/analysis/labeling-protocol.md`). The 600-item sample is at `data/labeling/automatable_sample.csv` (gitignored; regenerate with `make analysis DATA_SOURCE=s3`); two labelers per item, adjudicated, without opening `automatable_prelabels.csv` first. 75 items per workflow is the floor. Expect `card_support`, `dispute`, and `credit` items to be labeled as not matching their workflow: transcripts are two balance templates. This does not block any phase; the scores use the labeled proxy until then.
@@ -52,7 +52,244 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 33. **Review the risk estimator promotion and the default** ([model card](models/risk-estimator.md), [ADR 0030](adr/0030-credit-risk-estimator.md)). The session promoted `risk_estimator:logreg@2afb401aa70e` and refused `risk_estimator:lgbm@1c54c935b495` on test, under the delegated approval (records in `data/artifacts/models/risk_estimator/*/promotions.jsonl`). The label is cross-sectional (one snapshot), and the only signal is the credit product count. `WORKFLOW_RISK_ESTIMATOR` stays `score_band@1` until phase 14 (BACKLOG).
 34. **Feed a finding into action 17.** Credit score shows no association with snapshot delinquency on the full delivery (test ROC AUC 0.504 for the score bands; univariate 0.495), so the synthetic `ELG` score minimums find no support in this label. This is a question for the reviewers of the synthetic thresholds, not a policy change.
 
+35. **Review the phase 11 HTTP security design**: [ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md), [the threat model](security/threat-model.md), and [the API catalog](api/README.md): the rate limit defaults, the separate evaluator trace operation, and the agent visibility of credit intakes (handoff-referenced only until phase 13).
+36. **Check any `.env` made from an older `.env.example`.** A line with an empty value and an inline comment (`POLICY_DIR=     # default: policies/`) is read as the comment text, not as empty; the old example had 21 such lines (for example `POLICY_DIR`, the `RETRIEVAL_*` directories and thresholds, `LLM_PRICES_FILE`, `LLM_CASSETTE_DIR`, `WORKFLOW_MODEL_REGISTRY_DIR`, `BANK_DATA_DIR`). Delete those inline comments, or move your values aside and run `make env` (it writes `.env` only when none exists). The new example keeps such comments on the line above. Its dev-only database passwords differ from the ones an existing compose volume was created with, so keep your current passwords.
+
+37. **Resolved (2026-09-29): `origin/main` merged into local `main`.** The orchestrator merged PRs 7, 8, 12, 15, 16, and 17 (organizer data and collaboration skills, the local gold seed with ADR 0034, the chat persistence migration 0009, and the assistant preferences). Conflicts in `.env.example`, `Makefile`, `docs/BACKLOG.md`, `docs/PROGRESS.md`, `docs/README.md`, and the evaluation summary port were resolved by keeping both sides; `.env.example` keeps the phase 11 copy-and-run layout, which already carries the data-platform variables.
+38. **Review the web copy and the design direction** (`apps/web/src/shared/i18n/locales/{es,pt,en}.json`, [DESIGN.md](design/DESIGN.md), [audit.md](design/audit.md), screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`): a native Portuguese review, and a check that the deck-derived palette and type work for the team. Reviewers: pending. Date: pending.
+39. **Review the phase 13 surfaces before the video** (screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`, [audit.md](design/audit.md), [the demo script](demo/script.md)): the chat, the glass box, the inbox, the evaluation view, and the demo guide; include the new copy in pending action 38's native Portuguese review. Run `make db-upgrade` (migration `0010`) on any existing database, and record the video on a fresh compose volume after `make seed` (demo writes persist). Reviewers: pending. Date: pending.
+
 ## Phase log
+
+### Phase 13: product surfaces (chat, glass box, agent inbox, evaluation view) (2026-09-29)
+
+Plan: `docs/plans/phase-13.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op ("Already up to date"); local `main` already held the merge of `origin/main` (pending action 37). ADR 0025's scope was not built, as the human decided: no mock human agent, no Langfuse, and no assistant name or avatar (the API has no assistant profile route). The backend changes ran in two separate worktrees and were cherry-picked onto `main`.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `ec58c31` | The plan: routes, feature boundaries, decided questions (quick replies, talk to a person, step-up continuation, credit review items, evaluation summary 1.1.0), tests, risks |
+| `c8e1aed` | Agents read every reviewable credit intake (`submitted`, `under_human_review`) plus any a handoff references: migration `0010`, both repositories, RLS and contract tests (phase 02b decision, ADR 0021) |
+| `dbca58d` | `list_my_credit_applications` read tool; credit status without an application id (one, several, or none on record); every contract to 1.3.0 |
+| `d9d4350` | Intakes record the assessment id and the originating conversation |
+| `26f68a8` | `display_name` on credit product parts, in the message language, from the catalog |
+| `af9cc48` | Evaluation summary schema 1.1.0: `measurement` offline, simulated, or projected; `breakdowns` by language, dialect, and segment; `automation_attempted`; `cost_per_resolution_usd`; `failure_table` |
+| `84ef2a1` | The customer chat (`Conversation` compound, a renderer for every `AssistantMessage` part, quick replies, step-up through `useStepUp`, resume from `?conversation=`, talk to a person) and the glass box (panel, sheet, own route, linked selection, the two credit panels, the pre-check label); lazy routes |
+| `a41862d` | `HandoffView.policy_excerpts`: the clause text behind a handoff's policy basis, in the handoff's language |
+| `0dafd6d` | The agent inbox (filters in the URL, sorting, SLA in words, claim and resolve with confirmations and audit feedback), credit review items (read only), the evaluation view (per workflow, then aggregate, Wilson intervals, zero-event bounds, small cells, labels, breakdowns), the evaluator trace, the demo guide, the About page, vitest-axe on every page in both themes, and the `DataTable` caption fix |
+| `ef07eb3` | Fixes from the screenshot review and the full screenshot tool |
+| `e44b825` | `docs/frontend/features.md`, state, components, DESIGN, audit, `docs/demo/script.md`, READMEs, BACKLOG |
+| This commit | This entry |
+
+#### Decisions
+
+- Quick replies send words the deterministic parsers read (an ordinal for an option, "Sí, confirmo", "Sí, quiero que una persona lo revise", the step-up continuation), shown as the customer's own message; `SendTurnRequest` stays text only.
+- "Talk to a person" is a button that sends "Quiero hablar con una persona" / "Quero falar com uma pessoa"; the gate's keyword signal escalates in any state through `ESC.human_requested`, so no engine change was needed. The plain "sí" after an abstention moved to phase 14 (BACKLOG) to be measured first.
+- Each answer renders in its own language (`LanguageScope`), so a Portuguese turn reads in Portuguese with `pt-BR` formats whatever the chrome language.
+- Clause excerpts the engine appends move under a "cited policies" disclosure; an eligibility answer's text moves into a disclosure because its structured view carries the same policy sentences, which `tooling/eligibility-copy.test.ts` keeps identical to `policies/messages/eligibility.*.yaml`.
+- Linked selection is a page-level context in `entities/turn-selection`, so neither feature depends on the other. Zustand is not used ([state.md](frontend/state.md)).
+- Intervals are computed in the browser from the published counts (Wilson 95%; exact one-sided 95% bound for zero events); cells under 30 cases are flagged. Handoff completeness shows "not defined" until the summaries carry it (BACKLOG, phase 14).
+- The demo guide's messages are data in the feature, not locale copy: they are inputs in the language they demonstrate, and each was driven through the real API first. Phrasings that misroute were left out and recorded (BACKLOG).
+- Agent status transitions for credit intakes stay out (the prompt makes the list read only; BACKLOG, phase 16).
+- No new dependency.
+
+#### Visual verification
+
+The API ran with `DEMO_MODE=true`, `LLM_PROVIDER=fake`, and raised rate limits on the seeded compose PostgreSQL (after `make db-upgrade` to `0010` and `make seed`), the dev server with `VITE_DEMO_MODE=true`. `node tooling/screenshots.mjs` drove one conversation per workflow in es and pt through the real API (balances; similar transfers; a card block through confirmation and step-up; an unblock handoff; a dispute past its SLA; a dispute intake from the statement; a borderline credit result sent to review; the catalog and an eligibility result), then screenshotted the chat, the glass box sheet and page, the demo guide, About, the inbox, a handoff, the credit applications, the evaluation view, and the evaluator trace in light and dark at 1440 and 390 px. The findings and fixes are in [audit.md](design/audit.md). The pt dispute intake ended in an abstention because the same charge had been disputed during the earlier API checks (a charge can be disputed once; `make seed` does not delete cases). Screenshots (gitignored): `apps/web/.shots/light-desktop-chat-{account,card,dispute,credit}-{es,pt}.png` and `apps/web/.shots/{light,dark}-{desktop,mobile}-{10-chat,11-glass-box-sheet (mobile),12-glass-box,13-demo-guide,14-about,20-inbox,21-handoff,22-credit-applications,30-evaluation,31-evaluator-trace}.png`.
+
+#### How to verify
+
+```bash
+make check                                                  # needs Docker; never reads .env
+make test-web                                               # Vitest with coverage
+uv run --frozen pytest services/api/tests/integration/workflows/test_credit_status.py services/api/tests/integration/api -q
+make up && make db-upgrade && make seed
+DEMO_MODE=true LLM_PROVIDER=fake uv run --frozen uvicorn bank_agent.asgi:create_app --factory
+VITE_DEMO_MODE=true pnpm --dir apps/web run dev             # http://localhost:5173, then /demo
+pnpm --dir apps/web exec node tooling/screenshots.mjs       # raise the auth rate limits first
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `e44b825` (the run before this entry): lint, format, types, 5 import contracts, 2,502 unit and 1,327 integration Python tests, all 11 coverage gates, 340 web tests in 34 files (94.1% lines, `src/features/**` above the 70% gate), docs (72 Mermaid blocks), data sample, codegen, emoji, attribution, gitleaks. An earlier run failed only in Prettier on a scratch script left in the gitignored `apps/web/.shots/`, which was removed |
+| Web tests | 340 tests: conversation flows, message parts, every eligibility outcome, glass box (customer and evaluator), inbox filters, sorting, sections, claim and resolve, credit applications, evaluation tables and intervals, demo guide, About, and vitest-axe on every page in both themes |
+| Build | `pnpm run build` has no chunk over 500 KB: the entry is 422 KB (133 KB gzip); every page is a lazy route (the chat page is 48 KB) |
+| Screenshots | 46 PNGs from `tooling/screenshots.mjs` (8 conversations plus 38 surface shots) |
+
+#### Known limitations
+
+- The evaluation view has nothing to show until phase 14 publishes a summary; handoff completeness is not in the summary schema yet.
+- Demo writes persist: blocked cards are restored by `make seed`, but opened cases and intakes are not, so a charge can be disputed once per database.
+- The console is optimized for 1280 px and wider; on phones its tables scroll sideways.
+- Two misroutes found while verifying the demo are BACKLOG rows for phase 14 ("¿Mi tarjeta está activa o bloqueada?" leads to a block confirmation; "Aprove o meu crédito agora" is not recognized as an approval request).
+- No screen reader pass with real assistive technology; the checks are vitest-axe in jsdom and the screenshots. The new pt and en copy has had no native review (pending action 38).
+
+#### Next phase
+
+Phase 14, evaluation (`kit/prompts/14-evaluation.md`): the evaluation harness publishes the summaries this view reads (with breakdowns, the attempted share, both cost figures, and the failure table), plus the phase 14 BACKLOG rows.
+
+### Phase 12: frontend foundation and design system (2026-09-29)
+
+Plan: `docs/plans/phase-12.md`. The prompt asks for plan mode and a human-approved design direction; the human delegated approval to the orchestrator, who pre-approved the direction (the pitch deck's identity in `slides/`, adapted with restraint for a bank) and asked for autonomous execution, so every open question is decided in the plan and marked as decided under that pre-approval. **The pull at the start failed:** local `main` (phases 10b and 11, 10 commits, never pushed) and `origin/main` (20 commits: PRs 7, 8, 12, 15, 16, 17) have diverged, so `git pull --ff-only` refuses. As the orchestrator instructed, the phase ran on local `main`; the only upstream change taken is `ea3a7b3` (skip `.git` in the Markdown lint), cherry-picked because a fetched branch named `agent.md` made `make docs-check` fail. The human must merge `origin/main` before pushing (pending action 37).
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `56f872d` | The plan with the pre-approved direction and the decided questions |
+| `9a81612` | Tokens (`shared/ui/tokens.css`, the deck's Azure Skies palette with fixed meanings) mapped into Tailwind v4 with the default palette removed; `contrast.ts` and a test of every allowed pair in both themes; the theme provider and `public/theme-init.js` (no flash, no inline script); display preferences; i18next with typed keys and es, pt, en files; `Intl` formatters for es-MX, es-CO, es-AR, pt-BR, en-US; the `/v1` dev proxy; Vitest on capped forks with longer timeouts |
+| `d779222` | The primitives on Radix: Button, IconButton, TextLink, Field (compound), Input, Textarea, Select (native), OneTimeCodeInput, Dialog, Sheet, Tabs, Tooltip, Toast, Card, Badge, StatusPill, AsOfNote, Stack, Inline, Skeleton, EmptyState, ErrorState, KeyValueList, DataTable with `useTableSort`, Timeline, JsonView; Phosphor icons; colocated tests; colocated tests may import `src/test` (boundary override); scrollable regions may take focus |
+| `8f876bb` | `shared/api`: openapi-fetch client (credentials, request id, CSRF bootstrap, rotation, and one retry on `csrf-token-invalid`, lost-session reporting), `ApiError` and `NetworkError`, `unwrap`, the query client (retries only network errors and 5xx) and the query key factory; MSW fixtures typed from `schema.d.ts` |
+| `88a4613` | The composition root, React Router 8 with `CustomerLayout` and `ConsoleLayout` guarded by role through `/v1/auth/me`, a not-found page, a route error boundary; `features/auth` (persona picker in demo mode, document form, code step with countdown, wrong-code, expiry, and lockout copy, expired-session notice, compound step-up dialog behind `useStepUp`, session status, sign-out); integration tests on a stateful MSW fake; vitest-axe on the screens in both themes; the hard-coded string test |
+| `d8db98c` | API: a lost-session `401` deletes the stale session cookie (a per-app problem response hook), with integration tests; `Clear-Site-Data` on logout rejected with its reason in `docs/api/README.md`; BACKLOG rows closed or moved |
+| `df1e36c` | Fixes from the screenshots (mobile header, route focus under the sticky header, duplicated demo label, countdown face, polite confirmation toasts) and `tooling/screenshots.mjs` |
+| `feb45d5` | Offline versus unreachable-bank messages, 13 unused locale keys removed, axe's jsdom-incapable contrast rule switched off with the reason, layer READMEs |
+| `d7b9be0` | `docs/design/DESIGN.md`, `docs/design/audit.md`, `docs/frontend/components.md`, `docs/frontend/state.md`, ADR 0018, the web README, the docs index, the threat model |
+| `1d05e1d` | Cherry-pick of upstream `ea3a7b3` (Markdown lint skips `.git`) |
+| `e555e6c` | The locale test spells the dash characters as escapes |
+| This commit | This entry |
+
+#### Decisions
+
+- [ADR 0018](adr/0018-design-system.md): Radix primitives wrapped in `shared/ui`, CSS-variable tokens per theme mapped into Tailwind v4, Phosphor icons (regular), the deck's typefaces self-hosted (Unbounded for titles only, Instrument Sans, Geist Mono for figures and codes). The prompt's ADR number 0018 was free.
+- Color meanings follow the deck: blue the language model, yellow deterministic decisions and verified actions, red risk and escalation, light gray data. Light theme by default; the primary action is ink; only `verified` gets the yellow fill; eligibility never looks like approval ([DESIGN.md](design/DESIGN.md)).
+- vitest-axe 0.1.0 with `axe-core` 4.13 pinned directly (closes the phase 01 BACKLOG item on the accessibility library); contrast is tested from the tokens because jsdom cannot compute it.
+- Demo personas appear only with `VITE_DEMO_MODE=true` (a static catalog of the seeded ids; the API has no persona endpoint). The demo code is shown only when the challenge says `delivery_channel: "demo"`.
+- The conversation id survives re-authentication in the URL (`next=/?conversation=<id>`), validated as a same-app path; nothing goes to web storage except the theme and locale.
+- A lost session is handled by leaving the guarded page with a synchronous navigation (the DOM `RouterProvider` wires `flushSync`) before clearing the cached session, so the guard never redirects first and the expiry notice and the way back survive; sign-out does the same.
+- Zustand is not used ([state.md](frontend/state.md)).
+- Dependencies (exact pins in `apps/web/pnpm-lock.yaml`, all maintained; MIT unless noted): runtime `react-router` 8.4.0, `@tanstack/react-query` 5.104.0, `radix-ui` 1.6.7, `i18next` 26.4.2, `react-i18next` 17.0.15, `openapi-fetch` 0.17.0, `@phosphor-icons/react` 2.1.10 (33 MB unpacked, tree-shaken), `react-hook-form` 7.89.0, `zod` 4.6.5 (used as `zod/mini`), `@hookform/resolvers` 5.9.1, `@fontsource-variable/{instrument-sans,unbounded,geist-mono}` 5.3.0 (OFL-1.1); dev `vitest-axe` 0.1.0, `axe-core` 4.13.0 (MPL-2.0), `playwright-chromium` 1.63.0 (Apache-2.0; its browser download is not run by install). `node_modules` grew from about 450 to 565 MB.
+
+Deviations from the prompt and the plan, found during implementation:
+
+- `Select` is a styled native `<select>` rather than Radix Select (phones get the platform picker; screen readers get native semantics).
+- The one-time code input never submits on completion (WCAG 3.2.2); the person presses Verificar.
+- The talk-to-a-person BACKLOG row moved to phase 13 (it needs the chat and an engine change).
+- Upstream `ea3a7b3` was cherry-picked (see above).
+
+#### Visual verification
+
+The API ran with `DEMO_MODE=true` (and raised auth rate limits for the script) on the seeded compose PostgreSQL, the dev server with `VITE_DEMO_MODE=true`; `node tooling/screenshots.mjs` drove persona sign-in, the code, the customer home, step-up, sign-out, the expired notice, the agent console, and the preferences sheet in light and dark at 1440 and 390 px. The findings and fixes are in [audit.md](design/audit.md). Screenshots (gitignored): `apps/web/.shots/{light,dark}-{desktop,mobile}-{01-login,02-code,03-customer-home,04-step-up,05-stepped-up,06-signed-out,07-expired,08-console,09-preferences}.png`.
+
+#### How to verify
+
+```bash
+make check                                                  # needs Docker; never reads .env
+make test-web                                               # 273 Vitest tests with coverage
+uv run --frozen pytest services/api/tests/integration/api/test_auth_flow.py -q
+make up && make seed
+DEMO_MODE=true uv run --frozen uvicorn bank_agent.asgi:create_app --factory
+VITE_DEMO_MODE=true pnpm --dir apps/web run dev             # http://localhost:5173
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `e555e6c` (the run before this entry): lint, types, 5 import contracts, 2,448 unit and 1,298 integration Python tests, all 11 coverage gates, 273 web tests (25 files, 94.1% lines), docs, data sample, codegen, emoji, attribution, gitleaks. An earlier run failed only in markdownlint on `.git/logs/refs/remotes/origin/agent.md` (a fetched branch name), fixed by the cherry-pick |
+| Web tests | 273 tests in 25 files; web line coverage 94.1% overall, `src/features/**` above the 70% gate |
+| Python tests | 2,448 unit and 1,298 integration (four more than phase 11: the two new auth flow tests, on memory and PostgreSQL) |
+| Docs check | markdownlint 0 issues; mermaid blocks parse |
+| Build | `pnpm run build` succeeds; one 666 KB chunk (207 KB gzip), code splitting is BACKLOG for phase 13 |
+
+#### Known limitations
+
+- Browser-level accessibility (real contrast rendering, screen reader passes) was checked by eye on screenshots, not by an automated browser run; browser end-to-end tests are out of scope (CLAUDE.md section 8).
+- The Portuguese and English copy has had no native review (pending action 38).
+- The customer home and console overview hold the session and orientation only; the chat, glass box, inbox, and evaluation views are phase 13.
+- One bundle chunk (BACKLOG, phase 13).
+
+#### Next phase
+
+Phase 13, frontend features (`kit/prompts/13-frontend-features.md`): the conversation, the glass box, the agent inbox, and the evaluation view on this foundation.
+
+### Phase 11: API layer and HTTP security (2026-09-27)
+
+Plan: `docs/plans/phase-11.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op ("Already up to date"; a teammate branch `eda` was fetched). The phase 09 walkthroughs (pending actions 21 and 25) were not treated as blockers, on the human's instruction. Mid-phase the human added two requirements, both done here: an opt-in local LLM path (Ollama through LiteLLM) and a `.env.example` that works as copied. Origin/main gained four commits during the phase (PR #5, the EDA toolkit). The human pulled them into this checkout near the end; the pull stopped on a conflict in the ADR index, which the session resolved by keeping all three rows (0031 from this phase, 0032 and 0033 from the EDA work) and committed as the merge `7bf04ce`. The human had committed this session's `docs/README.md` edits as `77ea676` before pulling.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `76cd42b` | The plan: endpoint catalog, decided open questions, risks |
+| `69e1491` | Engine: a turn from a new session lineage mid-flow resumes through AUTH_REQUIRED at the last safe state (a step-up keeps the lineage); `TurnResult.workflow`; public `WorkflowEngine.new_conversation` |
+| `5f2fec1` | `HandoffQuery.workflows` and `CreditApplicationRepository.list_for_review` (agents, RLS-scoped) on memory and PostgreSQL, with contract tests |
+| `50fb816` | The HTTP layer: `/v1/auth` (csrf, start, verify, step-up start and verify, logout, me), `/v1/conversations` (create, turns, history, customer trace), `/v1/agent` (handoffs list, get, claim, resolve; credit applications list and get), `/v1/eval` (summaries, evaluator trace); cookie sessions, signed double-submit CSRF, sliding-window rate limits per IP and per session, body limit, CORS allowlist, security headers, new problem types; `ConversationService`, `AgentInbox`, the evaluation summary port and filesystem adapter; settings (`MAX_REQUEST_BODY_BYTES`, `RATE_LIMIT_*`, `EVAL_SUMMARIES_*`, `LLM_API_BASE`) and production rules (no `*` or plain-http origin, https `LLM_API_BASE`) |
+| `383295d` | Account answers carry `balances`, `payment_statuses`, and `statement` as structured parts (the prompt's turn parts), with scenario assertions |
+| `b35ca04`, `ff8a709`, `0b61a1f` | API integration tests on memory and PostgreSQL: each workflow's normal path and an out-of-scope request with a scripted `FakeLLM` (the card block resumed after the step-up route); CSRF on every state-changing operation; roles; cross-customer 404s; limits; rate limits; turn replays; the agent inbox with audit events; both trace views; evaluation summaries |
+| `7b5f6e9` | `contracts/openapi.json` (stable operation ids, security schemes, problem responses), `scripts/export_openapi.py`, `make openapi`, openapi-typescript 7.13.0 and `apps/web/src/shared/api/generated/schema.d.ts`, staleness tests (pytest and Vitest), the role consistency test, and the credit data exposure walk |
+| `e68a0ea` | Opt-in local LLM: keyless Ollama models, `LLM_API_BASE`, the zero-cost verified price entry, `scripts/llm_smoke.py` with tests |
+| `f45f0e0` | `.env.example` as a working development environment, dev-only secrets refused in production, conditional `env-check`, `make env`, `make llm-smoke`, `make api-local-llm`, README quickstart |
+| `2ced410` | `docs/api/README.md` (catalog checked against OpenAPI by a test) and ADR 0031 |
+| `a35d805`, `d8f093e` | Test typing; the litellm guard reads the install commands; the evaluation port's docstring sections |
+| `7bf04ce`, `01ec417` | The merge of origin/main (union of the ADR index rows); the litellm guard accepts the merged `--extra eda-ui` install line and still refuses `litellm` and `--all-extras` |
+| This commit | Threat model, security, architecture, workflow, and package docs, BACKLOG, and this entry |
+
+#### Review summary
+
+- **Sessions and CSRF** ([ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md)). `__Host-session` (`HttpOnly`, `Secure`, `SameSite=Strict`, `Path=/`, `Max-Age` to the absolute expiry) and a readable `__Host-csrf` in production; `session` and `csrf` without `Secure` in development. The CSRF token is a nonce signed with `CSRF_SECRET` for the current session (or `anonymous`), required on every POST, rotated on login, step-up, and logout.
+- **Roles and isolation.** One `endpoint(...)` call per route declares its rate class, CSRF need, and roles and writes `x-roles`, `x-rate-limit`, and `x-csrf` into the OpenAPI operation; a test compares the enforced and documented roles. Agents never read conversations (403); evaluators read every trace but no history; another customer's id answers like a missing one.
+- **Expired sessions** are a 401 on every route and never reach the engine (a stale token could otherwise append text to a conversation). The engine's pause semantics are kept by the new re-sign-in rule; a step-up continues the pending write directly. This closes the BACKLOG row about resuming after the step-up and re-authentication routes.
+- **Customer data exposure.** Response models are allowlists at the top level and reuse the domain's value objects, customer views, and contract components inside; `test_credit_data_exposure.py` walks every customer-facing schema in the OpenAPI document, nested, and fails on any credit profile field, risk estimate value, or `x-internal` field (a positive control finds them in the agent and evaluator schemas). The customer trace names the risk model only.
+- **Limits.** Defaults per minute per IP and per session: auth 10 and 10, write 30 and 20, read 120 and 60; 16 KiB bodies (chunked bodies too); 2,000-character messages.
+
+#### Decisions
+
+- [ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md): cookie sessions with a signed double-submit CSRF token for the same-site SPA. The prompt names ADR 0017; the human asked for the next free number, 0031.
+- Rate limits are an in-process sliding window (no new runtime dependency) rather than slowapi.
+- Every question in the plan's "Decisions on open questions" (cookies, CSRF signing, expired sessions, limits, CORS, headers, problem types, roles, DTO allowlists, audit, summaries, agent credit applications, OpenAPI, the `list_my_credit_applications` row moved to phase 13, the local LLM path).
+- Dependency: openapi-typescript 7.13.0 (MIT, a web devDependency, about 17 MB with `@redocly/openapi-core` and 17 other small packages; it declares a TypeScript 5 peer and works with the repository's TypeScript 6.0.3). No new Python dependency; the optional `litellm` extra (already locked) was installed locally for the smoke run, as the human asked.
+
+Deviations from the prompt and plan, found during implementation:
+
+- **The evaluator trace is its own operation** (`GET /v1/eval/conversations/{id}/trace`); the customer keeps `GET /v1/conversations/{id}/trace`. One path with two response shapes would put the risk estimate values into a customer-facing schema, which the exposure test (rightly) refuses.
+- **Account parts were missing from the engine's replies.** `AssistantResponse` had `balances`, `payment_statuses`, and `statement`, but no handler filled them; the turn response needs them, so `Reply` and the renderer carry them now.
+- **FastAPI 0.141 wraps included routers** (`_IncludedRouter`), so tests enumerate operations from the OpenAPI document and read route dependencies from each router module.
+- **`.env` parsing.** An empty value followed by an inline comment (`NAME=   # comment`) parses as the comment text; the old example had 21 such lines. Comments on empty values now sit on the line above, and a test fails if any value parses as a comment.
+- **The litellm guard.** `uv run --extra litellm` leaves the extra installed (uv syncs inexactly), so the unit test that asserted it was absent now checks that `make setup` and CI never select it.
+
+#### Local LLM smoke (local development measurement, not an evaluation)
+
+`make llm-smoke` against Ollama 0.34.4 serving `qwen2.5:7b-instruct` (Q4_K_M, 7.6B) on the developer's machine, `LLM_TIMEOUT_SECONDS=120`, one run: **32 of 32 cases passed** (all 24 extraction cases validated against their output models, all 8 phrasing cases returned text), es and pt, all four workflows. Latency per call: p50 4,112 ms, p95 7,828 ms, max 17,853 ms (the first, cold call). Passing means a schema-valid reply, not a correct one; answer quality is phase 14 work with recorded cassettes.
+
+#### How to verify
+
+```bash
+make check                                                      # needs Docker; never reads .env
+uv run pytest services/api/tests/integration/api -q            # the HTTP API on memory and PostgreSQL
+uv run pytest services/api/tests/unit/api -q                   # headers, limits, CSRF, OpenAPI, exposure walk
+make openapi && git diff --exit-code contracts/openapi.json apps/web/src/shared/api/generated/
+make env                                                        # a fresh .env with random dev secrets (only when absent)
+LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke
+make api-local-llm                                              # the API with the local model on 127.0.0.1:8000
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `4ea1fd5` (after the merge of origin/main). Earlier runs found a Mermaid note with a semicolon (fixed) and, after the merge, missing `streamlit` stubs, because the merged EDA code needs the `eda-ui` extra that `make setup` now installs; the session installed it with `uv sync --inexact --all-packages --extra eda-ui --frozen`, which keeps the `ml` and `litellm` extras |
+| Python tests | 2,448 unit and 1,294 integration tests pass after the merge (1,261 before it; 2,392 and 1,183 after 10b); the API suites run on the in-memory adapters and on PostgreSQL; Vitest 19 tests, including the generated-types staleness check |
+| Coverage gates | All 11 pass: api 97.3%, application 93.3%, adapters 98.1%, bootstrap 99.4%, domain 99.6%, ports 100% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 66 mermaid blocks in 301 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks (the dev-only placeholders need no allowlist) |
+
+#### Known limitations
+
+- Rate limits count per process and key on the ASGI client address (BACKLOG, phase 16).
+- The Vite dev server proxies `/api` and `/health`, not `/v1` (BACKLOG, phase 12).
+- Agents see only the credit intakes a handoff references (row-level security as built); widening is phase 13.
+- Evaluation summaries are empty until the harness publishes one (BACKLOG, phase 14).
+- The customer trace keeps rule parameters and reason codes (policy thresholds, not customer values); the glass box (phase 13) decides how to present them.
+- Timing equality for cross-customer 404s holds by construction (one scoped query either way); it is not measured.
+
+#### Next phase
+
+Phase 12, frontend foundation (`kit/prompts/12-frontend-foundation.md`): the typed client over `schema.d.ts` with `credentials: 'include'`, the CSRF header, and problem-details parsing, and the `/v1` dev proxy.
 
 ### Local gold seed for the MVP (2026-09-28)
 

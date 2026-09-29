@@ -98,7 +98,7 @@ def test_worst_output_cost_takes_the_most_expensive_configured_model() -> None:
     assert PRICES.worst_output_cost((), 1000) == Decimal("0.02000000")
 
 
-def test_the_repository_price_table_loads_and_every_entry_awaits_human_verification() -> None:
+def test_the_repository_price_table_loads_and_every_hosted_entry_awaits_human_verification() -> None:
     table = PriceTable.from_yaml(REPOSITORY_PRICES)
 
     ids = {entry.model_id for entry in table.entries}
@@ -106,8 +106,21 @@ def test_the_repository_price_table_loads_and_every_entry_awaits_human_verificat
     assert any(entry.model_id.startswith("openai/") for entry in table.entries)
     for entry in table.entries:
         assert entry.source_url.startswith("https://")
+        if entry.model_id.startswith("ollama/"):
+            continue
         assert not entry.verified
         assert table.effective(entry.model_id).basis is PriceBasis.UNVERIFIED
+
+
+def test_the_local_ollama_model_is_verified_at_zero_cost_and_labeled_local() -> None:
+    table = PriceTable.from_yaml(REPOSITORY_PRICES)
+
+    (local,) = [entry for entry in table.entries if entry.model_id.startswith("ollama/")]
+    assert (local.model_id, local.verified) == ("ollama/qwen2.5:7b-instruct", True)
+    assert local.input_usd_per_million == local.output_usd_per_million == 0
+    assert "Local development model" in local.notes
+    effective = table.effective(local.model_id)
+    assert (effective.basis, effective.input_usd_per_million) == (PriceBasis.VERIFIED, Decimal(0))
 
 
 @pytest.mark.parametrize(

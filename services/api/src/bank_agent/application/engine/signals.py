@@ -6,7 +6,8 @@ deterministic result, so a missing model never hides a signal the keywords see."
 import re
 from dataclasses import dataclass
 
-from bank_agent.application.understanding.text import fold
+from bank_agent.application.understanding.answers import YesNo, parse_yes_no
+from bank_agent.application.understanding.text import fold, words
 from bank_agent.domain.llm_outputs import EscalationSignals as ModelSignals
 
 SIGNAL_DETECTOR = "signals:keyword@1"
@@ -54,11 +55,20 @@ class DetectedSignals:
         )
 
 
-def detect_signals(text: str) -> DetectedSignals:
+MAX_ACCEPTANCE_WORDS = 4
+
+
+def accepts_offer(text: str) -> bool:
+    """A bare yes ("sí", "sim", "claro", "sí, por favor"): the answer to an offer of a person, nothing more."""
+    return len(words(text)) <= MAX_ACCEPTANCE_WORDS and parse_yes_no(text) is YesNo.YES
+
+
+def detect_signals(text: str, *, person_offered: bool = False) -> DetectedSignals:
+    """The keyword signals of ``text``; after an offer of a person, a bare yes is a request for one."""
     folded = fold(text)
     return DetectedSignals(
         legal_or_regulator_mention=bool(_LEGAL.search(folded)),
         distress=bool(_DISTRESS.search(folded)),
-        human_requested=bool(_HUMAN.search(folded)),
+        human_requested=bool(_HUMAN.search(folded)) or (person_offered and accepts_offer(text)),
         third_party_admission=bool(_THIRD_PARTY.search(folded)),
     )

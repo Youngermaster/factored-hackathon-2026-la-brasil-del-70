@@ -40,7 +40,7 @@ def _view(profile: AssistantProfile | None) -> AssistantProfileView:
     return AssistantProfileView(
         assistant_name=name,
         avatar_key=cast(AvatarKey, avatar_key),
-        avatar_url=f"/api/v1/assistant-profile/avatars/{avatar_key}.png",
+        avatar_url=f"/v1/assistant-profile/avatars/{avatar_key}.png",
         updated_at=updated_at,
     )
 

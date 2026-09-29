@@ -48,7 +48,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | `customers`, `products`, `transactions`, `historical_complaints` | `OWN` | none | none | none | all |
 | `credit_profiles` | `OWN` | none (agents never read credit profiles) | none | none | all |
 | `dispute_cases` | `OWN` | read, only when a handoff's `case_ref` names the case | none | none | all |
-| `credit_applications` | `OWN` | read, only when a handoff's `credit_review.application_ref` names it | none | none | all |
+| `credit_applications` | `OWN` | read when the status is `submitted` or `under_human_review` (a review item of its own, ADR 0021; migration `0010`), or when a handoff's `credit_review.application_ref` names it; no write | none | none | all |
 | `action_idempotency`, `conversations`, `turns` | `OWN` | none | none | none | none |
 | `execution_records` | `OWN` | none | read all | none | none |
 | `handoffs` | read and insert `OWN` | read all, update the lifecycle | read all | none | none |
@@ -73,6 +73,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | Customer A cannot read customer B through any repository, on memory, DuckDB, and PostgreSQL | `services/api/tests/contracts/` (every suite, `postgres` parameter) |
 | Raw SQL as `bank_app` without a context returns zero rows; a customer context sees only its rows | `services/api/tests/integration/test_row_level_security.py` |
 | Agents, evaluators, and the identity service read no customer data; agents see a case only once a handoff references it | `test_row_level_security.py` |
+| Agents read every reviewable credit intake, a withdrawn or closed one only when a handoff references it, and update none | `test_row_level_security.py`, `services/api/tests/contracts/test_credit_application_contract.py` |
 | `bank_app` cannot write reference data | `test_row_level_security.py` |
 | UPDATE, DELETE, and TRUNCATE fail on append-only tables, even for the owner | `services/api/tests/integration/test_schema_guards.py` |
 | The credit status constraint rejects anything outside the review lifecycle | `test_schema_guards.py` |
@@ -83,5 +84,5 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 ## Limitations
 
 - The development and test owner is the image's superuser, which bypasses RLS; the seed policies and the audit replay check are written for a non-superuser owner, which phase 16 introduces and must verify.
-- RLS protects rows, not columns: a customer context can read every column of its own rows (for example `days_past_due`). Keeping internal fields away from customers and models is the job of the tool results and the phase 11 DTOs (BACKLOG).
+- RLS protects rows, not columns: a customer context can read every column of its own rows (for example `days_past_due`). Keeping internal fields away from customers and models is the job of the tool results and the API response models, which are allowlists; `tests/unit/api/test_credit_data_exposure.py` fails if a credit profile, risk estimate, or internal field appears in any customer-facing schema.
 - The identity role can read every session and challenge; it holds no customer data beyond identifiers and keyed digests.

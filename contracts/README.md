@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-This directory holds the cross-boundary contracts: JSON Schemas for the documents that pass between the workflow engine, the persistence layer, the agent console, the glass box, and the evaluation harness. Phase 11 adds the OpenAPI snapshot next to them.
+This directory holds the cross-boundary contracts: JSON Schemas for the documents that pass between the workflow engine, the persistence layer, the agent console, the glass box, and the evaluation harness, and `openapi.json`, the HTTP API contract.
 
 The Pydantic models are the single source of truth. `scripts/generate_contracts.py` generates the schemas; nobody edits a schema file by hand.
 
@@ -83,9 +83,20 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 | decision | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
 | scenario | 1.2.0 | 2026-09-27 | Widens tool names (`list_my_cards`); new documents default to `1.2.0` |
 | policy_clause | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
+| handoff | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
+| execution_record | 1.3.0 | 2026-09-29 | Widens tool names (`list_my_credit_applications`); new documents default to `1.3.0` |
+| decision | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
+| scenario | 1.3.0 | 2026-09-29 | Widens tool names (`list_my_credit_applications`); new documents default to `1.3.0` |
+| policy_clause | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
+| scenario | 1.4.0 | 2026-09-29 | Adds optional `scripted_fallback` (the turns a simulated scenario plays when a run has no simulator model) and `template_family` (the generator family, kept within one split), marked `x-added-in`; a `tool_failure` scenario may use a `model_unavailable` fixture instead of a tool failure plan; new documents default to `1.4.0` |
+| handoff, execution_record, decision, policy_clause | 1.4.0 | 2026-09-29 | No field change; they move to the shared 1.4.0 release with the scenario additions |
 
 ## How to change a contract
 
 1. Change the model, following the versioning rules above (a new field in a minor version carries `AddedIn`); bump the version in `scripts/generate_contracts.py` and the model's default `schema_version` (a test checks they match) and, for a major version, add the new file alongside the old one.
 2. Run `make contracts`.
 3. Update the changelog and the consumers, and commit the model, the schemas, and the consumers together.
+
+## OpenAPI
+
+`openapi.json` is the HTTP API contract, exported from the FastAPI app by `scripts/export_openapi.py` (`make openapi`, which also regenerates `apps/web/src/shared/api/generated/schema.d.ts` with openapi-typescript). It carries a stable `operationId` per route, the `x-roles`, `x-rate-limit`, and `x-csrf` extensions, the session cookie and CSRF header security schemes, and RFC 9457 problem responses. `services/api/tests/unit/api/test_openapi_contract.py` fails when it is stale, and `apps/web/tooling/api-types.test.ts` fails when the TypeScript types are. Versioning rules for the API are in [docs/api/README.md](../docs/api/README.md#versioning).

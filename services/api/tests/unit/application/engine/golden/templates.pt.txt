@@ -165,6 +165,14 @@ Posso ajudar com mais alguma coisa sobre produtos de crédito?
 [credit.application_status]
 A sua solicitação app-000001 de empréstimo pessoal está aberto.
 
+[credit.application_status_item]
+app-000001, empréstimo pessoal, de 10 de junho de 2026: aberto
+
+[credit.application_statuses]
+Estas são as suas solicitações mais recentes:
+app-000001, empréstimo pessoal, de 10 de junho de 2026: aberto
+app-000001, empréstimo pessoal, de 10 de junho de 2026: aberto
+
 [credit.ask_amount]
 Qual valor interessa a você?
 
@@ -230,8 +238,8 @@ Estes são os produtos do catálogo sintético de crédito para o seu país:
 [credit.product_option]
 1) empréstimo pessoal
 
-[credit.status_need_reference]
-Não encontrei uma solicitação nesta conversa. Escreva o número da sua solicitação ou peça para falar com uma pessoa.
+[credit.status_none_on_record]
+Não encontrei solicitações de crédito em seu nome. Se quiser, conto quais produtos de crédito oferecemos: é só perguntar.
 
 [credit.status_not_found]
 Não encontrei essa solicitação entre as suas.

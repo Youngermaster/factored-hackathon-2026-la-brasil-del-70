@@ -4,7 +4,8 @@ Only after an explanation, and only for ``indicatively_eligible`` (the offer) or
 request). CONFIRM_INTAKE shows the product, the amount, the term (loans), the purpose, and that a person reviews the
 application and nothing is decided in the conversation. EXECUTE needs step-up (the policy matrix) and calls
 ``submit_credit_application`` with an idempotency key from the conversation, the assessment, the product, and the
-action; VERIFY reads it back, and only a positive read-back is reported as recorded.
+action, and links the intake to that assessment and conversation; VERIFY reads it back, and only a positive
+read-back is reported as recorded.
 """
 
 from bank_agent.application.engine.context import Step, TurnContext
@@ -50,6 +51,8 @@ def intake_request(
             requested_term_months=application.requested_term_months,
             purpose=application.purpose,
             declared_monthly_income=application.declared_monthly_income,
+            assessment_ref=data.assessment.assessment_id,
+            origin_conversation_id=ctx.conversation.conversation_id,
         ),
         idempotency_key=derive_key(scope, target, ActionKind.SUBMIT_CREDIT_APPLICATION),
         requested_in_state=state,

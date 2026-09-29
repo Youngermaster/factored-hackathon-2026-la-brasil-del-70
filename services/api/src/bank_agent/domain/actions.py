@@ -12,7 +12,15 @@ from pydantic import Field, PositiveInt, StringConstraints, model_validator
 from bank_agent.domain.base import Code, DomainModel, Pii, UtcDatetime
 from bank_agent.domain.cards import CardBlockReason
 from bank_agent.domain.dispute import DisputeReason
-from bank_agent.domain.identifiers import CreditProductCode, IdempotencyKey, ProductId, SourceRef, TransactionId
+from bank_agent.domain.identifiers import (
+    AssessmentId,
+    ConversationId,
+    CreditProductCode,
+    IdempotencyKey,
+    ProductId,
+    SourceRef,
+    TransactionId,
+)
 from bank_agent.domain.money import Money
 from bank_agent.domain.workflow import StateName
 
@@ -29,7 +37,8 @@ class ToolName(StrEnum):
 
     Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
     ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and
-    ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The
+    ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice, and
+    ``list_my_credit_applications`` lists their credit application intakes so a status question needs no id. The
     risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
     select them.
     """
@@ -51,6 +60,8 @@ class ToolName(StrEnum):
     GET_MY_CREDIT_PROFILE = "get_my_credit_profile"
     SUBMIT_CREDIT_APPLICATION = "submit_credit_application"
     GET_CREDIT_APPLICATION_STATUS = "get_credit_application_status"
+    LIST_MY_CREDIT_APPLICATIONS = "list_my_credit_applications"
+    """The session customer's credit application intakes, newest first (added in 1.3.0)."""
 
 
 WRITE_TOOLS = frozenset({ToolName.CREATE_DISPUTE_CASE, ToolName.BLOCK_CARD, ToolName.SUBMIT_CREDIT_APPLICATION})
@@ -79,7 +90,12 @@ class BlockCardArguments(DomainModel):
 
 
 class SubmitCreditApplicationArguments(DomainModel):
-    """What the customer asks for. The purpose is a code the catalog entry must allow (checked by policy)."""
+    """What the customer asks for. The purpose is a code the catalog entry must allow (checked by policy).
+
+    ``assessment_ref`` and ``origin_conversation_id`` link the intake to the eligibility assessment the customer
+    confirmed after and to the conversation it came from, so an agent reviews both. The engine sets them from its
+    own state, never from model output; neither identifies a customer.
+    """
 
     action: Literal[ActionKind.SUBMIT_CREDIT_APPLICATION] = ActionKind.SUBMIT_CREDIT_APPLICATION
     product_code: CreditProductCode
@@ -87,6 +103,8 @@ class SubmitCreditApplicationArguments(DomainModel):
     requested_term_months: Annotated[int, Field(ge=1, le=480)]
     purpose: Code
     declared_monthly_income: Annotated[Money | None, Pii("financial")] = None
+    assessment_ref: AssessmentId | None = None
+    origin_conversation_id: ConversationId | None = None
 
     @model_validator(mode="after")
     def _validate(self) -> Self:

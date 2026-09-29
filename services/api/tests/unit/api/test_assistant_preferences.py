@@ -162,7 +162,7 @@ async def test_name_and_predefined_image_changes_return_saved_customer_profile(
         named = await client.post(f"/v1/conversations/{conversation_id}/assistant-profile/name", {"name": "  Camila  "})
         assert named.status_code == 200
         assert named.json()["assistant_name"] == "Camila"
-        assert named.json()["avatar_url"] == "/api/v1/assistant-profile/avatars/avatar_1.png"
+        assert named.json()["avatar_url"] == "/v1/assistant-profile/avatars/avatar_1.png"
         assert "private" not in named.text
 
         image = await client.post(f"/v1/conversations/{conversation_id}/assistant-profile/mock-image")

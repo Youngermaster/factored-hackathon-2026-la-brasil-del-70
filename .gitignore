@@ -20,6 +20,7 @@ personal/
 # Team-written evaluation inputs (relevance judgments), not organizer data.
 !evals/data/
 !evals/data/*.jsonl
+!evals/data/*.lock
 # The pitch deck's metric registry (team-written numbers with sources), not organizer data.
 !slides/data/
 !slides/data/*.yml
@@ -36,8 +37,9 @@ models/artifacts/
 *.joblib
 *.onnx
 
-# Evaluation outputs (summaries are published explicitly under docs/evaluation)
-reports/eval/**/raw/
+# Evaluation outputs: runs (with transcripts) stay local; `bank-eval publish` copies summaries to
+# evals/reports/summaries/ and metrics to docs/evaluation/runs/.
+reports/eval/
 evals/cassettes/**/*.tmp
 
 # Python
@@ -77,3 +79,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Local screenshots of the web app (apps/web/tooling/screenshots.mjs)
+apps/web/.shots/

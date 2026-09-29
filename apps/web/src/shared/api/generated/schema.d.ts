@@ -52,7 +52,9 @@ export interface paths {
         };
         /**
          * List Credit Applications
-         * @description Intakes recorded for human review that a handoff references (read only; never a lending decision).
+         * @description Reviewable intakes (submitted, under human review) and any a handoff references, newest first.
+         *
+         *     Read only, and never a lending decision.
          */
         get: operations["agent_list_credit_applications"];
         put?: never;
@@ -860,15 +862,17 @@ export interface components {
         };
         /**
          * CreditProduct
-         * @description One synthetic catalog entry. Indicative ranges only: never an offer.
+         * @description A catalog entry as a message part: the domain ``CreditProduct`` plus ``display_name``, the catalog's name in
+         *     the message's language (``None`` for a code the catalog cannot name). Indicative ranges only: never an offer.
          *
-         *     ``self_service_eligibility`` is false for products whose eligibility needs facts the data does not have
-         *     (a mortgage needs collateral facts); the eligibility service then returns ``review_required``.
+         *     It keeps the domain name so the OpenAPI component stays ``CreditProduct``.
          */
         CreditProduct: {
             /** Catalog Version */
             catalog_version: string;
             currency: components["schemas"]["Currency"];
+            /** Display Name */
+            display_name: string | null;
             /**
              * Eligibility Clause Ids
              * @default []
@@ -1083,7 +1087,7 @@ export interface components {
             rule_results: components["schemas"]["RuleResult"][];
             /**
              * Schema Version
-             * @default 1.2.0
+             * @default 1.4.0
              */
             schema_version: string;
             /** State */
@@ -1223,8 +1227,15 @@ export interface components {
         /** EvaluationSummary */
         EvaluationSummary: {
             aggregate: components["schemas"]["OutcomeMetrics"];
+            /**
+             * Breakdowns
+             * @default []
+             */
+            breakdowns: components["schemas"]["SliceSummary"][];
             /** Dataset Version */
             dataset_version: string;
+            /** Failure Table */
+            failure_table: string | null;
             /**
              * Generated At
              * Format: date-time
@@ -1235,9 +1246,9 @@ export interface components {
             /**
              * Measurement
              * @default offline
-             * @constant
+             * @enum {string}
              */
-            measurement: "offline";
+            measurement: "offline" | "simulated" | "projected";
             /**
              * Notes
              * @default []
@@ -1247,10 +1258,10 @@ export interface components {
             run_id: string;
             /**
              * Schema Version
-             * @default 1.0.0
-             * @constant
+             * @default 1.1.0
+             * @enum {string}
              */
-            schema_version: "1.0.0";
+            schema_version: "1.0.0" | "1.1.0";
             /** System */
             system: string;
             /** Workflows */
@@ -1349,6 +1360,8 @@ export interface components {
             open_questions: string[];
             /** Policy Basis */
             policy_basis: components["schemas"]["ClauseRef"][];
+            /** Policy Excerpts */
+            policy_excerpts: components["schemas"]["Citation"][];
             priority: components["schemas"]["Priority"];
             request: components["schemas"]["HandoffRequest"];
             resolution: components["schemas"]["HandoffResolution"] | null;
@@ -1519,11 +1532,14 @@ export interface components {
          * @description The brief's outcome definitions over one slice of the workload.
          */
         OutcomeMetrics: {
+            automation_attempted: components["schemas"]["MetricCount"] | null;
             /** Cases */
             cases: number;
             containment: components["schemas"]["MetricCount"];
             /** Cost Per Attempted Case Usd */
             cost_per_attempted_case_usd: string | null;
+            /** Cost Per Resolution Usd */
+            cost_per_resolution_usd: string | null;
             escalation_missed: components["schemas"]["MetricCount"];
             escalation_unnecessary: components["schemas"]["MetricCount"];
             /** Latency P50 Ms */
@@ -1784,6 +1800,38 @@ export interface components {
             csrf_token: string;
             session: components["schemas"]["SessionView"];
         };
+        /**
+         * SliceSummary
+         * @description The outcome metrics for one slice, for example ``language`` ``pt`` or ``segment`` ``premium`` (added in 1.1.0).
+         *
+         *     ``workflow`` is ``None`` for a slice across every workflow.
+         */
+        SliceSummary: {
+            automation_attempted: components["schemas"]["MetricCount"] | null;
+            /** Cases */
+            cases: number;
+            containment: components["schemas"]["MetricCount"];
+            /** Cost Per Attempted Case Usd */
+            cost_per_attempted_case_usd: string | null;
+            /** Cost Per Resolution Usd */
+            cost_per_resolution_usd: string | null;
+            /**
+             * Dimension
+             * @enum {string}
+             */
+            dimension: "language" | "dialect" | "segment";
+            escalation_missed: components["schemas"]["MetricCount"];
+            escalation_unnecessary: components["schemas"]["MetricCount"];
+            /** Latency P50 Ms */
+            latency_p50_ms: number | null;
+            /** Latency P95 Ms */
+            latency_p95_ms: number | null;
+            safe_automated_resolution: components["schemas"]["MetricCount"];
+            unsafe_outcomes: components["schemas"]["MetricCount"];
+            /** Value */
+            value: string;
+            workflow: components["schemas"]["WorkflowId"] | null;
+        };
         /** SourceRef */
         SourceRef: string;
         /**
@@ -1977,12 +2025,13 @@ export interface components {
          *
          *     Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
          *     ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and
-         *     ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The
+         *     ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice, and
+         *     ``list_my_credit_applications`` lists their credit application intakes so a status question needs no id. The
          *     risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
          *     select them.
          * @enum {string}
          */
-        ToolName: "list_recent_transactions" | "get_transaction" | "get_product_status" | "list_my_cards" | "list_my_cases" | "get_case_status" | "create_dispute_case" | "block_card" | "list_my_balances" | "get_payment_status" | "get_statement_summary" | "list_credit_products" | "get_credit_product" | "get_my_credit_profile" | "submit_credit_application" | "get_credit_application_status";
+        ToolName: "list_recent_transactions" | "get_transaction" | "get_product_status" | "list_my_cards" | "list_my_cases" | "get_case_status" | "create_dispute_case" | "block_card" | "list_my_balances" | "get_payment_status" | "get_statement_summary" | "list_credit_products" | "get_credit_product" | "get_my_credit_profile" | "submit_credit_application" | "get_credit_application_status" | "list_my_credit_applications";
         /**
          * TransactionStatus
          * @enum {string}
@@ -2110,11 +2159,14 @@ export interface components {
         };
         /** WorkflowSummary */
         WorkflowSummary: {
+            automation_attempted: components["schemas"]["MetricCount"] | null;
             /** Cases */
             cases: number;
             containment: components["schemas"]["MetricCount"];
             /** Cost Per Attempted Case Usd */
             cost_per_attempted_case_usd: string | null;
+            /** Cost Per Resolution Usd */
+            cost_per_resolution_usd: string | null;
             escalation_missed: components["schemas"]["MetricCount"];
             escalation_unnecessary: components["schemas"]["MetricCount"];
             /** Latency P50 Ms */

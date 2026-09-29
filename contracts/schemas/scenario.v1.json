@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://bank-agent.local/contracts/schemas/scenario.v1.json",
-  "x-schema-version": "1.2.0",
+  "x-schema-version": "1.4.0",
   "$defs": {
     "ApplicationStatus": {
       "enum": [
@@ -661,6 +661,12 @@
           "minimum": 0,
           "title": "Advance Clock Seconds",
           "type": "integer"
+        },
+        "when_asked": {
+          "default": false,
+          "title": "When Asked",
+          "type": "boolean",
+          "x-added-in": "1.4.0"
         }
       },
       "title": "ScriptedTurn",
@@ -737,7 +743,7 @@
       "type": "object"
     },
     "ToolName": {
-      "description": "Every banking tool (phase 05).\n\nThree are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and\n``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and\n``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The\nrisk estimator and the eligibility service are not tools: the engine calls them, and no model output can\nselect them.",
+      "description": "Every banking tool (phase 05).\n\nThree are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and\n``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and\n``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice, and\n``list_my_credit_applications`` lists their credit application intakes so a status question needs no id. The\nrisk estimator and the eligibility service are not tools: the engine calls them, and no model output can\nselect them.",
       "enum": [
         "list_recent_transactions",
         "get_transaction",
@@ -754,7 +760,8 @@
         "get_credit_product",
         "get_my_credit_profile",
         "submit_credit_application",
-        "get_credit_application_status"
+        "get_credit_application_status",
+        "list_my_credit_applications"
       ],
       "title": "ToolName",
       "type": "string"
@@ -784,7 +791,7 @@
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "default": "1.2.0",
+      "default": "1.4.0",
       "pattern": "^1\\.[0-9]+\\.[0-9]+$",
       "title": "Schema Version",
       "type": "string"
@@ -1047,6 +1054,29 @@
       ],
       "default": null,
       "x-added-in": "1.1.0"
+    },
+    "scripted_fallback": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ScriptedTurn"
+      },
+      "title": "Scripted Fallback",
+      "type": "array",
+      "x-added-in": "1.4.0"
+    },
+    "template_family": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{2,63}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Template Family",
+      "x-added-in": "1.4.0"
     }
   },
   "required": [

@@ -33,6 +33,13 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
 | [adr/0002](adr/0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers |
 | [adr/0003](adr/0003-frontend-layering-and-state.md) | Frontend layering and state rules |
+| [adr/0018](adr/0018-design-system.md) | Design system on Radix primitives, Tailwind tokens, Phosphor icons, and the deck's typefaces |
+| [design/DESIGN.md](design/DESIGN.md) | The design system: principles, type, spacing, color tokens with contrast, motion, data display, states, voice |
+| [design/audit.md](design/audit.md) | The design pre-flight audit of the phase 12 foundation |
+| [frontend/components.md](frontend/components.md) | The UI primitives and how to use them |
+| [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
+| [frontend/features.md](frontend/features.md) | The product features: composition diagrams, context boundaries, and TanStack Query data flow |
+| [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 | [adr/0032](adr/0032-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
 | [adr/0033](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 | [adr/0034](adr/0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
@@ -136,6 +143,13 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [workflows/execution-records.md](workflows/execution-records.md) | Execution record fields, storage, and explaining a decision without chain-of-thought |
 | [../services/api/src/bank_agent/application/README.md](../services/api/src/bank_agent/application/README.md) | How to add a state, a workflow, or a tool |
 
+## HTTP API
+
+| Document | Purpose |
+|---|---|
+| [api/README.md](api/README.md) | Endpoint catalog (method, path, role, CSRF, rate class), the auth model, error types, and versioning |
+| [../contracts/openapi.json](../contracts/openapi.json) | The committed OpenAPI contract (`make openapi`), source of the web client types |
+
 ## Packages and apps
 
 | README | Scope |
@@ -156,8 +170,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [security/prompt-injection.md](security/prompt-injection.md) | Prompt injection defense layers, their status, and their tests |
 | [security/identity-and-sessions.md](security/identity-and-sessions.md) | The mock identity service, one-time codes, sessions, step-up, lifetimes and limits |
 | [security/data-isolation.md](security/data-isolation.md) | Tool-layer scoping, row-level security, database roles and policies, and the tests that prove them |
+| [security/threat-model.md](security/threat-model.md) | STRIDE per component (web, API, engine, LLM gateway, database, identity) with mitigations and their tests |
 | [demo/personas.md](demo/personas.md) | Demo personas: selection criteria, what each demonstrates, and how to seed and log in |
+| [demo/script.md](demo/script.md) | Outline of the pitch video: scenes, inputs, and what each proves |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
-Later phases add the workflow pages to `docs/workflows/`, more of `docs/evaluation/`, and `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.
+Later phases add the workflow pages to `docs/workflows/`, more of `docs/evaluation/`, and `docs/operations/`, each listed here when it lands.
