@@ -155,3 +155,14 @@ Exact commands for 14b are in [README.md](README.md#commands) and the phase log.
 | Learned risk estimator default | Keep `score_band@1`: on the dev credit scenarios `logreg@champion` changes nothing (19/28 either way), and with it every first-time applicant goes to review (ADR 0030) | No measured gain; the baseline gives first-time applicants an estimate |
 | First-time applicants under a learned estimator | Keep sending them to human review (band `unknown`), as built | Out of the estimator's training population; review is the safe outcome |
 | The evaluation world | 39 synthetic customers (13 roles in 3 countries), each case on a fresh copy | Deterministic, CI-able, and no organizer data in git |
+
+## Decisions taken during session 14b
+
+| Question | Decision | Why |
+|---|---|---|
+| Where does the test run execute? | From a separate git worktree detached at the run's commit (`6bc2e9d`); the judge and `publish` run there too, and the published files are copied into `main` and checked byte for byte | Work on `main` continued during the three-hour run; a pinned checkout keeps the code and the manifest's commit the same |
+| Judge sample size | 100 transcripts in all (B0 40, P 30, B1 30), what `bank-eval judge --sample 100` draws; the feasibility table's 100 per system is BACKLOG | The command's stratified sampler spans the systems; the judge is unvalidated either way until the human ratings exist |
+| Unsafe outcomes that are grader false positives or simulator artifacts on review | Published as graded, with each case explained in `results.md`; the grader and harness fixes are 14c rows measured on dev | Changing a grader after reading test transcripts and regrading would tune the measurement on test |
+| Between-run variance | Read on the 48-scenario subset alone in the analysis; the generated column mixes run 1's full split with the subset (BACKLOG) | The plan defines the variance over the repeated scenarios |
+| Test cassettes | Copied into `main` uncommitted, like the dev ones, until pending action 42 is decided; the judge's recordings sit in `evals/cassettes/eval/test-judge/` | The fixture cassette checks read `evals/cassettes/runs/` and skip `evals/cassettes/eval/` |
+| Learned router, resolver, and risk estimator defaults | Keep `keyword@1`, `rules@1`, and `score_band@1`: on dev with the local model the learned pair resolves 75/112 against 74/112 (overlapping intervals, routing scenarios 6/10 either way), and `logreg@champion` resolves 20/28 like the baseline while answering two review cases as indicatively eligible | The plan's rule (a gain with non-overlapping intervals on dev); the comparison ran after the test run and used nothing from it |

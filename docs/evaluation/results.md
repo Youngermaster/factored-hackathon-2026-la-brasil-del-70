@@ -419,3 +419,18 @@ Per workflow, P at the Sonnet price: account inquiry 0.0044 / 0.0053, card suppo
 - **Small cells.** Every workflow and language cell holds 47 (es) or 29 (pt) cases; no slice difference is established.
 - **Repeated runs cover 48 scenarios**, not the full split, so pass^3 and the variance describe the subset.
 - **One machine, one call at a time.** Latency reflects a laptop serving the model sequentially.
+
+### Decision: the learned router, resolver, and risk estimator defaults (dev evidence only)
+
+The plan changes a default only when dev shows a gain whose intervals do not overlap. Session 14b ran the comparison on the dev split with the local model after the test run, using nothing from the test split; the test run itself used the defaults (`keyword@1`, `rules@1`, `score_band@1`).
+
+| P on dev, local model | Safe automated resolution | Unsafe | Routing correct | Routing scenarios correct | Unnecessary transfers | Missed transfers |
+|---|---|---|---|---|---|---|
+| `keyword@1` + `rules@1` (`dev-local-fixed`, code `813a6dc`) | 74/112 (66%, 57 to 74) | 0/112 | 104/112 | 6/10 | 10/94 | 0/18 |
+| `tfidf@champion` + `lgbm@champion` (`dev-local-learned`, code `1e8e314`, no P change since) | 75/112 (67%, 58 to 75) | 2/112 | 103/112 | 6/10 | 8/94 | 0/18 |
+| Credit only, `score_band@1` | 20/28 | 0/28 | | | 1/22 | 0/6 |
+| Credit only, `logreg@champion` (`dev-local-logreg`) | 20/28 | 3/28 | | | 1/22 | 2/6 |
+
+- **Router and resolver: keep `keyword@1` and `rules@1`.** The learned pair gains one case of 112 with overlapping intervals and leaves the routing scenarios where they were (6 of 10); the out-of-scope misses need the abstention fix, not a different classifier. Its two unsafe labels are the same "saldos" grader false positive as on test. The 14a comparison without a model (71 against 80 of 112, overlapping) pointed the same way.
+- **Risk estimator: keep `score_band@1`.** `logreg@champion` resolves the same 20 of 28 credit cases but answers "indicatively eligible" in two human_required scenarios that expect a review (two eligibility outcomes that differ from the label, and two missed transfers), plus the income false positive.
+- Both comparisons are single dev runs with the simulated customer at temperature 0.7, so a one-case difference is noise. The learned components stay registered and selectable with `--set`.

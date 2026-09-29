@@ -65,6 +65,10 @@ uv run --frozen bank-eval publish reports/eval/test-local
 - `publish` refuses a run with cassette coverage below 100% unless `--allow-partial`, which adds a note. Every published number carries the model and provider label (`ollama/qwen2.5:7b-instruct (litellm)`); P and B1 numbers are simulated-scenario results on a synthetic world, not production outcomes.
 - Cassettes and `reports/eval/` raw outputs are not committed: `reports/eval/` is ignored, and whether `evals/cassettes/eval/` is committed is pending human action 42 (its measured size is recorded in the phase log).
 
+## Part 2: what happened
+
+The orchestrator ran the test split from a separate worktree pinned at `6bc2e9d` (2 h 51 min, 1,284 cases, 0 cassette misses, no lever needed); the judge and `publish` ran there too, and the published files were copied into `main` byte for byte. The generated `results.md` and `failures.md` carry a hand-written analysis after the generated part. The results, the categorized unsafe outcomes, and the limitations are in [results.md](../evaluation/results.md#analysis-hand-written-session-14b); the phase log has the summary. The test cassettes (8.6 MB) and the judge's (0.4 MB, kept in `evals/cassettes/eval/test-judge/`) stay uncommitted until pending action 42 is decided.
+
 ## Files
 
 | Area | Files |
@@ -72,4 +76,4 @@ uv run --frozen bank-eval publish reports/eval/test-local
 | Fixes | `services/api/src/bank_agent/application/engine/signals.py`, `gate.py`, `services/api/src/bank_agent/policy/lexicon.py` |
 | Dev-run fixes | `engine/flow.py`, `workflows/card_support/select.py`, `workflows/account_inquiry/unsupported.py`, `workflows/dispute/understand.py`, `workflows/credit/understand.py`, `adapters/models/keyword_router.py`; the grader's account check and the run manifest in `evals/src/bank_evals` |
 | Tests | `services/api/tests/unit/application/engine/test_signals_phase14b.py`, `services/api/tests/unit/policy/test_approval_lexicon.py`, `services/api/tests/unit/application/grounding/test_verifier_claims.py`, `services/api/tests/integration/workflows/test_third_party_requests.py`, `test_pending_answer_signals.py`, `evals/tests/unit/harness/test_graders_content.py` |
-| Docs | this plan, `docs/PROGRESS.md`, `docs/BACKLOG.md` |
+| Docs | this plan, `docs/PROGRESS.md`, `docs/BACKLOG.md`; part 2: `docs/evaluation/{results,failures,plan,README}.md`, `docs/evaluation/runs/test-local/`, `evals/reports/summaries/test-local-*.json`, `slides/data/metrics.yml` and the evidence narration |
