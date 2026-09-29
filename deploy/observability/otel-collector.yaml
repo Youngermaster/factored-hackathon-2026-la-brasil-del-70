@@ -1,6 +1,7 @@
-# OpenTelemetry Collector for the development `obs` profile.
-# Receives OTLP from the API, exports traces to Jaeger and exposes metrics for Prometheus.
-# Phase 15 adds the application instrumentation and dashboards.
+# OpenTelemetry Collector for the development `obs` profile (docs/operations/observability.md).
+# The API exports OTLP over HTTP (4318) when OTEL_ENABLED=true; gRPC (4317) stays open for other clients.
+# Traces go to Jaeger; metrics are exposed on 8889 for Prometheus, with the resource attributes (service.name,
+# deployment.environment.name) copied onto every series so dashboards can filter by service.
 receivers:
   otlp:
     protocols:
@@ -23,6 +24,9 @@ exporters:
       insecure: true
   prometheus:
     endpoint: 0.0.0.0:8889
+    resource_to_telemetry_conversion:
+      enabled: true
+    metric_expiration: 30m
 
 service:
   pipelines:

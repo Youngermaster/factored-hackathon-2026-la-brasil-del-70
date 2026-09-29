@@ -1,7 +1,11 @@
 # Prometheus for the development `obs` profile. Retention is set on the command line (7 days).
+# Alert rules live in alerts.yml (docs/operations/runbook.md maps each alert to its diagnosis steps).
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alerts.yml
 
 scrape_configs:
   - job_name: otel-collector

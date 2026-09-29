@@ -33,7 +33,7 @@ from bank_agent import __version__
 from bank_agent.adapters.telemetry.opentelemetry import OpenTelemetryAdapter
 from bank_agent.bootstrap.settings import ObservabilitySettings
 
-EXCLUDED_URLS: Final = "/health/live,/health/ready"
+EXCLUDED_URLS: Final = "/health/live,/health/ready,/health/details"
 STABILITY_OPT_IN: Final = "OTEL_SEMCONV_STABILITY_OPT_IN"
 
 
@@ -63,8 +63,14 @@ class Observability:
         if not self.exporting:
             return
         if engine is not None:
+            # The instrumentation declares sqlalchemy < 2.1 but works with 2.1 through the engine events it uses;
+            # the phase 15 obs run checked that database spans reach Jaeger (docs/operations/observability.md).
             SQLAlchemyInstrumentor().instrument(
-                engine=engine.sync_engine, tracer_provider=self.tracer_provider, meter_provider=self.meter_provider
+                engine=engine.sync_engine,
+                tracer_provider=self.tracer_provider,
+                meter_provider=self.meter_provider,
+                skip_dep_check=True,
+                enable_commenter=False,
             )
             self._instrumented.append("sqlalchemy")
         HTTPXClientInstrumentor().instrument(tracer_provider=self.tracer_provider, meter_provider=self.meter_provider)
