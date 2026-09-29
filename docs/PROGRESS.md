@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 12: frontend foundation and design system. The deck's identity as tokens with tested contrast, Radix primitives, the app shell and role-guarded layouts, the typed API client with CSRF and problem details, TanStack Query, i18n in es, pt, and en with `Intl` formatters, and sign-in, step-up, sign-out, and session-loss handling on the phase 11 API |
-| Next phase | 13, frontend features (`kit/prompts/13-frontend-features.md`) |
+| Last completed phase | 13: product surfaces. The customer chat with every turn part and quick replies, the glass box beside it (and on its own route, and for evaluators with the internal section), the agent inbox with credit review items, the evaluation view, the demo guide, and the About page, in es and pt for customers and en and es for the console; agents read every reviewable credit intake, credit status works without an application id, and evaluation summaries are at schema 1.1.0 |
+| Next phase | 14, evaluation (`kit/prompts/14-evaluation.md`) |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -57,8 +57,79 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 37. **Resolved (2026-09-29): `origin/main` merged into local `main`.** The orchestrator merged PRs 7, 8, 12, 15, 16, and 17 (organizer data and collaboration skills, the local gold seed with ADR 0034, the chat persistence migration 0009, and the assistant preferences). Conflicts in `.env.example`, `Makefile`, `docs/BACKLOG.md`, `docs/PROGRESS.md`, `docs/README.md`, and the evaluation summary port were resolved by keeping both sides; `.env.example` keeps the phase 11 copy-and-run layout, which already carries the data-platform variables.
 38. **Review the web copy and the design direction** (`apps/web/src/shared/i18n/locales/{es,pt,en}.json`, [DESIGN.md](design/DESIGN.md), [audit.md](design/audit.md), screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`): a native Portuguese review, and a check that the deck-derived palette and type work for the team. Reviewers: pending. Date: pending.
+39. **Review the phase 13 surfaces before the video** (screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`, [audit.md](design/audit.md), [the demo script](demo/script.md)): the chat, the glass box, the inbox, the evaluation view, and the demo guide; include the new copy in pending action 38's native Portuguese review. Run `make db-upgrade` (migration `0010`) on any existing database, and record the video on a fresh compose volume after `make seed` (demo writes persist). Reviewers: pending. Date: pending.
 
 ## Phase log
+
+### Phase 13: product surfaces (chat, glass box, agent inbox, evaluation view) (2026-09-29)
+
+Plan: `docs/plans/phase-13.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op ("Already up to date"); local `main` already held the merge of `origin/main` (pending action 37). ADR 0025's scope was not built, as the human decided: no mock human agent, no Langfuse, and no assistant name or avatar (the API has no assistant profile route). The backend changes ran in two separate worktrees and were cherry-picked onto `main`.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `ec58c31` | The plan: routes, feature boundaries, decided questions (quick replies, talk to a person, step-up continuation, credit review items, evaluation summary 1.1.0), tests, risks |
+| `c8e1aed` | Agents read every reviewable credit intake (`submitted`, `under_human_review`) plus any a handoff references: migration `0010`, both repositories, RLS and contract tests (phase 02b decision, ADR 0021) |
+| `dbca58d` | `list_my_credit_applications` read tool; credit status without an application id (one, several, or none on record); every contract to 1.3.0 |
+| `d9d4350` | Intakes record the assessment id and the originating conversation |
+| `26f68a8` | `display_name` on credit product parts, in the message language, from the catalog |
+| `af9cc48` | Evaluation summary schema 1.1.0: `measurement` offline, simulated, or projected; `breakdowns` by language, dialect, and segment; `automation_attempted`; `cost_per_resolution_usd`; `failure_table` |
+| `84ef2a1` | The customer chat (`Conversation` compound, a renderer for every `AssistantMessage` part, quick replies, step-up through `useStepUp`, resume from `?conversation=`, talk to a person) and the glass box (panel, sheet, own route, linked selection, the two credit panels, the pre-check label); lazy routes |
+| `a41862d` | `HandoffView.policy_excerpts`: the clause text behind a handoff's policy basis, in the handoff's language |
+| `0dafd6d` | The agent inbox (filters in the URL, sorting, SLA in words, claim and resolve with confirmations and audit feedback), credit review items (read only), the evaluation view (per workflow, then aggregate, Wilson intervals, zero-event bounds, small cells, labels, breakdowns), the evaluator trace, the demo guide, the About page, vitest-axe on every page in both themes, and the `DataTable` caption fix |
+| `ef07eb3` | Fixes from the screenshot review and the full screenshot tool |
+| `e44b825` | `docs/frontend/features.md`, state, components, DESIGN, audit, `docs/demo/script.md`, READMEs, BACKLOG |
+| This commit | This entry |
+
+#### Decisions
+
+- Quick replies send words the deterministic parsers read (an ordinal for an option, "Sí, confirmo", "Sí, quiero que una persona lo revise", the step-up continuation), shown as the customer's own message; `SendTurnRequest` stays text only.
+- "Talk to a person" is a button that sends "Quiero hablar con una persona" / "Quero falar com uma pessoa"; the gate's keyword signal escalates in any state through `ESC.human_requested`, so no engine change was needed. The plain "sí" after an abstention moved to phase 14 (BACKLOG) to be measured first.
+- Each answer renders in its own language (`LanguageScope`), so a Portuguese turn reads in Portuguese with `pt-BR` formats whatever the chrome language.
+- Clause excerpts the engine appends move under a "cited policies" disclosure; an eligibility answer's text moves into a disclosure because its structured view carries the same policy sentences, which `tooling/eligibility-copy.test.ts` keeps identical to `policies/messages/eligibility.*.yaml`.
+- Linked selection is a page-level context in `entities/turn-selection`, so neither feature depends on the other. Zustand is not used ([state.md](frontend/state.md)).
+- Intervals are computed in the browser from the published counts (Wilson 95%; exact one-sided 95% bound for zero events); cells under 30 cases are flagged. Handoff completeness shows "not defined" until the summaries carry it (BACKLOG, phase 14).
+- The demo guide's messages are data in the feature, not locale copy: they are inputs in the language they demonstrate, and each was driven through the real API first. Phrasings that misroute were left out and recorded (BACKLOG).
+- Agent status transitions for credit intakes stay out (the prompt makes the list read only; BACKLOG, phase 16).
+- No new dependency.
+
+#### Visual verification
+
+The API ran with `DEMO_MODE=true`, `LLM_PROVIDER=fake`, and raised rate limits on the seeded compose PostgreSQL (after `make db-upgrade` to `0010` and `make seed`), the dev server with `VITE_DEMO_MODE=true`. `node tooling/screenshots.mjs` drove one conversation per workflow in es and pt through the real API (balances; similar transfers; a card block through confirmation and step-up; an unblock handoff; a dispute past its SLA; a dispute intake from the statement; a borderline credit result sent to review; the catalog and an eligibility result), then screenshotted the chat, the glass box sheet and page, the demo guide, About, the inbox, a handoff, the credit applications, the evaluation view, and the evaluator trace in light and dark at 1440 and 390 px. The findings and fixes are in [audit.md](design/audit.md). The pt dispute intake ended in an abstention because the same charge had been disputed during the earlier API checks (a charge can be disputed once; `make seed` does not delete cases). Screenshots (gitignored): `apps/web/.shots/light-desktop-chat-{account,card,dispute,credit}-{es,pt}.png` and `apps/web/.shots/{light,dark}-{desktop,mobile}-{10-chat,11-glass-box-sheet (mobile),12-glass-box,13-demo-guide,14-about,20-inbox,21-handoff,22-credit-applications,30-evaluation,31-evaluator-trace}.png`.
+
+#### How to verify
+
+```bash
+make check                                                  # needs Docker; never reads .env
+make test-web                                               # Vitest with coverage
+uv run --frozen pytest services/api/tests/integration/workflows/test_credit_status.py services/api/tests/integration/api -q
+make up && make db-upgrade && make seed
+DEMO_MODE=true LLM_PROVIDER=fake uv run --frozen uvicorn bank_agent.asgi:create_app --factory
+VITE_DEMO_MODE=true pnpm --dir apps/web run dev             # http://localhost:5173, then /demo
+pnpm --dir apps/web exec node tooling/screenshots.mjs       # raise the auth rate limits first
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `e44b825` (the run before this entry): lint, format, types, 5 import contracts, 2,502 unit and 1,327 integration Python tests, all 11 coverage gates, 340 web tests in 34 files (94.1% lines, `src/features/**` above the 70% gate), docs (72 Mermaid blocks), data sample, codegen, emoji, attribution, gitleaks. An earlier run failed only in Prettier on a scratch script left in the gitignored `apps/web/.shots/`, which was removed |
+| Web tests | 340 tests: conversation flows, message parts, every eligibility outcome, glass box (customer and evaluator), inbox filters, sorting, sections, claim and resolve, credit applications, evaluation tables and intervals, demo guide, About, and vitest-axe on every page in both themes |
+| Build | `pnpm run build` has no chunk over 500 KB: the entry is 422 KB (133 KB gzip); every page is a lazy route (the chat page is 48 KB) |
+| Screenshots | 46 PNGs from `tooling/screenshots.mjs` (8 conversations plus 38 surface shots) |
+
+#### Known limitations
+
+- The evaluation view has nothing to show until phase 14 publishes a summary; handoff completeness is not in the summary schema yet.
+- Demo writes persist: blocked cards are restored by `make seed`, but opened cases and intakes are not, so a charge can be disputed once per database.
+- The console is optimized for 1280 px and wider; on phones its tables scroll sideways.
+- Two misroutes found while verifying the demo are BACKLOG rows for phase 14 ("¿Mi tarjeta está activa o bloqueada?" leads to a block confirmation; "Aprove o meu crédito agora" is not recognized as an approval request).
+- No screen reader pass with real assistive technology; the checks are vitest-axe in jsdom and the screenshots. The new pt and en copy has had no native review (pending action 38).
+
+#### Next phase
+
+Phase 14, evaluation (`kit/prompts/14-evaluation.md`): the evaluation harness publishes the summaries this view reads (with breakdowns, the attempted share, both cost figures, and the failure table), plus the phase 14 BACKLOG rows.
 
 ### Phase 12: frontend foundation and design system (2026-09-29)
 
