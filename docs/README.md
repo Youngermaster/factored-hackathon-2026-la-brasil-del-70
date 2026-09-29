@@ -44,6 +44,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0032](adr/0032-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
 | [adr/0033](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 | [adr/0034](adr/0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
+| [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
 
 ## Exploratory data analysis
 
@@ -156,6 +157,16 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [api/README.md](api/README.md) | Endpoint catalog (method, path, role, CSRF, rate class), the auth model, error types, and versioning |
 | [../contracts/openapi.json](../contracts/openapi.json) | The committed OpenAPI contract (`make openapi`), source of the web client types |
 
+## Operations
+
+| Document | Purpose |
+|---|---|
+| [operations/observability.md](operations/observability.md) | Telemetry flow, the signal catalog, log retention, and how to read the trace of one conversation |
+| [operations/degradation.md](operations/degradation.md) | The degradation ladder L0 to L4: triggers, behavior, flags, customer wording, and the chaos tests |
+| [operations/runbook.md](operations/runbook.md) | Each alert mapped to its symptom, diagnosis, and action |
+| [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |
+| [plans/phase-15.md](plans/phase-15.md) | The phase 15 plan and its decided questions |
+
 ## Packages and apps
 
 | README | Scope |
@@ -182,4 +193,4 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
-Later phases add the workflow pages to `docs/workflows/`, more of `docs/evaluation/`, and `docs/operations/`, each listed here when it lands.
+Later phases add the workflow pages to `docs/workflows/` and more of `docs/evaluation/`, each listed here when it lands.
