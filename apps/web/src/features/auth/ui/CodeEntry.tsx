@@ -1,5 +1,5 @@
 import { useState, type ReactNode, type SubmitEvent } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { useFormat } from '@/shared/i18n';
 import { Button, ClockIcon, Field, OneTimeCodeInput } from '@/shared/ui';
@@ -97,8 +97,12 @@ export function CodeEntry({
         {expired ? (
           <span role="status">{t('auth.codeExpired')}</span>
         ) : (
-          <span className="font-mono tabular-nums">
-            {t('auth.expiresIn', { time: format.countdown(seconds) })}
+          <span>
+            <Trans
+              i18nKey="auth.expiresIn"
+              values={{ time: format.countdown(seconds) }}
+              components={{ time: <span className="font-mono tabular-nums" /> }}
+            />
           </span>
         )}
       </p>

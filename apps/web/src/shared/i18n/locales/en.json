@@ -63,7 +63,7 @@
     "codeHint": "6 digits. You can paste the whole code.",
     "codeIncomplete": "The code has 6 digits.",
     "demoCode": "Demo code",
-    "expiresIn": "Expires in {{time}}",
+    "expiresIn": "Expires in <time>{{time}}</time>",
     "codeExpired": "The code expired. Ask for a new one.",
     "verify": "Verify",
     "resend": "Get another code",

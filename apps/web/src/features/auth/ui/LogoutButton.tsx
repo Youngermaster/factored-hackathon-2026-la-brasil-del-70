@@ -34,7 +34,8 @@ export function LogoutButton({ className }: { readonly className?: string }) {
       }}
     >
       <SignOutIcon aria-hidden="true" size={18} />
-      {t('auth.logout')}
+      {/* Icon only on narrow screens; the label stays in the accessible name. */}
+      <span className="sr-only sm:not-sr-only">{t('auth.logout')}</span>
     </Button>
   );
 }

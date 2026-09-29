@@ -57,6 +57,8 @@ export function ToastProvider({
         {entries.map(({ id, title, description, tone = 'neutral' }) => (
           <RadixToast.Root
             key={id}
+            // Failures interrupt (assertive); confirmations wait for a pause (polite).
+            type={tone === 'risk' ? 'foreground' : 'background'}
             onOpenChange={(open) => {
               if (!open) {
                 setEntries((current) => current.filter((entry) => entry.id !== id));

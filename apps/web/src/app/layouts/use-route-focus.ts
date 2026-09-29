@@ -14,7 +14,9 @@ export function useRouteFocus<T extends HTMLElement>() {
       first.current = false;
       return;
     }
-    ref.current?.focus();
+    // Start the new page at its top, then focus without scrolling so the sticky header never covers the heading.
+    window.scrollTo(0, 0);
+    ref.current?.focus({ preventScroll: true });
   }, [pathname]);
   return ref;
 }

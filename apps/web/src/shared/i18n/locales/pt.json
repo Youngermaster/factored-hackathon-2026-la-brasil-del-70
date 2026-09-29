@@ -63,7 +63,7 @@
     "codeHint": "6 dígitos. Você pode colar o código inteiro.",
     "codeIncomplete": "O código tem 6 dígitos.",
     "demoCode": "Código de demonstração",
-    "expiresIn": "Expira em {{time}}",
+    "expiresIn": "Expira em <time>{{time}}</time>",
     "codeExpired": "O código expirou. Peça um novo.",
     "verify": "Verificar",
     "resend": "Pedir outro código",

@@ -75,3 +75,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Local screenshots of the web app (apps/web/tooling/screenshots.mjs)
+apps/web/.shots/

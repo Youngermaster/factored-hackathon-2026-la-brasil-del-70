@@ -5,7 +5,6 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { homeFor, LoginFlow, SessionNotice, type LoginReason } from '@/features/auth';
 import { isDemoMode } from '@/shared/config';
 import { safeNextPath } from '@/shared/lib/safe-next';
-import { Badge } from '@/shared/ui';
 
 import { LoginAside } from './LoginAside';
 
@@ -31,11 +30,6 @@ export function LoginPage({ header }: { readonly header: ReactNode }) {
       >
         <div className="flex max-w-xl flex-col gap-8">
           <div className="flex flex-col gap-3">
-            {isDemoMode() && (
-              <Badge className="self-start" tone="neutral">
-                {t('app.demoMode')}
-              </Badge>
-            )}
             <h1 className="font-display text-display font-semibold tracking-tight text-fg">
               {t('auth.title')}
             </h1>

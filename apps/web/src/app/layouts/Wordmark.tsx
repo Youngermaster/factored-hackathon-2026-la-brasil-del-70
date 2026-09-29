@@ -11,7 +11,7 @@ export function Wordmark({ to }: { readonly to: string }) {
     <div className="flex min-w-0 items-center gap-3">
       <Link
         to={to}
-        className="rounded-control font-display text-body font-semibold tracking-tight text-fg"
+        className="rounded-control font-display text-body font-semibold tracking-tight whitespace-nowrap text-fg"
       >
         {t('app.name')}
       </Link>

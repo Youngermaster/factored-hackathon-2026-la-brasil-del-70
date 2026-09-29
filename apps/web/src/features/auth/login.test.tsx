@@ -61,7 +61,9 @@ describe('sign-in', () => {
     renderApp({ path: '/login' });
     await userEvent.click(await screen.findByRole('button', { name: /Cuenta corriente/ }));
     expect(await screen.findByText(DEMO_CODE)).toBeInTheDocument();
-    expect(screen.getByText(/^Vence en [45]:\d\d$/)).toBeInTheDocument();
+    expect(screen.getByText(/^[45]:\d\d$/).closest('span')?.parentElement).toHaveTextContent(
+      /^Vence en [45]:\d\d$/,
+    );
     expect(screen.getByRole('heading', { name: 'Ingresa tu código' })).toHaveFocus();
   });
 
