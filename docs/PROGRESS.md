@@ -81,6 +81,7 @@ Plan: [phase-14b.md](plans/phase-14b.md), following [the evaluation plan](evalua
 | `eecd295` | The fixture cassette checks skip `evals/cassettes/eval/` (real recordings) |
 | `f70c4ab`, `35b954a`, `800ee1b`, `a6e2372`, `c86932e`, `c69b1fb` | P bugs found on the dev run, each with regression tests on memory and PostgreSQL (below) |
 | `813a6dc` | The run manifest records the commit a run started from and notes a checkout that moved during it |
+| `6042856`, `656aaef` | Typed test fixtures; the fixture cassette comparisons skip the evaluation recordings |
 | This commit | This entry, the plan's file list, and BACKLOG |
 
 P bugs found on the dev run and fixed (clear, deterministic, and cheap):
@@ -140,7 +141,7 @@ uv run bank-eval estimate reports/eval/dev-local        # needs the local run ou
 
 | Check | Result |
 |---|---|
-| `make check` | MAKE_CHECK_RESULT |
+| `make check` | Exit 0 at `656aaef`: lint, types, 7 import contracts, 2,683 unit and 1,401 integration Python tests, all 11 coverage gates, 340 web tests, docs, data sample, codegen, emoji, attribution, gitleaks. Two earlier runs failed on test typing and on two fixture-cassette tests that globbed the new, uncommitted `evals/cassettes/eval/` recordings; both fixed (`6042856`, `656aaef`, and `eecd295`) |
 | Focused suites | Services unit and workflow integration tests pass on memory and PostgreSQL; `evals/tests` pass |
 
 #### Known limitations
