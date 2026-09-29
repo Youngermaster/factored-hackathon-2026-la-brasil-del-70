@@ -1281,6 +1281,8 @@ export interface components {
             open_questions: string[];
             /** Policy Basis */
             policy_basis: components["schemas"]["ClauseRef"][];
+            /** Policy Excerpts */
+            policy_excerpts: components["schemas"]["Citation"][];
             priority: components["schemas"]["Priority"];
             request: components["schemas"]["HandoffRequest"];
             resolution: components["schemas"]["HandoffResolution"] | null;

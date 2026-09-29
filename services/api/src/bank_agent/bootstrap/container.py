@@ -19,7 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
-from bank_agent.adapters.policy.filesystem import FilesystemCreditCatalog
+from bank_agent.adapters.policy.filesystem import FilesystemCreditCatalog, FilesystemPolicyRepository
 from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
 from bank_agent.adapters.retrieval.embedding import Embedder
 from bank_agent.adapters.system.clock import SystemClock
@@ -134,6 +134,10 @@ class Container:
     @property
     def credit_product_names(self) -> FilesystemCreditCatalog:
         return self._policy.catalog
+
+    @property
+    def policy_clauses(self) -> FilesystemPolicyRepository:
+        return self._policy.repository
 
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:

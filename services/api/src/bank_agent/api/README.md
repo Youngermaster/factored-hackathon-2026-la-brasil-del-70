@@ -9,7 +9,7 @@ The HTTP layer: the FastAPI application factory, routers, request and response m
 | Module | Content |
 |---|---|
 | `app.py` | `create_app(provider, config, problems=None)`: middleware (request id, security headers, CORS, body limit), the problem handlers, the routers, the OpenAPI document; closes the provider on shutdown |
-| `provider.py` | `ServiceProvider` Protocol (clock, identity, conversations, agent inbox, evaluation summaries, readiness) and `ApiConfig` |
+| `provider.py` | `ServiceProvider` Protocol (clock, identity, conversations, agent inbox, evaluation summaries, credit product names, policy clauses, readiness) and `ApiConfig` |
 | `config.py` | `SecurityConfig`: production flag, CSRF secret, CORS allowlist, body limit, rate limits per class, cookie names per environment |
 | `dependencies.py` | Services, the session from the cookie, `role_dependency`, `require_csrf`, `rate_limit`, and `endpoint(...)`, which gives each route its dependencies and its `x-roles`, `x-rate-limit`, and `x-csrf` extensions |
 | `cookies.py`, `csrf.py`, `ratelimit.py` | Cookie flags, signed double-submit tokens, the sliding-window limiter per IP and per session |

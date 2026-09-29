@@ -135,7 +135,7 @@ A missing-income case (scenario 26) carries `eligibility_outcome: insufficient_d
 
 ## What agents see
 
-The agent inbox (phase 13) shows the handoff as stored: the summary, the facts with links to their records, the actions and whether each was verified, the policy basis rendered from the clauses, the open questions, the SLA, the card request, and the credit review with the internal estimate (agents only; customer response models never carry it). Agents do not see the conversation transcript through the handoff; turns stay in the conversation store for the customer's own history.
+The agent inbox (phase 13) shows the handoff as stored: the summary, the facts with links to their records, the actions and whether each was verified, the policy basis rendered from the clauses (the API's handoff view carries it as `policy_excerpts`, in the handoff's language), the open questions, the SLA, the card request, and the credit review with the internal estimate (agents only; customer response models never carry it). Agents do not see the conversation transcript through the handoff; turns stay in the conversation store for the customer's own history.
 
 ## Limitations
 

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from bank_agent.api.config import SecurityConfig
-from bank_agent.api.provider import ApiConfig, CreditProductNames
+from bank_agent.api.provider import ApiConfig, CreditProductNames, PolicyClauses
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
@@ -97,6 +97,10 @@ class FakeProvider:
     @property
     def credit_product_names(self) -> CreditProductNames:
         raise AssertionError("FakeProvider has no credit catalog")
+
+    @property
+    def policy_clauses(self) -> PolicyClauses:
+        raise AssertionError("FakeProvider has no policy pack")
 
     async def aclose(self) -> None:
         self.closed = True

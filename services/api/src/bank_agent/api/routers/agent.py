@@ -1,6 +1,7 @@
 """``/v1/agent``: the handoff inbox (list, read, claim, resolve) and read-only credit application intakes.
 
 Agents act on structured handoffs; they never read a customer's conversation. Claims and resolutions are audited.
+Every handoff view carries its policy basis with the clause excerpts rendered from the loaded pack.
 """
 
 from typing import Annotated
@@ -64,8 +65,9 @@ async def list_handoffs(
             "limit": limit,
         }
     )
-    records = await services(request).inbox.list(session, query)
-    return HandoffListResponse(handoffs=tuple(HandoffView.of(record) for record in records))
+    provider = services(request)
+    records = await provider.inbox.list(session, query)
+    return HandoffListResponse(handoffs=tuple(HandoffView.of(record, provider.policy_clauses) for record in records))
 
 
 _AGENT_GET_HANDOFF = endpoint(rate=RateClass.READ, roles=AGENT, changes_state=False, operation_id="agent_get_handoff")
@@ -73,7 +75,8 @@ _AGENT_GET_HANDOFF = endpoint(rate=RateClass.READ, roles=AGENT, changes_state=Fa
 
 @router.get("/handoffs/{handoff_id}", response_model=HandoffView, **_AGENT_GET_HANDOFF)
 async def get_handoff(request: Request, handoff_id: HandoffPath, session: AgentSession) -> HandoffView:
-    return HandoffView.of(await services(request).inbox.get(session, handoff_id))
+    provider = services(request)
+    return HandoffView.of(await provider.inbox.get(session, handoff_id), provider.policy_clauses)
 
 
 _AGENT_CLAIM_HANDOFF = endpoint(
@@ -84,7 +87,8 @@ _AGENT_CLAIM_HANDOFF = endpoint(
 @router.post("/handoffs/{handoff_id}/claim", response_model=HandoffView, **_AGENT_CLAIM_HANDOFF)
 async def claim_handoff(request: Request, handoff_id: HandoffPath, session: AgentSession) -> HandoffView:
     """Claim an open handoff for the signed-in agent."""
-    return HandoffView.of(await services(request).inbox.claim(session, handoff_id))
+    provider = services(request)
+    return HandoffView.of(await provider.inbox.claim(session, handoff_id), provider.policy_clauses)
 
 
 _AGENT_RESOLVE_HANDOFF = endpoint(
@@ -97,8 +101,9 @@ async def resolve_handoff(
     request: Request, handoff_id: HandoffPath, body: ResolveHandoffRequest, session: AgentSession
 ) -> HandoffView:
     """Resolve a handoff this agent claimed, with an outcome code and a note."""
-    record = await services(request).inbox.resolve(session, handoff_id, body.outcome, body.note)
-    return HandoffView.of(record)
+    provider = services(request)
+    record = await provider.inbox.resolve(session, handoff_id, body.outcome, body.note)
+    return HandoffView.of(record, provider.policy_clauses)
 
 
 _AGENT_LIST_CREDIT_APPLICATIONS = endpoint(

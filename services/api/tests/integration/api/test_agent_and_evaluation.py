@@ -9,11 +9,14 @@ import pytest
 
 from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.credit import CreditApplicationIntake
+from bank_agent.domain.decision import ClauseRef
 from bank_agent.domain.eligibility import CreditReview
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.handoff import EscalationReason
 from bank_agent.domain.identifiers import ApplicationId, CreditProductCode, CustomerId, HandoffId, IdempotencyKey
+from bank_agent.domain.locale import Language, Locale
 from bank_agent.domain.money import Currency, Money
+from bank_agent.policy.explain import render_body
 from bank_agent.ports.audit import AuditQuery
 from bank_agent_api import EVALUATOR_ID, ApiBackend, ApiClient
 from bank_agent_builders import T0, eligibility_assessment, handoff_v1_1
@@ -61,6 +64,13 @@ async def test_agents_filter_read_claim_and_resolve_handoffs_and_the_moves_are_a
     assert view["escalation_reason"]["code"] == "credit_review_required"
     assert view["credit_review"]["risk"]["band"]
     assert "transcript" not in _keys(view)
+    assert view["language"] == "es"
+    assert [citation["clause"] for citation in view["policy_excerpts"]] == view["policy_basis"] != []
+    assert all(citation["excerpt"] and "{" not in citation["excerpt"] for citation in view["policy_excerpts"])
+    first = ClauseRef.parse(view["policy_basis"][0])
+    spanish = harness.container.policy.pack.get_clause(first.clause_id, Language.ES, first.version)
+    assert view["policy_excerpts"][0]["excerpt"] == render_body(spanish, Locale.ES_MX)[:1000]
+    assert claimed.json()["policy_excerpts"] == resolved.json()["policy_excerpts"] == view["policy_excerpts"]
     assert (claimed.json()["status"], resolved.json()["status"]) == ("claimed", "resolved")
     assert resolved.json()["resolution"]["outcome"] == "referred_to_specialist"
     assert again.status_code == 409

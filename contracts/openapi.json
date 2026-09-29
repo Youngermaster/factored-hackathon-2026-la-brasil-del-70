@@ -2370,6 +2370,13 @@
             "title": "Policy Basis",
             "type": "array"
           },
+          "policy_excerpts": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "title": "Policy Excerpts",
+            "type": "array"
+          },
           "priority": {
             "$ref": "#/components/schemas/Priority"
           },
@@ -2441,6 +2448,7 @@
           "verified_facts",
           "actions_taken",
           "policy_basis",
+          "policy_excerpts",
           "escalation_reason",
           "open_questions",
           "customer_sentiment",
