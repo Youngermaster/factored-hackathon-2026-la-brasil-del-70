@@ -1,0 +1,5928 @@
+{
+  "components": {
+    "schemas": {
+      "ActionDisplayStatus": {
+        "enum": [
+          "pending",
+          "verified",
+          "failed"
+        ],
+        "title": "ActionDisplayStatus",
+        "type": "string"
+      },
+      "ActionKind": {
+        "enum": [
+          "create_dispute_case",
+          "block_card",
+          "submit_credit_application"
+        ],
+        "title": "ActionKind",
+        "type": "string"
+      },
+      "ActionStatus": {
+        "enum": [
+          "executed",
+          "failed",
+          "unknown"
+        ],
+        "title": "ActionStatus",
+        "type": "string"
+      },
+      "ActionStatusView": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/ActionKind"
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/ActionDisplayStatus"
+          }
+        },
+        "required": [
+          "action",
+          "status",
+          "reference",
+          "evidence"
+        ],
+        "title": "ActionStatusView",
+        "type": "object"
+      },
+      "ActionTaken": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/ActionKind"
+          },
+          "confirmed": {
+            "title": "Confirmed",
+            "type": "boolean"
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/ActionStatus"
+          },
+          "target": {
+            "$ref": "#/components/schemas/SourceRef"
+          },
+          "verification": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        },
+        "required": [
+          "action",
+          "target",
+          "confirmed",
+          "status",
+          "verification",
+          "evidence"
+        ],
+        "title": "ActionTaken",
+        "type": "object"
+      },
+      "ApplicationStatus": {
+        "enum": [
+          "submitted",
+          "under_human_review",
+          "withdrawn",
+          "closed"
+        ],
+        "title": "ApplicationStatus",
+        "type": "string"
+      },
+      "ApplicationStatusChange": {
+        "additionalProperties": false,
+        "properties": {
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "from_status": {
+            "$ref": "#/components/schemas/ApplicationStatus"
+          },
+          "reason_code": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason Code",
+            "type": "string"
+          },
+          "to_status": {
+            "$ref": "#/components/schemas/ApplicationStatus"
+          }
+        },
+        "required": [
+          "from_status",
+          "to_status",
+          "at",
+          "reason_code"
+        ],
+        "title": "ApplicationStatusChange",
+        "type": "object"
+      },
+      "AssistantMessage": {
+        "properties": {
+          "action_statuses": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ActionStatusView"
+            },
+            "title": "Action Statuses",
+            "type": "array"
+          },
+          "balances": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/BalanceView"
+            },
+            "title": "Balances",
+            "type": "array"
+          },
+          "card_action_confirmation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CardActionConfirmation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "card_status": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CardStatusView"
+            },
+            "title": "Card Status",
+            "type": "array"
+          },
+          "citations": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "clarification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Clarification"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confirmation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConfirmationCard"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "credit_intake_confirmation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreditIntakeConfirmation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "credit_products": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CreditProduct"
+            },
+            "title": "Credit Products",
+            "type": "array"
+          },
+          "eligibility": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EligibilityView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "escalation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EscalationNotice"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "notices": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/NoticeCode"
+            },
+            "title": "Notices",
+            "type": "array"
+          },
+          "payment_statuses": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/PaymentStatusView"
+            },
+            "title": "Payment Statuses",
+            "type": "array"
+          },
+          "statement": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatementSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "step_up_required": {
+            "default": false,
+            "title": "Step Up Required",
+            "type": "boolean"
+          },
+          "template_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Id"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "language",
+          "text"
+        ],
+        "title": "AssistantMessage",
+        "type": "object"
+      },
+      "AuthLevel": {
+        "description": "How strongly the session's subject is authenticated, from weakest to strongest.",
+        "enum": [
+          "none",
+          "identified",
+          "otp_verified",
+          "step_up"
+        ],
+        "title": "AuthLevel",
+        "type": "string"
+      },
+      "BalanceView": {
+        "additionalProperties": false,
+        "description": "One product's balance. ``product_ref`` is grounding evidence; the chat shows only the masked number.",
+        "properties": {
+          "as_of": {
+            "format": "date-time",
+            "title": "As Of",
+            "type": "string"
+          },
+          "available_credit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "credit_limit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_balance": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "masked_number": {
+            "$ref": "#/components/schemas/MaskedNumber"
+          },
+          "over_limit": {
+            "default": false,
+            "title": "Over Limit",
+            "type": "boolean"
+          },
+          "product_ref": {
+            "$ref": "#/components/schemas/SourceRef"
+          },
+          "product_type": {
+            "$ref": "#/components/schemas/ProductType"
+          }
+        },
+        "required": [
+          "product_ref",
+          "product_type",
+          "masked_number",
+          "current_balance",
+          "credit_limit",
+          "available_credit",
+          "over_limit",
+          "as_of"
+        ],
+        "title": "BalanceView",
+        "type": "object"
+      },
+      "CardAction": {
+        "enum": [
+          "block",
+          "unblock_request",
+          "replacement_request"
+        ],
+        "title": "CardAction",
+        "type": "string"
+      },
+      "CardActionConfirmation": {
+        "additionalProperties": false,
+        "description": "What the customer confirms before a card write. Only self-service card actions have one.",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/CardAction"
+          },
+          "card_last4": {
+            "pattern": "^[0-9A-Z]{4}$",
+            "title": "Card Last4",
+            "type": "string"
+          },
+          "planned_actions": {
+            "items": {
+              "$ref": "#/components/schemas/ActionKind"
+            },
+            "minItems": 1,
+            "title": "Planned Actions",
+            "type": "array"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CardBlockReason"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "action",
+          "card_last4",
+          "reason",
+          "planned_actions"
+        ],
+        "title": "CardActionConfirmation",
+        "type": "object"
+      },
+      "CardBlockReason": {
+        "enum": [
+          "lost",
+          "stolen",
+          "unrecognized_activity",
+          "precaution"
+        ],
+        "title": "CardBlockReason",
+        "type": "string"
+      },
+      "CardRequest": {
+        "additionalProperties": false,
+        "description": "The card request a handoff carries: what the customer asked for, and for which card.",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/CardAction"
+          },
+          "product_ref": {
+            "$ref": "#/components/schemas/SourceRef"
+          }
+        },
+        "required": [
+          "action",
+          "product_ref"
+        ],
+        "title": "CardRequest",
+        "type": "object"
+      },
+      "CardStatusView": {
+        "additionalProperties": false,
+        "description": "A card's status as shown to its owner. ``product_ref`` is grounding evidence, never displayed.",
+        "properties": {
+          "card_type": {
+            "$ref": "#/components/schemas/ProductType"
+          },
+          "expires_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires On"
+          },
+          "masked_number": {
+            "$ref": "#/components/schemas/MaskedNumber"
+          },
+          "product_ref": {
+            "$ref": "#/components/schemas/SourceRef"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProductStatus"
+          }
+        },
+        "required": [
+          "product_ref",
+          "card_type",
+          "masked_number",
+          "status",
+          "expires_on"
+        ],
+        "title": "CardStatusView",
+        "type": "object"
+      },
+      "ChallengeResponse": {
+        "description": "An open one-time-code challenge. ``demo_code`` is set only when demo mode is on, labeled as a demo.",
+        "properties": {
+          "attempts_remaining": {
+            "title": "Attempts Remaining",
+            "type": "integer"
+          },
+          "challenge_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Challenge Id",
+            "type": "string"
+          },
+          "delivery_channel": {
+            "enum": [
+              "demo",
+              "sms"
+            ],
+            "title": "Delivery Channel",
+            "type": "string"
+          },
+          "demo_code": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9]{6}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Demo Code"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "purpose": {
+            "$ref": "#/components/schemas/OtpPurpose"
+          }
+        },
+        "required": [
+          "challenge_id",
+          "purpose",
+          "expires_at",
+          "attempts_remaining",
+          "delivery_channel"
+        ],
+        "title": "ChallengeResponse",
+        "type": "object"
+      },
+      "Channel": {
+        "description": "The service channel a conversation runs on (not the channel of a transaction).",
+        "enum": [
+          "web_chat",
+          "agent_console",
+          "evaluation_harness"
+        ],
+        "title": "Channel",
+        "type": "string"
+      },
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "clause": {
+            "$ref": "#/components/schemas/ClauseRef"
+          },
+          "excerpt": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Excerpt",
+            "type": "string"
+          }
+        },
+        "required": [
+          "clause",
+          "excerpt"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "Clarification": {
+        "additionalProperties": false,
+        "properties": {
+          "options": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ClarificationOption"
+            },
+            "maxItems": 3,
+            "title": "Options",
+            "type": "array"
+          }
+        },
+        "required": [
+          "options"
+        ],
+        "title": "Clarification",
+        "type": "object"
+      },
+      "ClarificationOption": {
+        "additionalProperties": false,
+        "description": "One candidate transaction, shown masked. The option id is opaque; the transaction id stays server side.",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "card_last4": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9A-Z]{4}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Card Last4"
+          },
+          "merchant_display": {
+            "anyOf": [
+              {
+                "maxLength": 150,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Merchant Display"
+          },
+          "occurred_on": {
+            "format": "date",
+            "title": "Occurred On",
+            "type": "string"
+          },
+          "option_id": {
+            "pattern": "^opt-[0-9]{1,2}$",
+            "title": "Option Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "option_id",
+          "occurred_on",
+          "merchant_display",
+          "amount",
+          "card_last4"
+        ],
+        "title": "ClarificationOption",
+        "type": "object"
+      },
+      "ClauseRef": {
+        "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF|ACC|CRE|ELG)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*@[1-9][0-9]*$",
+        "title": "ClauseRef",
+        "type": "string"
+      },
+      "ConfirmationCard": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "card_last4": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9A-Z]{4}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Card Last4"
+          },
+          "expected_resolution_by": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Resolution By"
+          },
+          "merchant_display": {
+            "anyOf": [
+              {
+                "maxLength": 150,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Merchant Display"
+          },
+          "occurred_on": {
+            "format": "date",
+            "title": "Occurred On",
+            "type": "string"
+          },
+          "planned_actions": {
+            "items": {
+              "$ref": "#/components/schemas/ActionKind"
+            },
+            "minItems": 1,
+            "title": "Planned Actions",
+            "type": "array"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/DisputeReason"
+          }
+        },
+        "required": [
+          "occurred_on",
+          "merchant_display",
+          "amount",
+          "card_last4",
+          "reason",
+          "planned_actions",
+          "expected_resolution_by"
+        ],
+        "title": "ConfirmationCard",
+        "type": "object"
+      },
+      "ConversationHistoryResponse": {
+        "properties": {
+          "conversation": {
+            "$ref": "#/components/schemas/ConversationView"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/TurnView"
+            },
+            "title": "Turns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "conversation",
+          "turns"
+        ],
+        "title": "ConversationHistoryResponse",
+        "type": "object"
+      },
+      "ConversationStatus": {
+        "enum": [
+          "active",
+          "escalated",
+          "closed"
+        ],
+        "title": "ConversationStatus",
+        "type": "string"
+      },
+      "ConversationView": {
+        "properties": {
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ConversationStatus"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "workflow": {
+            "$ref": "#/components/schemas/WorkflowRef"
+          }
+        },
+        "required": [
+          "conversation_id",
+          "status",
+          "language",
+          "workflow",
+          "state",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ConversationView",
+        "type": "object"
+      },
+      "Country": {
+        "enum": [
+          "MX",
+          "CO",
+          "AR"
+        ],
+        "title": "Country",
+        "type": "string"
+      },
+      "CreditApplicationListResponse": {
+        "properties": {
+          "applications": {
+            "items": {
+              "$ref": "#/components/schemas/CreditApplicationView"
+            },
+            "title": "Applications",
+            "type": "array"
+          }
+        },
+        "required": [
+          "applications"
+        ],
+        "title": "CreditApplicationListResponse",
+        "type": "object"
+      },
+      "CreditApplicationView": {
+        "description": "An intake recorded for human review. It is never a lending decision; the policy behind it is synthetic.",
+        "properties": {
+          "application_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Application Id",
+            "type": "string"
+          },
+          "assessment_ref": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Ref"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "customer_id": {
+            "maxLength": 20,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "declared_monthly_income": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "origin_conversation_id": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Conversation Id"
+          },
+          "product_code": {
+            "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+            "title": "Product Code",
+            "type": "string"
+          },
+          "purpose": {
+            "title": "Purpose",
+            "type": "string"
+          },
+          "requested_amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "requested_term_months": {
+            "title": "Requested Term Months",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ApplicationStatus"
+          },
+          "status_history": {
+            "items": {
+              "$ref": "#/components/schemas/ApplicationStatusChange"
+            },
+            "title": "Status History",
+            "type": "array"
+          },
+          "synthetic_policy": {
+            "title": "Synthetic Policy",
+            "type": "boolean"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "application_id",
+          "customer_id",
+          "product_code",
+          "requested_amount",
+          "requested_term_months",
+          "purpose",
+          "declared_monthly_income",
+          "assessment_ref",
+          "status",
+          "created_at",
+          "updated_at",
+          "status_history",
+          "origin_conversation_id",
+          "synthetic_policy"
+        ],
+        "title": "CreditApplicationView",
+        "type": "object"
+      },
+      "CreditIntakeConfirmation": {
+        "additionalProperties": false,
+        "description": "What the customer confirms before an application intake is recorded for human review.\n\nIt shows no declared income, and states that the result is indicative, not an offer or a decision.",
+        "properties": {
+          "disclaimer": {
+            "const": "indicative_not_an_offer_or_decision",
+            "default": "indicative_not_an_offer_or_decision",
+            "title": "Disclaimer",
+            "type": "string"
+          },
+          "eligibility_outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EligibilityOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "planned_actions": {
+            "items": {
+              "$ref": "#/components/schemas/ActionKind"
+            },
+            "minItems": 1,
+            "title": "Planned Actions",
+            "type": "array"
+          },
+          "product_code": {
+            "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+            "title": "Product Code",
+            "type": "string"
+          },
+          "product_type": {
+            "$ref": "#/components/schemas/CreditProductType"
+          },
+          "purpose": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Purpose",
+            "type": "string"
+          },
+          "requested_amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "requested_term_months": {
+            "maximum": 480.0,
+            "minimum": 1.0,
+            "title": "Requested Term Months",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "product_code",
+          "product_type",
+          "requested_amount",
+          "requested_term_months",
+          "purpose",
+          "eligibility_outcome",
+          "disclaimer",
+          "planned_actions"
+        ],
+        "title": "CreditIntakeConfirmation",
+        "type": "object"
+      },
+      "CreditProduct": {
+        "additionalProperties": false,
+        "description": "One synthetic catalog entry. Indicative ranges only: never an offer.\n\n``self_service_eligibility`` is false for products whose eligibility needs facts the data does not have\n(a mortgage needs collateral facts); the eligibility service then returns ``review_required``.",
+        "properties": {
+          "catalog_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Catalog Version",
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "eligibility_clause_ids": {
+            "default": [],
+            "items": {
+              "pattern": "^(SCOPE|AUTH|PRV|DSP|CRD|ESC|INF|ACC|CRE|ELG)-(MX|CO|AR|ALL)-[0-9]+(\\.[0-9]+)*$",
+              "type": "string"
+            },
+            "title": "Eligibility Clause Ids",
+            "type": "array"
+          },
+          "jurisdiction": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "max_amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "max_annual_rate": {
+            "ge": 0,
+            "le": "999.99",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Max Annual Rate",
+            "type": "string"
+          },
+          "max_term_months": {
+            "maximum": 480.0,
+            "minimum": 1.0,
+            "title": "Max Term Months",
+            "type": "integer"
+          },
+          "min_amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "min_annual_rate": {
+            "ge": 0,
+            "le": "999.99",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Min Annual Rate",
+            "type": "string"
+          },
+          "min_term_months": {
+            "maximum": 480.0,
+            "minimum": 1.0,
+            "title": "Min Term Months",
+            "type": "integer"
+          },
+          "product_code": {
+            "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+            "title": "Product Code",
+            "type": "string"
+          },
+          "product_type": {
+            "$ref": "#/components/schemas/CreditProductType"
+          },
+          "purposes": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Purposes",
+            "type": "array"
+          },
+          "required_information": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Required Information",
+            "type": "array"
+          },
+          "self_service_eligibility": {
+            "title": "Self Service Eligibility",
+            "type": "boolean"
+          },
+          "synthetic": {
+            "const": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "product_code",
+          "product_type",
+          "jurisdiction",
+          "currency",
+          "min_amount",
+          "max_amount",
+          "min_term_months",
+          "max_term_months",
+          "min_annual_rate",
+          "max_annual_rate",
+          "purposes",
+          "required_information",
+          "eligibility_clause_ids",
+          "self_service_eligibility",
+          "catalog_version",
+          "synthetic"
+        ],
+        "title": "CreditProduct",
+        "type": "object"
+      },
+      "CreditProductType": {
+        "enum": [
+          "credit_card",
+          "personal_loan",
+          "mortgage"
+        ],
+        "title": "CreditProductType",
+        "type": "string"
+      },
+      "CreditReview": {
+        "additionalProperties": false,
+        "description": "The credit part of a handoff: what was assessed, why a human is needed, and the internal estimate.",
+        "properties": {
+          "application_ref": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Application Ref"
+          },
+          "eligibility_outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EligibilityOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "missing_facts": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Missing Facts",
+            "type": "array"
+          },
+          "product_code": {
+            "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+            "title": "Product Code",
+            "type": "string"
+          },
+          "reason_codes": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Reason Codes",
+            "type": "array"
+          },
+          "review_reasons": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ReviewReason"
+            },
+            "title": "Review Reasons",
+            "type": "array"
+          },
+          "risk": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreditReviewRisk"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-internal": true
+          },
+          "rule_ids": {
+            "default": [],
+            "items": {
+              "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+              "type": "string"
+            },
+            "title": "Rule Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "product_code",
+          "application_ref",
+          "eligibility_outcome",
+          "rule_ids",
+          "reason_codes",
+          "review_reasons",
+          "missing_facts",
+          "risk"
+        ],
+        "title": "CreditReview",
+        "type": "object"
+      },
+      "CreditReviewRisk": {
+        "additionalProperties": false,
+        "description": "The estimate a human reviewer sees in a handoff. Agents see it; customers never do.",
+        "properties": {
+          "band": {
+            "$ref": "#/components/schemas/RiskBand",
+            "x-internal": true
+          },
+          "interval_high": {
+            "ge": 0,
+            "le": 1,
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Interval High",
+            "type": "string",
+            "x-internal": true
+          },
+          "interval_low": {
+            "ge": 0,
+            "le": 1,
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Interval Low",
+            "type": "string",
+            "x-internal": true
+          },
+          "label_definition": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Label Definition",
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelRef"
+          }
+        },
+        "required": [
+          "band",
+          "interval_low",
+          "interval_high",
+          "model",
+          "label_definition"
+        ],
+        "title": "CreditReviewRisk",
+        "type": "object"
+      },
+      "CsrfResponse": {
+        "description": "The double-submit token, also set as the readable CSRF cookie. Send it in ``X-CSRF-Token``.",
+        "properties": {
+          "csrf_token": {
+            "maxLength": 128,
+            "title": "Csrf Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "csrf_token"
+        ],
+        "title": "CsrfResponse",
+        "type": "object"
+      },
+      "Currency": {
+        "enum": [
+          "MXN",
+          "COP",
+          "ARS",
+          "USD"
+        ],
+        "title": "Currency",
+        "type": "string"
+      },
+      "CurrencyTotals": {
+        "additionalProperties": false,
+        "description": "Settled debits and credits in one currency. Amounts in different currencies are never added together.",
+        "properties": {
+          "credit_count": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Credit Count",
+            "type": "integer"
+          },
+          "credits": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "debit_count": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Debit Count",
+            "type": "integer"
+          },
+          "debits": {
+            "$ref": "#/components/schemas/Money"
+          }
+        },
+        "required": [
+          "currency",
+          "debits",
+          "credits",
+          "debit_count",
+          "credit_count"
+        ],
+        "title": "CurrencyTotals",
+        "type": "object"
+      },
+      "CustomerTraceRecord": {
+        "properties": {
+          "auth_level": {
+            "$ref": "#/components/schemas/AuthLevel"
+          },
+          "case_refs": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "type": "string"
+            },
+            "title": "Case Refs",
+            "type": "array"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "clause_refs": {
+            "items": {
+              "$ref": "#/components/schemas/ClauseRef"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "cost_usd": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Cost Usd",
+            "type": "string"
+          },
+          "decisions": {
+            "items": {
+              "$ref": "#/components/schemas/Decision"
+            },
+            "title": "Decisions",
+            "type": "array"
+          },
+          "eligibility_assessments": {
+            "items": {
+              "$ref": "#/components/schemas/EligibilityAssessmentRecord"
+            },
+            "title": "Eligibility Assessments",
+            "type": "array"
+          },
+          "grounding": {
+            "$ref": "#/components/schemas/GroundingReport"
+          },
+          "handoff_ref": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Handoff Ref"
+          },
+          "intent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IntentPrediction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "language_detection": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LanguageDetection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latency": {
+            "$ref": "#/components/schemas/LatencyBreakdown"
+          },
+          "llm_calls": {
+            "items": {
+              "$ref": "#/components/schemas/LlmCallRecord"
+            },
+            "title": "Llm Calls",
+            "type": "array"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelRef"
+            },
+            "title": "Models",
+            "type": "array"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/Outcome"
+          },
+          "policy_pack_version": {
+            "title": "Policy Pack Version",
+            "type": "string"
+          },
+          "prompts": {
+            "items": {
+              "$ref": "#/components/schemas/PromptRef"
+            },
+            "title": "Prompts",
+            "type": "array"
+          },
+          "recorded_at": {
+            "format": "date-time",
+            "title": "Recorded At",
+            "type": "string"
+          },
+          "retrieval": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RetrievalRecord"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "risk_estimates_used": {
+            "items": {
+              "$ref": "#/components/schemas/RiskEstimateUsed"
+            },
+            "title": "Risk Estimates Used",
+            "type": "array"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "state_after": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State After",
+            "type": "string"
+          },
+          "state_before": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State Before",
+            "type": "string"
+          },
+          "token_usage": {
+            "$ref": "#/components/schemas/TokenUsage"
+          },
+          "tool_calls": {
+            "items": {
+              "$ref": "#/components/schemas/ToolCallRecord"
+            },
+            "title": "Tool Calls",
+            "type": "array"
+          },
+          "turn_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Turn Id",
+            "type": "string"
+          },
+          "workflow": {
+            "$ref": "#/components/schemas/WorkflowRef"
+          },
+          "workflow_before": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "schema_version",
+          "turn_id",
+          "conversation_id",
+          "workflow",
+          "workflow_before",
+          "recorded_at",
+          "channel",
+          "language",
+          "language_detection",
+          "auth_level",
+          "state_before",
+          "state_after",
+          "outcome",
+          "intent",
+          "decisions",
+          "clause_refs",
+          "tool_calls",
+          "llm_calls",
+          "models",
+          "prompts",
+          "policy_pack_version",
+          "latency",
+          "token_usage",
+          "cost_usd",
+          "grounding",
+          "handoff_ref",
+          "case_refs",
+          "eligibility_assessments",
+          "retrieval",
+          "risk_estimates_used"
+        ],
+        "title": "CustomerTraceRecord",
+        "type": "object"
+      },
+      "CustomerTraceResponse": {
+        "properties": {
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/CustomerTraceRecord"
+            },
+            "title": "Records",
+            "type": "array"
+          }
+        },
+        "required": [
+          "conversation_id",
+          "records"
+        ],
+        "title": "CustomerTraceResponse",
+        "type": "object"
+      },
+      "DateRange": {
+        "additionalProperties": false,
+        "description": "An inclusive range of calendar dates in the customer's time zone.",
+        "properties": {
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "DateRange",
+        "type": "object"
+      },
+      "Decision": {
+        "additionalProperties": false,
+        "description": "Version 1 of the decision contract (``contracts/schemas/decision.v1.json``).",
+        "properties": {
+          "action": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ActionKind"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "clause_refs": {
+            "items": {
+              "$ref": "#/components/schemas/ClauseRef"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "decisive_rule_ids": {
+            "default": [],
+            "items": {
+              "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+              "type": "string"
+            },
+            "title": "Decisive Rule Ids",
+            "type": "array"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/DecisionKind"
+          },
+          "policy_pack_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Policy Pack Version",
+            "type": "string"
+          },
+          "rule_results": {
+            "items": {
+              "$ref": "#/components/schemas/RuleResult"
+            },
+            "title": "Rule Results",
+            "type": "array"
+          },
+          "schema_version": {
+            "default": "1.2.0",
+            "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "state": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "state",
+          "action",
+          "kind",
+          "rule_results",
+          "decisive_rule_ids",
+          "clause_refs",
+          "policy_pack_version"
+        ],
+        "title": "Decision",
+        "type": "object"
+      },
+      "DecisionKind": {
+        "enum": [
+          "allow",
+          "deny",
+          "require_confirmation",
+          "require_step_up",
+          "clarify",
+          "escalate",
+          "abstain",
+          "refuse"
+        ],
+        "title": "DecisionKind",
+        "type": "string"
+      },
+      "DisputeReason": {
+        "enum": [
+          "unrecognized",
+          "duplicate",
+          "wrong_amount",
+          "not_received",
+          "atm_cash_not_dispensed",
+          "subscription_cancelled",
+          "other"
+        ],
+        "title": "DisputeReason",
+        "type": "string"
+      },
+      "DocumentLogin": {
+        "additionalProperties": false,
+        "description": "A document number plus the last four phone digits. Never proof of identity: it only opens a challenge.",
+        "properties": {
+          "document_number": {
+            "pattern": "^[A-Za-z0-9-]{4,20}$",
+            "title": "Document Number",
+            "type": "string"
+          },
+          "kind": {
+            "const": "document",
+            "title": "Kind",
+            "type": "string"
+          },
+          "phone_last4": {
+            "pattern": "^[0-9]{4}$",
+            "title": "Phone Last4",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "document_number",
+          "phone_last4"
+        ],
+        "title": "DocumentLogin",
+        "type": "object"
+      },
+      "EligibilityAssessmentRecord": {
+        "additionalProperties": false,
+        "description": "An eligibility assessment as the execution record keeps it: rule ids and versions, not parameters.",
+        "properties": {
+          "assessment_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Assessment Id",
+            "type": "string"
+          },
+          "missing_facts": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Missing Facts",
+            "type": "array"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/EligibilityOutcome"
+          },
+          "policy_pack_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Policy Pack Version",
+            "type": "string"
+          },
+          "product_code": {
+            "pattern": "^[A-Z][A-Z0-9_-]{2,31}$",
+            "title": "Product Code",
+            "type": "string"
+          },
+          "review_reasons": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ReviewReason"
+            },
+            "title": "Review Reasons",
+            "type": "array"
+          },
+          "rules": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/RuleVersion"
+            },
+            "title": "Rules",
+            "type": "array"
+          },
+          "service": {
+            "$ref": "#/components/schemas/ServiceRef"
+          }
+        },
+        "required": [
+          "assessment_id",
+          "service",
+          "product_code",
+          "outcome",
+          "rules",
+          "review_reasons",
+          "missing_facts",
+          "policy_pack_version"
+        ],
+        "title": "EligibilityAssessmentRecord",
+        "type": "object"
+      },
+      "EligibilityOutcome": {
+        "description": "There is no approved outcome by design: the synthetic service gives an indication, never a decision.",
+        "enum": [
+          "indicatively_eligible",
+          "not_eligible",
+          "review_required",
+          "insufficient_data"
+        ],
+        "title": "EligibilityOutcome",
+        "type": "string"
+      },
+      "EligibilityReason": {
+        "additionalProperties": false,
+        "properties": {
+          "clause": {
+            "$ref": "#/components/schemas/ClauseRef"
+          },
+          "reason_code": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason_code",
+          "clause"
+        ],
+        "title": "EligibilityReason",
+        "type": "object"
+      },
+      "EligibilityView": {
+        "additionalProperties": false,
+        "description": "The customer-facing part of an assessment. It never carries the estimate or any profile value.",
+        "properties": {
+          "disclaimer": {
+            "const": "indicative_not_an_offer_or_decision",
+            "default": "indicative_not_an_offer_or_decision",
+            "title": "Disclaimer",
+            "type": "string"
+          },
+          "missing_facts": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Missing Facts",
+            "type": "array"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/EligibilityOutcome"
+          },
+          "reasons": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/EligibilityReason"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "review_path": {
+            "$ref": "#/components/schemas/ReviewPath"
+          },
+          "synthetic": {
+            "const": true,
+            "default": true,
+            "title": "Synthetic",
+            "type": "boolean"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/UncertaintyStatement"
+          }
+        },
+        "required": [
+          "outcome",
+          "reasons",
+          "missing_facts",
+          "uncertainty",
+          "review_path",
+          "disclaimer",
+          "synthetic"
+        ],
+        "title": "EligibilityView",
+        "type": "object"
+      },
+      "EntryDirection": {
+        "enum": [
+          "debit",
+          "credit",
+          "unclassified"
+        ],
+        "title": "EntryDirection",
+        "type": "string"
+      },
+      "EscalationNotice": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_response_by": {
+            "format": "date-time",
+            "title": "Expected Response By",
+            "type": "string"
+          },
+          "handoff_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Handoff Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "handoff_id",
+          "expected_response_by"
+        ],
+        "title": "EscalationNotice",
+        "type": "object"
+      },
+      "EscalationReason": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/EscalationReasonCode"
+          },
+          "detail": {
+            "maxLength": 300,
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "detail"
+        ],
+        "title": "EscalationReason",
+        "type": "object"
+      },
+      "EscalationReasonCode": {
+        "enum": [
+          "amount_above_auto_limit",
+          "repeat_complainer",
+          "legal_or_regulator_mention",
+          "distress_signal",
+          "human_requested",
+          "clarification_exhausted",
+          "tool_failure",
+          "verification_mismatch",
+          "risk_tier_high",
+          "sla_breached",
+          "unsupported_needs_human",
+          "other",
+          "card_unblock_requested",
+          "card_replacement_requested",
+          "credit_review_required",
+          "eligibility_contested"
+        ],
+        "title": "EscalationReasonCode",
+        "type": "string"
+      },
+      "EvaluationSummariesResponse": {
+        "description": "Newest first. Empty until the evaluation harness publishes a run.",
+        "properties": {
+          "summaries": {
+            "items": {
+              "$ref": "#/components/schemas/EvaluationSummary"
+            },
+            "title": "Summaries",
+            "type": "array"
+          }
+        },
+        "required": [
+          "summaries"
+        ],
+        "title": "EvaluationSummariesResponse",
+        "type": "object"
+      },
+      "EvaluationSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "aggregate": {
+            "$ref": "#/components/schemas/OutcomeMetrics"
+          },
+          "dataset_version": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Dataset Version",
+            "type": "string"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "git_sha": {
+            "pattern": "^[0-9a-f]{7,40}$",
+            "title": "Git Sha",
+            "type": "string"
+          },
+          "measurement": {
+            "const": "offline",
+            "default": "offline",
+            "title": "Measurement",
+            "type": "string"
+          },
+          "notes": {
+            "default": [],
+            "items": {
+              "maxLength": 300,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+              "type": "string"
+            },
+            "title": "Notes",
+            "type": "array"
+          },
+          "run_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "1.0.0",
+            "default": "1.0.0",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "system": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "System",
+            "type": "string"
+          },
+          "workflows": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowSummary"
+            },
+            "minItems": 1,
+            "title": "Workflows",
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "run_id",
+          "system",
+          "generated_at",
+          "git_sha",
+          "dataset_version",
+          "measurement",
+          "workflows",
+          "aggregate",
+          "notes"
+        ],
+        "title": "EvaluationSummary",
+        "type": "object"
+      },
+      "GroundingReport": {
+        "additionalProperties": false,
+        "properties": {
+          "llm_phrasing_used": {
+            "default": false,
+            "title": "Llm Phrasing Used",
+            "type": "boolean"
+          },
+          "template_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_.]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Id"
+          },
+          "violations": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Violations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "llm_phrasing_used",
+          "template_id",
+          "violations"
+        ],
+        "title": "GroundingReport",
+        "type": "object"
+      },
+      "HandoffAuth": {
+        "additionalProperties": false,
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "level": {
+            "$ref": "#/components/schemas/AuthLevel"
+          }
+        },
+        "required": [
+          "level",
+          "expires_at"
+        ],
+        "title": "HandoffAuth",
+        "type": "object"
+      },
+      "HandoffListResponse": {
+        "properties": {
+          "handoffs": {
+            "items": {
+              "$ref": "#/components/schemas/HandoffView"
+            },
+            "title": "Handoffs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "handoffs"
+        ],
+        "title": "HandoffListResponse",
+        "type": "object"
+      },
+      "HandoffOutcomeCode": {
+        "enum": [
+          "resolved_by_agent",
+          "case_updated",
+          "referred_to_specialist",
+          "no_action_needed",
+          "customer_unreachable",
+          "other"
+        ],
+        "title": "HandoffOutcomeCode",
+        "type": "string"
+      },
+      "HandoffRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "intent": {
+            "$ref": "#/components/schemas/Intent"
+          },
+          "summary": {
+            "maxLength": 500,
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "summary",
+          "intent"
+        ],
+        "title": "HandoffRequest",
+        "type": "object"
+      },
+      "HandoffResolution": {
+        "additionalProperties": false,
+        "properties": {
+          "note": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Note",
+            "type": "string",
+            "x-pii": "free_text"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/HandoffOutcomeCode"
+          },
+          "resolved_at": {
+            "format": "date-time",
+            "title": "Resolved At",
+            "type": "string"
+          },
+          "resolved_by": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Resolved By",
+            "type": "string"
+          }
+        },
+        "required": [
+          "outcome",
+          "note",
+          "resolved_by",
+          "resolved_at"
+        ],
+        "title": "HandoffResolution",
+        "type": "object"
+      },
+      "HandoffStatus": {
+        "enum": [
+          "open",
+          "claimed",
+          "resolved"
+        ],
+        "title": "HandoffStatus",
+        "type": "string"
+      },
+      "HandoffView": {
+        "properties": {
+          "actions_taken": {
+            "items": {
+              "$ref": "#/components/schemas/ActionTaken"
+            },
+            "title": "Actions Taken",
+            "type": "array"
+          },
+          "auth": {
+            "$ref": "#/components/schemas/HandoffAuth"
+          },
+          "card_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CardRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "case_ref": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Ref"
+          },
+          "claimed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claimed At"
+          },
+          "claimed_by": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claimed By"
+          },
+          "conversation_ref": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Ref",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "credit_review": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreditReview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "customer_ref": {
+            "maxLength": 20,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Customer Ref",
+            "type": "string"
+          },
+          "customer_sentiment": {
+            "$ref": "#/components/schemas/Sentiment"
+          },
+          "escalation_reason": {
+            "$ref": "#/components/schemas/EscalationReason"
+          },
+          "handoff_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Handoff Id",
+            "type": "string"
+          },
+          "jurisdiction": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "open_questions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Open Questions",
+            "type": "array"
+          },
+          "policy_basis": {
+            "items": {
+              "$ref": "#/components/schemas/ClauseRef"
+            },
+            "title": "Policy Basis",
+            "type": "array"
+          },
+          "priority": {
+            "$ref": "#/components/schemas/Priority"
+          },
+          "request": {
+            "$ref": "#/components/schemas/HandoffRequest"
+          },
+          "resolution": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HandoffResolution"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "sla_due": {
+            "format": "date-time",
+            "title": "Sla Due",
+            "type": "string"
+          },
+          "state_at_escalation": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State At Escalation",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/HandoffStatus"
+          },
+          "verified_facts": {
+            "items": {
+              "$ref": "#/components/schemas/VerifiedFact"
+            },
+            "title": "Verified Facts",
+            "type": "array"
+          },
+          "workflow": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "handoff_id",
+          "schema_version",
+          "created_at",
+          "status",
+          "claimed_by",
+          "claimed_at",
+          "resolution",
+          "conversation_ref",
+          "customer_ref",
+          "case_ref",
+          "workflow",
+          "state_at_escalation",
+          "language",
+          "jurisdiction",
+          "auth",
+          "request",
+          "verified_facts",
+          "actions_taken",
+          "policy_basis",
+          "escalation_reason",
+          "open_questions",
+          "customer_sentiment",
+          "priority",
+          "sla_due",
+          "credit_review",
+          "card_request"
+        ],
+        "title": "HandoffView",
+        "type": "object"
+      },
+      "Intent": {
+        "description": "What the customer wants. Each intent is owned by exactly one workflow or is cross-workflow.\n\n``domain.workflow_catalog.WORKFLOW_CATALOG`` assigns the owners; ``CROSS_WORKFLOW_INTENTS`` lists the rest.",
+        "enum": [
+          "dispute_new",
+          "dispute_status",
+          "card_block",
+          "informational",
+          "unsupported",
+          "human_request",
+          "greeting_or_other",
+          "balance_inquiry",
+          "payment_status",
+          "statement_request",
+          "card_status",
+          "card_unblock_request",
+          "card_replacement_request",
+          "credit_product_info",
+          "credit_eligibility",
+          "credit_application",
+          "credit_application_status"
+        ],
+        "title": "Intent",
+        "type": "string"
+      },
+      "IntentPrediction": {
+        "additionalProperties": false,
+        "properties": {
+          "below_threshold": {
+            "title": "Below Threshold",
+            "type": "boolean"
+          },
+          "candidates": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/IntentScore"
+            },
+            "maxItems": 7,
+            "title": "Candidates",
+            "type": "array"
+          },
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "intent": {
+            "$ref": "#/components/schemas/Intent"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelRef"
+          }
+        },
+        "required": [
+          "intent",
+          "confidence",
+          "candidates",
+          "below_threshold",
+          "model"
+        ],
+        "title": "IntentPrediction",
+        "type": "object"
+      },
+      "IntentScore": {
+        "additionalProperties": false,
+        "properties": {
+          "intent": {
+            "$ref": "#/components/schemas/Intent"
+          },
+          "score": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "intent",
+          "score"
+        ],
+        "title": "IntentScore",
+        "type": "object"
+      },
+      "Language": {
+        "enum": [
+          "es",
+          "pt",
+          "en"
+        ],
+        "title": "Language",
+        "type": "string"
+      },
+      "LanguageDetection": {
+        "additionalProperties": false,
+        "description": "``language`` is ``None`` when the detector is uncertain; the engine then asks the customer.",
+        "properties": {
+          "candidates": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/LanguageScore"
+            },
+            "title": "Candidates",
+            "type": "array"
+          },
+          "confidence": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "detector": {
+            "$ref": "#/components/schemas/ModelRef"
+          },
+          "is_mixed": {
+            "default": false,
+            "title": "Is Mixed",
+            "type": "boolean"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "language",
+          "confidence",
+          "candidates",
+          "is_mixed",
+          "detector"
+        ],
+        "title": "LanguageDetection",
+        "type": "object"
+      },
+      "LanguageScore": {
+        "additionalProperties": false,
+        "properties": {
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "score": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "language",
+          "score"
+        ],
+        "title": "LanguageScore",
+        "type": "object"
+      },
+      "LatencyBreakdown": {
+        "additionalProperties": false,
+        "properties": {
+          "stages": {
+            "patternProperties": {
+              "^[a-z][a-z0-9_]{0,63}$": {
+                "minimum": 0.0,
+                "type": "integer"
+              }
+            },
+            "title": "Stages",
+            "type": "object"
+          },
+          "total_ms": {
+            "minimum": 0.0,
+            "title": "Total Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_ms",
+          "stages"
+        ],
+        "title": "LatencyBreakdown",
+        "type": "object"
+      },
+      "LivenessResponse": {
+        "properties": {
+          "status": {
+            "const": "live",
+            "default": "live",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "title": "LivenessResponse",
+        "type": "object"
+      },
+      "LlmCallRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "cost_usd": {
+            "ge": 0,
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Cost Usd",
+            "type": "string"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "input_tokens": {
+            "minimum": 0.0,
+            "title": "Input Tokens",
+            "type": "integer"
+          },
+          "latency_ms": {
+            "minimum": 0.0,
+            "title": "Latency Ms",
+            "type": "integer"
+          },
+          "model_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "title": "Model Id",
+            "type": "string"
+          },
+          "output_tokens": {
+            "minimum": 0.0,
+            "title": "Output Tokens",
+            "type": "integer"
+          },
+          "prompt": {
+            "$ref": "#/components/schemas/PromptRef"
+          },
+          "status": {
+            "$ref": "#/components/schemas/LlmCallStatus"
+          }
+        },
+        "required": [
+          "prompt",
+          "model_id",
+          "input_tokens",
+          "output_tokens",
+          "cost_usd",
+          "latency_ms",
+          "status",
+          "error_code"
+        ],
+        "title": "LlmCallRecord",
+        "type": "object"
+      },
+      "LlmCallStatus": {
+        "enum": [
+          "ok",
+          "repaired",
+          "failed",
+          "fallback"
+        ],
+        "title": "LlmCallStatus",
+        "type": "string"
+      },
+      "MaskedNumber": {
+        "additionalProperties": false,
+        "description": "The last four alphanumeric characters of a product number, rendered as ``**** 1234``.",
+        "properties": {
+          "last4": {
+            "pattern": "^[0-9A-Z]{4}$",
+            "title": "Last4",
+            "type": "string"
+          }
+        },
+        "required": [
+          "last4"
+        ],
+        "title": "MaskedNumber",
+        "type": "object"
+      },
+      "MetricCount": {
+        "additionalProperties": false,
+        "description": "A count and the denominator it is reported over.",
+        "properties": {
+          "count": {
+            "minimum": 0.0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "denominator": {
+            "minimum": 0.0,
+            "title": "Denominator",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "count",
+          "denominator"
+        ],
+        "title": "MetricCount",
+        "type": "object"
+      },
+      "ModelComponent": {
+        "enum": [
+          "router",
+          "resolver",
+          "retriever",
+          "language_detector",
+          "llm",
+          "risk_estimator"
+        ],
+        "title": "ModelComponent",
+        "type": "string"
+      },
+      "ModelRef": {
+        "pattern": "^(router|resolver|retriever|language_detector|llm|risk_estimator):[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+        "title": "ModelRef",
+        "type": "string"
+      },
+      "Money": {
+        "additionalProperties": false,
+        "description": "An amount in one currency. JSON form: ``{\"amount\": \"12.50\", \"currency\": \"MXN\"}``.",
+        "properties": {
+          "amount": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount",
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        },
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "title": "Money",
+        "type": "object"
+      },
+      "NoticeCode": {
+        "enum": [
+          "session_expired",
+          "reauthentication_required",
+          "language_question"
+        ],
+        "title": "NoticeCode",
+        "type": "string"
+      },
+      "OtpPurpose": {
+        "enum": [
+          "login",
+          "step_up"
+        ],
+        "title": "OtpPurpose",
+        "type": "string"
+      },
+      "Outcome": {
+        "enum": [
+          "resolved",
+          "clarified",
+          "abstained",
+          "escalated",
+          "refused",
+          "in_progress"
+        ],
+        "title": "Outcome",
+        "type": "string"
+      },
+      "OutcomeMetrics": {
+        "additionalProperties": false,
+        "description": "The brief's outcome definitions over one slice of the workload.",
+        "properties": {
+          "cases": {
+            "minimum": 0.0,
+            "title": "Cases",
+            "type": "integer"
+          },
+          "containment": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "cost_per_attempted_case_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Attempted Case Usd"
+          },
+          "escalation_missed": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "escalation_unnecessary": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "latency_p50_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency P50 Ms"
+          },
+          "latency_p95_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency P95 Ms"
+          },
+          "safe_automated_resolution": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "unsafe_outcomes": {
+            "$ref": "#/components/schemas/MetricCount"
+          }
+        },
+        "required": [
+          "cases",
+          "safe_automated_resolution",
+          "containment",
+          "escalation_missed",
+          "escalation_unnecessary",
+          "unsafe_outcomes",
+          "latency_p50_ms",
+          "latency_p95_ms",
+          "cost_per_attempted_case_usd"
+        ],
+        "title": "OutcomeMetrics",
+        "type": "object"
+      },
+      "PaymentStatusView": {
+        "additionalProperties": false,
+        "description": "The status of one payment or transfer. ``payee_display`` is sanitized record text, never an instruction.",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "masked_number": {
+            "$ref": "#/components/schemas/MaskedNumber"
+          },
+          "occurred_on": {
+            "format": "date",
+            "title": "Occurred On",
+            "type": "string"
+          },
+          "payee_display": {
+            "anyOf": [
+              {
+                "maxLength": 150,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payee Display"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "transaction_ref": {
+            "$ref": "#/components/schemas/SourceRef"
+          },
+          "transaction_type": {
+            "$ref": "#/components/schemas/TransactionType"
+          }
+        },
+        "required": [
+          "transaction_ref",
+          "transaction_type",
+          "status",
+          "amount",
+          "occurred_on",
+          "payee_display",
+          "masked_number"
+        ],
+        "title": "PaymentStatusView",
+        "type": "object"
+      },
+      "PersonaLogin": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "persona",
+            "title": "Kind",
+            "type": "string"
+          },
+          "persona_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Persona Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "persona_id"
+        ],
+        "title": "PersonaLogin",
+        "type": "object"
+      },
+      "Priority": {
+        "enum": [
+          "low",
+          "medium",
+          "high",
+          "critical"
+        ],
+        "title": "Priority",
+        "type": "string"
+      },
+      "ProblemDetails": {
+        "description": "RFC 9457 problem details. `type` is a stable URI per error; `errors` lists invalid fields.",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "errors": {
+            "items": {
+              "properties": {
+                "loc": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "loc",
+                "type"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "instance": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "instance"
+        ],
+        "title": "ProblemDetails",
+        "type": "object"
+      },
+      "ProductStatus": {
+        "enum": [
+          "active",
+          "blocked",
+          "closed",
+          "suspended"
+        ],
+        "title": "ProductStatus",
+        "type": "string"
+      },
+      "ProductType": {
+        "enum": [
+          "checking_account",
+          "savings_account",
+          "credit_card",
+          "debit_card",
+          "personal_loan",
+          "mortgage",
+          "investment",
+          "other"
+        ],
+        "title": "ProductType",
+        "type": "string"
+      },
+      "PromptRef": {
+        "pattern": "^[a-z][a-z0-9_]{0,63}@[1-9][0-9]*$",
+        "title": "PromptRef",
+        "type": "string"
+      },
+      "ReadinessResponse": {
+        "properties": {
+          "checks": {
+            "additionalProperties": {
+              "enum": [
+                "ok",
+                "unavailable"
+              ],
+              "type": "string"
+            },
+            "title": "Checks",
+            "type": "object"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "not_ready"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "checks"
+        ],
+        "title": "ReadinessResponse",
+        "type": "object"
+      },
+      "ResolveHandoffRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "note": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Note",
+            "type": "string"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/HandoffOutcomeCode"
+          }
+        },
+        "required": [
+          "outcome"
+        ],
+        "title": "ResolveHandoffRequest",
+        "type": "object"
+      },
+      "RetrievalDecisionCode": {
+        "enum": [
+          "answer",
+          "abstain"
+        ],
+        "title": "RetrievalDecisionCode",
+        "type": "string"
+      },
+      "RetrievalRecord": {
+        "additionalProperties": false,
+        "description": "What open retrieval did for an informational turn: which retriever, against which threshold, with what.",
+        "properties": {
+          "citations": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ClauseRef"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/RetrievalDecisionCode"
+          },
+          "retriever": {
+            "$ref": "#/components/schemas/ModelRef"
+          },
+          "threshold": {
+            "title": "Threshold",
+            "type": "number"
+          },
+          "top_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top Score"
+          }
+        },
+        "required": [
+          "retriever",
+          "decision",
+          "threshold",
+          "top_score",
+          "citations"
+        ],
+        "title": "RetrievalRecord",
+        "type": "object"
+      },
+      "ReviewPath": {
+        "enum": [
+          "submit_for_human_review",
+          "request_human_contact",
+          "provide_missing_information"
+        ],
+        "title": "ReviewPath",
+        "type": "string"
+      },
+      "ReviewReason": {
+        "enum": [
+          "missing_income",
+          "missing_credit_score",
+          "borderline_risk_interval",
+          "risk_estimate_unavailable",
+          "days_past_due_present",
+          "amount_above_review_threshold",
+          "customer_contests_result",
+          "product_requires_human_assessment"
+        ],
+        "title": "ReviewReason",
+        "type": "string"
+      },
+      "RiskBand": {
+        "enum": [
+          "low",
+          "medium",
+          "high",
+          "unknown"
+        ],
+        "title": "RiskBand",
+        "type": "string"
+      },
+      "RiskEstimateRecord": {
+        "additionalProperties": false,
+        "description": "A risk estimate as the execution record keeps it (glass box, phase 13). Internal.",
+        "properties": {
+          "band": {
+            "$ref": "#/components/schemas/RiskBand",
+            "x-internal": true
+          },
+          "estimate_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Estimate Id",
+            "type": "string"
+          },
+          "flags": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/UncertaintyFlag"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "interval_high": {
+            "ge": 0,
+            "le": 1,
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Interval High",
+            "type": "string",
+            "x-internal": true
+          },
+          "interval_low": {
+            "ge": 0,
+            "le": 1,
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Interval Low",
+            "type": "string",
+            "x-internal": true
+          },
+          "label_definition": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Label Definition",
+            "type": "string"
+          },
+          "latency_ms": {
+            "minimum": 0.0,
+            "title": "Latency Ms",
+            "type": "integer"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelRef"
+          },
+          "probability": {
+            "ge": 0,
+            "le": 1,
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Probability",
+            "type": "string",
+            "x-internal": true
+          }
+        },
+        "required": [
+          "model",
+          "estimate_id",
+          "probability",
+          "interval_low",
+          "interval_high",
+          "band",
+          "flags",
+          "label_definition",
+          "latency_ms"
+        ],
+        "title": "RiskEstimateRecord",
+        "type": "object"
+      },
+      "RiskEstimateUsed": {
+        "description": "That a risk estimate was used, and which model made it. No value of the estimate.",
+        "properties": {
+          "estimate_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Estimate Id",
+            "type": "string"
+          },
+          "label_definition": {
+            "title": "Label Definition",
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelRef"
+          }
+        },
+        "required": [
+          "estimate_id",
+          "model",
+          "label_definition"
+        ],
+        "title": "RiskEstimateUsed",
+        "type": "object"
+      },
+      "RiskTier": {
+        "enum": [
+          "low",
+          "elevated",
+          "high"
+        ],
+        "title": "RiskTier",
+        "type": "string"
+      },
+      "Role": {
+        "enum": [
+          "customer",
+          "agent",
+          "evaluator"
+        ],
+        "title": "Role",
+        "type": "string"
+      },
+      "RuleResult": {
+        "additionalProperties": false,
+        "description": "The outcome of one rule. A failed rule names the effect it asks the evaluator to apply.",
+        "properties": {
+          "clause_refs": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ClauseRef"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "effect": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionKind"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "missing_facts": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            "title": "Missing Facts",
+            "type": "array"
+          },
+          "params": {
+            "patternProperties": {
+              "^[a-z][a-z0-9_]{0,63}$": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Money"
+                  },
+                  {
+                    "maxLength": 200,
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ]
+              }
+            },
+            "title": "Params",
+            "type": "object"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          },
+          "reason_code": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason Code",
+            "type": "string"
+          },
+          "rule_id": {
+            "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_version": {
+            "exclusiveMinimum": 0.0,
+            "title": "Rule Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rule_id",
+          "rule_version",
+          "passed",
+          "effect",
+          "reason_code",
+          "params",
+          "clause_refs",
+          "missing_facts"
+        ],
+        "title": "RuleResult",
+        "type": "object"
+      },
+      "RuleVersion": {
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "pattern": "^[A-Z]+\\.[a-z][a-z0-9_]*$",
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "rule_version": {
+            "minimum": 1.0,
+            "title": "Rule Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rule_id",
+          "rule_version"
+        ],
+        "title": "RuleVersion",
+        "type": "object"
+      },
+      "SendTurnRequest": {
+        "additionalProperties": false,
+        "description": "One customer message. ``turn_id`` is a client-made UUID; sending the same one again replays the result.",
+        "properties": {
+          "text": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "turn_id": {
+            "format": "uuid",
+            "title": "Turn Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "text"
+        ],
+        "title": "SendTurnRequest",
+        "type": "object"
+      },
+      "Sentiment": {
+        "enum": [
+          "positive",
+          "neutral",
+          "negative",
+          "very_negative",
+          "unknown"
+        ],
+        "title": "Sentiment",
+        "type": "string"
+      },
+      "ServiceRef": {
+        "pattern": "^eligibility:[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+        "title": "ServiceRef",
+        "type": "string"
+      },
+      "SessionView": {
+        "properties": {
+          "absolute_expires_at": {
+            "format": "date-time",
+            "title": "Absolute Expires At",
+            "type": "string"
+          },
+          "auth_level": {
+            "$ref": "#/components/schemas/AuthLevel"
+          },
+          "idle_expires_at": {
+            "format": "date-time",
+            "title": "Idle Expires At",
+            "type": "string"
+          },
+          "language_preference": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "step_up_expires_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step Up Expires At"
+          },
+          "step_up_valid": {
+            "title": "Step Up Valid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "role",
+          "auth_level",
+          "step_up_valid",
+          "step_up_expires_at",
+          "idle_expires_at",
+          "absolute_expires_at",
+          "language_preference"
+        ],
+        "title": "SessionView",
+        "type": "object"
+      },
+      "SignedInResponse": {
+        "description": "A new session: the session cookie is set, and ``csrf_token`` is the rotated double-submit token.",
+        "properties": {
+          "csrf_token": {
+            "maxLength": 128,
+            "title": "Csrf Token",
+            "type": "string"
+          },
+          "session": {
+            "$ref": "#/components/schemas/SessionView"
+          }
+        },
+        "required": [
+          "session",
+          "csrf_token"
+        ],
+        "title": "SignedInResponse",
+        "type": "object"
+      },
+      "SourceRef": {
+        "pattern": "^(customers|products|transactions|dispute_cases|historical_complaints|conversations|turns|execution_records|handoffs|audit_events|policy_clauses|credit_applications|credit_products|eligibility_assessments):[A-Za-z0-9][A-Za-z0-9_.@-]{0,127}$",
+        "title": "SourceRef",
+        "type": "string"
+      },
+      "SourceTable": {
+        "description": "Tables a verified fact or an evidence reference may point to.",
+        "enum": [
+          "customers",
+          "products",
+          "transactions",
+          "dispute_cases",
+          "historical_complaints",
+          "conversations",
+          "turns",
+          "execution_records",
+          "handoffs",
+          "audit_events",
+          "policy_clauses",
+          "credit_applications",
+          "credit_products",
+          "eligibility_assessments"
+        ],
+        "title": "SourceTable",
+        "type": "string"
+      },
+      "StaffTraceRecord": {
+        "description": "The evaluator view: everything in the record, the internal risk estimates included.",
+        "properties": {
+          "auth_level": {
+            "$ref": "#/components/schemas/AuthLevel"
+          },
+          "case_refs": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "type": "string"
+            },
+            "title": "Case Refs",
+            "type": "array"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "clause_refs": {
+            "items": {
+              "$ref": "#/components/schemas/ClauseRef"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "cost_usd": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Cost Usd",
+            "type": "string"
+          },
+          "decisions": {
+            "items": {
+              "$ref": "#/components/schemas/Decision"
+            },
+            "title": "Decisions",
+            "type": "array"
+          },
+          "eligibility_assessments": {
+            "items": {
+              "$ref": "#/components/schemas/EligibilityAssessmentRecord"
+            },
+            "title": "Eligibility Assessments",
+            "type": "array"
+          },
+          "grounding": {
+            "$ref": "#/components/schemas/GroundingReport"
+          },
+          "handoff_ref": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Handoff Ref"
+          },
+          "intent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IntentPrediction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "language_detection": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LanguageDetection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "latency": {
+            "$ref": "#/components/schemas/LatencyBreakdown"
+          },
+          "llm_calls": {
+            "items": {
+              "$ref": "#/components/schemas/LlmCallRecord"
+            },
+            "title": "Llm Calls",
+            "type": "array"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelRef"
+            },
+            "title": "Models",
+            "type": "array"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/Outcome"
+          },
+          "policy_pack_version": {
+            "title": "Policy Pack Version",
+            "type": "string"
+          },
+          "prompts": {
+            "items": {
+              "$ref": "#/components/schemas/PromptRef"
+            },
+            "title": "Prompts",
+            "type": "array"
+          },
+          "recorded_at": {
+            "format": "date-time",
+            "title": "Recorded At",
+            "type": "string"
+          },
+          "retrieval": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RetrievalRecord"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "risk_estimates": {
+            "items": {
+              "$ref": "#/components/schemas/RiskEstimateRecord"
+            },
+            "title": "Risk Estimates",
+            "type": "array"
+          },
+          "risk_tier": {
+            "$ref": "#/components/schemas/RiskTier"
+          },
+          "safety_interventions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Safety Interventions",
+            "type": "array"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "state_after": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State After",
+            "type": "string"
+          },
+          "state_before": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State Before",
+            "type": "string"
+          },
+          "token_usage": {
+            "$ref": "#/components/schemas/TokenUsage"
+          },
+          "tool_calls": {
+            "items": {
+              "$ref": "#/components/schemas/ToolCallRecord"
+            },
+            "title": "Tool Calls",
+            "type": "array"
+          },
+          "trace_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trace Id"
+          },
+          "trust_events_added": {
+            "items": {
+              "$ref": "#/components/schemas/TrustEventKind"
+            },
+            "title": "Trust Events Added",
+            "type": "array"
+          },
+          "turn_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Turn Id",
+            "type": "string"
+          },
+          "workflow": {
+            "$ref": "#/components/schemas/WorkflowRef"
+          },
+          "workflow_before": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "schema_version",
+          "turn_id",
+          "conversation_id",
+          "workflow",
+          "workflow_before",
+          "recorded_at",
+          "channel",
+          "language",
+          "language_detection",
+          "auth_level",
+          "state_before",
+          "state_after",
+          "outcome",
+          "intent",
+          "decisions",
+          "clause_refs",
+          "tool_calls",
+          "llm_calls",
+          "models",
+          "prompts",
+          "policy_pack_version",
+          "latency",
+          "token_usage",
+          "cost_usd",
+          "grounding",
+          "handoff_ref",
+          "case_refs",
+          "eligibility_assessments",
+          "retrieval",
+          "risk_estimates",
+          "risk_tier",
+          "trust_events_added",
+          "safety_interventions",
+          "trace_id"
+        ],
+        "title": "StaffTraceRecord",
+        "type": "object"
+      },
+      "StaffTraceResponse": {
+        "properties": {
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/StaffTraceRecord"
+            },
+            "title": "Records",
+            "type": "array"
+          }
+        },
+        "required": [
+          "conversation_id",
+          "records"
+        ],
+        "title": "StaffTraceResponse",
+        "type": "object"
+      },
+      "StatementLine": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/EntryDirection"
+          },
+          "display_text": {
+            "anyOf": [
+              {
+                "maxLength": 150,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Text"
+          },
+          "occurred_on": {
+            "format": "date",
+            "title": "Occurred On",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SourceRef"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "transaction_type": {
+            "$ref": "#/components/schemas/TransactionType"
+          }
+        },
+        "required": [
+          "occurred_on",
+          "transaction_type",
+          "direction",
+          "amount",
+          "status",
+          "display_text",
+          "source"
+        ],
+        "title": "StatementLine",
+        "type": "object"
+      },
+      "StatementPeriod": {
+        "additionalProperties": false,
+        "properties": {
+          "dates": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "product_ref": {
+            "$ref": "#/components/schemas/SourceRef"
+          }
+        },
+        "required": [
+          "product_ref",
+          "dates"
+        ],
+        "title": "StatementPeriod",
+        "type": "object"
+      },
+      "StatementSummary": {
+        "additionalProperties": false,
+        "description": "A summary of one product's transactions in a period.\n\n``totals`` cover approved transactions whose direction is known, one entry per currency.\n``unclassified_count`` counts approved transfers and adjustments; ``not_settled_count`` counts pending,\ndeclined, and reversed transactions. At most ``MAX_STATEMENT_LINES`` lines are listed, newest first.",
+        "properties": {
+          "as_of": {
+            "format": "date-time",
+            "title": "As Of",
+            "type": "string"
+          },
+          "lines": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/StatementLine"
+            },
+            "maxItems": 20,
+            "title": "Lines",
+            "type": "array"
+          },
+          "not_settled_count": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Not Settled Count",
+            "type": "integer"
+          },
+          "period": {
+            "$ref": "#/components/schemas/StatementPeriod"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "totals": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CurrencyTotals"
+            },
+            "title": "Totals",
+            "type": "array"
+          },
+          "transaction_count": {
+            "minimum": 0.0,
+            "title": "Transaction Count",
+            "type": "integer"
+          },
+          "truncated": {
+            "default": false,
+            "title": "Truncated",
+            "type": "boolean"
+          },
+          "unclassified_count": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Unclassified Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "period",
+          "transaction_count",
+          "totals",
+          "unclassified_count",
+          "not_settled_count",
+          "lines",
+          "truncated",
+          "as_of",
+          "sources"
+        ],
+        "title": "StatementSummary",
+        "type": "object"
+      },
+      "TokenUsage": {
+        "additionalProperties": false,
+        "properties": {
+          "input_tokens": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Input Tokens",
+            "type": "integer"
+          },
+          "output_tokens": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Output Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "input_tokens",
+          "output_tokens"
+        ],
+        "title": "TokenUsage",
+        "type": "object"
+      },
+      "ToolCallRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "patternProperties": {
+              "^[a-z][a-z0-9_]{0,63}$": {
+                "anyOf": [
+                  {
+                    "maxLength": 200,
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "title": "Arguments",
+            "type": "object"
+          },
+          "attempts": {
+            "default": 1,
+            "exclusiveMinimum": 0.0,
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "idempotency_key": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9_-]{16,128}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idempotency Key"
+          },
+          "latency_ms": {
+            "minimum": 0.0,
+            "title": "Latency Ms",
+            "type": "integer"
+          },
+          "result_summary": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result Summary"
+          },
+          "sequence": {
+            "exclusiveMinimum": 0.0,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ToolCallStatus"
+          },
+          "tool": {
+            "$ref": "#/components/schemas/ToolName"
+          },
+          "verification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Verification"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "sequence",
+          "tool",
+          "arguments",
+          "idempotency_key",
+          "status",
+          "error_code",
+          "attempts",
+          "latency_ms",
+          "result_summary",
+          "verification"
+        ],
+        "title": "ToolCallRecord",
+        "type": "object"
+      },
+      "ToolCallStatus": {
+        "enum": [
+          "ok",
+          "not_found",
+          "failed",
+          "unknown",
+          "rejected_by_allowlist"
+        ],
+        "title": "ToolCallStatus",
+        "type": "string"
+      },
+      "ToolName": {
+        "description": "Every banking tool (phase 05).\n\nThree are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and\n``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and\n``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The\nrisk estimator and the eligibility service are not tools: the engine calls them, and no model output can\nselect them.",
+        "enum": [
+          "list_recent_transactions",
+          "get_transaction",
+          "get_product_status",
+          "list_my_cards",
+          "list_my_cases",
+          "get_case_status",
+          "create_dispute_case",
+          "block_card",
+          "list_my_balances",
+          "get_payment_status",
+          "get_statement_summary",
+          "list_credit_products",
+          "get_credit_product",
+          "get_my_credit_profile",
+          "submit_credit_application",
+          "get_credit_application_status"
+        ],
+        "title": "ToolName",
+        "type": "string"
+      },
+      "TransactionStatus": {
+        "enum": [
+          "approved",
+          "declined",
+          "pending",
+          "reversed"
+        ],
+        "title": "TransactionStatus",
+        "type": "string"
+      },
+      "TransactionType": {
+        "enum": [
+          "deposit",
+          "withdrawal",
+          "transfer",
+          "payment",
+          "purchase",
+          "adjustment"
+        ],
+        "title": "TransactionType",
+        "type": "string"
+      },
+      "TrustEventKind": {
+        "enum": [
+          "failed_otp",
+          "otp_lockout",
+          "cross_customer_probe",
+          "injection_detected",
+          "third_party_admission",
+          "unusual_amount",
+          "identity_mismatch"
+        ],
+        "title": "TrustEventKind",
+        "type": "string"
+      },
+      "TurnResponse": {
+        "description": "The result of one turn: the assistant message and where the conversation now is.",
+        "properties": {
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "message": {
+            "$ref": "#/components/schemas/AssistantMessage"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/Outcome"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "state": {
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$",
+            "title": "State",
+            "type": "string"
+          },
+          "turn_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Turn Id",
+            "type": "string"
+          },
+          "workflow": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The workflow after the turn; the router is `router@1`."
+          }
+        },
+        "required": [
+          "turn_id",
+          "conversation_id",
+          "workflow",
+          "state",
+          "outcome",
+          "replayed",
+          "message"
+        ],
+        "title": "TurnResponse",
+        "type": "object"
+      },
+      "TurnView": {
+        "properties": {
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "customer_text": {
+            "title": "Customer Text",
+            "type": "string"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "message": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssistantMessage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "received_at": {
+            "format": "date-time",
+            "title": "Received At",
+            "type": "string"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "turn_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Turn Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "sequence",
+          "received_at",
+          "customer_text",
+          "language",
+          "message",
+          "completed_at"
+        ],
+        "title": "TurnView",
+        "type": "object"
+      },
+      "UncertaintyFlag": {
+        "enum": [
+          "missing_features",
+          "out_of_distribution",
+          "wide_interval",
+          "model_unavailable"
+        ],
+        "title": "UncertaintyFlag",
+        "type": "string"
+      },
+      "UncertaintyStatement": {
+        "enum": [
+          "indicative_only",
+          "borderline_estimate",
+          "missing_information",
+          "estimate_unavailable"
+        ],
+        "title": "UncertaintyStatement",
+        "type": "string"
+      },
+      "Verification": {
+        "additionalProperties": false,
+        "description": "The result of reading back an action's effect.",
+        "properties": {
+          "check": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Check",
+            "type": "string"
+          },
+          "checked_at": {
+            "format": "date-time",
+            "title": "Checked At",
+            "type": "string"
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mismatch_code": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mismatch Code"
+          },
+          "verified": {
+            "title": "Verified",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "verified",
+          "check",
+          "evidence",
+          "mismatch_code",
+          "checked_at"
+        ],
+        "title": "Verification",
+        "type": "object"
+      },
+      "VerificationStatus": {
+        "enum": [
+          "verified",
+          "not_verified",
+          "mismatch"
+        ],
+        "title": "VerificationStatus",
+        "type": "string"
+      },
+      "VerifiedFact": {
+        "additionalProperties": false,
+        "description": "A fact the system verified, with the record that proves it (``table:id``).",
+        "properties": {
+          "fact": {
+            "maxLength": 300,
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x1F\\x7F]*$",
+            "title": "Fact",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SourceRef"
+          }
+        },
+        "required": [
+          "fact",
+          "source"
+        ],
+        "title": "VerifiedFact",
+        "type": "object"
+      },
+      "VerifyLoginRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "challenge_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Challenge Id",
+            "type": "string"
+          },
+          "code": {
+            "pattern": "^[0-9]{6}$",
+            "title": "Code",
+            "type": "string"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "challenge_id",
+          "code"
+        ],
+        "title": "VerifyLoginRequest",
+        "type": "object"
+      },
+      "VerifyStepUpRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "challenge_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Challenge Id",
+            "type": "string"
+          },
+          "code": {
+            "pattern": "^[0-9]{6}$",
+            "title": "Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "challenge_id",
+          "code"
+        ],
+        "title": "VerifyStepUpRequest",
+        "type": "object"
+      },
+      "WorkflowId": {
+        "description": "The supported workflows (section 1 of CLAUDE.md). ``WorkflowRef.id`` stays a pattern-constrained string in\nevery contract; membership in this registry is checked by the application, not by the schemas.",
+        "enum": [
+          "account_inquiry",
+          "card_support",
+          "dispute",
+          "credit"
+        ],
+        "title": "WorkflowId",
+        "type": "string"
+      },
+      "WorkflowRef": {
+        "additionalProperties": false,
+        "description": "Which workflow definition, and which version of it, handled a turn.",
+        "properties": {
+          "id": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "version": {
+            "exclusiveMinimum": 0.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version"
+        ],
+        "title": "WorkflowRef",
+        "type": "object"
+      },
+      "WorkflowSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "cases": {
+            "minimum": 0.0,
+            "title": "Cases",
+            "type": "integer"
+          },
+          "containment": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "cost_per_attempted_case_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Attempted Case Usd"
+          },
+          "escalation_missed": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "escalation_unnecessary": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "latency_p50_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency P50 Ms"
+          },
+          "latency_p95_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency P95 Ms"
+          },
+          "safe_automated_resolution": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "unsafe_outcomes": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "workflow": {
+            "$ref": "#/components/schemas/WorkflowId"
+          }
+        },
+        "required": [
+          "cases",
+          "safe_automated_resolution",
+          "containment",
+          "escalation_missed",
+          "escalation_unnecessary",
+          "unsafe_outcomes",
+          "latency_p50_ms",
+          "latency_p95_ms",
+          "cost_per_attempted_case_usd",
+          "workflow"
+        ],
+        "title": "WorkflowSummary",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "csrfHeader": {
+        "description": "The double-submit token from `GET /v1/auth/csrf`, echoed on every state-changing request.",
+        "in": "header",
+        "name": "X-CSRF-Token",
+        "type": "apiKey"
+      },
+      "sessionCookie": {
+        "description": "Opaque session token (HttpOnly). The development cookie is named `session`.",
+        "in": "cookie",
+        "name": "__Host-session",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "title": "bank-agent",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/health/live": {
+      "get": {
+        "description": "The process is up and serving requests.",
+        "operationId": "health_live",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LivenessResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [],
+        "summary": "Live",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "description": "Every configured dependency is reachable. Failures report the check name only, never error text.",
+        "operationId": "health_ready",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [],
+        "summary": "Ready",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/v1/agent/credit-applications": {
+      "get": {
+        "description": "Intakes recorded for human review that a handoff references (read only; never a lending decision).",
+        "operationId": "agent_list_credit_applications",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicationStatus"
+                  },
+                  "maxItems": 4,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditApplicationListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "List Credit Applications",
+        "tags": [
+          "agent"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/agent/credit-applications/{application_id}": {
+      "get": {
+        "operationId": "agent_get_credit_application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "application_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Application Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditApplicationView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Get Credit Application",
+        "tags": [
+          "agent"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/agent/handoffs": {
+      "get": {
+        "description": "The inbox, soonest SLA first, filtered by workflow, priority, reason, language, status, and SLA due.",
+        "operationId": "agent_list_handoffs",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "workflow",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/WorkflowId"
+                  },
+                  "maxItems": 4,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Workflow"
+            }
+          },
+          {
+            "in": "query",
+            "name": "priority",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/Priority"
+                  },
+                  "maxItems": 4,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Priority"
+            }
+          },
+          {
+            "in": "query",
+            "name": "reason",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/EscalationReasonCode"
+                  },
+                  "maxItems": 20,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Reason"
+            }
+          },
+          {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/Language"
+                  },
+                  "maxItems": 3,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/HandoffStatus"
+                  },
+                  "maxItems": 3,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sla_due_before",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sla Due Before"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandoffListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "List Handoffs",
+        "tags": [
+          "agent"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/agent/handoffs/{handoff_id}": {
+      "get": {
+        "operationId": "agent_get_handoff",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handoff_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Handoff Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandoffView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Get Handoff",
+        "tags": [
+          "agent"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/agent/handoffs/{handoff_id}/claim": {
+      "post": {
+        "description": "Claim an open handoff for the signed-in agent.",
+        "operationId": "agent_claim_handoff",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handoff_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Handoff Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandoffView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Claim Handoff",
+        "tags": [
+          "agent"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/agent/handoffs/{handoff_id}/resolve": {
+      "post": {
+        "description": "Resolve a handoff this agent claimed, with an outcome code and a note.",
+        "operationId": "agent_resolve_handoff",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handoff_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Handoff Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveHandoffRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HandoffView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Resolve Handoff",
+        "tags": [
+          "agent"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/auth/csrf": {
+      "get": {
+        "description": "A double-submit token bound to the current session cookie, or anonymous before login.",
+        "operationId": "auth_csrf",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CsrfResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [],
+        "summary": "Csrf Token",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "auth",
+        "x-roles": [
+          "anyone"
+        ]
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "description": "Revoke the session (when there is one), clear the cookie, and return an anonymous CSRF token.",
+        "operationId": "auth_logout",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CsrfResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": []
+          }
+        ],
+        "summary": "Logout",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "auth",
+        "x-roles": [
+          "anyone"
+        ]
+      }
+    },
+    "/v1/auth/me": {
+      "get": {
+        "description": "The session's role, authentication level, expiry instants, and language preference.",
+        "operationId": "auth_me",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Me",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "agent",
+          "customer",
+          "evaluator"
+        ]
+      }
+    },
+    "/v1/auth/start": {
+      "post": {
+        "description": "Open a one-time-code challenge. Unknown people get an indistinguishable challenge that never succeeds.",
+        "operationId": "auth_start",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "discriminator": {
+                  "mapping": {
+                    "document": "#/components/schemas/DocumentLogin",
+                    "persona": "#/components/schemas/PersonaLogin"
+                  },
+                  "propertyName": "kind"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PersonaLogin"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DocumentLogin"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": []
+          }
+        ],
+        "summary": "Start Login",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "auth",
+        "x-roles": [
+          "anyone"
+        ]
+      }
+    },
+    "/v1/auth/step-up/start": {
+      "post": {
+        "description": "Open a step-up challenge bound to this session (needed before a write action).",
+        "operationId": "auth_step_up_start",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Start Step Up",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "auth",
+        "x-roles": [
+          "agent",
+          "customer",
+          "evaluator"
+        ]
+      }
+    },
+    "/v1/auth/step-up/verify": {
+      "post": {
+        "description": "Verify the step-up code; the session rotates (new token, same lineage) and a step-up window opens.",
+        "operationId": "auth_step_up_verify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyStepUpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignedInResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Verify Step Up",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "auth",
+        "x-roles": [
+          "agent",
+          "customer",
+          "evaluator"
+        ]
+      }
+    },
+    "/v1/auth/verify": {
+      "post": {
+        "description": "Verify the code and start a session; any previous session of this browser is revoked.",
+        "operationId": "auth_verify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignedInResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": []
+          }
+        ],
+        "summary": "Verify Login",
+        "tags": [
+          "auth"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "auth",
+        "x-roles": [
+          "anyone"
+        ]
+      }
+    },
+    "/v1/conversations": {
+      "post": {
+        "description": "Open an empty conversation for the signed-in customer.",
+        "operationId": "conversations_create",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Create Conversation",
+        "tags": [
+          "conversations"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}": {
+      "get": {
+        "description": "The conversation and its turns, oldest first.",
+        "operationId": "conversations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationHistoryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Get Conversation",
+        "tags": [
+          "conversations"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/trace": {
+      "get": {
+        "description": "The execution records of the customer's own conversation (glass box), without risk estimate values.",
+        "operationId": "conversations_trace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerTraceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Get Trace",
+        "tags": [
+          "conversations"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/turns": {
+      "post": {
+        "description": "Send one customer message and get the assistant's reply with every workflow part.",
+        "operationId": "conversations_send_turn",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendTurnRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TurnResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Send Turn",
+        "tags": [
+          "conversations"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/eval/conversations/{conversation_id}/trace": {
+      "get": {
+        "description": "Every execution record of any conversation, with the internal risk estimates.",
+        "operationId": "eval_conversation_trace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffTraceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Conversation Trace",
+        "tags": [
+          "evaluation"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "evaluator"
+        ]
+      }
+    },
+    "/v1/eval/summaries": {
+      "get": {
+        "description": "Published evaluation summaries, newest first; empty until the harness publishes a run.",
+        "operationId": "eval_list_summaries",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationSummariesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "List Summaries",
+        "tags": [
+          "evaluation"
+        ],
+        "x-csrf": false,
+        "x-public-when": "EVAL_SUMMARIES_PUBLIC=true",
+        "x-rate-limit": "read",
+        "x-roles": [
+          "evaluator"
+        ]
+      }
+    }
+  }
+}

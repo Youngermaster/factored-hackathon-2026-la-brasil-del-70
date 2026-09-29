@@ -8,7 +8,8 @@ phases add model clients here. Persistence, identity, and the banking tools come
 the policy pack, the synthetic credit catalog, and the eligibility service from ``bootstrap/policy.py``; the bound
 clause lookup, open retrieval, and the grounding verifier from ``bootstrap/retrieval.py`` (tests and the evaluation
 harness may inject an embedder so dense retrieval runs without the optional ``ml`` extra); the workflow engines (the
-proposed system and baseline B0) from ``bootstrap/workflows.py``.
+proposed system and baseline B0) from ``bootstrap/workflows.py``; the HTTP use cases (conversations, the agent inbox,
+the published evaluation summaries) are wired here too.
 """
 
 from collections.abc import Sequence
@@ -16,12 +17,15 @@ from collections.abc import Sequence
 from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
+from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
 from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
 from bank_agent.adapters.retrieval.embedding import Embedder
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.system.ids import RandomIdGenerator
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
+from bank_agent.application.agent.inbox import AgentInbox
+from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.tools.banking import BankingTools
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_client
@@ -37,6 +41,7 @@ from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
 from bank_agent.bootstrap.workflows import WorkflowServices, build_workflows
 from bank_agent.ports.determinism import Clock, IdGenerator
+from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
@@ -68,6 +73,7 @@ class Container:
         llm_overrides: LlmOverrides | None = None,
         ids: IdGenerator | None = None,
         embedder: Embedder | None = None,
+        persistence: PersistenceServices | None = None,
     ) -> None:
         self.settings = settings
         self._clock: Clock = clock if clock is not None else SystemClock()
@@ -89,7 +95,7 @@ class Container:
                 max_overflow=5,
             )
         self._ids: IdGenerator = ids if ids is not None else RandomIdGenerator()
-        self._persistence = build_persistence(self._engine)
+        self._persistence = persistence if persistence is not None else build_persistence(self._engine)
         self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
         self._policy = build_policy(settings.policy, clock=self._clock, ids=self._ids)
         self._grounding = build_grounding(settings.retrieval, self._policy.repository, embedder=embedder)
@@ -113,6 +119,11 @@ class Container:
             environment=settings.runtime.app_env,
             embedder=(lambda: embedder) if embedder is not None else default_embedder(settings.retrieval),
         )
+        self._conversations = ConversationService(
+            self._workflows.engine(), self._persistence.uow_factory, self._clock, self._ids
+        )
+        self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
+        self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
         self._readiness_checks: tuple[ReadinessCheck, ...] = (
             (PostgresReadinessCheck(self._engine),) if self._engine is not None else ()
         )
@@ -166,6 +177,19 @@ class Container:
     def workflows(self) -> WorkflowServices:
         """The workflow engines: ``engine()`` is the proposed system, ``engine("baseline_b0")`` baseline B0."""
         return self._workflows
+
+    @property
+    def conversations(self) -> ConversationService:
+        """Open, send, history, and trace over the proposed system's engine."""
+        return self._conversations
+
+    @property
+    def inbox(self) -> AgentInbox:
+        return self._inbox
+
+    @property
+    def evaluation_summaries(self) -> EvaluationSummaryReader:
+        return self._evaluation_summaries
 
     @property
     def database_engine(self) -> AsyncEngine | None:

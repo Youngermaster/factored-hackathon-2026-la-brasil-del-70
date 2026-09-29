@@ -100,6 +100,7 @@ async def balances(ctx: TurnContext) -> Step:
         suffix=lines,
         explain=(clause_ref(ctx, "ACC-ALL-1"),),
         facts=facts,
+        balances=tuple(views),
     )
     return Step(BALANCES, reply, Outcome.RESOLVED)
 
@@ -156,5 +157,6 @@ async def payment_status(ctx: TurnContext) -> Step:
         params=params,
         explain=(clause_ref(ctx, "ACC-ALL-1"),),
         facts=(_fact(FactKind.AS_OF, day=as_of),),
+        payment_statuses=(view,),
     )
     return Step(PAYMENT_STATUS, reply, Outcome.RESOLVED)

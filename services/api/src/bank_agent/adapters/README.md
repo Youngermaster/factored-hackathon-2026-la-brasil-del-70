@@ -61,6 +61,9 @@ adapters/
 │   ├── tfidf_router.py       router:tfidf, TF-IDF logistic regression evaluated in pure Python (IntentRouter)
 │   ├── embedding_router.py   router:embeddings, a logistic head over the ml extra's embedder (IntentRouter)
 │   ├── lgbm_resolver.py      resolver:lgbm, LightGBM trees with an evidence gate and a none option (TransactionResolver)
+│   ├── learned_risk.py       risk_estimator:logreg and risk_estimator:lgbm, snapshot risk estimates (RiskEstimator)
+│   ├── risk_artifact.py      the risk_classifier/1 artifact: scorer, calibrator, interval, policy cut points, ranges
+│   ├── risk_features.py      the risk feature vector shared with bank-ml training
 │   ├── tree_ensemble.py      pure-Python evaluator for exported LightGBM trees
 │   ├── text_features.py      the router analyzer shared with bank-ml training
 │   └── resolver_features.py  candidate features and the evidence gate shared with bank-ml training

@@ -237,5 +237,7 @@ class TurnResult(DomainModel):
     state: StateName
     outcome: Outcome
     response: AssistantResponse
+    workflow: WorkflowRef | None = None
+    """The workflow (or the router) the conversation is in after the turn, from the turn's execution record."""
     replayed: bool = False
     """True when the turn id was already processed and the stored result is returned again."""

@@ -124,6 +124,7 @@ class TestCreditApplicationRepositoryContract:
     async def test_an_agent_reads_only_applications_a_handoff_references(self, write_backend: WriteBackend) -> None:
         async with write_backend.uow_factory()(AGENT) as uow:
             assert await uow.credit_applications.get(EXISTING) is None
+            assert await uow.credit_applications.list_for_review() == []
         review = CreditReview.from_assessment(
             eligibility_assessment(outcome="review_required", review_reasons=["borderline_risk_interval"]),
             application_ref=EXISTING,
@@ -144,8 +145,14 @@ class TestCreditApplicationRepositoryContract:
             application = await uow.credit_applications.get(EXISTING)
             assert application is not None
             assert application.customer_id == CUSTOMER_A
+            listed = await uow.credit_applications.list_for_review()
+            assert [item.application_id for item in listed] == [EXISTING]
+            assert await uow.credit_applications.list_for_review(frozenset({ApplicationStatus.CLOSED})) == []
             with pytest.raises(AccessContextError):
                 await uow.credit_applications.list_mine()
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            with pytest.raises(AccessContextError):
+                await uow.credit_applications.list_for_review()
 
     async def test_evaluators_are_refused(self, write_backend: WriteBackend) -> None:
         async with write_backend.uow_factory()(EVALUATOR) as uow:

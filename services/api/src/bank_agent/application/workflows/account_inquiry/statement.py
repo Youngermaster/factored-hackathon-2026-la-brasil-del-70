@@ -114,9 +114,11 @@ async def statement_summary(ctx: TurnContext) -> Step:
     as_of_fact = RecordFact(fact_id="a", kind=FactKind.AS_OF, day=as_of)
     explain = (clause_ref(ctx, "ACC-ALL-2"),)
     if summary.transaction_count == 0:
-        reply = Reply(template="account.statement_empty", params=params, explain=explain, facts=(as_of_fact,))
+        reply = Reply(
+            template="account.statement_empty", params=params, explain=explain, facts=(as_of_fact,), statement=summary
+        )
         return Step(STATEMENT_SUMMARY, reply, Outcome.RESOLVED)
     lines, facts = _totals(summary)
     reply = Reply(template="account.statement", params=params, suffix=lines, explain=explain,
-                  facts=(as_of_fact, *facts))  # fmt: skip
+                  facts=(as_of_fact, *facts), statement=summary)  # fmt: skip
     return Step(STATEMENT_SUMMARY, reply, Outcome.RESOLVED)

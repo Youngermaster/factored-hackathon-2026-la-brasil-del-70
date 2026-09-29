@@ -4,9 +4,16 @@ import asyncio
 import itertools
 from collections.abc import Sequence
 from dataclasses import dataclass
+from datetime import UTC, datetime
 
+from bank_agent.api.config import SecurityConfig
 from bank_agent.api.provider import ApiConfig
+from bank_agent.application.agent.inbox import AgentInbox
+from bank_agent.application.conversations.service import ConversationService
+from bank_agent.application.identity.sessions import SessionService
+from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
+from bank_agent.testing.clock import FixedClock
 
 
 class StaticReadinessCheck:
@@ -52,15 +59,40 @@ class HangingReadinessCheck:
 
 
 class FakeProvider:
-    """ServiceProvider with configurable readiness checks that records shutdown."""
+    """ServiceProvider for the health and middleware tests: configurable readiness checks, recorded shutdown.
+
+    It has no identity service (auth routes answer 503) and fails loudly if a test reaches for the conversation,
+    inbox, or evaluation services, which the API tests take from a real container instead.
+    """
 
     def __init__(self, checks: Sequence[ReadinessCheck] = ()) -> None:
         self._checks = tuple(checks)
         self.closed = False
+        self._clock = FixedClock(datetime(2026, 6, 18, 15, 0, tzinfo=UTC))
 
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:
         return self._checks
+
+    @property
+    def clock(self) -> FixedClock:
+        return self._clock
+
+    @property
+    def session_service(self) -> SessionService | None:
+        return None
+
+    @property
+    def conversations(self) -> ConversationService:
+        raise AssertionError("FakeProvider has no conversation service")
+
+    @property
+    def inbox(self) -> AgentInbox:
+        raise AssertionError("FakeProvider has no agent inbox")
+
+    @property
+    def evaluation_summaries(self) -> EvaluationSummaryReader:
+        raise AssertionError("FakeProvider has no evaluation summaries")
 
     async def aclose(self) -> None:
         self.closed = True
@@ -76,12 +108,15 @@ class SequentialIds:
         return f"req-{next(self._counter):08d}"
 
 
-def api_config(timeout_seconds: float = 2.0, expose_docs: bool = True) -> ApiConfig:
+def api_config(
+    timeout_seconds: float = 2.0, expose_docs: bool = True, security: SecurityConfig | None = None
+) -> ApiConfig:
     return ApiConfig(
         request_id_factory=SequentialIds(),
         version="0.0.0-test",
         expose_docs=expose_docs,
         readiness_timeout_seconds=timeout_seconds,
+        security=security or SecurityConfig.development(),
     )
 
 

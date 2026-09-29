@@ -6,12 +6,19 @@ with a recording ``FakeLLM`` and model understanding, phrasing, and handoff summ
 """
 
 import json
+import tempfile
 from decimal import Decimal
+from pathlib import Path
 
 from pydantic import JsonValue
 
+from bank_agent.adapters.models.learned_risk import LearnedRiskEstimator
 from bank_agent.domain.intelligence import PromptRef
+from bank_agent.testing.clock import FixedClock
 from bank_agent.testing.fake_llm import FakeLLM, ScriptedResponse
+from bank_agent.testing.ids import SequentialIdGenerator
+from bank_agent_builders import T0
+from bank_agent_models import RISK_LGBM_ARTIFACT, publish
 from bank_agent_scenarios import MX, PT, PT2, scenario_data
 from bank_agent_workflow_support import CREDIT_SLOTS, NO_SIGNALS, PHRASE, SIGNALS, Backend
 from bank_agent_workflows import build_harness
@@ -72,3 +79,30 @@ async def test_no_prompt_receives_a_profile_or_estimate_value_on_any_credit_path
     assert all(set(call.variables) <= {"workflow", "response_kind", "facts", "clause_texts", "customer_message",
                                        "dialect_hint", "eligibility_outcome", "eligibility_reasons", "disclaimer"}
                for call in fake.calls if call.prompt == PHRASE)  # fmt: skip
+
+
+LEARNED_VALUES = ("0.12", "0.23", "0.38", "0.11", "0.13", "0.22", "0.25", "0.36", "0.41")
+
+
+async def test_no_prompt_receives_a_learned_estimate_value(memory_only: Backend) -> None:
+    """The same credit paths with the learned ``risk_estimator:lgbm`` behind the port (a fixture artifact)."""
+    registry = Path(tempfile.mkdtemp(prefix="model-registry-"))
+    learned = LearnedRiskEstimator.load(publish(registry, "risk_estimator:lgbm", RISK_LGBM_ARTIFACT),
+                                        FixedClock(T0), SequentialIdGenerator())  # fmt: skip
+    fake = recording_llm()
+    harness = build_harness(memory_only.uow_factory, memory_only.session_store, llm=fake, phrasing=True,
+                            handoff_summary=True, risk_estimator=learned)  # fmt: skip
+    eligible = harness.session(PT, step_up=True)
+    first = await harness.say("Sou elegível para um cartão de crédito com limite de 30 mil pesos?", eligible)
+    await harness.say("sim", eligible, first.conversation_id)
+    borderline = harness.session(PT2)
+    second = await harness.say("Posso pedir um empréstimo pessoal de 20 milhões de pesos em 36 meses?", borderline)
+    await harness.say("sim", borderline, second.conversation_id)
+    assert fake.calls
+    forbidden = forbidden_values() | set(LEARNED_VALUES)
+    for call in fake.calls:
+        dumped = json.dumps(dict(call.variables), ensure_ascii=False, default=str)
+        assert not any(value in dumped for value in forbidden), (call.prompt, dumped)
+        assert not any(
+            part in name for name in call.variables for part in FORBIDDEN_NAMES if name != "customer_message"
+        )

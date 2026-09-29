@@ -140,7 +140,7 @@ sequenceDiagram
 
 ## Risk estimator baseline `risk_estimator:score_band@1`
 
-`adapters/models/score_band_risk.py`: deterministic bands from the credit score only, with wide intervals, `calibrated: false`, and `label_definition: score_band_baseline_prior`. It is a baseline, not a trained model; phase 10 registers the learned estimator behind the same port (`WORKFLOW_RISK_ESTIMATOR`).
+`adapters/models/score_band_risk.py`: deterministic bands from the credit score only, with wide intervals, `calibrated: false`, and `label_definition: score_band_baseline_prior`. It is a baseline, not a trained model, and it stays the default. Session 10b registered the learned snapshot risk estimators behind the same port (`WORKFLOW_RISK_ESTIMATOR=logreg@champion` or `lgbm@...`); see [the model card](../models/risk-estimator.md). On test the score bands show no association with the snapshot delinquency label (ROC AUC 0.504), and the learned models reach 0.611, almost entirely through the credit product count.
 
 | Score | Band | Probability | Interval | Effect in the synthetic service |
 |---|---|---|---|---|
@@ -173,7 +173,7 @@ Scenarios 24 to 29 with variants run on both backends (`test_credit_workflow.py`
 
 ## Limitations
 
-- The estimator is a score-band baseline with no trained label; its intervals are wide by design and not calibrated.
+- The default estimator is a score-band baseline with no trained label; its intervals are wide by design and not calibrated. The learned estimators are cross-sectional and weak (ADR 0030), and with them every first-time applicant is out of distribution and goes to review.
 - Income stays in the product currency (no exchange rates), so `monthly_income_usd` is unset for the estimator.
 - Catalog names are shown as product types, not the catalog's display names (BACKLOG, phase 13).
 - The offer of a person after an abstention is accepted by asking for one ("hablar con una persona"), as in 09a.

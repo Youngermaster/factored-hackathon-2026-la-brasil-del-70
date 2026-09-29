@@ -7,24 +7,40 @@ from pydantic import ValidationError
 
 from bank_agent.adapters.models.embedding_router import EmbeddingIntentRouter
 from bank_agent.adapters.models.keyword_router import KeywordIntentRouter
+from bank_agent.adapters.models.learned_risk import LearnedRiskEstimator
 from bank_agent.adapters.models.lgbm_resolver import LgbmTransactionResolver
 from bank_agent.adapters.models.rules_resolver import RuleTransactionResolver
+from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
 from bank_agent.adapters.models.tfidf_router import TfidfIntentRouter
 from bank_agent.bootstrap.models import (
     build_model_registry,
     build_resolver,
+    build_risk_estimator,
     build_router,
     default_embedder,
     split_selection,
 )
 from bank_agent.bootstrap.settings import DEFAULT_MODEL_REGISTRY_DIR, RetrievalSettings, WorkflowSettings
 from bank_agent.domain.errors import ConfigurationError, ModelArtifactIntegrityError
-from bank_agent_models import EMBEDDING_ARTIFACT, LGBM_ARTIFACT, TFIDF_ARTIFACT, FixtureEmbedder, publish
+from bank_agent.testing.clock import FixedClock
+from bank_agent.testing.ids import SequentialIdGenerator
+from bank_agent_builders import T0
+from bank_agent_models import (
+    EMBEDDING_ARTIFACT,
+    LGBM_ARTIFACT,
+    RISK_LGBM_ARTIFACT,
+    RISK_LOGREG_ARTIFACT,
+    TFIDF_ARTIFACT,
+    FixtureEmbedder,
+    publish,
+)
 
 
 @pytest.fixture(autouse=True)
 def _no_model_environment(monkeypatch: pytest.MonkeyPatch) -> None:
-    for name in ("WORKFLOW_ROUTER", "WORKFLOW_RESOLVER", "WORKFLOW_MODEL_REGISTRY_DIR", "RETRIEVAL_EMBEDDING_MODEL"):
+    names = ("WORKFLOW_ROUTER", "WORKFLOW_RESOLVER", "WORKFLOW_RISK_ESTIMATOR", "WORKFLOW_MODEL_REGISTRY_DIR",
+             "RETRIEVAL_EMBEDDING_MODEL")  # fmt: skip
+    for name in names:
         monkeypatch.delenv(name, raising=False)
 
 
@@ -109,3 +125,39 @@ def test_default_embedder_builds_the_cached_sentence_transformer(monkeypatch: py
     monkeypatch.setattr("bank_agent.bootstrap.models.build_embedder", fake_build)
     assert isinstance(default_embedder(RetrievalSettings(_env_file=None))(), FixtureEmbedder)
     assert built == [RetrievalSettings(_env_file=None).embedding_model]
+
+
+def _risk(tmp_path: Path, selection: str) -> object:
+    registry = build_model_registry(tmp_path)
+    return build_risk_estimator(
+        settings(tmp_path, risk_estimator=selection), registry, FixedClock(T0), SequentialIdGenerator()
+    )
+
+
+def test_the_risk_estimator_defaults_to_the_score_band_baseline(tmp_path: Path) -> None:
+    assert workflow_settings().risk_estimator == "score_band@1"
+    assert isinstance(_risk(tmp_path, "score_band@1"), ScoreBandRiskEstimator)
+    assert workflow_settings(risk_estimator=" ").risk_estimator == "score_band@1"
+
+
+def test_learned_risk_estimators_load_by_alias(tmp_path: Path) -> None:
+    publish(tmp_path, "risk_estimator:logreg", RISK_LOGREG_ARTIFACT)
+    publish(tmp_path, "risk_estimator:lgbm", RISK_LGBM_ARTIFACT)
+    for name in ("logreg", "lgbm"):
+        loaded = _risk(tmp_path, f"{name}@champion")
+        assert isinstance(loaded, LearnedRiskEstimator)
+        assert loaded.model.name == name
+
+
+def test_a_missing_risk_artifact_serves_the_baseline_and_a_tampered_one_stops_startup(tmp_path: Path) -> None:
+    assert isinstance(_risk(tmp_path, "lgbm@champion"), ScoreBandRiskEstimator)
+    resolved = publish(tmp_path, "risk_estimator:lgbm", RISK_LGBM_ARTIFACT)
+    Path(resolved.local_path).write_text("{}")
+    with pytest.raises(ModelArtifactIntegrityError):
+        _risk(tmp_path, "lgbm@champion")
+
+
+@pytest.mark.parametrize("value", ["score_band@2", "gbm@1", "lgbm@", "logreg@../x"])
+def test_risk_estimator_selections_are_validated(value: str) -> None:
+    with pytest.raises(ValidationError):
+        workflow_settings(risk_estimator=value)

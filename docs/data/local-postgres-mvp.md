@@ -1,7 +1,7 @@
 # MVP data in PostgreSQL
 
 How to prepare, load, and verify the MVP data from the full organizer delivery, and the plan for loading
-the complete delivery later. This guide implements [ADR 0032](../adr/0032-bounded-local-gold-seed-for-mvp.md).
+the complete delivery later. This guide implements [ADR 0034](../adr/0034-bounded-local-gold-seed-for-mvp.md).
 
 ## What gets built
 

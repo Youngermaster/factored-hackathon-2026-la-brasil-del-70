@@ -349,6 +349,7 @@ class InMemoryHandoffRepository:
                 and (not query.priorities or document.priority in query.priorities)
                 and (not query.reasons or document.escalation_reason.code in query.reasons)
                 and (not query.languages or document.language in query.languages)
+                and (not query.workflows or (document.workflow is not None and document.workflow.id in query.workflows))
                 and (query.sla_due_before is None or document.sla_due < query.sla_due_before)
             )
 
@@ -464,6 +465,19 @@ class InMemoryCreditApplicationRepository:
         self, statuses: frozenset[ApplicationStatus] | None = None, limit: int = 50
     ) -> Sequence[CreditApplicationIntake]:
         found = [item for item in self._own() if statuses is None or item.status in statuses]
+        found.sort(key=lambda item: item.application_id)
+        found.sort(key=lambda item: item.created_at, reverse=True)
+        return found[:limit]
+
+    async def list_for_review(
+        self, statuses: frozenset[ApplicationStatus] | None = None, limit: int = 50
+    ) -> Sequence[CreditApplicationIntake]:
+        _staff_of(self._context, Role.AGENT)
+        found = [
+            item
+            for item in self._applications.values()
+            if self._referenced_by_a_handoff(item.application_id) and (statuses is None or item.status in statuses)
+        ]
         found.sort(key=lambda item: item.application_id)
         found.sort(key=lambda item: item.created_at, reverse=True)
         return found[:limit]

@@ -12,8 +12,9 @@ from bank_agent.domain.errors import (
 from bank_agent.domain.handoff import EscalationReasonCode, HandoffOutcomeCode, HandoffStatus
 from bank_agent.domain.identifiers import HandoffId
 from bank_agent.domain.locale import Language
+from bank_agent.domain.workflow import WorkflowId, WorkflowRef
 from bank_agent.ports.repositories.handoffs import HandoffQuery
-from bank_agent_builders import T0, handoff
+from bank_agent_builders import T0, handoff, handoff_v1_1
 from bank_agent_contracts import AGENT, CONTEXT_A, CONTEXT_B, EVALUATOR, WriteBackend
 
 FIRST = HandoffId("ho-000001")
@@ -70,6 +71,16 @@ class TestHandoffRepositoryContract:
             assert [r.handoff_id for r in due_soon] == [SECOND]
             assert await uow.handoffs.list(HandoffQuery(statuses=(HandoffStatus.RESOLVED,))) == []
             assert len(await uow.handoffs.list(HandoffQuery(limit=1))) == 1
+
+    async def test_agents_filter_by_workflow_and_router_handoffs_never_match(self, write_backend: WriteBackend) -> None:
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.handoffs.add(handoff())
+            await uow.handoffs.add(handoff_v1_1(handoff_id=SECOND, workflow=WorkflowRef(id="dispute", version=1)))
+            await uow.commit()
+        async with write_backend.uow_factory()(AGENT) as uow:
+            disputes = await uow.handoffs.list(HandoffQuery(workflows=(WorkflowId.DISPUTE,)))
+            assert [r.handoff_id for r in disputes] == [SECOND]
+            assert await uow.handoffs.list(HandoffQuery(workflows=(WorkflowId.CREDIT,))) == []
 
     async def test_agent_claims_and_resolves(self, write_backend: WriteBackend) -> None:
         await _seed(write_backend)

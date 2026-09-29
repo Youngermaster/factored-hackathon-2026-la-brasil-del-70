@@ -4,12 +4,36 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse, Response
+from starlette.types import Scope
 
-from bank_agent.api.domain_problems import domain_problem_registry
-from bank_agent.api.middleware import RequestIdMiddleware
-from bank_agent.api.problems import ProblemRegistry
+from bank_agent.api.csrf import CSRF_HEADER, CsrfTokens
+from bank_agent.api.domain_problems import api_problem_registry
+from bank_agent.api.middleware import (
+    REQUEST_ID_HEADER,
+    BodySizeLimitMiddleware,
+    RequestIdMiddleware,
+    SecurityHeadersMiddleware,
+)
+from bank_agent.api.openapi import install_openapi
+from bank_agent.api.problems import PAYLOAD_TOO_LARGE_PROBLEM, PROBLEM_CONTENT_TYPE, ProblemRegistry
 from bank_agent.api.provider import ApiConfig, ServiceProvider
-from bank_agent.api.routers import health
+from bank_agent.api.ratelimit import SlidingWindowLimiter
+from bank_agent.api.routers import agent, auth, conversations, evaluation, health
+
+
+async def _payload_too_large(scope: Scope) -> Response:
+    body: dict[str, object] = {
+        "type": PAYLOAD_TOO_LARGE_PROBLEM.type_uri,
+        "title": PAYLOAD_TOO_LARGE_PROBLEM.title,
+        "status": PAYLOAD_TOO_LARGE_PROBLEM.status,
+        "instance": scope.get("path", ""),
+    }
+    request_id = scope.get("state", {}).get("request_id")
+    if request_id is not None:
+        body["request_id"] = request_id
+    return JSONResponse(body, status_code=PAYLOAD_TOO_LARGE_PROBLEM.status, media_type=PROBLEM_CONTENT_TYPE)
 
 
 def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRegistry | None = None) -> FastAPI:
@@ -17,7 +41,10 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
 
     The provider and config are stored on ``app.state`` for routers and dependencies, and the provider is
     closed when the application shuts down. ``problems`` maps typed errors to problem details; when none is
-    given, a registry with every domain error family registered is used.
+    given, the HTTP-layer errors and every domain error family are registered.
+
+    Middleware, outermost first: request id, security headers, CORS, body size limit. Every response class,
+    including CORS preflights, 413 refusals, and problem details, therefore carries the security headers.
     """
 
     @asynccontextmanager
@@ -27,6 +54,7 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
         finally:
             await provider.aclose()
 
+    security = config.security
     app = FastAPI(
         title=config.title,
         version=config.version,
@@ -37,7 +65,25 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     )
     app.state.provider = provider
     app.state.api_config = config
-    (problems or domain_problem_registry()).install(app)
+    app.state.csrf = CsrfTokens(security.csrf_secret)
+    app.state.rate_limiter = SlidingWindowLimiter(config.monotonic)
+    (problems or api_problem_registry()).install(app)
+    app.add_middleware(BodySizeLimitMiddleware, max_bytes=security.max_request_body_bytes, respond=_payload_too_large)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(security.cors_allowed_origins),
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
+        allow_headers=["Content-Type", CSRF_HEADER, REQUEST_ID_HEADER],
+        expose_headers=[REQUEST_ID_HEADER, "Retry-After"],
+        max_age=600,
+    )
+    app.add_middleware(SecurityHeadersMiddleware, production=security.production)
     app.add_middleware(RequestIdMiddleware, id_factory=config.request_id_factory)
     app.include_router(health.router)
+    app.include_router(auth.router)
+    app.include_router(conversations.router)
+    app.include_router(agent.router)
+    app.include_router(evaluation.router)
+    install_openapi(app)
     return app

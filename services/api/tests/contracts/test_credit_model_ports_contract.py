@@ -1,15 +1,21 @@
 """Contract suites for the credit model ports: the risk estimator and the eligibility policy.
 
 The eligibility suite runs against the fake and the synthetic eligibility service (phase 06, on the real pack);
-phase 09 adds the score-band baseline estimator and phase 10 the learned estimators to the same lists.
+the estimator suite runs against the fake, the score-band baseline, and the learned ``logreg`` and ``lgbm`` estimators
+(from hand-written fixture artifacts in a temporary registry).
 """
 
+import tempfile
 from collections.abc import Callable
 from datetime import date
 from decimal import Decimal
+from pathlib import Path
+from typing import Any
 
 import pytest
 
+from bank_agent.adapters.models.learned_risk import LearnedRiskEstimator
+from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
 from bank_agent.adapters.policy.filesystem import FilesystemPolicyRepository
 from bank_agent.bootstrap.settings import DEFAULT_POLICY_DIR
 from bank_agent.domain.credit import CreditProductType, CreditProfile
@@ -32,9 +38,24 @@ from bank_agent.testing.credit import FakeEligibilityPolicy, FakeRiskEstimator
 from bank_agent.testing.ids import SequentialIdGenerator
 from bank_agent_builders import CUSTOMER_A, T0, risk_estimate
 from bank_agent_credit import catalog_products
+from bank_agent_models import RISK_LGBM_ARTIFACT, RISK_LOGREG_ARTIFACT, publish
+
+
+def _learned(name: str, artifact: dict[str, Any]) -> Callable[[], RiskEstimator]:
+    def factory() -> RiskEstimator:
+        root = Path(tempfile.mkdtemp(prefix="model-registry-"))
+        return LearnedRiskEstimator.load(publish(root, name, artifact), FixedClock(T0), SequentialIdGenerator())
+
+    return factory
+
 
 RISK_ESTIMATORS = [
-    pytest.param(lambda: FakeRiskEstimator(FixedClock(T0), SequentialIdGenerator()), marks=pytest.mark.unit, id="fake")
+    pytest.param(lambda: FakeRiskEstimator(FixedClock(T0), SequentialIdGenerator()), marks=pytest.mark.unit, id="fake"),
+    pytest.param(
+        lambda: ScoreBandRiskEstimator(FixedClock(T0), SequentialIdGenerator()), marks=pytest.mark.unit, id="score_band"
+    ),
+    pytest.param(_learned("risk_estimator:logreg", RISK_LOGREG_ARTIFACT), marks=pytest.mark.unit, id="logreg"),
+    pytest.param(_learned("risk_estimator:lgbm", RISK_LGBM_ARTIFACT), marks=pytest.mark.unit, id="lgbm"),
 ]
 
 

@@ -1,4 +1,4 @@
-# 0032: Bounded local gold seed into PostgreSQL for the MVP
+# 0034: Bounded local gold seed into PostgreSQL for the MVP
 
 - Status: accepted
 - Date: 2026-09-27

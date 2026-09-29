@@ -1,11 +1,12 @@
-"""Selects the router and resolver implementations named in ``WorkflowSettings``, loading learned artifacts
-through the filesystem ``ModelRegistry`` by version or alias.
+"""Selects the router, resolver, and risk estimator implementations named in ``WorkflowSettings``, loading learned
+artifacts through the filesystem ``ModelRegistry`` by version or alias.
 
-``keyword@1`` and ``rules@1`` are the rule baselines. ``tfidf@<version or alias>``, ``embeddings@<...>``, and
-``lgbm@<...>`` load registered artifacts. When no artifact exists for the name (a fresh checkout before
-``make train``), or the embeddings router cannot run because the ``ml`` extra is absent, the baseline serves and a
-structured warning names the reason; every prediction still records the model that actually answered. A digest
-mismatch or a malformed artifact is never tolerated: it stops startup.
+``keyword@1``, ``rules@1``, and ``score_band@1`` are the baselines. ``tfidf@<version or alias>``,
+``embeddings@<...>``, ``lgbm@<...>`` (resolver or risk estimator), and ``logreg@<...>`` load registered artifacts.
+When no artifact exists for the name (a fresh checkout before ``make train``), or the embeddings router cannot run
+because the ``ml`` extra is absent, the baseline serves and a structured warning names the reason; every prediction
+still records the model that actually answered. A digest mismatch or a malformed artifact is never tolerated: it
+stops startup.
 """
 
 from collections.abc import Callable
@@ -15,15 +16,18 @@ import structlog
 
 from bank_agent.adapters.models.embedding_router import EmbeddingIntentRouter
 from bank_agent.adapters.models.keyword_router import KeywordIntentRouter
+from bank_agent.adapters.models.learned_risk import LearnedRiskEstimator
 from bank_agent.adapters.models.lgbm_resolver import LgbmTransactionResolver
 from bank_agent.adapters.models.registry import FilesystemModelRegistry
 from bank_agent.adapters.models.rules_resolver import RuleTransactionResolver
+from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
 from bank_agent.adapters.models.tfidf_router import TfidfIntentRouter
 from bank_agent.adapters.retrieval.embedding import Embedder, ml_extra_installed
 from bank_agent.bootstrap.retrieval import build_embedder
 from bank_agent.bootstrap.settings import RetrievalSettings, WorkflowSettings
 from bank_agent.domain.errors import ConfigurationError, ModelArtifactNotFoundError, ModelUnavailableError
-from bank_agent.ports.models import IntentRouter, ModelRegistry, TransactionResolver
+from bank_agent.ports.determinism import Clock, IdGenerator
+from bank_agent.ports.models import IntentRouter, ModelRegistry, RiskEstimator, TransactionResolver
 
 _log = structlog.get_logger(__name__)
 EmbedderFactory = Callable[[], Embedder | None]
@@ -78,6 +82,21 @@ def build_resolver(settings: WorkflowSettings, registry: ModelRegistry) -> Trans
     except ModelArtifactNotFoundError as error:
         _fallback("resolver", settings.resolver, str(error), "resolver:rules@1")
         return RuleTransactionResolver()
+
+
+def build_risk_estimator(
+    settings: WorkflowSettings, registry: ModelRegistry, clock: Clock, ids: IdGenerator
+) -> RiskEstimator:
+    """The selected estimator. A missing artifact serves the score-band baseline (named in every estimate it makes);
+    a corrupt one stops startup; an estimate that cannot be computed raises ``risk_estimator_unavailable``."""
+    name, version = split_selection(settings.risk_estimator)
+    if name == "score_band":
+        return ScoreBandRiskEstimator(clock, ids)
+    try:
+        return LearnedRiskEstimator.load(registry.resolve(f"risk_estimator:{name}", version), clock, ids)
+    except ModelArtifactNotFoundError as error:
+        _fallback("risk_estimator", settings.risk_estimator, str(error), "risk_estimator:score_band@1")
+        return ScoreBandRiskEstimator(clock, ids)
 
 
 def build_model_registry(root: Path) -> ModelRegistry:

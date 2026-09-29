@@ -61,6 +61,27 @@ def pause(ctx: TurnContext) -> Step:
     return Step(AUTH_REQUIRED, auth_required_reply())
 
 
+def resume_after_sign_in(ctx: TurnContext) -> None:
+    """A turn from a new session lineage (the customer signed in again) mid-flow resumes like after a pause.
+
+    The HTTP layer never passes an expired session to the engine, so ``pause`` does not run for it; instead the
+    first turn of the new login goes through AUTH_REQUIRED to the last safe state (a write state's ``resume_state``),
+    and the question there is asked again, so a confirmation is never carried across a sign-in. A step-up rotates
+    the session but keeps the lineage, so a stepped-up turn executes directly.
+    """
+    previous, current = ctx.engine.lineage, ctx.session.lineage_id
+    ctx.engine = ctx.engine.evolve(lineage=current)
+    if previous is None or previous == current or ctx.at_router or ctx.state == AUTH_REQUIRED:
+        return
+    spec = ctx.definition.spec(ctx.state)
+    if spec.kind in (StateKind.TERMINAL, StateKind.ACCEPTS_REQUEST):
+        return
+    ctx.definition.check_transition(ctx.state, AUTH_REQUIRED)
+    ctx.recorder.intervention("signed_in_again")
+    ctx.engine = ctx.engine.evolve(resume_state=spec.resume_state or ctx.state)
+    ctx.state = AUTH_REQUIRED
+
+
 def resolve_turn_language(ctx: TurnContext) -> Step | None:
     detection = ctx.services.language_detector.detect(ctx.text)
     ctx.detection = detection

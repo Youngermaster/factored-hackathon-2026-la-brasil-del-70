@@ -23,7 +23,7 @@ BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
-	policy-lock policy-catalog index eval-retrieval train promote
+	policy-lock policy-catalog index eval-retrieval train promote openapi
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -73,6 +73,10 @@ env-check: ## Report set or unset for every documented environment variable, nev
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models
 	$(UV_RUN) python scripts/generate_contracts.py
 
+openapi: ## Export contracts/openapi.json and regenerate the web API types (apps/web/src/shared/api/generated)
+	$(UV_RUN) python scripts/export_openapi.py
+	$(WEB) exec node tooling/generate-api-types.ts
+
 policy-lock: ## Rewrite policies/versions.lock.yaml after a clause change (refuses a change without a version bump)
 	$(UV_RUN) bank-agent policy lock
 
@@ -85,16 +89,19 @@ index: ## Build the retrieval index for the current pack under data/artifacts (D
 eval-retrieval: ## Compare BM25, dense, and hybrid on the relevance judgments; writes docs/evaluation/retrieval.md
 	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) bank-eval retrieval
 
-train: ## Train, register as candidates, and evaluate the router and resolver; writes docs/evaluation (resolver needs the s3 gold)
+train: ## Train, register as candidates, and evaluate the router, resolver, and risk estimator; writes docs/evaluation (resolver and risk need the s3 gold)
 	$(UV_RUN) bank-ml router train
 	$(UV_RUN) bank-ml router evaluate
 	$(UV_RUN) bank-ml resolver train
 	$(UV_RUN) bank-ml resolver evaluate
+	$(UV_RUN) bank-ml risk train
+	$(UV_RUN) bank-ml risk evaluate
 
-promote: ## Move 'champion' to the candidates that win on dev, recording APPROVED_BY (required)
+promote: ## Move 'champion' to the candidates that win (router and resolver on dev, risk on test), recording APPROVED_BY (required)
 	@test -n "$(APPROVED_BY)" || { echo "APPROVED_BY=<name> is required: promotion records who approved it"; exit 1; }
 	$(UV_RUN) bank-ml router promote --approved-by "$(APPROVED_BY)"
 	$(UV_RUN) bank-ml resolver promote --approved-by "$(APPROVED_BY)"
+	$(UV_RUN) bank-ml risk promote --approved-by "$(APPROVED_BY)"
 
 data-download: ## Incremental, manifest-driven download of the organizer bucket into data/warehouse (needs S3 credentials)
 	$(BANK_DATA) ingest --source s3 --download-only
