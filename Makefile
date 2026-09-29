@@ -24,7 +24,7 @@ BANK_DATA := $(UV_RUN) bank-data
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
 	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
-	api-local-llm env
+	api-local-llm env api-obs load-test
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -88,6 +88,19 @@ llm-smoke: ## Opt-in: run the fixture prompts (es, pt, four workflows) against t
 api-local-llm: ## Opt-in: run the API on :8000 with the local Ollama model through LiteLLM (LOCAL_LLM_MODEL, LOCAL_LLM_BASE)
 	LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=$(LOCAL_LLM_MODEL) LLM_API_BASE=$(LOCAL_LLM_BASE) \
 		$(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
+
+api-obs: ## Run the API on :8000 exporting traces and metrics to the obs profile (make up PROFILES=obs first)
+	OTEL_ENABLED=true OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+		$(UV_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
+
+# Load test (docs/operations/capacity.md): Locust runs through uv without entering the lockfile or the image.
+LOAD_HOST ?= http://127.0.0.1:8000
+LOAD_USERS ?= 20
+LOAD_DURATION ?= 60s
+load-test: ## Locust against LOAD_HOST (raise the rate limits, fake model); CSV results in reports/load/
+	mkdir -p reports/load
+	uv run --no-project --with locust==2.46.6 locust -f scripts/load/locustfile.py --headless --host $(LOAD_HOST) \
+		-u $(LOAD_USERS) -r 5 -t $(LOAD_DURATION) --csv reports/load/local --only-summary
 
 openapi: ## Export contracts/openapi.json and regenerate the web API types (apps/web/src/shared/api/generated)
 	$(UV_RUN) python scripts/export_openapi.py

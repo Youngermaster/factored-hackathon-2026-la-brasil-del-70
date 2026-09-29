@@ -12,7 +12,8 @@ from typer.testing import CliRunner
 from bank_agent.adapters.models.learned_risk import LearnedRiskEstimator
 from bank_agent.adapters.models.registry import FilesystemModelStore
 from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
-from bank_agent.bootstrap.models import build_model_registry, build_risk_estimator
+from bank_agent.adapters.models.unavailable_risk import UnavailableRiskEstimator
+from bank_agent.bootstrap.models import ModelFallbacks, build_model_registry, build_risk_estimator
 from bank_agent.bootstrap.settings import WorkflowSettings
 from bank_agent.domain.credit import CreditProductType
 from bank_agent.domain.eligibility import CreditRiskFeatures, RiskBand
@@ -102,10 +103,16 @@ def test_train_evaluate_promote_and_serve(risk_gold: Path, tmp_path: Path) -> No
     assert estimate.model.version == refs["lgbm"].split("@")[1]
 
 
-def test_the_api_keeps_the_baseline_without_an_artifact(tmp_path: Path) -> None:
+def test_without_an_artifact_the_api_serves_no_estimate_unless_the_band_fallback_is_allowed(tmp_path: Path) -> None:
+    # Degradation level L3 (phase 15): a learned estimator that cannot load never guesses; eligibility goes to
+    # review unless DEGRADATION_RISK_BAND_FALLBACK allows the score-band baseline.
     served = build_risk_estimator(_settings(tmp_path, "logreg@champion"), build_model_registry(tmp_path),
                                   FixedClock(T0), SequentialIdGenerator())  # fmt: skip
-    assert isinstance(served, ScoreBandRiskEstimator)
+    assert isinstance(served, UnavailableRiskEstimator)
+    allowed = build_risk_estimator(_settings(tmp_path, "logreg@champion"), build_model_registry(tmp_path),
+                                   FixedClock(T0), SequentialIdGenerator(),
+                                   ModelFallbacks(risk_band_fallback=True))  # fmt: skip
+    assert isinstance(allowed, ScoreBandRiskEstimator)
 
 
 def test_bands_use_the_policy_pack_cut_points() -> None:

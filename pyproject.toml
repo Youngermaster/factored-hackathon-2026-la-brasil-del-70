@@ -122,8 +122,15 @@ files = [
 # checks it in a second, separate mypy run.
 
 [[tool.mypy.overrides]]
-module = ["asyncpg", "asyncpg.*", "boto3", "boto3.*", "botocore", "botocore.*", "datasketch", "datasketch.*", "importlinter.*", "jsonschema", "jsonschema.*", "lightgbm", "lightgbm.*", "litellm", "litellm.*", "mlflow", "mlflow.*", "pytest_socket", "sentence_transformers", "sentence_transformers.*", "sklearn", "sklearn.*", "testcontainers.*"]
+module = ["asyncpg", "asyncpg.*", "boto3", "boto3.*", "botocore", "botocore.*", "datasketch", "datasketch.*", "importlinter.*", "jsonschema", "jsonschema.*", "lightgbm", "lightgbm.*", "litellm", "litellm.*", "locust", "locust.*", "mlflow", "mlflow.*", "pytest_socket", "sentence_transformers", "sentence_transformers.*", "sklearn", "sklearn.*", "testcontainers.*"]
 ignore_missing_imports = true
+
+# The load test runs Locust through `uv run --with` (docs/operations/capacity.md), outside the lockfile, so its
+# base class and task decorator are untyped here; only this script may subclass and decorate with them.
+[[tool.mypy.overrides]]
+module = ["load.locustfile", "scripts.load.locustfile", "locustfile"]
+disallow_subclassing_any = false
+disallow_untyped_decorators = false
 
 [tool.pydantic-mypy]
 init_forbid_extra = true

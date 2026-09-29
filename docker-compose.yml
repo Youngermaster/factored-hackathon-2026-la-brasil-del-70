@@ -2,6 +2,7 @@
 #   make up                          PostgreSQL only
 #   make up PROFILES="api web"       plus the API (hot reload) and the web dev server
 #   make up PROFILES=obs             plus the OpenTelemetry collector, Jaeger, Prometheus, and Grafana
+#                                    (the API exports to it with OTEL_ENABLED=true; docs/operations/observability.md)
 #   make up PROFILES=ml              plus the MLflow tracking server
 #
 # Values come from .env (see .env.example). Only the two PostgreSQL passwords are required, because Compose
@@ -10,9 +11,15 @@
 
 name: bank-agent
 
+# Every service rotates its container log: at most 5 files of 10 MB (docs/operations/observability.md, retention).
 x-hardening: &hardening
   security_opt:
     - no-new-privileges:true
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "5"
 
 services:
   postgres:
@@ -56,7 +63,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-bank_agent}
       POSTGRES_APP_USER: ${POSTGRES_APP_USER:-bank_app}
       POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?set POSTGRES_APP_PASSWORD in .env, see .env.example}
-      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_ENABLED: ${OTEL_ENABLED:-false}
     volumes:
       - .:/workspace:ro
       - api-venv:/opt/venv
@@ -116,6 +124,7 @@ services:
       - --storage.tsdb.retention.time=7d
     volumes:
       - ./deploy/observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/observability/alerts.yml:/etc/prometheus/alerts.yml:ro
       - prometheus-data:/prometheus
     ports:
       - "127.0.0.1:9090:9090"
@@ -127,7 +136,8 @@ services:
     cap_drop: [ALL]
     environment:
       # Local development only: anonymous read-only access, no login form, no basic auth, so no admin
-      # password is needed. Dashboards are file-provisioned (phase 15).
+      # password is needed. The dashboard in deploy/observability/grafana/provisioning/dashboards is
+      # file-provisioned and read only.
       GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
       GF_AUTH_DISABLE_LOGIN_FORM: "true"

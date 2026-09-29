@@ -24,10 +24,10 @@ class RecordedSpan:
 @dataclass
 class RecordedCounter:
     name: str
-    total: int = 0
-    points: list[tuple[int, dict[str, AttributeValue]]] = field(default_factory=list)
+    total: float = 0
+    points: list[tuple[float, dict[str, AttributeValue]]] = field(default_factory=list)
 
-    def add(self, amount: int, attributes: dict[str, AttributeValue] | None = None) -> None:
+    def add(self, amount: float, attributes: dict[str, AttributeValue] | None = None) -> None:
         self.total += amount
         self.points.append((amount, dict(attributes or {})))
 
@@ -41,6 +41,20 @@ class RecordedHistogram:
         self.values.append((value, dict(attributes or {})))
 
 
+@dataclass
+class RecordedGauge:
+    name: str
+    values: list[tuple[float, dict[str, AttributeValue]]] = field(default_factory=list)
+
+    def set(self, value: float, attributes: dict[str, AttributeValue] | None = None) -> None:
+        self.values.append((value, dict(attributes or {})))
+
+    def last(self, **attributes: AttributeValue) -> float | None:
+        """The newest value recorded with exactly these attributes."""
+        matching = [value for value, recorded in self.values if recorded == attributes]
+        return matching[-1] if matching else None
+
+
 class RecordingTelemetry:
     """Implements the ``Telemetry`` port by keeping everything in memory."""
 
@@ -48,6 +62,7 @@ class RecordingTelemetry:
         self.spans: list[RecordedSpan] = []
         self.counters: dict[str, RecordedCounter] = {}
         self.histograms: dict[str, RecordedHistogram] = {}
+        self.gauges: dict[str, RecordedGauge] = {}
 
     def span(
         self, name: str, attributes: dict[str, AttributeValue] | None = None
@@ -65,3 +80,9 @@ class RecordingTelemetry:
 
     def histogram(self, name: str) -> RecordedHistogram:
         return self.histograms.setdefault(name, RecordedHistogram(name))
+
+    def gauge(self, name: str) -> RecordedGauge:
+        return self.gauges.setdefault(name, RecordedGauge(name))
+
+    def current_trace_id(self) -> str | None:
+        return self.spans[-1].trace_id if self.spans else None

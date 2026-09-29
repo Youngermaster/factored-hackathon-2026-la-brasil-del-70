@@ -30,7 +30,9 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `eligibility.py` | `EligibilityPolicy`, `EligibilityRequest` | sync | The synthetic eligibility service: indicative outcomes from `ELG` rules, never an approval |
 | `retrieval.py` | `Retriever` | sync | Open retrieval over clauses |
 | `models.py` | `IntentRouter`, `TransactionResolver`, `LanguageDetector`, `ModelRegistry`, `RiskEstimator` | sync | Replaceable learned or rule-based components; the risk estimator is predictive only and internal |
-| `telemetry.py` | `Telemetry`, `Span`, `Counter`, `Histogram` | sync | Spans and metrics without importing OpenTelemetry |
+| `telemetry.py` | `Telemetry`, `Span`, `Counter`, `Histogram`, `Gauge` | sync | Spans, metrics, and the current trace id without importing OpenTelemetry |
+| `reliability.py` | `DegradationSource` | sync | The current degradation level (L0 to L4) for the engine and the health endpoint |
+| `budget.py` | `BudgetLedger` | async | Model spend per lineage, conversation, and day, shared by processes; atomic reservations |
 | `health.py` | `ReadinessCheck` | async | One dependency checked by `/health/ready` |
 | `evaluation.py` | `EvaluationSummaryReader` | async | Published evaluation summaries, newest first |
 

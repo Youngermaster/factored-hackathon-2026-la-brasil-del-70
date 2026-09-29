@@ -27,6 +27,7 @@
   "errors": {
     "network": "Não conseguimos conectar ao banco. Verifique sua conexão e tente de novo.",
     "server": "Algo falhou do nosso lado. Tente de novo em alguns minutos.",
+    "unavailable": "O serviço não está disponível no momento, então não confirmamos nenhuma alteração. Tente de novo em alguns minutos.",
     "rateLimited": "Você fez muitas solicitações seguidas. Aguarde um momento e tente de novo.",
     "forbidden": "Seu perfil não tem acesso a esta seção.",
     "generic": "Não foi possível concluir a ação.",

@@ -14,6 +14,7 @@ from bank_agent.adapters.llm.prices import (
 )
 from bank_agent.domain.errors import (
     ConfigurationError,
+    DatabaseUnavailableError,
     LlmBudgetExceededError,
     LlmInvalidOutputError,
     LlmProviderError,
@@ -21,6 +22,7 @@ from bank_agent.domain.errors import (
 )
 from bank_agent.domain.identifiers import ConversationId, LineageId
 from bank_agent.domain.intelligence import LlmCallContext, TokenUsage
+from bank_agent.ports.budget import BudgetScope, Reservation
 from bank_agent.testing.clock import FixedClock
 from bank_agent.testing.telemetry import RecordingTelemetry
 from bank_agent_llm import StubClient, call_structured, call_text
@@ -186,15 +188,20 @@ def _guard(stub: StubClient, clock: FixedClock, limits: BudgetLimits = LIMITS) -
     return BudgetGuardDecorator(stub, limits=limits, prices=PRICES, model_ids=("verified/model",), clock=clock)
 
 
+def memory(guard: BudgetGuardDecorator) -> InMemoryBudgetLedger:
+    assert isinstance(guard.ledger, InMemoryBudgetLedger)
+    return guard.ledger
+
+
 async def test_records_actual_tokens_and_cost_after_a_successful_call() -> None:
     stub = StubClient(usage=TokenUsage(input_tokens=1000, output_tokens=200), cost_usd=Decimal("0.0100"))
     guard = _guard(stub, FixedClock(NOW))
 
     await call_structured(guard, context=CONTEXT, max_output_tokens=500)
 
-    assert guard.ledger.session_tokens["lin-1"] == 1200
-    assert guard.ledger.conversation_cost["conv-1"] == Decimal("0.0100")
-    assert guard.ledger.daily_cost[NOW.date()] == Decimal("0.0100")
+    assert memory(guard).session_tokens["lin-1"] == 1200
+    assert memory(guard).conversation_cost["conv-1"] == Decimal("0.0100")
+    assert memory(guard).daily_cost[NOW.date()] == Decimal("0.0100")
 
 
 async def test_uses_the_price_table_when_the_result_has_no_cost() -> None:
@@ -203,7 +210,7 @@ async def test_uses_the_price_table_when_the_result_has_no_cost() -> None:
 
     await call_text(guard, context=CONTEXT, max_output_tokens=100)
 
-    assert guard.ledger.daily_cost[NOW.date()] == Decimal("0.00800000")
+    assert memory(guard).daily_cost[NOW.date()] == Decimal("0.00800000")
 
 
 async def test_session_token_cap_counts_the_reservation() -> None:
@@ -241,7 +248,7 @@ async def test_daily_cost_cap_resets_on_the_next_utc_day() -> None:
 
     clock.advance(timedelta(minutes=1))
     await call_structured(guard, max_output_tokens=1000)
-    assert guard.ledger.daily_cost[date(2026, 9, 27)] == Decimal("0.099")
+    assert memory(guard).daily_cost[date(2026, 9, 27)] == Decimal("0.099")
 
 
 async def test_a_zero_daily_budget_refuses_every_call() -> None:
@@ -264,8 +271,8 @@ async def test_keeps_the_reservation_when_the_provider_may_have_billed(error: Ex
     with pytest.raises(type(error)):
         await call_structured(guard, context=CONTEXT, max_output_tokens=1000)
 
-    assert guard.ledger.session_tokens["lin-1"] == 1000
-    assert guard.ledger.conversation_cost["conv-1"] == Decimal("0.00400000")
+    assert memory(guard).session_tokens["lin-1"] == 1000
+    assert memory(guard).conversation_cost["conv-1"] == Decimal("0.00400000")
 
 
 async def test_releases_the_reservation_after_other_errors() -> None:
@@ -275,8 +282,8 @@ async def test_releases_the_reservation_after_other_errors() -> None:
     with pytest.raises(LlmProviderError):
         await call_structured(guard, context=CONTEXT, max_output_tokens=1000)
 
-    assert guard.ledger.session_tokens["lin-1"] == 0
-    assert guard.ledger.daily_cost[NOW.date()] == 0
+    assert memory(guard).session_tokens["lin-1"] == 0
+    assert memory(guard).daily_cost[NOW.date()] == 0
 
 
 def test_budget_limits_are_validated() -> None:
@@ -292,3 +299,41 @@ def test_the_ledger_ignores_missing_identifiers_except_for_the_day() -> None:
     assert dict(ledger.session_tokens) == {}
     assert dict(ledger.conversation_cost) == {}
     assert ledger.daily_cost[NOW.date()] == Decimal(1)
+
+
+class BrokenLedger:
+    """A ``BudgetLedger`` whose storage is down: reservations and settles both fail."""
+
+    def __init__(self, *, reserve_works: bool = False) -> None:
+        self.reserve_works = reserve_works
+
+    async def reserve(self, scope: BudgetScope, *, tokens: int, cost: Decimal, limits: BudgetLimits) -> Reservation:
+        if self.reserve_works:
+            return Reservation(refused_by=None, daily_spent_usd=cost)
+        raise DatabaseUnavailableError("fixture: ledger down")
+
+    async def settle(self, scope: BudgetScope, *, tokens: int, cost: Decimal) -> Decimal:
+        raise DatabaseUnavailableError("fixture: ledger down")
+
+
+async def test_an_unreadable_ledger_refuses_the_call_before_it_is_made() -> None:
+    stub = StubClient()
+    guard = BudgetGuardDecorator(
+        stub, limits=LIMITS, prices=PRICES, model_ids=("verified/model",), clock=FixedClock(NOW), ledger=BrokenLedger()
+    )
+    with pytest.raises(LlmBudgetExceededError, match="ledger is unavailable"):
+        await call_text(guard, context=CONTEXT)
+    assert stub.calls == []
+
+
+async def test_a_failed_settle_keeps_the_result_and_the_worst_case_reserved() -> None:
+    stub = StubClient()
+    guard = BudgetGuardDecorator(
+        stub,
+        limits=LIMITS,
+        prices=PRICES,
+        model_ids=("verified/model",),
+        clock=FixedClock(NOW),
+        ledger=BrokenLedger(reserve_works=True),
+    )
+    assert (await call_text(guard, context=CONTEXT)).text == "hola"

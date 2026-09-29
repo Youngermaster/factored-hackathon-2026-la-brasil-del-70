@@ -296,6 +296,17 @@ class ToolPermanentError(ToolError):
     code = "tool_permanent_failure"
 
 
+class DatabaseUnavailableError(DependencyError):
+    """The database refused or dropped the connection, timed out, or is read-only (degradation level L4).
+
+    The request's unit of work was rolled back, so nothing it tried to write was committed by it; the API answers 503
+    with ``Retry-After``. Writes never fail open: a write whose outcome is unknown is not reported as done.
+    """
+
+    code = "database_unavailable"
+    retryable = True
+
+
 class RiskEstimatorUnavailableError(DependencyError):
     """The risk estimator cannot produce an estimate. Never retried: the eligibility service falls back to
     human review instead of guessing."""

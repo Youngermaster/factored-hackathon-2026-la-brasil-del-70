@@ -3,6 +3,8 @@ from collections.abc import Sequence
 import httpx
 
 from bank_agent.api.app import create_app
+from bank_agent.application.reliability.ladder import LadderFlags, Signals, StaticDegradation, assess
+from bank_agent.domain.degradation import ComponentState
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent_test_support import (
     FakeProvider,
@@ -84,3 +86,47 @@ def test_docs_can_be_hidden() -> None:
 
     assert app.docs_url is None
     assert app.openapi_url is None
+
+
+def _details_client(provider: FakeProvider) -> httpx.AsyncClient:
+    app = create_app(provider, api_config())
+    return httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://testserver")
+
+
+async def test_details_report_the_level_reasons_and_components() -> None:
+    status = assess(Signals(llm_primary=ComponentState.UNAVAILABLE, database=ComponentState.OK), LadderFlags())
+    provider = FakeProvider([StaticReadinessCheck("database", healthy=True)], StaticDegradation(status))
+    async with _details_client(provider) as client:
+        response = await client.get("/health/details")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert (body["status"], body["level"], body["reasons"], body["template_only"]) == (
+        "degraded",
+        "L2",
+        ["llm_unavailable"],
+        True,
+    )
+    assert body["components"]["llm_primary"] == "unavailable"
+    assert body["checks"] == {"database": "ok"}
+    assert provider.degradation.database_probes == [True]
+
+
+async def test_details_answer_503_at_l4_and_readiness_feeds_the_database_probe() -> None:
+    status = assess(Signals(database=ComponentState.UNAVAILABLE), LadderFlags())
+    provider = FakeProvider([StaticReadinessCheck("database", healthy=False)], StaticDegradation(status))
+    async with _details_client(provider) as client:
+        details = await client.get("/health/details")
+        ready = await client.get("/health/ready")
+
+    assert (details.status_code, details.json()["status"], details.json()["level"]) == (503, "unavailable", "L4")
+    assert ready.status_code == 503
+    assert provider.degradation.database_probes == [False, False]
+
+
+async def test_details_are_normal_without_degradation() -> None:
+    async with _details_client(FakeProvider()) as client:
+        response = await client.get("/health/details")
+
+    assert response.status_code == 200
+    assert (response.json()["status"], response.json()["level"]) == ("normal", "L0")

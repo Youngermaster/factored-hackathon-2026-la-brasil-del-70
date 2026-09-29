@@ -6,9 +6,11 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 class PostgresReadinessCheck:
-    """Runs ``SELECT 1`` as the application role to prove the database accepts connections.
+    """Proves the database accepts connections as the application role and accepts writes.
 
-    Implements ``bank_agent.ports.health.ReadinessCheck``.
+    Implements ``bank_agent.ports.health.ReadinessCheck``. A read-only server (a standby, or
+    ``default_transaction_read_only``) is not ready: every request that changes state would fail, and even reads
+    refresh the session's last-seen time (degradation level L4).
     """
 
     def __init__(self, engine: AsyncEngine) -> None:
@@ -21,7 +23,7 @@ class PostgresReadinessCheck:
     async def check(self) -> bool:
         try:
             async with self._engine.connect() as connection:
-                result = await connection.execute(text("SELECT 1"))
-                return result.scalar_one() == 1
+                result = await connection.execute(text("SELECT current_setting('transaction_read_only')"))
+                return result.scalar_one() == "off"
         except (SQLAlchemyError, OSError):
             return False

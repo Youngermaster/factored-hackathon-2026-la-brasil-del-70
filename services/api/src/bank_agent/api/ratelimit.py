@@ -45,8 +45,10 @@ class SlidingWindowLimiter:
     def check(self, rate_class: RateClass, limit: RateLimit, *, client_ip: str, session_token: str | None) -> None:
         """Raise ``RateLimitedError`` when the IP or the session is over its limit for ``rate_class``."""
         wait = self.hit(f"{rate_class.value}:ip:{client_ip}", limit.per_ip)
-        if wait is None and session_token:
+        if wait is not None:
+            raise RateLimitedError(wait, key="ip")
+        if session_token:
             digest = hashlib.sha256(session_token.encode("utf-8")).hexdigest()[:32]
             wait = self.hit(f"{rate_class.value}:session:{digest}", limit.per_session)
-        if wait is not None:
-            raise RateLimitedError(wait)
+            if wait is not None:
+                raise RateLimitedError(wait, key="session")

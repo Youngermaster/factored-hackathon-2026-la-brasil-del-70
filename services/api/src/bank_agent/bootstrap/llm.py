@@ -34,8 +34,10 @@ from bank_agent.adapters.llm.retry import BoundedRetryDecorator, Sleep
 from bank_agent.adapters.llm.timeout import TimeoutDecorator
 from bank_agent.adapters.llm.tracing import TracingDecorator
 from bank_agent.adapters.llm.unconfigured import UnconfiguredLLMClient
+from bank_agent.adapters.reliability.monitor import LlmHealth
 from bank_agent.bootstrap.settings import LLMSettings
 from bank_agent.domain.errors import ConfigurationError
+from bank_agent.ports.budget import BudgetLedger
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
@@ -123,7 +125,9 @@ def _provider(
     return UnconfiguredLLMClient()
 
 
-def _reliability(client: LLMClient, settings: LLMSettings, clock: Clock, sleep: Sleep | None) -> LLMClient:
+def _reliability(
+    client: LLMClient, settings: LLMSettings, clock: Clock, sleep: Sleep | None
+) -> CircuitBreakerDecorator:
     timed = TimeoutDecorator(client, seconds=settings.timeout_seconds)
     retried = BoundedRetryDecorator(
         timed,
@@ -141,7 +145,15 @@ def _reliability(client: LLMClient, settings: LLMSettings, clock: Clock, sleep: 
     )
 
 
-def build_llm_client(
+@dataclass(frozen=True, slots=True)
+class LlmStack:
+    """The decorated gateway and the handles the degradation monitor reads (breakers and budget guard)."""
+
+    client: LLMClient
+    health: LlmHealth
+
+
+def build_llm_stack(
     settings: LLMSettings,
     *,
     registry: PromptRegistry,
@@ -149,8 +161,14 @@ def build_llm_client(
     telemetry: Telemetry,
     overrides: LlmOverrides | None = None,
     find_spec: FindSpec = importlib.util.find_spec,
-) -> LLMClient:
-    """Return the fully decorated ``LLMClient`` described by ``settings``."""
+    ledger: BudgetLedger | None = None,
+    fallback_enabled: bool = True,
+) -> LlmStack:
+    """The fully decorated gateway described by ``settings``, with its breakers and budget guard.
+
+    ``ledger`` shares the budget across processes (PostgreSQL); by default it is in memory. ``fallback_enabled``
+    is the L1 feature flag (``DEGRADATION_FALLBACK_PROVIDER``): off, a configured fallback model is not used.
+    """
     overrides = overrides or LlmOverrides()
     prices = PriceTable.from_yaml(settings.prices_file)
     redactor = Redactor()
@@ -163,14 +181,19 @@ def build_llm_client(
     primary = overrides.primary or configured(settings.primary_model, settings.api_key_primary)
     primary_model = _model_id(primary, settings.primary_model, settings.provider)
     model_ids = [primary_model]
-    client: LLMClient = _reliability(primary, settings, clock, overrides.sleep)
+    primary_breaker = _reliability(primary, settings, clock, overrides.sleep)
+    client: LLMClient = primary_breaker
 
     fallback = overrides.fallback
     if fallback is None and settings.fallback_model and settings.provider != "fake":
         fallback = configured(settings.fallback_model, settings.api_key_fallback)
-    if fallback is not None:
-        model_ids.append(_model_id(fallback, settings.fallback_model, settings.provider))
-        client = FallbackDecorator(client, _reliability(fallback, settings, clock, overrides.sleep))
+    fallback_breaker: CircuitBreakerDecorator | None = None
+    fallback_model = ""
+    if fallback is not None and fallback_enabled:
+        fallback_model = _model_id(fallback, settings.fallback_model, settings.provider)
+        model_ids.append(fallback_model)
+        fallback_breaker = _reliability(fallback, settings, clock, overrides.sleep)
+        client = FallbackDecorator(client, fallback_breaker)
 
     client = CostAccountingDecorator(client, prices=prices, telemetry=telemetry)
     client = TracingDecorator(
@@ -180,7 +203,7 @@ def build_llm_client(
         request_model=primary_model,
         capture_content=settings.trace_content,
     )
-    client = BudgetGuardDecorator(
+    budget = BudgetGuardDecorator(
         client,
         limits=BudgetLimits(
             session_token_limit=settings.session_token_limit,
@@ -190,5 +213,31 @@ def build_llm_client(
         prices=prices,
         model_ids=tuple(model_ids),
         clock=clock,
+        ledger=ledger,
+        telemetry=telemetry,
     )
-    return RedactionDecorator(client, redactor=redactor)
+    configured_provider = not isinstance(primary, UnconfiguredLLMClient)
+    health = LlmHealth(
+        primary=primary_breaker if configured_provider else None,
+        fallback=fallback_breaker if configured_provider else None,
+        budget=budget if configured_provider else None,
+        primary_model=primary_model,
+        fallback_model=fallback_model,
+    )
+    return LlmStack(RedactionDecorator(budget, redactor=redactor), health)
+
+
+def build_llm_client(
+    settings: LLMSettings,
+    *,
+    registry: PromptRegistry,
+    clock: Clock,
+    telemetry: Telemetry,
+    overrides: LlmOverrides | None = None,
+    find_spec: FindSpec = importlib.util.find_spec,
+) -> LLMClient:
+    """Return the fully decorated ``LLMClient`` described by ``settings`` (CLIs, the evaluation harness)."""
+    stack = build_llm_stack(
+        settings, registry=registry, clock=clock, telemetry=telemetry, overrides=overrides, find_spec=find_spec
+    )
+    return stack.client

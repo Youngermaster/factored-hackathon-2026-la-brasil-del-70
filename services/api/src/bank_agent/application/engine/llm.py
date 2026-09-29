@@ -3,7 +3,9 @@
 Every call names its prompt by id and version, passes only the variables the prompt declares (customer text as
 ``UntrustedText``), and carries the session's first name as a sensitive term so the redaction decorator masks it.
 Any ``LlmError`` is recorded (status ``fallback`` with the error code) and returns ``None``; the caller then uses
-its deterministic path. The model's output is understanding only: it never names a state, a tool, or a customer.
+its deterministic path. In template-only mode (degradation level L2) no call is attempted: the skip is recorded the
+same way with the code ``degraded_template_only``. The model's output is understanding only: it never names a
+state, a tool, or a customer.
 """
 
 from collections.abc import Mapping
@@ -22,6 +24,15 @@ DETECT_SIGNALS = PromptRef(prompt_id="detect_escalation_signals", version=1)
 PHRASE_RESPONSE = PromptRef(prompt_id="phrase_response", version=1)
 SUMMARIZE_HANDOFF = PromptRef(prompt_id="summarize_for_handoff", version=1)
 MIN_SENSITIVE = 2
+TEMPLATE_ONLY = "degraded_template_only"
+
+
+def skipped(ctx: TurnContext, prompt: PromptRef) -> bool:
+    """True, and recorded, when the degradation ladder says no model call may be attempted this turn."""
+    if not ctx.degradation.template_only:
+        return False
+    ctx.recorder.llm_skipped(prompt, TEMPLATE_ONLY)
+    return True
 
 
 def call_context(ctx: TurnContext) -> LlmCallContext:
@@ -38,7 +49,7 @@ async def structured[OutputT: BaseModel](
     ctx: TurnContext, prompt: PromptRef, variables: Mapping[str, PromptValue], output_model: type[OutputT]
 ) -> OutputT | None:
     """The validated output, or ``None`` when understanding by model is off or the gateway fails."""
-    if not ctx.settings.llm_understanding:
+    if not ctx.settings.llm_understanding or skipped(ctx, prompt):
         return None
     try:
         generation = await ctx.services.llm.generate_structured(
@@ -58,6 +69,8 @@ async def structured[OutputT: BaseModel](
 
 
 async def text(ctx: TurnContext, prompt: PromptRef, variables: Mapping[str, PromptValue]) -> str | None:
+    if skipped(ctx, prompt):
+        return None
     try:
         generation = await ctx.services.llm.generate_text(
             prompt,

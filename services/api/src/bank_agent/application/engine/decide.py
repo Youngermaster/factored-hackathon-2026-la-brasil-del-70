@@ -74,8 +74,13 @@ def failed(decision: Decision, rule_id: str) -> bool:
 
 
 def clarification_left(ctx: TurnContext) -> bool:
-    """True while another clarifying question fits the budget (``ESC.clarification_exhausted`` decides)."""
-    decision = evaluate(ctx, clarification_attempts=ctx.clarifications_used)
+    """True while another clarifying question fits the budget (``ESC.clarification_exhausted`` decides).
+
+    Degraded (L2 or L3), the kernel sees one more attempt than was made: one question fewer before a handoff,
+    because the deterministic understanding that serves then is less likely to resolve an unclear request.
+    """
+    stricter = 1 if ctx.degradation.stricter_clarification else 0
+    decision = evaluate(ctx, clarification_attempts=ctx.clarifications_used + stricter)
     return not failed(decision, "ESC.clarification_exhausted")
 
 

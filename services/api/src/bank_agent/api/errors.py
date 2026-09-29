@@ -26,9 +26,11 @@ class PayloadTooLargeError(ApiError):
 class RateLimitedError(ApiError):
     """Too many requests in the current window for this rate class."""
 
-    def __init__(self, retry_after_seconds: float) -> None:
+    def __init__(self, retry_after_seconds: float, key: str = "ip") -> None:
         super().__init__("rate limited")
         self.retry_after_seconds = max(1, math.ceil(retry_after_seconds))
+        self.key = key
+        """Which limit refused the request: ``ip`` or ``session`` (for metrics, never the address or token)."""
 
 
 class ServiceUnavailableError(ApiError):

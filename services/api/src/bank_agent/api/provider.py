@@ -21,6 +21,12 @@ from bank_agent.policy.loader.catalog import ProductDisplay
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
+from bank_agent.ports.reliability import DegradationSource
+from bank_agent.ports.telemetry import Telemetry
+
+
+def no_trace() -> str | None:
+    return None
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,6 +41,10 @@ class ApiConfig:
     security: SecurityConfig = field(default_factory=SecurityConfig.development)
     monotonic: Callable[[], float] = time.monotonic
     """The clock of the rate limiter's windows; tests pass a controllable one."""
+    database_retry_after_seconds: int = 30
+    """``Retry-After`` on the 503 while the database is unavailable (``DEGRADATION_DATABASE_RETRY_AFTER_SECONDS``)."""
+    current_trace_id: Callable[[], str | None] = no_trace
+    """The active trace id for ``X-Trace-Id`` (the telemetry adapter's ``current_trace_id``)."""
 
 
 class CreditProductNames(Protocol):
@@ -90,6 +100,16 @@ class ServiceProvider(Protocol):
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:
         """Dependencies checked by ``/health/ready``; empty when none are configured."""
+        ...
+
+    @property
+    def telemetry(self) -> Telemetry:
+        """Where the HTTP layer's metrics go (rate-limit rejections, active sessions)."""
+        ...
+
+    @property
+    def degradation(self) -> DegradationSource:
+        """The degradation ladder read by ``/health/details`` and told the outcome of each database probe."""
         ...
 
     async def aclose(self) -> None:

@@ -5,6 +5,7 @@ export type ErrorMessageKey =
   | 'errors.offline'
   | 'errors.network'
   | 'errors.server'
+  | 'errors.unavailable'
   | 'errors.rateLimited'
   | 'errors.forbidden'
   | 'errors.generic';
@@ -15,6 +16,10 @@ export function errorMessageKey(error: unknown): ErrorMessageKey {
     return navigator.onLine ? 'errors.network' : 'errors.offline';
   }
   if (error instanceof ApiError) {
+    if (error.status === 503 && error.slug === 'dependency-unavailable') {
+      // The API is degraded (a dependency such as the database is down): nothing was confirmed, retry later.
+      return 'errors.unavailable';
+    }
     if (error.status >= 500) {
       return 'errors.server';
     }

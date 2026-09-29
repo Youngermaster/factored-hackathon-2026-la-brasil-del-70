@@ -10,6 +10,7 @@ Roles: `anyone` needs no session; the others need a session of that role. CSRF: 
 |---|---|---|---|---|
 | GET | `/health/live` | anyone | no | none |
 | GET | `/health/ready` | anyone | no | none |
+| GET | `/health/details` | anyone | no | none |
 | GET | `/v1/auth/csrf` | anyone | no | auth |
 | POST | `/v1/auth/start` | anyone | yes | auth |
 | POST | `/v1/auth/verify` | anyone | yes | auth |
@@ -42,6 +43,9 @@ Notes on the catalog:
 - **Traces have two views.** The customer trace (own conversations only) shows that a risk estimate was used and which model made it, never its probability, interval, band, or flags, and leaves out the session id, trust events, risk tier, and safety interventions. The evaluator trace (any conversation) has everything, the internal risk estimates included. The prompt placed both under `/v1/conversations/{id}/trace`; they are separate operations so each role has one exact schema and the credit exposure test can check the customer one.
 - **Agents never read conversations.** They see structured handoffs (verified facts, actions taken, policy basis, open questions, and the credit review with its internal estimate). Every handoff view (list, read, claim, resolve) also carries `policy_excerpts`: one `Citation` (`clause_id@version` plus the excerpt, the same component the turn response uses) per `policy_basis` clause, in the same order, rendered from the loaded policy pack in the handoff's language exactly as the engine renders customer citations; a clause the pack cannot resolve is left out rather than given invented text. It is a view field only; the handoff contract (`handoff.v1.json`) is unchanged. Agents also see the credit application intakes: every reviewable one (status `submitted` or `under_human_review`, a review item of its own even without a handoff) plus any a handoff references, newest first, read only (status moves for agents come in phase 16). Claims and resolutions are audited.
 - **Evaluation summaries** are published by the evaluation harness (phase 14) into `EVAL_SUMMARIES_DIR`, always with the per-workflow numbers next to the aggregate, and always labeled by `measurement`: `offline` (measured on a held-out workload), `simulated` (measured against simulated customers or traffic), or `projected` (extrapolated under stated assumptions, never a measurement); the label is shown wherever the numbers are. Summary schema 1.1.0 (`schema_version`; 1.0.0 files still load) adds `automation_attempted` (cases where automation was attempted, over all in-scope cases) and `cost_per_resolution_usd` to every metrics block, `breakdowns` (slices by `language`, `dialect`, or `segment`, each optionally per `workflow`, with the same metrics), and `failure_table` (a repository-relative path). The list is empty until a run is published.
+
+- **Health.** `/health/live` answers while the process runs; `/health/ready` is 503 while a configured dependency (the database, read-only counts as unavailable) fails, for orchestrators; `/health/details` adds the degradation level (`L0` to `L4`), its reason codes, every component's state, and the share of the daily model budget spent, and is 503 at L4 ([degradation](../operations/degradation.md)). None of them is rate limited or traced, and none reports error text.
+- **Tracing headers.** Every traced response carries `X-Trace-Id` (32 hex characters) next to `X-Request-ID`; the turn's execution record stores the same trace id, and the evaluator trace returns it ([observability](../operations/observability.md)). Both headers are exposed to the browser through CORS.
 
 ## Auth model
 
@@ -94,7 +98,7 @@ Every error is RFC 9457 problem details (`application/problem+json`) with `type`
 | 413 | `payload-too-large` | The body is over the limit |
 | 422 | `validation-error`, `unprocessable-request` | Request validation, or a domain invariant |
 | 429 | `rate-limited`, `identity-locked` | A rate limit, or five failed codes (15-minute lockout); both send `Retry-After` |
-| 503 | `service-unavailable`, `dependency-unavailable` | Identity not configured (`SESSION_SECRET`), or a dependency failed |
+| 503 | `service-unavailable`, `dependency-unavailable` | Identity not configured (`SESSION_SECRET`), or a dependency failed; an unavailable or read-only database (degradation level L4) adds `Retry-After` (`DEGRADATION_DATABASE_RETRY_AFTER_SECONDS`, 30) and nothing was changed |
 | 500 | `internal-error` | Anything unexpected (logged with the request id) |
 
 ## Versioning

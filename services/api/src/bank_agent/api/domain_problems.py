@@ -23,6 +23,7 @@ from bank_agent.domain.errors import (
     AuthorizationError,
     ConfigurationError,
     ConflictError,
+    DatabaseUnavailableError,
     DependencyError,
     DomainError,
     IdentityChallengeExpiredError,
@@ -89,10 +90,19 @@ HTTP_PROBLEMS: Final[tuple[tuple[type[Exception], ProblemType], ...]] = (
 domain families, so the most specific entry wins."""
 
 
-def api_problem_registry() -> ProblemRegistry:
-    """The registry ``create_app`` installs: the HTTP-layer errors, the identity refinements, and the families."""
+DEPENDENCY_PROBLEM: Final = ProblemType(503, "dependency-unavailable", "A dependency is temporarily unavailable")
+
+
+def api_problem_registry(database_retry_after_seconds: int = 30) -> ProblemRegistry:
+    """The registry ``create_app`` installs: the HTTP-layer errors, the identity refinements, and the families.
+
+    An unavailable database (degradation level L4) is the dependency problem with ``Retry-After``: nothing was done,
+    and the client may send the same request again (turns are idempotent by ``turn_id``).
+    """
     registry = ProblemRegistry()
     for error_type, problem in HTTP_PROBLEMS:
         needs_retry_after = problem.status == 429
         registry.register(error_type, problem, headers=_retry_after if needs_retry_after else None)
+    retry_after = {"Retry-After": str(database_retry_after_seconds)}
+    registry.register(DatabaseUnavailableError, DEPENDENCY_PROBLEM, headers=lambda _: dict(retry_after))
     return register_domain_problems(registry)

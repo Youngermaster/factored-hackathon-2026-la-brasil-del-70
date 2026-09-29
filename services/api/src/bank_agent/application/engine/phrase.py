@@ -4,10 +4,16 @@ Phrasing is off by default (``WORKFLOW_LLM_PHRASING``). When on, the model recei
 and the rendered clause texts (a credit reply adds only the outcome code, the rendered reasons, and the disclaimer,
 never the profile or the estimate), and its draft must pass the grounding verifier with the same evidence; any
 violation or gateway failure keeps the template, and the violation kinds go into the execution record.
+
+The runtime unsafe-outcome detectors (phase 15) also guard the template itself: a rendered reply the verifier finds
+claiming an unverified action, using approval wording, or disclosing a risk estimate or credit profile value is
+never sent. ``common.unsafe_blocked`` replaces it (it offers a person), ``unsafe_output_blocked`` is recorded, and the
+violation kinds stay in the record, where ``bank.safety.unsafe_blocked`` counts them.
 """
 
 from bank_agent.application.engine.context import TurnContext
 from bank_agent.application.engine.llm import PHRASE_RESPONSE, text
+from bank_agent.application.engine.metrics import UNSAFE_DETECTORS
 from bank_agent.application.engine.render import MAX_TEXT, Renderer, RenderInput
 from bank_agent.application.engine.reply import Reply
 from bank_agent.application.grounding.draft import ResponseDraft
@@ -16,6 +22,7 @@ from bank_agent.domain.execution_record import GroundingReport
 from bank_agent.domain.intelligence import PromptValue
 from bank_agent.domain.locale import Language
 
+UNSAFE_BLOCKED = "common.unsafe_blocked"
 _KINDS = (
     ("eligibility", "eligibility_result"),
     ("confirm", "confirm_request"),
@@ -51,8 +58,13 @@ def render_input(ctx: TurnContext) -> RenderInput:
 
 async def finish_reply(ctx: TurnContext, renderer: Renderer, reply: Reply) -> AssistantResponse:
     rendered = renderer.render(reply, render_input(ctx))
-    ctx.recorder.citations.extend(rendered.citations)
     kinds = [violation.kind.value for violation in rendered.violations]
+    if any(kind in UNSAFE_DETECTORS for kind in kinds):
+        ctx.recorder.intervention("unsafe_output_blocked")
+        blocked = renderer.render(Reply(template=UNSAFE_BLOCKED), render_input(ctx))
+        ctx.recorder.grounding = GroundingReport(template_id=reply.template, violations=tuple(dict.fromkeys(kinds)))
+        return blocked.response
+    ctx.recorder.citations.extend(rendered.citations)
     if kinds:
         ctx.recorder.intervention("grounding_violation")
     response = rendered.response

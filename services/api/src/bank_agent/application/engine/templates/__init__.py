@@ -20,6 +20,7 @@ PERSON_OFFER_TEMPLATES = frozenset(
         "dispute.denied",
         "credit.mortgage_info_only",
         "credit.no_decision",
+        "common.unsafe_blocked",
     }
 )
 """Replies that end by offering a person; a bare yes to one of them is a request for a person."""

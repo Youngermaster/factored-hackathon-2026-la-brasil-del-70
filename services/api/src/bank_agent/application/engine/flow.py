@@ -8,6 +8,7 @@ from bank_agent.application.engine.data import PendingSwitch, PendingWorkflowCho
 from bank_agent.application.engine.decide import clarification_left, evaluate
 from bank_agent.application.engine.definition import StateKind, StateSpec
 from bank_agent.application.engine.gate import pause
+from bank_agent.application.engine.observed import run_state
 from bank_agent.application.engine.registry import WorkflowRegistry
 from bank_agent.application.engine.reply import Param, Reply
 from bank_agent.application.engine.router import Route, RouteKind, dispatch
@@ -75,7 +76,7 @@ async def run_handlers(ctx: TurnContext) -> Step:
         ctx.tools.allow(spec.allowed_tools)
         asked_again = ctx.reprompt
         try:
-            step = await spec.handler(ctx)
+            step = await run_state(ctx, spec)
         except AuthenticationError:
             return pause(ctx)
         except StepUpRequiredError:

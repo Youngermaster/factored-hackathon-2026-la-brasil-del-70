@@ -10,6 +10,10 @@ Redaction has two parts:
 - Key masking: the value of any sensitive key is replaced entirely, at any nesting depth.
 - Value scrubbing: every string is searched for emails, LATAM document numbers, phone numbers, and long
   digit runs, which are replaced by a labeled marker such as ``[REDACTED:email]``.
+
+Every record inside a span carries ``trace_id`` and ``span_id`` (``add_trace_context``), so a log line leads to its
+trace in Jaeger and to the execution record that stores the same trace id. Both are passed through unredacted only
+when they are lowercase hex of the OpenTelemetry length (an all-digit id would otherwise look like a long number).
 """
 
 import logging
@@ -19,6 +23,7 @@ from collections.abc import Mapping, MutableMapping
 from typing import IO, Any, Final
 
 import structlog
+from opentelemetry import trace
 from structlog.typing import EventDict, Processor, WrappedLogger
 
 from bank_agent.bootstrap.settings import LogLevel
@@ -82,6 +87,10 @@ _VALUE_PATTERNS: Final[tuple[tuple[str, re.Pattern[str]], ...]] = (
 )
 
 _LARGE_INTEGER: Final = 10**6
+_TRACE_FIELDS: Final[dict[str, re.Pattern[str]]] = {
+    "trace_id": re.compile(r"^[0-9a-f]{32}$"),
+    "span_id": re.compile(r"^[0-9a-f]{16}$"),
+}
 
 
 def is_sensitive_key(key: str) -> bool:
@@ -122,13 +131,27 @@ class RedactionProcessor:
     def __call__(self, logger: WrappedLogger, method_name: str, event_dict: EventDict) -> EventDict:
         redacted: MutableMapping[str, Any] = {}
         for key, value in event_dict.items():
+            pattern = _TRACE_FIELDS.get(key)
+            if pattern is not None and isinstance(value, str) and pattern.fullmatch(value):
+                redacted[key] = value
+                continue
             redacted[key] = REDACTED if is_sensitive_key(key) else redact(value)
         return dict(redacted)
+
+
+def add_trace_context(logger: WrappedLogger, method_name: str, event_dict: EventDict) -> EventDict:
+    """Add the active span's trace and span ids (32 and 16 hex characters) to the record."""
+    context = trace.get_current_span().get_span_context()
+    if context.is_valid:
+        event_dict.setdefault("trace_id", format(context.trace_id, "032x"))
+        event_dict.setdefault("span_id", format(context.span_id, "016x"))
+    return event_dict
 
 
 def _shared_processors() -> list[Processor]:
     return [
         structlog.contextvars.merge_contextvars,
+        add_trace_context,
         structlog.stdlib.add_log_level,
         structlog.stdlib.add_logger_name,
         structlog.processors.TimeStamper(fmt="iso", utc=True),

@@ -14,7 +14,14 @@ from fastapi import Depends, Request
 
 from bank_agent.api.config import RateClass, SecurityConfig
 from bank_agent.api.csrf import CSRF_HEADER, CsrfTokens
-from bank_agent.api.errors import CsrfTokenError, NotAuthenticatedError, RoleNotPermittedError, ServiceUnavailableError
+from bank_agent.api.errors import (
+    CsrfTokenError,
+    NotAuthenticatedError,
+    RateLimitedError,
+    RoleNotPermittedError,
+    ServiceUnavailableError,
+)
+from bank_agent.api.metrics import HttpMetrics
 from bank_agent.api.provider import ApiConfig, ServiceProvider
 from bank_agent.api.ratelimit import SlidingWindowLimiter
 from bank_agent.application.identity.sessions import SessionService
@@ -61,9 +68,12 @@ async def current_session(request: Request) -> Session:
     if token is None:
         raise NotAuthenticatedError("no session cookie")
     try:
-        return await session_service(request).resolve(token)
+        session = await session_service(request).resolve(token)
     except SessionNotFoundError:
         raise NotAuthenticatedError("unknown session") from None
+    metrics: HttpMetrics = request.app.state.http_metrics
+    metrics.session_seen(session, services(request).clock.now())
+    return session
 
 
 @cache
@@ -96,7 +106,12 @@ def rate_limit(rate_class: RateClass) -> Callable[[Request], None]:
     def check(request: Request) -> None:
         limiter: SlidingWindowLimiter = request.app.state.rate_limiter
         limit = security_config(request).rate_limits[rate_class]
-        limiter.check(rate_class, limit, client_ip=client_ip(request), session_token=session_token(request))
+        try:
+            limiter.check(rate_class, limit, client_ip=client_ip(request), session_token=session_token(request))
+        except RateLimitedError as refused:
+            metrics: HttpMetrics = request.app.state.http_metrics
+            metrics.rate_limited(rate_class, refused.key)
+            raise
 
     return check
 

@@ -710,6 +710,16 @@
         "title": "ClauseRef",
         "type": "string"
       },
+      "ComponentState": {
+        "enum": [
+          "ok",
+          "degraded",
+          "unavailable",
+          "disabled"
+        ],
+        "title": "ComponentState",
+        "type": "string"
+      },
       "ConfirmationCard": {
         "additionalProperties": false,
         "properties": {
@@ -2516,6 +2526,74 @@
           "card_request"
         ],
         "title": "HandoffView",
+        "type": "object"
+      },
+      "HealthDetailsResponse": {
+        "properties": {
+          "budget_used_ratio": {
+            "title": "Budget Used Ratio",
+            "type": "number"
+          },
+          "checks": {
+            "additionalProperties": {
+              "enum": [
+                "ok",
+                "unavailable"
+              ],
+              "type": "string"
+            },
+            "title": "Checks",
+            "type": "object"
+          },
+          "components": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ComponentState"
+            },
+            "title": "Components",
+            "type": "object"
+          },
+          "level": {
+            "enum": [
+              "L0",
+              "L1",
+              "L2",
+              "L3",
+              "L4"
+            ],
+            "title": "Level",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "normal",
+              "degraded",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "template_only": {
+            "title": "Template Only",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "level",
+          "reasons",
+          "components",
+          "checks",
+          "template_only",
+          "budget_used_ratio"
+        ],
+        "title": "HealthDetailsResponse",
         "type": "object"
       },
       "Intent": {
@@ -4853,6 +4931,49 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/health/details": {
+      "get": {
+        "description": "The degradation level (L0 to L4), its reasons, and each component's state; 503 at L4.",
+        "operationId": "health_details",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthDetailsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthDetailsResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [],
+        "summary": "Details",
+        "tags": [
+          "health"
+        ]
+      }
+    },
     "/health/live": {
       "get": {
         "description": "The process is up and serving requests.",

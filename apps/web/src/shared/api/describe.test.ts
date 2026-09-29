@@ -19,6 +19,10 @@ describe('errorMessageKey', () => {
 
   it.each([
     [apiError(503), 'errors.server'],
+    [
+      apiError(503, 'https://bank-agent.local/problems/dependency-unavailable'),
+      'errors.unavailable',
+    ],
     [apiError(429), 'errors.rateLimited'],
     [apiError(403, 'https://bank-agent.local/problems/role-not-permitted'), 'errors.forbidden'],
     [apiError(404), 'errors.generic'],

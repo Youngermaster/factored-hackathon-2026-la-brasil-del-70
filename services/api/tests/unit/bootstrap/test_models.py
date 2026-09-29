@@ -12,7 +12,9 @@ from bank_agent.adapters.models.lgbm_resolver import LgbmTransactionResolver
 from bank_agent.adapters.models.rules_resolver import RuleTransactionResolver
 from bank_agent.adapters.models.score_band_risk import ScoreBandRiskEstimator
 from bank_agent.adapters.models.tfidf_router import TfidfIntentRouter
+from bank_agent.adapters.models.unavailable_risk import UnavailableRiskEstimator
 from bank_agent.bootstrap.models import (
+    ModelFallbacks,
     build_model_registry,
     build_resolver,
     build_risk_estimator,
@@ -21,7 +23,11 @@ from bank_agent.bootstrap.models import (
     split_selection,
 )
 from bank_agent.bootstrap.settings import DEFAULT_MODEL_REGISTRY_DIR, RetrievalSettings, WorkflowSettings
-from bank_agent.domain.errors import ConfigurationError, ModelArtifactIntegrityError
+from bank_agent.domain.base import UntrustedText
+from bank_agent.domain.credit import CreditProductType
+from bank_agent.domain.eligibility import CreditRiskFeatures
+from bank_agent.domain.errors import ConfigurationError, ModelArtifactIntegrityError, RiskEstimatorUnavailableError
+from bank_agent.domain.locale import Country, Language
 from bank_agent.testing.clock import FixedClock
 from bank_agent.testing.ids import SequentialIdGenerator
 from bank_agent_builders import T0
@@ -33,6 +39,10 @@ from bank_agent_models import (
     TFIDF_ARTIFACT,
     FixtureEmbedder,
     publish,
+)
+
+FEATURES = CreditRiskFeatures(
+    jurisdiction=Country.MX, product_type=CreditProductType.PERSONAL_LOAN, requested_term_months=24, credit_score=700
 )
 
 
@@ -149,12 +159,63 @@ def test_learned_risk_estimators_load_by_alias(tmp_path: Path) -> None:
         assert loaded.model.name == name
 
 
-def test_a_missing_risk_artifact_serves_the_baseline_and_a_tampered_one_stops_startup(tmp_path: Path) -> None:
-    assert isinstance(_risk(tmp_path, "lgbm@champion"), ScoreBandRiskEstimator)
+def test_a_missing_risk_artifact_serves_no_estimate_and_a_tampered_one_stops_startup(tmp_path: Path) -> None:
+    fallbacks = ModelFallbacks()
+    registry = build_model_registry(tmp_path)
+    served = build_risk_estimator(
+        settings(tmp_path, risk_estimator="lgbm@champion"), registry, FixedClock(T0), SequentialIdGenerator(), fallbacks
+    )
+    assert isinstance(served, UnavailableRiskEstimator)
+    with pytest.raises(RiskEstimatorUnavailableError):
+        served.estimate(FEATURES)
+    assert fallbacks.served_baseline == ["risk_estimator"]
     resolved = publish(tmp_path, "risk_estimator:lgbm", RISK_LGBM_ARTIFACT)
     Path(resolved.local_path).write_text("{}")
     with pytest.raises(ModelArtifactIntegrityError):
         _risk(tmp_path, "lgbm@champion")
+
+
+def test_the_score_band_serves_a_missing_risk_artifact_only_when_the_flag_allows_it(tmp_path: Path) -> None:
+    fallbacks = ModelFallbacks(risk_band_fallback=True)
+    served = build_risk_estimator(
+        settings(tmp_path, risk_estimator="logreg@champion"),
+        build_model_registry(tmp_path),
+        FixedClock(T0),
+        SequentialIdGenerator(),
+        fallbacks,
+    )
+    assert isinstance(served, ScoreBandRiskEstimator)
+    assert fallbacks.served_baseline == ["risk_estimator"]
+
+
+def test_a_failed_learned_router_serves_the_stricter_keyword_router_and_is_reported(tmp_path: Path) -> None:
+    fallbacks = ModelFallbacks(router_threshold=0.75)
+    router = build_router(settings(tmp_path, router="tfidf@champion"), build_model_registry(tmp_path), None, fallbacks)
+    assert isinstance(router, KeywordIntentRouter)
+    assert router.route(UntrustedText("hola"), Language.ES).below_threshold
+    build_resolver(settings(tmp_path, resolver="lgbm@champion"), build_model_registry(tmp_path), fallbacks)
+    assert fallbacks.served_baseline == ["router", "resolver"]
+
+
+def test_an_unreadable_registry_is_an_availability_failure(tmp_path: Path) -> None:
+    class Unreadable:
+        def resolve(self, name: str, version_or_alias: str) -> object:
+            raise PermissionError("registry storage unavailable")
+
+    fallbacks = ModelFallbacks()
+    router = build_router(settings(tmp_path, router="tfidf@champion"), Unreadable(), None, fallbacks)  # type: ignore[arg-type]
+    assert isinstance(router, KeywordIntentRouter)
+    assert fallbacks.served_baseline == ["router"]
+
+
+def test_without_the_baselines_flag_a_load_failure_stops_startup(tmp_path: Path) -> None:
+    with pytest.raises(ConfigurationError, match="DEGRADATION_MODEL_BASELINES"):
+        build_router(
+            settings(tmp_path, router="tfidf@champion"),
+            build_model_registry(tmp_path),
+            None,
+            ModelFallbacks(baselines_allowed=False),
+        )
 
 
 @pytest.mark.parametrize("value", ["score_band@2", "gbm@1", "lgbm@", "logreg@../x"])

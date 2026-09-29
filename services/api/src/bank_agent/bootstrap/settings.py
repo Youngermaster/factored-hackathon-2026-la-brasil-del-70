@@ -22,6 +22,7 @@ Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 LLMProvider = Literal["fake", "cassette", "litellm"]
 LLMCassetteMode = Literal["replay", "record"]
+BudgetLedgerName = Literal["auto", "memory", "postgres"]
 
 MIN_SECRET_LENGTH = 32
 # A refused prefix, not a secret.
@@ -180,6 +181,7 @@ class LLMSettings(BaseSettings):
     cassette_mode: LLMCassetteMode = "replay"
     cassette_dir: Path = DEFAULT_CASSETTE_DIR
     trace_content: bool = False
+    budget_ledger: BudgetLedgerName = "auto"
 
     @field_validator("prices_file", "cassette_dir", mode="before")
     @classmethod
@@ -275,6 +277,7 @@ class WorkflowSettings(BaseSettings):
     llm_phrasing: bool = False
     llm_handoff_summary: bool = False
     max_turns: int = Field(default=40, ge=1, le=500)
+    tool_timeout_seconds: float = Field(default=5.0, gt=0, le=120)
     router: Annotated[str, Field(pattern=ROUTER_SELECTION)] = "keyword@1"
     resolver: Annotated[str, Field(pattern=RESOLVER_SELECTION)] = "rules@1"
     model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
@@ -317,12 +320,47 @@ class EvaluationSettings(BaseSettings):
 
 
 class ObservabilitySettings(BaseSettings):
-    """OpenTelemetry export settings."""
+    """OpenTelemetry settings (``docs/operations/observability.md``).
+
+    Spans, trace ids, and the ``X-Trace-Id`` header always work; ``enabled`` only decides whether spans and metrics
+    are exported over OTLP/HTTP to ``exporter_otlp_endpoint`` (the collector, which feeds Jaeger and Prometheus).
+    ``traces_sampler_arg`` is the parent-based trace-id ratio (1.0 keeps every trace); ``metric_export_interval`` is
+    in milliseconds, as in the OpenTelemetry specification.
+    """
 
     model_config = _config("OTEL_")
 
-    exporter_otlp_endpoint: str = "http://localhost:4317"
+    enabled: bool = False
+    exporter_otlp_endpoint: str = "http://localhost:4318"
     service_name: str = "bank-agent-api"
+    traces_sampler_arg: float = Field(default=1.0, ge=0.0, le=1.0)
+    metric_export_interval: int = Field(default=15000, ge=1000, le=300_000)
+
+
+class DegradationSettings(BaseSettings):
+    """One feature flag per fallback of the degradation ladder (``docs/operations/degradation.md``).
+
+    - ``fallback_provider`` (L1): use ``LLM_FALLBACK_MODEL`` when the primary provider's circuit is open.
+    - ``template_only`` (L2): while no provider can serve or the daily budget is spent, skip model calls entirely
+      (off, each call still fails fast through the open circuit and falls back one by one).
+    - ``model_baselines`` (L3): serve the keyword and rule baselines when a learned model cannot load; off, startup
+      stops. ``router_threshold`` is the stricter keyword threshold used then.
+    - ``risk_band_fallback`` (L3): a learned risk estimator that cannot load is replaced by ``score_band@1``; off
+      (the default), every eligibility request goes to ``review_required``.
+    - ``credit_catalog_fallback``: a credit catalog that cannot load disables the ``credit`` workflow; off, startup
+      stops.
+    - ``database_retry_after_seconds`` (L4): ``Retry-After`` on the 503. L4 has no flag: it always fails closed.
+    """
+
+    model_config = _config("DEGRADATION_")
+
+    fallback_provider: bool = True
+    template_only: bool = True
+    model_baselines: bool = True
+    router_threshold: float = Field(default=0.75, gt=0, le=1)
+    risk_band_fallback: bool = False
+    credit_catalog_fallback: bool = True
+    database_retry_after_seconds: int = Field(default=30, ge=1, le=3600)
 
 
 class AppSettings:
@@ -339,6 +377,7 @@ class AppSettings:
         retrieval: RetrievalSettings | None = None,
         workflow: WorkflowSettings | None = None,
         evaluation: EvaluationSettings | None = None,
+        degradation: DegradationSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
@@ -349,6 +388,7 @@ class AppSettings:
         self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
         self.workflow = workflow if workflow is not None else WorkflowSettings()
         self.evaluation = evaluation if evaluation is not None else EvaluationSettings()
+        self.degradation = degradation if degradation is not None else DegradationSettings()
 
     @property
     def is_production(self) -> bool:
@@ -436,6 +476,7 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
         evaluation=EvaluationSettings(_env_file=env_file),
+        degradation=DegradationSettings(_env_file=env_file),
     )
     problems = production_problems(settings)
     if problems:

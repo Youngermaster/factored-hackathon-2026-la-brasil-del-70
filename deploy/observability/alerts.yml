@@ -1,0 +1,90 @@
+# Prometheus alert rules for the bank agent (docs/operations/runbook.md has one section per alert).
+# Metric names are the OpenTelemetry instruments after the collector's Prometheus translation: dots become
+# underscores, units become suffixes (seconds), counters end in _total.
+groups:
+  - name: bank-agent-degradation
+    rules:
+      - alert: LlmProviderDown
+        expr: max by (bank_llm_model) (bank_llm_circuit_state) == 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "The circuit of model {{ $labels.bank_llm_model }} is open"
+          runbook: docs/operations/runbook.md#llmproviderdown
+      - alert: DegradedTemplateOnly
+        expr: max(bank_degradation_level) >= 2 and max(bank_degradation_level) < 4
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "The service runs at degradation level L{{ $value }} (template-only or baselines)"
+          runbook: docs/operations/runbook.md#degradedtemplateonly
+      - alert: DatabaseUnavailable
+        expr: max(bank_degradation_level) == 4 or sum(increase(bank_database_unavailable_total[5m])) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "The database is unavailable or read-only (L4): every request that changes state gets 503"
+          runbook: docs/operations/runbook.md#databaseunavailable
+  - name: bank-agent-budget
+    rules:
+      - alert: LlmBudgetAt80Percent
+        expr: max(bank_llm_budget_daily_used_ratio) >= 0.8 and max(bank_llm_budget_daily_used_ratio) < 1
+        labels:
+          severity: warning
+        annotations:
+          summary: "80 percent of the daily model budget is spent"
+          runbook: docs/operations/runbook.md#llmbudgetat80percent
+      - alert: LlmBudgetExhausted
+        expr: max(bank_llm_budget_daily_used_ratio) >= 1 or sum(increase(bank_llm_budget_refusals_total{bank_llm_budget_cap="daily_cost"}[5m])) > 0
+        labels:
+          severity: critical
+        annotations:
+          summary: "The daily model budget is spent: template-only mode until the next UTC day"
+          runbook: docs/operations/runbook.md#llmbudgetexhausted
+  - name: bank-agent-safety
+    rules:
+      - alert: UnsafeOutputBlocked
+        expr: sum(increase(bank_safety_unsafe_blocked_total[15m])) > 0
+        labels:
+          severity: critical
+        annotations:
+          summary: "A runtime detector blocked an unsafe message ({{ $value }} in 15 minutes)"
+          runbook: docs/operations/runbook.md#unsafeoutputblocked
+      - alert: InjectionSpike
+        expr: sum(increase(bank_safety_interventions_total{bank_intervention=~"injection_detected|record_text_injection_flagged"}[10m])) > 10
+        labels:
+          severity: warning
+        annotations:
+          summary: "More than 10 prompt-injection detections in 10 minutes"
+          runbook: docs/operations/runbook.md#injectionspike
+  - name: bank-agent-http
+    rules:
+      - alert: ErrorRateSpike
+        expr: >
+          sum(rate(http_server_request_duration_seconds_count{http_response_status_code=~"5.."}[5m]))
+          / sum(rate(http_server_request_duration_seconds_count[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "More than 5 percent of requests fail with a 5xx"
+          runbook: docs/operations/runbook.md#errorratespike
+      - alert: TurnLatencyHigh
+        expr: histogram_quantile(0.95, sum by (le) (rate(bank_turn_duration_seconds_bucket[5m]))) > 5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "p95 turn latency is above 5 seconds"
+          runbook: docs/operations/runbook.md#turnlatencyhigh
+      - alert: EscalationSpike
+        expr: sum(rate(bank_escalations_total[15m])) / sum(rate(bank_turn_outcomes_total[15m])) > 0.3
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "More than 30 percent of turns end in a handoff"
+          runbook: docs/operations/runbook.md#escalationspike

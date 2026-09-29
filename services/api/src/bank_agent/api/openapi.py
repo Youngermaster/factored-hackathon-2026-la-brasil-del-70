@@ -14,6 +14,7 @@ from typing import Any, Final
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
+from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.api.csrf import CSRF_HEADER
 from bank_agent.api.dependencies import ANYONE
 from bank_agent.api.problems import PROBLEM_CONTENT_TYPE
@@ -21,9 +22,12 @@ from bank_agent.api.provider import ApiConfig
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
+from bank_agent.application.reliability.ladder import StaticDegradation
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
+from bank_agent.ports.reliability import DegradationSource
+from bank_agent.ports.telemetry import Telemetry
 
 PROBLEM_REF: Final = {"$ref": "#/components/schemas/ProblemDetails"}
 PROBLEM_SCHEMA: Final[dict[str, Any]] = {
@@ -91,6 +95,14 @@ class SchemaOnlyProvider:
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:
         raise self._unavailable()
+
+    @property
+    def telemetry(self) -> Telemetry:
+        return NoopTelemetry()
+
+    @property
+    def degradation(self) -> DegradationSource:
+        return StaticDegradation()
 
     async def aclose(self) -> None:
         return None

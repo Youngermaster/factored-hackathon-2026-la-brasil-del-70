@@ -132,6 +132,9 @@ Isto é o que diz a política que se aplica ao seu pedido:
 [common.language_question]
 Em qual idioma você prefere ser atendido: espanhol ou português?
 
+[common.limited_service]
+No momento estou funcionando em modo limitado: respondo com mensagens padrão e, se o seu caso precisar, encaminho você para uma pessoa da equipe.
+
 [common.nothing_recorded]
 Certo, não registrei nada. Posso ajudar com mais alguma coisa?
 
@@ -155,6 +158,9 @@ Ainda temos pendente a sua contestação. Quer deixar isso e passar para os seus
 
 [common.switch_declined]
 Certo, seguimos com a sua contestação.
+
+[common.unsafe_blocked]
+Não posso dar essa resposta no momento. Se precisar, encaminho você para uma pessoa da equipe.
 
 [common.unsupported_in_workflow]
 Isso eu não consigo fazer nesta conversa. Se quiser, transfiro você para uma pessoa da equipe.

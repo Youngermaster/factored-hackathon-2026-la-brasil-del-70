@@ -22,6 +22,7 @@ from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.conversation import Conversation
 from bank_agent.domain.customer import Customer
 from bank_agent.domain.decision import Decision
+from bank_agent.domain.degradation import NORMAL, DegradationStatus
 from bank_agent.domain.handoff import Handoff
 from bank_agent.domain.identifiers import TransactionId, TurnId
 from bank_agent.domain.intelligence import IntentPrediction, LanguageDetection
@@ -37,7 +38,9 @@ from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.eligibility import EligibilityPolicy
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.models import IntentRouter, LanguageDetector, RiskEstimator, TransactionResolver
+from bank_agent.ports.reliability import DegradationSource
 from bank_agent.ports.sessions import SessionStore
+from bank_agent.ports.telemetry import Telemetry
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
 
@@ -72,6 +75,8 @@ class EngineSettings:
     llm_handoff_summary: bool = False
     max_turns: int = 40
     max_steps: int = 12
+    tool_timeout_seconds: float | None = None
+    """Bound on one tool attempt; a slow tool becomes ``tool_timeout`` (``WORKFLOW_TOOL_TIMEOUT_SECONDS``)."""
     llm_max_output_tokens: int = 600
     environment: str = "development"
     fixed_language: Language | None = None
@@ -106,6 +111,10 @@ class EngineServices:
     clock: Clock
     ids: IdGenerator
     credit: CreditPorts
+    telemetry: Telemetry
+    """Spans for the turn, each state handler, and each tool call; turn metrics from the execution record."""
+    degradation: DegradationSource
+    """The degradation ladder, read once per turn (template-only mode, the stricter clarification budget)."""
 
 
 @dataclass(frozen=True)
@@ -161,6 +170,8 @@ class TurnContext:
     resumed: bool = False
     reprompt: bool = False
     """Ask the state's question again without parsing the text (after a resume or a declined switch)."""
+    degradation: DegradationStatus = NORMAL
+    """The degradation status read at the start of the turn (``bank_agent.domain.degradation``)."""
     turn_values: dict[str, object] = field(default_factory=dict)
     """Values that live for this turn only and are never persisted (the credit profile and the risk estimate between
     ESTIMATE_RISK and ASSESS_ELIGIBILITY); nothing here reaches the conversation data, a prompt, or a reply."""

@@ -4,7 +4,7 @@ models, and helpers to drive a conversation turn by turn. Every value is a fixtu
 from __future__ import annotations
 
 import itertools
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import timedelta
 from functools import cache
@@ -12,11 +12,13 @@ from pathlib import Path
 
 from bank_agent.adapters.llm.unconfigured import UnconfiguredLLMClient
 from bank_agent.adapters.persistence.duckdb.gold import DATASET_CREDIT_BALANCE_CONVENTION
+from bank_agent.application.engine.context import ToolProvider
 from bank_agent.application.engine.engine import TurnRequest, WorkflowEngine
 from bank_agent.application.tools.banking import BankingTools, EngineOnlyTools, SessionToolset
 from bank_agent.application.tools.base import ToolDependencies
 from bank_agent.application.tools.context import SessionContext, ToolSettings
 from bank_agent.application.tools.failure_injection import ToolFailureInjector
+from bank_agent.bootstrap.models import ModelFallbacks
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
 from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
 from bank_agent.bootstrap.settings import PolicySettings, RetrievalSettings, WorkflowSettings
@@ -29,7 +31,8 @@ from bank_agent.domain.handoff import HandoffRecord
 from bank_agent.domain.identifiers import ConversationId, CustomerId, HandoffId, LineageId, SessionId, TurnId
 from bank_agent.domain.session import Session
 from bank_agent.ports.llm import LLMClient
-from bank_agent.ports.models import RiskEstimator
+from bank_agent.ports.models import ModelRegistry, RiskEstimator
+from bank_agent.ports.reliability import DegradationSource
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 from bank_agent.testing.clock import FixedClock
@@ -124,9 +127,19 @@ def build_harness(
     phrasing: bool = False,
     handoff_summary: bool = False,
     risk_estimator: RiskEstimator | None = None,
+    tool_timeout_seconds: float = 5.0,
+    wrap_tools: Callable[[BankingTools], ToolProvider] | None = None,
+    degradation: DegradationSource | None = None,
+    pack: tuple[PolicyServices, GroundingServices] | None = None,
+    model_registry: ModelRegistry | None = None,
+    fallbacks: ModelFallbacks | None = None,
+    risk_selection: str | None = None,
+    **workflow_settings: str,
 ) -> Harness:
+    if risk_selection is not None:
+        workflow_settings["risk_estimator"] = risk_selection
     clock, ids = FixedClock(NOW), SequentialIdGenerator()
-    policy, grounding = shared_policy()
+    policy, grounding = pack or shared_policy()
     tools = BankingTools(
         ToolDependencies(
             uow_factory=uow_factory,
@@ -136,13 +149,17 @@ def build_harness(
             settings=ToolSettings(policy=policy.tool_policy, balance_convention=DATASET_CREDIT_BALANCE_CONVENTION),
         )
     )
-    provider = FailingTools(tools, failures) if failures else tools
+    provider: ToolProvider = FailingTools(tools, failures) if failures else tools
+    if wrap_tools is not None:
+        provider = wrap_tools(tools)
     services = build_workflows(
         WorkflowSettings(
             enabled=list(enabled),
             llm_understanding=llm_understanding,
             llm_phrasing=phrasing,
             llm_handoff_summary=handoff_summary,
+            tool_timeout_seconds=tool_timeout_seconds,
+            **workflow_settings,  # type: ignore[arg-type]
         ),
         uow_factory=uow_factory,
         session_store=session_store,
@@ -154,5 +171,8 @@ def build_harness(
         ids=ids,
         environment="test",
         risk_estimator=risk_estimator,
+        degradation=degradation,
+        model_registry=model_registry,
+        fallbacks=fallbacks,
     )
     return Harness(services.engine(), services.engine("baseline_b0"), uow_factory, session_store, clock)

@@ -132,6 +132,9 @@ Esto es lo que dice la política que aplica a tu consulta:
 [common.language_question]
 ¿En qué idioma prefieres que te atienda: español o portugués?
 
+[common.limited_service]
+En este momento funciono en modo limitado: te respondo con mensajes estándar y, si tu caso lo necesita, te comunico con una persona del equipo.
+
 [common.nothing_recorded]
 De acuerdo, no registré nada. ¿Hay algo más en lo que te ayude?
 
@@ -155,6 +158,9 @@ Todavía tenemos pendiente tu reclamación. ¿Quieres dejarlo y pasar a tus tarj
 
 [common.switch_declined]
 De acuerdo, seguimos con tu reclamación.
+
+[common.unsafe_blocked]
+No puedo darte esa respuesta en este momento. Si lo necesitas, te comunico con una persona del equipo.
 
 [common.unsupported_in_workflow]
 Eso no lo puedo hacer en esta conversación. Si quieres, te comunico con una persona del equipo.

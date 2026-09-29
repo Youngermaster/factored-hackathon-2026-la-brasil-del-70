@@ -3,9 +3,17 @@
 from types import TracebackType
 from typing import Self
 
+import structlog
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncTransaction
 
-from bank_agent.adapters.persistence.postgres.database import DatabaseRole, role_of, set_context
+from bank_agent.adapters.persistence.postgres.database import (
+    AvailabilityListener,
+    DatabaseRole,
+    is_unavailable,
+    role_of,
+    set_context,
+    unavailable,
+)
 from bank_agent.adapters.persistence.postgres.repositories.accounts import (
     PostgresCreditProfileReader,
     PostgresCustomerRepository,
@@ -29,6 +37,8 @@ from bank_agent.adapters.persistence.postgres.transaction import Tx
 from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.errors import ConcurrencyConflictError
 
+_log = structlog.get_logger(__name__)
+
 
 class PostgresUnitOfWork:
     """Implements ``UnitOfWork``. Entering opens a connection and a transaction and sets the context first.
@@ -37,9 +47,12 @@ class PostgresUnitOfWork:
     unit of work had locked (see ``Tx.lock_or_mark_conflicted``).
     """
 
-    def __init__(self, engine: AsyncEngine, context: AccessContext) -> None:
+    def __init__(
+        self, engine: AsyncEngine, context: AccessContext, listener: AvailabilityListener | None = None
+    ) -> None:
         self._engine = engine
         self._context = context
+        self._listener = listener
         self._connection: AsyncConnection | None = None
         self._transaction: AsyncTransaction | None = None
         self._tx: Tx | None = None
@@ -129,19 +142,55 @@ class PostgresUnitOfWork:
             await self._transaction.rollback()
         await self._restart()
 
+    def _record(self, available: bool) -> None:
+        if self._listener is not None:
+            self._listener.record(available)
+
     async def __aenter__(self) -> Self:
-        self._connection = await self._engine.connect()
-        self._transaction = await self._connection.begin()
-        await set_context(self._connection, role_of(self._context), self._context.customer_id)
+        try:
+            self._connection = await self._engine.connect()
+            self._transaction = await self._connection.begin()
+            await set_context(self._connection, role_of(self._context), self._context.customer_id)
+        except Exception as error:
+            await self._close_quietly()
+            if is_unavailable(error):
+                self._record(False)
+                raise unavailable(error) from error
+            raise
         self._tx = Tx(self._connection, self._context)
+        self._record(True)
         return self
+
+    async def _close_quietly(self) -> None:
+        """Release the connection after an availability failure; a second failure changes nothing."""
+        try:
+            if self._connection is not None:
+                await self._connection.close()
+        except Exception as error:  # the database is already known to be unavailable
+            _log.debug("database_close_failed", error_type=type(error).__name__)
+        self._connection = None
+        self._transaction = None
 
     async def __aexit__(
         self, exc_type: type[BaseException] | None, exc: BaseException | None, traceback: TracebackType | None
     ) -> None:
+        if exc is not None and not isinstance(exc, Exception):
+            # Cancelled (a tool timeout) or shutting down: release the connection and let the cancellation through.
+            await self._close_quietly()
+            return
+        if exc is not None and is_unavailable(exc):
+            self._record(False)
+            await self._close_quietly()
+            raise unavailable(exc) from exc
         try:
             if self._transaction is not None and self._transaction.is_active:
                 await self._transaction.rollback()
+        except Exception as error:
+            if not is_unavailable(error):
+                raise
+            self._record(False)
+            await self._close_quietly()
+            raise unavailable(error) from error
         finally:
             if self._connection is not None:
                 await self._connection.close()
@@ -152,11 +201,12 @@ class PostgresUnitOfWork:
 class PostgresUnitOfWorkFactory:
     """Implements ``UnitOfWorkFactory`` over one application-role engine."""
 
-    def __init__(self, engine: AsyncEngine) -> None:
+    def __init__(self, engine: AsyncEngine, listener: AvailabilityListener | None = None) -> None:
         self._engine = engine
+        self._listener = listener
 
     def __call__(self, context: AccessContext) -> PostgresUnitOfWork:
-        return PostgresUnitOfWork(self._engine, context)
+        return PostgresUnitOfWork(self._engine, context, self._listener)
 
 
 __all__ = ["DatabaseRole", "PostgresUnitOfWork", "PostgresUnitOfWorkFactory"]

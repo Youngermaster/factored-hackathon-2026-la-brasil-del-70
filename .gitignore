@@ -40,6 +40,8 @@ models/artifacts/
 # Evaluation outputs: runs (with transcripts) stay local; `bank-eval publish` copies summaries to
 # evals/reports/summaries/ and metrics to docs/evaluation/runs/.
 reports/eval/
+# Load test CSVs (make load-test); the numbers that matter are written up in docs/operations/capacity.md.
+reports/load/
 evals/cassettes/**/*.tmp
 
 # Python
