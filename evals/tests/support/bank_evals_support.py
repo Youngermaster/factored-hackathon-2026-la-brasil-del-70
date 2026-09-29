@@ -54,8 +54,14 @@ def graded(scn: Scenario, turns: list[TurnView], system: str = "p", end: EndStat
     return grade(scn, transcript(turns, system, end), build_world())
 
 
-def result(scn: Scenario, grade_: CaseGrade | None, system: str = "p", run_index: int = 1,
-           segment: str = "basic", latency: int = 10) -> CaseResult:  # fmt: skip
+def result(
+    scn: Scenario,
+    grade_: CaseGrade | None,
+    system: str = "p",
+    run_index: int = 1,
+    segment: str = "basic",
+    latency: int = 10,
+) -> CaseResult:
     return CaseResult(
         run_id="fixture-run",
         system=system,

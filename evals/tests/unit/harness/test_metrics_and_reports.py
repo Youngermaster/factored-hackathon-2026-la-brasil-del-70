@@ -18,14 +18,19 @@ WORKFLOW_PERSONA = {"account_inquiry": "acc-mx", "card_support": "crd-mx", "disp
 
 def grade_(*, sar: bool = True, escalate: bool = False, transferred: bool = False, unsafe: bool = False) -> CaseGrade:
     return CaseGrade(
-        final_outcome="escalated" if transferred else "resolved", task_success=sar, outcome_matches=sar,
-        policy_compliant=True, transferred=transferred, automation_attempted=not transferred,
-        escalation_required=escalate, escalation_missed=escalate and not transferred,
+        final_outcome="escalated" if transferred else "resolved",
+        task_success=sar,
+        outcome_matches=sar,
+        policy_compliant=True,
+        transferred=transferred,
+        automation_attempted=not transferred,
+        escalation_required=escalate,
+        escalation_missed=escalate and not transferred,
         escalation_unnecessary=transferred and not escalate,
         handoff_complete=True if escalate and transferred else None,
         safe_automated_resolution=sar and not escalate and not transferred and not unsafe,
         unsafe=[UnsafeEvent(type="forbidden_disclosure", code="x")] if unsafe else [],
-    )  # fmt: skip
+    )
 
 
 def cases(system: str = "p", run_index: int = 1) -> list[CaseResult]:
@@ -33,8 +38,15 @@ def cases(system: str = "p", run_index: int = 1) -> list[CaseResult]:
     for number, workflow in enumerate(WORKFLOW_PERSONA):
         base = {"workflow": workflow, "persona_ref": WORKFLOW_PERSONA[workflow]}
         out.append(result(scenario(id=f"s-{workflow[:3]}-1", **base), grade_(), system, run_index, latency=10 + number))
-        out.append(result(scenario(id=f"s-{workflow[:3]}-2", language="pt", dialect="pt-BR", **base),
-                          grade_(sar=False, unsafe=True), system, run_index, segment="premium"))  # fmt: skip
+        out.append(
+            result(
+                scenario(id=f"s-{workflow[:3]}-2", language="pt", dialect="pt-BR", **base),
+                grade_(sar=False, unsafe=True),
+                system,
+                run_index,
+                segment="premium",
+            )
+        )
         esc = scenario(id=f"s-{workflow[:3]}-3", expected_outcome="escalated", **base)
         out.append(result(esc, grade_(sar=True, escalate=True, transferred=True), system, run_index))
     routing = scenario(
@@ -96,11 +108,15 @@ def test_repeated_runs_give_pass_hat_k_and_between_run_variance() -> None:
 
 def test_the_summary_is_a_valid_1_1_0_document_with_breakdowns() -> None:
     summary = build_summary(
-        run_id="fixture-run", system="p", metrics=system_metrics(cases()),
+        run_id="fixture-run",
+        system="p",
+        metrics=system_metrics(cases()),
         generated_at=datetime(2026, 9, 29, tzinfo=UTC),
-        git_sha="abcdef1", dataset_version="eval-world-1:test:abc", failure_table="docs/evaluation/failures.md",
+        git_sha="abcdef1",
+        dataset_version="eval-world-1:test:abc",
+        failure_table="docs/evaluation/failures.md",
         notes=["Model and provider: none."],
-    )  # fmt: skip
+    )
     document = EvaluationSummary.model_validate_json(summary.model_dump_json())
     assert document.schema_version == "1.1.0"
     assert document.measurement == "simulated"
@@ -117,9 +133,20 @@ def test_rates_show_wilson_intervals_and_zero_event_bounds() -> None:
 
 
 def test_reports_have_one_section_per_workflow_and_label_the_measurement() -> None:
-    manifest = {"run_id": "r", "generated_at": "2026-09-29T00:00:00+00:00", "git_sha": "abc1234", "split": "dev",
-                "scenario_file": "scenarios.dev.jsonl", "scenario_set_hash": "0" * 64, "scenarios": 13, "runs": 1,
-                "llm_mode": "off", "systems": {"p": "none"}, "cassette_misses": {}, "harness_errors": 0}  # fmt: skip
+    manifest = {
+        "run_id": "r",
+        "generated_at": "2026-09-29T00:00:00+00:00",
+        "git_sha": "abc1234",
+        "split": "dev",
+        "scenario_file": "scenarios.dev.jsonl",
+        "scenario_set_hash": "0" * 64,
+        "scenarios": 13,
+        "runs": 1,
+        "llm_mode": "off",
+        "systems": {"p": "none"},
+        "cassette_misses": {},
+        "harness_errors": 0,
+    }
     results = cases()
     report = render_report(manifest, {"p": system_metrics(results)}, results)
     for heading in ("## `account_inquiry`", "## `credit`", "## Aggregate", "## Routing scenarios", "### By dialect"):

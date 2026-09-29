@@ -178,7 +178,7 @@ class NaiveTools:
             "customer_id": self._customer(arguments),
             "transaction_id": arguments["transaction_id"],
             "reason": arguments.get("reason", "other"),
-            "status": "open",
+            "status": "opened",
             "sla_due_at": (NOW + timedelta(days=30)).date().isoformat(),
         }
         if not dry_run:
