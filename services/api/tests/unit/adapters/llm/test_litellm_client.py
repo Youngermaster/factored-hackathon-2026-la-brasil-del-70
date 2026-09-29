@@ -211,7 +211,7 @@ def test_setup_and_ci_install_the_python_packages_without_the_litellm_extra() ->
     setup = makefile.split("\nsetup:", 1)[1].split("\n\n", 1)[0]
     installs = [line for line in (setup + "\n" + ci).splitlines() if "uv sync" in line]
     assert installs
-    assert all("--extra" not in line and "--all-extras" not in line for line in installs)
+    assert all("litellm" not in line and "--all-extras" not in line for line in installs)
 
 
 def test_loading_litellm_without_the_extra_raises_a_typed_rejection(monkeypatch: pytest.MonkeyPatch) -> None:
