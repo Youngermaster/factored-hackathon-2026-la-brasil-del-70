@@ -273,6 +273,26 @@ def seed(
         typer.echo(f"{table}: {count}")
 
 
+@app.command("verify-seed")
+def verify_seed(
+    source: SourceOption = None,
+    local_dir: LocalDirOption = None,
+    customers: Annotated[
+        int, typer.Option("--customers", min=1, help="Reconcile this deterministic customer selection.")
+    ] = 200,
+) -> None:
+    """Read-only reconciliation of the selected gold rows and demo identities against PostgreSQL."""
+    from bank_data.seed.command import verify
+
+    try:
+        report = verify(_workspace(source, local_dir), customers=customers)
+    except DataPlatformError as error:
+        raise _fail(error) from None
+    typer.echo(f"verified revision={report.revision} personas={report.personas}")
+    for table, count in report.counts.items():
+        typer.echo(f"{table}: {count}")
+
+
 def _shown(path: Path) -> str:
     try:
         return path.resolve().relative_to(REPOSITORY_ROOT).as_posix()
