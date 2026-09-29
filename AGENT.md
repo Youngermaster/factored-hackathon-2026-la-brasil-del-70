@@ -1,4 +1,4 @@
-# agent.md
+# AGENT.md
 
 Operating guide for Claude Code sessions in this repository: what the product is, what the MVP contains, where the build stands, what comes next, and how to work here.
 
