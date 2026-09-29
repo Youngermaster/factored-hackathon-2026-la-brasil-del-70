@@ -1,4 +1,4 @@
-"""The agent inbox: handoffs with their lifecycle, and the credit application intakes handoffs reference.
+"""The agent inbox: handoffs with their lifecycle, and the reviewable credit application intakes.
 
 Every call runs under the agent's session, so the repositories and row-level security scope it. Claims and
 resolutions are audited in the same unit of work as the lifecycle change. Agents see handoffs, which carry the

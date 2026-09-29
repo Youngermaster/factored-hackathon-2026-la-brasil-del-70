@@ -1,4 +1,4 @@
-"""Credit application intakes: idempotent creation, customer withdrawal, agent reads of referenced intakes."""
+"""Credit application intakes: idempotent creation, customer withdrawal, agent reads of reviewable intakes."""
 
 from collections.abc import Sequence
 from datetime import datetime
@@ -9,7 +9,12 @@ from bank_agent.adapters.persistence.postgres.mappers.cases import application_f
 from bank_agent.adapters.persistence.postgres.repositories.access import customer_of, staff_of
 from bank_agent.adapters.persistence.postgres.transaction import Tx
 from bank_agent.domain.access import Role
-from bank_agent.domain.credit import CUSTOMER_APPLICATION_TRANSITIONS, ApplicationStatus, CreditApplicationIntake
+from bank_agent.domain.credit import (
+    CUSTOMER_APPLICATION_TRANSITIONS,
+    REVIEWABLE_APPLICATION_STATUSES,
+    ApplicationStatus,
+    CreditApplicationIntake,
+)
 from bank_agent.domain.errors import (
     AccessContextError,
     ConcurrencyConflictError,
@@ -25,6 +30,20 @@ _INSERT = (
     ":customer_id, :product_code, :status, :requested_amount, :currency, :requested_term_months, :created_at, "
     ":idempotency_key, :version, CAST(:document AS jsonb)) ON CONFLICT (customer_id, idempotency_key) DO NOTHING"
 )
+
+# Agents see every reviewable intake and any intake a handoff references; row-level security agrees (0010).
+_AGENT_GET = (
+    "SELECT a.document FROM app.credit_applications a WHERE a.application_id = :application_id "
+    "AND (a.status = ANY(CAST(:reviewable AS text[])) "
+    "OR EXISTS (SELECT 1 FROM app.handoffs h WHERE h.application_ref = a.application_id))"
+)
+_AGENT_LIST = (
+    "SELECT a.document FROM app.credit_applications a WHERE (a.status = ANY(CAST(:reviewable AS text[])) "
+    "OR EXISTS (SELECT 1 FROM app.handoffs h WHERE h.application_ref = a.application_id)) "
+    "AND (CAST(:statuses AS text[]) IS NULL OR a.status = ANY(CAST(:statuses AS text[]))) "
+    "ORDER BY a.created_at DESC, a.application_id ASC LIMIT :limit"
+)
+_REVIEWABLE = sorted(status.value for status in REVIEWABLE_APPLICATION_STATUSES)
 
 
 class PostgresCreditApplicationRepository:
@@ -55,9 +74,8 @@ class PostgresCreditApplicationRepository:
     async def get(self, application_id: ApplicationId) -> CreditApplicationIntake | None:
         if self._tx.context.role is Role.AGENT:
             row = await self._tx.one_or_none(
-                "SELECT a.document FROM app.credit_applications a WHERE a.application_id = :application_id "
-                "AND EXISTS (SELECT 1 FROM app.handoffs h WHERE h.application_ref = a.application_id)",
-                {"application_id": application_id},
+                _AGENT_GET,
+                {"application_id": application_id, "reviewable": _REVIEWABLE},
             )
         else:
             row = await self._tx.one_or_none(
@@ -87,11 +105,12 @@ class PostgresCreditApplicationRepository:
     ) -> Sequence[CreditApplicationIntake]:
         staff_of(self._tx.context, Role.AGENT)
         rows = await self._tx.rows(
-            "SELECT a.document FROM app.credit_applications a "
-            "WHERE EXISTS (SELECT 1 FROM app.handoffs h WHERE h.application_ref = a.application_id) "
-            "AND (CAST(:statuses AS text[]) IS NULL OR a.status = ANY(CAST(:statuses AS text[]))) "
-            "ORDER BY a.created_at DESC, a.application_id ASC LIMIT :limit",
-            {"statuses": None if statuses is None else sorted(status.value for status in statuses), "limit": limit},
+            _AGENT_LIST,
+            {
+                "statuses": None if statuses is None else sorted(status.value for status in statuses),
+                "limit": limit,
+                "reviewable": _REVIEWABLE,
+            },
         )
         return [application_from_row(row) for row in rows]
 

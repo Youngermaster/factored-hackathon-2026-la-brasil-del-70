@@ -52,7 +52,9 @@ export interface paths {
         };
         /**
          * List Credit Applications
-         * @description Intakes recorded for human review that a handoff references (read only; never a lending decision).
+         * @description Reviewable intakes (submitted, under human review) and any a handoff references, newest first.
+         *
+         *     Read only, and never a lending decision.
          */
         get: operations["agent_list_credit_applications"];
         put?: never;

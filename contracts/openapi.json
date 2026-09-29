@@ -4649,7 +4649,7 @@
     },
     "/v1/agent/credit-applications": {
       "get": {
-        "description": "Intakes recorded for human review that a handoff references (read only; never a lending decision).",
+        "description": "Reviewable intakes (submitted, under human review) and any a handoff references, newest first.\n\nRead only, and never a lending decision.",
         "operationId": "agent_list_credit_applications",
         "parameters": [
           {

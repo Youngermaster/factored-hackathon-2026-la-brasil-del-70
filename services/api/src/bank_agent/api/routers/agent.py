@@ -113,7 +113,10 @@ async def list_credit_applications(
     status: Annotated[list[ApplicationStatus] | None, Query(max_length=4)] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
 ) -> CreditApplicationListResponse:
-    """Intakes recorded for human review that a handoff references (read only; never a lending decision)."""
+    """Reviewable intakes (submitted, under human review) and any a handoff references, newest first.
+
+    Read only, and never a lending decision.
+    """
     statuses = frozenset(status) if status else None
     applications = await services(request).inbox.credit_applications(session, statuses, limit)
     return CreditApplicationListResponse(

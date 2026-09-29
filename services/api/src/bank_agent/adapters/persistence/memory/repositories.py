@@ -11,6 +11,7 @@ from bank_agent.domain.complaint import HistoricalComplaint
 from bank_agent.domain.conversation import Conversation, Turn
 from bank_agent.domain.credit import (
     CUSTOMER_APPLICATION_TRANSITIONS,
+    REVIEWABLE_APPLICATION_STATUSES,
     ApplicationStatus,
     CreditApplicationIntake,
     CreditProfile,
@@ -441,6 +442,12 @@ class InMemoryCreditApplicationRepository:
                 return True
         return False
 
+    def _reviewable(self, application: CreditApplicationIntake) -> bool:
+        """Agents see every reviewable intake, plus any intake a handoff references."""
+        return application.status in REVIEWABLE_APPLICATION_STATUSES or self._referenced_by_a_handoff(
+            application.application_id
+        )
+
     async def create(self, intake: CreditApplicationIntake) -> CreditApplicationIntake:
         if intake.customer_id != _customer_of(self._context):
             raise AccessContextError("an application can only be created for the context customer")
@@ -457,7 +464,7 @@ class InMemoryCreditApplicationRepository:
     async def get(self, application_id: ApplicationId) -> CreditApplicationIntake | None:
         application = self._applications.get(application_id)
         if self._context.role is Role.AGENT:
-            return application if self._referenced_by_a_handoff(application_id) else None
+            return application if application is not None and self._reviewable(application) else None
         owner = _customer_of(self._context)
         return application if application is not None and application.customer_id == owner else None
 
@@ -476,7 +483,7 @@ class InMemoryCreditApplicationRepository:
         found = [
             item
             for item in self._applications.values()
-            if self._referenced_by_a_handoff(item.application_id) and (statuses is None or item.status in statuses)
+            if self._reviewable(item) and (statuses is None or item.status in statuses)
         ]
         found.sort(key=lambda item: item.application_id)
         found.sort(key=lambda item: item.created_at, reverse=True)

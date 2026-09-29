@@ -5,7 +5,12 @@ from collections.abc import AsyncIterator
 import asyncpg
 import pytest
 
-from bank_agent_builders import handoff
+from bank_agent.domain.credit import ApplicationStatus
+from bank_agent.domain.eligibility import CreditReview
+from bank_agent.domain.escalation import EscalationReasonCode
+from bank_agent.domain.handoff import EscalationReason
+from bank_agent.domain.identifiers import ApplicationId, HandoffId
+from bank_agent_builders import T0, eligibility_assessment, handoff, handoff_v1_1
 from bank_agent_contracts import CONTEXT_A, contract_dataset
 from bank_agent_postgres_backend import PostgresBackend
 from bank_agent_test_support import PostgresInstance
@@ -19,6 +24,8 @@ CUSTOMER_TABLES = (
     "dispute_cases",
     "credit_applications",
 )
+AGENT_HIDDEN_TABLES = tuple(table for table in CUSTOMER_TABLES if table != "credit_applications")
+"""A submitted intake is a review item of its own, so agents read reviewable credit applications (0010)."""
 
 
 @pytest.fixture
@@ -81,15 +88,64 @@ async def test_a_customer_role_without_a_customer_sees_nothing(seeded: PostgresI
         await app.close()
 
 
-@pytest.mark.parametrize("table", [*CUSTOMER_TABLES, "execution_records", "conversations"])
+@pytest.mark.parametrize("table", [*AGENT_HIDDEN_TABLES, "execution_records", "conversations"])
 async def test_the_agent_role_reads_no_customer_data(seeded: PostgresInstance, table: str) -> None:
     app = await _connect(seeded)
     try:
         assert await _count(app, table, role="agent") == 0
+    finally:
+        await app.close()
+
+
+@pytest.mark.parametrize("table", [*CUSTOMER_TABLES, "execution_records", "conversations"])
+async def test_the_evaluator_and_identity_roles_read_no_customer_data(seeded: PostgresInstance, table: str) -> None:
+    app = await _connect(seeded)
+    try:
         assert await _count(app, table, role="evaluator") == 0
         assert await _count(app, table, role="identity") == 0
     finally:
         await app.close()
+
+
+async def test_the_agent_reads_reviewable_applications_and_referenced_ones(
+    migrated_postgres: PostgresInstance,
+) -> None:
+    backend = PostgresBackend(migrated_postgres)
+    await backend.seed(contract_dataset())
+    app = await _connect(migrated_postgres)
+    existing = ApplicationId("app-000001")
+    try:
+        assert await _count(app, "credit_applications", role="agent") == 1
+        async with app.transaction():
+            await app.execute("SELECT set_config('app.role', 'agent', true)")
+            assert await app.execute("UPDATE app.credit_applications SET status = 'closed'") == "UPDATE 0"
+        async with backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.credit_applications.transition(
+                existing, ApplicationStatus.WITHDRAWN, expected_version=0, at=T0, reason_code="customer_request"
+            )
+            await uow.commit()
+        assert await _count(app, "credit_applications", role="agent") == 0
+        review = CreditReview.from_assessment(
+            eligibility_assessment(outcome="review_required", review_reasons=["borderline_risk_interval"]),
+            application_ref=existing,
+        )
+        async with backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.handoffs.add(
+                handoff_v1_1(
+                    handoff_id=HandoffId("ho-credit-01"),
+                    case_ref=None,
+                    actions_taken=[],
+                    escalation_reason=EscalationReason(
+                        code=EscalationReasonCode.CREDIT_REVIEW_REQUIRED, detail="Borderline indicative result."
+                    ),
+                    credit_review=review,
+                )
+            )
+            await uow.commit()
+        assert await _count(app, "credit_applications", role="agent") == 1
+    finally:
+        await app.close()
+        await backend.aclose()
 
 
 async def test_the_agent_reads_a_case_only_once_a_handoff_references_it(migrated_postgres: PostgresInstance) -> None:
@@ -103,7 +159,7 @@ async def test_the_agent_reads_a_case_only_once_a_handoff_references_it(migrated
             await uow.commit()
         assert await _count(app, "dispute_cases", role="agent") == 1
         assert await _count(app, "handoffs", role="agent") == 1
-        assert await _count(app, "credit_applications", role="agent") == 0
+        assert await _count(app, "credit_applications", role="agent") == 1
     finally:
         await app.close()
         await backend.aclose()

@@ -27,7 +27,7 @@ Phases 05 and 07 added three use-case packages:
 Phase 11 added the HTTP use cases:
 
 - `conversations/service.py`: `ConversationService` (open an empty conversation with an audit event, send a turn through the engine and refuse a turn id from another conversation, the history, and the execution records for the customer or an evaluator), all scoped by the caller's session.
-- `agent/inbox.py`: `AgentInbox` (list with filters, read, claim, resolve, each move audited in the same unit of work; read-only credit application intakes a handoff references).
+- `agent/inbox.py`: `AgentInbox` (list with filters, read, claim, resolve, each move audited in the same unit of work; read-only credit application intakes: every reviewable one plus any a handoff references).
 - Engine: `gate.resume_after_sign_in` (a turn from a new session lineage mid-flow resumes through AUTH_REQUIRED at the last safe state; a step-up keeps the lineage), `WorkflowEngine.new_conversation`, `TurnResult.workflow`, and the account parts on `Reply` (`balances`, `payment_statuses`, `statement`).
 
 ## Who may import it

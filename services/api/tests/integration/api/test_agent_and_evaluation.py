@@ -1,6 +1,7 @@
 """The agent inbox, the customer and evaluator traces, and the published evaluation summaries over HTTP."""
 
 import json
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
@@ -16,7 +17,7 @@ from bank_agent.domain.money import Currency, Money
 from bank_agent.ports.audit import AuditQuery
 from bank_agent_api import EVALUATOR_ID, ApiBackend, ApiClient
 from bank_agent_builders import T0, eligibility_assessment, handoff_v1_1
-from bank_agent_scenarios import MX
+from bank_agent_scenarios import MX, PT
 
 RISK_VALUE_KEYS = {"probability", "interval_low", "interval_high", "band"}
 
@@ -124,6 +125,47 @@ async def test_agents_read_the_credit_intakes_a_handoff_references(memory_api: A
     assert [item["application_id"] for item in listed.json()["applications"]] == ["app-api-01"]
     assert (detail.json()["status"], detail.json()["synthetic_policy"]) == ("submitted", True)
     assert missing.status_code == 404
+
+
+def _intake(application_id: str, customer: str, key: str, created_at: Any) -> CreditApplicationIntake:
+    return CreditApplicationIntake.submit(
+        application_id=ApplicationId(application_id),
+        customer_id=CustomerId(customer),
+        product_code=CreditProductCode("MX-PL-STANDARD"),
+        requested_amount=Money.of("50000.00", Currency.MXN),
+        requested_term_months=24,
+        purpose="general_purpose",
+        idempotency_key=IdempotencyKey(key),
+        created_at=created_at,
+    )
+
+
+async def test_agents_list_every_reviewable_intake_without_a_handoff(api_backend: ApiBackend) -> None:
+    harness = api_backend.build()
+    older = _intake("app-api-11", MX, "idem-key-api-fixture-0011", T0 - timedelta(days=1))
+    newer = _intake("app-api-12", MX, "idem-key-api-fixture-0012", T0)
+    mx, pt = AccessContext.for_customer(CustomerId(MX)), AccessContext.for_customer(CustomerId(PT))
+    async with harness.container.persistence.uow_factory(mx) as uow:
+        await uow.credit_applications.create(older)
+        await uow.credit_applications.create(newer)
+        await uow.commit()
+    async with ApiClient(harness.app) as agent, ApiClient(harness.app) as customer:
+        await agent.login("persona-agent")
+        listed = await agent.get("/v1/agent/credit-applications")
+        detail = await agent.get("/v1/agent/credit-applications/app-api-11")
+        await customer.login("persona-pt", language="pt")
+        refused = await customer.get("/v1/agent/credit-applications")
+    assert [item["application_id"] for item in listed.json()["applications"]] == ["app-api-12", "app-api-11"]
+    assert detail.json()["status"] == "submitted"
+    assert refused.status_code == 403
+    async with harness.container.persistence.uow_factory(pt) as uow:
+        assert await uow.credit_applications.list_mine() == []
+        assert await uow.credit_applications.get(ApplicationId("app-api-11")) is None
+    async with harness.container.persistence.uow_factory(mx) as uow:
+        assert [item.application_id for item in await uow.credit_applications.list_mine()] == [
+            "app-api-12",
+            "app-api-11",
+        ]
 
 
 def _summary(run_id: str, generated_at: str) -> dict[str, Any]:
