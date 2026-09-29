@@ -75,6 +75,27 @@ OFFER_STATES: Final = frozenset({"OFFER_PROTECTIVE_BLOCK"})
 ACCEPT_OFFER: Final = {Language.ES: "Sí, bloquéala también", Language.PT: "Sim, bloqueie também"}
 DECLINE_OFFER: Final = {Language.ES: "No, gracias", Language.PT: "Não, obrigado"}
 LANGUAGE_WORD: Final = {Language.ES: "español", Language.PT: "português"}
+WORKFLOW_ANSWER: Final = {
+    "account_inquiry": {Language.ES: "Es sobre mis saldos y pagos", Language.PT: "É sobre os meus saldos e pagamentos"},
+    "card_support": {Language.ES: "Es sobre mis tarjetas", Language.PT: "É sobre os meus cartões"},
+    "dispute": {
+        Language.ES: "Es sobre un cargo que no reconozco",
+        Language.PT: "É sobre uma cobrança que não reconheço",
+    },
+    "credit": {Language.ES: "Es sobre productos de crédito", Language.PT: "É sobre produtos de crédito"},
+}
+WORKFLOW_QUESTION: Final = "common.clarify_workflow"
+SWITCH_QUESTION: Final = "common.switch_confirm"
+SWITCH_YES: Final = {Language.ES: "Sí, cambiemos a eso", Language.PT: "Sim, vamos mudar para isso"}
+TERMINAL: Final = frozenset({"resolved", "abstained", "refused"})
+LANGUAGE_QUESTION: Final = "common.language_question"
+ASKING: Final = frozenset({"clarified", "in_progress"})
+REASON_QUESTIONS: Final = frozenset({"dispute.ask_reason", "b0.reasons"})
+REASON_ANSWER: Final = {
+    "unrecognized": {Language.ES: "No reconozco la compra", Language.PT: "Não reconheço a compra"},
+    "not_received": {Language.ES: "No recibí lo que compré", Language.PT: "Não recebi o que comprei"},
+}
+MAX_WORKFLOW_ANSWERS: Final = 2
 MAX_TURNS: Final = 16
 
 
@@ -84,23 +105,47 @@ async def play_scripted(
     """Play ``turns`` (the scenario's, or its scripted fallback) and return every turn of the conversation.
 
     The script holds what the customer says and decides; the driver answers what a script cannot know in advance
-    and a real customer would: the language question, and the protective block offer (declined unless the scenario
-    is tagged ``accepts_protective_block``). A transfer to a person ends the conversation.
+    and a real customer would: the language question, which workflow the request is about (the scenario's), the
+    question whether to switch to the new request (yes: the script asked for it), and the protective block offer
+    (declined unless the scenario is tagged ``accepts_protective_block``). A transfer to a person ends the
+    conversation, and so does a finished request when only confirmations remain in the script.
     """
     expiring = {f.turn_index for f in scenario.fixtures if isinstance(f, SessionExpiresBeforeTurn)}
     language, log = scenario.language, TurnLog()
     accepts = "accepts_protective_block" in scenario.tags
-    answered_language = answered_offer = False
+    answered_language = answered_offer = answered_switch = answered_reason = False
+    workflow_answers = 0
+    workflow = scenario.workflow.value if scenario.workflow is not None else None
     number = 0
     view: TurnView | None = None
     while len(log.turns) < MAX_TURNS:
         if view is not None and (view.state == "ESCALATED" or view.outcome == "escalated"):
             break
-        if view is not None and "language_question" in view.notices and not answered_language:
+        asked_language = view is not None and (
+            "language_question" in view.notices or view.template_id == LANGUAGE_QUESTION
+        )
+        if asked_language and not answered_language:
             answered_language = True
             view = await send_with_session_events(
                 case, log, LANGUAGE_WORD[language], language, driver=driver, expired=False
             )
+            continue
+        asked_workflow = view is not None and view.template_id == WORKFLOW_QUESTION
+        if asked_workflow and workflow is not None and workflow_answers < MAX_WORKFLOW_ANSWERS:
+            workflow_answers += 1
+            text = WORKFLOW_ANSWER[workflow][language]
+            view = await send_with_session_events(case, log, text, language, driver=driver, expired=False)
+            continue
+        if view is not None and view.template_id == SWITCH_QUESTION and not answered_switch:
+            answered_switch = True
+            view = await send_with_session_events(case, log, SWITCH_YES[language], language, driver=driver,
+                                                  expired=False)  # fmt: skip
+            continue
+        if view is not None and view.template_id in REASON_QUESTIONS and not answered_reason:
+            answered_reason = True
+            reason = "not_received" if "reason_not_received" in scenario.tags else "unrecognized"
+            view = await send_with_session_events(case, log, REASON_ANSWER[reason][language], language, driver=driver,
+                                                  expired=False)  # fmt: skip
             continue
         if view is not None and view.state in OFFER_STATES and not answered_offer:
             answered_offer = True
@@ -109,8 +154,13 @@ async def play_scripted(
             continue
         if number >= len(turns):
             break
+        remaining = turns[number:]
+        if view is not None and view.outcome in TERMINAL and all(turn.action is not None for turn in remaining):
+            break
         turn = turns[number]
         number += 1
+        if turn.when_asked and view is not None and view.outcome not in ASKING:
+            continue
         if turn.advance_clock_seconds:
             case.advance_clock(turn.advance_clock_seconds)
         expired = number in expiring

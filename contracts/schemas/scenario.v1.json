@@ -661,6 +661,12 @@
           "minimum": 0,
           "title": "Advance Clock Seconds",
           "type": "integer"
+        },
+        "when_asked": {
+          "default": false,
+          "title": "When Asked",
+          "type": "boolean",
+          "x-added-in": "1.4.0"
         }
       },
       "title": "ScriptedTurn",

@@ -110,35 +110,44 @@ def _disputes(b: Builder, p: Persona, book: CountryBook) -> None:
     b.txn(p, book, "injection_target", card, a["target"], 4, m["target"])
 
 
-def _cases(b: Builder, p: Persona, book: CountryBook) -> None:
+def _case(b: Builder, p: Persona, book: CountryBook, ref: str, days_ago: int, opened_days_ago: int) -> None:
     card = _card(b, p, book)
-    m, a = book.merchants, book.amounts
-    b.txn(p, book, "case_within_sla_txn", card, a["recent"], 8, m["recent"])
-    b.txn(p, book, "case_past_sla_txn", card, a["old"], 75, m["old"])
-    b.txn(p, book, "recent_card_purchase", card, a["similar"], 2, m["similar"])
-    within = b.world.transaction(p.refs["case_within_sla_txn"])
-    past = b.world.transaction(p.refs["case_past_sla_txn"])
+    b.txn(
+        p,
+        book,
+        f"{ref}_txn",
+        card,
+        book.amounts["recent" if ref == "case_within_sla" else "old"],
+        days_ago,
+        book.merchants["recent" if ref == "case_within_sla" else "old"],
+    )
+    b.txn(p, book, "recent_card_purchase", card, book.amounts["similar"], 2, book.merchants["similar"])
     sla = {"MX": 45, "CO": 15, "AR": 30}[book.country.value]
-    for ref, txn, opened in (
-        ("case_within_sla", within, NOW - timedelta(days=5)),
-        ("case_past_sla", past, NOW - timedelta(days=70)),
-    ):
-        case = DisputeCase.open(
-            case_id=f"case-{p.customer.customer_id[4:].lower()}-{ref[5:9]}",  # type: ignore[arg-type]
-            transaction=txn,
-            reason=DisputeReason.UNRECOGNIZED,
-            opened_at=opened,
-            sla_due_at=opened + timedelta(days=sla),
-            idempotency_key=f"idem-eval-{p.customer.customer_id[4:].lower()}-{ref}",  # type: ignore[arg-type]
-        )
-        b.world.cases.append(case)
-        p.refs[ref] = case.case_id
+    opened = NOW - timedelta(days=opened_days_ago)
+    case = DisputeCase.open(
+        case_id=f"case-{p.customer.customer_id[4:].lower()}-0001",  # type: ignore[arg-type]
+        transaction=b.world.transaction(p.refs[f"{ref}_txn"]),
+        reason=DisputeReason.UNRECOGNIZED,
+        opened_at=opened,
+        sla_due_at=opened + timedelta(days=sla),
+        idempotency_key=f"idem-eval-{p.customer.customer_id[4:].lower()}-{ref}",  # type: ignore[arg-type]
+    )
+    b.world.cases.append(case)
+    p.refs[ref] = case.case_id
+
+
+def _cases(b: Builder, p: Persona, book: CountryBook) -> None:
+    _case(b, p, book, "case_within_sla", 8, 5)
+
+
+def _late_cases(b: Builder, p: Persona, book: CountryBook) -> None:
+    _case(b, p, book, "case_past_sla", 75, 70)
 
 
 def _repeat_complainer(b: Builder, p: Persona, book: CountryBook) -> None:
     card = _card(b, p, book)
     b.txn(p, book, "recent_card_purchase", card, book.amounts["recent"], 3, book.merchants["recent"])
-    for index, days in enumerate((40, 120, 200)):
+    for index, days in enumerate((20, 70, 130)):
         b.world.complaints.append(
             HistoricalComplaint(
                 complaint_id=f"CMP-{p.customer.customer_id[4:]}-{index + 1}",  # type: ignore[arg-type]
@@ -192,7 +201,8 @@ DEMONSTRATES = {
     "crd": "Two active cards and a declined purchase",
     "crdx": "An expired credit card and a blocked debit card",
     "dsp": "Disputable purchases: recent, similar, pending, old, above the automatic limit, and an injection target",
-    "dspcase": "Open dispute cases within and past the resolution SLA",
+    "dspcase": "An open dispute case within the resolution SLA",
+    "dsplate": "An open dispute case past the resolution SLA",
     "dsprep": "A repeat complainer (three complaints in the last year)",
     "cre": "A complete credit profile with no days past due",
     "crenoinc": "A credit profile without income",
@@ -212,6 +222,7 @@ def populate(b: Builder, book: CountryBook) -> None:
         "crdx": _expired_and_blocked,
         "dsp": _disputes,
         "dspcase": _cases,
+        "dsplate": _late_cases,
         "dsprep": _repeat_complainer,
     }
     for index, role in enumerate(ROLES):

@@ -98,6 +98,9 @@ class ScriptedTurn(ScenarioModel):
     action: TurnAction | None = None
     option_index: Annotated[int, Field(ge=1, le=3)] | None = None
     advance_clock_seconds: NonNegativeInt = 0
+    when_asked: Annotated[bool, AddedIn("1.4.0")] = False
+    """An answer the customer gives only when the previous reply asked something (a clarifying question or a
+    pending step); the driver skips it when the system already finished the request."""
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
@@ -356,8 +359,9 @@ class Scenario(ScenarioModel):
             raise ValueError(f"unknown handoff fields: {sorted(unknown)}")
         if self.expected_handoff_fields and self.expected_outcome is not Outcome.ESCALATED:
             raise ValueError("expected handoff fields need an escalated outcome")
-        if self.category is ScenarioCategory.TOOL_FAILURE and not self.tool_failure_plan:
-            raise ValueError("a tool_failure scenario needs a tool failure plan")
+        unavailable = any(isinstance(f, ModelUnavailable) for f in self.fixtures)
+        if self.category is ScenarioCategory.TOOL_FAILURE and not (self.tool_failure_plan or unavailable):
+            raise ValueError("a tool_failure scenario needs a tool failure plan or an unavailable model")
         expiring = [f for f in self.fixtures if isinstance(f, SessionExpiresBeforeTurn)]
         if self.mode is ScenarioMode.SCRIPTED and any(f.turn_index > len(self.turns) for f in expiring):
             raise ValueError("a session expiry fixture points past the last turn")

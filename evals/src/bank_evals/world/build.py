@@ -54,6 +54,7 @@ BOOKS: Final = {
             "Paola",
             "Hugo",
             "Carla",
+            "Elena",
             "Rafael",
         ),
         {
@@ -100,6 +101,7 @@ BOOKS: Final = {
             "Natalia",
             "Andres",
             "Paula",
+            "Valentina",
             "Rafael",
         ),
         {
@@ -146,6 +148,7 @@ BOOKS: Final = {
             "Federico",
             "Julieta",
             "Ramiro",
+            "Camilo",
             "Rafael",
         ),
         {
@@ -185,6 +188,7 @@ ROLES: Final = (
     "crdx",
     "dsp",
     "dspcase",
+    "dsplate",
     "dsprep",
     "cre",
     "crenoinc",

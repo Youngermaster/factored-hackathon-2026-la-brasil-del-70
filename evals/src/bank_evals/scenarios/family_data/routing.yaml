@@ -1,0 +1,130 @@
+# Routing situations (team-written, synthetic): requests out of scope of all four workflows, and conversations
+# that switch workflows mid-way. Labels follow docs/workflows/workflow-router.md.
+- key: investment
+  category: unsupported
+  role: acc
+  in_scope: false
+  goal: Ask for investment advice.
+  expected_outcome: abstained
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["Recomiéndame en qué invertir mis ahorros"]
+      pt: ["Me recomende onde investir as minhas economias"]
+    - es: ["¿Conviene comprar criptomonedas este mes?"]
+      pt: ["Vale a pena comprar criptomoedas este mês?"]
+- key: insurance-or-account
+  category: unsupported
+  role: acc
+  in_scope: false
+  goal: Buy insurance or open a new account.
+  expected_outcome: abstained
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["Quiero contratar un seguro de vida"]
+      pt: ["Quero contratar um seguro de vida"]
+    - es: ["Quiero abrir una cuenta de ahorro nueva"]
+      pt: ["Quero abrir uma conta poupança nova"]
+- key: personal-data
+  category: unsupported
+  role: acc
+  in_scope: false
+  goal: Change personal data.
+  expected_outcome: abstained
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["Quiero cambiar mi dirección y mi número de teléfono"]
+      pt: ["Quero mudar o meu endereço e o meu telefone"]
+    - es: ["Actualiza mi correo electrónico, por favor"]
+      pt: ["Atualize o meu e-mail, por favor"]
+- key: tax-or-legal
+  category: unsupported
+  role: acc
+  in_scope: false
+  goal: Ask for tax advice or a legal opinion.
+  expected_outcome: abstained
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["¿Cómo declaro mis impuestos de este año?"]
+      pt: ["Como faço a minha declaração de imposto de renda deste ano?"]
+    - es: ["¿Qué tipo de cambio me conviene para comprar dólares hoy?"]
+      pt: ["Qual câmbio compensa para comprar dólares hoje?"]
+- key: other-bank
+  category: unsupported
+  role: acc
+  in_scope: false
+  goal: Ask about another bank's products or a branch appointment.
+  expected_outcome: abstained
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["Quiero agendar una cita en la sucursal para el lunes"]
+      pt: ["Quero marcar um horário na agência para segunda-feira"]
+    - es: ["¿Me ayudas a pedir un préstamo en otro banco?"]
+      pt: ["Você me ajuda a pedir um empréstimo em outro banco?"]
+- key: card-then-dispute
+  category: normal
+  role: dsp
+  workflow: card_support
+  expected_workflow_path: [card_support, dispute]
+  goal: Check the credit card, then dispute a charge.
+  expected_outcome: resolved
+  assertions: [{kind: case_exists, transaction_ref: recent_card_purchase}]
+  phrasings:
+    - es: ["¿Mi tarjeta de crédito está activa?", "Por cierto, no reconozco un cargo de {recent_card_purchase_amount} en {recent_card_purchase_merchant}", {action: confirm}]
+      pt: ["Meu cartão de crédito está ativo?", "Aliás, não reconheço uma cobrança de {recent_card_purchase_amount} na {recent_card_purchase_merchant}", {action: confirm}]
+    - es: ["¿Cuándo vence mi tarjeta de crédito?", "Otra cosa: hay un cargo de {recent_card_purchase_amount} en {recent_card_purchase_merchant} que no hice", {action: confirm}]
+      pt: ["Quando vence o meu cartão de crédito?", "Outra coisa: tem uma cobrança de {recent_card_purchase_amount} na {recent_card_purchase_merchant} que eu não fiz", {action: confirm}]
+- key: balance-then-block
+  category: normal
+  role: crd
+  workflow: account_inquiry
+  expected_workflow_path: [account_inquiry, card_support]
+  goal: Check the balance, then block the stolen debit card.
+  expected_outcome: resolved
+  assertions: [{kind: product_status, product_ref: debit_card, status: blocked}]
+  phrasings:
+    - es: ["¿Cuál es mi saldo?", "Ahora quiero bloquear mi tarjeta de débito, me la robaron", {action: confirm}]
+      pt: ["Qual é o meu saldo?", "Agora quero bloquear meu cartão de débito, foi roubado", {action: confirm}]
+- key: credit-then-balance
+  category: normal
+  role: cre
+  workflow: credit
+  expected_workflow_path: [credit, account_inquiry]
+  goal: Ask the loan conditions, then the savings balance.
+  expected_outcome: resolved
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["¿Qué condiciones tiene el préstamo personal?", "Mejor dime cuánto tengo en mi cuenta de ahorro"]
+      pt: ["Quais são as condições do empréstimo pessoal?", "Melhor me diga quanto tenho na poupança"]
+- key: dispute-status-then-block
+  category: normal
+  role: dspcase
+  workflow: dispute
+  expected_workflow_path: [dispute, card_support]
+  goal: Check the dispute case, then block the credit card.
+  expected_outcome: resolved
+  assertions: [{kind: product_status, product_ref: credit_card, status: blocked}]
+  phrasings:
+    - es: ["¿Cómo va mi reclamación?", "Bloquea también mi tarjeta de crédito por precaución", {action: confirm}]
+      pt: ["Como está a minha contestação?", "Bloqueie também o meu cartão de crédito por precaução", {action: confirm}]
+- key: card-then-balance-ambiguous
+  category: ambiguous
+  role: crd
+  workflow: card_support
+  expected_workflow_path: [card_support, account_inquiry]
+  goal: Ask about a card without saying which, then about the balance.
+  expected_outcome: resolved
+  assertions: [{kind: no_writes}]
+  phrasings:
+    - es: ["¿Cómo está mi tarjeta?", "La de débito", "¿Y cuánto debo en la de crédito?"]
+      pt: ["Como está o meu cartão?", "O de débito", "E quanto devo no de crédito?"]
+- key: balance-then-dispute
+  category: normal
+  role: dsp
+  workflow: account_inquiry
+  expected_workflow_path: [account_inquiry, dispute]
+  goal: Check the card balance, then dispute a charge.
+  expected_outcome: resolved
+  assertions: [{kind: case_exists, transaction_ref: recent_card_purchase}]
+  phrasings:
+    - es: ["¿Cuánto debo en mi tarjeta de crédito?", "No reconozco un cargo de {recent_card_purchase_amount} en {recent_card_purchase_merchant}", {action: confirm}]
+      pt: ["Quanto devo no meu cartão de crédito?", "Não reconheço uma cobrança de {recent_card_purchase_amount} na {recent_card_purchase_merchant}", {action: confirm}]

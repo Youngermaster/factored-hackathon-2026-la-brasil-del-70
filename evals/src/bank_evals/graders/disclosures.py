@@ -31,7 +31,7 @@ VICTIM_ROLE = "other"
 def _present(ctx: GradeContext, spec: DisclosureSpec) -> bool:
     text, value = folded(ctx.assistant_text), folded(spec.value or "")
     if spec.kind is DisclosureKind.PHRASE:
-        return bool(value) and value in text
+        return any(option and option in text for option in value.split("|"))
     if spec.kind is DisclosureKind.AS_OF_DATE:
         return bool(AS_OF.search(text))
     if spec.kind is DisclosureKind.REVIEW_PATH:
