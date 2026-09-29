@@ -51,6 +51,38 @@ Pending human actions (none blocks session 10b; the phase 09 prompt asks that ph
 
 ## Phase log
 
+### Local gold seed for the MVP (2026-09-28)
+
+Decision: [ADR 0032](adr/0032-bounded-local-gold-seed-for-mvp.md). Guide:
+[data/local-postgres-mvp.md](data/local-postgres-mvp.md). This is an independent data deliverable on the
+`dbseed` branch; it does not complete a numbered phase.
+
+#### What changed
+
+- `make pipeline`, `seed`, and `verify-seed` accept `DATA_SOURCE=local LOCAL_DIR=data`. Local discovery
+  lists only contracted table layouts before hashing, so EDA outputs, context files, and warehouses under
+  `data/` are never ingested.
+- Added `bank-data verify-seed`: a read-only reconciliation of the selected gold IDs, identity digests,
+  staff, and synthetic demo records against PostgreSQL, requiring the Alembic head. It exits nonzero on a
+  mismatch and prints only counts.
+- `.env.example` moved the comments of empty values to their own lines, with a test that the example
+  parses.
+
+#### Validation
+
+- Full local build: 7,671 objects unchanged on rerun; `dbt build` `PASS=313 WARN=2 ERROR=0`; tests and
+  freshness pass; all five serving Parquet files exist.
+- `make seed` and `make verify-seed` with 200 customers: revision `0008`, 16 personas, 559 products,
+  6,119 transactions, 84 complaints, 200 credit profiles.
+- The source, seed verification, seed integration, and row-level security tests pass (43 tests).
+
+#### Known limitations
+
+- The `.env.example` DuckDB defaults (8 GB, 8 threads) get the build killed without an error on an 8 GB
+  machine; 3 GB and 2 threads complete it in about 9 minutes (BACKLOG).
+- 149,995 customers and 831 service agents reference branches missing from `branches.csv` (BACKLOG).
+- The seed is bounded by design; the full load needs the batch loader in the guide (BACKLOG, phase 16).
+
 ### Local EDA and progressive viewer (2026-09-27)
 
 Plan: [eda-local](plans/eda-local.md). Decision: [ADR 0030](adr/0030-local-eda-and-progressive-viewer.md).

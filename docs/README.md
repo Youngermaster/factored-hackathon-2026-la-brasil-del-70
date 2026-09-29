@@ -35,6 +35,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0003](adr/0003-frontend-layering-and-state.md) | Frontend layering and state rules |
 | [adr/0030](adr/0030-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
 | [adr/0031](adr/0031-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
+| [adr/0032](adr/0032-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
 
 ## Exploratory data analysis
 
@@ -73,6 +74,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [data/update-policy.md](data/update-policy.md) | Freshness targets, late arrivals, reprocessing and backfills, schema evolution, retention |
 | [data/quality-report.md](data/quality-report.md) | Generated data-quality report of the latest full build |
 | [data/lineage.md](data/lineage.md) | Generated lineage flowchart from the dbt manifest |
+| [data/local-postgres-mvp.md](data/local-postgres-mvp.md) | Build gold from the local delivery, seed and verify the 200-customer MVP slice, and the plan for the full load |
 | [workflows/data-pipeline.md](workflows/data-pipeline.md) | Source to serving flowchart and the incremental run with a late arrival |
 | [../data_platform/sample/README.md](../data_platform/sample/README.md) | The committed organizer sample: provenance, counts, treatments, and example rows per table |
 
