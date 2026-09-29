@@ -50,6 +50,7 @@ async def play_case(
                 before = len(simulator.calls)
                 turns = await simulator.play(case, scenario, run_index)
                 user_calls = simulator.calls[before:]
+                transcript.user_calls = list(user_calls)
             else:
                 turns = await play_scripted(case, scenario, scenario.scripted_fallback, driver="scripted_fallback")
         else:

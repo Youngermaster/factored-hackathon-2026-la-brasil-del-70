@@ -92,6 +92,8 @@ class Transcript(Record):
     error: str | None = None
     """A harness error (the case could not be played); such cases are excluded from metrics and counted."""
     cassette_misses: int = 0
+    user_calls: list[LlmCallView] = Field(default_factory=list)
+    """The simulated customer's model calls (role ``user``), kept apart from the system's."""
 
     @property
     def workflow_path(self) -> list[str]:
