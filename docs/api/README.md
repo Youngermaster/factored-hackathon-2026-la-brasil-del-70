@@ -21,6 +21,9 @@ Roles: `anyone` needs no session; the others need a session of that role. CSRF: 
 | POST | `/v1/conversations/{conversation_id}/turns` | customer | yes | write |
 | GET | `/v1/conversations/{conversation_id}` | customer | no | read |
 | GET | `/v1/conversations/{conversation_id}/trace` | customer | no | read |
+| GET | `/v1/conversations/{conversation_id}/assistant-profile` | customer | no | read |
+| POST | `/v1/conversations/{conversation_id}/assistant-profile/name` | customer | yes | write |
+| POST | `/v1/conversations/{conversation_id}/assistant-profile/mock-image` | customer | yes | write |
 | GET | `/v1/agent/handoffs` | agent | no | read |
 | GET | `/v1/agent/handoffs/{handoff_id}` | agent | no | read |
 | POST | `/v1/agent/handoffs/{handoff_id}/claim` | agent | yes | write |
