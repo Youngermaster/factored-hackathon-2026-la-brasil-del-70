@@ -65,6 +65,103 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Phase 15: reliability and observability (2026-09-29)
+
+Plan: `docs/plans/phase-15.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The session ran in a git worktree while session 14b worked on `main`, so the pull was skipped as instructed; engine edits stay small (a turn span, a state span helper, the template-only check, one clarification line) and the orchestrator merges the branch. The session paused twice (a login expiry) and resumed from its commits. No Langfuse, as the human decided.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `7f8ea8b` | The plan with the decided questions |
+| `9b33877` | OpenTelemetry API and SDK 1.45.0, the OTLP HTTP exporter, and the FastAPI, SQLAlchemy, and httpx instrumentations 0.66b0 (Apache-2.0, about 5 MB) |
+| `d02e111` | The OpenTelemetry adapter (GenAI 1.37.0 schema URL, units and buckets from an instrument catalog, never raising), `bootstrap/observability.py` (always a tracer provider, export only with `OTEL_ENABLED=true`, parent-based ratio sampling), `X-Trace-Id`, trace and span ids in JSON logs, spans for the turn, each state handler, each tool call, and tracing decorators for the router, the policy kernel, the risk estimator, and the eligibility service; the trace id stored in the execution record; turn metrics read from the record; a per-attempt tool timeout (`WORKFLOW_TOOL_TIMEOUT_SECONDS`) |
+| `0d7228e` | The degradation ladder (pure decision, `DegradationMonitor`, one flag per fallback), template-only turns with a limited-service notice in es and pt, one clarifying question fewer when degraded, L3 model baselines with a stricter keyword threshold, a learned risk estimator that never guesses unless `DEGRADATION_RISK_BAND_FALLBACK` allows `score_band@1`, a credit catalog failure that disables only `credit`, the runtime unsafe-output block, the `BudgetLedger` port with the 80 percent alert, and `/health/details` |
+| `58b45e6` | L4: database availability failures become `DatabaseUnavailableError` where transactions open and end, `503 dependency-unavailable` with `Retry-After`, and web copy in es, pt, en that nothing was confirmed |
+| `39b8b72` | The chaos suite (38 tests) and a readiness check that refuses a read-only database |
+| `3194da4` | Rate-limit rejections and active sessions |
+| `ef69319` | The shared budget ledger in PostgreSQL (migration `0011`, `app.llm_budget`), failing closed |
+| `471d228` | Safety interventions by code (for the injection alert) |
+| `f77ad0d` | Prometheus alert rules, the provisioned Grafana dashboard, collector resource attributes, container log rotation, SQLAlchemy spans, the Locust file, `make api-obs`, `make load-test`, the degradation and runbook docs, and a test that every queried metric and runbook anchor exists |
+| `c6d4580`, `760ffc3`, `2429674` | Observability and capacity docs, ADR 0035, the gateway, API, threat model, deploy, and package guides, the docs index, and the BACKLOG |
+| This commit | This entry |
+
+#### Degradation levels
+
+| Level | Trigger | Behavior |
+|---|---|---|
+| L0 | Normal, or no model configured on purpose | Full behavior |
+| L1 | Primary provider circuit open, fallback healthy | Fallback provider (`DEGRADATION_FALLBACK_PROVIDER`) |
+| L2 | Every provider circuit open, or the daily budget spent | No model call; templates, deterministic extraction, one question fewer before a handoff; replies start with the limited-service notice in es and pt (`DEGRADATION_TEMPLATE_ONLY`) |
+| L3 | A learned model or the credit catalog fails to load | Baselines with the stricter router threshold; `review_required` for every eligibility unless the score-band fallback is allowed; credit disabled without its catalog (`DEGRADATION_MODEL_BASELINES`, `DEGRADATION_RISK_BAND_FALLBACK`, `DEGRADATION_CREDIT_CATALOG_FALLBACK`) |
+| L4 | Database unavailable or read-only | Nothing done, 503 with `Retry-After`, readiness fails; no flag (fails closed) |
+
+Writes never fail open at any level. Details: [degradation.md](operations/degradation.md).
+
+#### Decisions
+
+- [ADR 0035](adr/0035-telemetry-export-and-degradation-ladder.md): OTLP over HTTP to the collector (no gRPC wheels, no scrape endpoint on the API), metrics read from the execution record, a pure ladder with one flag per fallback, and the budget ledger shared in PostgreSQL. The other plan decisions (export off by default, sampling, an unconfigured model is L0, levels combine by severity, per-process active sessions, Locust through `uv run --with`, development log retention) are in the plan.
+- The unsafe-outcome detectors reuse the grounding verifier's violation kinds; a template that trips one is replaced by `common.unsafe_blocked` (a person is offered) and counted.
+- A learned risk estimator that cannot load now serves no estimate by default (phase 10 served the score band); the default selection is still `score_band@1`, so default runs do not change.
+- An unreadable model registry is an availability failure (L3); a tampered artifact still stops startup.
+- The SQLAlchemy instrumentation declares `sqlalchemy < 2.1`; it is enabled with `skip_dep_check` after its spans were checked in Jaeger with 2.1.1 (BACKLOG row to recheck on upgrades).
+- Dependencies: OpenTelemetry API, SDK, and OTLP HTTP exporter 1.45.0; the FastAPI, SQLAlchemy, and httpx instrumentations 0.66b0; with `asgiref`, `googleapis-common-protos`, and the OTLP common packages, about 5 MB, Apache-2.0 (asgiref BSD). Locust 2.46.6 runs through `uv run --with` and is not in the lockfile.
+
+#### Verification on the local obs stack
+
+A separate compose project (`bank-agent-p15`, PostgreSQL on 55432, seeded from the committed sample) ran the `obs` profile with the API exporting (`OTEL_ENABLED=true`). Jaeger (`/api/v3`) showed service `bank-agent-api` with full turn traces: the HTTP span, `bank.turn`, `bank.router.dispatch`, `bank.workflow.state`, `bank.policy.evaluate`, `bank.tool.call`, `gen_ai.chat`, and SQLAlchemy `SELECT`, `INSERT`, `UPDATE` spans. Prometheus had the turn, tool, escalation, dispatch, fallback, intervention, session, degradation, GenAI, and HTTP series with the resource labels, and all 10 alert rules loaded with health `ok`. Grafana provisioned "Bank agent: reliability and operations" (30 panels) and answered queries through its Prometheus datasource. No screenshots were taken.
+
+#### Load test (local measurement, fake model)
+
+One uvicorn worker, PostgreSQL in Docker, Apple M3, telemetry on, while a local model evaluation ran on the same machine; demand-weighted mix of the four workflows, 40 percent Portuguese, read-only turns. Zero errors at every step.
+
+| Customers | Requests per second | Turns per second | Turn p50 and p95 (ms) by workflow: account, card, dispute, credit |
+|---|---|---|---|
+| 10 | 11.4 | 6.1 | 50/100, 68/140, 47/93, 71/140 |
+| 25 | 29.5 | 16.2 | 51/140, 65/180, 59/180, 52/220 |
+| 50 | 54.4 | 29.3 | 80/270, 99/280, 91/280, 86/330 |
+
+The first bottleneck is the single worker's CPU (about 80 percent of a core at 50 customers); a worker tops out near 30 to 35 turns per second; with a model, provider latency and rate limits dominate. Projections and scaling per tier: [capacity.md](operations/capacity.md).
+
+#### How to verify
+
+```bash
+make check                                                     # needs Docker; never reads .env
+uv run --frozen pytest services/api/tests/integration/chaos -q # the chaos suite, memory and PostgreSQL
+uv run --frozen pytest services/api/tests/unit/application/test_degradation_ladder.py services/api/tests/unit/adapters/test_degradation_monitor.py -q
+make up PROFILES=obs && make db-upgrade && make seed           # migration 0011 on existing databases
+make api-obs                                                   # then http://localhost:16686, :9090, :3000
+curl -s localhost:8000/health/details
+make load-test LOAD_USERS=25                                   # raise the rate limits first (capacity.md)
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `2429674` (the run before this entry): lint, format, types, 7 import contracts, bandit, ESLint, Prettier, 2,744 unit and 1,430 integration Python tests (3 skipped: the optional `ml` extra), all 11 coverage gates (application 94.5%, adapters 97.3%, api 97.4%), 341 web tests, docs (75 Mermaid blocks), data sample, codegen, emoji, attribution, gitleaks |
+| Chaos suite | 38 tests: provider errors and timeouts opening the circuit, template-only turns in es and pt, the budget running out, recovery; a database cut before a card block (nothing blocked, the retried turn blocks once), before a request (503, `Retry-After`), read-only; a slow table past the tool timeout; failing read tools (timeout, transient, permanent) in es and pt; partial writes; a registry failure at startup; the risk estimator failing mid-conversation; a catalog failure; an unsafe template blocked |
+| Budget ledger | Memory and PostgreSQL contract tests; 20 concurrent reservations from two engines never overspend |
+
+#### Known limitations
+
+- The degradation level and the active-session gauge are per process; the budget ledger is shared (BACKLOG, 16).
+- Grafana is anonymous and Jaeger keeps traces in memory: development only (BACKLOG, 16).
+- The load numbers are one local run with no model and a concurrent evaluation on the same machine; nothing was measured with a live provider or several workers (BACKLOG, 16).
+- `acc-co-payments` has no customer in the committed sample, so the load test uses `acc-mx-accounts` for payment questions.
+- Recovery from L3 needs a restart.
+- The limited-service notice and `errors.unavailable` copy have had no native Portuguese review (add to pending action 38).
+
+#### Pending human review
+
+- Merge this branch into `main` and update the "Current state" table (last completed: phase 15; next: phase 16). Existing databases need `make db-upgrade` (migration `0011`).
+- The new customer copy (`common.limited_service`, `common.unsafe_blocked`, `errors.unavailable`) in es and pt.
+- The default `DEGRADATION_RISK_BAND_FALLBACK=false` (a learned estimator that cannot load sends every eligibility to review) and the stricter router threshold 0.75.
+
+#### Next phase
+
+Phase 16, security and deployment (`kit/prompts/16-security-deployment.md`): the production compose and Caddy, persistent telemetry storage and Grafana authentication, shared rate limits and degradation state, retention jobs, and the load test on the target.
+
 ### Phase 14, session 14a: the evaluation harness (2026-09-29)
 
 Plan: `docs/plans/phase-14a.md` and [the evaluation plan](evaluation/plan.md). The prompt asks for plan mode; the human delegated approval to the orchestrator and asked for the MVP first, so both plans were committed first with every open question decided by the session under the orchestrator's pre-approval, and implementation followed. The pull at the start was a fast-forward no-op ("Already up to date"). The session paused mid-way at the human's request and resumed; nothing changed on `main` in between. A helper agent for the three engine fixes stalled; its partial diff (the card state question) was reviewed and applied on `main`, the other two fixes were written directly, and its worktree and branch were removed. Session 14a ran no live model in tests or CI; it made two small live runs on the local model (9 dev scenarios) to measure latency and check the prompts. The live test runs and the published test numbers are session 14b.
