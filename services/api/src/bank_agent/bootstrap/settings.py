@@ -22,6 +22,7 @@ Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 LLMProvider = Literal["fake", "cassette", "litellm"]
 LLMCassetteMode = Literal["replay", "record"]
+BudgetLedgerName = Literal["auto", "memory", "postgres"]
 
 MIN_SECRET_LENGTH = 32
 # A refused prefix, not a secret.
@@ -180,6 +181,7 @@ class LLMSettings(BaseSettings):
     cassette_mode: LLMCassetteMode = "replay"
     cassette_dir: Path = DEFAULT_CASSETTE_DIR
     trace_content: bool = False
+    budget_ledger: BudgetLedgerName = "auto"
 
     @field_validator("prices_file", "cassette_dir", mode="before")
     @classmethod

@@ -25,7 +25,12 @@ import structlog
 
 from bank_agent.adapters.llm.prices import PriceTable
 from bank_agent.adapters.llm.request import Generation, LlmDecorator, LlmRequest, Proceed
-from bank_agent.domain.errors import LlmBudgetExceededError, LlmInvalidOutputError, LlmTimeoutError
+from bank_agent.domain.errors import (
+    DependencyError,
+    LlmBudgetExceededError,
+    LlmInvalidOutputError,
+    LlmTimeoutError,
+)
 from bank_agent.ports.budget import BudgetCap, BudgetLedger, BudgetLimits, BudgetScope, Reservation
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.llm import LLMClient
@@ -137,7 +142,12 @@ class BudgetGuardDecorator(LlmDecorator):
         )
         tokens = request.max_output_tokens
         reserved = self.prices.worst_output_cost(self.model_ids, tokens)
-        reservation = await self.ledger.reserve(scope, tokens=tokens, cost=reserved, limits=self.limits)
+        try:
+            reservation = await self.ledger.reserve(scope, tokens=tokens, cost=reserved, limits=self.limits)
+        except DependencyError as error:
+            # The ledger cannot be read: refuse the call (fail closed); the caller takes its deterministic path.
+            _log.warning("llm_budget_ledger_unavailable", error_type=type(error).__name__)
+            raise LlmBudgetExceededError("the budget ledger is unavailable") from error
         self._saw(scope.day, reservation.daily_spent_usd)
         if reservation.refused_by is not None:
             if reservation.refused_by is BudgetCap.DAILY_COST:
@@ -150,9 +160,16 @@ class BudgetGuardDecorator(LlmDecorator):
         except (LlmInvalidOutputError, LlmTimeoutError):
             raise
         except BaseException:
-            self._saw(scope.day, await self.ledger.settle(scope, tokens=-tokens, cost=-reserved))
+            await self._settle(scope, -tokens, -reserved)
             raise
         cost = result.cost_usd if result.cost_usd is not None else self.prices.cost(result.model_id, result.usage)
         used = result.usage.input_tokens + result.usage.output_tokens
-        self._saw(scope.day, await self.ledger.settle(scope, tokens=used - tokens, cost=cost - reserved))
+        await self._settle(scope, used - tokens, cost - reserved)
         return result
+
+    async def _settle(self, scope: BudgetScope, tokens: int, cost: Decimal) -> None:
+        """Replace the reservation with the actual spend; if the ledger fails, the worst case stays reserved."""
+        try:
+            self._saw(scope.day, await self.ledger.settle(scope, tokens=tokens, cost=cost))
+        except DependencyError as error:
+            _log.warning("llm_budget_settle_failed", error_type=type(error).__name__)

@@ -18,6 +18,7 @@ from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
+from bank_agent.adapters.persistence.postgres.budget import PostgresBudgetLedger
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
 from bank_agent.adapters.policy.filesystem import FilesystemCreditCatalog, FilesystemPolicyRepository
 from bank_agent.adapters.policy.unavailable import UnavailableCreditCatalog
@@ -43,9 +44,11 @@ from bank_agent.bootstrap.persistence import (
 )
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
 from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
-from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
+from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings, LLMSettings
 from bank_agent.bootstrap.workflows import WorkflowServices, build_workflows
 from bank_agent.domain.degradation import ComponentState
+from bank_agent.domain.errors import ConfigurationError
+from bank_agent.ports.budget import BudgetLedger
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
@@ -65,6 +68,17 @@ def application_database_url(database: DatabaseSettings) -> URL:
         port=database.port,
         database=database.db,
     )
+
+
+def budget_ledger(llm: LLMSettings, engine: AsyncEngine | None) -> BudgetLedger | None:
+    """The shared PostgreSQL ledger when a database is configured (``LLM_BUDGET_LEDGER=auto`` or ``postgres``)."""
+    if llm.budget_ledger == "memory":
+        return None
+    if engine is None:
+        if llm.budget_ledger == "postgres":
+            raise ConfigurationError("LLM_BUDGET_LEDGER=postgres needs the database settings")
+        return None
+    return PostgresBudgetLedger(engine)
 
 
 class Container:
@@ -87,16 +101,6 @@ class Container:
         self._clock: Clock = clock if clock is not None else SystemClock()
         self._telemetry: Telemetry = telemetry if telemetry is not None else NoopTelemetry()
         self._prompt_registry = FilePromptRegistry.from_package()
-        degradation = settings.degradation
-        self._llm_stack = build_llm_stack(
-            settings.llm,
-            registry=self._prompt_registry,
-            clock=self._clock,
-            telemetry=self._telemetry,
-            overrides=llm_overrides,
-            fallback_enabled=degradation.fallback_provider,
-        )
-        self._llm_client = self._llm_stack.client
         self._engine: AsyncEngine | None = None
         if settings.database.is_configured:
             self._engine = create_async_engine(
@@ -105,6 +109,17 @@ class Container:
                 pool_size=5,
                 max_overflow=5,
             )
+        degradation = settings.degradation
+        self._llm_stack = build_llm_stack(
+            settings.llm,
+            registry=self._prompt_registry,
+            clock=self._clock,
+            telemetry=self._telemetry,
+            overrides=llm_overrides,
+            fallback_enabled=degradation.fallback_provider,
+            ledger=budget_ledger(settings.llm, self._engine),
+        )
+        self._llm_client = self._llm_stack.client
         self._ids: IdGenerator = ids if ids is not None else RandomIdGenerator()
         self._database_health = DatabaseHealth(self._telemetry) if self._engine is not None else None
         self._persistence = (

@@ -14,6 +14,7 @@ from bank_agent.adapters.llm.prices import (
 )
 from bank_agent.domain.errors import (
     ConfigurationError,
+    DatabaseUnavailableError,
     LlmBudgetExceededError,
     LlmInvalidOutputError,
     LlmProviderError,
@@ -21,6 +22,7 @@ from bank_agent.domain.errors import (
 )
 from bank_agent.domain.identifiers import ConversationId, LineageId
 from bank_agent.domain.intelligence import LlmCallContext, TokenUsage
+from bank_agent.ports.budget import BudgetScope, Reservation
 from bank_agent.testing.clock import FixedClock
 from bank_agent.testing.telemetry import RecordingTelemetry
 from bank_agent_llm import StubClient, call_structured, call_text
@@ -297,3 +299,41 @@ def test_the_ledger_ignores_missing_identifiers_except_for_the_day() -> None:
     assert dict(ledger.session_tokens) == {}
     assert dict(ledger.conversation_cost) == {}
     assert ledger.daily_cost[NOW.date()] == Decimal(1)
+
+
+class BrokenLedger:
+    """A ``BudgetLedger`` whose storage is down: reservations and settles both fail."""
+
+    def __init__(self, *, reserve_works: bool = False) -> None:
+        self.reserve_works = reserve_works
+
+    async def reserve(self, scope: BudgetScope, *, tokens: int, cost: Decimal, limits: BudgetLimits) -> Reservation:
+        if self.reserve_works:
+            return Reservation(refused_by=None, daily_spent_usd=cost)
+        raise DatabaseUnavailableError("fixture: ledger down")
+
+    async def settle(self, scope: BudgetScope, *, tokens: int, cost: Decimal) -> Decimal:
+        raise DatabaseUnavailableError("fixture: ledger down")
+
+
+async def test_an_unreadable_ledger_refuses_the_call_before_it_is_made() -> None:
+    stub = StubClient()
+    guard = BudgetGuardDecorator(
+        stub, limits=LIMITS, prices=PRICES, model_ids=("verified/model",), clock=FixedClock(NOW), ledger=BrokenLedger()
+    )
+    with pytest.raises(LlmBudgetExceededError, match="ledger is unavailable"):
+        await call_text(guard, context=CONTEXT)
+    assert stub.calls == []
+
+
+async def test_a_failed_settle_keeps_the_result_and_the_worst_case_reserved() -> None:
+    stub = StubClient()
+    guard = BudgetGuardDecorator(
+        stub,
+        limits=LIMITS,
+        prices=PRICES,
+        model_ids=("verified/model",),
+        clock=FixedClock(NOW),
+        ledger=BrokenLedger(reserve_works=True),
+    )
+    assert (await call_text(guard, context=CONTEXT)).text == "hola"

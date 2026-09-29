@@ -28,6 +28,7 @@ OWNER = "bank_owner"
 APP_USER = "bank_app"
 DATABASE = "bank_agent"
 RUNTIME_TABLES = (
+    "llm_budget",
     "audit_events",
     "execution_records",
     "trust_events",

@@ -2,11 +2,15 @@ import secrets
 from datetime import date
 
 import pytest
+from sqlalchemy.ext.asyncio import create_async_engine
 
+from bank_agent.adapters.persistence.postgres.budget import PostgresBudgetLedger
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
-from bank_agent.bootstrap.container import Container, application_database_url
+from bank_agent.bootstrap.container import Container, application_database_url, budget_ledger
 from bank_agent.bootstrap.settings import load_settings
 from bank_agent.domain.actions import ActionKind
+from bank_agent.domain.degradation import Component, ComponentState
+from bank_agent.domain.errors import ConfigurationError
 from bank_agent.domain.locale import Country
 
 
@@ -69,3 +73,23 @@ def test_policy_settings_read_the_environment(monkeypatch: pytest.MonkeyPatch) -
     settings = load_settings(env_file=None)
     assert settings.policy.data_as_of == date(2026, 6, 30)
     assert settings.policy.dir.name == "policies"
+
+
+def test_the_budget_ledger_is_shared_in_postgresql_only_with_a_database(monkeypatch: pytest.MonkeyPatch) -> None:
+    settings = load_settings(env_file=None)
+    assert budget_ledger(settings.llm, None) is None
+    engine = create_async_engine("postgresql+asyncpg://bank_app@127.0.0.1:9/bank_agent")
+    assert isinstance(budget_ledger(settings.llm, engine), PostgresBudgetLedger)
+    monkeypatch.setenv("LLM_BUDGET_LEDGER", "memory")
+    assert budget_ledger(load_settings(env_file=None).llm, engine) is None
+    monkeypatch.setenv("LLM_BUDGET_LEDGER", "postgres")
+    with pytest.raises(ConfigurationError, match="LLM_BUDGET_LEDGER"):
+        budget_ledger(load_settings(env_file=None).llm, None)
+
+
+def test_the_degradation_monitor_starts_at_l0_with_an_unconfigured_model() -> None:
+    container = Container(load_settings(env_file=None))
+    status = container.degradation.current()
+    assert status.level.label == "L0"
+    assert status.components[Component.LLM_PRIMARY] is ComponentState.DISABLED
+    assert status.components[Component.DATABASE] is ComponentState.DISABLED
