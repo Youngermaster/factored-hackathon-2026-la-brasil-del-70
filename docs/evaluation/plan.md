@@ -54,7 +54,7 @@ Totals: test 76 per workflow plus 28 routing = 332; dev 28 per workflow plus 10 
 
 **Multilingual ambiguity.** Tagged scenarios spread across categories cover: the false friend "estafa"; "apellido" and "apelido"; currency slang ("lucas", "palos", "pila", "conto", "mangos"); a bare "$"; the date "03/04"; code-switching; Argentine voseo; "saldo" (balance, or the remaining amount of a loan); "cartão" and "tarjeta" in one code-switched card request; "crédito" as a card, a loan, or a refund credit.
 
-**Modes.** Scripted turns for most scenarios. The LLM-simulated user plays a documented subset: every `ambiguous` scenario and every direct `prompt_injection` scenario (48 plus 16 = 64 on test, 16 plus 8 = 24 on dev), because those are the conversations where a fixed script cannot follow the system's clarifying question or an adversary would adapt. Every simulated scenario also carries scripted fallback turns, played when a run has no simulator model (offline and CI runs), and each result records which driver played it.
+**Modes.** Scripted turns for most scenarios. The LLM-simulated user plays a documented subset: every `ambiguous` scenario and every direct `prompt_injection` scenario (on test, 48 ambiguous, 16 direct injections, and 4 ambiguous routing switches = 68; on dev, 20), because those are the conversations where a fixed script cannot follow the system's clarifying question or an adversary would adapt. Every simulated scenario also carries scripted fallback turns, played when a run has no simulator model (offline and CI runs), and each result records which driver played it.
 
 ## Evaluation world and split rules
 
@@ -102,7 +102,7 @@ Measured on the developer's machine before planning (phase 11 smoke, 32 calls): 
 |---|---|---|
 | P, once on the test split | 332 cases x P model calls per case (measured on dev: calls per turn x turns per case) | about 1,500 calls |
 | B1, once on the test split | 332 x B1 calls per case (agent steps per turn x turns) | about 2,500 calls |
-| Simulated user | 64 simulated scenarios x turns x 3 systems (B0 plays them too) | about 580 calls |
+| Simulated user | 68 simulated scenarios x turns x 3 systems (B0 plays them too) | about 600 calls |
 | Judge | the stratified 100-transcript sample x 3 systems (P, B1, B0) | 300 calls |
 | B0 | no model | 0 |
 | Total | | about 4,900 calls, about 5.5 h at 4.1 s |
@@ -144,3 +144,14 @@ Exact commands for 14b are in [README.md](README.md#commands) and the phase log.
 | The two misroutes phase 13 found | Fixed with regression tests ("activa o bloqueada" is a status question; "Aprove o meu crédito agora" is a request for a decision now) | Phase 14 owns them and they affect correctness |
 | Learned-model defaults (router, resolver, risk estimator) | Compared on dev with P in 14a (`--set WORKFLOW_ROUTER=...`); the default changes only if dev shows a gain with non-overlapping intervals on routing, else stays and the reason is recorded; 14b confirms on test | The BACKLOG rows ask for an end-to-end comparison before any switch |
 | Simulator model | The same local model for now, configurable (`EVAL_SIMULATOR_MODEL`), checked on dev for staying in role and revealing hidden facts only when asked | One local model; a stronger adversarial player is a settings change |
+
+## Decisions taken during implementation (session 14a)
+
+| Question | Decision | Why |
+|---|---|---|
+| How does a script follow system-specific questions? | The scripted driver answers, the same way for every system, what a real customer would: the language question, the workflow question (with the scenario's workflow), a switch question (yes), the dispute reason, and the protective block offer; answers to a clarifying question are marked `when_asked` (scenario 1.4.0) and sent only when asked | Without this, a script written for one system's flow would test the script, not the system |
+| A `tool_failure` scenario for the unavailable risk estimator has no tool to fail | The scenario contract (1.4.0) accepts a `model_unavailable` fixture instead of a tool failure plan | The prompt asks for the estimator being unavailable under tool failure |
+| Learned router and resolver defaults | Keep `keyword@1` and `rules@1`: on dev with no model, P's safe automated resolution is 71/112 with the baselines and 80/112 with `tfidf@champion` and `lgbm@champion` (78/112 and 76/112 with the router alone), with overlapping Wilson intervals; 14b repeats the comparison with the local model before the test run (BACKLOG) | The plan's rule: change a default only on a gain the intervals support |
+| Learned risk estimator default | Keep `score_band@1`: on the dev credit scenarios `logreg@champion` changes nothing (19/28 either way), and with it every first-time applicant goes to review (ADR 0030) | No measured gain; the baseline gives first-time applicants an estimate |
+| First-time applicants under a learned estimator | Keep sending them to human review (band `unknown`), as built | Out of the estimator's training population; review is the safe outcome |
+| The evaluation world | 39 synthetic customers (13 roles in 3 countries), each case on a fresh copy | Deterministic, CI-able, and no organizer data in git |

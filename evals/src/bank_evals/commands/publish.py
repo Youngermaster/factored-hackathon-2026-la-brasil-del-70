@@ -41,6 +41,7 @@ def publish(
     summaries_dir: Annotated[Path, typer.Option("--summaries-dir")] = DEFAULT_EVAL_SUMMARIES_DIR,
     docs_dir: Annotated[Path, typer.Option("--docs-dir")] = DOCS_DIR,
     allow_partial: Annotated[bool, typer.Option("--allow-partial", help="Publish despite misses or errors.")] = False,
+    title: Annotated[str, typer.Option("--title", help="The heading of results.md and failures.md.")] = "",
 ) -> None:
     """Write the summaries the evaluation view reads, and results.md, failures.md, and the run's metrics."""
     manifest, metrics, results = load_run(run_dir)
@@ -53,8 +54,10 @@ def publish(
     target.mkdir(parents=True, exist_ok=True)
     for name in ("metrics.json", "manifest.json"):
         shutil.copyfile(run_dir / name, target / name)
-    (docs_dir / "results.md").write_text(render_report(manifest, metrics, results, "Evaluation results"), "utf-8")
-    (docs_dir / "failures.md").write_text(render_failures(manifest, results), encoding="utf-8")
+    heading = title or "Evaluation results"
+    (docs_dir / "results.md").write_text(render_report(manifest, metrics, results, heading), encoding="utf-8")
+    failures = render_failures(manifest, results, title=f"{heading}: failures" if title else "Evaluation failures")
+    (docs_dir / "failures.md").write_text(failures, encoding="utf-8")
     summaries_dir.mkdir(parents=True, exist_ok=True)
     table = (
         str((docs_dir / "failures.md").relative_to(REPOSITORY_ROOT))
