@@ -4,6 +4,8 @@
 // slides/slides.md is ignored, and only that file: it is Slidev source, not documentation. Every slide
 // starts with a `---` frontmatter block, which markdownlint reads as setext headings (MD022, MD003).
 // The pitch deck's prose (slides/README.md, slides/script.md, slides/VIDEO.md) stays linted.
+// .git/** is ignored because git stores ref logs under branch names, so a branch named like `agent.md`
+// creates `.git/logs/refs/remotes/origin/agent.md`, which is not documentation.
 {
   "config": {
     "default": true,
@@ -16,5 +18,5 @@
   },
   "globs": ["**/*.md"],
   "gitignore": true,
-  "ignores": ["kit/**", "**/node_modules/**", ".claude/skills/**", "slides/slides.md"]
+  "ignores": [".git/**", "kit/**", "**/node_modules/**", ".claude/skills/**", "slides/slides.md"]
 }
