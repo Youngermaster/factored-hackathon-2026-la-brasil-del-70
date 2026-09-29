@@ -175,6 +175,17 @@
     "messagesLabel": "Conversa",
     "reference": "Referência da conversa:",
     "newConversation": "Nova conversa",
+    "profile": {
+      "open": "Perfil do assistente",
+      "title": "Perfil do assistente",
+      "avatarAlt": "Avatar de {{name}}",
+      "changeImage": "Alterar imagem",
+      "name": "Nome do assistente",
+      "saveName": "Guardar nome",
+      "loadError": "Não foi possível carregar o perfil do assistente.",
+      "saveError": "Não foi possível guardar o nome. Verifique e tente novamente.",
+      "imageError": "Não foi possível alterar a imagem. Tente novamente."
+    },
     "composerLabel": "Sua mensagem",
     "composerHint": "Enter envia. Shift + Enter adiciona uma linha.",
     "waiting": "Aguardando a resposta do assistente.",

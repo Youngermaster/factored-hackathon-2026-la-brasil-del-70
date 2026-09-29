@@ -20,7 +20,7 @@ const TOPICS: readonly { readonly id: Topic; readonly icon: Icon }[] = [
 export function Starters() {
   const { t } = useTranslation();
   const { turns, pending, loadStatus, setDraft, composerRef } = useConversation();
-  if (turns.length > 0 || pending.length > 0 || loadStatus !== 'new') {
+  if (turns.length > 0 || pending.length > 0 || (loadStatus !== 'new' && loadStatus !== 'ready')) {
     return null;
   }
   return (

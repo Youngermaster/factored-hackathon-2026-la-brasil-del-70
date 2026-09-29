@@ -291,7 +291,7 @@ describe('the customer chat', () => {
     const [fromNotice] = screen.getAllByRole('button', { name: 'Nueva conversación' });
     await userEvent.click(fromNotice ?? document.body);
     await waitFor(() => {
-      expect(currentPath(router)).toBe('/');
+      expect(currentPath(router)).toBe('/?conversation=conv-new-1');
     });
   });
 

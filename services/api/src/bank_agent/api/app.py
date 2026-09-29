@@ -21,7 +21,7 @@ from bank_agent.api.openapi import install_openapi
 from bank_agent.api.problems import PAYLOAD_TOO_LARGE_PROBLEM, PROBLEM_CONTENT_TYPE, ProblemRegistry
 from bank_agent.api.provider import ApiConfig, ServiceProvider
 from bank_agent.api.ratelimit import SlidingWindowLimiter
-from bank_agent.api.routers import agent, auth, conversations, evaluation, health
+from bank_agent.api.routers import agent, auth, conversations, evaluation, health, preferences
 
 
 async def _payload_too_large(scope: Scope) -> Response:
@@ -84,6 +84,7 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     app.include_router(health.router)
     app.include_router(auth.router)
     app.include_router(conversations.router)
+    app.include_router(preferences.router)
     app.include_router(agent.router)
     app.include_router(evaluation.router)
     install_openapi(app)

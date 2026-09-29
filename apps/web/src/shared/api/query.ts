@@ -46,6 +46,10 @@ export const queryKeys = {
     detail: (conversationId: string) => ['api', 'conversations', conversationId] as const,
     trace: (conversationId: string) => ['api', 'conversations', conversationId, 'trace'] as const,
   },
+  assistantProfile: {
+    all: ['api', 'assistant-profile'] as const,
+    detail: (conversationId: string) => ['api', 'assistant-profile', conversationId] as const,
+  },
   handoffs: {
     all: ['api', 'handoffs'] as const,
     list: (filters: Readonly<Record<string, string | undefined>> = {}) =>

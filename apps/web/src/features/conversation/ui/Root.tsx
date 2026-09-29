@@ -59,7 +59,7 @@ export function Root({ children }: { readonly children: ReactNode }) {
   const [params, setParams] = useSearchParams();
   const conversationId = params.get(PARAM);
   const history = useConversationHistory(conversationId);
-  const create = useCreateConversation();
+  const { mutateAsync: createConversation } = useCreateConversation();
   const { mutateAsync: sendTurn } = useSendTurn();
   const { requestStepUp } = useStepUp();
   const [state, dispatch] = useReducer(chatReducer, initialChatState);
@@ -68,6 +68,7 @@ export function Root({ children }: { readonly children: ReactNode }) {
 
   // Async chains (create, send, step up) read the latest id and language, not the ones of the render that started.
   const idRef = useRef(conversationId);
+  const creatingRef = useRef<Promise<string> | null>(null);
   const turns = useMemo(() => history.data?.turns ?? [], [history.data]);
   const latest = latestAnswered(turns);
   const language: Language | null = latest?.message?.language ?? null;
@@ -76,6 +77,25 @@ export function Root({ children }: { readonly children: ReactNode }) {
     idRef.current = conversationId;
     languageRef.current = replyLanguage(language, viewerLanguage);
   }, [conversationId, language, viewerLanguage]);
+
+  const ensureConversation = useCallback((): Promise<string> => {
+    if (idRef.current !== null) return Promise.resolve(idRef.current);
+    creatingRef.current ??= createConversation()
+      .then(({ conversation_id }) => {
+        idRef.current = conversation_id;
+        setParams({ [PARAM]: conversation_id }, { replace: true });
+        return conversation_id;
+      })
+      .finally(() => {
+        creatingRef.current = null;
+      });
+    return creatingRef.current;
+  }, [createConversation, setParams]);
+
+  // A profile is scoped to a conversation, so open one when the chat is entered or restarted.
+  useEffect(() => {
+    if (conversationId === null) void ensureConversation().catch(() => undefined);
+  }, [conversationId, ensureConversation]);
 
   const phrase = useCallback(
     (reply: QuickReply) =>
@@ -93,12 +113,7 @@ export function Root({ children }: { readonly children: ReactNode }) {
       // A write that needs a step-up continues with one more message once the code is verified.
       for (;;) {
         try {
-          let id = idRef.current;
-          if (id === null) {
-            id = (await create.mutateAsync()).conversation_id;
-            idRef.current = id;
-            setParams({ [PARAM]: id }, { replace: true });
-          }
+          const id = await ensureConversation();
           const response = await sendTurn({ conversationId: id, turnId, text });
           dispatch({ type: 'settled', turnId });
           if (!response.message.step_up_required) {
@@ -120,7 +135,7 @@ export function Root({ children }: { readonly children: ReactNode }) {
         }
       }
     },
-    [create, phrase, requestStepUp, sendTurn, setParams],
+    [ensureConversation, phrase, requestStepUp, sendTurn],
   );
 
   const inFlight = state.pending.some((turn) => turn.status === 'sending');

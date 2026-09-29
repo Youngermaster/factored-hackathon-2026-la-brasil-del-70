@@ -89,7 +89,6 @@ export function startAuthServer(initial: { session?: Schema<'SessionView'> | nul
       return HttpResponse.json({ csrf_token: 'csrf-anonymous-2' });
     }),
   );
-
   return {
     state,
     requests,

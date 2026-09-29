@@ -306,6 +306,48 @@
         "title": "AssistantMessage",
         "type": "object"
       },
+      "AssistantProfileView": {
+        "properties": {
+          "assistant_name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Assistant Name",
+            "type": "string"
+          },
+          "avatar_key": {
+            "enum": [
+              "avatar_1",
+              "avatar_2"
+            ],
+            "title": "Avatar Key",
+            "type": "string"
+          },
+          "avatar_url": {
+            "title": "Avatar Url",
+            "type": "string"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "assistant_name",
+          "avatar_key",
+          "avatar_url",
+          "updated_at"
+        ],
+        "title": "AssistantProfileView",
+        "type": "object"
+      },
       "AuthLevel": {
         "description": "How strongly the session's subject is authenticated, from weakest to strongest.",
         "enum": [
@@ -544,6 +586,22 @@
           "delivery_channel"
         ],
         "title": "ChallengeResponse",
+        "type": "object"
+      },
+      "ChangeAssistantNameRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "ChangeAssistantNameRequest",
         "type": "object"
       },
       "Channel": {
@@ -5891,6 +5949,216 @@
         ],
         "x-csrf": false,
         "x-rate-limit": "read",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/assistant-profile": {
+      "get": {
+        "description": "Read the saved customer profile after the service confirms this conversation belongs to the session.",
+        "operationId": "assistant_profile_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Get Assistant Profile",
+        "tags": [
+          "assistant profile"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/assistant-profile/mock-image": {
+      "post": {
+        "description": "Choose the next predefined PNG through the assistant preference service.",
+        "operationId": "assistant_profile_image_change",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Mock Assistant Image",
+        "tags": [
+          "assistant profile"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/assistant-profile/name": {
+      "post": {
+        "description": "Validate and save the assistant name for the signed-in customer's profile.",
+        "operationId": "assistant_profile_name_set",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAssistantNameRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantProfileView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Change Assistant Name",
+        "tags": [
+          "assistant profile"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
         "x-roles": [
           "customer"
         ]

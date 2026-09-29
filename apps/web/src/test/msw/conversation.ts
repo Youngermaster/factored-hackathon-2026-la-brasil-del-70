@@ -112,6 +112,18 @@ export function startConversationServer(options: ConversationServerOptions = {})
         ? problem(404, 'resource-not-found')
         : HttpResponse.json(history);
     }),
+    apiGet('/v1/conversations/:id/assistant-profile', ({ params }) =>
+      !signedIn()
+        ? expired()
+        : histories.has(String(params['id']))
+          ? HttpResponse.json({
+              assistant_name: 'Assistant',
+              avatar_key: 'avatar_1',
+              avatar_url: '/v1/assistant-profile/avatars/avatar_1.png',
+              updated_at: null,
+            })
+          : problem(404, 'resource-not-found'),
+    ),
     apiGet('/v1/conversations/:id/trace', ({ params }) => {
       const id = String(params['id']);
       return HttpResponse.json(options.traces?.[id] ?? { conversation_id: id, records: [] });

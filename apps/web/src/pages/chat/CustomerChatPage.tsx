@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 import { TurnSelectionProvider } from '@/entities/turn-selection';
 import { SessionStatus } from '@/features/auth';
+import { AssistantProfileControl } from '@/features/assistant-profile';
 import { Conversation, useConversation } from '@/features/conversation';
 import { GlassBox } from '@/features/glass-box';
 import { cx } from '@/shared/lib/cx';
@@ -36,6 +37,7 @@ function ChatLayout() {
     >
       <div className="flex min-w-0 flex-col gap-6">
         <Conversation.Header>
+          <AssistantProfileControl />
           <div className="lg:hidden">
             <GlassBox.SheetTrigger conversationId={conversationId} />
           </div>

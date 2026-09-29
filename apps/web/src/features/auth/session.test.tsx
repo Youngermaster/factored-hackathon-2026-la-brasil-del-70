@@ -124,7 +124,9 @@ describe('sign-out and guards', () => {
     startAuthServer({ session: sessionView() });
     const { router } = renderApp({ path: '/console' });
     expect(await screen.findByRole('heading', { level: 1, name: 'Asistente' })).toBeInTheDocument();
-    expect(currentPath(router)).toBe('/');
+    await waitFor(() => {
+      expect(currentPath(router)).toBe('/?conversation=conv-default');
+    });
   });
 
   it('sends staff who open the customer area to the console', async () => {

@@ -175,6 +175,17 @@
     "messagesLabel": "Conversation",
     "reference": "Conversation reference:",
     "newConversation": "New conversation",
+    "profile": {
+      "open": "Assistant profile",
+      "title": "Assistant profile",
+      "avatarAlt": "{{name}} avatar",
+      "changeImage": "Change image",
+      "name": "Assistant name",
+      "saveName": "Save name",
+      "loadError": "The assistant profile could not be loaded.",
+      "saveError": "The name could not be saved. Check it and try again.",
+      "imageError": "The assistant image could not be changed. Try again."
+    },
     "composerLabel": "Your message",
     "composerHint": "Enter sends. Shift + Enter adds a line.",
     "waiting": "Waiting for the assistant to answer.",

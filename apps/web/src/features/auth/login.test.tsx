@@ -38,7 +38,9 @@ describe('sign-in', () => {
     expect(screen.getAllByText('Modo demostración').length).toBeGreaterThan(0);
     await signInAs(/Dos tarjetas activas/);
     expect(await screen.findByRole('heading', { level: 1, name: 'Asistente' })).toBeInTheDocument();
-    expect(currentPath(router)).toBe('/');
+    await waitFor(() => {
+      expect(currentPath(router)).toBe('/?conversation=conv-default');
+    });
     expect(screen.getByRole('button', { name: 'Cerrar sesión' })).toBeInTheDocument();
   });
 
@@ -168,17 +170,24 @@ describe('CSRF', () => {
     const auth = startAuthServer();
     renderApp({ path: '/login' });
     await signInAs(/Dos tarjetas activas/);
+    await waitFor(() => {
+      expect(
+        auth.requests.some((request) => new URL(request.url).pathname === '/v1/conversations'),
+      ).toBe(true);
+    });
     await userEvent.click(await screen.findByRole('button', { name: 'Cerrar sesión' }));
     expect(await screen.findByText('Cerraste sesión.')).toBeInTheDocument();
     const unsafe = auth.requests.filter((request) => request.method !== 'GET');
     expect(unsafe.map((request) => new URL(request.url).pathname)).toEqual([
       '/v1/auth/start',
       '/v1/auth/verify',
+      '/v1/conversations',
       '/v1/auth/logout',
     ]);
     expect(unsafe.map((request) => request.headers.get('X-CSRF-Token'))).toEqual([
       'csrf-anonymous-1',
       'csrf-anonymous-1',
+      'csrf-session',
       'csrf-session',
     ]);
   });

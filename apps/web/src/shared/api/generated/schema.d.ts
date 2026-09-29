@@ -339,6 +339,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/conversations/{conversation_id}/assistant-profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Assistant Profile
+         * @description Read the saved customer profile after the service confirms this conversation belongs to the session.
+         */
+        get: operations["assistant_profile_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/assistant-profile/mock-image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Mock Assistant Image
+         * @description Choose the next predefined PNG through the assistant preference service.
+         */
+        post: operations["assistant_profile_image_change"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/assistant-profile/name": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Change Assistant Name
+         * @description Validate and save the assistant name for the signed-in customer's profile.
+         */
+        post: operations["assistant_profile_name_set"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/conversations/{conversation_id}/trace": {
         parameters: {
             query?: never;
@@ -527,6 +587,20 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** AssistantProfileView */
+        AssistantProfileView: {
+            /** Assistant Name */
+            assistant_name: string;
+            /**
+             * Avatar Key
+             * @enum {string}
+             */
+            avatar_key: "avatar_1" | "avatar_2";
+            /** Avatar Url */
+            avatar_url: string;
+            /** Updated At */
+            updated_at: string | null;
+        };
         /**
          * AuthLevel
          * @description How strongly the session's subject is authenticated, from weakest to strongest.
@@ -619,6 +693,11 @@ export interface components {
              */
             expires_at: string;
             purpose: components["schemas"]["OtpPurpose"];
+        };
+        /** ChangeAssistantNameRequest */
+        ChangeAssistantNameRequest: {
+            /** Name */
+            name: string;
         };
         /**
          * Channel
@@ -2714,6 +2793,130 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConversationHistoryResponse"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    assistant_profile_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssistantProfileView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    assistant_profile_image_change: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssistantProfileView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    assistant_profile_name_set: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeAssistantNameRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssistantProfileView"];
                 };
             };
             /** @description Validation error as problem details */

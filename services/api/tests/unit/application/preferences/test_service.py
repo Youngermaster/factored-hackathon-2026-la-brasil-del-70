@@ -23,6 +23,30 @@ def is_file(path: str) -> bool:
 
 
 @pytest.mark.asyncio
+async def test_profile_read_is_customer_wide_and_verifies_the_conversation() -> None:
+    store = InMemoryStore()
+    store.seed(
+        conversations=[
+            conversation("conv-a1"),
+            conversation("conv-a2"),
+            conversation("conv-b1", customer_id=CUSTOMER_B),
+        ]
+    )
+    preferences = service(store)
+
+    assert await preferences.get_assistant_profile(session(), ConversationId("conv-a1")) is None
+
+    await preferences.change_assistant_name(session(), ConversationId("conv-a1"), "Camila")
+    saved = await preferences.get_assistant_profile(session(), ConversationId("conv-a2"))
+    assert saved is not None
+    assert saved.profile.assistant_name == "Camila"
+    assert is_file(saved.avatar_path)
+
+    with pytest.raises(ConversationNotFoundError):
+        await preferences.get_assistant_profile(session(), ConversationId("conv-b1"))
+
+
+@pytest.mark.asyncio
 async def test_name_is_customer_wide_and_preserves_existing_avatar() -> None:
     store = InMemoryStore()
     store.seed(conversations=[conversation("conv-a1"), conversation("conv-a2")])
