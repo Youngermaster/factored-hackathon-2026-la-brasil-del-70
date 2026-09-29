@@ -1,0 +1,1874 @@
+{
+  "customers": {
+    "columns": [
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "document_number",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": true
+      },
+      {
+        "name": "document_type",
+        "type": "VARCHAR(10)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "first_name",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "last_name",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "date_of_birth",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "gender",
+        "type": "VARCHAR(1)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "email",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "mobile_phone",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "landline_phone",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "address",
+        "type": "VARCHAR(200)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "city",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "state",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "country",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "postal_code",
+        "type": "VARCHAR(10)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "detected_accent",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "segment",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "credit_score",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "estimated_monthly_income",
+        "type": "DECIMAL(12,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "occupation",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "marital_status",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "education_level",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "registration_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "registration_branch_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "last_updated",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "accepts_marketing",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "products": {
+    "columns": [
+      {
+        "name": "product_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "product_type",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "product_number",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": true
+      },
+      {
+        "name": "currency",
+        "type": "VARCHAR(3)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "current_balance",
+        "type": "DECIMAL(15,2)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "credit_limit",
+        "type": "DECIMAL(15,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "interest_rate",
+        "type": "DECIMAL(5,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "opening_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "expiration_date",
+        "type": "DATE",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "opening_branch_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "product_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "opening_channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "has_linked_app",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "days_past_due",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "last_transaction_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "last_updated",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "branches": {
+    "columns": [
+      {
+        "name": "branch_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "branch_code",
+        "type": "VARCHAR(10)",
+        "required": true,
+        "pk": false,
+        "unique": true
+      },
+      {
+        "name": "branch_name",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "branch_type",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "address",
+        "type": "VARCHAR(200)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "city",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "state",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "country",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "postal_code",
+        "type": "VARCHAR(10)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "geographic_zone",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "phone",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "email",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "opening_time",
+        "type": "TIME",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "closing_time",
+        "type": "TIME",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "has_atms",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "atm_count",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "has_teller_windows",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "teller_window_count",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "latitude",
+        "type": "DECIMAL(10,7)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "longitude",
+        "type": "DECIMAL(10,7)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "branch_opening_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "branch_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "service_agents": {
+    "columns": [
+      {
+        "name": "agent_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "employee_code",
+        "type": "VARCHAR(15)",
+        "required": true,
+        "pk": false,
+        "unique": true
+      },
+      {
+        "name": "first_name",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "last_name",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "email",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "phone",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "native_accent",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "country_of_origin",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "assigned_branch_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_type",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "experience_level",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "languages",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "specialty",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "hire_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "avg_csat",
+        "type": "DECIMAL(3,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "total_monthly_interactions",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "work_shift",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "marketing_campaigns": {
+    "columns": [
+      {
+        "name": "campaign_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "campaign_name",
+        "type": "VARCHAR(150)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "description",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "campaign_type",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "campaign_objective",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "promoted_product",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "target_segment",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "target_country",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "start_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "end_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "budget",
+        "type": "DECIMAL(12,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "campaign_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "expected_conversion_rate",
+        "type": "DECIMAL(5,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "transactions": {
+    "columns": [
+      {
+        "name": "transaction_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "transaction_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "product_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "transaction_type",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "transaction_category",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "amount",
+        "type": "DECIMAL(15,2)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "currency",
+        "type": "VARCHAR(3)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "amount_usd",
+        "type": "DECIMAL(15,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "branch_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "merchant_name",
+        "type": "VARCHAR(150)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "merchant_category",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "transaction_country",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "transaction_city",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "transaction_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "response_code",
+        "type": "VARCHAR(10)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "is_fraud",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "fraud_score",
+        "type": "DECIMAL(5,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "latitude",
+        "type": "DECIMAL(10,7)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "longitude",
+        "type": "DECIMAL(10,7)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "call_center_interactions": {
+    "columns": [
+      {
+        "name": "interaction_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "interaction_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "interaction_type",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "contact_reason",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "reason_category",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "duration_seconds",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "wait_time_seconds",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "was_resolved",
+        "type": "BOOLEAN",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "requires_followup",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "detected_sentiment",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "sentiment_score",
+        "type": "DECIMAL(3,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_detected_accent",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_used_accent",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "was_escalated",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "mentioned_products",
+        "type": "VARCHAR(200)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "has_transcript",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "has_recording",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "call_transcripts": {
+    "columns": [
+      {
+        "name": "transcript_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "interaction_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "full_text",
+        "type": "TEXT",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_text",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_text",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "detected_language",
+        "type": "VARCHAR(10)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "detected_accent",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "accent_confidence",
+        "type": "DECIMAL(3,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "detected_keywords",
+        "type": "VARCHAR(500)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "mentioned_entities",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "detected_intents",
+        "type": "VARCHAR(300)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "main_topics",
+        "type": "VARCHAR(300)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "transcription_model",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "audio_quality",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "duration_seconds",
+        "type": "INTEGER",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "satisfaction_surveys": {
+    "columns": [
+      {
+        "name": "survey_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "survey_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "interaction_id",
+        "type": "VARCHAR(30)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "agent_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "survey_type",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "send_channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "main_score",
+        "type": "INTEGER",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "nps_category",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "question_1_text",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "question_1_response",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "question_2_text",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "question_2_response",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "question_3_text",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "question_3_response",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "open_comments",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "comment_sentiment",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "response_time_hours",
+        "type": "DECIMAL(8,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "campaign_response_rate",
+        "type": "DECIMAL(5,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "digital_events": {
+    "columns": [
+      {
+        "name": "event_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "event_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "session_id",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "event_type",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "event_category",
+        "type": "VARCHAR(50)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "platform",
+        "type": "VARCHAR(30)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "browser",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "app_version",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "page_url",
+        "type": "VARCHAR(300)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "page_title",
+        "type": "VARCHAR(200)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "action",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "element_id",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "product_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "event_value",
+        "type": "DECIMAL(15,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "duration_seconds",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "ip_address",
+        "type": "VARCHAR(45)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "ip_country",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "ip_city",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "is_mobile",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "referrer",
+        "type": "VARCHAR(300)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "utm_source",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "utm_medium",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "utm_campaign",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "complaints": {
+    "columns": [
+      {
+        "name": "complaint_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "creation_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "case_type",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "category",
+        "type": "VARCHAR(100)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "subcategory",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "reception_channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "affected_product_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "related_branch_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "origin_interaction_id",
+        "type": "VARCHAR(30)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "description",
+        "type": "TEXT",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "claimed_amount",
+        "type": "DECIMAL(15,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "currency",
+        "type": "VARCHAR(3)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "priority",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "status",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "assigned_agent_id",
+        "type": "VARCHAR(20)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "assignment_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "first_response_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "resolution_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "closing_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "sla_breached",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "resolution_days",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "compensation_granted",
+        "type": "DECIMAL(15,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "resolution_satisfaction",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "is_repeat_complainer",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "campaign_sends": {
+    "columns": [
+      {
+        "name": "send_id",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "send_date",
+        "type": "TIMESTAMP",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "process_date",
+        "type": "DATE",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "campaign_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "customer_id",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "send_channel",
+        "type": "VARCHAR(30)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "template_used",
+        "type": "VARCHAR(100)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "subject",
+        "type": "VARCHAR(200)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "send_status",
+        "type": "VARCHAR(20)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "was_delivered",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "was_opened",
+        "type": "BOOLEAN",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "open_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "was_clicked",
+        "type": "BOOLEAN",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "click_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "click_count",
+        "type": "INTEGER",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "had_conversion",
+        "type": "BOOLEAN",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "conversion_date",
+        "type": "TIMESTAMP",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "conversion_value",
+        "type": "DECIMAL(15,2)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "open_device",
+        "type": "VARCHAR(30)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "open_country",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "failure_reason",
+        "type": "VARCHAR(200)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "send_cost",
+        "type": "DECIMAL(10,4)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  },
+  "daily_exchange_rates": {
+    "columns": [
+      {
+        "name": "date",
+        "type": "DATE",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "source_currency",
+        "type": "VARCHAR(3)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "target_currency",
+        "type": "VARCHAR(3)",
+        "required": true,
+        "pk": true,
+        "unique": false
+      },
+      {
+        "name": "exchange_rate",
+        "type": "DECIMAL(12,6)",
+        "required": true,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "buy_rate",
+        "type": "DECIMAL(12,6)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "sell_rate",
+        "type": "DECIMAL(12,6)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      },
+      {
+        "name": "source",
+        "type": "VARCHAR(50)",
+        "required": false,
+        "pk": false,
+        "unique": false
+      }
+    ]
+  }
+}

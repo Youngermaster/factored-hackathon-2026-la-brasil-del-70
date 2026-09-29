@@ -12,6 +12,7 @@ from typing import Annotated
 import typer
 
 from bank_data import DISTRIBUTION_NAME, __version__, pipeline
+from bank_data.eda.cli import app as eda_app
 from bank_data.errors import ConfigurationError, DataPlatformError
 from bank_data.logs import configure_logging
 from bank_data.reports import lineage as lineage_report
@@ -30,6 +31,7 @@ app = typer.Typer(
     add_completion=False,
 )
 
+app.add_typer(eda_app, name="eda")
 SourceOption = Annotated[
     SourceKind | None,
     typer.Option("--source", help="sample (committed, offline), s3 (organizer bucket), or local (--local-dir)."),

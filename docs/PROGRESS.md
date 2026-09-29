@@ -9,6 +9,7 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 | Last completed phase | 10, session 10b: the learned credit risk estimator. `risk_estimator:logreg` (promoted on test) and `risk_estimator:lgbm` (promotion refused: no gain over logistic regression) are cross-sectional snapshot risk estimates on synthetic data, behind the `RiskEstimator` port and loaded through the filesystem `ModelRegistry`. The score-band baseline stays the default |
 | Next phase | 11, API and security (`kit/prompts/11-api-security.md`). The phase 09 prompt still asks that phase 11 start after the 09a and 09b walkthroughs (pending actions 21 and 25) |
 | Blocked | None |
+| Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
 Pending human actions (the phase 09 prompt asks that phase 11 start after actions 21 and 25):
 
@@ -156,6 +157,56 @@ Results recorded in this phase:
 #### Next phase
 
 Phase 11, API and security (`kit/prompts/11-api-security.md`). The phase 09 prompt asks that it start after the team's 09a and 09b walkthroughs (pending actions 21 and 25).
+
+### Local EDA and progressive viewer (2026-09-27)
+
+Plan: [eda-local](plans/eda-local.md). Decision: [ADR 0032](adr/0032-local-eda-and-progressive-viewer.md).
+This is an independent analysis deliverable; it does not mark the future S3/dbt or domain phases complete.
+
+#### What changed
+
+- Added `bank-data eda` commands, DuckDB profiling, conservative curation, lineage and relationship checks.
+- Added content-addressed runs, transactional file checkpoints and independently published phase status.
+- Added demand cubes, text repetition and temporal leakage diagnostics, local review sampling and workflow evidence.
+- Added a local Streamlit viewer with aggregate process pages, Spanish and English labels and a Markdown report.
+- Extended the viewer with a sanitized table explorer, a relationship graph and evidence-preserving
+  workflow traffic lights; recorded the boundary in [ADR 0033](adr/0033-sanitized-eda-laboratory.md).
+- Added optional `eda` and `eda-ui` dependencies, Make targets, synthetic tests and CI installation of the extras.
+- Corrected two existing whitespace issues in kickoff notes so the documentation gate passes.
+
+#### Validation
+
+- `make check` passes: 170 unit tests, 30 integration tests, 17 web tests and all 10 coverage gates.
+- Data-platform line coverage: 95.8 percent before the laboratory extension. All eight Streamlit
+  pages pass synthetic-data checks; the latest data-platform suite has 36 passing tests.
+- Actual inventory and profile pages pass AppTest; the local HTTP health endpoint returns `ok`.
+- A built wheel includes the JSON contracts and the viewer. Gitleaks reports no leaks.
+- Streamlit requires `websockets<17`; the shared lockfile moves that dependency from 17.1 to 16.1.1.
+  All other previously locked versions are unchanged, and backend tests pass.
+
+#### Full-data run
+
+Run `372ff8010bafd0b4d802` loaded all 7,671 CSV files with no parse errors: 23,495,188 rows.
+All five phases completed: inventory, profiling, curation, analysis and aggregate report generation.
+The prior run `d970e99d520f204fc3ef` was interrupted during ingestion and is explicitly marked failed.
+Original input files are unchanged. Results remain under the ignored `data/eda/` tree.
+
+The curated layer retains 23,471,159 structurally eligible rows; it excludes 24,029 transcripts
+with a missing required duration. The shareable aggregate findings are recorded in
+[analysis/RESULTS.md](analysis/RESULTS.md).
+
+The full profile found no duplicate primary keys or identical parsed rows in this local snapshot.
+It found 24,029 missing required transcript durations, 772 resolved/closed complaints without
+resolution dates, 1,040 claimed amounts without currencies, six extra repeated product numbers
+and 13 extra repeated employee codes. Text repetition is evaluated separately from duplicate events.
+
+#### How to use
+
+See [the EDA guide](analysis/EDA.md): `make eda-setup`, `make eda`, then `make eda-ui`.
+The viewer binds to localhost. Process pages expose completed aggregate artifacts; the laboratory
+adds bounded samples using an explicit low-risk allowlist, with free text and sensitive values removed.
+
+Integrated into `main` on 2026-09-28 through PR #5. At integration the EDA records were renumbered to ADR 0032 and ADR 0033 (0030 and 0031 were already taken), The `eda-ui` extra (Streamlit and pyarrow) stays in `make setup` and CI because the viewer and its tests import Streamlit; it is a development-only extra of `bank-data` and never enters the API image. Its size exceeds the CLAUDE.md rule 10 guideline and is accepted for the PR #5 merge as a development-only extra. The test counts above are from the branch base.
 
 ### Phase 10, session 10a: shared ML foundations, the learned router, and the transaction resolver (2026-09-27)
 

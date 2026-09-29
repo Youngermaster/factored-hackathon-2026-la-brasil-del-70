@@ -90,6 +90,17 @@ Exit codes: 0 success, 1 a failed object or step, 2 configuration, 3 breaking sc
 
 The gold serving Parquet (`customers_serving`, `products_serving`, `transactions_serving`, `complaints_serving`, `credit_profiles_serving`) is the contract read by `bank_agent.adapters.persistence.duckdb`; its columns are `GOLD_SCHEMAS` in `services/api/src/bank_agent/adapters/persistence/duckdb/gold.py`, and an integration test checks that dbt writes exactly those.
 
+## Local exploratory analysis
+
+The local EDA is implemented independently of the future S3 ingestion and dbt pipeline.
+See [the EDA guide](../docs/analysis/EDA.md) for reproducibility, quality policies, commands,
+and the read-only Streamlit viewer. The viewer includes a sanitized table explorer, a relationship
+map and workflow traffic lights. Install its optional dependencies with `make eda-setup`, run
+`make eda`, then launch `make eda-ui`.
+
+The `bank-data eda` group exposes `inventory`, `profile`, `curate`, `analyze`, `report`, and `run`.
+The other ingestion and seeding commands remain future work.
+
 ## How to extend
 
 - **Add a table.** Add a `TableSpec` to `contracts/tables.py` (columns, types, nullability, accepted values, ranges, primary key, order column, customer column), add translations to `contracts/canonical.py` if its values need them, run `make data-codegen`, and add `dbt/models/silver/stg_<table>.sql` (two lines: the config and `{{ stg_body('<table>') }}`) and `silver_<table>.sql` (orphan flags with the `orphan_flag` macro). Bump `CONTRACT_VERSION`. The contract, bronze layout, deduplication, and incremental logic follow from the spec.

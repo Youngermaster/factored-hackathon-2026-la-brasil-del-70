@@ -29,7 +29,7 @@ help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 setup: ## Install Python and web dependencies and the git hooks
-	uv sync --all-packages --frozen
+	uv sync --all-packages --extra eda-ui --frozen
 	$(WEB) install --frozen-lockfile
 	pre-commit install --install-hooks
 
@@ -174,3 +174,13 @@ check: ## Everything: lint, types, boundaries, tests with coverage gates, docs, 
 	$(GUARD_PY) scripts/checks/check_no_emoji.py
 	scripts/checks/check_no_ai_attribution.sh
 	gitleaks git --redact --no-banner .
+
+.PHONY: eda eda-ui eda-setup
+eda-setup: ## Install the local EDA engine and Streamlit viewer
+	uv sync --all-packages --extra eda-ui --frozen
+
+eda: ## Run or resume all EDA phases against local CSVs
+	uv run --frozen --extra eda bank-data eda run
+
+eda-ui: ## Open the local EDA viewer and sanitized laboratory
+	uv run --frozen --extra eda-ui streamlit run data_platform/src/bank_data/eda/ui.py --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false --theme.base light --theme.primaryColor '#346538' --theme.backgroundColor '#F7F6F3' --theme.secondaryBackgroundColor '#FFFFFF' --theme.textColor '#2F3437' --theme.font 'Helvetica Neue, sans-serif'
