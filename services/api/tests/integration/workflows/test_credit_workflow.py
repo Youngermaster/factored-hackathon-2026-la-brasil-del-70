@@ -82,6 +82,8 @@ async def test_25_pt_br_complete_profile_is_indicative_then_an_intake_is_submitt
     assert intake is not None
     assert intake.status is ApplicationStatus.SUBMITTED
     assert intake.requested_amount.amount == Decimal("30000")
+    assert intake.origin_conversation_id == explained.conversation_id
+    assert intake.assessment_ref == record.eligibility_assessments[0].assessment_id
     record = await harness.record(session, done.turn_id)
     submit = next(call for call in record.tool_calls if call.tool.value == "submit_credit_application")
     assert submit.verification is not None

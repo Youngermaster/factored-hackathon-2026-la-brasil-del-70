@@ -26,11 +26,19 @@ from bank_agent.domain.errors import (
     ToolTransientError,
     TransactionNotFoundError,
 )
-from bank_agent.domain.identifiers import CaseId, CreditProductCode, IdempotencyKey, ProductId, TransactionId
+from bank_agent.domain.identifiers import (
+    AssessmentId,
+    CaseId,
+    ConversationId,
+    CreditProductCode,
+    IdempotencyKey,
+    ProductId,
+    TransactionId,
+)
 from bank_agent.domain.money import Currency, Money
 from bank_agent.domain.product import ProductStatus
 from bank_agent.ports.audit import AuditQuery
-from bank_agent_contracts import EVALUATOR, WriteBackend
+from bank_agent_contracts import CONTEXT_A, EVALUATOR, WriteBackend
 from bank_agent_tools import session_context, tool_dependencies, tools_for
 
 KEY = IdempotencyKey("idem-key-tools-0001")
@@ -117,6 +125,20 @@ class TestWriteToolsContract:
             requested_term_months=APPLICATION.requested_term_months,
         )
         assert verified.verified
+        assert (intake.assessment_ref, intake.origin_conversation_id) == (None, None)
+
+    async def test_submit_credit_application_links_the_assessment_and_the_conversation(
+        self, write_backend: WriteBackend
+    ) -> None:
+        linked = APPLICATION.evolve(
+            assessment_ref=AssessmentId("asm-fixture-0001"), origin_conversation_id=ConversationId("conv-fixture-01")
+        )
+        tools = tools_for(write_backend.uow_factory(), step_up=True)
+        intake = await tools.submit_credit_application(linked, KEY)
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            stored = await uow.credit_applications.get(intake.application_id)
+        assert stored is not None
+        assert (stored.assessment_ref, stored.origin_conversation_id) == ("asm-fixture-0001", "conv-fixture-01")
 
     async def test_verification_detects_an_injected_partial_write(self, write_backend: WriteBackend) -> None:
         banking = BankingTools(tool_dependencies(write_backend.uow_factory()))

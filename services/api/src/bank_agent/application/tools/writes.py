@@ -159,6 +159,8 @@ class WriteTools(ToolCalls):
                 idempotency_key=idempotency_key,
                 created_at=at,
                 declared_monthly_income=request.declared_monthly_income,
+                assessment_ref=request.assessment_ref,
+                origin_conversation_id=request.origin_conversation_id,
             )
             return await uow.credit_applications.create(intake)
 

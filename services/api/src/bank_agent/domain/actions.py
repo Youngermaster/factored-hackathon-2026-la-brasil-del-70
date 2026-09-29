@@ -12,7 +12,15 @@ from pydantic import Field, PositiveInt, StringConstraints, model_validator
 from bank_agent.domain.base import Code, DomainModel, Pii, UtcDatetime
 from bank_agent.domain.cards import CardBlockReason
 from bank_agent.domain.dispute import DisputeReason
-from bank_agent.domain.identifiers import CreditProductCode, IdempotencyKey, ProductId, SourceRef, TransactionId
+from bank_agent.domain.identifiers import (
+    AssessmentId,
+    ConversationId,
+    CreditProductCode,
+    IdempotencyKey,
+    ProductId,
+    SourceRef,
+    TransactionId,
+)
 from bank_agent.domain.money import Money
 from bank_agent.domain.workflow import StateName
 
@@ -82,7 +90,12 @@ class BlockCardArguments(DomainModel):
 
 
 class SubmitCreditApplicationArguments(DomainModel):
-    """What the customer asks for. The purpose is a code the catalog entry must allow (checked by policy)."""
+    """What the customer asks for. The purpose is a code the catalog entry must allow (checked by policy).
+
+    ``assessment_ref`` and ``origin_conversation_id`` link the intake to the eligibility assessment the customer
+    confirmed after and to the conversation it came from, so an agent reviews both. The engine sets them from its
+    own state, never from model output; neither identifies a customer.
+    """
 
     action: Literal[ActionKind.SUBMIT_CREDIT_APPLICATION] = ActionKind.SUBMIT_CREDIT_APPLICATION
     product_code: CreditProductCode
@@ -90,6 +103,8 @@ class SubmitCreditApplicationArguments(DomainModel):
     requested_term_months: Annotated[int, Field(ge=1, le=480)]
     purpose: Code
     declared_monthly_income: Annotated[Money | None, Pii("financial")] = None
+    assessment_ref: AssessmentId | None = None
+    origin_conversation_id: ConversationId | None = None
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
