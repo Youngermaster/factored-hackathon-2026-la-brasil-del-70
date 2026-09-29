@@ -70,7 +70,7 @@ test-web: ## Web tests with coverage
 env: ## Create .env from .env.example (only when absent) with freshly generated development secrets
 	$(GUARD_PY) scripts/make_env.py
 
-env-check: ## Report set or unset for every documented environment variable, never a value
+env-check: ## Report which variables the current configuration needs and whether each is set, never a value
 	$(GUARD_PY) scripts/checks/check_env_keys.py
 
 contracts: ## Regenerate the JSON Schemas in contracts/schemas from the Pydantic models

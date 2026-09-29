@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 10, session 10b: the learned credit risk estimator. `risk_estimator:logreg` (promoted on test) and `risk_estimator:lgbm` (promotion refused: no gain over logistic regression) are cross-sectional snapshot risk estimates on synthetic data, behind the `RiskEstimator` port and loaded through the filesystem `ModelRegistry`. The score-band baseline stays the default |
-| Next phase | 11, API and security (`kit/prompts/11-api-security.md`). The phase 09 prompt still asks that phase 11 start after the 09a and 09b walkthroughs (pending actions 21 and 25) |
+| Last completed phase | 11: API layer and HTTP security. `/v1/auth`, `/v1/conversations`, `/v1/agent`, and `/v1/eval` over the application core, with cookie sessions, signed double-submit CSRF, roles, rate limits, a body limit, a CORS allowlist, security headers, problem details, and the committed OpenAPI contract with generated web types; plus the opt-in local LLM path and a `.env.example` that works as copied |
+| Next phase | 12, frontend foundation (`kit/prompts/12-frontend-foundation.md`) |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -22,7 +22,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 5. **Choose the language model provider** (phase 08 left it undecided). Until then `LLM_PROVIDER=fake` refuses every model call and workflows will run on their deterministic fallbacks.
 6. **Record real cassettes once the provider and key are chosen.** Every cassette in `evals/cassettes/` is a hand-authored fixture (`provenance: hand_authored_fixture`, model `fixture/hand-authored`); `evals/cassettes/README.md` has the recording steps. This is not a blocker.
 7. **Verify the price table.** `services/api/config/llm_prices.yaml` lists candidate prices (Anthropic `claude-sonnet-5` 2.00/10.00 and `claude-haiku-4-5-20251001` 1.00/5.00, OpenAI `gpt-5-mini` 0.25/2.00, USD per million tokens) with `verified: false`. Open each `source_url`, correct the numbers and date, and set `verified: true`; until then the budget guard charges 1.5 times the listed price.
-8. **Review the optional `litellm` extra before enabling it.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup`; check its advisories before `uv sync --extra litellm`.
+8. **Review the optional `litellm` extra.** litellm 1.102.1 (MIT) is 84 MB alone and 170 MB with its dependencies, above the 50 MB rule, and it handles provider API keys. It is pinned exactly, lazily imported, and never installed by `make setup` or CI. Phase 11 used it, as asked, for the opt-in local Ollama path (`make llm-smoke`, `make api-local-llm` run `uv run --extra litellm`), so it is now installed in this checkout's `.venv`; `uv sync --frozen --all-packages --extra ml` removes it and keeps the `ml` extra. Check its advisories before any hosted use.
 9. **Review the data platform dependency footprint.** DuckDB, dbt-duckdb, and Pandera are named in the CLAUDE.md stack and boto3 in the phase prompt, so they were added without asking; together with their dependencies (dbt-core, pandas, numpy, botocore, agate) the development environment grew by about 340 MB. Individually the largest are the DuckDB binary (44 MB), pandas (41 MB), and botocore (25 MB). The API image needs only DuckDB (for the gold readers).
 10. **Review the workflow prioritization** (`docs/decisions/workflow-prioritization.md`): confirm the build and depth order (`account_inquiry`, `card_support`, `dispute`, `credit`), read the "Breadth risk" section (`credit` is the weakest candidate for depth; `card_support` has no demand evidence under the strict mapping; `dispute` has the weakest data support), and decide whether the pre-registered weights stand. A weight change is a new pre-registration version (`docs/analysis/workflow-scoring-preregistration.md`); rerun `make analysis DATA_SOURCE=s3`.
 11. **Start the automatable-share labeling task** (`docs/analysis/labeling-protocol.md`). The 600-item sample is at `data/labeling/automatable_sample.csv` (gitignored; regenerate with `make analysis DATA_SOURCE=s3`); two labelers per item, adjudicated, without opening `automatable_prelabels.csv` first. 75 items per workflow is the floor. Expect `card_support`, `dispute`, and `credit` items to be labeled as not matching their workflow: transcripts are two balance templates. This does not block any phase; the scores use the labeled proxy until then.
@@ -52,7 +52,95 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 33. **Review the risk estimator promotion and the default** ([model card](models/risk-estimator.md), [ADR 0030](adr/0030-credit-risk-estimator.md)). The session promoted `risk_estimator:logreg@2afb401aa70e` and refused `risk_estimator:lgbm@1c54c935b495` on test, under the delegated approval (records in `data/artifacts/models/risk_estimator/*/promotions.jsonl`). The label is cross-sectional (one snapshot), and the only signal is the credit product count. `WORKFLOW_RISK_ESTIMATOR` stays `score_band@1` until phase 14 (BACKLOG).
 34. **Feed a finding into action 17.** Credit score shows no association with snapshot delinquency on the full delivery (test ROC AUC 0.504 for the score bands; univariate 0.495), so the synthetic `ELG` score minimums find no support in this label. This is a question for the reviewers of the synthetic thresholds, not a policy change.
 
+35. **Review the phase 11 HTTP security design**: [ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md), [the threat model](security/threat-model.md), and [the API catalog](api/README.md): the rate limit defaults, the separate evaluator trace operation, and the agent visibility of credit intakes (handoff-referenced only until phase 13).
+36. **Check any `.env` made from an older `.env.example`.** A line with an empty value and an inline comment (`POLICY_DIR=     # default: policies/`) is read as the comment text, not as empty; the old example had 21 such lines (for example `POLICY_DIR`, the `RETRIEVAL_*` directories and thresholds, `LLM_PRICES_FILE`, `LLM_CASSETTE_DIR`, `WORKFLOW_MODEL_REGISTRY_DIR`, `BANK_DATA_DIR`). Delete those inline comments, or move your values aside and run `make env` (it writes `.env` only when none exists). The new example keeps such comments on the line above. Its dev-only database passwords differ from the ones an existing compose volume was created with, so keep your current passwords.
+
 ## Phase log
+
+### Phase 11: API layer and HTTP security (2026-09-27)
+
+Plan: `docs/plans/phase-11.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op ("Already up to date"; a teammate branch `eda` was fetched). The phase 09 walkthroughs (pending actions 21 and 25) were not treated as blockers, on the human's instruction. Mid-phase the human added two requirements, both done here: an opt-in local LLM path (Ollama through LiteLLM) and a `.env.example` that works as copied. Origin/main gained four commits during the phase (PR #5, the EDA toolkit). The human pulled them into this checkout near the end; the pull stopped on a conflict in the ADR index, which the session resolved by keeping all three rows (0031 from this phase, 0032 and 0033 from the EDA work) and committed as the merge `7bf04ce`. The human had committed this session's `docs/README.md` edits as `77ea676` before pulling.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `76cd42b` | The plan: endpoint catalog, decided open questions, risks |
+| `69e1491` | Engine: a turn from a new session lineage mid-flow resumes through AUTH_REQUIRED at the last safe state (a step-up keeps the lineage); `TurnResult.workflow`; public `WorkflowEngine.new_conversation` |
+| `5f2fec1` | `HandoffQuery.workflows` and `CreditApplicationRepository.list_for_review` (agents, RLS-scoped) on memory and PostgreSQL, with contract tests |
+| `50fb816` | The HTTP layer: `/v1/auth` (csrf, start, verify, step-up start and verify, logout, me), `/v1/conversations` (create, turns, history, customer trace), `/v1/agent` (handoffs list, get, claim, resolve; credit applications list and get), `/v1/eval` (summaries, evaluator trace); cookie sessions, signed double-submit CSRF, sliding-window rate limits per IP and per session, body limit, CORS allowlist, security headers, new problem types; `ConversationService`, `AgentInbox`, the evaluation summary port and filesystem adapter; settings (`MAX_REQUEST_BODY_BYTES`, `RATE_LIMIT_*`, `EVAL_SUMMARIES_*`, `LLM_API_BASE`) and production rules (no `*` or plain-http origin, https `LLM_API_BASE`) |
+| `383295d` | Account answers carry `balances`, `payment_statuses`, and `statement` as structured parts (the prompt's turn parts), with scenario assertions |
+| `b35ca04`, `ff8a709`, `0b61a1f` | API integration tests on memory and PostgreSQL: each workflow's normal path and an out-of-scope request with a scripted `FakeLLM` (the card block resumed after the step-up route); CSRF on every state-changing operation; roles; cross-customer 404s; limits; rate limits; turn replays; the agent inbox with audit events; both trace views; evaluation summaries |
+| `7b5f6e9` | `contracts/openapi.json` (stable operation ids, security schemes, problem responses), `scripts/export_openapi.py`, `make openapi`, openapi-typescript 7.13.0 and `apps/web/src/shared/api/generated/schema.d.ts`, staleness tests (pytest and Vitest), the role consistency test, and the credit data exposure walk |
+| `e68a0ea` | Opt-in local LLM: keyless Ollama models, `LLM_API_BASE`, the zero-cost verified price entry, `scripts/llm_smoke.py` with tests |
+| `f45f0e0` | `.env.example` as a working development environment, dev-only secrets refused in production, conditional `env-check`, `make env`, `make llm-smoke`, `make api-local-llm`, README quickstart |
+| `2ced410` | `docs/api/README.md` (catalog checked against OpenAPI by a test) and ADR 0031 |
+| `a35d805`, `d8f093e` | Test typing; the litellm guard reads the install commands; the evaluation port's docstring sections |
+| `7bf04ce`, `01ec417` | The merge of origin/main (union of the ADR index rows); the litellm guard accepts the merged `--extra eda-ui` install line and still refuses `litellm` and `--all-extras` |
+| This commit | Threat model, security, architecture, workflow, and package docs, BACKLOG, and this entry |
+
+#### Review summary
+
+- **Sessions and CSRF** ([ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md)). `__Host-session` (`HttpOnly`, `Secure`, `SameSite=Strict`, `Path=/`, `Max-Age` to the absolute expiry) and a readable `__Host-csrf` in production; `session` and `csrf` without `Secure` in development. The CSRF token is a nonce signed with `CSRF_SECRET` for the current session (or `anonymous`), required on every POST, rotated on login, step-up, and logout.
+- **Roles and isolation.** One `endpoint(...)` call per route declares its rate class, CSRF need, and roles and writes `x-roles`, `x-rate-limit`, and `x-csrf` into the OpenAPI operation; a test compares the enforced and documented roles. Agents never read conversations (403); evaluators read every trace but no history; another customer's id answers like a missing one.
+- **Expired sessions** are a 401 on every route and never reach the engine (a stale token could otherwise append text to a conversation). The engine's pause semantics are kept by the new re-sign-in rule; a step-up continues the pending write directly. This closes the BACKLOG row about resuming after the step-up and re-authentication routes.
+- **Customer data exposure.** Response models are allowlists at the top level and reuse the domain's value objects, customer views, and contract components inside; `test_credit_data_exposure.py` walks every customer-facing schema in the OpenAPI document, nested, and fails on any credit profile field, risk estimate value, or `x-internal` field (a positive control finds them in the agent and evaluator schemas). The customer trace names the risk model only.
+- **Limits.** Defaults per minute per IP and per session: auth 10 and 10, write 30 and 20, read 120 and 60; 16 KiB bodies (chunked bodies too); 2,000-character messages.
+
+#### Decisions
+
+- [ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md): cookie sessions with a signed double-submit CSRF token for the same-site SPA. The prompt names ADR 0017; the human asked for the next free number, 0031.
+- Rate limits are an in-process sliding window (no new runtime dependency) rather than slowapi.
+- Every question in the plan's "Decisions on open questions" (cookies, CSRF signing, expired sessions, limits, CORS, headers, problem types, roles, DTO allowlists, audit, summaries, agent credit applications, OpenAPI, the `list_my_credit_applications` row moved to phase 13, the local LLM path).
+- Dependency: openapi-typescript 7.13.0 (MIT, a web devDependency, about 17 MB with `@redocly/openapi-core` and 17 other small packages; it declares a TypeScript 5 peer and works with the repository's TypeScript 6.0.3). No new Python dependency; the optional `litellm` extra (already locked) was installed locally for the smoke run, as the human asked.
+
+Deviations from the prompt and plan, found during implementation:
+
+- **The evaluator trace is its own operation** (`GET /v1/eval/conversations/{id}/trace`); the customer keeps `GET /v1/conversations/{id}/trace`. One path with two response shapes would put the risk estimate values into a customer-facing schema, which the exposure test (rightly) refuses.
+- **Account parts were missing from the engine's replies.** `AssistantResponse` had `balances`, `payment_statuses`, and `statement`, but no handler filled them; the turn response needs them, so `Reply` and the renderer carry them now.
+- **FastAPI 0.141 wraps included routers** (`_IncludedRouter`), so tests enumerate operations from the OpenAPI document and read route dependencies from each router module.
+- **`.env` parsing.** An empty value followed by an inline comment (`NAME=   # comment`) parses as the comment text; the old example had 21 such lines. Comments on empty values now sit on the line above, and a test fails if any value parses as a comment.
+- **The litellm guard.** `uv run --extra litellm` leaves the extra installed (uv syncs inexactly), so the unit test that asserted it was absent now checks that `make setup` and CI never select it.
+
+#### Local LLM smoke (local development measurement, not an evaluation)
+
+`make llm-smoke` against Ollama 0.34.4 serving `qwen2.5:7b-instruct` (Q4_K_M, 7.6B) on the developer's machine, `LLM_TIMEOUT_SECONDS=120`, one run: **32 of 32 cases passed** (all 24 extraction cases validated against their output models, all 8 phrasing cases returned text), es and pt, all four workflows. Latency per call: p50 4,112 ms, p95 7,828 ms, max 17,853 ms (the first, cold call). Passing means a schema-valid reply, not a correct one; answer quality is phase 14 work with recorded cassettes.
+
+#### How to verify
+
+```bash
+make check                                                      # needs Docker; never reads .env
+uv run pytest services/api/tests/integration/api -q            # the HTTP API on memory and PostgreSQL
+uv run pytest services/api/tests/unit/api -q                   # headers, limits, CSRF, OpenAPI, exposure walk
+make openapi && git diff --exit-code contracts/openapi.json apps/web/src/shared/api/generated/
+make env                                                        # a fresh .env with random dev secrets (only when absent)
+LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke
+make api-local-llm                                              # the API with the local model on 127.0.0.1:8000
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 (the final run, after this entry's docs; an earlier run found a Mermaid note with a semicolon, fixed here) |
+| Python tests | 2,448 unit and 1,261 integration tests pass (2,392 and 1,183 after 10b); the API suites run on the in-memory adapters and on PostgreSQL; Vitest 19 tests, including the generated-types staleness check |
+| Coverage gates | All 11 pass: api 97.3%, application 93.3%, adapters 98.1%, bootstrap 99.4%, domain 99.6%, ports 100% |
+| Import contracts | 5 kept |
+| Docs check | markdownlint 0 issues; 66 mermaid blocks in 303 files parse |
+| Guards | No emoji; attribution clean; gitleaks found no leaks (the dev-only placeholders need no allowlist) |
+
+#### Known limitations
+
+- Rate limits count per process and key on the ASGI client address (BACKLOG, phase 16).
+- The Vite dev server proxies `/api` and `/health`, not `/v1` (BACKLOG, phase 12).
+- Agents see only the credit intakes a handoff references (row-level security as built); widening is phase 13.
+- Evaluation summaries are empty until the harness publishes one (BACKLOG, phase 14).
+- The customer trace keeps rule parameters and reason codes (policy thresholds, not customer values); the glass box (phase 13) decides how to present them.
+- Timing equality for cross-customer 404s holds by construction (one scoped query either way); it is not measured.
+
+#### Next phase
+
+Phase 12, frontend foundation (`kit/prompts/12-frontend-foundation.md`): the typed client over `schema.d.ts` with `credentials: 'include'`, the CSRF header, and problem-details parsing, and the `/v1` dev proxy.
 
 ### Phase 10, session 10b: the learned credit risk estimator (2026-09-27)
 

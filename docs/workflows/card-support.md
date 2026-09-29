@@ -73,7 +73,7 @@ sequenceDiagram
     E->>K: EXECUTE_BLOCK with the confirmed block
     K-->>E: require_step_up (AUTH.step_up_valid)
     E-->>C: step-up requested, state stays EXECUTE
-    Note over C,E: the customer completes step-up (phase 11 routes)
+    Note over C,E: the customer completes step-up (POST /v1/auth/step-up/start and /verify)
     C->>E: "listo"
     E->>K: EXECUTE_BLOCK
     K-->>E: allow
@@ -139,4 +139,4 @@ Scenarios 13 to 17 and follow-ups run on both backends (`services/api/tests/inte
 
 - There is no unblock or replacement tool by design; a person handles both.
 - Declined purchases show no reason because the data has no response-code table.
-- Step-up itself is a phase 11 route; the engine only asks for it and re-checks the window at EXECUTE.
+- Step-up itself is an HTTP route (`/v1/auth/step-up/*`, [API](../api/README.md)); the engine only asks for it and re-checks the window at EXECUTE. After it the client sends the next message and the block runs. A new sign-in (a new session lineage) at EXECUTE goes back to CONFIRM_BLOCK and asks again.

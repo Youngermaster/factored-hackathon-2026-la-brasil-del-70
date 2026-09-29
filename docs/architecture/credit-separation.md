@@ -51,7 +51,7 @@ flowchart LR
 | Protected and proxy attributes are excluded | `CreditRiskFeatures` is an allowlist with no gender, age, marital status, accent, location below country, segment, occupation, or education level |
 | Everything is labeled synthetic | Catalog entries, assessments (`eligibility:synthetic@<pack>`), estimates, and intakes carry a literal `True` marker; the view carries the "indicative, not an offer or a decision" disclaimer |
 | Estimates and assessments stay apart in the records | Separate execution record fields; the glass box (phase 13) shows them separately |
-| Agents see the estimate, customers never do | `CreditReview.risk` in the handoff and `ExecutionRecord.risk_estimates` are internal; customer DTOs (phase 11) strip `internal_fields` |
+| Agents see the estimate, customers never do | `CreditReview.risk` in the handoff and `ExecutionRecord.risk_estimates` are internal; customer response models are allowlists without them, and `tests/unit/api/test_credit_data_exposure.py` walks every customer-facing OpenAPI schema; the customer trace names the estimate's model only |
 
 ## Outcomes and review paths
 

@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-This directory holds the cross-boundary contracts: JSON Schemas for the documents that pass between the workflow engine, the persistence layer, the agent console, the glass box, and the evaluation harness. Phase 11 adds the OpenAPI snapshot next to them.
+This directory holds the cross-boundary contracts: JSON Schemas for the documents that pass between the workflow engine, the persistence layer, the agent console, the glass box, and the evaluation harness, and `openapi.json`, the HTTP API contract.
 
 The Pydantic models are the single source of truth. `scripts/generate_contracts.py` generates the schemas; nobody edits a schema file by hand.
 
@@ -89,3 +89,7 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 1. Change the model, following the versioning rules above (a new field in a minor version carries `AddedIn`); bump the version in `scripts/generate_contracts.py` and the model's default `schema_version` (a test checks they match) and, for a major version, add the new file alongside the old one.
 2. Run `make contracts`.
 3. Update the changelog and the consumers, and commit the model, the schemas, and the consumers together.
+
+## OpenAPI
+
+`openapi.json` is the HTTP API contract, exported from the FastAPI app by `scripts/export_openapi.py` (`make openapi`, which also regenerates `apps/web/src/shared/api/generated/schema.d.ts` with openapi-typescript). It carries a stable `operationId` per route, the `x-roles`, `x-rate-limit`, and `x-csrf` extensions, the session cookie and CSRF header security schemes, and RFC 9457 problem responses. `services/api/tests/unit/api/test_openapi_contract.py` fails when it is stale, and `apps/web/tooling/api-types.test.ts` fails when the TypeScript types are. Versioning rules for the API are in [docs/api/README.md](../docs/api/README.md#versioning).

@@ -32,6 +32,7 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `models.py` | `IntentRouter`, `TransactionResolver`, `LanguageDetector`, `ModelRegistry`, `RiskEstimator` | sync | Replaceable learned or rule-based components; the risk estimator is predictive only and internal |
 | `telemetry.py` | `Telemetry`, `Span`, `Counter`, `Histogram` | sync | Spans and metrics without importing OpenTelemetry |
 | `health.py` | `ReadinessCheck` | async | One dependency checked by `/health/ready` |
+| `evaluation.py` | `EvaluationSummaryReader` | async | Published evaluation summaries, newest first |
 
 Async ports may perform I/O. Sync ports run in process on data loaded at startup; a remote implementation would need an async variant of the port.
 

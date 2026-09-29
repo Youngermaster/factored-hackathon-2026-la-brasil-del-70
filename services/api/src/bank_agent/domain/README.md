@@ -22,6 +22,7 @@ The domain layer holds the business vocabulary of the four workflows (account in
 | `credit.py`, `eligibility.py` | Credit catalog, profile, application intake; risk estimates and synthetic eligibility assessments, kept apart |
 | `conversation.py` | Conversations, turns, `AssistantResponse`, `TurnResult` |
 | `handoff.py`, `execution_record.py`, `audit.py` | Contract documents and audit events |
+| `evaluation.py` | Published evaluation summaries: per-workflow and aggregate outcome counts with denominators, always labeled offline |
 | `errors.py` | The error taxonomy |
 
 ## Conventions

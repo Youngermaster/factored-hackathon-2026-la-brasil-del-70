@@ -1,6 +1,6 @@
 # Identity and sessions
 
-The prototype authenticates people with a trusted test identity service (`adapters/identity`) and keeps server-side, opaque sessions (`application/identity/sessions.py`). A national ID or customer number alone never proves identity: identification only opens a one-time-code challenge. HTTP routes, cookies, and CSRF arrive in phase 11; this page describes the services those routes call. The choice of opaque sessions over JWT is [ADR 0008](../adr/0008-server-side-opaque-sessions.md).
+The prototype authenticates people with a trusted test identity service (`adapters/identity`) and keeps server-side, opaque sessions (`application/identity/sessions.py`). A national ID or customer number alone never proves identity: identification only opens a one-time-code challenge. This page describes the services; the HTTP routes, cookies, and CSRF that expose them are in the [API documentation](../api/README.md) and [ADR 0031](../adr/0031-cookie-sessions-with-signed-double-submit-csrf.md). The choice of opaque sessions over JWT is [ADR 0008](../adr/0008-server-side-opaque-sessions.md).
 
 ## Lifetimes and limits
 
@@ -93,7 +93,7 @@ sequenceDiagram
     S->>T: save(touched), so the idle expiry moves to minute 25
     C->>S: resolve(token) at minute 30
     S-->>C: SessionExpiredError(idle)
-    Note over C,S: The client logs in again. The new session starts a new lineage,<br/>and phase 09 decides whether the conversation resumes.
+    Note over C,S: The API answers 401 session-expired. The client logs in again, the new<br/>session starts a new lineage, and the next turn resumes at the last safe state.
     C->>S: resolve(token) at minute 61 of a busy session
     S-->>C: SessionExpiredError(absolute), however recent the activity
 ```
@@ -104,6 +104,19 @@ sequenceDiagram
 
 `logout(token)` and `revoke(session_id)` set `revoked_at`; the session then resolves to `SessionRevokedError`. Every login, step-up, logout, and revocation appends an audit event without codes, tokens, or identifiers (only the internal session id in the arguments).
 
+## Over HTTP (phase 11)
+
+| Route | Service call | Cookie and CSRF effect |
+|---|---|---|
+| `GET /v1/auth/csrf` | none | sets the CSRF cookie with a token bound to the current session, or `anonymous` |
+| `POST /v1/auth/start` | `start_login` | none; identification never sets a session |
+| `POST /v1/auth/verify` | `complete_login` (and `logout` of the browser's previous session) | sets the session cookie (`Max-Age` to the absolute expiry) and a new CSRF token |
+| `POST /v1/auth/step-up/start`, `/verify` | `start_step_up`, `complete_step_up` | the rotated session token replaces the cookie; a new CSRF token |
+| `POST /v1/auth/logout` | `logout` | clears the session cookie; an anonymous CSRF token |
+| `GET /v1/auth/me` | `resolve` | none |
+
+Every other route resolves the cookie with `resolve`: an unknown token, a revoked session, or an expired one is a `401`, and the engine never receives an expired session. The engine's re-sign-in rule keeps its pause semantics: the first turn from a new lineage at a mid-flow state goes back to the last safe state and asks again, while a step-up (same lineage) continues directly. Cookie names are `__Host-session` and `__Host-csrf` in production and `session` and `csrf` in development ([ADR 0031](../adr/0031-cookie-sessions-with-signed-double-submit-csrf.md)). Wrong codes and unknown identifications share the `verification-failed` problem; an exhausted challenge is `429 identity-locked` with `Retry-After`.
+
 ## Where it is tested
 
 | Behavior | Test |
@@ -113,10 +126,12 @@ sequenceDiagram
 | Session expiry math with `FixedClock`, rotation, revocation, audit | `services/api/tests/unit/application/identity/test_session_service.py` |
 | The same lifecycle against PostgreSQL | `services/api/tests/integration/test_identity_postgres.py` |
 | Session store contract (memory and PostgreSQL) | `services/api/tests/contracts/test_session_store_contract.py` |
+| The routes, cookie flags per environment, lockout, expiry, step-up rotation, logout (memory and PostgreSQL) | `services/api/tests/integration/api/test_auth_flow.py` |
+| Resuming after a new sign-in, and not after a step-up | `services/api/tests/integration/workflows/test_engine_behaviors.py::test_a_new_sign_in_mid_write_asks_the_confirmation_again_and_a_step_up_does_not` |
 
 ## Limitations
 
 - There is no real delivery channel: `DemoOtpSender` either shows the code (demo mode, labeled in the UI) or emits an event without it. A production deployment needs a real sender adapter.
-- The lockout is per subject key, not per network address; per-IP rate limits arrive with the HTTP layer (phase 11).
+- The lockout is per subject key, not per network address; the HTTP layer adds sliding-window limits per IP and per session (auth: 10 per minute each by default), counted per process.
 - Step-up rotation keeps the absolute expiry of the original login, so a step-up never extends a session.
 - The identity keys derive from `SESSION_SECRET`; rotating that secret invalidates every identity lookup until `make seed` runs again.

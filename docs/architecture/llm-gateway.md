@@ -48,7 +48,7 @@ Why this order:
 |---|---|---|
 | `fake` (default) | The client injected through `LlmOverrides` (tests, evaluation harness), otherwise `UnconfiguredLLMClient` | The unconfigured client raises `LlmProviderRejectedError` (never retried), so workflows run deterministically |
 | `cassette` | `CassetteLLM` in replay mode, keyed by `LLM_PRIMARY_MODEL` | Record mode (`LLM_CASSETTE_MODE=record`) wraps `LiteLLMClient` and is refused in production |
-| `litellm` | `LiteLLMClient` | Needs the optional `litellm` extra, `LLM_PRIMARY_MODEL`, and a key for every configured model |
+| `litellm` | `LiteLLMClient` | Needs the optional `litellm` extra, `LLM_PRIMARY_MODEL`, and a key for every hosted model; local Ollama models (`ollama/...`, `ollama_chat/...`) need no key. `LLM_API_BASE` sets the provider base URL (https only in production) |
 
 `LiteLLMClient` is `PromptedLLMClient` (provider-neutral: rendering, the language directive, structured output, repair) over `LiteLLMCompletion` (one `litellm.acompletion` call with explicit model, key, timeout, and `num_retries=0`).
 
@@ -86,13 +86,27 @@ Why this order:
 
 One `gen_ai.chat` span per logical call (the `Telemetry` port requires dot-separated names, so the convention's `chat {model}` name becomes attributes). Attributes: `gen_ai.operation.name`, `gen_ai.provider.name`, `gen_ai.request.model`, `gen_ai.request.max_tokens`, `gen_ai.request.temperature`, `gen_ai.output.type`, `gen_ai.response.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `error.type`, plus `bank.prompt.id`, `bank.prompt.version`, `bank.language`, `bank.llm.latency_ms`, `bank.llm.cost_usd`, `bank.llm.repaired`. Metrics: `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` histograms, and `bank.llm.cost_usd`. Content capture (`LLM_TRACE_CONTENT`) is off by default and refused in production; when on, spans carry the already redacted variables and the output.
 
+## Opt-in local model (development only)
+
+A developer with [Ollama](https://ollama.com) serving `qwen2.5:7b-instruct` can run the gateway against it without changing any default:
+
+```bash
+LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke
+make api-local-llm                    # the API on 127.0.0.1:8000 with the same three settings
+```
+
+- `make llm-smoke` (`scripts/llm_smoke.py`) runs every committed fixture cassette case (es and pt, the four workflows' extraction prompts plus phrasing, 32 cases) through the full decorator stack, validates each structured reply against its output model, and prints a pass/fail and latency table. It checks that the Ollama server answers and the model is pulled before the first call, and exits 2 with the fix when it does not. It is never part of `make check` or CI.
+- Both targets use `uv run --extra litellm`, which installs the optional extra; uv keeps it in the environment afterwards (`uv sync --frozen --all-packages` removes it again). `make setup` and CI never install it.
+- The price table lists the model at zero cost, `verified: true`, noted as local, so the budget guard does not charge the unverified multiplier.
+- Measured once on the developer's machine (phase 11): 32 of 32 cases passed, p50 4.1 s and p95 7.8 s per call, 17.9 s for the first (cold) call. This is a local development measurement of schema-valid replies, not an evaluation of answer quality.
+
 ## Cassettes
 
 `CassetteLLM` keys each call by a SHA-256 over the prompt reference, model id, session language, and canonical JSON of the redacted variables, and stores one JSON file per call in `evals/cassettes/<prompt_id>/<version>/`. Variables and outputs are redacted before writing. Replay never calls a provider and fails loudly when a cassette is missing. See [`evals/cassettes/README.md`](../../evals/cassettes/README.md) for the format, the coverage, and how to record real cassettes.
 
 ## Limitations
 
-- No live provider has been exercised: request shapes are tested against LiteLLM's documented interface with an injected completion function, and the litellm extra is not installed in development.
+- No hosted provider has been exercised: request shapes are tested against LiteLLM's documented interface with an injected completion function. The only live runs are the opt-in local Ollama smoke runs, which check schema validity, not quality.
 - The budget ledger is in memory per process; several API workers would each enforce their own caps (BACKLOG, phase 15).
 - The Portuguese check over cassettes is lexical; it catches Spanish leakage, not awkward phrasing.
 - Name redaction masks the session's known names and names introduced by phrases such as "me llamo"; a name mentioned without such a phrase passes through. Workflow code must never put names in variables (CLAUDE.md rule 6); the redaction is a second line of defense.

@@ -68,6 +68,8 @@ adapters/
 │   ├── text_features.py      the router analyzer shared with bank-ml training
 │   └── resolver_features.py  candidate features and the evidence gate shared with bank-ml training
 ├── retrieval/                corpus from the pack (no ELG), BM25, dense, hybrid, embedding cache, index store
+├── evaluation/
+│   └── summaries.py          FilesystemEvaluationSummaries: published evaluation summaries (EvaluationSummaryReader)
 ├── prompts/
 │   └── file_registry.py      FilePromptRegistry: versioned prompt files, variable validation, data delimiters
 ├── system/

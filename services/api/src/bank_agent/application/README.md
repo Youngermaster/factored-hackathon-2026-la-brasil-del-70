@@ -24,6 +24,12 @@ Phases 05 and 07 added three use-case packages:
 
 - `grounding/` (phase 07, [grounding](../../../../../docs/workflows/grounding.md)): `BoundPolicyLookup` (the clauses of a workflow state for the verified customer's jurisdiction, every state resolved at construction), `InformationalRetrieval` and `RetrievalPolicy` (open retrieval only for the `informational` intent, threshold abstention, ELG never returned), and `GroundingVerifier` with its figure normalization (`numbers.py`), claim lexicons (`lexicon.py`), evidence collection (`evidence.py`), and models (`draft.py`: `ResponseDraft`, `GroundingContext`, `RecordFact`, `VerifiedAction`, `Violation`).
 
+Phase 11 added the HTTP use cases:
+
+- `conversations/service.py`: `ConversationService` (open an empty conversation with an audit event, send a turn through the engine and refuse a turn id from another conversation, the history, and the execution records for the customer or an evaluator), all scoped by the caller's session.
+- `agent/inbox.py`: `AgentInbox` (list with filters, read, claim, resolve, each move audited in the same unit of work; read-only credit application intakes a handoff references).
+- Engine: `gate.resume_after_sign_in` (a turn from a new session lineage mid-flow resumes through AUTH_REQUIRED at the last safe state; a step-up keeps the lineage), `WorkflowEngine.new_conversation`, `TurnResult.workflow`, and the account parts on `Reply` (`balances`, `payment_statuses`, `statement`).
+
 ## Who may import it
 
 `adapters`, `api`, and `bootstrap`. The application layer imports `policy`, `ports`, and `domain` only.

@@ -8,7 +8,7 @@ Foundation code with no knowledge of the product domain: UI primitives built on 
 shared/
 ├── ui/              accessible primitives (Button, Dialog, Field) styled with design tokens
 ├── api/             openapi-fetch client with credentials: 'include', CSRF header, problem-details parsing
-│   └── generated/   types generated from the backend OpenAPI (make openapi); never edited by hand
+│   └── generated/   schema.d.ts, generated from contracts/openapi.json by make openapi (openapi-typescript); never edited by hand
 ├── i18n/            i18next setup and locale files (es, pt, en)
 └── lib/             framework-free helpers
 ```

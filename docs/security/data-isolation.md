@@ -83,5 +83,5 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 ## Limitations
 
 - The development and test owner is the image's superuser, which bypasses RLS; the seed policies and the audit replay check are written for a non-superuser owner, which phase 16 introduces and must verify.
-- RLS protects rows, not columns: a customer context can read every column of its own rows (for example `days_past_due`). Keeping internal fields away from customers and models is the job of the tool results and the phase 11 DTOs (BACKLOG).
+- RLS protects rows, not columns: a customer context can read every column of its own rows (for example `days_past_due`). Keeping internal fields away from customers and models is the job of the tool results and the API response models, which are allowlists; `tests/unit/api/test_credit_data_exposure.py` fails if a credit profile, risk estimate, or internal field appears in any customer-facing schema.
 - The identity role can read every session and challenge; it holds no customer data beyond identifiers and keyed digests.
