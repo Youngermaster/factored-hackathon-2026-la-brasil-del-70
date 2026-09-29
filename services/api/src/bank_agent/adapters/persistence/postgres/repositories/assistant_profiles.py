@@ -28,7 +28,8 @@ class PostgresAssistantProfileRepository:
             "RETURNING customer_id, assistant_name, avatar_key, updated_at",
             {"customer": customer, "name": name, "now": now},
         )
-        assert row is not None
+        if row is None:
+            raise RuntimeError("assistant profile upsert returned no row")
         return AssistantProfile(**row)
 
     async def set_avatar(self, avatar_key: str, *, now: datetime) -> AssistantProfile:
@@ -40,5 +41,6 @@ class PostgresAssistantProfileRepository:
             "RETURNING customer_id, assistant_name, avatar_key, updated_at",
             {"customer": customer, "avatar": avatar_key, "now": now},
         )
-        assert row is not None
+        if row is None:
+            raise RuntimeError("assistant profile upsert returned no row")
         return AssistantProfile(**row)

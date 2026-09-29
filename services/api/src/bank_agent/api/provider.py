@@ -14,7 +14,6 @@ from bank_agent.api.config import SecurityConfig
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
-from bank_agent.application.preferences.service import AssistantPreferencesService
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
@@ -49,9 +48,6 @@ class ServiceProvider(Protocol):
 
     @property
     def conversations(self) -> ConversationService: ...
-
-    @property
-    def assistant_preferences(self) -> AssistantPreferencesService: ...
 
     @property
     def inbox(self) -> AgentInbox: ...

@@ -1,8 +1,8 @@
 """Use cases for changing the customer-wide assistant name and mock avatar."""
 
+import secrets
 from dataclasses import dataclass
 from importlib.resources import files
-import random
 
 from bank_agent.domain.access import Role
 from bank_agent.domain.assistant_profile import AssistantProfile
@@ -52,15 +52,11 @@ class AssistantPreferencesService:
             await uow.commit()
         return AssistantPreference(profile, _avatar_path(profile.avatar_key))
 
-    async def mock_assistant_image(
-        self, session: Session, conversation_id: ConversationId
-    ) -> AssistantPreference:
+    async def mock_assistant_image(self, session: Session, conversation_id: ConversationId) -> AssistantPreference:
         _customer_only(session)
         async with self._uow_factory(session.access_context()) as uow:
             if await uow.conversations.get(conversation_id) is None:
                 raise ConversationNotFoundError()
-            profile = await uow.assistant_profiles.set_avatar(
-                random.choice(AVATAR_KEYS), now=self._clock.now()
-            )
+            profile = await uow.assistant_profiles.set_avatar(secrets.choice(AVATAR_KEYS), now=self._clock.now())
             await uow.commit()
         return AssistantPreference(profile, _avatar_path(profile.avatar_key))

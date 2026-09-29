@@ -3,6 +3,7 @@
 from types import TracebackType
 from typing import Protocol, Self
 
+from bank_agent.adapters.persistence.memory.assistant_profiles import InMemoryAssistantProfileRepository
 from bank_agent.adapters.persistence.memory.repositories import (
     InMemoryActionLedger,
     InMemoryAuditLog,
@@ -17,7 +18,6 @@ from bank_agent.adapters.persistence.memory.repositories import (
     InMemoryProductRepository,
     InMemoryTransactionRepository,
 )
-from bank_agent.adapters.persistence.memory.assistant_profiles import InMemoryAssistantProfileRepository
 from bank_agent.adapters.persistence.memory.store import DirectView, InMemoryStore, TableView
 from bank_agent.domain.access import AccessContext
 from bank_agent.domain.errors import ConcurrencyConflictError

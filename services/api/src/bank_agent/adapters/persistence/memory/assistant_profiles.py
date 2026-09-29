@@ -4,8 +4,8 @@ from datetime import datetime
 
 from bank_agent.adapters.persistence.memory.repositories import _customer_of
 from bank_agent.adapters.persistence.memory.store import TableView
-from bank_agent.domain.assistant_profile import AssistantProfile
 from bank_agent.domain.access import AccessContext
+from bank_agent.domain.assistant_profile import AssistantProfile
 
 
 class InMemoryAssistantProfileRepository:
