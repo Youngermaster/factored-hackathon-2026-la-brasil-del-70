@@ -1,0 +1,169 @@
+{
+  "app": {
+    "name": "Bank Agent",
+    "skipToContent": "Skip to content",
+    "demoMode": "Demo mode",
+    "demoModeHint": "Synthetic customers and data. Codes are shown on screen."
+  },
+  "common": {
+    "loading": "Loading",
+    "retry": "Try again",
+    "close": "Close",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "goHome": "Go to the start",
+    "reload": "Reload the page",
+    "copy": "Copy",
+    "notAvailable": "Not available"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "theme": "Theme",
+    "themeSystem": "Match the system",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "locale": "Language and region"
+  },
+  "errors": {
+    "network": "We could not reach the bank. Check your connection and try again.",
+    "server": "Something failed on our side. Try again in a few minutes.",
+    "rateLimited": "Too many requests in a row. Wait a moment and try again.",
+    "forbidden": "Your profile has no access to this section.",
+    "generic": "The action could not be completed.",
+    "offline": "You are offline. What you see may be out of date.",
+    "notFoundTitle": "We could not find this page",
+    "notFoundBody": "The address does not exist or is no longer available.",
+    "routeErrorTitle": "We could not show this screen",
+    "routeErrorBody": "Reload the page. If the problem continues, go back to the start.",
+    "referenceId": "Reference for support"
+  },
+  "auth": {
+    "title": "Sign in to your bank",
+    "intro": "We confirm your identity with a one-time code. We will never ask for your password.",
+    "methodLabel": "Sign-in method",
+    "methodPersona": "Demo profile",
+    "methodDocument": "Document",
+    "personaHeading": "Choose a profile",
+    "personaCustomers": "Customers",
+    "personaStaff": "Bank staff",
+    "personaSelect": "Sign in as {{persona}}",
+    "documentNumber": "Document number",
+    "documentNumberHint": "Letters, digits, and hyphens, 4 to 20 characters.",
+    "documentNumberInvalid": "Check the number: use 4 to 20 letters, digits, or hyphens.",
+    "phoneLast4": "Last 4 digits of your phone",
+    "phoneLast4Hint": "From the phone registered with the bank.",
+    "phoneLast4Invalid": "Enter exactly 4 digits.",
+    "sendCode": "Send code",
+    "codeHeading": "Enter your code",
+    "codeIntro": "We sent a 6-digit code.",
+    "codeLabel": "Verification code",
+    "codeHint": "6 digits. You can paste the whole code.",
+    "codeIncomplete": "The code has 6 digits.",
+    "demoCode": "Demo code",
+    "expiresIn": "Expires in {{time}}",
+    "codeExpired": "The code expired. Ask for a new one.",
+    "verify": "Verify",
+    "resend": "Get another code",
+    "changeIdentity": "Use other details",
+    "wrongCode": "The code is not correct or the details do not match.",
+    "attemptsRemaining_one": "{{count}} attempt left.",
+    "attemptsRemaining_other": "{{count}} attempts left.",
+    "locked": "For your security, sign-in is locked after several failed attempts. Try again in {{minutes}} minutes.",
+    "expiredTitle": "Your session ended",
+    "expiredBody": "For your security we end the session after a period without activity. Sign in again and we will pick up where you left off.",
+    "signedOut": "You signed out.",
+    "logout": "Sign out",
+    "stepUpTitle": "Confirm it is you",
+    "stepUpBody": "This action changes something in your account, so we need a new code.",
+    "stepUpConfirm": "Confirm",
+    "stepUpDone": "Identity confirmed.",
+    "stepUpStart": "Confirm identity",
+    "stepUpFailed": "We could not open the verification."
+  },
+  "session": {
+    "title": "Your session",
+    "role": "Profile",
+    "authLevel": "Verification",
+    "idleExpires": "Ends if idle",
+    "absoluteExpires": "Ends at the latest",
+    "stepUp": "Stronger verification",
+    "stepUpActive": "Active until {{time}}",
+    "stepUpInactive": "Not active",
+    "roles": {
+      "customer": "Customer",
+      "agent": "Agent",
+      "evaluator": "Evaluator"
+    },
+    "authLevels": {
+      "none": "Not verified",
+      "identified": "Identified",
+      "otp_verified": "Verified with a code",
+      "step_up": "Stronger verification"
+    }
+  },
+  "status": {
+    "verified": "Verified",
+    "pending": "Pending",
+    "failed": "Failed",
+    "escalated": "With a person",
+    "reviewRequired": "Review required"
+  },
+  "data": {
+    "asOf": "Data as of {{date}}",
+    "maskedNumber": "Ending in {{last4}}",
+    "sortBy": "Sort by {{column}}",
+    "sortedAscending": "ascending",
+    "sortedDescending": "descending",
+    "empty": "No records"
+  },
+  "layout": {
+    "mainNav": "Main navigation",
+    "consoleNav": "Console navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "overview": "Overview",
+    "home": "Home"
+  },
+  "home": {
+    "heading": "How can we help today?",
+    "intro": "The assistant answers from your account data and the bank's policies. When something needs a person, it says so and hands your case over.",
+    "topicsLabel": "Topics the assistant handles",
+    "resume": "Your conversation {{id}} is still open.",
+    "topics": {
+      "account_inquiry": "Accounts and payments",
+      "account_inquiryBody": "Balances with their as-of date, payment status, and statement summaries.",
+      "card_support": "Cards",
+      "card_supportBody": "Card status and a protective block. Unblocks and replacements go to a person.",
+      "dispute": "Disputes",
+      "disputeBody": "Charges you do not recognize and the status of your case.",
+      "credit": "Credit",
+      "creditBody": "Products and an indicative eligibility result. Never an approval."
+    }
+  },
+  "console": {
+    "heading": "Overview",
+    "agentBody": "You handle structured handoffs: verified facts, actions taken, the policy basis, and open questions. Never the full transcript.",
+    "evaluatorBody": "You review execution records and offline evaluation results, always with the per-workflow numbers next to the total."
+  },
+  "personas": {
+    "acc-mx-accounts": "Checking and savings accounts with balances",
+    "acc-co-payments": "A pending payment and a reversed one",
+    "acc-ar-similar-transfers": "Two similar transfers in the same week",
+    "crd-mx-two-cards": "Two active cards",
+    "crd-co-declined": "A declined card purchase",
+    "crd-ar-expired": "An expired card",
+    "crd-mx-blocked": "A card that is already blocked",
+    "dsp-co-unrecognized": "A recent purchase they may not recognize",
+    "dsp-mx-open-case": "An open dispute case",
+    "dsp-ar-repeat-complainer": "Several complaints in the past year",
+    "dsp-mx-similar-purchases": "Several purchases at one merchant",
+    "cre-mx-complete": "A complete credit profile",
+    "cre-co-no-income": "No income on file",
+    "cre-ar-borderline": "A borderline credit score",
+    "cre-mx-past-due": "A product with days past due",
+    "cre-co-application": "A credit application in progress",
+    "agent-demo-01": "Agent console: handoffs and applications",
+    "evaluator-demo-01": "Evaluation console: records and results"
+  }
+}

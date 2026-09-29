@@ -1,7 +1,10 @@
 # pnpm settings for the web app (a single-package workspace).
-# Dependency lifecycle scripts are blocked by default. These two are not needed:
+# Dependency lifecycle scripts are blocked by default. These are not needed:
 # - msw: its postinstall only copies the browser service worker, and tests use the Node server.
 # - unrs-resolver: its postinstall is a fallback for missing prebuilt binaries, which pnpm installs anyway.
+# - playwright-chromium: its postinstall downloads a browser; only the optional screenshot script
+#   (tooling/screenshots.mjs) needs one, installed on demand with `pnpm exec playwright install chromium`.
 ignoredBuiltDependencies:
   - msw
+  - playwright-chromium
   - unrs-resolver

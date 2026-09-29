@@ -1,9 +1,131 @@
 @import 'tailwindcss';
+@import './shared/ui/tokens.css';
+
+/* The theme is an attribute on <html>, set before first paint by public/theme-init.js. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /*
- * Neutral base only. Design tokens (color, type, spacing, radius, motion) arrive with the design system in
- * phase 12 as CSS variables consumed through Tailwind's @theme.
+ * Tailwind's default palette is removed so only the design tokens exist as color utilities (bg-surface,
+ * text-fg-muted, border-border-strong, ...). docs/design/DESIGN.md documents each token.
  */
-:root {
-  color-scheme: light dark;
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+
+  --font-sans: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Unbounded Variable', 'Arial Black', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, Menlo, monospace;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.25rem;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.75rem;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.75rem;
+  --text-heading: 1.5rem;
+  --text-heading--line-height: 2rem;
+  --text-display: 2rem;
+  --text-display--line-height: 2.5rem;
+
+  --radius-control: 6px;
+  --radius-card: 12px;
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-overlay-in: overlay-in 200ms var(--ease-standard);
+  --animate-panel-in: panel-in 200ms var(--ease-standard);
+  --animate-sheet-in: sheet-in 240ms var(--ease-standard);
+  --animate-skeleton: skeleton 1.6s ease-in-out infinite;
+
+  @keyframes overlay-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes skeleton {
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-inverse: var(--fg-inverse);
+  --color-action: var(--action);
+  --color-action-hover: var(--action-hover);
+  --color-action-fg: var(--action-fg);
+  --color-focus: var(--focus);
+  --color-understanding: var(--understanding);
+  --color-understanding-fg: var(--understanding-fg);
+  --color-understanding-text: var(--understanding-text);
+  --color-understanding-subtle: var(--understanding-subtle);
+  --color-decision: var(--decision);
+  --color-decision-fg: var(--decision-fg);
+  --color-decision-text: var(--decision-text);
+  --color-decision-subtle: var(--decision-subtle);
+  --color-risk: var(--risk);
+  --color-risk-fg: var(--risk-fg);
+  --color-risk-text: var(--risk-text);
+  --color-risk-subtle: var(--risk-subtle);
+  --color-overlay: var(--overlay);
+}
+
+@layer base {
+  html {
+    background-color: var(--canvas);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    font-size: var(--text-body);
+    line-height: 1.5;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--understanding-subtle);
+    color: var(--fg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

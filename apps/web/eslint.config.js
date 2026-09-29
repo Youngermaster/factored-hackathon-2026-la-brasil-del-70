@@ -15,6 +15,7 @@ export default tseslint.config(
       'coverage',
       'node_modules',
       'tooling/boundaries-fixture',
+      '.shots',
       'src/shared/api/generated',
     ],
   },
@@ -75,8 +76,18 @@ export default tseslint.config(
     },
   },
   {
+    // The one module that stores per-viewer display preferences (theme and locale, never session data). It is the
+    // only place web storage may be touched; see src/shared/lib/preferences.ts.
+    files: ['src/shared/lib/preferences.ts', 'src/shared/lib/lib.test.ts'],
+    rules: { 'no-restricted-globals': 'off', 'no-restricted-properties': 'off' },
+  },
+  {
     files: ['src/**/*.{ts,tsx}'],
     ...boundariesConfig,
+  },
+  {
+    files: ['public/**/*.js'],
+    languageOptions: { globals: globals.browser, sourceType: 'script' },
   },
   {
     files: ['*.{js,ts}'],

@@ -1,0 +1,91 @@
+/*
+ * Design tokens: the pitch deck's "Azure Skies" identity (slides/styles/tokens.css), adapted for a banking UI.
+ * docs/design/DESIGN.md explains every value; contrast.ts lists the allowed text pairs and tokens.test.ts
+ * checks each one against WCAG 2.2 AA in both themes.
+ *
+ * Meaning, never swapped (the project thesis in color):
+ *   understanding (blue)  the language model: intents, extraction, retrieval
+ *   decision (yellow)     deterministic code deciding and acting: verified actions
+ *   risk (red)            refusal, escalation, failure
+ *   paper (light gray)    data and documents
+ * Accents are for meaning only. The primary action is ink, not an accent.
+ *
+ * Every color is an explicit hex: alpha chains make contrast unverifiable.
+ */
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --canvas: #f3f3f1;
+  --surface: #ffffff;
+  --surface-sunken: #e6e6e4;
+  --surface-hover: #ececea;
+  --border: #d9d9d6;
+  --border-strong: #7a7a77;
+
+  --fg: #070707;
+  --fg-secondary: #3a3a38;
+  --fg-muted: #5c5c59;
+  --fg-inverse: #ffffff;
+
+  --action: #070707;
+  --action-hover: #2b2b29;
+  --action-fg: #ffffff;
+  --focus: #070707;
+
+  --understanding: #3772ff;
+  --understanding-fg: #070707;
+  --understanding-text: #2a57c9;
+  --understanding-subtle: #eaf0ff;
+
+  --decision: #fdc840;
+  --decision-fg: #070707;
+  --decision-text: #070707;
+  --decision-subtle: #fff4d1;
+
+  --risk: #e12b37;
+  --risk-fg: #ffffff;
+  --risk-text: #b4202b;
+  --risk-subtle: #fcebec;
+
+  --overlay: #070707b3;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --canvas: #070707;
+  --surface: #121212;
+  --surface-sunken: #1f1f1f;
+  --surface-hover: #1a1a1a;
+  --border: #2e2e2e;
+  --border-strong: #7a7a77;
+
+  --fg: #e6e6e4;
+  --fg-secondary: #b8b8b5;
+  --fg-muted: #8c8c89;
+  --fg-inverse: #070707;
+
+  --action: #e6e6e4;
+  --action-hover: #cfcfcc;
+  --action-fg: #070707;
+  --focus: #e6e6e4;
+
+  --understanding: #3772ff;
+  --understanding-fg: #070707;
+  --understanding-text: #6f9bff;
+  --understanding-subtle: #0e1a3a;
+
+  --decision: #fdc840;
+  --decision-fg: #070707;
+  --decision-text: #fdc840;
+  --decision-subtle: #2b2208;
+
+  --risk: #e12b37;
+  --risk-fg: #ffffff;
+  --risk-text: #f0616a;
+  --risk-subtle: #2e0b0e;
+
+  --overlay: #000000cc;
+}

@@ -1,0 +1,169 @@
+{
+  "app": {
+    "name": "Bank Agent",
+    "skipToContent": "Saltar al contenido",
+    "demoMode": "Modo demostración",
+    "demoModeHint": "Clientes y datos sintéticos. Los códigos se muestran en pantalla."
+  },
+  "common": {
+    "loading": "Cargando",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "back": "Volver",
+    "goHome": "Ir al inicio",
+    "reload": "Recargar la página",
+    "copy": "Copiar",
+    "notAvailable": "Sin dato"
+  },
+  "preferences": {
+    "title": "Preferencias",
+    "theme": "Tema",
+    "themeSystem": "Según el sistema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "locale": "Idioma y región"
+  },
+  "errors": {
+    "network": "No pudimos conectar con el banco. Revisa tu conexión e inténtalo de nuevo.",
+    "server": "Algo falló de nuestro lado. Inténtalo de nuevo en unos minutos.",
+    "rateLimited": "Hiciste muchas solicitudes seguidas. Espera un momento e inténtalo de nuevo.",
+    "forbidden": "Tu perfil no tiene acceso a esta sección.",
+    "generic": "No se pudo completar la acción.",
+    "offline": "Sin conexión. Lo que ves puede no estar actualizado.",
+    "notFoundTitle": "No encontramos esta página",
+    "notFoundBody": "La dirección no existe o ya no está disponible.",
+    "routeErrorTitle": "No pudimos mostrar esta pantalla",
+    "routeErrorBody": "Recarga la página. Si el problema sigue, vuelve al inicio.",
+    "referenceId": "Referencia para soporte"
+  },
+  "auth": {
+    "title": "Ingresa a tu banca",
+    "intro": "Confirmamos tu identidad con un código de un solo uso. Nunca te pediremos tu clave.",
+    "methodLabel": "Forma de ingreso",
+    "methodPersona": "Perfil de demostración",
+    "methodDocument": "Documento",
+    "personaHeading": "Elige un perfil",
+    "personaCustomers": "Clientes",
+    "personaStaff": "Equipo del banco",
+    "personaSelect": "Ingresar como {{persona}}",
+    "documentNumber": "Número de documento",
+    "documentNumberHint": "Letras, números y guiones, de 4 a 20 caracteres.",
+    "documentNumberInvalid": "Revisa el número: usa de 4 a 20 letras, números o guiones.",
+    "phoneLast4": "Últimos 4 dígitos de tu teléfono",
+    "phoneLast4Hint": "Los del teléfono que registraste en el banco.",
+    "phoneLast4Invalid": "Escribe exactamente 4 dígitos.",
+    "sendCode": "Enviar código",
+    "codeHeading": "Ingresa tu código",
+    "codeIntro": "Te enviamos un código de 6 dígitos.",
+    "codeLabel": "Código de verificación",
+    "codeHint": "6 dígitos. Puedes pegarlo completo.",
+    "codeIncomplete": "El código tiene 6 dígitos.",
+    "demoCode": "Código de demostración",
+    "expiresIn": "Vence en {{time}}",
+    "codeExpired": "El código venció. Pide uno nuevo.",
+    "verify": "Verificar",
+    "resend": "Pedir otro código",
+    "changeIdentity": "Usar otros datos",
+    "wrongCode": "El código no es correcto o los datos no coinciden.",
+    "attemptsRemaining_one": "Te queda {{count}} intento.",
+    "attemptsRemaining_other": "Te quedan {{count}} intentos.",
+    "locked": "Por seguridad bloqueamos el ingreso tras varios intentos fallidos. Inténtalo de nuevo en {{minutes}} minutos.",
+    "expiredTitle": "Tu sesión terminó",
+    "expiredBody": "Por seguridad cerramos la sesión tras un tiempo sin actividad. Ingresa de nuevo y retomamos donde quedaste.",
+    "signedOut": "Cerraste sesión.",
+    "logout": "Cerrar sesión",
+    "stepUpTitle": "Confirma que eres tú",
+    "stepUpBody": "Esta acción cambia algo en tu cuenta, así que necesitamos un código nuevo.",
+    "stepUpConfirm": "Confirmar",
+    "stepUpDone": "Identidad confirmada.",
+    "stepUpStart": "Confirmar identidad",
+    "stepUpFailed": "No pudimos abrir la verificación."
+  },
+  "session": {
+    "title": "Tu sesión",
+    "role": "Perfil",
+    "authLevel": "Verificación",
+    "idleExpires": "Cierre por inactividad",
+    "absoluteExpires": "Cierre definitivo",
+    "stepUp": "Verificación reforzada",
+    "stepUpActive": "Activa hasta {{time}}",
+    "stepUpInactive": "No activa",
+    "roles": {
+      "customer": "Cliente",
+      "agent": "Agente",
+      "evaluator": "Evaluador"
+    },
+    "authLevels": {
+      "none": "Sin verificar",
+      "identified": "Identificado",
+      "otp_verified": "Verificado con código",
+      "step_up": "Verificación reforzada"
+    }
+  },
+  "status": {
+    "verified": "Verificado",
+    "pending": "Pendiente",
+    "failed": "Falló",
+    "escalated": "Con una persona",
+    "reviewRequired": "Requiere revisión"
+  },
+  "data": {
+    "asOf": "Datos al {{date}}",
+    "maskedNumber": "Terminada en {{last4}}",
+    "sortBy": "Ordenar por {{column}}",
+    "sortedAscending": "orden ascendente",
+    "sortedDescending": "orden descendente",
+    "empty": "Sin registros"
+  },
+  "layout": {
+    "mainNav": "Navegación principal",
+    "consoleNav": "Navegación de la consola",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "overview": "Resumen",
+    "home": "Inicio"
+  },
+  "home": {
+    "heading": "¿En qué te ayudamos hoy?",
+    "intro": "El asistente responde con datos de tu cuenta y las políticas del banco. Si algo requiere a una persona, te lo dice y pasa tu caso.",
+    "topicsLabel": "Temas que atiende el asistente",
+    "resume": "Tu conversación {{id}} sigue abierta.",
+    "topics": {
+      "account_inquiry": "Cuentas y pagos",
+      "account_inquiryBody": "Saldos con su fecha de corte, estado de pagos y resúmenes.",
+      "card_support": "Tarjetas",
+      "card_supportBody": "Estado de tus tarjetas y bloqueo preventivo. Desbloqueos y reposiciones pasan a una persona.",
+      "dispute": "Aclaraciones",
+      "disputeBody": "Cargos que no reconoces y el estado de tu caso.",
+      "credit": "Crédito",
+      "creditBody": "Productos y una elegibilidad indicativa. Nunca una aprobación."
+    }
+  },
+  "console": {
+    "heading": "Resumen",
+    "agentBody": "Atiendes traspasos estructurados: hechos verificados, acciones realizadas, base de política y preguntas abiertas. Nunca la transcripción completa.",
+    "evaluatorBody": "Revisas registros de ejecución y resultados de evaluación offline, siempre con las cifras por flujo junto al total."
+  },
+  "personas": {
+    "acc-mx-accounts": "Cuenta corriente y de ahorro con saldos",
+    "acc-co-payments": "Un pago pendiente y uno revertido",
+    "acc-ar-similar-transfers": "Dos transferencias parecidas en la misma semana",
+    "crd-mx-two-cards": "Dos tarjetas activas",
+    "crd-co-declined": "Una compra con tarjeta rechazada",
+    "crd-ar-expired": "Una tarjeta vencida",
+    "crd-mx-blocked": "Una tarjeta ya bloqueada",
+    "dsp-co-unrecognized": "Una compra reciente que podría no reconocer",
+    "dsp-mx-open-case": "Un caso de aclaración abierto",
+    "dsp-ar-repeat-complainer": "Varios reclamos en el último año",
+    "dsp-mx-similar-purchases": "Varias compras en el mismo comercio",
+    "cre-mx-complete": "Perfil de crédito completo",
+    "cre-co-no-income": "Sin ingreso registrado",
+    "cre-ar-borderline": "Puntaje en el límite",
+    "cre-mx-past-due": "Un producto con días de atraso",
+    "cre-co-application": "Una solicitud de crédito en curso",
+    "agent-demo-01": "Consola de agente: traspasos y solicitudes",
+    "evaluator-demo-01": "Consola de evaluación: registros y resultados"
+  }
+}
