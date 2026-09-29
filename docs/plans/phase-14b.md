@@ -48,7 +48,7 @@ uv run --frozen --extra litellm bank-eval run --run-id test-local --split test -
 ```
 
 - Run 1 plays the full test split (332 scenarios) with B0, P, and B1; runs 2 and 3 play the stratified 48-scenario subset with every system (pass^3 and the between-run variance; B0's repeats must be identical). Cassettes go to `evals/cassettes/eval/test/`.
-- **Interrupted?** Rerun the same command with `--resume`: cases already in `reports/eval/test-local/results.jsonl` are skipped, and model calls already recorded are served from the cassettes.
+- **Interrupted?** Rerun the same command with `--resume`: cases already in `reports/eval/test-local/results.jsonl` are skipped (their cassettes stay), and the remaining cases are played live. Record mode always calls the model and overwrites a cassette with the same key, so never rerun without `--resume` on a directory that holds finished cases.
 
 ```bash
 uv run --frozen --extra litellm bank-eval run --run-id test-local --split test --llm record --runs 3 --repeat subset --mlflow --resume
