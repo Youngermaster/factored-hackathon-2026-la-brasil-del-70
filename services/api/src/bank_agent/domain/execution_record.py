@@ -12,7 +12,8 @@ so the glass box shows them apart; the estimates are internal. The new fields ar
 Version 1.2.0 adds ``retrieval`` (the retriever, its decision, threshold, top score, and citations for an
 informational answer) and the ``list_my_cards`` tool name.
 
-Version 1.3.0 adds the ``list_my_credit_applications`` tool name; no field changes.
+Version 1.3.0 adds the ``list_my_credit_applications`` tool name; no field changes. Version 1.4.0 is the shared release
+of the scenario additions (phase 14); no field changes here.
 """
 
 from decimal import Decimal
@@ -142,7 +143,7 @@ class RetrievalRecord(DomainModel):
 
 
 class ExecutionRecord(DomainModel):
-    schema_version: SchemaVersion = "1.3.0"
+    schema_version: SchemaVersion = "1.4.0"
     turn_id: TurnId
     conversation_id: ConversationId
     customer_ref: CustomerId | None = None

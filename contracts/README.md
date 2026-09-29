@@ -88,6 +88,8 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 | decision | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
 | scenario | 1.3.0 | 2026-09-29 | Widens tool names (`list_my_credit_applications`); new documents default to `1.3.0` |
 | policy_clause | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
+| scenario | 1.4.0 | 2026-09-29 | Adds optional `scripted_fallback` (the turns a simulated scenario plays when a run has no simulator model) and `template_family` (the generator family, kept within one split), marked `x-added-in`; new documents default to `1.4.0` |
+| handoff, execution_record, decision, policy_clause | 1.4.0 | 2026-09-29 | No field change; they move to the shared 1.4.0 release with the scenario additions |
 
 ## How to change a contract
 

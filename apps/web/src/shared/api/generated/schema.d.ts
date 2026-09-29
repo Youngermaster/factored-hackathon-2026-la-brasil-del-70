@@ -1008,7 +1008,7 @@ export interface components {
             rule_results: components["schemas"]["RuleResult"][];
             /**
              * Schema Version
-             * @default 1.3.0
+             * @default 1.4.0
              */
             schema_version: string;
             /** State */

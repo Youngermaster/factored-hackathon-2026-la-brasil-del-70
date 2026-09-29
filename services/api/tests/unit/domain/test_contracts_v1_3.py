@@ -20,10 +20,10 @@ def _schema(name: str) -> dict[str, Any]:
     return loaded
 
 
-def test_every_output_contract_defaults_to_1_3() -> None:
+def test_every_output_contract_defaults_to_the_shared_release() -> None:
     for model in (Handoff, ExecutionRecord, Decision):
-        assert model.model_fields["schema_version"].default == "1.3.0"
-    assert execution_record().schema_version == "1.3.0"
+        assert model.model_fields["schema_version"].default == "1.4.0"
+    assert execution_record().schema_version == "1.4.0"
 
 
 def test_the_credit_application_listing_tool_is_a_read_that_fits_the_schemas() -> None:

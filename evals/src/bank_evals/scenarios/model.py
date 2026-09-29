@@ -278,7 +278,7 @@ HANDOFF_FIELDS = frozenset(Handoff.model_fields)
 
 
 class Scenario(ScenarioModel):
-    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.3.0"
+    schema_version: Annotated[str, StringConstraints(pattern=r"^1\.[0-9]+\.[0-9]+$")] = "1.4.0"
     id: Annotated[str, StringConstraints(pattern=r"^[a-z0-9][a-z0-9_-]{2,63}$")]
     split: Split
     language: Language
@@ -308,6 +308,12 @@ class Scenario(ScenarioModel):
     expected_workflow_path: Annotated[tuple[WorkflowId, ...], AddedIn("1.1.0")] = ()
     """For routing scenarios: the workflows the conversation visits, in order, starting with ``workflow``."""
     expected_eligibility_outcome: Annotated[EligibilityOutcome | None, AddedIn("1.1.0")] = None
+    scripted_fallback: Annotated[tuple[ScriptedTurn, ...], AddedIn("1.4.0")] = ()
+    """For a simulated scenario: the turns played when a run has no simulator model (offline and CI runs)."""
+    template_family: Annotated[
+        Annotated[str, StringConstraints(pattern=r"^[a-z0-9][a-z0-9_.-]{2,63}$")] | None, AddedIn("1.4.0")
+    ] = None
+    """The generator's template family; a family belongs wholly to one split (leakage guard)."""
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
@@ -339,6 +345,8 @@ class Scenario(ScenarioModel):
             raise ValueError("a scripted scenario has turns and no simulator instructions")
         if self.mode is ScenarioMode.SIMULATED and (self.turns or self.simulator_instructions is None):
             raise ValueError("a simulated scenario has simulator instructions and no scripted turns")
+        if self.scripted_fallback and self.mode is not ScenarioMode.SIMULATED:
+            raise ValueError("only a simulated scenario has scripted fallback turns")
 
     def _validate_consistency(self) -> None:
         if set(self.known_facts) & set(self.hidden_facts):
