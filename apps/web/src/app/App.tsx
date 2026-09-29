@@ -1,11 +1,19 @@
-/**
- * Application shell. Phase 12 adds the providers (TanStack Query, i18n, theme), the router, and the real
- * layouts; until then the shell renders only the product name, a proper noun rather than translatable copy.
- */
+import { useState } from 'react';
+import { createBrowserRouter } from 'react-router';
+// The DOM RouterProvider wires ReactDOM.flushSync, which the session-loss redirect relies on.
+import { RouterProvider } from 'react-router/dom';
+
+import { AppProviders } from './AppProviders';
+import { createRoutes } from './routes';
+import { createAppServices } from './services';
+
+/** The composition root: services are created once, then the providers and the router. */
 export function App() {
+  const [services] = useState(createAppServices);
+  const [router] = useState(() => createBrowserRouter(createRoutes(services)));
   return (
-    <main className="flex min-h-dvh items-center justify-center p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Bank Agent</h1>
-    </main>
+    <AppProviders services={services}>
+      <RouterProvider router={router} />
+    </AppProviders>
   );
 }

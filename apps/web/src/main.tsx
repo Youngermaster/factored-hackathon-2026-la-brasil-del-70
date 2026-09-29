@@ -1,3 +1,6 @@
+import '@fontsource-variable/geist-mono';
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/unbounded';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

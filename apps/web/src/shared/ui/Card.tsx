@@ -24,7 +24,7 @@ export function Header({
   readonly className?: string;
 }) {
   return (
-    <header
+    <div
       className={cx('flex items-start justify-between gap-4 px-5 pt-5 sm:px-6 sm:pt-6', className)}
     >
       <div className="flex min-w-0 flex-col gap-1">
@@ -32,7 +32,7 @@ export function Header({
         {description !== undefined && <p className="text-small text-fg-secondary">{description}</p>}
       </div>
       {action}
-    </header>
+    </div>
   );
 }
 

@@ -12,9 +12,8 @@ import type { ProblemSlug, Schema } from '@/shared/api';
  * MSW building blocks typed from the generated API schema: each fixture is a `Schema<...>` value, so a contract
  * change that breaks a fixture breaks the type check, and handlers answer with the real shapes.
  */
-export const FIXED_NOW = new Date('2026-09-27T15:00:00Z');
-const inMinutes = (minutes: number) =>
-  new Date(FIXED_NOW.getTime() + minutes * 60_000).toISOString();
+/** Instants relative to the real clock, so countdowns and expiry checks behave as they would live. */
+const inMinutes = (minutes: number) => new Date(Date.now() + minutes * 60_000).toISOString();
 
 export function sessionView(overrides: Partial<Schema<'SessionView'>> = {}): Schema<'SessionView'> {
   return {

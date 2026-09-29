@@ -9,6 +9,7 @@ export {
   type ApiContextValue,
 } from './client';
 export { useApi } from './context';
+export { errorMessageKey, errorRequestId, type ErrorMessageKey } from './describe';
 export { CsrfStore } from './csrf';
 export type { components, operations, paths } from './generated/schema';
 export {

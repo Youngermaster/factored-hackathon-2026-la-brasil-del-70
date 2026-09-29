@@ -50,7 +50,6 @@
     "personaHeading": "Elige un perfil",
     "personaCustomers": "Clientes",
     "personaStaff": "Equipo del banco",
-    "personaSelect": "Ingresar como {{persona}}",
     "documentNumber": "Número de documento",
     "documentNumberHint": "Letras, números y guiones, de 4 a 20 caracteres.",
     "documentNumberInvalid": "Revisa el número: usa de 4 a 20 letras, números o guiones.",
@@ -82,7 +81,11 @@
     "stepUpConfirm": "Confirmar",
     "stepUpDone": "Identidad confirmada.",
     "stepUpStart": "Confirmar identidad",
-    "stepUpFailed": "No pudimos abrir la verificación."
+    "stepUpFailed": "No pudimos abrir la verificación.",
+    "thesisTitle": "Cómo te atiende el asistente",
+    "thesisUnderstand": "Entiende tu mensaje, en español o en portugués.",
+    "thesisDecide": "Las reglas del banco deciden, y solo informamos acciones que verificamos.",
+    "thesisEscalate": "Si algo requiere a una persona, te lo decimos y pasamos tu caso."
   },
   "session": {
     "title": "Tu sesión",

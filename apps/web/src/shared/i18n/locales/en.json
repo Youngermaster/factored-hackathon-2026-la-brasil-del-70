@@ -50,7 +50,6 @@
     "personaHeading": "Choose a profile",
     "personaCustomers": "Customers",
     "personaStaff": "Bank staff",
-    "personaSelect": "Sign in as {{persona}}",
     "documentNumber": "Document number",
     "documentNumberHint": "Letters, digits, and hyphens, 4 to 20 characters.",
     "documentNumberInvalid": "Check the number: use 4 to 20 letters, digits, or hyphens.",
@@ -82,7 +81,11 @@
     "stepUpConfirm": "Confirm",
     "stepUpDone": "Identity confirmed.",
     "stepUpStart": "Confirm identity",
-    "stepUpFailed": "We could not open the verification."
+    "stepUpFailed": "We could not open the verification.",
+    "thesisTitle": "How the assistant serves you",
+    "thesisUnderstand": "It understands your message, in Spanish or Portuguese.",
+    "thesisDecide": "The bank's rules decide, and we only report actions we have verified.",
+    "thesisEscalate": "When something needs a person, we say so and hand your case over."
   },
   "session": {
     "title": "Your session",
