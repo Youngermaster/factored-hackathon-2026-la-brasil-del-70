@@ -14,7 +14,7 @@ Timestamps assume the narration is spoken over each animation, starting as the c
 | 1:42 to 2:16 | Slide 3, architecture | deck | Clicks 1 to 5: kernel, gateway, verifier, data platform, inward arrows |
 | 2:16 to 2:52 | Slide 4, workflows | deck | Clicks 1 to 5: one workflow per click, then the depth bar |
 | 2:52 to 3:07 | Demo B, card block and credit | app | See "Demo segments" |
-| 3:07 to 3:33 | Slide 5, evidence | deck | Clicks 1 to 4. Record this slide only after phase 14 fills `data/metrics.yml` |
+| 3:07 to 3:33 | Slide 5, evidence | deck | Clicks 1 to 4. The phase 14b numbers are in `data/metrics.yml`; the evidence tiles are simulation on a local model |
 | 3:33 to 3:55 | Slide 6, close | deck | Clicks 1 to 3: route to operation, team, thesis and links. Hold the last frame 3 seconds |
 
 If the cut runs long, trim in this order: the transcript beat of slide 1 (click 3), the depth bar of slide 4 (click 5), demo B's credit half. Never cut the thesis, the injection beat, or the limits.

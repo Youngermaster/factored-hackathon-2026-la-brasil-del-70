@@ -59,32 +59,33 @@ retrieval.abst_p.hybrid: {value: 0.92, display: "0.92", kind: provisional, sourc
 retrieval.abst_r.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.p95.hybrid: {value: 6.88, display: "6.9 ms", kind: provisional, source: docs/evaluation/retrieval.md}
 
-# -- held-out evaluation (phase 14): pending until the harness reports -------
-# Each value is the proposed system on the held-out workload; `.b0` is the
-# keyword-menu baseline B0 on the same workload. Replace `status: pending`
-# with `value:` and `display:` when docs/evaluation/ has the report.
-eval.cases: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "held-out scenarios, all workflows and languages"}
-eval.safe_resolution: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.safe_resolution.b0: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.attempted: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "share of cases where automation was attempted"}
-eval.containment: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.containment.b0: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.missed_escalations: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "count over cases that required a transfer"}
-eval.unneeded_escalations: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.unsafe: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)", note: "count and denominator, for example 0 of 240"}
-eval.unsafe.b0: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.latency_p50: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.latency_p95: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.cost_attempted: {status: pending, kind: projection, source: "docs/evaluation/ (phase 14)", note: "from the verified price table and token counts"}
-eval.cost_resolved: {status: pending, kind: projection, source: "docs/evaluation/ (phase 14)", note: "not defined when there are no resolutions"}
-eval.sar.account_inquiry.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.account_inquiry.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.card_support.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.card_support.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.dispute.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.dispute.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.credit.es: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-eval.sar.credit.pt: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
+# -- held-out evaluation (phase 14b): P and B0 on the frozen test split ----
+# Simulated, offline: scripted and model-played customers on the synthetic
+# evaluation world. P runs on the local model qwen2.5:7b-instruct; `.b0` is
+# the keyword-menu baseline B0 (no model) on the same cases. Rates are over
+# the 304 in-scope workflow cases unless the note says otherwise.
+eval.cases: {value: 332, display: "332", kind: simulation, source: docs/evaluation/results.md, note: "held-out test scenarios per system: 304 in the four workflows, 28 routing; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.safe_resolution: {value: 58.2, display: "58%", kind: simulation, source: docs/evaluation/results.md, note: "177 of 304, Wilson 95% 53 to 64; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.safe_resolution.b0: {value: 42.1, display: "42%", kind: simulation, source: docs/evaluation/results.md, note: "128 of 304, Wilson 95% 37 to 48; B0 has no model"}
+eval.attempted: {value: 84.5, display: "85%", kind: simulation, source: docs/evaluation/results.md, note: "257 of 304 cases where automation was attempted; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.containment: {value: 72.4, display: "72%", kind: simulation, source: docs/evaluation/results.md, note: "220 of 304, never reported alone; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.containment.b0: {value: 68.4, display: "68%", kind: simulation, source: docs/evaluation/results.md, note: "208 of 304; B0 has no model"}
+eval.missed_escalations: {value: 7, display: "7 of 64", kind: simulation, source: docs/evaluation/results.md, note: "over the cases that required a transfer; B0 10 of 64; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.unneeded_escalations: {value: 27, display: "27 of 240", kind: simulation, source: docs/evaluation/results.md, note: "over the cases that did not require a transfer; B0 42 of 240; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.unsafe: {value: 8, display: "8 of 304", kind: simulation, source: docs/evaluation/results.md, note: "as graded; 3 are grader false positives on review (results.md); local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.unsafe.b0: {value: 4, display: "4 of 304", kind: simulation, source: docs/evaluation/results.md, note: "as graded; B0 has no model"}
+eval.latency_p50: {value: 2.3, display: "2.3 s", kind: simulation, source: docs/evaluation/results.md, note: "per turn, in process, one laptop; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.latency_p95: {value: 10.4, display: "10.4 s", kind: simulation, source: docs/evaluation/results.md, note: "per turn, in process, one laptop; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.cost_attempted: {value: 0.0052, display: "0.0052 USD", kind: projection, source: docs/evaluation/results.md, note: "P tokens measured on the local model (0 USD) priced at the unverified claude-sonnet-5 list price; tokenizer differs"}
+eval.cost_resolved: {value: 0.0076, display: "0.0076 USD", kind: projection, source: docs/evaluation/results.md, note: "per safe automated resolution (177); same projection basis as eval.cost_attempted"}
+eval.sar.account_inquiry.es: {value: 68.1, display: "68%", kind: simulation, source: docs/evaluation/results.md, note: "32 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.account_inquiry.pt: {value: 75.9, display: "76%", kind: simulation, source: docs/evaluation/results.md, note: "22 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.card_support.es: {value: 59.6, display: "60%", kind: simulation, source: docs/evaluation/results.md, note: "28 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.card_support.pt: {value: 41.4, display: "41%", kind: simulation, source: docs/evaluation/results.md, note: "12 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.dispute.es: {value: 48.9, display: "49%", kind: simulation, source: docs/evaluation/results.md, note: "23 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.dispute.pt: {value: 37.9, display: "38%", kind: simulation, source: docs/evaluation/results.md, note: "11 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.credit.es: {value: 66.0, display: "66%", kind: simulation, source: docs/evaluation/results.md, note: "31 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.sar.credit.pt: {value: 62.1, display: "62%", kind: simulation, source: docs/evaluation/results.md, note: "18 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
 
 # -- operation (phases 15 to 17) ----------------------------------------------
 deploy.url: {status: pending, kind: offline, source: "deploy/README.md (phase 16)", note: "the public URL the organizers require"}

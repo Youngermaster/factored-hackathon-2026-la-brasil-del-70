@@ -6,7 +6,7 @@ The spoken script for the video, one section per slide (keyed by the slide's `ro
 
 <!-- total-target: 195-240 -->
 
-Rules for editing: English, plain words, no em dashes, no number that is not in `data/metrics.yml`. When phase 14 fills the evaluation metrics, update the `evidence` section with the real numbers (the comment there marks where).
+Rules for editing: English, plain words, no em dashes, no number that is not in `data/metrics.yml`. The `evidence` section carries the phase 14b test numbers; if the evaluation is rerun, update it from `data/metrics.yml`.
 
 ## hook
 
@@ -86,15 +86,15 @@ The card block in Portuguese, with its step-up code, then a credit question answ
 
 ## evidence
 
-<!-- slide 5, about 30 s. PHASE 14: replace click 2 and click 3 with the measured numbers and their denominators -->
+<!-- slide 5, about 30 s. Numbers from data/metrics.yml (phase 14b test run, local model) -->
 
 [arrive] The baseline and the system run the same held-out cases: every workflow, both languages, all three paths.
 
 [click 1] Including the brief's stress cases, from prompt injection to tool failures.
 
-[click 2] We report safe automated resolution, containment, escalation quality and unsafe outcomes, with denominators.
+[click 2] On a small local model, the system resolves fifty eight percent safely, against forty two for the baseline. Unsafe outcomes: eight of three hundred and four, each one read and listed.
 
-[click 3] Always per workflow and per language.
+[click 3] Always per workflow and per language: credit gains the most, and card support does not beat the baseline yet.
 
 [click 4] Retrieval is measured already: recall at one of zero point seven four, provisional.
 

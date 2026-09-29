@@ -87,7 +87,7 @@ clicks: 4
 <!--
 EVIDENCE. Narration: script.md, section "evidence". Click 1 stress cases,
 2 outcomes against B0, 3 per workflow and language, 4 efficiency and retrieval.
-Pending values render as dashed boxes until phase 14 fills data/metrics.yml.
+Pending values render as dashed boxes; the phase 14b test numbers fill data/metrics.yml.
 -->
 
 ---

@@ -240,7 +240,7 @@ evidence:
   abst: abstention precision and recall
   p95: p95 latency, hybrid
   retNote: test queries, labels pending review
-  cite: offline measurement  |  docs/evaluation/ (phase 14)
+  cite: simulation on a local open model  |  docs/evaluation/results.md
 
 close:
   limitsTitle: What we cannot claim yet
