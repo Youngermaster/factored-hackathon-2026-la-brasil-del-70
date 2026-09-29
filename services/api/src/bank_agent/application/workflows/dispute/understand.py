@@ -9,6 +9,7 @@ customer's words only), and every slot the model returns is validated by its out
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.llm import EXTRACT_DISPUTE, structured
 from bank_agent.application.understanding import amounts, dates, extraction
+from bank_agent.application.understanding.text import fold
 from bank_agent.application.workflows.dispute.data import DisputeData, load, save
 from bank_agent.domain.llm_outputs import DisputeSlotExtraction
 from bank_agent.domain.workflow import Intent
@@ -16,6 +17,12 @@ from bank_agent.domain.workflow import Intent
 DISPUTE_INTENTS = frozenset({Intent.DISPUTE_NEW, Intent.DISPUTE_STATUS})
 STATUS_INQUIRY = "STATUS_INQUIRY"
 LOCATE_TRANSACTION = "LOCATE_TRANSACTION"
+
+
+def _said(expression: str | None, text: str) -> bool:
+    """The model's date expression is used only when it is the customer's own words (phase 14b: a local model
+    returned an ISO date for a message that named no date, and the dispute could not find the purchase)."""
+    return bool(expression) and fold(expression or "") in fold(text)
 
 
 async def absorb(ctx: TurnContext, data: DisputeData, text: str, *, use_model: bool = True) -> DisputeData:
@@ -35,10 +42,13 @@ async def absorb(ctx: TurnContext, data: DisputeData, text: str, *, use_model: b
         changes["amount"] = mention.amount
         changes["currency"] = amounts.resolve_currency(mention, frozenset({ctx.currency} if ctx.currency else ()))
     elif extracted is not None and extracted.amount is not None:
-        changes["amount"], changes["currency"] = extracted.amount, extracted.currency_hint
+        # The text states the figure with no currency marker (else the branch above wins), so a currency from the
+        # model is a guess, never the customer's words; it would rule out every transaction in the real currency.
+        changes["amount"] = extracted.amount
+        changes["currency"] = extracted.currency_hint if mention is None else None
     found = dates.resolve_dates(text, ctx.today)
-    if found is None and extracted is not None and extracted.date_expression:
-        found = dates.resolve_dates(extracted.date_expression, ctx.today)
+    if found is None and extracted is not None and _said(extracted.date_expression, text):
+        found = dates.resolve_dates(extracted.date_expression or "", ctx.today)
     if found is not None:
         changes["date_expression"] = found.expression[:100]
         changes["date_options"] = found.interpretations
