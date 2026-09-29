@@ -13,7 +13,7 @@ from bank_agent.application.engine.llm import DETECT_SIGNALS, structured
 from bank_agent.application.engine.reply import Reply
 from bank_agent.application.engine.security import INJECTION_DETECTOR, detect_injection, referenced_ids
 from bank_agent.application.engine.shared import escalate_decision, refuse
-from bank_agent.application.engine.signals import SIGNAL_DETECTOR, detect_signals
+from bank_agent.application.engine.signals import SIGNAL_DETECTOR, detect_signals, plain_answer
 from bank_agent.application.engine.states import auth_required_reply
 from bank_agent.domain.actions import ToolName
 from bank_agent.domain.base import UntrustedText
@@ -135,14 +135,27 @@ async def _references(ctx: TurnContext) -> None:
         await add_trust_event(ctx, TrustEventKind.CROSS_CUSTOMER_PROBE, "reference:session_scope@1", "not_visible")
 
 
+def answers_pending_question(ctx: TurnContext) -> bool:
+    """The turn is a plain yes or no while a question is pending: a workflow state that awaits an answer (a
+    confirmation, an offer) or the engine's own switch question."""
+    if not plain_answer(ctx.text):
+        return False
+    if ctx.engine.pending_switch is not None:
+        return True
+    return not ctx.at_router and ctx.definition.spec(ctx.state).kind is StateKind.AWAITS_ANSWER
+
+
 async def inspect(ctx: TurnContext) -> Step | None:
     """Injection heuristics, escalation and privacy signals, and record ids named in the text; then the kernel's
-    common rules (refusal and escalation triggers) at the workflow's START binding."""
+    common rules (refusal and escalation triggers) at the workflow's START binding. A plain yes or no to a pending
+    question is resolved deterministically: the model's signals are not asked for (the keywords still run)."""
     if detect_injection(ctx.text):
         ctx.recorder.intervention("injection_detected")
         await add_trust_event(ctx, TrustEventKind.INJECTION_DETECTED, INJECTION_DETECTOR, "customer_text")
-    variables = {"customer_message": ctx.text, "dialect_hint": ctx.locale.value}
-    model = await structured(ctx, DETECT_SIGNALS, variables, ModelSignals)
+    model = None
+    if not answers_pending_question(ctx):
+        variables = {"customer_message": ctx.text, "dialect_hint": ctx.locale.value}
+        model = await structured(ctx, DETECT_SIGNALS, variables, ModelSignals)
     signals = detect_signals(ctx.text, person_offered=ctx.engine.person_offered).merged(model)
     ctx.escalation = ctx.escalation.evolve(
         human_requested=signals.human_requested,

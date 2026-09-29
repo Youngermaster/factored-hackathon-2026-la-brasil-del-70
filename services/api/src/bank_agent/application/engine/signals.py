@@ -79,6 +79,18 @@ def accepts_offer(text: str) -> bool:
     return len(words(text)) <= MAX_ACCEPTANCE_WORDS and parse_yes_no(text) is YesNo.YES
 
 
+MAX_ANSWER_WORDS = 6
+
+
+def plain_answer(text: str) -> bool:
+    """A short yes or no ("Sí, quiero solicitarlo", "não, obrigado"): an answer to a pending question, nothing more.
+
+    At a pending question such a turn is resolved by the deterministic parsers alone; the model's escalation
+    signals are not asked for, because a small model read "Sí, quiero solicitarlo" as a request for a person
+    (phase 14b). The keyword signals still run on it, so "sí, pero quiero hablar con un asesor" still escalates."""
+    return len(words(text)) <= MAX_ANSWER_WORDS and parse_yes_no(text) is not YesNo.UNCLEAR
+
+
 def detect_signals(text: str, *, person_offered: bool = False) -> DetectedSignals:
     """The keyword signals of ``text``; after an offer of a person, a bare yes is a request for one."""
     folded = fold(text)
