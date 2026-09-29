@@ -42,7 +42,7 @@ describe('locale files', () => {
 
   it.each(['es', 'pt', 'en'] as const)('%s uses no em or en dashes and no emoji', (language) => {
     for (const [key, text] of flat[language]) {
-      expect(text, key).not.toMatch(/[–—]/);
+      expect(text, key).not.toMatch(/[\u2013\u2014]/);
       expect(text, key).not.toMatch(/\p{Extended_Pictographic}/u);
     }
   });
