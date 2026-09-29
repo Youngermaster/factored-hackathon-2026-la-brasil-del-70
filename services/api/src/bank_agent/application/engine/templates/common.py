@@ -75,6 +75,19 @@ COMMON: dict[str, dict[Language, str]] = {
         "retomamos de onde paramos.",
         EN: "Your session expired. To continue, please verify your identity again; then we pick up where we left off.",
     },
+    "common.limited_service": {
+        ES: "En este momento funciono en modo limitado: te respondo con mensajes estándar y, si tu caso lo necesita, "
+        "te comunico con una persona del equipo.",
+        PT: "No momento estou funcionando em modo limitado: respondo com mensagens padrão e, se o seu caso precisar, "
+        "encaminho você para uma pessoa da equipe.",
+        EN: "I am working in a limited mode right now: I answer with standard messages and, if your case needs it, "
+        "I connect you with a person on the team.",
+    },
+    "common.unsafe_blocked": {
+        ES: "No puedo darte esa respuesta en este momento. Si lo necesitas, te comunico con una persona del equipo.",
+        PT: "Não posso dar essa resposta no momento. Se precisar, encaminho você para uma pessoa da equipe.",
+        EN: "I cannot give you that answer right now. If you need it, I can connect you with a person on the team.",
+    },
     "common.resume": {
         ES: "Gracias por verificar tu identidad. Retomemos donde íbamos.",
         PT: "Obrigado por verificar a sua identidade. Vamos retomar de onde paramos.",

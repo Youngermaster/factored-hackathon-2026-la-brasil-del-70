@@ -10,7 +10,7 @@ from decimal import Decimal
 import pytest
 from pydantic import JsonValue
 
-from bank_agent.adapters.llm.budget import BudgetGuardDecorator
+from bank_agent.adapters.llm.budget import BudgetGuardDecorator, InMemoryBudgetLedger
 from bank_agent.adapters.llm.tracing import SPAN_NAME
 from bank_agent.bootstrap.container import Container
 from bank_agent.bootstrap.llm import LlmOverrides
@@ -110,9 +110,10 @@ async def test_success_path_redacts_prices_traces_and_budgets(monkeypatch: pytes
     assert span.name == SPAN_NAME
     assert span.attributes["gen_ai.provider.name"] == "openai"
     assert span.attributes["bank.llm.cost_usd"] == "0.00066000"
-    budget = _find(container.llm_client, BudgetGuardDecorator)
-    assert budget.ledger.session_tokens["lin-int-1"] == 920
-    assert budget.ledger.conversation_cost["conv-int-1"] == Decimal("0.00066000")
+    ledger = _find(container.llm_client, BudgetGuardDecorator).ledger
+    assert isinstance(ledger, InMemoryBudgetLedger)
+    assert ledger.session_tokens["lin-int-1"] == 920
+    assert ledger.conversation_cost["conv-int-1"] == Decimal("0.00066000")
 
 
 async def test_transient_failures_are_retried_then_the_fallback_answers(monkeypatch: pytest.MonkeyPatch) -> None:

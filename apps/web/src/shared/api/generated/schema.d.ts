@@ -3,6 +3,26 @@
  * Do not edit by hand; change the backend and regenerate.
  */
 export interface paths {
+    "/health/details": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Details
+         * @description The degradation level (L0 to L4), its reasons, and each component's state; 503 at L4.
+         */
+        get: operations["health_details"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health/live": {
         parameters: {
             query?: never;
@@ -660,6 +680,11 @@ export interface components {
         };
         /** ClauseRef */
         ClauseRef: string;
+        /**
+         * ComponentState
+         * @enum {string}
+         */
+        ComponentState: "ok" | "degraded" | "unavailable" | "disabled";
         /** ConfirmationCard */
         ConfirmationCard: {
             amount: components["schemas"]["Money"];
@@ -1299,6 +1324,33 @@ export interface components {
             /** Verified Facts */
             verified_facts: components["schemas"]["VerifiedFact"][];
             workflow: components["schemas"]["WorkflowRef"] | null;
+        };
+        /** HealthDetailsResponse */
+        HealthDetailsResponse: {
+            /** Budget Used Ratio */
+            budget_used_ratio: number;
+            /** Checks */
+            checks: {
+                [key: string]: "ok" | "unavailable";
+            };
+            /** Components */
+            components: {
+                [key: string]: components["schemas"]["ComponentState"];
+            };
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "L0" | "L1" | "L2" | "L3" | "L4";
+            /** Reasons */
+            reasons: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "degraded" | "unavailable";
+            /** Template Only */
+            template_only: boolean;
         };
         /**
          * Intent
@@ -2107,6 +2159,44 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    health_details: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthDetailsResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthDetailsResponse"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
     health_live: {
         parameters: {
             query?: never;

@@ -18,7 +18,7 @@ OPERATION_IDS = {
     "conversations_create", "conversations_send_turn", "conversations_get", "conversations_trace",
     "agent_list_handoffs", "agent_get_handoff", "agent_claim_handoff", "agent_resolve_handoff",
     "agent_list_credit_applications", "agent_get_credit_application",
-    "eval_list_summaries", "eval_conversation_trace", "health_live", "health_ready",
+    "eval_list_summaries", "eval_conversation_trace", "health_live", "health_ready", "health_details",
 }  # fmt: skip
 
 

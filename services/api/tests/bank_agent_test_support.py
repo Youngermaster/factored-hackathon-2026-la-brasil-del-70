@@ -11,6 +11,7 @@ from bank_agent.api.provider import ApiConfig, CreditProductNames, PolicyClauses
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
+from bank_agent.application.reliability.ladder import StaticDegradation
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.testing.clock import FixedClock
@@ -65,9 +66,10 @@ class FakeProvider:
     inbox, or evaluation services, which the API tests take from a real container instead.
     """
 
-    def __init__(self, checks: Sequence[ReadinessCheck] = ()) -> None:
+    def __init__(self, checks: Sequence[ReadinessCheck] = (), degradation: StaticDegradation | None = None) -> None:
         self._checks = tuple(checks)
         self.closed = False
+        self._degradation = degradation or StaticDegradation()
         self._clock = FixedClock(datetime(2026, 6, 18, 15, 0, tzinfo=UTC))
 
     @property
@@ -101,6 +103,10 @@ class FakeProvider:
     @property
     def policy_clauses(self) -> PolicyClauses:
         raise AssertionError("FakeProvider has no policy pack")
+
+    @property
+    def degradation(self) -> StaticDegradation:
+        return self._degradation
 
     async def aclose(self) -> None:
         self.closed = True

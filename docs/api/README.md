@@ -10,6 +10,7 @@ Roles: `anyone` needs no session; the others need a session of that role. CSRF: 
 |---|---|---|---|---|
 | GET | `/health/live` | anyone | no | none |
 | GET | `/health/ready` | anyone | no | none |
+| GET | `/health/details` | anyone | no | none |
 | GET | `/v1/auth/csrf` | anyone | no | auth |
 | POST | `/v1/auth/start` | anyone | yes | auth |
 | POST | `/v1/auth/verify` | anyone | yes | auth |

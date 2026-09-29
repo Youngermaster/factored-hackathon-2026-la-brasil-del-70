@@ -53,6 +53,8 @@ from bank_agent.ports.telemetry import AttributeValue, Span
 
 ROUTER_REF = WorkflowRef(id="router", version=1)
 ESCALATED_STATE = "ESCALATED"
+LIMITED_SERVICE = "common.limited_service"
+"""The prefix of every reply in template-only mode (L2): the customer learns the service is limited."""
 
 
 @dataclass(frozen=True)
@@ -122,6 +124,8 @@ class WorkflowEngine:
             raise RuntimeError("a turn must end with a reply")
         if ctx.resumed and reply.prefix is None:
             reply = replace(reply, prefix="common.resume")
+        if ctx.degradation.template_only and reply.prefix is None:
+            reply = replace(reply, prefix=LIMITED_SERVICE)
         response = await finish_reply(ctx, self._renderer, reply)
         await refine_summary(ctx)
         record = build_record(ctx, conversation, step, request.channel, now, trace_id=span.trace_id)
@@ -201,6 +205,9 @@ class WorkflowEngine:
         session_context = SessionContext.of(session, services.clock) if valid else None
         tools_context = session_context or SessionContext(session=session, at=now)
         recorder = TurnRecorder(monotonic=self._monotonic)
+        degradation = services.degradation.current()
+        if degradation.degraded:
+            recorder.intervention(f"degradation_{degradation.level.label.lower()}")
         retry_budget = services.policy.pack.get_clause("ESC-ALL-1", Language.ES).metadata.params["tool_retry_budget"]
         tools = GuardedToolset(
             services.tools.for_session(tools_context),
@@ -243,6 +250,7 @@ class WorkflowEngine:
             enabled=enabled,
             at_router=at_router,
             prior_complaints=loaded.prior_complaints,
+            degradation=degradation,
         )
 
     async def _run(self, ctx: TurnContext) -> Step:

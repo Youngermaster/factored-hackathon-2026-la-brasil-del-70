@@ -21,6 +21,7 @@ _SETTINGS_PREFIXES = (
     "POLICY_",
     "RETRIEVAL_",
     "WORKFLOW_",
+    "DEGRADATION_",
 )
 
 

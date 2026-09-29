@@ -21,6 +21,7 @@ from bank_agent.policy.loader.catalog import ProductDisplay
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
+from bank_agent.ports.reliability import DegradationSource
 
 
 def no_trace() -> str | None:
@@ -96,6 +97,11 @@ class ServiceProvider(Protocol):
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:
         """Dependencies checked by ``/health/ready``; empty when none are configured."""
+        ...
+
+    @property
+    def degradation(self) -> DegradationSource:
+        """The degradation ladder read by ``/health/details`` and told the outcome of each database probe."""
         ...
 
     async def aclose(self) -> None:

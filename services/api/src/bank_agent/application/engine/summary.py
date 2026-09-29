@@ -8,7 +8,7 @@ verified. Otherwise, or on any gateway error, the deterministic summary stays an
 
 from bank_agent.application.engine.context import TurnContext
 from bank_agent.application.engine.handoff import validate_handoff
-from bank_agent.application.engine.llm import SUMMARIZE_HANDOFF, call_context
+from bank_agent.application.engine.llm import SUMMARIZE_HANDOFF, call_context, skipped
 from bank_agent.application.grounding.lexicon import ClaimedAction, claimed_actions
 from bank_agent.application.grounding.numbers import Figure, extract_figures, fold_same_length
 from bank_agent.domain.errors import LlmError
@@ -32,7 +32,7 @@ def grounded(draft: HandoffSummaryDraft, facts: dict[str, str], verified: set[st
 
 async def refine_summary(ctx: TurnContext) -> None:
     handoff = ctx.handoff
-    if handoff is None or not ctx.settings.llm_handoff_summary:
+    if handoff is None or not ctx.settings.llm_handoff_summary or skipped(ctx, SUMMARIZE_HANDOFF):
         return
     facts = {f"F{index}": fact.fact for index, fact in enumerate(handoff.verified_facts, 1)}
     verified = {item.action.value for item in handoff.actions_taken if item.verification.value == "verified"}

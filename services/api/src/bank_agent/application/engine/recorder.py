@@ -123,6 +123,23 @@ class TurnRecorder:
         )
         self.intervention("llm_fallback")
 
+    def llm_skipped(self, prompt: PromptRef, code: str) -> None:
+        """A model call not attempted (template-only mode): recorded like a fallback, with the reason as its code."""
+        self.prompts.setdefault(str(prompt), prompt)
+        self.llm_calls.append(
+            LlmCallRecord(
+                prompt=prompt,
+                model_id=UNAVAILABLE_MODEL,
+                input_tokens=0,
+                output_tokens=0,
+                cost_usd=Decimal(0),
+                latency_ms=0,
+                status=LlmCallStatus.FALLBACK,
+                error_code=code,
+            )
+        )
+        self.intervention("llm_fallback")
+
     def token_usage(self) -> TokenUsage:
         return sum(
             (TokenUsage(input_tokens=c.input_tokens, output_tokens=c.output_tokens) for c in self.llm_calls),

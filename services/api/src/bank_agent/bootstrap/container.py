@@ -20,7 +20,9 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
 from bank_agent.adapters.policy.filesystem import FilesystemCreditCatalog, FilesystemPolicyRepository
+from bank_agent.adapters.policy.unavailable import UnavailableCreditCatalog
 from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
+from bank_agent.adapters.reliability.monitor import DegradationMonitor
 from bank_agent.adapters.retrieval.embedding import Embedder
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.system.ids import RandomIdGenerator
@@ -29,9 +31,10 @@ from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
+from bank_agent.application.reliability.ladder import LadderFlags
 from bank_agent.application.tools.banking import BankingTools
-from bank_agent.bootstrap.llm import LlmOverrides, build_llm_client
-from bank_agent.bootstrap.models import default_embedder
+from bank_agent.bootstrap.llm import LlmOverrides, build_llm_stack
+from bank_agent.bootstrap.models import ModelFallbacks, default_embedder
 from bank_agent.bootstrap.persistence import (
     PersistenceServices,
     build_banking_tools,
@@ -42,6 +45,7 @@ from bank_agent.bootstrap.policy import PolicyServices, build_policy
 from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
 from bank_agent.bootstrap.workflows import WorkflowServices, build_workflows
+from bank_agent.domain.degradation import ComponentState
 from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
@@ -83,13 +87,16 @@ class Container:
         self._clock: Clock = clock if clock is not None else SystemClock()
         self._telemetry: Telemetry = telemetry if telemetry is not None else NoopTelemetry()
         self._prompt_registry = FilePromptRegistry.from_package()
-        self._llm_client = build_llm_client(
+        degradation = settings.degradation
+        self._llm_stack = build_llm_stack(
             settings.llm,
             registry=self._prompt_registry,
             clock=self._clock,
             telemetry=self._telemetry,
             overrides=llm_overrides,
+            fallback_enabled=degradation.fallback_provider,
         )
+        self._llm_client = self._llm_stack.client
         self._engine: AsyncEngine | None = None
         if settings.database.is_configured:
             self._engine = create_async_engine(
@@ -101,7 +108,31 @@ class Container:
         self._ids: IdGenerator = ids if ids is not None else RandomIdGenerator()
         self._persistence = persistence if persistence is not None else build_persistence(self._engine)
         self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
-        self._policy = build_policy(settings.policy, clock=self._clock, ids=self._ids)
+        self._policy = build_policy(
+            settings.policy, clock=self._clock, ids=self._ids, catalog_fallback=degradation.credit_catalog_fallback
+        )
+        self._readiness_checks: tuple[ReadinessCheck, ...] = (
+            (PostgresReadinessCheck(self._engine),) if self._engine is not None else ()
+        )
+        self._model_fallbacks = ModelFallbacks(
+            baselines_allowed=degradation.model_baselines,
+            router_threshold=degradation.router_threshold,
+            risk_band_fallback=degradation.risk_band_fallback,
+        )
+        self._degradation = DegradationMonitor(
+            clock=self._clock,
+            telemetry=self._telemetry,
+            flags=LadderFlags(
+                fallback_provider=degradation.fallback_provider,
+                template_only=degradation.template_only,
+                model_baselines=degradation.model_baselines,
+                risk_band_fallback=degradation.risk_band_fallback,
+            ),
+            llm=self._llm_stack.health,
+            models_on_baseline=self._model_fallbacks.served_baseline,
+            credit_catalog=ComponentState.OK if self._policy.credit_catalog_available else ComponentState.UNAVAILABLE,
+            database_configured=bool(self._readiness_checks),
+        )
         self._grounding = build_grounding(settings.retrieval, self._policy.repository, embedder=embedder)
         self._banking_tools = build_banking_tools(
             self._persistence,
@@ -123,6 +154,8 @@ class Container:
             environment=settings.runtime.app_env,
             embedder=(lambda: embedder) if embedder is not None else default_embedder(settings.retrieval),
             telemetry=self._telemetry,
+            fallbacks=self._model_fallbacks,
+            degradation=self._degradation,
         )
         self._conversations = ConversationService(
             self._workflows.engine(), self._persistence.uow_factory, self._clock, self._ids
@@ -130,12 +163,10 @@ class Container:
         self._assistant_preferences = AssistantPreferencesService(self._persistence.uow_factory, self._clock)
         self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
-        self._readiness_checks: tuple[ReadinessCheck, ...] = (
-            (PostgresReadinessCheck(self._engine),) if self._engine is not None else ()
-        )
+        self._degradation.current()
 
     @property
-    def credit_product_names(self) -> FilesystemCreditCatalog:
+    def credit_product_names(self) -> FilesystemCreditCatalog | UnavailableCreditCatalog:
         return self._policy.catalog
 
     @property
@@ -145,6 +176,11 @@ class Container:
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:
         return self._readiness_checks
+
+    @property
+    def degradation(self) -> DegradationMonitor:
+        """The degradation ladder over the gateway's breakers and budget, startup loads, and database probes."""
+        return self._degradation
 
     @property
     def clock(self) -> Clock:
