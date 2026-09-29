@@ -67,6 +67,9 @@ class EngineData(DomainModel):
     """A card chosen in ``card_support``, carried into ``dispute`` after a switch as a verified fact."""
     lineage: LineageId | None = None
     """The session lineage of the last turn. A different one means the customer signed in again (phase 11)."""
+    person_offered: bool = False
+    """The last reply offered a person (an abstention with the offer), so a bare yes in the next turn accepts it.
+    Set from each turn's reply, so it lasts exactly one turn."""
 
     def executed_for(self, key: str) -> ExecutedAction | None:
         return next((item for item in self.executed if item.idempotency_key == key), None)

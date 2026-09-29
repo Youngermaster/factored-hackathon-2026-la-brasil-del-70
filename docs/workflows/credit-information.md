@@ -176,4 +176,3 @@ Scenarios 24 to 29 with variants run on both backends (`test_credit_workflow.py`
 - The default estimator is a score-band baseline with no trained label; its intervals are wide by design and not calibrated. The learned estimators are cross-sectional and weak (ADR 0030), and with them every first-time applicant is out of distribution and goes to review.
 - Income stays in the product currency (no exchange rates), so `monthly_income_usd` is unset for the estimator.
 - Catalog names are shown as product types, not the catalog's display names (BACKLOG, phase 13).
-- The offer of a person after an abstention is accepted by asking for one ("hablar con una persona"), as in 09a.
