@@ -13,9 +13,11 @@ from bank_agent.api.csrf import CSRF_HEADER, CsrfTokens
 from bank_agent.api.domain_problems import api_problem_registry
 from bank_agent.api.middleware import (
     REQUEST_ID_HEADER,
+    TRACE_ID_HEADER,
     BodySizeLimitMiddleware,
     RequestIdMiddleware,
     SecurityHeadersMiddleware,
+    TraceIdMiddleware,
 )
 from bank_agent.api.openapi import install_openapi
 from bank_agent.api.problems import PAYLOAD_TOO_LARGE_PROBLEM, PROBLEM_CONTENT_TYPE, ProblemRegistry
@@ -44,8 +46,9 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     closed when the application shuts down. ``problems`` maps typed errors to problem details; when none is
     given, the HTTP-layer errors and every domain error family are registered.
 
-    Middleware, outermost first: request id, security headers, CORS, body size limit. Every response class,
-    including CORS preflights, 413 refusals, and problem details, therefore carries the security headers.
+    Middleware, outermost first: request id, trace id, security headers, CORS, body size limit. Every response class,
+    including CORS preflights, 413 refusals, and problem details, therefore carries the security headers. The
+    OpenTelemetry instrumentation, when the entry point installs it, wraps the whole stack.
     """
 
     @asynccontextmanager
@@ -76,10 +79,11 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
         allow_credentials=True,
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type", CSRF_HEADER, REQUEST_ID_HEADER],
-        expose_headers=[REQUEST_ID_HEADER, "Retry-After"],
+        expose_headers=[REQUEST_ID_HEADER, TRACE_ID_HEADER, "Retry-After"],
         max_age=600,
     )
     app.add_middleware(SecurityHeadersMiddleware, production=security.production)
+    app.add_middleware(TraceIdMiddleware, current_trace_id=config.current_trace_id)
     app.add_middleware(RequestIdMiddleware, id_factory=config.request_id_factory)
     app.include_router(health.router)
     app.include_router(auth.router)

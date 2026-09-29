@@ -5,8 +5,13 @@ The engine sets the allowlist of the current state before each handler runs; a c
 redacted arguments (the tools' audit allowlist), attempts, latency, and a result summary. Only transient failures
 (``ToolError.retryable``) are retried, at most ``retry_budget`` times (``ESC-ALL-1``); every tool is idempotent
 (reads by nature, writes by idempotency key), so a retry never duplicates an effect.
+
+Each attempt is bounded by ``timeout_seconds`` (``TOOL_TIMEOUT_SECONDS``): a slow tool becomes ``ToolTimeoutError``, a
+transient failure retried within the budget like any other; a write that timed out is never reported as done, because
+success is reported only after the read-back. With telemetry, every call is a ``bank.tool.call`` span.
 """
 
+import asyncio
 import time
 from collections.abc import Awaitable, Callable, Iterator, Mapping, Sequence
 from contextlib import contextmanager
@@ -21,7 +26,7 @@ from bank_agent.domain.actions import CreateDisputeArguments, SubmitCreditApplic
 from bank_agent.domain.cards import CardBlockReason, CardStatusView
 from bank_agent.domain.credit import CreditApplicationIntake, CreditProduct, CreditProfile
 from bank_agent.domain.dispute import DisputeCase
-from bank_agent.domain.errors import DomainError, NotFoundError, ToolError, ToolNotAllowedError
+from bank_agent.domain.errors import DomainError, NotFoundError, ToolError, ToolNotAllowedError, ToolTimeoutError
 from bank_agent.domain.execution_record import RedactedValue, ToolCallRecord, ToolCallStatus
 from bank_agent.domain.identifiers import (
     ApplicationId,
@@ -35,6 +40,7 @@ from bank_agent.domain.intelligence import DateRange
 from bank_agent.domain.product import Product
 from bank_agent.domain.transaction import Transaction
 from bank_agent.ports.repositories.transactions import TransactionQuery
+from bank_agent.ports.telemetry import Telemetry
 
 
 def _recorded(arguments: Mapping[str, object]) -> dict[str, RedactedValue]:
@@ -57,11 +63,15 @@ class GuardedToolset:
         *,
         retry_budget: int,
         monotonic: Callable[[], float] = time.perf_counter,
+        timeout_seconds: float | None = None,
+        telemetry: Telemetry | None = None,
     ) -> None:
         self._inner = inner
         self._recorder = recorder
         self._retry_budget = retry_budget
         self._monotonic = monotonic
+        self._timeout = timeout_seconds
+        self._telemetry = telemetry
         self._allowed: frozenset[ToolName] = frozenset()
 
     @property
@@ -89,6 +99,37 @@ class GuardedToolset:
         arguments: Mapping[str, object] | None = None,
         idempotency_key: IdempotencyKey | None = None,
         summarize: Callable[[T], str | None] = lambda _: None,
+    ) -> T:
+        if self._telemetry is None:
+            return await self._run(tool, invoke, arguments, idempotency_key, summarize)
+        with self._telemetry.span("bank.tool.call", {"bank.tool": tool.value}) as span:
+            try:
+                return await self._run(tool, invoke, arguments, idempotency_key, summarize)
+            except DomainError as error:
+                span.record_error_code(error.code)
+                raise
+            finally:
+                calls = self._recorder.tool_calls
+                if calls and calls[-1].tool is tool:
+                    span.set_attribute("bank.tool.status", calls[-1].status.value)
+                    span.set_attribute("bank.tool.attempts", calls[-1].attempts)
+
+    async def _attempt[T](self, invoke: Callable[[], Awaitable[T]]) -> T:
+        if self._timeout is None:
+            return await invoke()
+        try:
+            async with asyncio.timeout(self._timeout):
+                return await invoke()
+        except TimeoutError:
+            raise ToolTimeoutError(f"the tool call exceeded {self._timeout} seconds") from None
+
+    async def _run[T](
+        self,
+        tool: ToolName,
+        invoke: Callable[[], Awaitable[T]],
+        arguments: Mapping[str, object] | None,
+        idempotency_key: IdempotencyKey | None,
+        summarize: Callable[[T], str | None],
     ) -> T:
         sequence = self._recorder.next_tool_sequence()
         recorded = _recorded(arguments or {})
@@ -118,7 +159,7 @@ class GuardedToolset:
         while True:
             attempts += 1
             try:
-                result = await invoke()
+                result = await self._attempt(invoke)
             except ToolError as error:
                 if error.retryable and attempts <= self._retry_budget:
                     continue

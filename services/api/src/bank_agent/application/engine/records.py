@@ -6,13 +6,14 @@ from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.domain.access import Channel
 from bank_agent.domain.conversation import Conversation
 from bank_agent.domain.execution_record import ExecutionRecord
+from bank_agent.domain.identifiers import TraceId
 from bank_agent.domain.workflow import Outcome, WorkflowRef
 
 ROUTER_REF = WorkflowRef(id="router", version=1)
 
 
 def build_record(
-    ctx: TurnContext, before: Conversation, step: Step, channel: Channel, now: datetime
+    ctx: TurnContext, before: Conversation, step: Step, channel: Channel, now: datetime, trace_id: str | None = None
 ) -> ExecutionRecord:
     recorder = ctx.recorder
     outcome = step.outcome
@@ -56,4 +57,5 @@ def build_record(
         retrieval=recorder.retrieval,
         risk_estimates=tuple(recorder.risk_estimates),
         eligibility_assessments=tuple(recorder.eligibility_assessments),
+        trace_id=TraceId(trace_id) if trace_id is not None else None,
     )

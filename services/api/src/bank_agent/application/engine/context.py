@@ -38,6 +38,7 @@ from bank_agent.ports.eligibility import EligibilityPolicy
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.models import IntentRouter, LanguageDetector, RiskEstimator, TransactionResolver
 from bank_agent.ports.sessions import SessionStore
+from bank_agent.ports.telemetry import Telemetry
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
 
@@ -72,6 +73,8 @@ class EngineSettings:
     llm_handoff_summary: bool = False
     max_turns: int = 40
     max_steps: int = 12
+    tool_timeout_seconds: float | None = None
+    """Bound on one tool attempt; a slow tool becomes ``tool_timeout`` (``WORKFLOW_TOOL_TIMEOUT_SECONDS``)."""
     llm_max_output_tokens: int = 600
     environment: str = "development"
     fixed_language: Language | None = None
@@ -106,6 +109,8 @@ class EngineServices:
     clock: Clock
     ids: IdGenerator
     credit: CreditPorts
+    telemetry: Telemetry
+    """Spans for the turn, each state handler, and each tool call; turn metrics from the execution record."""
 
 
 @dataclass(frozen=True)

@@ -59,6 +59,7 @@ EXTENSIONS = {
     "Span",
     "Counter",
     "Histogram",
+    "Gauge",
 }
 
 

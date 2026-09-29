@@ -19,6 +19,7 @@ from bank_agent.application.engine.data import ENGINE_KEY, FLOW_KEY, dump, load_
 from bank_agent.application.engine.flow import route_and_run
 from bank_agent.application.engine.gate import inspect, pause, resolve_turn_language, resume_after_sign_in
 from bank_agent.application.engine.handoff import validate_handoff
+from bank_agent.application.engine.metrics import TurnMetrics
 from bank_agent.application.engine.phrase import finish_reply
 from bank_agent.application.engine.recorder import TurnRecorder
 from bank_agent.application.engine.records import build_record
@@ -48,6 +49,7 @@ from bank_agent.domain.identifiers import ConversationId, IdKind, TurnId
 from bank_agent.domain.locale import Language
 from bank_agent.domain.session import Session
 from bank_agent.domain.workflow import WorkflowId, WorkflowRef
+from bank_agent.ports.telemetry import AttributeValue, Span
 
 ROUTER_REF = WorkflowRef(id="router", version=1)
 ESCALATED_STATE = "ESCALATED"
@@ -88,6 +90,7 @@ class WorkflowEngine:
         self._registry = registry
         self._renderer = renderer
         self._monotonic = monotonic
+        self._metrics = TurnMetrics(services.telemetry)
 
     @property
     def registry(self) -> WorkflowRegistry:
@@ -97,6 +100,13 @@ class WorkflowEngine:
         replayed = await self._replay(request)
         if replayed is not None:
             return replayed
+        attributes: dict[str, AttributeValue] = {"bank.turn_id": request.turn_id, "bank.channel": request.channel}
+        if request.conversation_id is not None:
+            attributes["bank.conversation_id"] = request.conversation_id
+        with self._services.telemetry.span("bank.turn", attributes) as span:
+            return await self._process(request, span)
+
+    async def _process(self, request: TurnRequest, span: Span) -> TurnResult:
         loaded = await self._load(request)
         now = self._services.clock.now()
         conversation = loaded.conversation or self.new_conversation(
@@ -114,7 +124,7 @@ class WorkflowEngine:
             reply = replace(reply, prefix="common.resume")
         response = await finish_reply(ctx, self._renderer, reply)
         await refine_summary(ctx)
-        record = build_record(ctx, conversation, step, request.channel, now)
+        record = build_record(ctx, conversation, step, request.channel, now, trace_id=span.trace_id)
         try:
             await self._persist(ctx, conversation, loaded.conversation is None, request, response, record, now)
         except DuplicateEntityError:
@@ -122,6 +132,12 @@ class WorkflowEngine:
             if again is None:
                 raise
             return again
+        span.set_attribute("bank.conversation_id", conversation.conversation_id)
+        span.set_attribute("bank.workflow", record.workflow.id)
+        span.set_attribute("bank.state", record.state_after)
+        span.set_attribute("bank.outcome", record.outcome.value)
+        reason = ctx.handoff.escalation_reason.code.value if ctx.handoff is not None else None
+        self._metrics.observe(record, escalation_reason=reason)
         return TurnResult(
             turn_id=request.turn_id,
             conversation_id=conversation.conversation_id,
@@ -191,6 +207,8 @@ class WorkflowEngine:
             recorder,
             retry_budget=retry_budget if isinstance(retry_budget, int) else 0,
             monotonic=self._monotonic,
+            timeout_seconds=self._settings.tool_timeout_seconds,
+            telemetry=services.telemetry,
         )
         position = conversation.position
         at_router = position.workflow == ROUTER_REF

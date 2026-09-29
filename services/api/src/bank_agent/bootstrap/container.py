@@ -12,7 +12,7 @@ proposed system and baseline B0) from ``bootstrap/workflows.py``; the HTTP use c
 the published evaluation summaries) are wired here too.
 """
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 
 from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
@@ -76,8 +76,10 @@ class Container:
         ids: IdGenerator | None = None,
         embedder: Embedder | None = None,
         persistence: PersistenceServices | None = None,
+        on_close: Sequence[Callable[[], None]] = (),
     ) -> None:
         self.settings = settings
+        self._on_close = tuple(on_close)
         self._clock: Clock = clock if clock is not None else SystemClock()
         self._telemetry: Telemetry = telemetry if telemetry is not None else NoopTelemetry()
         self._prompt_registry = FilePromptRegistry.from_package()
@@ -120,6 +122,7 @@ class Container:
             ids=self._ids,
             environment=settings.runtime.app_env,
             embedder=(lambda: embedder) if embedder is not None else default_embedder(settings.retrieval),
+            telemetry=self._telemetry,
         )
         self._conversations = ConversationService(
             self._workflows.engine(), self._persistence.uow_factory, self._clock, self._ids
@@ -212,5 +215,10 @@ class Container:
         return self._engine
 
     async def aclose(self) -> None:
-        if self._engine is not None:
-            await self._engine.dispose()
+        """Dispose of the database engine, then run the shutdown hooks (flushing the telemetry exporters)."""
+        try:
+            if self._engine is not None:
+                await self._engine.dispose()
+        finally:
+            for close in self._on_close:
+                close()

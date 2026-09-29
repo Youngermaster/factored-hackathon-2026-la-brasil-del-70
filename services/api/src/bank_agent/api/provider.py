@@ -23,6 +23,10 @@ from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 
 
+def no_trace() -> str | None:
+    return None
+
+
 @dataclass(frozen=True, slots=True)
 class ApiConfig:
     """HTTP-layer configuration derived from settings by the composition root."""
@@ -35,6 +39,8 @@ class ApiConfig:
     security: SecurityConfig = field(default_factory=SecurityConfig.development)
     monotonic: Callable[[], float] = time.monotonic
     """The clock of the rate limiter's windows; tests pass a controllable one."""
+    current_trace_id: Callable[[], str | None] = no_trace
+    """The active trace id for ``X-Trace-Id`` (the telemetry adapter's ``current_trace_id``)."""
 
 
 class CreditProductNames(Protocol):

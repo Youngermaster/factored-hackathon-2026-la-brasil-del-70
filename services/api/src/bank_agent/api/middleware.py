@@ -1,4 +1,4 @@
-"""Pure ASGI middleware: request ids, security headers, and the request body limit."""
+"""Pure ASGI middleware: request ids, trace ids, security headers, and the request body limit."""
 
 import re
 from collections.abc import Awaitable, Callable
@@ -10,6 +10,7 @@ from starlette.responses import Response
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 REQUEST_ID_HEADER: Final = "X-Request-ID"
+TRACE_ID_HEADER: Final = "X-Trace-Id"
 _VALID_REQUEST_ID: Final = re.compile(r"^[A-Za-z0-9-]{8,64}$")
 
 
@@ -50,6 +51,33 @@ class RequestIdMiddleware:
                     return candidate
                 break
         return self._id_factory()
+
+
+class TraceIdMiddleware:
+    """Answers every HTTP request with the id of its trace in ``X-Trace-Id``.
+
+    The id comes from ``current_trace_id`` when the response starts, inside the server span the OpenTelemetry
+    instrumentation opened, so it is the trace a support engineer finds in Jaeger and the one the turn's execution
+    record stores. Responses outside a trace (health probes, or no tracer) carry no header.
+    """
+
+    def __init__(self, app: ASGIApp, current_trace_id: Callable[[], str | None]) -> None:
+        self._app = app
+        self._current_trace_id = current_trace_id
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self._app(scope, receive, send)
+            return
+
+        async def send_with_trace_id(message: Message) -> None:
+            if message["type"] == "http.response.start":
+                trace_id = self._current_trace_id()
+                if trace_id is not None:
+                    MutableHeaders(scope=message)[TRACE_ID_HEADER] = trace_id
+            await send(message)
+
+        await self._app(scope, receive, send_with_trace_id)
 
 
 API_CSP: Final = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"

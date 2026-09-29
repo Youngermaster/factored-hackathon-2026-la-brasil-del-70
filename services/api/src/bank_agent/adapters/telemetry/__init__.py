@@ -1,1 +1,1 @@
-"""Telemetry adapters. Phase 15 adds the OpenTelemetry adapter next to the no-op one."""
+"""Telemetry adapters: OpenTelemetry for the API, a no-op adapter, and the instrument catalog."""

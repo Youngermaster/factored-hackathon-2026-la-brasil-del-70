@@ -1,5 +1,7 @@
 """The guarded toolset: the per-state allowlist, bounded retries for transient failures only, and records."""
 
+import asyncio
+
 import pytest
 
 from bank_agent.application.engine.recorder import TurnRecorder
@@ -13,6 +15,7 @@ from bank_agent.domain.errors import (
 )
 from bank_agent.domain.execution_record import ToolCallStatus
 from bank_agent.domain.identifiers import SourceRef, TransactionId
+from bank_agent.testing.telemetry import RecordingTelemetry
 from bank_agent_builders import T0
 
 
@@ -85,3 +88,45 @@ async def test_engine_checks_widen_the_allowlist_only_inside_the_block() -> None
     )
     tools.attach_verification(ToolName.GET_TRANSACTION, verification)
     assert recorder.tool_calls[0].verification == verification
+
+
+class Slow:
+    """A toolset stand-in whose ``get_transaction`` takes longer than any timeout the tests set."""
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    async def get_transaction(self, transaction_id: TransactionId) -> str:
+        self.calls += 1
+        await asyncio.sleep(10)
+        return f"found {transaction_id}"
+
+
+async def test_a_slow_tool_times_out_is_retried_and_is_recorded_as_a_timeout() -> None:
+    inner = Slow()
+    recorder = TurnRecorder(monotonic=lambda: 0.0)
+    tools = GuardedToolset(inner, recorder, retry_budget=1, monotonic=lambda: 0.0, timeout_seconds=0.01)  # type: ignore[arg-type]
+    tools.allow(frozenset({ToolName.GET_TRANSACTION}))
+    with pytest.raises(ToolTimeoutError):
+        await tools.get_transaction(TransactionId("TXN-1"))
+    assert inner.calls == 2
+    call = recorder.tool_calls[0]
+    assert (call.status, call.attempts, call.error_code) == (ToolCallStatus.FAILED, 2, "tool_timeout")
+
+
+async def test_each_call_is_a_span_with_its_status_and_attempts() -> None:
+    telemetry = RecordingTelemetry()
+    recorder = TurnRecorder(monotonic=lambda: 0.0)
+    tools = GuardedToolset(Flaky(1), recorder, retry_budget=2, monotonic=lambda: 0.0, telemetry=telemetry)  # type: ignore[arg-type]
+    tools.allow(frozenset({ToolName.GET_TRANSACTION}))
+    await tools.get_transaction(TransactionId("TXN-1"))
+    tools.allow(frozenset())
+    with pytest.raises(ToolNotAllowedError):
+        await tools.get_transaction(TransactionId("TXN-1"))
+    ok, refused = telemetry.spans
+    assert (ok.name, ok.attributes) == (
+        "bank.tool.call",
+        {"bank.tool": "get_transaction", "bank.tool.status": "ok", "bank.tool.attempts": 2},
+    )
+    assert refused.attributes["bank.tool.status"] == "rejected_by_allowlist"
+    assert refused.error_codes == [ToolNotAllowedError.code]

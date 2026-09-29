@@ -1,4 +1,4 @@
-"""A telemetry adapter that records nothing, used until the OpenTelemetry adapter lands (phase 15)."""
+"""A telemetry adapter that records nothing: CLIs, the evaluation harness, and tests that do not assert telemetry."""
 
 from collections.abc import Iterator
 from contextlib import AbstractContextManager, contextmanager
@@ -19,12 +19,17 @@ class NoopSpan:
 
 
 class NoopCounter:
-    def add(self, amount: int, attributes: dict[str, AttributeValue] | None = None) -> None:
+    def add(self, amount: float, attributes: dict[str, AttributeValue] | None = None) -> None:
         """Discard the measurement."""
 
 
 class NoopHistogram:
     def record(self, value: float, attributes: dict[str, AttributeValue] | None = None) -> None:
+        """Discard the measurement."""
+
+
+class NoopGauge:
+    def set(self, value: float, attributes: dict[str, AttributeValue] | None = None) -> None:
         """Discard the measurement."""
 
 
@@ -43,3 +48,9 @@ class NoopTelemetry:
 
     def histogram(self, name: str) -> NoopHistogram:
         return NoopHistogram()
+
+    def gauge(self, name: str) -> NoopGauge:
+        return NoopGauge()
+
+    def current_trace_id(self) -> str | None:
+        return None

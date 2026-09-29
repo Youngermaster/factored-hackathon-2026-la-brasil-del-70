@@ -1,4 +1,9 @@
-"""Telemetry facade, so inner layers never import OpenTelemetry (phase 15 adds the real adapter)."""
+"""Telemetry facade, so inner layers never import OpenTelemetry.
+
+The OpenTelemetry adapter (``adapters/telemetry/opentelemetry.py``) implements it for the API; the no-op adapter serves
+CLIs and the evaluation harness, and ``bank_agent.testing.telemetry`` records everything for assertions. Instrument
+names, units, and attributes are listed in ``adapters/telemetry/catalog.py`` and ``docs/operations/observability.md``.
+"""
 
 from contextlib import AbstractContextManager
 from typing import Protocol
@@ -22,11 +27,17 @@ class Span(Protocol):
 
 
 class Counter(Protocol):
-    def add(self, amount: int, attributes: dict[str, AttributeValue] | None = None) -> None: ...
+    def add(self, amount: float, attributes: dict[str, AttributeValue] | None = None) -> None: ...
 
 
 class Histogram(Protocol):
     def record(self, value: float, attributes: dict[str, AttributeValue] | None = None) -> None: ...
+
+
+class Gauge(Protocol):
+    """The last value wins (a circuit state, a degradation level, a budget ratio)."""
+
+    def set(self, value: float, attributes: dict[str, AttributeValue] | None = None) -> None: ...
 
 
 class Telemetry(Protocol):
@@ -45,3 +56,9 @@ class Telemetry(Protocol):
     def counter(self, name: str) -> Counter: ...
 
     def histogram(self, name: str) -> Histogram: ...
+
+    def gauge(self, name: str) -> Gauge: ...
+
+    def current_trace_id(self) -> str | None:
+        """The 32-character hex trace id of the active span, or ``None`` outside a trace or with tracing off."""
+        ...

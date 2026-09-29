@@ -12,6 +12,13 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, replace
 
 from bank_agent.adapters.models.lexical_language import LexicalLanguageDetector
+from bank_agent.adapters.telemetry.instrumented import (
+    TracedEligibilityPolicy,
+    TracedIntentRouter,
+    TracedPolicyEvaluator,
+    TracedRiskEstimator,
+)
+from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.engine.context import CreditPorts, EngineServices, EngineSettings, ToolProvider
 from bank_agent.application.engine.definition import WorkflowDefinition
 from bank_agent.application.engine.engine import WorkflowEngine
@@ -41,6 +48,7 @@ from bank_agent.ports.determinism import Clock, IdGenerator
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.models import IntentRouter, LanguageDetector, ModelRegistry, RiskEstimator, TransactionResolver
 from bank_agent.ports.sessions import SessionStore
+from bank_agent.ports.telemetry import Telemetry
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
 PROPOSED = "proposed"
@@ -86,29 +94,34 @@ def build_workflows(
     risk_estimator: RiskEstimator | None = None,
     model_registry: ModelRegistry | None = None,
     embedder: EmbedderFactory | None = None,
+    telemetry: Telemetry | None = None,
 ) -> WorkflowServices:
     enabled = enabled_workflows(settings)
+    telemetry = telemetry or NoopTelemetry()
     models = model_registry or build_model_registry(settings.model_registry_dir)
     credit = CreditPorts(
         catalog=policy.catalog,
-        eligibility=policy.eligibility,
-        risk_estimator=risk_estimator or build_risk_estimator(settings, models, clock, ids),
+        eligibility=TracedEligibilityPolicy(policy.eligibility, telemetry),
+        risk_estimator=TracedRiskEstimator(
+            risk_estimator or build_risk_estimator(settings, models, clock, ids), telemetry
+        ),
     )
     services = EngineServices(
         uow_factory=uow_factory,
         session_store=session_store,
         tools=tools,
-        policy=policy,
+        policy=TracedPolicyEvaluator(policy, telemetry),
         bound=grounding.bound,
         verifier=grounding.verifier,
         informational=grounding.informational,
         llm=llm,
-        router=router or build_router(settings, models, embedder),
+        router=TracedIntentRouter(router or build_router(settings, models, embedder), telemetry),
         resolver=resolver or build_resolver(settings, models),
         language_detector=language_detector or LexicalLanguageDetector(),
         clock=clock,
         ids=ids,
         credit=credit,
+        telemetry=telemetry,
     )
     renderer = Renderer(policy.pack, grounding.verifier)
     proposed = EngineSettings(
@@ -117,12 +130,14 @@ def build_workflows(
         llm_phrasing=settings.llm_phrasing,
         llm_handoff_summary=settings.llm_handoff_summary,
         max_turns=settings.max_turns,
+        tool_timeout_seconds=settings.tool_timeout_seconds,
         environment=environment,
     )
     baseline = EngineSettings(
         enabled=enabled,
         llm_understanding=False,
         max_turns=settings.max_turns,
+        tool_timeout_seconds=settings.tool_timeout_seconds,
         environment=environment,
         fixed_language=Language.ES,
         menu_template="b0.menu",

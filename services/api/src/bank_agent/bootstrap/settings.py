@@ -275,6 +275,7 @@ class WorkflowSettings(BaseSettings):
     llm_phrasing: bool = False
     llm_handoff_summary: bool = False
     max_turns: int = Field(default=40, ge=1, le=500)
+    tool_timeout_seconds: float = Field(default=5.0, gt=0, le=120)
     router: Annotated[str, Field(pattern=ROUTER_SELECTION)] = "keyword@1"
     resolver: Annotated[str, Field(pattern=RESOLVER_SELECTION)] = "rules@1"
     model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
@@ -317,12 +318,21 @@ class EvaluationSettings(BaseSettings):
 
 
 class ObservabilitySettings(BaseSettings):
-    """OpenTelemetry export settings."""
+    """OpenTelemetry settings (``docs/operations/observability.md``).
+
+    Spans, trace ids, and the ``X-Trace-Id`` header always work; ``enabled`` only decides whether spans and metrics
+    are exported over OTLP/HTTP to ``exporter_otlp_endpoint`` (the collector, which feeds Jaeger and Prometheus).
+    ``traces_sampler_arg`` is the parent-based trace-id ratio (1.0 keeps every trace); ``metric_export_interval`` is
+    in milliseconds, as in the OpenTelemetry specification.
+    """
 
     model_config = _config("OTEL_")
 
-    exporter_otlp_endpoint: str = "http://localhost:4317"
+    enabled: bool = False
+    exporter_otlp_endpoint: str = "http://localhost:4318"
     service_name: str = "bank-agent-api"
+    traces_sampler_arg: float = Field(default=1.0, ge=0.0, le=1.0)
+    metric_export_interval: int = Field(default=15000, ge=1000, le=300_000)
 
 
 class AppSettings:
