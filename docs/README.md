@@ -7,7 +7,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [CLAUDE.md](../CLAUDE.md) | Rules, stack, architecture, testing, documentation, and commit conventions for every session |
-| [AGENT.md](../AGENT.md) | Operating guide for Claude Code sessions: MVP scope, current state, next steps, and where each kind of change belongs |
+| [AGENTS.md](../AGENTS.md) | Guide for every coding agent: precedence, quick start, repository map, enforced rules, recipes for common changes, pitfalls, collaboration (`AGENT.md` points here) |
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes |
