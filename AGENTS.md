@@ -306,7 +306,7 @@ Detail: [contracts/README.md](contracts/README.md) (versioning, deprecation, cha
 Detail: [evals/README.md](evals/README.md), [docs/evaluation/plan.md](docs/evaluation/plan.md), [docs/evaluation/methodology.md](docs/evaluation/methodology.md).
 
 1. Add the situation to `evals/src/bank_evals/scenarios/family_data/<workflow>.yaml` with at least two phrasings, labels taken from the policy documents, and facts in braces from `evals/src/bank_evals/scenarios/facts.py`. New persona roles or records go in `evals/src/bank_evals/world/records.py`, named symbolically; never copy organizer records.
-2. `make eval-scenarios` regenerates both splits deterministically and runs lint, leakage guards, and the test set lock. Changing the locked test split needs `--relock` and a recorded reason in the phase log; never tune on the test split.
+2. `make eval-scenarios` regenerates both splits deterministically and runs lint, leakage guards, and the test set lock. Changing the locked test split needs `uv run --frozen bank-eval scenarios generate --relock` and a recorded reason in the phase log; never tune on the test split.
 3. `make eval-smoke` must still pass (the CI smoke suite, no model).
 4. Coordinate with whoever runs the live evaluation before touching `evals/` while a run is in progress (session 14b).
 
