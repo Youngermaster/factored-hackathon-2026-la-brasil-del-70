@@ -1,0 +1,49 @@
+{
+  "run_id": "dev-14a",
+  "generated_at": "2026-09-29T15:15:21+00:00",
+  "git_sha": "7b759c4",
+  "split": "dev",
+  "scenario_file": "scenarios.dev.jsonl",
+  "scenario_set_hash": "9a01b8408f4287cc058864695c761e3e981c83cd79d62d6e1f8311ce400a994f",
+  "test_set_lock": null,
+  "scenarios": 122,
+  "cases": 244,
+  "runs": 1,
+  "repeat": "subset",
+  "systems": {
+    "b0": "none",
+    "p": "none"
+  },
+  "llm_mode": "off",
+  "model_label": "none",
+  "driver": "auto",
+  "cassette_dir": "evals/cassettes/eval/dev",
+  "cassette_misses": {},
+  "workflow_settings": {
+    "llm_understanding": true,
+    "llm_phrasing": false,
+    "router": "keyword@1",
+    "resolver": "rules@1",
+    "risk_estimator": "score_band@1"
+  },
+  "prompts": [
+    "classify_intent_fallback@1",
+    "detect_escalation_signals@1",
+    "extract_account_inquiry_slots@1",
+    "extract_card_support_slots@1",
+    "extract_credit_slots@1",
+    "extract_dispute_slots@1",
+    "judge_transcript@1",
+    "naive_agent_step@1",
+    "paraphrase_router_eval@1",
+    "paraphrase_router_seed@1",
+    "phrase_response@1",
+    "simulate_customer@1",
+    "summarize_for_handoff@1",
+    "translate_to_portuguese@1"
+  ],
+  "world": "eval-world-1",
+  "wall_clock_seconds": 2.7,
+  "notes": [],
+  "harness_errors": 0
+}
