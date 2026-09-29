@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 11: API layer and HTTP security. `/v1/auth`, `/v1/conversations`, `/v1/agent`, and `/v1/eval` over the application core, with cookie sessions, signed double-submit CSRF, roles, rate limits, a body limit, a CORS allowlist, security headers, problem details, and the committed OpenAPI contract with generated web types; plus the opt-in local LLM path and a `.env.example` that works as copied |
-| Next phase | 12, frontend foundation (`kit/prompts/12-frontend-foundation.md`) |
+| Last completed phase | 12: frontend foundation and design system. The deck's identity as tokens with tested contrast, Radix primitives, the app shell and role-guarded layouts, the typed API client with CSRF and problem details, TanStack Query, i18n in es, pt, and en with `Intl` formatters, and sign-in, step-up, sign-out, and session-loss handling on the phase 11 API |
+| Next phase | 13, frontend features (`kit/prompts/13-frontend-features.md`) |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -55,7 +55,85 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 35. **Review the phase 11 HTTP security design**: [ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md), [the threat model](security/threat-model.md), and [the API catalog](api/README.md): the rate limit defaults, the separate evaluator trace operation, and the agent visibility of credit intakes (handoff-referenced only until phase 13).
 36. **Check any `.env` made from an older `.env.example`.** A line with an empty value and an inline comment (`POLICY_DIR=     # default: policies/`) is read as the comment text, not as empty; the old example had 21 such lines (for example `POLICY_DIR`, the `RETRIEVAL_*` directories and thresholds, `LLM_PRICES_FILE`, `LLM_CASSETTE_DIR`, `WORKFLOW_MODEL_REGISTRY_DIR`, `BANK_DATA_DIR`). Delete those inline comments, or move your values aside and run `make env` (it writes `.env` only when none exists). The new example keeps such comments on the line above. Its dev-only database passwords differ from the ones an existing compose volume was created with, so keep your current passwords.
 
+37. **Merge `origin/main` into local `main` before pushing.** The two have diverged (local: phases 10b, 11, and 12; origin: PRs 7, 8, 12, 15, 16, 17), so the phase 12 pull failed and the phase ran on local `main`. Upstream `ea3a7b3` (Markdown lint skips `.git`) was cherry-picked; expect conflicts in `docs/PROGRESS.md`, `docs/BACKLOG.md`, `docs/adr/README.md` (origin adds ADR 0034), and possibly `.markdownlint-cli2.jsonc` (identical change).
+38. **Review the web copy and the design direction** (`apps/web/src/shared/i18n/locales/{es,pt,en}.json`, [DESIGN.md](design/DESIGN.md), [audit.md](design/audit.md), screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`): a native Portuguese review, and a check that the deck-derived palette and type work for the team. Reviewers: pending. Date: pending.
+
 ## Phase log
+
+### Phase 12: frontend foundation and design system (2026-09-29)
+
+Plan: `docs/plans/phase-12.md`. The prompt asks for plan mode and a human-approved design direction; the human delegated approval to the orchestrator, who pre-approved the direction (the pitch deck's identity in `slides/`, adapted with restraint for a bank) and asked for autonomous execution, so every open question is decided in the plan and marked as decided under that pre-approval. **The pull at the start failed:** local `main` (phases 10b and 11, 10 commits, never pushed) and `origin/main` (20 commits: PRs 7, 8, 12, 15, 16, 17) have diverged, so `git pull --ff-only` refuses. As the orchestrator instructed, the phase ran on local `main`; the only upstream change taken is `ea3a7b3` (skip `.git` in the Markdown lint), cherry-picked because a fetched branch named `agent.md` made `make docs-check` fail. The human must merge `origin/main` before pushing (pending action 37).
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `56f872d` | The plan with the pre-approved direction and the decided questions |
+| `9a81612` | Tokens (`shared/ui/tokens.css`, the deck's Azure Skies palette with fixed meanings) mapped into Tailwind v4 with the default palette removed; `contrast.ts` and a test of every allowed pair in both themes; the theme provider and `public/theme-init.js` (no flash, no inline script); display preferences; i18next with typed keys and es, pt, en files; `Intl` formatters for es-MX, es-CO, es-AR, pt-BR, en-US; the `/v1` dev proxy; Vitest on capped forks with longer timeouts |
+| `d779222` | The primitives on Radix: Button, IconButton, TextLink, Field (compound), Input, Textarea, Select (native), OneTimeCodeInput, Dialog, Sheet, Tabs, Tooltip, Toast, Card, Badge, StatusPill, AsOfNote, Stack, Inline, Skeleton, EmptyState, ErrorState, KeyValueList, DataTable with `useTableSort`, Timeline, JsonView; Phosphor icons; colocated tests; colocated tests may import `src/test` (boundary override); scrollable regions may take focus |
+| `8f876bb` | `shared/api`: openapi-fetch client (credentials, request id, CSRF bootstrap, rotation, and one retry on `csrf-token-invalid`, lost-session reporting), `ApiError` and `NetworkError`, `unwrap`, the query client (retries only network errors and 5xx) and the query key factory; MSW fixtures typed from `schema.d.ts` |
+| `88a4613` | The composition root, React Router 8 with `CustomerLayout` and `ConsoleLayout` guarded by role through `/v1/auth/me`, a not-found page, a route error boundary; `features/auth` (persona picker in demo mode, document form, code step with countdown, wrong-code, expiry, and lockout copy, expired-session notice, compound step-up dialog behind `useStepUp`, session status, sign-out); integration tests on a stateful MSW fake; vitest-axe on the screens in both themes; the hard-coded string test |
+| `d8db98c` | API: a lost-session `401` deletes the stale session cookie (a per-app problem response hook), with integration tests; `Clear-Site-Data` on logout rejected with its reason in `docs/api/README.md`; BACKLOG rows closed or moved |
+| `df1e36c` | Fixes from the screenshots (mobile header, route focus under the sticky header, duplicated demo label, countdown face, polite confirmation toasts) and `tooling/screenshots.mjs` |
+| `feb45d5` | Offline versus unreachable-bank messages, 13 unused locale keys removed, axe's jsdom-incapable contrast rule switched off with the reason, layer READMEs |
+| `d7b9be0` | `docs/design/DESIGN.md`, `docs/design/audit.md`, `docs/frontend/components.md`, `docs/frontend/state.md`, ADR 0018, the web README, the docs index, the threat model |
+| `1d05e1d` | Cherry-pick of upstream `ea3a7b3` (Markdown lint skips `.git`) |
+| `e555e6c` | The locale test spells the dash characters as escapes |
+| This commit | This entry |
+
+#### Decisions
+
+- [ADR 0018](adr/0018-design-system.md): Radix primitives wrapped in `shared/ui`, CSS-variable tokens per theme mapped into Tailwind v4, Phosphor icons (regular), the deck's typefaces self-hosted (Unbounded for titles only, Instrument Sans, Geist Mono for figures and codes). The prompt's ADR number 0018 was free.
+- Color meanings follow the deck: blue the language model, yellow deterministic decisions and verified actions, red risk and escalation, light gray data. Light theme by default; the primary action is ink; only `verified` gets the yellow fill; eligibility never looks like approval ([DESIGN.md](design/DESIGN.md)).
+- vitest-axe 0.1.0 with `axe-core` 4.13 pinned directly (closes the phase 01 BACKLOG item on the accessibility library); contrast is tested from the tokens because jsdom cannot compute it.
+- Demo personas appear only with `VITE_DEMO_MODE=true` (a static catalog of the seeded ids; the API has no persona endpoint). The demo code is shown only when the challenge says `delivery_channel: "demo"`.
+- The conversation id survives re-authentication in the URL (`next=/?conversation=<id>`), validated as a same-app path; nothing goes to web storage except the theme and locale.
+- A lost session is handled by leaving the guarded page with a synchronous navigation (the DOM `RouterProvider` wires `flushSync`) before clearing the cached session, so the guard never redirects first and the expiry notice and the way back survive; sign-out does the same.
+- Zustand is not used ([state.md](frontend/state.md)).
+- Dependencies (exact pins in `apps/web/pnpm-lock.yaml`, all maintained; MIT unless noted): runtime `react-router` 8.4.0, `@tanstack/react-query` 5.104.0, `radix-ui` 1.6.7, `i18next` 26.4.2, `react-i18next` 17.0.15, `openapi-fetch` 0.17.0, `@phosphor-icons/react` 2.1.10 (33 MB unpacked, tree-shaken), `react-hook-form` 7.89.0, `zod` 4.6.5 (used as `zod/mini`), `@hookform/resolvers` 5.9.1, `@fontsource-variable/{instrument-sans,unbounded,geist-mono}` 5.3.0 (OFL-1.1); dev `vitest-axe` 0.1.0, `axe-core` 4.13.0 (MPL-2.0), `playwright-chromium` 1.63.0 (Apache-2.0; its browser download is not run by install). `node_modules` grew from about 450 to 565 MB.
+
+Deviations from the prompt and the plan, found during implementation:
+
+- `Select` is a styled native `<select>` rather than Radix Select (phones get the platform picker; screen readers get native semantics).
+- The one-time code input never submits on completion (WCAG 3.2.2); the person presses Verificar.
+- The talk-to-a-person BACKLOG row moved to phase 13 (it needs the chat and an engine change).
+- Upstream `ea3a7b3` was cherry-picked (see above).
+
+#### Visual verification
+
+The API ran with `DEMO_MODE=true` (and raised auth rate limits for the script) on the seeded compose PostgreSQL, the dev server with `VITE_DEMO_MODE=true`; `node tooling/screenshots.mjs` drove persona sign-in, the code, the customer home, step-up, sign-out, the expired notice, the agent console, and the preferences sheet in light and dark at 1440 and 390 px. The findings and fixes are in [audit.md](design/audit.md). Screenshots (gitignored): `apps/web/.shots/{light,dark}-{desktop,mobile}-{01-login,02-code,03-customer-home,04-step-up,05-stepped-up,06-signed-out,07-expired,08-console,09-preferences}.png`.
+
+#### How to verify
+
+```bash
+make check                                                  # needs Docker; never reads .env
+make test-web                                               # 273 Vitest tests with coverage
+uv run --frozen pytest services/api/tests/integration/api/test_auth_flow.py -q
+make up && make seed
+DEMO_MODE=true uv run --frozen uvicorn bank_agent.asgi:create_app --factory
+VITE_DEMO_MODE=true pnpm --dir apps/web run dev             # http://localhost:5173
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `e555e6c` (the run before this entry): lint, types, 5 import contracts, 2,448 unit and 1,298 integration Python tests, all 11 coverage gates, 273 web tests (25 files, 94.1% lines), docs, data sample, codegen, emoji, attribution, gitleaks. An earlier run failed only in markdownlint on `.git/logs/refs/remotes/origin/agent.md` (a fetched branch name), fixed by the cherry-pick |
+| Web tests | 273 tests in 25 files; web line coverage 94.1% overall, `src/features/**` above the 70% gate |
+| Python tests | 2,448 unit and 1,298 integration (four more than phase 11: the two new auth flow tests, on memory and PostgreSQL) |
+| Docs check | markdownlint 0 issues; mermaid blocks parse |
+| Build | `pnpm run build` succeeds; one 666 KB chunk (207 KB gzip), code splitting is BACKLOG for phase 13 |
+
+#### Known limitations
+
+- Browser-level accessibility (real contrast rendering, screen reader passes) was checked by eye on screenshots, not by an automated browser run; browser end-to-end tests are out of scope (CLAUDE.md section 8).
+- The Portuguese and English copy has had no native review (pending action 38).
+- The customer home and console overview hold the session and orientation only; the chat, glass box, inbox, and evaluation views are phase 13.
+- One bundle chunk (BACKLOG, phase 13).
+
+#### Next phase
+
+Phase 13, frontend features (`kit/prompts/13-frontend-features.md`): the conversation, the glass box, the agent inbox, and the evaluation view on this foundation.
 
 ### Phase 11: API layer and HTTP security (2026-09-27)
 
