@@ -27,6 +27,16 @@ VIOLATIONS = {
     "application/imports_testing.py": "import bank_agent.testing\n",
     # Test doubles: they must not depend on adapters.
     "testing/imports_adapters.py": "import bank_agent.adapters\n",
+    # The application must not import the evaluation harness.
+    "ports/imports_evals.py": "import bank_evals\n",
+}
+EVALS_VIOLATIONS = {
+    "__init__.py": "",
+    "systems/__init__.py": "",
+    "systems/engine_system.py": "",
+    "systems/failures.py": "",
+    # Baseline B1 must not reach the policy kernel.
+    "systems/naive_agent/__init__.py": "import bank_agent.policy\n",
 }
 
 
@@ -59,6 +69,10 @@ def _build_violating_package(source_root: Path) -> None:
     (package / "cli.py").write_text("", encoding="utf-8")
     for relative_path, content in VIOLATIONS.items():
         (package / relative_path).write_text(content, encoding="utf-8")
+    evals = source_root / "bank_evals"
+    (evals / "systems" / "naive_agent").mkdir(parents=True)
+    for relative_path, content in EVALS_VIOLATIONS.items():
+        (evals / relative_path).write_text(content, encoding="utf-8")
 
 
 def test_every_contract_detects_its_violation(tmp_path: Path) -> None:

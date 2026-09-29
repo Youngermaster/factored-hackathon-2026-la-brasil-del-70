@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from bank_agent.domain.eligibility import EligibilityOutcome
 from bank_agent.domain.workflow import WorkflowId
-from bank_evals.scenarios.model import ExpectedOutcome, Provenance, ScenarioCategory
+from bank_evals.scenarios.model import ExpectedOutcome, Provenance, ReviewStatus, ScenarioCategory
 
 FAMILY_FILES = ("account_inquiry", "card_support", "dispute", "credit", "routing")
 TurnSpec = str | dict[str, Any]
@@ -58,6 +58,8 @@ class Situation(BaseModel):
     expected_workflow_path: list[WorkflowId] = Field(default_factory=list)
     eligibility: EligibilityOutcome | None = None
     provenance: Provenance | None = None
+    review_status: ReviewStatus = ReviewStatus.PENDING_REVIEW
+    """Set to ``approved`` once a reviewer has checked the situation's labels and phrasings."""
     countries: list[str] = Field(default_factory=lambda: ["MX", "CO", "AR"])
     phrasings: list[Phrasing]
 
