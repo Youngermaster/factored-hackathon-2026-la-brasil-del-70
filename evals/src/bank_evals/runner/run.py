@@ -108,7 +108,7 @@ async def execute(options: RunOptions, *, settings: HarnessSettings | None = Non
     scenarios = select(load_split(source), options)
     directory = options.out_dir / options.run_id
     directory.mkdir(parents=True, exist_ok=True)
-    cassettes = options.cassette_dir or (REPOSITORY_ROOT / "evals" / "cassettes" / "runs" / options.run_id)
+    cassettes = options.cassette_dir or (REPOSITORY_ROOT / "evals" / "cassettes" / "eval" / options.split.value)
     if options.llm == "fake":
         llm = build_run_llm(harness.llm, prompt_registry(), "inject", injected=smoke_llm(), label=FAKE_LABEL)
     else:
