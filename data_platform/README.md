@@ -26,7 +26,8 @@ flowchart LR
     bronze --> silver["dbt silver<br/>stg_ + silver_"]
     silver --> gold["dbt gold<br/>serving, ML, marts"]
     gold --> api["bank-agent DuckDB readers"]
-    gold --> seed["phase 05 seed"]
+    gold --> seed["bounded MVP seed"]
+    seed --> postgres["PostgreSQL app schema"]
 ```
 
 The full flow, the incremental run, and the late-arrival sequence are in [docs/workflows/data-pipeline.md](../docs/workflows/data-pipeline.md); the reasons for DuckDB, dbt, and Pandera are in [ADR 0007](../docs/adr/0007-dbt-duckdb-and-pandera-for-the-data-platform.md), and the committed sample in [ADR 0022](../docs/adr/0022-committed-bounded-data-sample.md).
@@ -39,7 +40,7 @@ The source is explicit and never mixed. Each source builds in its own warehouse 
 |---|---|---|---|
 | `sample` (default) | nothing, `BANK_DATA_SOURCE=sample`, or `make pipeline DATA_SOURCE=sample` | nothing: no network, no credentials | `data/warehouse-sample/` |
 | `s3` | `BANK_DATA_SOURCE=s3` in `.env`, or `DATA_SOURCE=s3` on each make call | the organizer S3 values in `.env` | `data/warehouse/` |
-| `local` | `bank-data ... --source local --local-dir <dir>` | a directory laid out like the bucket | `data/warehouse-local/` |
+| `local` | `make pipeline DATA_SOURCE=local LOCAL_DIR=data` or `bank-data ... --source local --local-dir <dir>` | local CSVs laid out like the bucket | `data/warehouse-local/` |
 
 ```bash
 # Without credentials: bronze, silver, and gold from the committed sample, offline (about 30 seconds).
@@ -48,7 +49,15 @@ make pipeline
 # With the organizer credentials in .env: the full 5.3 GB delivery replaces the sample in your builds.
 make data-download                 # manifest-driven, incremental; about 8 minutes the first time
 make pipeline DATA_SOURCE=s3       # or set BANK_DATA_SOURCE=s3 in .env and run `make pipeline`
+
+# With the full local delivery under data/, no S3 credentials needed:
+make pipeline DATA_SOURCE=local LOCAL_DIR=data
+make data-report DATA_SOURCE=local LOCAL_DIR=data
 ```
+
+For `local`, discovery is restricted to contracted root snapshots and dated partitions. Ancillary
+`data/contexto`, `data/eda`, and generated `data/warehouse-*` files are never hashed or ingested.
+See the [MVP PostgreSQL loading guide](../docs/data/local-postgres-mvp.md) for seeding and reconciliation.
 
 ## Layout
 
@@ -82,6 +91,7 @@ The `bank-data` command. Every data command takes `--source sample|s3|local` (de
 | `bank-data report` | `make data-report` | The quality report (`docs/data/quality-report.md` for the S3 source) |
 | `bank-data lineage` | `make lineage` | `dbt docs generate` and the Mermaid lineage (`docs/data/lineage.md` for the S3 source) |
 | `bank-data seed [--customers N]` | `make seed` (`SEED_CUSTOMERS`, default 200) | Migrate the compose PostgreSQL, then load the personas and a deterministic subset from gold; idempotent. Needs `POSTGRES_ADMIN_PASSWORD` and `SESSION_SECRET` |
+| `bank-data verify-seed [--customers N]` | `make verify-seed` | Read-only comparison of the selected gold IDs, persona lookups, and demo records with PostgreSQL; exits nonzero on a mismatch |
 | `bank-data analysis [--output-dir D] [--labeling-dir D]` | `make analysis` | Demand evidence, pre-registered scores, figures, and the labeling files (`docs/analysis/` and `data/labeling/` for the S3 source; next to the warehouse otherwise) |
 | `bank-data sample` | `make data-sample` | Regenerate `sample/` from the S3 warehouse, then run the guard |
 | `bank-data codegen [--check]` | `make data-codegen` | Regenerate (or check) the dbt files derived from the table specs |
@@ -99,7 +109,7 @@ map and workflow traffic lights. Install its optional dependencies with `make ed
 `make eda`, then launch `make eda-ui`.
 
 The `bank-data eda` group exposes `inventory`, `profile`, `curate`, `analyze`, `report`, and `run`.
-The other ingestion and seeding commands remain future work.
+The ingestion and seeding commands above remain independent of the EDA viewer.
 
 ## How to extend
 

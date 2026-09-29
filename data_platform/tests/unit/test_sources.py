@@ -14,6 +14,7 @@ from bank_data.ingest.s3 import S3Source, error_code, is_transient
 from bank_data.ingest.source import SourceObject
 from bank_data.logs import configure_logging
 from bank_data.settings import S3Settings
+from bank_data.workspace import Workspace
 
 FAKE_KEY_ID = "AKIAFAKEFIXTURE00001"
 FAKE_SECRET = "fake-secret-value-for-tests-only-0000000000"  # noqa: S105 (a fixture value, not a credential)
@@ -69,6 +70,35 @@ def test_local_source_requires_an_existing_directory(tmp_path: Path) -> None:
     gone = SourceObject("gone.csv", "e", 1, datetime(2026, 1, 1, tzinfo=UTC))
     with pytest.raises(SourceAccessError, match=r"gone\.csv"):
         source.download(gone, tmp_path / "x.csv")
+
+
+def test_local_workspace_ignores_non_data_before_hashing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    (tmp_path / "customers.csv").write_text("customer_id\nCUS-A\n", encoding="utf-8")
+    valid = tmp_path / "transactions" / "year=2024" / "month=01" / "day=01"
+    valid.mkdir(parents=True)
+    (valid / "transactions_20240101.csv").write_text("transaction_id\nTXN-A\n", encoding="utf-8")
+    invalid = tmp_path / "transactions" / "year=2024" / "month=13" / "day=01"
+    invalid.mkdir(parents=True)
+    (invalid / "transactions_20241301.csv").write_text("bad", encoding="utf-8")
+    for directory in ("contexto", "eda", "warehouse-local", "warehouse-sample"):
+        target = tmp_path / directory
+        target.mkdir()
+        (target / "customers.csv").write_text("not input", encoding="utf-8")
+    (tmp_path / "notes.pdf").write_text("not input", encoding="utf-8")
+
+    hashed: list[str] = []
+
+    def record_hash(path: Path) -> str:
+        hashed.append(path.relative_to(tmp_path).as_posix())
+        return "fixture-etag"
+
+    monkeypatch.setattr("bank_data.ingest.local.file_md5", record_hash)
+    source = Workspace.resolve("local", local_dir=tmp_path, warehouse_dir=tmp_path / "warehouse-local").data_source()
+    listed = list(source.list_objects())
+
+    expected = ["customers.csv", "transactions/year=2024/month=01/day=01/transactions_20240101.csv"]
+    assert [item.key for item in listed] == expected
+    assert hashed == expected
 
 
 def test_s3_source_lists_objects_under_the_prefix() -> None:

@@ -8,6 +8,8 @@
 
 # Build kit (prompts and organizer PDFs stay private; remove this line to share prompts in git)
 kit/
+# Personal working notes and ad hoc queries outside the repository conventions
+personal/
 
 # Organizer and derived data (never commit)
 **/data/*
