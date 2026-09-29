@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 13: product surfaces. The customer chat with every turn part and quick replies, the glass box beside it (and on its own route, and for evaluators with the internal section), the agent inbox with credit review items, the evaluation view, the demo guide, and the About page, in es and pt for customers and en and es for the console; agents read every reviewable credit intake, credit status works without an application id, and evaluation summaries are at schema 1.1.0 |
-| Next phase | 14, evaluation (`kit/prompts/14-evaluation.md`) |
+| Last completed phase | 14, session 14a: the evaluation harness. 332 test and 122 dev scenarios in es and pt (locked test split), the synthetic evaluation world, B0, B1, P, and H, scripted and simulated customers, deterministic graders, the judge, statistics, reports, the `bank-eval` commands (run, compare, report, publish, estimate, judge, scenarios), `make eval`, `make eval-test`, the CI smoke suite; the three phase 14 engine fixes; a development run published on the dev split |
+| Next phase | 14, session 14b: the live runs on the local model and the published test numbers (`kit/prompts/14-evaluation.md`) |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -59,7 +59,93 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 38. **Review the web copy and the design direction** (`apps/web/src/shared/i18n/locales/{es,pt,en}.json`, [DESIGN.md](design/DESIGN.md), [audit.md](design/audit.md), screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`): a native Portuguese review, and a check that the deck-derived palette and type work for the team. Reviewers: pending. Date: pending.
 39. **Review the phase 13 surfaces before the video** (screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`, [audit.md](design/audit.md), [the demo script](demo/script.md)): the chat, the glass box, the inbox, the evaluation view, and the demo guide; include the new copy in pending action 38's native Portuguese review. Run `make db-upgrade` (migration `0010`) on any existing database, and record the video on a fresh compose volume after `make seed` (demo writes persist). Reviewers: pending. Date: pending.
 
+40. **Rate the judge sample after session 14b** following [the rating protocol](evaluation/judge-rubric.md#human-rating-protocol): two native raters per language on `judge_sample.jsonl`, adjudication, then `bank-eval judge --ratings`. Raters: pending. Date: pending. Not a blocker; the agreement is reported as pending until then.
+41. **Review the scenario set**: a native Portuguese review of the pt phrasings in `evals/src/bank_evals/scenarios/family_data/*.yaml`, and a review of a sample of situations per workflow against the policy documents (labels, required and forbidden disclosures). Record the result as `review_status: approved` on the reviewed situations and regenerate (`make eval-scenarios`, `--relock` for the test split); the reports state the reviewed share per workflow. Reviewers: pending. Date: pending.
+42. **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, measured size in the 14b entry): committed, they let anyone replay the published run without the model.
+
 ## Phase log
+
+### Phase 14, session 14a: the evaluation harness (2026-09-29)
+
+Plan: `docs/plans/phase-14a.md` and [the evaluation plan](evaluation/plan.md). The prompt asks for plan mode; the human delegated approval to the orchestrator and asked for the MVP first, so both plans were committed first with every open question decided by the session under the orchestrator's pre-approval, and implementation followed. The pull at the start was a fast-forward no-op ("Already up to date"). The session paused mid-way at the human's request and resumed; nothing changed on `main` in between. A helper agent for the three engine fixes stalled; its partial diff (the card state question) was reviewed and applied on `main`, the other two fixes were written directly, and its worktree and branch were removed. Session 14a ran no live model in tests or CI; it made two small live runs on the local model (9 dev scenarios) to measure latency and check the prompts. The live test runs and the published test numbers are session 14b.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `f4931d2` | The evaluation plan and the 14a plan, with the decided questions and the local-model run protocol |
+| `e339183` | Prompt files may name output models from a caller's table, and registries combine |
+| `c499b93`, `953a395`, `d56218a` | The phase 14 engine fixes with regression tests on both backends: a card state question with "bloqueada/bloqueado" is card status; imperative credit approval requests ("Aprove o meu crédito agora", "Aprueba mi crédito ya") abstain with `CRE-ALL-3` while "¿Qué necesito para que me aprueben un préstamo?" does not; a bare "sí"/"sim" right after a reply that offered a person escalates with `human_requested` (the engine remembers the offer for one turn) |
+| `40f9a9d` | Scenario contract 1.4.0: `scripted_fallback`, `template_family` (every contract on the shared 1.4.0 release) |
+| `374895a` | The synthetic evaluation world, P and B0 through the composition root's builders over the in-memory adapters, scheduled tool failures, the scripted driver, and the run's gateway in off, replay, record, or inject mode |
+| `49c46f3` | B1 (the naive agent and its own database), the simulated user, the deterministic graders, the metrics, and the summary builder |
+| `0317797` | The situations in es and pt, the deterministic generator (332 test, 122 dev), lint, leakage guards, the test set lock, `when_asked` turns and the unavailable model as a tool failure (1.4.0), the run and report commands |
+| `ae0c8df` | `publish`, `estimate`, `judge` (stratified sample, Cohen's kappa), the Portuguese proposal helper |
+| `4f7590a` | Import contracts: `bank_agent` never imports `bank_evals`; B1 never imports the kernel, application, adapters, bootstrap, or API |
+| `593f9e4`, `767b1fc` | The 12-scenario smoke suite with a scripted client; `make eval`, `make eval-test`, `make eval-smoke`, `make eval-scenarios`; the CI job `eval-smoke` |
+| `b1e80e4`, `3747c1e` | Tests: statistics against published values, every grader positive and negative, metrics, summary, reports, scenario set, world, drivers, B1, judge, estimate, and the smoke suite end to end (evals coverage 96%) |
+| `2d2a8c5`, `d228345`, `7b759c4` | Methodology, judge rubric, the harness README with its Mermaid diagram, the decisions of 14a, the BACKLOG moves, and the simulated customer leaving a finished request |
+| `ce8c1bf` | The published development run on the dev split (B0 and P, no model): `docs/evaluation/results.md`, `failures.md`, `runs/dev-14a/`, and two summaries for the evaluation view |
+| This commit | This entry |
+
+#### Decisions
+
+All decided under the orchestrator's pre-approval; the reasons are in [the plan](evaluation/plan.md#decisions-on-open-questions-decided-by-the-session-under-the-orchestrators-pre-approval).
+
+- **The mix is the test split** (332, exactly the prompt's table); dev is a separate 122-scenario set. 40% pt-BR in every cell (test 127 of 332), Spanish even across es-MX, es-CO, es-AR.
+- **A synthetic evaluation world** (39 customers, 13 roles in three countries, four segments) instead of gold records: gold is not in CI and rule 5 forbids committing organizer-derived records; no learned component saw the world. Scenarios name records symbolically.
+- **Families stay in one split**, with near-duplicate guards across splits and against the router seeds; labels live in shared situations, so a dev label fix reaches test without reading test.
+- **The scripted driver answers what a real customer would**, identically for every system (language, workflow, switch, dispute reason, protective block, step-up, sign-in); `when_asked` answers only when asked.
+- **Simulated customers** for every ambiguous scenario and every direct injection (68 on test), with scripted fallbacks.
+- **B1's database** is an in-memory copy of the world per case (schema `eval_naive`); a PostgreSQL variant is BACKLOG (16).
+- **Summaries stay on schema 1.1.0**, labeled `simulated`; handoff completeness is in `results.md` and `metrics.json` (BACKLOG 14b). H is a labeled reference table, not a summary.
+- **Model defaults unchanged** after the dev comparison with no model: router and resolver baselines 71/112 against 80/112 for `tfidf@champion` with `lgbm@champion` (78/112 router alone, 76/112 embeddings), intervals overlapping; `logreg@champion` changes nothing on the credit scenarios (19/28). 14b repeats the router comparison with the model (BACKLOG). First-time applicants under a learned estimator stay on review.
+- **Repeated runs on the local model**: P and B1 once on the full test split, three times on a stratified 48-scenario subset; with a hosted model, `--repeat all`.
+- No new dependency.
+
+#### Local model measurement (development, not an evaluation)
+
+Two record runs on Ollama serving `qwen2.5:7b-instruct` (`LLM_TIMEOUT_SECONDS=120`), 9 dev scenarios, cassettes kept out of the repository: 82 successful model calls. Mean latency per call: P 2.8 s (the escalation signals about 1.7 s, slot extraction about 5.7 s), B1 4.5 s (its prompt carries the policy), the simulated customer 3.4 s; overall 3.7 s (phase 11's smoke: p50 4.1 s, p95 7.8 s). Calls per case: P 5.8, B1 7.3, the simulated customer 2.3 per simulated case once it leaves finished requests.
+
+**Projected wall clock for the 14b main test run** (`bank-eval estimate`): P 332 x 5.8 = about 1,940 calls (1.5 h), B1 about 2,430 calls (3.0 h), the simulated customer 68 x 2.3 x 3 systems = about 480 calls (0.4 h), the judge 300 calls (0.3 h): **about 5.3 hours**, inside the 6-hour target. The variance runs (48 scenarios, two more runs of P and B1) add about 1.3 hours in a separate sitting. The projection rests on 9 scenarios; 14b re-measures on a full dev run before the test run. Priced at the dated Claude Haiku 4.5 entry the same tokens would cost about 13 USD (projected, unverified prices), under the 25 USD cap; the local model costs nothing.
+
+What the live runs showed (inputs to 14b, not results): the local model's escalation signal flagged "Sí, quiero solicitarlo" after an eligible answer as a request for a person, so P escalated an intake; the simulated customer sometimes invents details (a transaction number); B1 wrote cases and applications without confirmation or step-up, and its words said "estás calificado" while it read the outcome as a review, which the lexical approval list does not catch (BACKLOG row on lexical misses).
+
+#### Development run on the dev split (no model; development evidence, not the published results)
+
+`reports/eval/dev-14a`, published as [results.md](evaluation/results.md) and [failures.md](evaluation/failures.md): safe automated resolution P 71/112 (account 18/28, card 20/28, dispute 14/28, credit 19/28) against B0 45/112; unsafe outcomes 0/112 for both (exact 95% upper bound 2.6%); missed transfers 2/18 for both (credit). P's failures on dev are mostly the keyword router and the extraction fallbacks without a model (statements, payment status, and disputes phrased outside the tables), third-party requests phrased with the product first, and Portuguese phrasings such as "Posso pegar um empréstimo"; B1 needs a model and was not run.
+
+#### How to verify
+
+```bash
+make check                                    # needs Docker; never reads .env
+make eval-scenarios                           # the set regenerates byte for byte; lint, leakage, lock
+make eval-smoke                               # 36 cases, three systems, no model
+EVAL_LLM=off make eval                        # the dev suite with no model, about 3 seconds
+uv run pytest evals/tests -q                  # the harness's unit and integration tests
+uv run lint-imports                           # 7 contracts, including the two new ones
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `821a5fd` (the run before this entry): lint, types, 7 import contracts, 2,605 unit and 1,354 integration Python tests, all 11 coverage gates (`evals/src` 97.1%), 340 web tests, docs (73 Mermaid blocks), data sample, codegen, emoji, attribution, gitleaks. The run before it failed only in the import contract negative control, which now covers the two new contracts |
+| Harness tests | 150 tests in `evals/tests`; `evals/src` line coverage 97.1% |
+| Engine fixes | Regression tests on the in-memory adapters and PostgreSQL; the workflow and API suites pass |
+| Scenario set | Deterministic, lint and leakage clean, test lock `292c7c0b17c3f04d` |
+
+#### Known limitations
+
+- Every number so far is a development number; the test split has not been scored (session 14b).
+- The workload is synthetic (team-written words, a synthetic world, scripted or model-played customers); labels and the Portuguese phrasings are pending human review.
+- The lexical graders miss paraphrases (approval wording such as "estás calificado", success claims); they make a grader lenient, never harsher.
+- The local 7B model plays B1, the simulated customer, and the judge; its quality bounds B1's numbers and the simulated conversations. Every number carries the model label.
+- Cassettes of the live runs are per split and overwritten by identical inputs, so a replay reproduces the last recording.
+
+#### Next phase
+
+Phase 14, session 14b: the live runs on the local model (commands in [the evaluation README](evaluation/README.md#commands)): a full dev record run, `bank-eval estimate` against the 6-hour target, the router default comparison with the model, the test record run (`--runs 3 --repeat subset --resume`), the judge on 100 transcripts, `bank-eval publish`, and the results in this log.
 
 ### Phase 13: product surfaces (chat, glass box, agent inbox, evaluation view) (2026-09-29)
 
