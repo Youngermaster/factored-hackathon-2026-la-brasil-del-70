@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass, field
 
 from bank_agent.domain.actions import ActionLedgerEntry
+from bank_agent.domain.assistant_profile import AssistantProfile
 from bank_agent.domain.audit import AuditEvent
 from bank_agent.domain.complaint import HistoricalComplaint
 from bank_agent.domain.conversation import Conversation, Turn
@@ -77,6 +78,7 @@ class InMemoryStore:
     credit_profiles: dict[str, CreditProfile] = field(default_factory=dict)
     """Keyed by customer id: a customer has at most one credit profile."""
     credit_applications: dict[str, CreditApplicationIntake] = field(default_factory=dict)
+    assistant_profiles: dict[str, AssistantProfile] = field(default_factory=dict)
     action_ledger: dict[tuple[str, str, str], ActionLedgerEntry] = field(default_factory=dict)
     """Keyed by customer id, action, and idempotency key."""
 
