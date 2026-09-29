@@ -82,6 +82,7 @@ export function Messages({ className = '' }: { readonly className?: string }) {
 
   return (
     <div role="log" aria-live="polite" aria-label={t('chat.messagesLabel')} className={className}>
+      <h2 className="sr-only">{t('chat.messagesLabel')}</h2>
       <ol className="flex flex-col gap-6">
         {conversation.conversationId !== null && turns.length > 0 && (
           <li className="flex items-center gap-2 text-caption text-fg-muted">

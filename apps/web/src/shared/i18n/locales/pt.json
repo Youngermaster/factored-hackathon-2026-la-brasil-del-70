@@ -116,7 +116,11 @@
   },
   "layout": {
     "consoleNav": "Navegação do console",
-    "overview": "Resumo"
+    "overview": "Resumo",
+    "inbox": "Caixa de entrada",
+    "creditApplications": "Solicitações de crédito",
+    "evaluation": "Avaliação",
+    "traces": "Registros"
   },
   "home": {
     "heading": "Como podemos ajudar hoje?",
@@ -140,7 +144,11 @@
   "console": {
     "heading": "Resumo",
     "agentBody": "Você atende transferências estruturadas: fatos verificados, ações realizadas, base de política e perguntas em aberto. Nunca a transcrição completa.",
-    "evaluatorBody": "Você revisa registros de execução e resultados de avaliação offline, sempre com os números por fluxo ao lado do total."
+    "evaluatorBody": "Você revisa registros de execução e resultados de avaliação offline, sempre com os números por fluxo ao lado do total.",
+    "inboxBody": "Transferências com fatos verificados, ações, política e perguntas abertas. Assuma e resolva.",
+    "applicationsBody": "Solicitações registradas para revisão humana, com a avaliação e a conversa de origem.",
+    "evaluationBody": "Resultados publicados por fluxo e no total, com amostras e intervalos.",
+    "tracesBody": "O registro completo de uma conversa, com o que o cliente nunca vê."
   },
   "personas": {
     "acc-mx-accounts": "Conta corrente e poupança com saldos",
@@ -635,6 +643,407 @@
       "interventions": "Intervenções de segurança",
       "authLevel": "Verificação",
       "traceId": "Rastro"
+    },
+    "turns": "Turnos"
+  },
+  "inbox": {
+    "heading": "Caixa de transferências",
+    "intro": "Casos que o assistente passou para uma pessoa, com o que foi verificado e o que falta. Nunca a transcrição.",
+    "back": "Voltar à caixa",
+    "filters": "Filtros",
+    "all": "Todos",
+    "clearFilters": "Limpar filtros",
+    "filter": {
+      "status": "Situação",
+      "workflow": "Fluxo",
+      "priority": "Prioridade",
+      "reason": "Motivo",
+      "language": "Idioma",
+      "due": "Prazo"
+    },
+    "values": {
+      "status": {
+        "open": "Aberta",
+        "claimed": "Assumida",
+        "resolved": "Resolvida"
+      },
+      "workflow": {
+        "account_inquiry": "Contas e pagamentos",
+        "card_support": "Cartões",
+        "dispute": "Contestações",
+        "credit": "Crédito"
+      },
+      "priority": {
+        "critical": "Crítica",
+        "high": "Alta",
+        "medium": "Média",
+        "low": "Baixa"
+      },
+      "reason": {
+        "human_requested": "Pediu uma pessoa",
+        "amount_above_auto_limit": "Valor acima do limite automático",
+        "repeat_complainer": "Reclamações repetidas",
+        "legal_or_regulator_mention": "Menção legal ou a um regulador",
+        "distress_signal": "Sinal de angústia",
+        "clarification_exhausted": "Esclarecimentos esgotados",
+        "tool_failure": "Falha de um sistema",
+        "verification_mismatch": "A verificação não confere",
+        "risk_tier_high": "Risco alto na sessão",
+        "sla_breached": "Prazo vencido",
+        "unsupported_needs_human": "Pedido não suportado",
+        "card_unblock_requested": "Desbloqueio de cartão",
+        "card_replacement_requested": "Segunda via de cartão",
+        "credit_review_required": "Revisão de crédito",
+        "eligibility_contested": "Resultado de elegibilidade contestado",
+        "other": "Outro"
+      },
+      "language": {
+        "es": "Espanhol",
+        "pt": "Português",
+        "en": "Inglês"
+      },
+      "due": {
+        "overdue": "Vencidas",
+        "1h": "Na próxima hora",
+        "4h": "Nas próximas 4 horas",
+        "24h": "Nas próximas 24 horas"
+      }
+    },
+    "noWorkflow": "Sem fluxo",
+    "codes": {
+      "sentiment": {
+        "positive": "Positivo",
+        "neutral": "Neutro",
+        "negative": "Negativo",
+        "very_negative": "Muito negativo",
+        "unknown": "Desconhecido"
+      },
+      "action": {
+        "create_dispute_case": "Abrir uma contestação",
+        "block_card": "Bloquear o cartão",
+        "submit_credit_application": "Registrar uma solicitação de crédito"
+      },
+      "verification": {
+        "verified": "Conferido no registro",
+        "not_verified": "Não conferido",
+        "mismatch": "Não confere com o registro"
+      },
+      "outcome": {
+        "resolved_by_agent": "Resolvido pelo agente",
+        "case_updated": "Caso atualizado",
+        "referred_to_specialist": "Encaminhado a um especialista",
+        "no_action_needed": "Nenhuma ação necessária",
+        "customer_unreachable": "Cliente sem contato",
+        "other": "Outro"
+      },
+      "application": {
+        "submitted": "Enviada",
+        "under_human_review": "Em revisão humana",
+        "withdrawn": "Retirada",
+        "closed": "Encerrada"
+      }
+    },
+    "dueIn": "Vence {{relative}}",
+    "overdue": "Vencida, {{relative}}",
+    "loading": "Carregando a caixa",
+    "error": "Não conseguimos carregar as transferências",
+    "emptyTitle": "Nenhuma transferência pendente",
+    "emptyFiltered": "Nenhuma transferência corresponde aos filtros",
+    "emptyBody": "Quando o assistente passar um caso para uma pessoa, ele aparece aqui com o que foi verificado e as perguntas abertas.",
+    "tableCaption_one": "{{count}} transferência",
+    "tableCaption_other": "{{count}} transferências",
+    "columns": {
+      "priority": "Prioridade",
+      "request": "Pedido",
+      "reason": "Motivo",
+      "sla": "Prazo",
+      "status": "Situação",
+      "created": "Criada"
+    },
+    "notFoundTitle": "Não encontramos essa transferência",
+    "notFoundBody": "Ela não existe ou não está disponível para o seu perfil.",
+    "detail": {
+      "request": "Pedido",
+      "workflow": "Fluxo",
+      "intent": "Intenção",
+      "state": "Estado ao escalar",
+      "reasonDetail": "Detalhe do motivo",
+      "language": "Idioma e país",
+      "sentiment": "Sentimento",
+      "auth": "Verificação do cliente",
+      "created": "Criada",
+      "references": "Referências",
+      "facts": "Fatos verificados",
+      "none": "Nenhum",
+      "actions": "Ações realizadas",
+      "noActions": "O assistente não realizou ações.",
+      "confirmed": "confirmada pelo cliente",
+      "policy": "Base de política",
+      "questions": "Perguntas abertas",
+      "noQuestions": "Não restam perguntas abertas.",
+      "credit": "Revisão de crédito",
+      "eligibility": "Elegibilidade sintética",
+      "product": "Produto",
+      "outcome": "Resultado",
+      "reasons": "Códigos e regras",
+      "reviewReasons": "Motivos de revisão",
+      "missing": "Dados faltantes",
+      "application": "Solicitação",
+      "noEstimate": "Nenhuma estimativa registrada.",
+      "estimateNote": "Somente para a revisão interna: o cliente nunca vê a estimativa.",
+      "card": "Pedido de cartão",
+      "cardAction": "Pedido",
+      "cardProduct": "Cartão"
+    },
+    "actions": {
+      "claim": "Assumir transferência",
+      "claimTitle": "Assumir esta transferência",
+      "claimBody": "Ela ficará no seu nome e a ação é registrada na auditoria.",
+      "claimConfirm": "Assumir",
+      "claimed": "Você assumiu a transferência. Ficou registrado na auditoria.",
+      "conflict": "Outra pessoa mudou esta transferência. Recarregue a página para ver a situação.",
+      "claimedBy": "Assumida por {{agent}}",
+      "resolve": "Resolver",
+      "resolveTitle": "Resolver esta transferência",
+      "resolveBody": "Escolha o resultado. A resolução é registrada na auditoria e não pode ser desfeita.",
+      "outcome": "Resultado",
+      "note": "Nota",
+      "noteHint": "{{count}} de {{max}} caracteres. Não inclua dados pessoais.",
+      "resolveConfirm": "Resolver",
+      "resolved": "Transferência resolvida. Ficou registrado na auditoria.",
+      "resolvedBy": "Resolvida por {{agent}} em {{time}}"
     }
+  },
+  "applications": {
+    "heading": "Solicitações de crédito",
+    "intro": "Solicitações registradas para revisão humana. Cada uma é um item de revisão, nunca uma decisão de crédito.",
+    "back": "Voltar às solicitações",
+    "error": "Não conseguimos carregar as solicitações",
+    "emptyTitle": "Nenhuma solicitação para revisar",
+    "emptyBody": "Quando um cliente registrar uma solicitação para revisão, ela aparece aqui.",
+    "tableCaption_one": "{{count}} solicitação",
+    "tableCaption_other": "{{count}} solicitações",
+    "columns": {
+      "application": "Solicitação",
+      "product": "Produto",
+      "amount": "Valor",
+      "status": "Situação",
+      "created": "Criada"
+    },
+    "notFoundTitle": "Não encontramos essa solicitação",
+    "notFoundBody": "Ela não existe ou não está disponível para o seu perfil.",
+    "synthetic": "Política sintética",
+    "notADecision": "A elegibilidade que o cliente viu vem de um serviço sintético. Esta solicitação aguarda uma revisão humana; não é uma decisão de crédito.",
+    "request": "O que foi pedido",
+    "income": "Renda declarada",
+    "assessment": "Avaliação",
+    "conversation": "Conversa de origem",
+    "customer": "Cliente",
+    "history": "Histórico de situações"
+  },
+  "traces": {
+    "heading": "Registros de execução",
+    "intro": "O registro completo de cada turno, com o que o cliente nunca vê em uma seção à parte. Sem raciocínio do modelo: ele não é guardado.",
+    "label": "Referência da conversa",
+    "hint": "Começa com conv-. O cliente a vê no início da conversa.",
+    "submit": "Buscar",
+    "emptyTitle": "Busque uma conversa",
+    "emptyBody": "Cole a referência de uma conversa para ver os registros, turno a turno."
+  },
+  "eval": {
+    "heading": "Resultados de avaliação",
+    "intro": "Resumos publicados pelo arcabouço de avaliação sobre a mesma carga reservada: por fluxo primeiro, depois o total. Cada número traz sua amostra e seu intervalo de 95%.",
+    "loading": "Carregando os resultados",
+    "error": "Não conseguimos carregar os resultados",
+    "emptyTitle": "Ainda não há resultados publicados",
+    "emptyBody": "Os resultados aparecem aqui quando o arcabouço publica uma execução. Execute",
+    "emptyWhere": "para publicar um resumo por sistema em",
+    "emptyAfter": "; esta tela o lê sem outra configuração.",
+    "run": "Execução {{run}}",
+    "runMeta": "Dados {{dataset}}, gerado em {{generated}}, commit {{shas}}.",
+    "failureTable": "Tabela de falhas:",
+    "workflowCaption": "{{workflow}}: resultados por sistema",
+    "aggregateCaption": "Total dos quatro fluxos: resultados por sistema",
+    "metric": "Resultado",
+    "slice": "Segmento",
+    "allWorkflows": "Todos os fluxos",
+    "systems": {
+      "h": "H: atendimento humano",
+      "b0": "B0: menu com regras",
+      "b1": "B1: agente ingênuo",
+      "p": "P: proposto"
+    },
+    "measurement": {
+      "offline": "Offline",
+      "simulated": "Simulado",
+      "projected": "Projetado"
+    },
+    "rows": {
+      "cases": "Casos",
+      "safe_automated_resolution": "Resolução automática segura",
+      "automation_attempted": "Casos com tentativa automática",
+      "containment": "Contenção",
+      "escalation_missed": "Transferências perdidas",
+      "escalation_unnecessary": "Transferências desnecessárias",
+      "handoff_completeness": "Transferências completas",
+      "unsafe_outcomes": "Resultados inseguros",
+      "latency_p50": "Latência p50",
+      "latency_p95": "Latência p95",
+      "cost_attempted": "Custo por caso tentado",
+      "cost_resolution": "Custo por resolução"
+    },
+    "breakdown": {
+      "language": "Por idioma: resolução automática segura",
+      "dialect": "Por dialeto: resolução automática segura",
+      "segment": "Por segmento: resolução automática segura"
+    },
+    "notDefined": "Não definido",
+    "small": "Amostra pequena",
+    "countOf": "{{count}} de {{total}}",
+    "interval": "IC 95%: {{low}} a {{high}}",
+    "upperBound": "zero eventos, limite superior 95%: {{high}}",
+    "ms": "{{value}} ms"
+  },
+  "demo": {
+    "title": "Guia de demonstração",
+    "intro": "Percorra os quatro fluxos com clientes sintéticos: o caminho normal, um ambíguo ou não suportado e um que passa para uma pessoa, em espanhol e em português.",
+    "signIn": "Ir para a entrada",
+    "link": "Guia de demonstração para jurados",
+    "start": {
+      "title": "Como começar",
+      "step1": "Na entrada, escolha o perfil de demonstração do cenário. O código de uso único aparece na tela.",
+      "step2": "Escreva as mensagens no idioma que quiser testar: o assistente responde em espanhol ou em português.",
+      "step3": "As ações que mudam algo (um bloqueio, uma contestação, uma solicitação) pedem confirmação e um código novo.",
+      "step4": "O registro de execução, ao lado do chat, mostra por turno as regras, as fontes e as verificações.",
+      "step5": "O botão Falar com uma pessoa funciona a qualquer momento e em qualquer fluxo."
+    },
+    "paths": {
+      "normal": "Normal",
+      "ambiguous": "Ambíguo ou não suportado",
+      "escalation": "Passa para uma pessoa"
+    },
+    "persona": "Perfil",
+    "spanish": "Español",
+    "portuguese": "Português",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "actions": {
+      "confirm_and_code": "Toque em Confirmar e digite o código que aparece na tela.",
+      "review_button": "Toque no botão de revisão da orientação de elegibilidade.",
+      "human_button": "Toque em Falar com uma pessoa."
+    },
+    "scenarios": {
+      "balances": {
+        "title": "Saldos",
+        "note": "Cada saldo mostra a data e a hora de corte dos dados."
+      },
+      "similar-transfers": {
+        "title": "Transferências parecidas",
+        "note": "Há várias parecidas: o assistente pergunta qual antes de responder."
+      },
+      "transfer-unsupported": {
+        "title": "Transferir dinheiro",
+        "note": "Não suportado: abstém-se citando a política e oferece uma pessoa."
+      },
+      "contested-balance": {
+        "title": "Saldo contestado",
+        "note": "Passa para uma pessoa com os saldos como fatos verificados."
+      },
+      "card-block": {
+        "title": "Bloqueio preventivo",
+        "note": "Pergunta qual cartão, pede confirmação e um código novo; só informa o bloqueio depois de conferi-lo."
+      },
+      "card-status": {
+        "title": "Situação dos cartões",
+        "note": "Com vários cartões pergunta qual; mostra situação, validade e compras recusadas."
+      },
+      "card-unblock": {
+        "title": "Desbloqueio",
+        "note": "Não há ferramenta para desbloquear: passa para uma pessoa com o cartão escolhido."
+      },
+      "dispute-intake": {
+        "title": "Contestação de uma cobrança",
+        "note": "Veja o extrato, conteste uma cobrança por estabelecimento, data e valor, e confirme. Recuse ou aceite o bloqueio oferecido."
+      },
+      "dispute-details": {
+        "title": "Cobrança sem dados",
+        "note": "O pedido não basta para achar a compra: o assistente pede data, valor e estabelecimento."
+      },
+      "dispute-sla": {
+        "title": "Caso com prazo vencido",
+        "note": "O caso aberto passou do prazo de resolução: passa para uma pessoa."
+      },
+      "credit-eligibility": {
+        "title": "Catálogo e elegibilidade",
+        "note": "Produtos do catálogo sintético e uma orientação indicativa com motivos, incerteza e caminho de revisão."
+      },
+      "credit-status": {
+        "title": "Situação de uma solicitação",
+        "note": "Responde sem número de solicitação: procura entre as do cliente."
+      },
+      "credit-missing-income": {
+        "title": "Falta a renda",
+        "note": "Sem renda registrada, a orientação é falta de informação e pede o dado."
+      },
+      "credit-approval-request": {
+        "title": "Exigir o crédito agora",
+        "note": "Não suportado: aqui não se tomam decisões de crédito, e isso é dito sem prometer nada."
+      },
+      "credit-review": {
+        "title": "Revisão humana",
+        "note": "O resultado ainda não atende; o botão de revisão passa o caso com a seção de crédito."
+      }
+    },
+    "console": {
+      "title": "O console",
+      "agent": "abra a caixa, filtre, assuma uma transferência e resolva; veja também as solicitações de crédito.",
+      "evaluator": "cole a referência de uma conversa em Registros para ver o que o cliente nunca vê, e abra Avaliação."
+    },
+    "reset": "Os dados são sintéticos. As ações ficam registradas: recarregue os dados de demonstração com make seed antes de gravar."
+  },
+  "about": {
+    "title": "O que este assistente faz",
+    "intro": "Um assistente de atendimento ao cliente para quatro temas. O modelo de linguagem entende a sua mensagem; as regras do banco decidem; e só informamos ações que conferimos nos registros.",
+    "link": "O que este assistente faz",
+    "does": "Faz",
+    "doesNot": "Não faz",
+    "workflows": {
+      "account_inquiry": {
+        "does1": "Informa os seus saldos, com a data e a hora de corte dos dados.",
+        "does2": "Consulta a situação dos seus pagamentos e transferências.",
+        "does3": "Resume as suas movimentações de um período, com totais por moeda.",
+        "not1": "Não faz transferências nem pagamentos.",
+        "not2": "Não emite extratos oficiais nem declarações."
+      },
+      "card_support": {
+        "does1": "Informa a situação e a validade dos seus cartões.",
+        "does2": "Bloqueia um cartão de forma preventiva, com a sua confirmação e um código novo.",
+        "does3": "Passa para uma pessoa os desbloqueios e as segundas vias.",
+        "not1": "Não desbloqueia cartões.",
+        "not2": "Não emite cartões novos."
+      },
+      "dispute": {
+        "does1": "Registra uma contestação de uma cobrança que você não reconhece, com a sua confirmação.",
+        "does2": "Informa a situação do seu caso e o prazo.",
+        "does3": "Oferece bloquear o cartão se você não reconhece uma compra.",
+        "not1": "Não garante reembolsos.",
+        "not2": "Não decide o resultado da contestação."
+      },
+      "credit": {
+        "does1": "Descreve os produtos de um catálogo sintético, com faixas indicativas.",
+        "does2": "Dá uma orientação de elegibilidade indicativa, com motivos, incerteza e um caminho de revisão.",
+        "does3": "Registra uma solicitação para análise de uma pessoa.",
+        "not1": "Não concede nem nega crédito: não há decisões de crédito nesta conversa.",
+        "not2": "Não usa nem mostra a sua pontuação nem uma probabilidade."
+      }
+    },
+    "creditTitle": "Sobre o crédito",
+    "credit": "A elegibilidade vem de um serviço sintético com regras de demonstração. É uma orientação, nunca uma oferta nem uma decisão. Uma estimativa de risco é só uma das entradas, e o modelo de linguagem nunca a recebe.",
+    "dataTitle": "Sobre os dados",
+    "data": "Os clientes, as contas e as movimentações são dados sintéticos do organizador do hackathon, não pessoas reais. O catálogo de crédito e as regras de elegibilidade também são sintéticos.",
+    "transparencyTitle": "Sobre a transparência",
+    "transparency": "Ao lado do chat você vê o registro de cada turno: o que o sistema entendeu, quais regras e cláusulas aplicou e o que conferiu. O raciocínio do modelo não é guardado nem mostrado, por projeto.",
+    "humanTitle": "Você sempre pode falar com uma pessoa",
+    "human": "Quando você pede, quando algo exige critério humano ou quando uma regra exige, o seu caso passa para uma pessoa com o que já verificamos, para você não precisar repetir."
   }
 }

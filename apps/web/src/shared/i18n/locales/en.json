@@ -116,7 +116,11 @@
   },
   "layout": {
     "consoleNav": "Console navigation",
-    "overview": "Overview"
+    "overview": "Overview",
+    "inbox": "Inbox",
+    "creditApplications": "Credit applications",
+    "evaluation": "Evaluation",
+    "traces": "Records"
   },
   "home": {
     "heading": "How can we help today?",
@@ -140,7 +144,11 @@
   "console": {
     "heading": "Overview",
     "agentBody": "You handle structured handoffs: verified facts, actions taken, the policy basis, and open questions. Never the full transcript.",
-    "evaluatorBody": "You review execution records and offline evaluation results, always with the per-workflow numbers next to the total."
+    "evaluatorBody": "You review execution records and offline evaluation results, always with the per-workflow numbers next to the total.",
+    "inboxBody": "Handoffs with verified facts, actions, policy, and open questions. Claim and resolve.",
+    "applicationsBody": "Applications recorded for human review, with their assessment and originating conversation.",
+    "evaluationBody": "Published results per workflow and in aggregate, with sample sizes and intervals.",
+    "tracesBody": "A conversation's full record, with what the customer never sees."
   },
   "personas": {
     "acc-mx-accounts": "Checking and savings accounts with balances",
@@ -635,6 +643,407 @@
       "interventions": "Safety interventions",
       "authLevel": "Verification",
       "traceId": "Trace"
+    },
+    "turns": "Turns"
+  },
+  "inbox": {
+    "heading": "Handoff inbox",
+    "intro": "Cases the assistant passed to a person, with what was verified and what is still open. Never the transcript.",
+    "back": "Back to the inbox",
+    "filters": "Filters",
+    "all": "All",
+    "clearFilters": "Clear filters",
+    "filter": {
+      "status": "Status",
+      "workflow": "Workflow",
+      "priority": "Priority",
+      "reason": "Reason",
+      "language": "Language",
+      "due": "Due"
+    },
+    "values": {
+      "status": {
+        "open": "Open",
+        "claimed": "Claimed",
+        "resolved": "Resolved"
+      },
+      "workflow": {
+        "account_inquiry": "Accounts and payments",
+        "card_support": "Cards",
+        "dispute": "Disputes",
+        "credit": "Credit"
+      },
+      "priority": {
+        "critical": "Critical",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "reason": {
+        "human_requested": "Asked for a person",
+        "amount_above_auto_limit": "Amount above the automatic limit",
+        "repeat_complainer": "Repeat complaints",
+        "legal_or_regulator_mention": "Legal or regulator mention",
+        "distress_signal": "Distress signal",
+        "clarification_exhausted": "Clarifications exhausted",
+        "tool_failure": "A system failed",
+        "verification_mismatch": "Verification mismatch",
+        "risk_tier_high": "High session risk",
+        "sla_breached": "SLA breached",
+        "unsupported_needs_human": "Unsupported request",
+        "card_unblock_requested": "Card unblock",
+        "card_replacement_requested": "Card replacement",
+        "credit_review_required": "Credit review",
+        "eligibility_contested": "Eligibility result contested",
+        "other": "Other"
+      },
+      "language": {
+        "es": "Spanish",
+        "pt": "Portuguese",
+        "en": "English"
+      },
+      "due": {
+        "overdue": "Overdue",
+        "1h": "Within the next hour",
+        "4h": "Within the next 4 hours",
+        "24h": "Within the next 24 hours"
+      }
+    },
+    "noWorkflow": "No workflow",
+    "codes": {
+      "sentiment": {
+        "positive": "Positive",
+        "neutral": "Neutral",
+        "negative": "Negative",
+        "very_negative": "Very negative",
+        "unknown": "Unknown"
+      },
+      "action": {
+        "create_dispute_case": "Open a dispute case",
+        "block_card": "Block the card",
+        "submit_credit_application": "Record a credit application"
+      },
+      "verification": {
+        "verified": "Checked against the record",
+        "not_verified": "Not checked",
+        "mismatch": "Does not match the record"
+      },
+      "outcome": {
+        "resolved_by_agent": "Resolved by the agent",
+        "case_updated": "Case updated",
+        "referred_to_specialist": "Referred to a specialist",
+        "no_action_needed": "No action needed",
+        "customer_unreachable": "Customer unreachable",
+        "other": "Other"
+      },
+      "application": {
+        "submitted": "Submitted",
+        "under_human_review": "Under human review",
+        "withdrawn": "Withdrawn",
+        "closed": "Closed"
+      }
+    },
+    "dueIn": "Due {{relative}}",
+    "overdue": "Overdue, {{relative}}",
+    "loading": "Loading the inbox",
+    "error": "We could not load the handoffs",
+    "emptyTitle": "No handoffs waiting",
+    "emptyFiltered": "No handoff matches the filters",
+    "emptyBody": "When the assistant passes a case to a person, it appears here with what was verified and the open questions.",
+    "tableCaption_one": "{{count}} handoff",
+    "tableCaption_other": "{{count}} handoffs",
+    "columns": {
+      "priority": "Priority",
+      "request": "Request",
+      "reason": "Reason",
+      "sla": "Due",
+      "status": "Status",
+      "created": "Created"
+    },
+    "notFoundTitle": "We could not find that handoff",
+    "notFoundBody": "It does not exist or is not available to your role.",
+    "detail": {
+      "request": "Request",
+      "workflow": "Workflow",
+      "intent": "Intent",
+      "state": "State at escalation",
+      "reasonDetail": "Reason detail",
+      "language": "Language and country",
+      "sentiment": "Sentiment",
+      "auth": "Customer verification",
+      "created": "Created",
+      "references": "References",
+      "facts": "Verified facts",
+      "none": "None",
+      "actions": "Actions taken",
+      "noActions": "The assistant took no actions.",
+      "confirmed": "confirmed by the customer",
+      "policy": "Policy basis",
+      "questions": "Open questions",
+      "noQuestions": "No open questions remain.",
+      "credit": "Credit review",
+      "eligibility": "Synthetic eligibility",
+      "product": "Product",
+      "outcome": "Outcome",
+      "reasons": "Codes and rules",
+      "reviewReasons": "Review reasons",
+      "missing": "Missing facts",
+      "application": "Application",
+      "noEstimate": "No estimate recorded.",
+      "estimateNote": "For internal review only: the customer never sees the estimate.",
+      "card": "Card request",
+      "cardAction": "Request",
+      "cardProduct": "Card"
+    },
+    "actions": {
+      "claim": "Claim handoff",
+      "claimTitle": "Claim this handoff",
+      "claimBody": "It will be assigned to you and the action is recorded in the audit log.",
+      "claimConfirm": "Claim",
+      "claimed": "You claimed the handoff. It was recorded in the audit log.",
+      "conflict": "Someone else changed this handoff. Reload the page to see its status.",
+      "claimedBy": "Claimed by {{agent}}",
+      "resolve": "Resolve",
+      "resolveTitle": "Resolve this handoff",
+      "resolveBody": "Choose the outcome. The resolution is recorded in the audit log and cannot be undone.",
+      "outcome": "Outcome",
+      "note": "Note",
+      "noteHint": "{{count}} of {{max}} characters. Do not include personal data.",
+      "resolveConfirm": "Resolve",
+      "resolved": "Handoff resolved. It was recorded in the audit log.",
+      "resolvedBy": "Resolved by {{agent}} on {{time}}"
     }
+  },
+  "applications": {
+    "heading": "Credit applications",
+    "intro": "Applications recorded for human review. Each one is a review item, never a credit decision.",
+    "back": "Back to the applications",
+    "error": "We could not load the applications",
+    "emptyTitle": "No applications to review",
+    "emptyBody": "When a customer records an application for review, it appears here.",
+    "tableCaption_one": "{{count}} application",
+    "tableCaption_other": "{{count}} applications",
+    "columns": {
+      "application": "Application",
+      "product": "Product",
+      "amount": "Amount",
+      "status": "Status",
+      "created": "Created"
+    },
+    "notFoundTitle": "We could not find that application",
+    "notFoundBody": "It does not exist or is not available to your role.",
+    "synthetic": "Synthetic policy",
+    "notADecision": "The eligibility the customer saw comes from a synthetic service. This application waits for human review; it is not a credit decision.",
+    "request": "What was requested",
+    "income": "Declared income",
+    "assessment": "Assessment",
+    "conversation": "Originating conversation",
+    "customer": "Customer",
+    "history": "Status history"
+  },
+  "traces": {
+    "heading": "Execution records",
+    "intro": "The full record of each turn, with what the customer never sees in a separate section. No model reasoning: it is not stored.",
+    "label": "Conversation reference",
+    "hint": "It starts with conv-. The customer sees it at the top of the conversation.",
+    "submit": "Look up",
+    "emptyTitle": "Look up a conversation",
+    "emptyBody": "Paste a conversation reference to read its records, turn by turn."
+  },
+  "eval": {
+    "heading": "Evaluation results",
+    "intro": "Summaries the evaluation harness published for the same held-out workload: per workflow first, then the aggregate. Every figure carries its sample size and 95% interval.",
+    "loading": "Loading the results",
+    "error": "We could not load the results",
+    "emptyTitle": "No results published yet",
+    "emptyBody": "Results appear here once the harness publishes a run. Run",
+    "emptyWhere": "to publish one summary per system into",
+    "emptyAfter": "; this view reads it with no further setup.",
+    "run": "Run {{run}}",
+    "runMeta": "Data {{dataset}}, generated {{generated}}, commit {{shas}}.",
+    "failureTable": "Failure table:",
+    "workflowCaption": "{{workflow}}: results per system",
+    "aggregateCaption": "All four workflows: results per system",
+    "metric": "Outcome",
+    "slice": "Slice",
+    "allWorkflows": "All workflows",
+    "systems": {
+      "h": "H: human service",
+      "b0": "B0: rule menu",
+      "b1": "B1: naive agent",
+      "p": "P: proposed"
+    },
+    "measurement": {
+      "offline": "Offline",
+      "simulated": "Simulated",
+      "projected": "Projected"
+    },
+    "rows": {
+      "cases": "Cases",
+      "safe_automated_resolution": "Safe automated resolution",
+      "automation_attempted": "Automation attempted",
+      "containment": "Containment",
+      "escalation_missed": "Missed transfers",
+      "escalation_unnecessary": "Unnecessary transfers",
+      "handoff_completeness": "Complete handoffs",
+      "unsafe_outcomes": "Unsafe outcomes",
+      "latency_p50": "Latency p50",
+      "latency_p95": "Latency p95",
+      "cost_attempted": "Cost per attempted case",
+      "cost_resolution": "Cost per resolution"
+    },
+    "breakdown": {
+      "language": "By language: safe automated resolution",
+      "dialect": "By dialect: safe automated resolution",
+      "segment": "By segment: safe automated resolution"
+    },
+    "notDefined": "Not defined",
+    "small": "Small sample",
+    "countOf": "{{count}} of {{total}}",
+    "interval": "95% CI: {{low}} to {{high}}",
+    "upperBound": "zero events, 95% upper bound: {{high}}",
+    "ms": "{{value}} ms"
+  },
+  "demo": {
+    "title": "Demo guide",
+    "intro": "Walk through the four workflows with synthetic customers: the normal path, an ambiguous or unsupported one, and one that goes to a person, in Spanish and Portuguese.",
+    "signIn": "Go to sign-in",
+    "link": "Demo guide for judges",
+    "start": {
+      "title": "How to start",
+      "step1": "On sign-in, pick the scenario's demo profile. The one-time code appears on screen.",
+      "step2": "Type the messages in the language you want to try: the assistant answers in Spanish or Portuguese.",
+      "step3": "Actions that change something (a block, a dispute, an application) ask for confirmation and a new code.",
+      "step4": "The execution record beside the chat shows each turn's rules, sources, and checks.",
+      "step5": "The Talk to a person button works at any moment, in any workflow."
+    },
+    "paths": {
+      "normal": "Normal",
+      "ambiguous": "Ambiguous or unsupported",
+      "escalation": "Goes to a person"
+    },
+    "persona": "Profile",
+    "spanish": "Español",
+    "portuguese": "Português",
+    "copy": "Copy",
+    "copied": "Copied",
+    "actions": {
+      "confirm_and_code": "Press Confirm and type the code shown on screen.",
+      "review_button": "Press the review button of the eligibility indication.",
+      "human_button": "Press Talk to a person."
+    },
+    "scenarios": {
+      "balances": {
+        "title": "Balances",
+        "note": "Each balance shows the date and time of the data cut."
+      },
+      "similar-transfers": {
+        "title": "Similar transfers",
+        "note": "Several look alike: the assistant asks which one before answering."
+      },
+      "transfer-unsupported": {
+        "title": "Transfer money",
+        "note": "Unsupported: it abstains citing the policy and offers a person."
+      },
+      "contested-balance": {
+        "title": "Contested balance",
+        "note": "Goes to a person with the balances as verified facts."
+      },
+      "card-block": {
+        "title": "Protective block",
+        "note": "Asks which card, for confirmation, and for a new code; reports the block only after checking it."
+      },
+      "card-status": {
+        "title": "Card status",
+        "note": "With several cards it asks which; shows status, expiry, and declined purchases."
+      },
+      "card-unblock": {
+        "title": "Unblock",
+        "note": "There is no unblock tool: it goes to a person with the chosen card."
+      },
+      "dispute-intake": {
+        "title": "Dispute a charge",
+        "note": "Read the statement, dispute a charge by merchant, date, and amount, and confirm. Decline or accept the offered block."
+      },
+      "dispute-details": {
+        "title": "Charge without details",
+        "note": "The request is not enough to find the purchase: the assistant asks for the date, amount, and merchant."
+      },
+      "dispute-sla": {
+        "title": "Case past its deadline",
+        "note": "The open case passed its resolution deadline: it goes to a person."
+      },
+      "credit-eligibility": {
+        "title": "Catalog and eligibility",
+        "note": "Synthetic catalog products and an indicative result with reasons, uncertainty, and a review path."
+      },
+      "credit-status": {
+        "title": "Application status",
+        "note": "Answers without an application number: it finds the customer's own."
+      },
+      "credit-missing-income": {
+        "title": "Missing income",
+        "note": "With no income on file, the result is missing information and it asks for it."
+      },
+      "credit-approval-request": {
+        "title": "Demand the loan now",
+        "note": "Unsupported: no credit decisions are made here, and it says so without promising anything."
+      },
+      "credit-review": {
+        "title": "Human review",
+        "note": "The result does not meet the conditions for now; the review button hands the case over with its credit section."
+      }
+    },
+    "console": {
+      "title": "The console",
+      "agent": "open the inbox, filter, claim a handoff, and resolve it; also review the credit applications.",
+      "evaluator": "paste a conversation reference into Records to see what the customer never sees, and open Evaluation."
+    },
+    "reset": "The data is synthetic. Actions are recorded: reload the demo data with make seed before recording."
+  },
+  "about": {
+    "title": "What this assistant does",
+    "intro": "A customer service assistant for four topics. The language model understands your message; the bank's rules decide; and we only report actions we checked against the records.",
+    "link": "What this assistant does",
+    "does": "Does",
+    "doesNot": "Does not",
+    "workflows": {
+      "account_inquiry": {
+        "does1": "Tells you your balances, with the date and time of the data cut.",
+        "does2": "Checks the status of your payments and transfers.",
+        "does3": "Summarizes a period's transactions, with totals per currency.",
+        "not1": "Does not make transfers or payments.",
+        "not2": "Does not issue official statements or certificates."
+      },
+      "card_support": {
+        "does1": "Tells you the status and expiry of your cards.",
+        "does2": "Blocks a card as a precaution, with your confirmation and a new code.",
+        "does3": "Hands unblock and replacement requests to a person.",
+        "not1": "Does not unblock cards.",
+        "not2": "Does not issue new cards."
+      },
+      "dispute": {
+        "does1": "Records a dispute for a charge you do not recognize, with your confirmation.",
+        "does2": "Tells you your case status and its deadline.",
+        "does3": "Offers to block the card if you do not recognize a purchase.",
+        "not1": "Does not guarantee refunds.",
+        "not2": "Does not decide the dispute's outcome."
+      },
+      "credit": {
+        "does1": "Describes the products of a synthetic catalog, with indicative ranges.",
+        "does2": "Gives an indicative eligibility result, with its reasons, its uncertainty, and a review path.",
+        "does3": "Records an application for a person to review.",
+        "not1": "Does not grant or refuse credit: no credit decisions happen in this conversation.",
+        "not2": "Does not use or show your score or a probability."
+      }
+    },
+    "creditTitle": "About credit",
+    "credit": "Eligibility comes from a synthetic service with demonstration rules. It is an indication, never an offer or a decision. A risk estimate is only one of its inputs, and the language model never receives it.",
+    "dataTitle": "About the data",
+    "data": "The customers, accounts, and transactions are synthetic data from the hackathon organizer, not real people. The credit catalog and the eligibility rules are synthetic too.",
+    "transparencyTitle": "About transparency",
+    "transparency": "Beside the chat you see each turn's record: what the system understood, which rules and clauses it applied, and what it checked. Model reasoning is neither stored nor shown, by design.",
+    "humanTitle": "You can always talk to a person",
+    "human": "When you ask, when something needs human judgment, or when a rule requires it, your case goes to a person with what we already checked, so you do not have to repeat it."
   }
 }

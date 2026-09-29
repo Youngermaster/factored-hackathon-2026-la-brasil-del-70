@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 
 import { homeFor, LoginFlow, SessionNotice, type LoginReason } from '@/features/auth';
 import { isDemoMode } from '@/shared/config';
@@ -35,6 +35,19 @@ export function LoginPage({ header }: { readonly header: ReactNode }) {
             </h1>
             <p className="max-w-prose text-lead text-fg-secondary">{t('auth.intro')}</p>
             {isDemoMode() && <p className="text-small text-fg-muted">{t('app.demoModeHint')}</p>}
+            <p className="flex flex-wrap gap-x-6 gap-y-2 text-small">
+              {isDemoMode() && (
+                <Link to="/demo" className="font-semibold text-fg underline underline-offset-4">
+                  {t('demo.link')}
+                </Link>
+              )}
+              <Link
+                to="/about"
+                className="text-fg-secondary underline underline-offset-4 hover:text-fg"
+              >
+                {t('about.link')}
+              </Link>
+            </p>
           </div>
           {reason !== null && <SessionNotice reason={reason} />}
           <LoginFlow

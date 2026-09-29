@@ -22,10 +22,10 @@ export function Internal() {
       aria-labelledby={id}
       className="flex flex-col gap-2 rounded-card border border-dashed border-border-strong bg-surface-sunken p-3 text-caption"
     >
-      <h4 id={id} className="flex items-center gap-1.5 text-small font-semibold text-fg">
+      <h3 id={id} className="flex items-center gap-1.5 text-small font-semibold text-fg">
         <ShieldIcon aria-hidden="true" size={16} />
         {t('glass.internal.title')}
-      </h4>
+      </h3>
       <p className="text-fg-secondary">{t('glass.internal.body')}</p>
       <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-0.5 text-fg">
         <dt>{t('glass.internal.riskTier')}</dt>

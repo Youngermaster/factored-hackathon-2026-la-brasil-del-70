@@ -68,18 +68,21 @@ export function TraceBody({
     );
   }
   return (
-    <ol className="flex flex-col gap-3">
-      {query.data.records.map((record, index) => (
-        <li key={record.turn_id}>
-          <TurnTrace
-            record={record}
-            index={index}
-            latest={index === query.data.records.length - 1}
-            view={view}
-            excerpts={excerpts?.get(record.turn_id)}
-          />
-        </li>
-      ))}
-    </ol>
+    <>
+      <h2 className="sr-only">{t('glass.turns')}</h2>
+      <ol className="flex flex-col gap-3">
+        {query.data.records.map((record, index) => (
+          <li key={record.turn_id}>
+            <TurnTrace
+              record={record}
+              index={index}
+              latest={index === query.data.records.length - 1}
+              view={view}
+              excerpts={excerpts?.get(record.turn_id)}
+            />
+          </li>
+        ))}
+      </ol>
+    </>
   );
 }

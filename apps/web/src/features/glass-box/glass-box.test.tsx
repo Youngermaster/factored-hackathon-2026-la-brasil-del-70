@@ -1,10 +1,11 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { HttpResponse } from 'msw';
 import { describe, expect, it } from 'vitest';
 
 import type { Schema } from '@/shared/api';
 import { renderApp } from '@/test/app';
-import { sessionView } from '@/test/msw/api';
+import { apiGet, sessionView } from '@/test/msw/api';
 import { startAuthServer } from '@/test/msw/auth';
 import {
   assistantMessage,
@@ -12,7 +13,14 @@ import {
   startConversationServer,
   turnView,
 } from '@/test/msw/conversation';
-import { assessmentRecord, customerTraceRecord, decision, ruleResult } from '@/test/msw/trace';
+import { server } from '@/test/msw/server';
+import {
+  assessmentRecord,
+  customerTraceRecord,
+  decision,
+  ruleResult,
+  staffTraceRecord,
+} from '@/test/msw/trace';
 
 async function openTrace(records: Schema<'CustomerTraceRecord'>[], turns = [turnView()]) {
   startAuthServer({ session: sessionView() });
@@ -184,5 +192,62 @@ describe('the glass box', () => {
     renderApp({ path: '/' });
     const panel = await screen.findByRole('region', { name: 'Registro de ejecución' });
     expect(within(panel).getByText('Todavía no hay turnos')).toBeInTheDocument();
+  });
+});
+
+describe('the evaluator glass box', () => {
+  it('looks a conversation up and adds what customers never see, in its own section', async () => {
+    startAuthServer({ session: sessionView({ role: 'evaluator' }) });
+    server.use(
+      apiGet('/v1/eval/conversations/:id/trace', ({ params }) =>
+        HttpResponse.json({
+          conversation_id: String(params['id']),
+          records: [
+            staffTraceRecord({
+              workflow: { id: 'credit', version: 1 },
+              risk_tier: 'elevated',
+              trust_events_added: ['injection_detected'],
+              safety_interventions: ['injection_detected'],
+              eligibility_assessments: [assessmentRecord()],
+              risk_estimates: [
+                {
+                  estimate_id: 'est-fixture-1',
+                  model: 'risk_estimator:score_band@1',
+                  band: 'medium',
+                  probability: '0.143',
+                  interval_low: '0.08',
+                  interval_high: '0.21',
+                  flags: ['wide_interval'],
+                  label_definition: 'dpd90_snapshot',
+                  latency_ms: 2,
+                },
+              ],
+            }),
+          ],
+        }),
+      ),
+    );
+    renderApp({ path: '/console/traces' });
+    await userEvent.type(
+      await screen.findByRole('textbox', { name: 'Referencia de la conversación' }),
+      'conv-eval-1',
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Buscar' }));
+    const internal = await screen.findByRole('region', { name: 'Solo evaluación' });
+    expect(within(internal).getByText('elevado')).toBeInTheDocument();
+    expect(within(internal).getAllByText('injection_detected')).toHaveLength(2);
+    const risk = screen.getByRole('region', { name: 'Estimación de riesgo' });
+    expect(within(risk).getByText('14.3 %')).toBeInTheDocument();
+    expect(within(risk).getByText('8 % a 21 %')).toBeInTheDocument();
+    expect(within(risk).getByText('intervalo amplio')).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Decisión de elegibilidad' })).not.toContainElement(
+      risk,
+    );
+  });
+
+  it('asks for a reference before showing anything', async () => {
+    startAuthServer({ session: sessionView({ role: 'evaluator' }) });
+    renderApp({ path: '/console/traces' });
+    expect(await screen.findByText('Busca una conversación')).toBeInTheDocument();
   });
 });

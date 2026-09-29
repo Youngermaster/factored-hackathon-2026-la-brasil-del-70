@@ -73,6 +73,11 @@ const firstColumn = () =>
     .map((row) => within(row).getAllByRole('cell')[0]?.textContent);
 
 describe('DataTable', () => {
+  it('names its scrollable region with the caption (regression: two tables had unnamed, duplicate regions)', () => {
+    renderWithProviders(<Transactions />);
+    expect(screen.getByRole('region', { name: 'Movimientos recientes' })).toBeInTheDocument();
+  });
+
   it('is named by its caption and marks the sorted column', async () => {
     const { container } = renderWithProviders(<Transactions />);
     expect(screen.getByRole('table', { name: 'Movimientos recientes' })).toBeInTheDocument();

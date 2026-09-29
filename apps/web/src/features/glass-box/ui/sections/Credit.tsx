@@ -47,7 +47,7 @@ function RiskEstimatePanel() {
       aria-label={t('glass.credit.riskTitle')}
       className="flex flex-col gap-2 rounded-card border border-understanding bg-understanding-subtle p-3 text-caption"
     >
-      <h4 className="text-small font-semibold text-fg">{t('glass.credit.riskTitle')}</h4>
+      <h3 className="text-small font-semibold text-fg">{t('glass.credit.riskTitle')}</h3>
       <p className="text-understanding-text">{t('glass.credit.riskLabel')}</p>
       {isStaffRecord(record)
         ? record.risk_estimates.map((estimate) => (
@@ -100,7 +100,7 @@ function EligibilityPanel() {
       aria-label={t('glass.credit.eligibilityTitle')}
       className="flex flex-col gap-2 rounded-card border border-border-strong bg-decision-subtle p-3 text-caption"
     >
-      <h4 className="text-small font-semibold text-fg">{t('glass.credit.eligibilityTitle')}</h4>
+      <h3 className="text-small font-semibold text-fg">{t('glass.credit.eligibilityTitle')}</h3>
       {record.eligibility_assessments.length === 0 && <p>{t('glass.credit.noAssessment')}</p>}
       {record.eligibility_assessments.map((assessment) => (
         <div key={assessment.assessment_id} className="flex flex-col gap-1.5 text-fg">

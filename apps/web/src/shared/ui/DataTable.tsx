@@ -37,6 +37,7 @@ export function Root({
     >
       <table className="w-full border-collapse text-left text-small">
         <caption
+          id={captionId}
           className={cx(
             'px-4 pt-4 pb-2 text-left text-small font-semibold text-fg',
             captionHidden && 'sr-only',
