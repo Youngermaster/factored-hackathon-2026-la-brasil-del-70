@@ -16,7 +16,11 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      '/api': { target: apiProxyTarget, changeOrigin: false },
+      '/api': {
+        target: apiProxyTarget,
+        changeOrigin: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
       '/health': { target: apiProxyTarget, changeOrigin: false },
     },
   },
