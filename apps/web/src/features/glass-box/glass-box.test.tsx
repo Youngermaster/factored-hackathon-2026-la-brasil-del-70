@@ -191,7 +191,7 @@ describe('the glass box', () => {
     startConversationServer();
     renderApp({ path: '/' });
     const panel = await screen.findByRole('region', { name: 'Registro de ejecución' });
-    expect(within(panel).getByText('Todavía no hay turnos')).toBeInTheDocument();
+    expect(await within(panel).findByText('Todavía no hay turnos')).toBeInTheDocument();
   });
 });
 
