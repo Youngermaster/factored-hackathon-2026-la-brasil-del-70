@@ -97,6 +97,11 @@ def test_a_catalog_entry_from_another_jurisdiction_fails() -> None:
         ("O empréstimo está aprovado.", Language.PT),
         ("Your loan is approved.", Language.EN),
         ("This is not an approval.", Language.EN),
+        ("Con esos datos estás calificado para el préstamo.", Language.ES),
+        ("Calificás para la tarjeta, che.", Language.ES),
+        ("Você está qualificado para o empréstimo.", Language.PT),
+        ("Seu crédito já foi liberado.", Language.PT),
+        ("You qualify for this loan.", Language.EN),
     ],
 )
 def test_approval_wording_fails_in_credit_responses(text: str, language: Language) -> None:

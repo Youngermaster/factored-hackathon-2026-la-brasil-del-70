@@ -157,6 +157,21 @@ async def test_the_simulated_user_plays_until_done_and_records_its_calls() -> No
     assert [c.status for c in user.calls] == ["ok", "ok"]
 
 
+async def test_the_simulated_user_leaves_when_the_request_is_finished() -> None:
+    fake = FakeLLM()
+    fake.script(SIM, ScriptedResponse(output={"message": "Mi saldo", "done": False}))
+    scn = scenario(
+        mode="simulated",
+        turns=[],
+        simulator_instructions="x",
+        scripted_fallback=[{"text": "respaldo"}],
+        category="ambiguous",
+    )
+    case = FakeCase(lambda _t, _n: view("resolved"))
+    await SimulatedUser(fake).play(case, scn, run_index=1)
+    assert case.sent == ["Mi saldo"]
+
+
 async def test_the_simulated_user_falls_back_to_the_script_without_a_model() -> None:
     fake = FakeLLM()
     fake.script(SIM, ScriptedError(LlmProviderRejectedError))

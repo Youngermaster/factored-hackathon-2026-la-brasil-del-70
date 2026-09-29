@@ -29,11 +29,27 @@ _HUMAN = re.compile(
     r"\b(hablar con (una persona|un humano|un asesor|alguien|un agente|un ejecutivo)|asesor humano|agente humano|"
     r"falar com (uma pessoa|um atendente|um humano|alguem)|atendente humano|talk to (a person|a human|an agent))\b"
 )
+_RELATIVE = (
+    r"(?:mama|madre|papa|padre|esposo|esposa|marido|mujer|pareja|hijo|hija|filho|filha|hermano|hermana|irmao|irma|"
+    r"abuela|abuelo|avo|nieto|nieta|neto|neta|tio|tia|primo|prima|suegro|suegra|sogro|sogra|novio|novia|namorado|"
+    r"namorada|amigo|amiga|mae|pai|vecino|vecina|vizinho|vizinha|jefe|chefe|socio|socia|cliente)"
+)
+# A product first ("la tarjeta de crédito de mi mamá", "o cartão de crédito da minha mãe", "o saldo da conta dele"):
+# the product noun, up to three qualifier words from a closed list, then the owner. Phase 14b added it after the dev
+# split showed P offering to block the customer's own card for a relative's card. A purchase or a charge keeps the
+# owner right after the noun, so "la compra de los útiles de mi hijo" (the customer's own purchase) is not a signal.
+_PRODUCT = r"(?:tarjeta|cuenta|cartao|conta|prestamo|emprestimo|credito|saldo|limite|financiamiento|financiamento)s?"
+_QUALIFIER = (
+    r"(?:de|do|da|del|la|el|a|o|su|sua|seu|credito|debito|ahorros?|corriente|corrente|poupanca|sueldo|nomina|"
+    r"salario|adicional|virtual|fisica|visa|mastercard|oro|dorada|platinum|clasica|gold|black|personal|pessoal|"
+    r"hipotecario|imobiliario|cuenta|conta|tarjeta|cartao|prestamo|emprestimo)"
+)
+_OWNER = rf"(?:de|da|do|del|dos|das) (?:mi|mis|minha|minhas|meu|meus|una|um|uma) {_RELATIVE}s?"
 _THIRD_PARTY = re.compile(
-    r"\b(en nombre de|de parte de|em nome de|a pedido de|on behalf of)\b"
-    r"|\b(tarjeta|cuenta|cartao|conta|compra|cargo)s? (de|da|do) (mi|minha|meu|una|um|uma) "
-    r"(mama|madre|papa|padre|esposo|esposa|marido|mujer|hijo|hija|filho|filha|hermano|hermana|irmao|irma|abuela|"
-    r"abuelo|avo|amigo|amiga|mae|pai|vecino|vecina|cliente)\b"
+    r"\b(?:en nombre de|de parte de|em nome d[eoa]s?|a pedido d[eoa]s?|on behalf of)\b"
+    r"|\b(?:apoderad[oa]|procurador[a]?|poder notarial|procuracao) (?:de|da|do|del)\b"
+    rf"|\b(?:compra|cargo|cobro|cobranca)s? {_OWNER}\b"
+    rf"|\b{_PRODUCT} (?:{_QUALIFIER} ){{0,3}}(?:{_OWNER}|dele|dela|deles|delas)\b"
 )
 
 
@@ -61,6 +77,18 @@ MAX_ACCEPTANCE_WORDS = 4
 def accepts_offer(text: str) -> bool:
     """A bare yes ("sí", "sim", "claro", "sí, por favor"): the answer to an offer of a person, nothing more."""
     return len(words(text)) <= MAX_ACCEPTANCE_WORDS and parse_yes_no(text) is YesNo.YES
+
+
+MAX_ANSWER_WORDS = 6
+
+
+def plain_answer(text: str) -> bool:
+    """A short yes or no ("Sí, quiero solicitarlo", "não, obrigado"): an answer to a pending question, nothing more.
+
+    At a pending question such a turn is resolved by the deterministic parsers alone; the model's escalation
+    signals are not asked for, because a small model read "Sí, quiero solicitarlo" as a request for a person
+    (phase 14b). The keyword signals still run on it, so "sí, pero quiero hablar con un asesor" still escalates."""
+    return len(words(text)) <= MAX_ANSWER_WORDS and parse_yes_no(text) is not YesNo.UNCLEAR
 
 
 def detect_signals(text: str, *, person_offered: bool = False) -> DetectedSignals:

@@ -1,7 +1,8 @@
 """The simulated user driver: a language model plays the customer (``simulate_customer@1``).
 
 It sees only the scenario's goal, instructions, known and hidden facts, and what the assistant wrote, never
-system internals. It stops when it says it is done, when the case is transferred, or after ``MAX_MESSAGES``.
+system internals. It stops when it says it is done, when the system finishes a request (resolved, abstained, refused, or
+transferred), or after ``MAX_MESSAGES``.
 When the model cannot answer the first message (``--llm off``, a missing cassette, an error), the scenario's
 scripted fallback turns are played instead and the turns say so (``driver: scripted_fallback``).
 """
@@ -23,6 +24,9 @@ SIMULATOR_PROMPT: Final = PromptRef(prompt_id="simulate_customer", version=1)
 MAX_MESSAGES: Final = 6
 TEMPERATURE: Final = 0.7
 MAX_OUTPUT_TOKENS: Final = 200
+FINISHED: Final = frozenset({"resolved", "abstained", "refused", "escalated"})
+"""A finished request ends the conversation, as a customer would leave; the graders judge whether it was the
+right one."""
 
 
 def _facts(facts: dict[str, str]) -> str:
@@ -83,7 +87,7 @@ class SimulatedUser:
             view = await send_with_session_events(
                 case, log, message.message.strip()[:2000], scenario.language, driver="simulated", expired=False
             )
-            if message.done or view.state == "ESCALATED" or view.outcome == "escalated":
+            if message.done or view.state == "ESCALATED" or view.outcome in FINISHED:
                 break
             message = await self._next(scenario, log, run_index)
         return log.turns

@@ -158,6 +158,7 @@ def _scenario(world: World, situation: Situation, phrasing_index: int, phrasing:
         "expected_workflow_path": [w.value for w in situation.expected_workflow_path],
         "expected_eligibility_outcome": situation.eligibility.value if situation.eligibility else None,
         "template_family": situation.family_key(workflow, phrasing_index),
+        "review_status": situation.review_status.value,
     }  # fmt: skip
     if simulated:
         document["simulator_instructions"] = fill(situation.simulate or situation.goal, facts)
