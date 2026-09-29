@@ -47,7 +47,7 @@ describe.each(['light', 'dark'] as const)('accessibility in the %s theme', (them
   it('customer layout with the step-up dialog open', async () => {
     startAuthServer({ session: sessionView() });
     renderApp({ path: '/', theme });
-    await screen.findByRole('heading', { level: 1, name: '¿En qué te ayudamos hoy?' });
+    await screen.findByRole('heading', { level: 1, name: 'Asistente' });
     expect(await axe(document.body, pageRules)).toHaveNoViolations();
 
     await userEvent.click(screen.getByRole('button', { name: 'Confirmar identidad' }));

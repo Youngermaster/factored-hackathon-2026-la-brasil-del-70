@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { currentPath, renderApp } from '@/test/app';
 import { apiGet, problem, sessionView } from '@/test/msw/api';
 import { DEMO_CODE, startAuthServer } from '@/test/msw/auth';
+import { conversationView, startConversationServer, turnView } from '@/test/msw/conversation';
 import { server } from '@/test/msw/server';
 
 beforeEach(() => {
@@ -18,11 +19,20 @@ afterEach(() => {
 describe('a session lost mid-way', () => {
   it('sends the customer to sign-in and back to the same conversation afterwards', async () => {
     const auth = startAuthServer({ session: sessionView() });
+    startConversationServer({
+      signedIn: () => auth.state.session !== null,
+      histories: {
+        'c-123': {
+          conversation: conversationView({ conversation_id: 'c-123' }),
+          turns: [turnView({ customer_text: '¿Cuál es mi saldo?' })],
+        },
+      },
+    });
     const { router } = renderApp({ path: '/?conversation=c-123' });
-    expect(await screen.findByText('Tu conversación c-123 sigue abierta.')).toBeInTheDocument();
+    expect(await screen.findByText('¿Cuál es mi saldo?')).toBeInTheDocument();
 
     auth.expire();
-    await userEvent.click(screen.getByRole('button', { name: 'Confirmar identidad' }));
+    await userEvent.type(screen.getByRole('textbox', { name: 'Tu mensaje' }), 'Hola{Enter}');
 
     expect(await screen.findByText('Tu sesión terminó')).toBeInTheDocument();
     expect(currentPath(router)).toBe('/login?reason=expired&next=%2F%3Fconversation%3Dc-123');
@@ -35,7 +45,7 @@ describe('a session lost mid-way', () => {
     );
     await userEvent.click(screen.getByRole('button', { name: 'Verificar' }));
 
-    expect(await screen.findByText('Tu conversación c-123 sigue abierta.')).toBeInTheDocument();
+    expect(await screen.findByText('¿Cuál es mi saldo?')).toBeInTheDocument();
     expect(currentPath(router)).toBe('/?conversation=c-123');
   });
 
@@ -113,9 +123,7 @@ describe('sign-out and guards', () => {
   it('sends a customer who opens the console to the customer home', async () => {
     startAuthServer({ session: sessionView() });
     const { router } = renderApp({ path: '/console' });
-    expect(
-      await screen.findByRole('heading', { level: 1, name: '¿En qué te ayudamos hoy?' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Asistente' })).toBeInTheDocument();
     expect(currentPath(router)).toBe('/');
   });
 

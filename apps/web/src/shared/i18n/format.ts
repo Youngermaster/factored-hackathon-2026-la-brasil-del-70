@@ -13,6 +13,11 @@ export interface Formatters {
   number: (value: number) => string;
   /** A calendar date, for example an as-of date or a due date. */
   date: (iso: string) => string;
+  /**
+   * A date-only value (`2026-06-15`), shown as that calendar day in every time zone. `date` would read it as UTC
+   * midnight and show the previous day west of Greenwich.
+   */
+  day: (isoDate: string) => string;
   /** A date with the time, in the viewer's time zone. */
   dateTime: (iso: string) => string;
   time: (iso: string) => string;
@@ -48,6 +53,7 @@ export function createFormatters(locale: AppLocale, timeZone?: string): Formatte
     ...zone,
   });
   const timeFormat = new Intl.DateTimeFormat(locale, { timeStyle: 'short', ...zone });
+  const dayFormat = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' });
   const relativeFormat = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
 
   const moneyFormat = (currency: string, decimals: number): Intl.NumberFormat => {
@@ -80,6 +86,7 @@ export function createFormatters(locale: AppLocale, timeZone?: string): Formatte
       ),
     number: (value) => numberFormat.format(value),
     date: (iso) => dateFormat.format(new Date(iso)),
+    day: (isoDate) => dayFormat.format(new Date(`${isoDate.slice(0, 10)}T00:00:00Z`)),
     dateTime: (iso) => dateTimeFormat.format(new Date(iso)),
     time: (iso) => timeFormat.format(new Date(iso)),
     relative: (iso, now = new Date()) => {

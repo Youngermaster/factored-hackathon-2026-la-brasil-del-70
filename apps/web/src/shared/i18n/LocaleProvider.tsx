@@ -43,7 +43,13 @@ export function LocaleProvider({
   }, []);
 
   const value = useMemo(
-    () => ({ locale, language, format: createFormatters(locale, timeZone), setLocale }),
+    () => ({
+      locale,
+      language,
+      format: createFormatters(locale, timeZone),
+      timeZone,
+      setLocale,
+    }),
     [locale, language, timeZone, setLocale],
   );
 

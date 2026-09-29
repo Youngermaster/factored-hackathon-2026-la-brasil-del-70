@@ -37,9 +37,7 @@ describe('sign-in', () => {
     const { router } = renderApp({ path: '/login' });
     expect(screen.getAllByText('Modo demostración').length).toBeGreaterThan(0);
     await signInAs(/Dos tarjetas activas/);
-    expect(
-      await screen.findByRole('heading', { level: 1, name: '¿En qué te ayudamos hoy?' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Asistente' })).toBeInTheDocument();
     expect(currentPath(router)).toBe('/');
     expect(screen.getByRole('button', { name: 'Cerrar sesión' })).toBeInTheDocument();
   });
@@ -89,9 +87,7 @@ describe('sign-in', () => {
       DEMO_CODE,
     );
     await userEvent.click(screen.getByRole('button', { name: 'Verificar' }));
-    expect(
-      await screen.findByRole('heading', { level: 1, name: '¿En qué te ayudamos hoy?' }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Asistente' })).toBeInTheDocument();
     const start = auth.requests.find((request) => request.url.endsWith('/v1/auth/start'));
     expect(await start?.json()).toEqual({
       kind: 'document',

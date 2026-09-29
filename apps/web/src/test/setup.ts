@@ -26,6 +26,8 @@ if (hasDom) {
     hasPointerCapture: () => false,
     setPointerCapture: () => undefined,
     releasePointerCapture: () => undefined,
+    // jsdom does not scroll; the chat scrolls new messages and selected turns into view.
+    scrollIntoView: () => undefined,
   });
 }
 

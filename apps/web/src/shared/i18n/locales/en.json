@@ -121,8 +121,6 @@
   "home": {
     "heading": "How can we help today?",
     "intro": "The assistant answers from your account data and the bank's policies. When something needs a person, it says so and hands your case over.",
-    "topicsLabel": "Topics the assistant handles",
-    "resume": "Your conversation {{id}} is still open.",
     "topics": {
       "account_inquiry": "Accounts and payments",
       "account_inquiryBody": "Balances with their as-of date, payment status, and statement summaries.",
@@ -131,8 +129,13 @@
       "dispute": "Disputes",
       "disputeBody": "Charges you do not recognize and the status of your case.",
       "credit": "Credit",
-      "creditBody": "Products and an indicative eligibility result. Never an approval."
-    }
+      "creditBody": "Products and an indicative eligibility result. Never an approval.",
+      "account_inquiryExample": "What is the balance of my accounts?",
+      "card_supportExample": "What is the status of my card?",
+      "disputeExample": "I do not recognize a charge on my card",
+      "creditExample": "Which personal loans do you have?"
+    },
+    "tryExample": "For example: {{example}}"
   },
   "console": {
     "heading": "Overview",
@@ -158,5 +161,480 @@
     "cre-co-application": "A credit application in progress",
     "agent-demo-01": "Agent console: handoffs and applications",
     "evaluator-demo-01": "Evaluation console: records and results"
+  },
+  "chat": {
+    "title": "Assistant",
+    "messagesLabel": "Conversation",
+    "reference": "Conversation reference:",
+    "newConversation": "New conversation",
+    "composerLabel": "Your message",
+    "composerHint": "Enter sends. Shift + Enter adds a line.",
+    "waiting": "Waiting for the assistant to answer.",
+    "counter": "{{count}} of {{max}}",
+    "limitReached": "You reached the limit of {{max}} characters.",
+    "send": "Send",
+    "sending": "Sending",
+    "responding": "The assistant is answering",
+    "you": "You",
+    "assistant": "Assistant",
+    "notSent": "Your message was not sent.",
+    "retry": "Try again",
+    "loading": "Loading the conversation",
+    "loadError": "We could not load the conversation",
+    "notFoundTitle": "We could not find that conversation",
+    "notFoundBody": "It may belong to another session or no longer exist. Start a new one and we will help all the same.",
+    "human": "Talk to a person",
+    "withPerson": "Your case is already with a person on the team.",
+    "showTrace": "Show in the record",
+    "stepUpWaiting": "This action needs you to confirm your identity with a new code.",
+    "stepUpAgain": "Confirm identity",
+    "stepUpCancelled": "You did not confirm your identity, so nothing was changed.",
+    "status": {
+      "escalated": "With a person",
+      "closed": "Closed"
+    },
+    "notices": {
+      "session_expired": "Your previous session ended. We continue from the last safe step.",
+      "reauthentication_required": "Please sign in again to continue.",
+      "language_question": "Choose the conversation language: Spanish or Portuguese."
+    },
+    "replies": {
+      "confirm": "Yes, I confirm",
+      "cancel": "No, cancel",
+      "option": "Option {{number}}",
+      "human": "I want to talk to a person",
+      "review": "Yes, I want a person to review it",
+      "steppedUp": "Done, I confirmed my identity"
+    },
+    "hideTracePanel": "Hide record",
+    "showTracePanel": "Show record",
+    "traceFull": "Full record",
+    "backToChat": "Back to the chat"
+  },
+  "parts": {
+    "maskedPrefix": "Ending in",
+    "disclaimer": "This is an indication from a synthetic service: it is not an offer or a credit decision.",
+    "productTypes": {
+      "checking_account": "Checking account",
+      "savings_account": "Savings account",
+      "credit_card": "Credit card",
+      "debit_card": "Debit card",
+      "personal_loan": "Personal loan",
+      "mortgage": "Mortgage",
+      "investment": "Investment",
+      "other": "Other product"
+    },
+    "transactionTypes": {
+      "deposit": "Deposit",
+      "withdrawal": "Withdrawal",
+      "transfer": "Transfer",
+      "payment": "Payment",
+      "purchase": "Purchase",
+      "adjustment": "Adjustment"
+    },
+    "transactionStatuses": {
+      "approved": "Authorized",
+      "declined": "Declined",
+      "pending": "Pending",
+      "reversed": "Reversed"
+    },
+    "productStatuses": {
+      "active": "Active",
+      "blocked": "Blocked",
+      "closed": "Closed",
+      "suspended": "Suspended"
+    },
+    "directions": {
+      "debit": "Debit",
+      "credit": "Credit",
+      "unclassified": "Unclassified"
+    },
+    "balances": {
+      "title": "Balances",
+      "current": "Balance",
+      "available": "Available credit",
+      "limit": "Credit limit",
+      "overLimit": "The balance is over the credit limit."
+    },
+    "payments": {
+      "title": "Payment status",
+      "status": "Status",
+      "amount": "Amount",
+      "date": "Date",
+      "payee": "Payee"
+    },
+    "cards": {
+      "title": "Your cards",
+      "status": "Status",
+      "expires": "Expires",
+      "noExpiry": "No expiry date"
+    },
+    "statement": {
+      "title": "Statement summary",
+      "period": "From {{start}} to {{end}}",
+      "totals": "Totals per currency",
+      "currency": "Currency",
+      "debits": "Debits",
+      "credits": "Credits",
+      "movements_one": "{{count}} transaction",
+      "movements_other": "{{count}} transactions",
+      "counts": "{{total}} transactions in the period. Left out of the totals: {{notSettled}} not settled and {{unclassified}} unclassified.",
+      "lines": "Transactions",
+      "date": "Date",
+      "detail": "Detail",
+      "status": "Status",
+      "amount": "Amount",
+      "truncated": "The most recent transactions are shown; the period has more."
+    },
+    "options": {
+      "title": "Which one is it?",
+      "label": "Option {{number}}"
+    },
+    "confirm": {
+      "disputeTitle": "Review the dispute before you confirm",
+      "cardTitle": "Review the change to your card",
+      "creditTitle": "Review the application before it is recorded",
+      "planned": "If you confirm, we will do this:",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "amount": "Amount",
+      "date": "Date",
+      "merchant": "Merchant",
+      "card": "Card",
+      "reason": "Reason",
+      "expectedBy": "Expected answer",
+      "action": "Action",
+      "product": "Product",
+      "term": "Term",
+      "months_one": "{{count}} month",
+      "months_other": "{{count}} months",
+      "purpose": "Purpose",
+      "indication": "Indication"
+    },
+    "actionKinds": {
+      "create_dispute_case": "Open a dispute case",
+      "block_card": "Block the card",
+      "submit_credit_application": "Record the application for review by a person"
+    },
+    "disputeReasons": {
+      "unrecognized": "I do not recognize the charge",
+      "duplicate": "Duplicate charge",
+      "wrong_amount": "Wrong amount",
+      "not_received": "I did not receive the product or service",
+      "atm_cash_not_dispensed": "The ATM did not dispense the cash",
+      "subscription_cancelled": "Cancelled subscription",
+      "other": "Another reason"
+    },
+    "cardActions": {
+      "block": "Protective block",
+      "unblock_request": "Unblock request",
+      "replacement_request": "Replacement request"
+    },
+    "cardBlockReasons": {
+      "lost": "Lost",
+      "stolen": "Stolen",
+      "unrecognized_activity": "Activity I do not recognize",
+      "precaution": "Precaution"
+    },
+    "creditTypes": {
+      "credit_card": "Credit card",
+      "personal_loan": "Personal loan",
+      "mortgage": "Mortgage"
+    },
+    "purposes": {
+      "general_purpose": "General purpose",
+      "debt_consolidation": "Debt consolidation",
+      "home_improvement": "Home improvement",
+      "education": "Education",
+      "home_purchase": "Home purchase",
+      "home_construction": "Home construction"
+    },
+    "requiredInformation": {
+      "declared_monthly_income": "your monthly income",
+      "property_value": "the property value",
+      "down_payment": "the down payment"
+    },
+    "eligibilityOutcomes": {
+      "indicatively_eligible": "Indicatively meets the conditions",
+      "not_eligible": "Does not meet the conditions for now",
+      "review_required": "Needs review by a person",
+      "insufficient_data": "Information is missing"
+    },
+    "products": {
+      "title": "Credit products",
+      "synthetic": "Synthetic catalog",
+      "amount": "Amount",
+      "amountRange": "From {{min}} to {{max}}",
+      "term": "Term",
+      "termRange": "From {{min}} to {{max}} months",
+      "rate": "Annual rate",
+      "rateRange": "From {{min}}% to {{max}}%",
+      "required": "For an indication we need",
+      "humanOnly": "This product needs an assessment by a person.",
+      "indicative": "Indicative values from a demonstration catalog. Not an offer."
+    },
+    "eligibility": {
+      "title": "Eligibility indication",
+      "synthetic": "Synthetic service",
+      "rule": "Rule",
+      "reviewButton": {
+        "submit_for_human_review": "Send for review",
+        "request_human_contact": "Ask a person to review",
+        "provide_missing_information": "Ask a person to review"
+      }
+    },
+    "actions": {
+      "title": "Actions",
+      "pending": "In progress: not yet checked against the record.",
+      "verified": "Done and checked against the bank's record.",
+      "failed": "It could not be completed. No change was made that we did not check.",
+      "reference": "Reference",
+      "evidence": "Checked in"
+    },
+    "escalation": {
+      "title": "Your case went to a person on the team",
+      "reference": "Case reference",
+      "expected": "Expected answer by"
+    },
+    "citations": {
+      "title_one": "{{count}} cited policy",
+      "title_other": "{{count}} cited policies"
+    }
+  },
+  "eligibility": {
+    "heading": {
+      "synthetic_notice": "Synthetic eligibility guide (demonstration): this is not a credit decision.",
+      "reasons": "Reasons, with the rule behind each one:",
+      "missing": "Missing information:"
+    },
+    "outcome": {
+      "indicatively_eligible": "Under the synthetic rules, your profile indicatively meets this product's conditions.",
+      "not_eligible": "Under the synthetic rules, your profile does not meet this product's indicative conditions for now.",
+      "review_required": "Your case needs a review by a person from the credit team.",
+      "insufficient_data": "We are missing information needed to give you a guide."
+    },
+    "reason": {
+      "self_service_product": "The product supports an automatic guide.",
+      "product_requires_human_assessment": "This product needs an assessment by a person from the team.",
+      "credit_score_present": "A credit score is on record.",
+      "missing_credit_score": "No credit score is on record.",
+      "credit_score_meets_minimum": "The credit score reaches the product's minimum.",
+      "credit_score_below_minimum": "The credit score is below the product's minimum.",
+      "income_present": "A monthly income is available.",
+      "missing_income": "No monthly income is available.",
+      "income_currency_mismatch": "The available income is in another currency and cannot be compared.",
+      "payment_to_income_within_maximum": "The estimated monthly payment is within the maximum relative to your income.",
+      "payment_to_income_above_maximum": "The estimated monthly payment exceeds the maximum relative to your income.",
+      "days_past_due_within_maximum": "There are no arrears on your credit products.",
+      "missing_days_past_due": "There is no information about arrears on your credit products.",
+      "days_past_due_present": "There are arrears on your credit products.",
+      "tenure_meets_minimum": "Your time as a customer reaches the minimum.",
+      "missing_tenure": "There is no information about your time as a customer.",
+      "tenure_below_minimum": "Your time as a customer is below the minimum.",
+      "amount_within_product_range": "The amount and term are within the product's range.",
+      "amount_outside_product_range": "The amount is outside the product's range.",
+      "term_outside_product_range": "The term is outside the product's range.",
+      "purpose_not_offered": "The product does not accept that purpose.",
+      "amount_above_review_threshold": "The amount is above the human review threshold.",
+      "risk_estimate_available": "A risk estimate is available.",
+      "risk_estimate_unavailable": "The risk estimate is not available.",
+      "risk_band_acceptable": "The risk estimate is in an acceptable band.",
+      "risk_band_not_acceptable": "The risk estimate is outside the product's acceptable bands.",
+      "risk_interval_clear": "The estimate's uncertainty is not close to a boundary between levels.",
+      "borderline_risk_interval": "The estimate's uncertainty is close to a boundary between risk levels."
+    },
+    "missing_fact": {
+      "credit_score": "A recorded credit score.",
+      "monthly_income": "Your monthly income (you can declare it in this conversation).",
+      "max_days_past_due": "The arrears information of your credit products.",
+      "tenure_months": "Your time as a customer."
+    },
+    "uncertainty": {
+      "indicative_only": "This is an indicative guide based on synthetic rules and may change after a human review.",
+      "borderline_estimate": "The risk estimate is close to a boundary, so the result is uncertain.",
+      "missing_information": "Without the missing information we cannot give a guide.",
+      "estimate_unavailable": "No risk estimate was available, so the result is uncertain."
+    },
+    "review_path": {
+      "submit_for_human_review": "If you like, we can record your application for review by a person from the credit team.",
+      "request_human_contact": "If you like, a person from the credit team can review your case and contact you.",
+      "provide_missing_information": "If you give us the missing information, we can give you a new guide; you can also ask to speak with a person."
+    }
+  },
+  "glass": {
+    "title": "Execution record",
+    "intro": "What the system understood, which rules decided, and which actions were checked, turn by turn.",
+    "open": "Record",
+    "reasoningNote": "Model reasoning is not shown, by design. Decisions are explained by rules, sources, and records.",
+    "legend": {
+      "understanding": "Blue: what the models understood",
+      "decision": "Yellow: rules and checked actions",
+      "risk": "Red: escalations and failures"
+    },
+    "emptyTitle": "No turns yet",
+    "emptyBody": "Each assistant answer leaves its record here: state, rules, sources, and tools.",
+    "loading": "Loading the record",
+    "notFoundTitle": "We could not find that record",
+    "notFoundBody": "The conversation does not exist or is not yours.",
+    "error": "We could not load the record",
+    "turn": "Turn {{number}}",
+    "switched": "Moved from {{from}}",
+    "showMessage": "Show the message in the chat",
+    "workflows": {
+      "account_inquiry": "Accounts and payments",
+      "card_support": "Cards",
+      "dispute": "Disputes",
+      "credit": "Credit",
+      "router": "Router"
+    },
+    "outcomes": {
+      "resolved": "Resolved",
+      "clarified": "Clarifying question",
+      "abstained": "Abstained",
+      "escalated": "Went to a person",
+      "refused": "Refused",
+      "in_progress": "In progress"
+    },
+    "kinds": {
+      "model": "models",
+      "rules": "deterministic rules",
+      "policy": "policy",
+      "write": "write",
+      "read": "read",
+      "separated": "separate components",
+      "outcome": "outcome",
+      "record": "record"
+    },
+    "understanding": "Understanding",
+    "intentLabel": "Intent",
+    "belowThreshold": "Below the threshold: a clarifying question was asked.",
+    "languageLabel": "Language",
+    "confidence": "confidence {{value}}",
+    "uncertain": "uncertain",
+    "retrieval": {
+      "answer": "Policy search: answered with sources",
+      "abstain": "Policy search: abstained"
+    },
+    "llmStatus": {
+      "ok": "answered",
+      "repaired": "answered after a repair",
+      "failed": "failed",
+      "fallback": "unavailable: the deterministic path was used"
+    },
+    "noUnderstanding": "No model took part in this turn.",
+    "rules": "Policy decisions",
+    "preCheck": "pre-check",
+    "preCheckNote": "Evaluated before the records are read; rules without facts are evaluated again afterwards.",
+    "decisionKinds": {
+      "allow": "allowed",
+      "deny": "denied",
+      "require_confirmation": "needs confirmation",
+      "require_step_up": "needs step-up verification",
+      "clarify": "clarify",
+      "escalate": "escalate to a person",
+      "abstain": "abstain",
+      "refuse": "refuse"
+    },
+    "ruleCounts": "{{passed}} passed, {{failed}} failed, {{missing}} without facts.",
+    "decisive": "Decisive:",
+    "rulesCaption": "Rules evaluated in {{state}}",
+    "rule": "Rule",
+    "result": "Result",
+    "reason": "Code",
+    "ruleStatus": {
+      "passed": "passed",
+      "failed": "failed",
+      "missing": "no facts"
+    },
+    "clauses": "Clauses",
+    "otherClauses": "Also applied:",
+    "ms": "{{value}} ms",
+    "status": "Status",
+    "toolStatus": {
+      "ok": "ok",
+      "not_found": "no results",
+      "failed": "failed",
+      "unknown": "unknown",
+      "rejected_by_allowlist": "not allowed in this state"
+    },
+    "attempts_one": "{{count}} attempt",
+    "attempts_other": "{{count}} attempts",
+    "arguments": "Arguments",
+    "resultSummary": "Result",
+    "verification": "Verification",
+    "verified": "Checked",
+    "notVerified": "Not checked",
+    "evidence": "Evidence:",
+    "credit": {
+      "title": "Credit",
+      "separation": "The language model received neither: not the estimate and not the credit profile.",
+      "riskTitle": "Risk estimate",
+      "riskLabel": "Synthetic-data estimate, not a credit decision.",
+      "model": "Model",
+      "band": "Band",
+      "bands": {
+        "low": "low",
+        "medium": "medium",
+        "high": "high",
+        "unknown": "unknown"
+      },
+      "probability": "Probability",
+      "interval": "Interval",
+      "to": "to",
+      "flags": "Uncertainty",
+      "noFlags": "none",
+      "flag": {
+        "missing_features": "missing features",
+        "out_of_distribution": "outside the training population",
+        "wide_interval": "wide interval",
+        "model_unavailable": "model unavailable"
+      },
+      "label": "Definition",
+      "used": "An estimate was used from",
+      "valuesHidden": "The estimate values are not shown to the customer.",
+      "eligibilityTitle": "Eligibility decision",
+      "noAssessment": "No eligibility assessment in this turn.",
+      "notRecorded": "no result recorded",
+      "reviewReasons": "Review reasons:",
+      "review": {
+        "missing_income": "income missing",
+        "missing_credit_score": "score missing",
+        "borderline_risk_interval": "borderline estimate",
+        "risk_estimate_unavailable": "estimate unavailable",
+        "days_past_due_present": "days past due",
+        "amount_above_review_threshold": "amount above the threshold",
+        "customer_contests_result": "the customer contests the result",
+        "product_requires_human_assessment": "the product needs a person"
+      }
+    },
+    "handoff": "Handoff",
+    "case": "Case",
+    "phrased": "Answer phrased by the model and verified",
+    "template": "Template answer",
+    "grounded": "No claims outside the sources.",
+    "violations": "Unsupported claims: {{list}}",
+    "versions": "Versions and cost",
+    "models": "Models",
+    "prompts": "Prompts",
+    "policyPack": "Policies",
+    "latency": "Latency",
+    "tokens": "Tokens",
+    "tokenCounts": "{{input}} in, {{output}} out",
+    "cost": "Cost",
+    "none": "none",
+    "internal": {
+      "title": "Evaluation only",
+      "body": "What the customer never sees: the session's defenses.",
+      "riskTier": "Session risk tier",
+      "tiers": {
+        "low": "low",
+        "elevated": "elevated",
+        "high": "high"
+      },
+      "trustEvents": "Trust events",
+      "interventions": "Safety interventions",
+      "authLevel": "Verification",
+      "traceId": "Trace"
+    }
   }
 }

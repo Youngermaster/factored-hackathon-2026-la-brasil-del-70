@@ -15,12 +15,22 @@ export function Input({
 export function Textarea({
   className,
   ref,
+  compact = false,
   ...props
-}: TextareaHTMLAttributes<HTMLTextAreaElement> & { readonly ref?: Ref<HTMLTextAreaElement> }) {
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  readonly ref?: Ref<HTMLTextAreaElement>;
+  /** A short box that grows with its rows (the chat composer) instead of the default minimum height. */
+  readonly compact?: boolean;
+}) {
   return (
     <textarea
       ref={ref}
-      className={cx(controlClasses, 'min-h-24 py-2 leading-relaxed', className)}
+      className={cx(
+        controlClasses,
+        compact ? 'py-2.5' : 'min-h-24 py-2',
+        'leading-relaxed',
+        className,
+      )}
       {...props}
     />
   );

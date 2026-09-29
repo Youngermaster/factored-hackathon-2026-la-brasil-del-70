@@ -121,8 +121,6 @@
   "home": {
     "heading": "¿En qué te ayudamos hoy?",
     "intro": "El asistente responde con datos de tu cuenta y las políticas del banco. Si algo requiere a una persona, te lo dice y pasa tu caso.",
-    "topicsLabel": "Temas que atiende el asistente",
-    "resume": "Tu conversación {{id}} sigue abierta.",
     "topics": {
       "account_inquiry": "Cuentas y pagos",
       "account_inquiryBody": "Saldos con su fecha de corte, estado de pagos y resúmenes.",
@@ -131,8 +129,13 @@
       "dispute": "Aclaraciones",
       "disputeBody": "Cargos que no reconoces y el estado de tu caso.",
       "credit": "Crédito",
-      "creditBody": "Productos y una elegibilidad indicativa. Nunca una aprobación."
-    }
+      "creditBody": "Productos y una elegibilidad indicativa. Nunca una aprobación.",
+      "account_inquiryExample": "¿Cuál es el saldo de mis cuentas?",
+      "card_supportExample": "¿Cómo está mi tarjeta?",
+      "disputeExample": "No reconozco un cargo en mi tarjeta",
+      "creditExample": "¿Qué préstamos personales tienen?"
+    },
+    "tryExample": "Por ejemplo: {{example}}"
   },
   "console": {
     "heading": "Resumen",
@@ -158,5 +161,480 @@
     "cre-co-application": "Una solicitud de crédito en curso",
     "agent-demo-01": "Consola de agente: traspasos y solicitudes",
     "evaluator-demo-01": "Consola de evaluación: registros y resultados"
+  },
+  "chat": {
+    "title": "Asistente",
+    "messagesLabel": "Conversación",
+    "reference": "Referencia de la conversación:",
+    "newConversation": "Nueva conversación",
+    "composerLabel": "Tu mensaje",
+    "composerHint": "Enter envía. Shift + Enter agrega una línea.",
+    "waiting": "Esperando la respuesta del asistente.",
+    "counter": "{{count}} de {{max}}",
+    "limitReached": "Llegaste al límite de {{max}} caracteres.",
+    "send": "Enviar",
+    "sending": "Enviando",
+    "responding": "El asistente está respondiendo",
+    "you": "Tú",
+    "assistant": "Asistente",
+    "notSent": "Tu mensaje no se envió.",
+    "retry": "Reintentar",
+    "loading": "Cargando la conversación",
+    "loadError": "No pudimos cargar la conversación",
+    "notFoundTitle": "No encontramos esa conversación",
+    "notFoundBody": "Puede que sea de otra sesión o que ya no exista. Empieza una nueva y te ayudamos igual.",
+    "human": "Hablar con una persona",
+    "withPerson": "Tu caso ya está con una persona del equipo.",
+    "showTrace": "Ver en el registro",
+    "stepUpWaiting": "Esta acción necesita que confirmes tu identidad con un código nuevo.",
+    "stepUpAgain": "Confirmar identidad",
+    "stepUpCancelled": "No confirmaste tu identidad, así que no hicimos ningún cambio.",
+    "status": {
+      "escalated": "Con una persona",
+      "closed": "Cerrada"
+    },
+    "notices": {
+      "session_expired": "Tu sesión anterior terminó. Seguimos desde el último paso seguro.",
+      "reauthentication_required": "Necesitamos que vuelvas a ingresar para continuar.",
+      "language_question": "Elige el idioma de la conversación: español o portugués."
+    },
+    "replies": {
+      "confirm": "Sí, confirmo",
+      "cancel": "No, cancelar",
+      "option": "Opción {{number}}",
+      "human": "Quiero hablar con una persona",
+      "review": "Sí, quiero que una persona lo revise",
+      "steppedUp": "Listo, ya confirmé mi identidad"
+    },
+    "hideTracePanel": "Ocultar registro",
+    "showTracePanel": "Mostrar registro",
+    "traceFull": "Registro completo",
+    "backToChat": "Volver al chat"
+  },
+  "parts": {
+    "maskedPrefix": "Terminada en",
+    "disclaimer": "Es una orientación indicativa de un servicio sintético: no es una oferta ni una decisión de crédito.",
+    "productTypes": {
+      "checking_account": "Cuenta corriente",
+      "savings_account": "Cuenta de ahorro",
+      "credit_card": "Tarjeta de crédito",
+      "debit_card": "Tarjeta de débito",
+      "personal_loan": "Préstamo personal",
+      "mortgage": "Crédito hipotecario",
+      "investment": "Inversión",
+      "other": "Otro producto"
+    },
+    "transactionTypes": {
+      "deposit": "Depósito",
+      "withdrawal": "Retiro",
+      "transfer": "Transferencia",
+      "payment": "Pago",
+      "purchase": "Compra",
+      "adjustment": "Ajuste"
+    },
+    "transactionStatuses": {
+      "approved": "Autorizada",
+      "declined": "Rechazada",
+      "pending": "Pendiente",
+      "reversed": "Revertida"
+    },
+    "productStatuses": {
+      "active": "Activa",
+      "blocked": "Bloqueada",
+      "closed": "Cerrada",
+      "suspended": "Suspendida"
+    },
+    "directions": {
+      "debit": "Cargo",
+      "credit": "Abono",
+      "unclassified": "Sin clasificar"
+    },
+    "balances": {
+      "title": "Saldos",
+      "current": "Saldo",
+      "available": "Crédito disponible",
+      "limit": "Límite de crédito",
+      "overLimit": "El saldo supera el límite de crédito."
+    },
+    "payments": {
+      "title": "Estado de pagos",
+      "status": "Estado",
+      "amount": "Monto",
+      "date": "Fecha",
+      "payee": "Destinatario"
+    },
+    "cards": {
+      "title": "Tus tarjetas",
+      "status": "Estado",
+      "expires": "Vence",
+      "noExpiry": "Sin fecha de vencimiento"
+    },
+    "statement": {
+      "title": "Resumen de movimientos",
+      "period": "Del {{start}} al {{end}}",
+      "totals": "Totales por moneda",
+      "currency": "Moneda",
+      "debits": "Cargos",
+      "credits": "Abonos",
+      "movements_one": "{{count}} movimiento",
+      "movements_other": "{{count}} movimientos",
+      "counts": "{{total}} movimientos en el período. Fuera de los totales: {{notSettled}} sin liquidar y {{unclassified}} sin clasificar.",
+      "lines": "Movimientos",
+      "date": "Fecha",
+      "detail": "Detalle",
+      "status": "Estado",
+      "amount": "Monto",
+      "truncated": "Mostramos los movimientos más recientes; el período tiene más."
+    },
+    "options": {
+      "title": "¿Cuál de estos es?",
+      "label": "Opción {{number}}"
+    },
+    "confirm": {
+      "disputeTitle": "Revisa la aclaración antes de confirmar",
+      "cardTitle": "Revisa el cambio en tu tarjeta",
+      "creditTitle": "Revisa la solicitud antes de registrarla",
+      "planned": "Si confirmas, haremos esto:",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "amount": "Monto",
+      "date": "Fecha",
+      "merchant": "Comercio",
+      "card": "Tarjeta",
+      "reason": "Motivo",
+      "expectedBy": "Respuesta esperada",
+      "action": "Acción",
+      "product": "Producto",
+      "term": "Plazo",
+      "months_one": "{{count}} mes",
+      "months_other": "{{count}} meses",
+      "purpose": "Propósito",
+      "indication": "Orientación"
+    },
+    "actionKinds": {
+      "create_dispute_case": "Abrir un caso de aclaración",
+      "block_card": "Bloquear la tarjeta",
+      "submit_credit_application": "Registrar la solicitud para revisión de una persona"
+    },
+    "disputeReasons": {
+      "unrecognized": "No reconozco el cargo",
+      "duplicate": "Cargo duplicado",
+      "wrong_amount": "Monto incorrecto",
+      "not_received": "No recibí el producto o servicio",
+      "atm_cash_not_dispensed": "El cajero no entregó el efectivo",
+      "subscription_cancelled": "Suscripción cancelada",
+      "other": "Otro motivo"
+    },
+    "cardActions": {
+      "block": "Bloqueo preventivo",
+      "unblock_request": "Solicitud de desbloqueo",
+      "replacement_request": "Solicitud de reposición"
+    },
+    "cardBlockReasons": {
+      "lost": "Pérdida",
+      "stolen": "Robo",
+      "unrecognized_activity": "Movimientos que no reconozco",
+      "precaution": "Precaución"
+    },
+    "creditTypes": {
+      "credit_card": "Tarjeta de crédito",
+      "personal_loan": "Préstamo personal",
+      "mortgage": "Crédito hipotecario"
+    },
+    "purposes": {
+      "general_purpose": "Uso general",
+      "debt_consolidation": "Consolidar deudas",
+      "home_improvement": "Mejoras en el hogar",
+      "education": "Educación",
+      "home_purchase": "Compra de vivienda",
+      "home_construction": "Construcción de vivienda"
+    },
+    "requiredInformation": {
+      "declared_monthly_income": "tu ingreso mensual",
+      "property_value": "el valor de la propiedad",
+      "down_payment": "el pago inicial"
+    },
+    "eligibilityOutcomes": {
+      "indicatively_eligible": "Cumple de forma indicativa",
+      "not_eligible": "No cumple por ahora",
+      "review_required": "Requiere revisión de una persona",
+      "insufficient_data": "Falta información"
+    },
+    "products": {
+      "title": "Productos de crédito",
+      "synthetic": "Catálogo sintético",
+      "amount": "Monto",
+      "amountRange": "De {{min}} a {{max}}",
+      "term": "Plazo",
+      "termRange": "De {{min}} a {{max}} meses",
+      "rate": "Tasa anual",
+      "rateRange": "Del {{min}} % al {{max}} %",
+      "required": "Para una orientación necesitamos",
+      "humanOnly": "Este producto requiere la evaluación de una persona.",
+      "indicative": "Valores indicativos de un catálogo de demostración. No es una oferta."
+    },
+    "eligibility": {
+      "title": "Orientación de elegibilidad",
+      "synthetic": "Servicio sintético",
+      "rule": "Regla",
+      "reviewButton": {
+        "submit_for_human_review": "Enviar a revisión",
+        "request_human_contact": "Pedir revisión de una persona",
+        "provide_missing_information": "Pedir revisión de una persona"
+      }
+    },
+    "actions": {
+      "title": "Acciones",
+      "pending": "En proceso: todavía no lo comprobamos en el registro.",
+      "verified": "Hecho y comprobado en el registro del banco.",
+      "failed": "No se pudo completar. No se hizo ningún cambio que no hayamos comprobado.",
+      "reference": "Referencia",
+      "evidence": "Comprobado en"
+    },
+    "escalation": {
+      "title": "Tu caso pasó a una persona del equipo",
+      "reference": "Referencia del caso",
+      "expected": "Respuesta esperada antes del"
+    },
+    "citations": {
+      "title_one": "{{count}} política citada",
+      "title_other": "{{count}} políticas citadas"
+    }
+  },
+  "eligibility": {
+    "heading": {
+      "synthetic_notice": "Orientación sintética de elegibilidad (demostración): no es una decisión de crédito.",
+      "reasons": "Motivos, con la regla que los respalda:",
+      "missing": "Información que falta:"
+    },
+    "outcome": {
+      "indicatively_eligible": "Según las reglas sintéticas, tu perfil cumple de forma indicativa las condiciones de este producto.",
+      "not_eligible": "Según las reglas sintéticas, tu perfil no cumple por ahora las condiciones indicativas de este producto.",
+      "review_required": "Tu caso necesita la revisión de una persona del equipo de crédito.",
+      "insufficient_data": "Nos falta información para darte una orientación."
+    },
+    "reason": {
+      "self_service_product": "El producto admite una orientación automática.",
+      "product_requires_human_assessment": "Este producto requiere una evaluación de una persona del equipo.",
+      "credit_score_present": "Hay un puntaje de crédito registrado.",
+      "missing_credit_score": "No hay un puntaje de crédito registrado.",
+      "credit_score_meets_minimum": "El puntaje de crédito alcanza el mínimo del producto.",
+      "credit_score_below_minimum": "El puntaje de crédito está por debajo del mínimo del producto.",
+      "income_present": "Hay un ingreso mensual disponible.",
+      "missing_income": "No hay un ingreso mensual disponible.",
+      "income_currency_mismatch": "El ingreso disponible está en otra moneda y no se puede comparar.",
+      "payment_to_income_within_maximum": "El pago mensual estimado está dentro del máximo respecto de tu ingreso.",
+      "payment_to_income_above_maximum": "El pago mensual estimado supera el máximo respecto de tu ingreso.",
+      "days_past_due_within_maximum": "No hay atrasos en tus productos de crédito.",
+      "missing_days_past_due": "No hay información sobre atrasos en tus productos de crédito.",
+      "days_past_due_present": "Hay atrasos en tus productos de crédito.",
+      "tenure_meets_minimum": "Tu antigüedad como cliente alcanza el mínimo.",
+      "missing_tenure": "No hay información sobre tu antigüedad como cliente.",
+      "tenure_below_minimum": "Tu antigüedad como cliente está por debajo del mínimo.",
+      "amount_within_product_range": "El monto y el plazo están dentro del rango del producto.",
+      "amount_outside_product_range": "El monto está fuera del rango del producto.",
+      "term_outside_product_range": "El plazo está fuera del rango del producto.",
+      "purpose_not_offered": "El producto no admite ese propósito.",
+      "amount_above_review_threshold": "El monto supera el umbral de revisión humana.",
+      "risk_estimate_available": "Hay una estimación de riesgo disponible.",
+      "risk_estimate_unavailable": "La estimación de riesgo no está disponible.",
+      "risk_band_acceptable": "La estimación de riesgo está en una banda aceptable.",
+      "risk_band_not_acceptable": "La estimación de riesgo está fuera de las bandas aceptables del producto.",
+      "risk_interval_clear": "La incertidumbre de la estimación no está cerca de un límite entre niveles.",
+      "borderline_risk_interval": "La incertidumbre de la estimación está cerca de un límite entre niveles de riesgo."
+    },
+    "missing_fact": {
+      "credit_score": "Un puntaje de crédito registrado.",
+      "monthly_income": "Tu ingreso mensual (puedes declararlo en esta conversación).",
+      "max_days_past_due": "La información de atrasos de tus productos de crédito.",
+      "tenure_months": "Tu antigüedad como cliente."
+    },
+    "uncertainty": {
+      "indicative_only": "Es una orientación indicativa basada en reglas sintéticas y puede cambiar tras una revisión humana.",
+      "borderline_estimate": "La estimación de riesgo está cerca de un límite, así que el resultado es incierto.",
+      "missing_information": "Sin la información que falta no podemos dar una orientación.",
+      "estimate_unavailable": "No hubo una estimación de riesgo disponible, así que el resultado es incierto."
+    },
+    "review_path": {
+      "submit_for_human_review": "Si quieres, podemos registrar tu solicitud para que la revise una persona del equipo de crédito.",
+      "request_human_contact": "Si quieres, una persona del equipo de crédito puede revisar tu caso y contactarte.",
+      "provide_missing_information": "Si nos das la información que falta, podemos volver a darte una orientación; también puedes pedir hablar con una persona."
+    }
+  },
+  "glass": {
+    "title": "Registro de ejecución",
+    "intro": "Qué entendió el sistema, qué reglas decidieron y qué acciones se comprobaron, turno por turno.",
+    "open": "Registro",
+    "reasoningNote": "El razonamiento del modelo no se muestra, por diseño. Las decisiones se explican con reglas, fuentes y registros.",
+    "legend": {
+      "understanding": "Azul: lo que entendieron los modelos",
+      "decision": "Amarillo: reglas y acciones comprobadas",
+      "risk": "Rojo: escalamientos y fallas"
+    },
+    "emptyTitle": "Todavía no hay turnos",
+    "emptyBody": "Cada respuesta del asistente deja aquí su registro: estado, reglas, fuentes y herramientas.",
+    "loading": "Cargando el registro",
+    "notFoundTitle": "No encontramos ese registro",
+    "notFoundBody": "La conversación no existe o no es tuya.",
+    "error": "No pudimos cargar el registro",
+    "turn": "Turno {{number}}",
+    "switched": "Cambió desde {{from}}",
+    "showMessage": "Ver el mensaje en el chat",
+    "workflows": {
+      "account_inquiry": "Cuentas y pagos",
+      "card_support": "Tarjetas",
+      "dispute": "Aclaraciones",
+      "credit": "Crédito",
+      "router": "Enrutador"
+    },
+    "outcomes": {
+      "resolved": "Resuelto",
+      "clarified": "Pregunta de aclaración",
+      "abstained": "Se abstuvo",
+      "escalated": "Pasó a una persona",
+      "refused": "Rechazado",
+      "in_progress": "En curso"
+    },
+    "kinds": {
+      "model": "modelos",
+      "rules": "reglas deterministas",
+      "policy": "política",
+      "write": "escritura",
+      "read": "lectura",
+      "separated": "componentes separados",
+      "outcome": "resultado",
+      "record": "registro"
+    },
+    "understanding": "Entendimiento",
+    "intentLabel": "Intención",
+    "belowThreshold": "Por debajo del umbral: se pidió una aclaración.",
+    "languageLabel": "Idioma",
+    "confidence": "confianza {{value}}",
+    "uncertain": "incierto",
+    "retrieval": {
+      "answer": "Búsqueda en políticas: respondió con fuentes",
+      "abstain": "Búsqueda en políticas: se abstuvo"
+    },
+    "llmStatus": {
+      "ok": "respondió",
+      "repaired": "respondió tras una reparación",
+      "failed": "falló",
+      "fallback": "no disponible: se usó la ruta determinista"
+    },
+    "noUnderstanding": "No intervino ningún modelo en este turno.",
+    "rules": "Decisiones de política",
+    "preCheck": "comprobación previa",
+    "preCheckNote": "Se evalúa antes de leer los registros; las reglas sin datos se evalúan de nuevo después.",
+    "decisionKinds": {
+      "allow": "permitido",
+      "deny": "denegado",
+      "require_confirmation": "requiere confirmación",
+      "require_step_up": "requiere verificación reforzada",
+      "clarify": "aclarar",
+      "escalate": "escalar a una persona",
+      "abstain": "abstenerse",
+      "refuse": "rechazar"
+    },
+    "ruleCounts": "{{passed}} cumplen, {{failed}} no cumplen, {{missing}} sin datos.",
+    "decisive": "Decisivas:",
+    "rulesCaption": "Reglas evaluadas en {{state}}",
+    "rule": "Regla",
+    "result": "Resultado",
+    "reason": "Código",
+    "ruleStatus": {
+      "passed": "cumple",
+      "failed": "no cumple",
+      "missing": "sin datos"
+    },
+    "clauses": "Cláusulas",
+    "otherClauses": "También aplicadas:",
+    "ms": "{{value}} ms",
+    "status": "Estado",
+    "toolStatus": {
+      "ok": "correcto",
+      "not_found": "sin resultados",
+      "failed": "falló",
+      "unknown": "desconocido",
+      "rejected_by_allowlist": "no permitida en este estado"
+    },
+    "attempts_one": "{{count}} intento",
+    "attempts_other": "{{count}} intentos",
+    "arguments": "Argumentos",
+    "resultSummary": "Resultado",
+    "verification": "Verificación",
+    "verified": "Comprobado",
+    "notVerified": "No comprobado",
+    "evidence": "Evidencia:",
+    "credit": {
+      "title": "Crédito",
+      "separation": "El modelo de lenguaje no recibió ninguno de los dos: ni la estimación ni el perfil de crédito.",
+      "riskTitle": "Estimación de riesgo",
+      "riskLabel": "Estimación con datos sintéticos, no una decisión de crédito.",
+      "model": "Modelo",
+      "band": "Banda",
+      "bands": {
+        "low": "baja",
+        "medium": "media",
+        "high": "alta",
+        "unknown": "desconocida"
+      },
+      "probability": "Probabilidad",
+      "interval": "Intervalo",
+      "to": "a",
+      "flags": "Incertidumbre",
+      "noFlags": "ninguna",
+      "flag": {
+        "missing_features": "faltan datos",
+        "out_of_distribution": "fuera de la población de entrenamiento",
+        "wide_interval": "intervalo amplio",
+        "model_unavailable": "modelo no disponible"
+      },
+      "label": "Definición",
+      "used": "Se usó una estimación de",
+      "valuesHidden": "Los valores de la estimación no se muestran al cliente.",
+      "eligibilityTitle": "Decisión de elegibilidad",
+      "noAssessment": "No hubo evaluación de elegibilidad en este turno.",
+      "notRecorded": "sin resultado registrado",
+      "reviewReasons": "Motivos de revisión:",
+      "review": {
+        "missing_income": "falta el ingreso",
+        "missing_credit_score": "falta el puntaje",
+        "borderline_risk_interval": "estimación en el límite",
+        "risk_estimate_unavailable": "estimación no disponible",
+        "days_past_due_present": "hay atrasos",
+        "amount_above_review_threshold": "monto sobre el umbral",
+        "customer_contests_result": "el cliente impugna el resultado",
+        "product_requires_human_assessment": "el producto requiere una persona"
+      }
+    },
+    "handoff": "Traspaso",
+    "case": "Caso",
+    "phrased": "Respuesta redactada por el modelo y verificada",
+    "template": "Respuesta de plantilla",
+    "grounded": "Sin afirmaciones fuera de las fuentes.",
+    "violations": "Afirmaciones no respaldadas: {{list}}",
+    "versions": "Versiones y costo",
+    "models": "Modelos",
+    "prompts": "Prompts",
+    "policyPack": "Políticas",
+    "latency": "Latencia",
+    "tokens": "Tokens",
+    "tokenCounts": "{{input}} de entrada, {{output}} de salida",
+    "cost": "Costo",
+    "none": "ninguno",
+    "internal": {
+      "title": "Solo evaluación",
+      "body": "Lo que el cliente nunca ve: las defensas de la sesión.",
+      "riskTier": "Nivel de riesgo de la sesión",
+      "tiers": {
+        "low": "bajo",
+        "elevated": "elevado",
+        "high": "alto"
+      },
+      "trustEvents": "Eventos de confianza",
+      "interventions": "Intervenciones de seguridad",
+      "authLevel": "Verificación",
+      "traceId": "Traza"
+    }
   }
 }

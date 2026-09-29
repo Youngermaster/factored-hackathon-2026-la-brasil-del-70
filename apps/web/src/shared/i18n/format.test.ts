@@ -51,6 +51,15 @@ describe('dates and times', () => {
     expect(plain(createFormatters('es-MX', 'America/Mexico_City').time(at))).toBe('9:04 a.m.');
   });
 
+  it('shows a date-only value as the same calendar day in every time zone', () => {
+    expect(plain(createFormatters('es-MX', 'America/Mexico_City').day('2026-06-15'))).toBe(
+      '15 jun 2026',
+    );
+    expect(plain(createFormatters('pt-BR', 'Asia/Tokyo').day('2026-06-15'))).toBe(
+      '15 de jun. de 2026',
+    );
+  });
+
   it.each(SUPPORTED_LOCALES)('%s formats relative time in both directions', (locale) => {
     const format = createFormatters(locale, 'UTC');
     const now = new Date(at);

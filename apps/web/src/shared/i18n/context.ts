@@ -7,6 +7,8 @@ export interface LocaleContextValue {
   readonly locale: AppLocale;
   readonly language: Language;
   readonly format: Formatters;
+  /** The time zone formatters use; undefined means the viewer's. */
+  readonly timeZone: string | undefined;
   readonly setLocale: (locale: AppLocale) => void;
 }
 
