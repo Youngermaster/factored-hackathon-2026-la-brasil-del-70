@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 14, session 14b, first part: the three 14a fixes (third-party requests phrased product first, plain answers to a pending question resolved without the model's signals, qualification wording in the approval lexicon), six more P fixes from a full live dev run on the local model `qwen2.5:7b-instruct`, and the test run protocol. Dev (local development run, not the results): P 74/112 safe automated resolution with 0/112 unsafe, B0 51/112, B1 9/112 with 32/112 unsafe |
-| Next phase | 14, session 14b, second part: the test run on the local model (about 4 hours; commands in the 14b entry), the judge, and publication; then phase 15 |
+| Last completed phase | 14, session 14b: the frozen test run on the local model `qwen2.5:7b-instruct` (P, B0, B1 on 332 test scenarios plus the 48-scenario repeats, 1,284 cases, 0 cassette misses), the judge, publication, the analysis, and the deck's evaluation metrics. Test (simulated, offline): safe automated resolution P 177/304 (58%, 53 to 64), B0 128/304 (42%, 37 to 48), B1 39/304 (13%, 10 to 17); unsafe outcomes P 8/304, B0 4/304, B1 90/304 |
+| Next phase | Merge phase 15 (reliability and observability, in progress in its own worktree) into `main`, then phase 16 |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -46,7 +46,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 28. **Native review of the pt-BR router seeds** (`ml/corpus/router/seeds/*.yaml`, 136 pt-BR seeds) and of the Portuguese resolver templates (`ml/src/bank_ml/resolver/describe.py`). Reviewer: pending. Date: pending.
 29. **Generate the router paraphrases once a provider is chosen** (after actions 5 and 6): `bank-ml router paraphrase --purpose train` and `--purpose eval`, review the rows (`review_status: pending`), record the cassettes, and rerun `make train`. No cassette exists yet, and none was fabricated.
 30. **Verify the 12 silver complaint-to-transaction matches** in `data/labeling/resolver_silver_sample.csv` (gitignored; regenerate with `bank-ml resolver evaluate`), marking `verified_match` yes or no. The result feeds the dispute data support item (BACKLOG).
-31. **Review the promotions and the learned-model defaults.** The session promoted `router:tfidf`, `router:embeddings`, and `resolver:lgbm` under the delegated approval (records in `data/artifacts/models/*/*/promotions.jsonl`). The defaults stay on the rule baselines until phase 14 (ADRs 0015 and 0016). To re-promote after retraining, run `make promote APPROVED_BY="Name"`.
+31. **Review the promotions and the learned-model defaults.** The session promoted `router:tfidf`, `router:embeddings`, and `resolver:lgbm` under the delegated approval (records in `data/artifacts/models/*/*/promotions.jsonl`). The defaults stay on the rule baselines until phase 14 (ADRs 0015 and 0016). To re-promote after retraining, run `make promote APPROVED_BY="Name"`. Session 14b kept the rule baselines after an end-to-end dev comparison with the local model ([results.md](evaluation/results.md#decision-the-learned-router-resolver-and-risk-estimator-defaults-dev-evidence-only)).
 32. **Resolved (2026-09-27): duplicate ADR number 0025.** The human chose to renumber the session 09b record to `0029-in-domain-unsupported-requests.md`; the teammate's `0025-tuesday-account-inquiry-mvp-and-observability.md` keeps its number. The human also decided the build does not follow ADR 0025's Tuesday MVP scope: all four workflows stay automated as built.
 
 33. **Review the risk estimator promotion and the default** ([model card](models/risk-estimator.md), [ADR 0030](adr/0030-credit-risk-estimator.md)). The session promoted `risk_estimator:logreg@2afb401aa70e` and refused `risk_estimator:lgbm@1c54c935b495` on test, under the delegated approval (records in `data/artifacts/models/risk_estimator/*/promotions.jsonl`). The label is cross-sectional (one snapshot), and the only signal is the credit product count. `WORKFLOW_RISK_ESTIMATOR` stays `score_band@1` until phase 14 (BACKLOG).
@@ -59,11 +59,71 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 38. **Review the web copy and the design direction** (`apps/web/src/shared/i18n/locales/{es,pt,en}.json`, [DESIGN.md](design/DESIGN.md), [audit.md](design/audit.md), screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`): a native Portuguese review, and a check that the deck-derived palette and type work for the team. Reviewers: pending. Date: pending.
 39. **Review the phase 13 surfaces before the video** (screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`, [audit.md](design/audit.md), [the demo script](demo/script.md)): the chat, the glass box, the inbox, the evaluation view, and the demo guide; include the new copy in pending action 38's native Portuguese review. Run `make db-upgrade` (migration `0010`) on any existing database, and record the video on a fresh compose volume after `make seed` (demo writes persist). Reviewers: pending. Date: pending.
 
-40. **Rate the judge sample after session 14b** following [the rating protocol](evaluation/judge-rubric.md#human-rating-protocol): two native raters per language on `judge_sample.jsonl`, adjudication, then `bank-eval judge --ratings`. Raters: pending. Date: pending. Not a blocker; the agreement is reported as pending until then.
+40. **Rate the judge sample of the 14b test run** (`reports/eval/test-local/judge_sample.jsonl`, copied into this checkout from the `eval-run` worktree; 100 transcripts, not committed because they hold transcripts) following [the rating protocol](evaluation/judge-rubric.md#human-rating-protocol): two native raters per language on `judge_sample.jsonl`, adjudication, then `bank-eval judge --ratings`. Raters: pending. Date: pending. Not a blocker; the agreement is reported as pending until then.
 41. **Review the scenario set**: a native Portuguese review of the pt phrasings in `evals/src/bank_evals/scenarios/family_data/*.yaml`, and a review of a sample of situations per workflow against the policy documents (labels, required and forbidden disclosures). Record the result as `review_status: approved` on the reviewed situations and regenerate (`make eval-scenarios`, `--relock` for the test split); the reports state the reviewed share per workflow. Reviewers: pending. Date: pending.
-42. **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, measured size in the 14b entry): committed, they let anyone replay the published run without the model. Measured: the dev recordings are 3.3 MB in 838 files; the test run will be roughly three times that.
+42. **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, and the judge's recordings, which `bank-eval judge` writes to `evals/cassettes/runs/test-local-judge/` and this checkout holds in `evals/cassettes/eval/test-judge/` so the fixture cassette checks skip them): committed, they let anyone replay the published run without the model. Measured: dev 3.3 MB in 838 files; test 8.6 MB in 2,188 files; judge 0.4 MB in 100 files (about 12 MB in all). All are in this checkout, uncommitted.
 
 ## Phase log
+
+### Phase 14, session 14b, second part: the test run, the judge, and publication (2026-09-29)
+
+Plan: [phase-14b.md](plans/phase-14b.md#part-2-the-test-run-protocol-run-by-the-orchestrator). The orchestrator ran the frozen test split from a separate pinned worktree (`../eval-run`, detached at `6bc2e9d`) so the code could not move under the run; this session ran the judge and `publish` there, then brought the published files into `main`. The pull at the start fast-forwarded `main` from `6bc2e9d` to `1e8e314` (PR 18, the assistant profile HTTP client and preferences API; no engine, policy, or evaluation code). Nothing was tuned on the test split: every fix it suggests is a BACKLOG row owned by 14c, to be built and measured on dev.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `41a2663` | `bank-eval publish` output, byte-identical to what it wrote in the pinned worktree: `docs/evaluation/results.md`, `failures.md`, `runs/test-local/{metrics,manifest}.json`, and the summaries `evals/reports/summaries/test-local-{b0,p,b1}.json` the evaluation view reads |
+| `48b6bc4` | The deck's `eval.*` metrics (simulation on the local model; cost as a labeled projection), the evidence narration, and the slides' notes; only `deploy.url` stays pending |
+| `a7ab823` | The hand-written analysis after the generated part of `results.md` and `failures.md` |
+| `9fa92ef` | BACKLOG: the open 14b rows move to 14c (an evaluation follow-up measured on dev only), and the test run's findings are added |
+| `de4c708` | The learned-defaults decision (dev only), the 14b decisions in the plan, the evaluation README and the 14b plan |
+| This commit | This entry and the current state |
+
+The run: `bank-eval run --run-id test-local --split test --llm record --runs 3 --repeat subset --mlflow` with `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 LLM_TIMEOUT_SECONDS=120 LLM_SESSION_TOKEN_LIMIT=1000000`. 1,284 cases (332 scenarios x 3 systems in run 1, the 48-scenario subset x 3 systems in runs 2 and 3), 2 h 51 min, 0 cassette misses, 0 harness errors, test set lock matched; no lever of the plan was needed. The judge (`--sample 100`) took under 20 minutes. Raw outputs (`reports/eval/test-local/`, gitignored) are in both checkouts; the cassettes are in `main` uncommitted (action 42).
+
+#### Headline results (simulated, offline; the local 7B model; not production)
+
+Safe automated resolution (Wilson 95%); unsafe outcomes; missed transfers; unnecessary transfers; latency per turn p50 / p95:
+
+| System | account_inquiry | card_support | dispute | credit | aggregate |
+|---|---|---|---|---|---|
+| P | 54/76 (60 to 80); 2; 0/14; 0/62 | 40/76 (42 to 63); 0; 3/17; 11/59 | 34/76 (34 to 56); 4; 2/14; 14/62 | 49/76 (53 to 74); 2; 2/19; 2/57 | **177/304 (58%, 53 to 64); 8/304; 7/64; 27/240; 2.3 / 10.4 s** |
+| B0 | 42/76 (44 to 66); 0; 0/14; 2/62 | 43/76 (45 to 67); 0; 2/17; 0/59 | 27/76 (26 to 47); 3; 4/14; 7/62 | 16/76 (13 to 31); 1; 4/19; 33/57 | 128/304 (42%, 37 to 48); 4/304; 10/64; 42/240; 5 / 18 ms |
+| B1 | 18/76 (16 to 34); 17; 13/14; 0/62 | 12/76 (9 to 26); 5; 16/17; 2/59 | 2/76 (1 to 9); 14; 13/14; 0/62 | 7/76 (5 to 18); 54; 12/19; 1/57 | 39/304 (13%, 10 to 17); 90/304; 54/64; 3/240; 7.7 / 13.6 s |
+
+- P against B1 is supported in every workflow (safe automated resolution) and in aggregate, credit, and account inquiry (unsafe outcomes). P against B0 is supported in aggregate and in credit only; in card support B0 is ahead on the point estimate (not established). No language, dialect, or segment difference is established (P es 61%, pt 54%).
+- P's 8 graded unsafe outcomes, read afterwards: 3 injected merchant descriptors echoed in the dispute summary (a real weakness, shared with B0), 2 simulated-customer deviations (a consented, stepped-up block; an amount the simulator never saw because of redaction), 3 grader false positives. Reported as graded.
+- Repeats on the 48-scenario subset: pass^3 P 77%, B0 46%, B1 17%; task success SD on the subset 1.2 points (P), 2.4 (B0), 1.2 (B1); every flip is a simulated-customer scenario.
+- Cost: 0.00 USD measured (local model). Projected at the unverified `claude-sonnet-5` list price: P 0.0052 USD per attempted case and 0.0076 per safe automated resolution; B1 0.0100 and 0.0772.
+- Judge (100 transcripts, same local model): P tone 4.37, clarity 4.00; B0 3.77, 2.80; B1 4.93, 4.63. Agreement with human raters: pending (action 40). The judge's language verdicts contradict the deterministic check on plainly Portuguese replies, so it is treated as unvalidated.
+
+Full tables, slices, the categorized unsafe outcomes, transfers, cost, judge, and limitations: [results.md](evaluation/results.md#analysis-hand-written-session-14b); failure clusters and fix status: [failures.md](evaluation/failures.md#failure-analysis-hand-written-session-14b).
+
+#### Decision on the learned defaults (dev only)
+
+After the test run, P ran on the dev split with the local model and the learned components (`dev-local-learned`: `tfidf@champion` and `lgbm@champion`; `dev-local-logreg`: `logreg@champion` on the credit scenarios), cassettes kept outside the repository. Learned router and resolver: 75/112 against 74/112 with the rule baselines (Wilson 58 to 75 against 57 to 74), routing scenarios 6/10 either way. `logreg@champion`: 20/28 like `score_band@1`, but two review cases answered "indicatively eligible" (two missed transfers). **The defaults stay `keyword@1`, `rules@1`, and `score_band@1`**, as the plan's rule requires; the two BACKLOG rows that asked for the switch are replaced by a low-priority row to repeat the comparison after the 14c routing fixes or with a hosted model. Pending action 31 is answered for now.
+
+#### How to verify
+
+```bash
+make check
+uv run --frozen bank-eval report reports/eval/test-local     # regenerates report.md from results.jsonl alone
+uv run --frozen bank-eval publish reports/eval/test-local --title "Evaluation results: session 14b test run (test split, local model qwen2.5:7b-instruct)" --docs-dir /tmp/pub --summaries-dir /tmp/pub
+cd slides && pnpm verify                                    # only deploy.url pending
+```
+
+| Check | Result |
+|---|---|
+| `make check` | Exit 0 at `de4c708` plus this entry: lint, types, import contracts, 2,690 unit and 1,401 integration Python tests, all 11 coverage gates, 342 web tests, docs, codegen, emoji, attribution, gitleaks. An earlier run failed two fixture cassette tests because the judge's uncommitted recordings sat in `evals/cassettes/runs/`; they now sit in `evals/cassettes/eval/test-judge/`, which those checks skip |
+| Publish reproduces | `bank-eval publish` from `main` on the copied `reports/eval/test-local` rewrites the generated `results.md` and `failures.md` byte for byte as committed in `41a2663` |
+| `cd slides && pnpm verify` | Types and content pass; 1 metric pending (`deploy.url`) |
+
+#### Known limitations
+
+- A local 7B model plays P's understanding, B1, the simulated customer, and the judge; a hosted model needs only other `LLM_*` settings and a new run.
+- Synthetic world, team-authored scenarios, 0 of 332 reviewed (action 41), Portuguese pending native review; lexical graders with known false positives; 22 of 258 simulated cases saw redacted instructions.
+- `results.md` and `failures.md` now hold a hand-written analysis after the generated part; a new `publish` overwrites it (BACKLOG).
 
 ### Phase 14, session 14b, first part: the three fixes and the local dev run (2026-09-29)
 
