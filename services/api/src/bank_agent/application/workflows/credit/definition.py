@@ -53,7 +53,7 @@ STATES = (
     StateSpec("VERIFY", "SUBMIT_APPLICATION", verify, StateKind.WORKING, CATALOG, SUBMIT,
               resume_state="CONFIRM_INTAKE"),
     StateSpec("APPLICATION_STATUS", "ANSWER_APPLICATION_STATUS", application_status, StateKind.WORKING,
-              CATALOG | {T.GET_CREDIT_APPLICATION_STATUS}),
+              CATALOG | {T.GET_CREDIT_APPLICATION_STATUS, T.LIST_MY_CREDIT_APPLICATIONS}),
     end_state(RESOLVED),
     end_state(ABSTAINED),
     end_state(REFUSED),

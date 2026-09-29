@@ -27,6 +27,7 @@ from bank_agent.ports.repositories.transactions import MAX_TRANSACTION_PAGE, Tra
 from bank_agent.ports.unit_of_work import UnitOfWork
 
 MAX_STATEMENT_TRANSACTIONS = 5000
+MAX_APPLICATIONS = 50
 
 
 def _ref(table: SourceTable, key: str | None) -> SourceRef | None:
@@ -212,3 +213,11 @@ class ReadTools(ToolCalls):
             arguments={"application_id": application_id},
             target=lambda item: _ref(SourceTable.CREDIT_APPLICATIONS, item.application_id if item else None),
         )
+
+    async def list_my_credit_applications(self) -> Sequence[CreditApplicationIntake]:
+        """The session customer's application intakes, newest first (ties by id), at most ``MAX_APPLICATIONS``."""
+
+        async def work(uow: UnitOfWork) -> Sequence[CreditApplicationIntake]:
+            return await uow.credit_applications.list_mine(limit=MAX_APPLICATIONS)
+
+        return await self._run(ToolName.LIST_MY_CREDIT_APPLICATIONS, work)

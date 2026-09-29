@@ -83,6 +83,11 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 | decision | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
 | scenario | 1.2.0 | 2026-09-27 | Widens tool names (`list_my_cards`); new documents default to `1.2.0` |
 | policy_clause | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
+| handoff | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
+| execution_record | 1.3.0 | 2026-09-29 | Widens tool names (`list_my_credit_applications`); new documents default to `1.3.0` |
+| decision | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
+| scenario | 1.3.0 | 2026-09-29 | Widens tool names (`list_my_credit_applications`); new documents default to `1.3.0` |
+| policy_clause | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
 
 ## How to change a contract
 

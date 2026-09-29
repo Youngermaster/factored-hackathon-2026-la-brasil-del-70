@@ -57,7 +57,7 @@ Common clauses on every state as in [account inquiry](account-inquiry.md#states-
 | CONFIRM_INTAKE | CONFIRM_APPLICATION | none | CRE rules, action rules, step-up | CRE-ALL-1, CRE-ALL-2, INF-ALL-3 | as above | EXECUTE, RESOLVED |
 | EXECUTE | SUBMIT_APPLICATION | none | action rules with `confirmed_at`, `AUTH.step_up_valid` | as CONFIRM_INTAKE | submit_credit_application | VERIFY, EXECUTE (step-up) |
 | VERIFY | SUBMIT_APPLICATION | WriteVerifier | `ESC.verification_mismatch` | as above | none (read-back) | RESOLVED, ESCALATED |
-| APPLICATION_STATUS | ANSWER_APPLICATION_STATUS | none | common | CRE-ALL-1, INF-ALL-3 | get_credit_application_status, list_credit_products | RESOLVED |
+| APPLICATION_STATUS | ANSWER_APPLICATION_STATUS | none | common | CRE-ALL-1, INF-ALL-3 | get_credit_application_status, list_my_credit_applications, list_credit_products | RESOLVED |
 | RESOLVED, ABSTAINED, REFUSED | START | IntentRouter | common | SCOPE-ALL-2 | none | UNDERSTAND, switch |
 | ESCALATED | ESCALATE | HandoffBuilder | common | ESC-{c}-2, ESC-ALL-4 | none | terminal |
 
@@ -66,7 +66,7 @@ Common clauses on every state as in [account inquiry](account-inquiry.md#states-
 - **Eligibility.** ASSESS_ELIGIBILITY calls the synthetic service with the catalog entry, the profile, the application facts, and the estimate or `None`. The estimate goes to `ExecutionRecord.risk_estimates` (internal) and the assessment to `eligibility_assessments`, as separate entries.
 - **Explanation.** EXPLAIN_ELIGIBILITY renders `EligibilityView` (outcome, reasons with citations, uncertainty, review path, `CRE-ALL-1`) and adds the question its outcome allows. The verifier receives the assessment (an outcome claim must match it) and the profile, the estimate, and the declared income as figures that must never appear; phrasing, when on, receives only the outcome code, the rendered reasons, and the disclaimer.
 - **Intake.** Only after an explanation and only for `indicatively_eligible` (yes) or `review_required` (an explicit request). The idempotency key derives from the conversation, the assessment, the product, and the action, so a resumed step never records twice.
-- **Application status.** No tool lists a customer's applications, so status comes from an intake verified in the conversation or an `app-` id in the text (checked for ownership by the engine; another customer's id is refused).
+- **Application status.** An `app-` id in the text (checked for ownership by the engine; another customer's id is refused) or an intake verified earlier in the conversation is answered with `get_credit_application_status`. Without either, `list_my_credit_applications` reads the session customer's intakes, newest first: one answers its status (`credit.application_status`); several list the newest three with id, product type, date, and status (`credit.application_statuses`), with no follow-up question because every listed status is already answered; none says there is no application on record and offers the catalog (`credit.status_none_on_record`).
 
 ## Sequence: normal path (scenario 25, pt-BR complete profile and intake)
 

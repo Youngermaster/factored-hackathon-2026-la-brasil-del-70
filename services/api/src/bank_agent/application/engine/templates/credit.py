@@ -138,17 +138,28 @@ CREDIT: dict[str, dict[Language, str]] = {
         EN: "No credit decisions are made in this conversation. I can give you an indicative eligibility guide from "
         "synthetic rules or, if you prefer, ask a person from the credit team to review your case.",
     },
-    "credit.status_need_reference": {
-        ES: "No encontré una solicitud en esta conversación. Escríbeme el número de tu solicitud o pide hablar con "
-        "una persona.",
-        PT: "Não encontrei uma solicitação nesta conversa. Escreva o número da sua solicitação ou peça para falar com "
-        "uma pessoa.",
-        EN: "I found no application in this conversation. Write your application number or ask to talk to a person.",
+    "credit.status_none_on_record": {
+        ES: "No encontré solicitudes de crédito a tu nombre. Si quieres, te cuento qué productos de crédito "
+        "ofrecemos: solo pregúntame por ellos.",
+        PT: "Não encontrei solicitações de crédito em seu nome. Se quiser, conto quais produtos de crédito "
+        "oferecemos: é só perguntar.",
+        EN: "I found no credit applications in your name. If you want, I can tell you which credit products we "
+        "offer: just ask.",
     },
     "credit.application_status": {
         ES: "Tu solicitud {application} de {name} está {status}.",
         PT: "A sua solicitação {application} de {name} está {status}.",
         EN: "Your application {application} for a {name} is {status}.",
+    },
+    "credit.application_statuses": {
+        ES: "Estas son tus solicitudes más recientes:\n{items}",
+        PT: "Estas são as suas solicitações mais recentes:\n{items}",
+        EN: "These are your most recent applications:\n{items}",
+    },
+    "credit.application_status_item": {
+        ES: "{application}, {name}, del {created}: {status}",
+        PT: "{application}, {name}, de {created}: {status}",
+        EN: "{application}, {name}, from {created}: {status}",
     },
     "credit.status_not_found": {
         ES: "No encontré esa solicitud entre las tuyas.",

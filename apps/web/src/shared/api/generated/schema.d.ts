@@ -1006,7 +1006,7 @@ export interface components {
             rule_results: components["schemas"]["RuleResult"][];
             /**
              * Schema Version
-             * @default 1.2.0
+             * @default 1.3.0
              */
             schema_version: string;
             /** State */
@@ -1900,12 +1900,13 @@ export interface components {
          *
          *     Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
          *     ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and
-         *     ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The
+         *     ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice, and
+         *     ``list_my_credit_applications`` lists their credit application intakes so a status question needs no id. The
          *     risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
          *     select them.
          * @enum {string}
          */
-        ToolName: "list_recent_transactions" | "get_transaction" | "get_product_status" | "list_my_cards" | "list_my_cases" | "get_case_status" | "create_dispute_case" | "block_card" | "list_my_balances" | "get_payment_status" | "get_statement_summary" | "list_credit_products" | "get_credit_product" | "get_my_credit_profile" | "submit_credit_application" | "get_credit_application_status";
+        ToolName: "list_recent_transactions" | "get_transaction" | "get_product_status" | "list_my_cards" | "list_my_cases" | "get_case_status" | "create_dispute_case" | "block_card" | "list_my_balances" | "get_payment_status" | "get_statement_summary" | "list_credit_products" | "get_credit_product" | "get_my_credit_profile" | "submit_credit_application" | "get_credit_application_status" | "list_my_credit_applications";
         /**
          * TransactionStatus
          * @enum {string}

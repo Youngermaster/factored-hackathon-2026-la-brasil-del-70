@@ -165,6 +165,14 @@ Eso no lo puedo hacer en esta conversación. Si quieres, te comunico con una per
 [credit.application_status]
 Tu solicitud app-000001 de préstamo personal está abierto.
 
+[credit.application_status_item]
+app-000001, préstamo personal, del 10 de junio de 2026: abierto
+
+[credit.application_statuses]
+Estas son tus solicitudes más recientes:
+app-000001, préstamo personal, del 10 de junio de 2026: abierto
+app-000001, préstamo personal, del 10 de junio de 2026: abierto
+
 [credit.ask_amount]
 ¿Qué monto te interesa?
 
@@ -230,8 +238,8 @@ Estos son los productos del catálogo sintético de crédito para tu país:
 [credit.product_option]
 1) préstamo personal
 
-[credit.status_need_reference]
-No encontré una solicitud en esta conversación. Escríbeme el número de tu solicitud o pide hablar con una persona.
+[credit.status_none_on_record]
+No encontré solicitudes de crédito a tu nombre. Si quieres, te cuento qué productos de crédito ofrecemos: solo pregúntame por ellos.
 
 [credit.status_not_found]
 No encontré esa solicitud entre las tuyas.

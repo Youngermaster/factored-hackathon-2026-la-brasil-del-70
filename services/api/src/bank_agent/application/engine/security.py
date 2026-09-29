@@ -31,7 +31,8 @@ _INJECTION: dict[str, re.Pattern[str]] = {
     "tool_invocation": re.compile(
         r"\b(call|llama|chama|ejecuta|execute|executa|invoke|usa|use)\b.{0,30}"
         r"\b(tool|herramienta|ferramenta|function|funcion|funcao)\b"
-        r"|\b(block_card|create_dispute_case|submit_credit_application|get_my_credit_profile|list_my_cards)\b"
+        r"|\b(block_card|create_dispute_case|submit_credit_application|get_my_credit_profile|list_my_cards"
+        r"|list_my_credit_applications)\b"
     ),
     "other_customer": re.compile(
         r"\b(customer_id|customer id|id de cliente|otro cliente|outro cliente|another customer)\b"

@@ -76,6 +76,7 @@ SAMPLES: dict[str, Param] = {
     "application": "app-000001",
     "term": 24,
     "purpose": "uso general",
+    "created": date(2026, 6, 10),
 }
 PRODUCT = credit_product(
     "MX-PL-FIXTURE", CreditProductType.PERSONAL_LOAN, Country.MX, "10000", "350000",
@@ -101,6 +102,7 @@ LIST_ITEMS = {
     "card.declined": ("items", "card.declined_item"),
     "dispute.clarify_options": ("options", "dispute.option"),
     "dispute.status_many": ("items", "dispute.status_item"),
+    "credit.application_statuses": ("items", "credit.application_status_item"),
 }
 LOCALIZED: dict[Language, dict[str, Param]] = {
     Language.ES: {},
