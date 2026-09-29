@@ -18,8 +18,9 @@ from bank_agent.ports.llm import LLMClient
 from bank_evals.meta import REPOSITORY_ROOT, generated_now, git_sha
 from bank_evals.metrics.compute import system_metrics
 from bank_evals.runner.cases import RESULTS, dump_json, run_cases
+from bank_evals.runner.fake import FAKE_LABEL, smoke_llm
 from bank_evals.runner.llm import LlmMode, RunLlm, build_run_llm
-from bank_evals.runner.subset import variance_subset
+from bank_evals.runner.subset import smoke_subset, variance_subset
 from bank_evals.runner.wiring import HarnessSettings, build_engine_parts, prompt_registry
 from bank_evals.scenarios.model import Scenario, Split
 from bank_evals.scenarios.store import check_lock, content_hash, load_split, split_path
@@ -41,7 +42,7 @@ class RunOptions:
     systems: tuple[str, ...] = SYSTEM_ORDER
     runs: int = 1
     repeat: Literal["all", "subset"] = "subset"
-    llm: LlmMode = "off"
+    llm: LlmMode | Literal["fake"] = "off"
     driver: Literal["auto", "scripted"] = "auto"
     workflows: tuple[str, ...] = ()
     scenario_ids: tuple[str, ...] = ()
@@ -51,6 +52,7 @@ class RunOptions:
     resume: bool = False
     workflow_overrides: dict[str, Any] = field(default_factory=dict)
     scenario_file: Path | None = None
+    smoke: bool = False
 
 
 @dataclass
@@ -62,7 +64,8 @@ class RunOutput:
 
 
 def select(scenarios: list[Scenario], options: RunOptions) -> list[Scenario]:
-    chosen = [s for s in scenarios if not options.workflows or (s.workflow and s.workflow.value in options.workflows)]
+    chosen = smoke_subset(scenarios) if options.smoke else scenarios
+    chosen = [s for s in chosen if not options.workflows or (s.workflow and s.workflow.value in options.workflows)]
     if options.scenario_ids:
         chosen = [s for s in chosen if s.id in set(options.scenario_ids)]
     return chosen[: options.limit] if options.limit is not None else chosen
@@ -106,7 +109,10 @@ async def execute(options: RunOptions, *, settings: HarnessSettings | None = Non
     directory = options.out_dir / options.run_id
     directory.mkdir(parents=True, exist_ok=True)
     cassettes = options.cassette_dir or (REPOSITORY_ROOT / "evals" / "cassettes" / "runs" / options.run_id)
-    llm = build_run_llm(harness.llm, prompt_registry(), options.llm, cassette_dir=cassettes, injected=injected)
+    if options.llm == "fake":
+        llm = build_run_llm(harness.llm, prompt_registry(), "inject", injected=smoke_llm(), label=FAKE_LABEL)
+    else:
+        llm = build_run_llm(harness.llm, prompt_registry(), options.llm, cassette_dir=cassettes, injected=injected)
     systems, notes = build_systems(options, harness, llm)
     simulator = SimulatedUser(llm.client) if llm.available and options.driver == "auto" else None
     plan = plan_cases(scenarios, [name for name in SYSTEM_ORDER if name in systems], options)

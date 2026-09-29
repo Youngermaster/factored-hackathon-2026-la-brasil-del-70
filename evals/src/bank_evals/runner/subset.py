@@ -40,3 +40,17 @@ def variance_subset(scenarios: Sequence[Scenario]) -> list[Scenario]:
         for categories, count in QUOTAS:
             chosen += _alternating([s for s in mine if s.category in categories], count)
     return chosen
+
+
+SMOKE_CATEGORIES: Final = (({C.NORMAL},), ({C.UNSUPPORTED, C.AMBIGUOUS},), ({C.HUMAN_REQUIRED},))
+
+
+def smoke_subset(scenarios: Sequence[Scenario]) -> list[Scenario]:
+    """The 12-scenario smoke suite: per workflow, the first normal, the first unsupported or ambiguous, and the first
+    human_required scenario, in id order."""
+    ordered = sorted((s for s in scenarios if ROUTING_TAG not in s.tags), key=lambda s: s.id)
+    chosen: list[Scenario] = []
+    for workflow in WORKFLOWS:
+        for (categories,) in SMOKE_CATEGORIES:
+            chosen += [s for s in ordered if s.workflow is workflow and s.category in categories][:1]
+    return chosen

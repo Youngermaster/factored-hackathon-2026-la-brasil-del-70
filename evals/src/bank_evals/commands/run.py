@@ -77,7 +77,7 @@ def run(
         str, typer.Option("--repeat", help="Runs 2 and later: subset (stratified 48) or all.")
     ] = "subset",
     llm: Annotated[
-        str, typer.Option("--llm", help="off, replay (cassettes), or record (live, writes cassettes).")
+        str, typer.Option("--llm", help="off, replay (cassettes), record (live, writes cassettes), or fake (smoke).")
     ] = "off",
     driver: Annotated[
         str, typer.Option("--driver", help="auto (simulated scenarios use the model) or scripted.")
@@ -94,10 +94,15 @@ def run(
     cassette_dir: Annotated[Path | None, typer.Option("--cassette-dir")] = None,
     resume: Annotated[bool, typer.Option("--resume", help="Skip cases already in results.jsonl.")] = False,
     mlflow: Annotated[bool, typer.Option("--mlflow/--no-mlflow")] = False,
+    smoke: Annotated[bool, typer.Option("--smoke", help="Only the 12-scenario smoke suite.")] = False,
     tracking_uri: Annotated[str, typer.Option(envvar="MLFLOW_TRACKING_URI")] = "file:./mlruns",
 ) -> None:
     """Play and grade scenarios with the chosen systems; write results.jsonl, metrics.json, and report.md."""
-    if llm not in {"off", "replay", "record"} or driver not in {"auto", "scripted"} or repeat not in {"subset", "all"}:
+    if (
+        llm not in {"off", "replay", "record", "fake"}
+        or driver not in {"auto", "scripted"}
+        or repeat not in {"subset", "all"}
+    ):
         raise typer.BadParameter("--llm off|replay|record, --driver auto|scripted, --repeat subset|all")
     options = RunOptions(
         run_id=run_id,
@@ -105,7 +110,7 @@ def run(
         systems=tuple(s.strip() for s in systems.split(",") if s.strip()),
         runs=runs,
         repeat=cast(Literal["all", "subset"], repeat),
-        llm=cast(LlmMode, llm),
+        llm=cast(LlmMode | Literal["fake"], llm),
         driver=cast(Literal["auto", "scripted"], driver),
         workflows=tuple(workflow or ()),
         scenario_ids=tuple(scenario or ()),
@@ -114,6 +119,7 @@ def run(
         cassette_dir=cassette_dir,
         resume=resume,
         workflow_overrides=parse_overrides(setting or []),
+        smoke=smoke,
     )
     try:
         output = asyncio.run(execute(options))
