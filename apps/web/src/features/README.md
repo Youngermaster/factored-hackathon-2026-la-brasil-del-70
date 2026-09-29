@@ -20,7 +20,7 @@ features/<name>/
 
 ## How to extend
 
-Create the folder with the layout above, export the public components and hooks from `index.ts`, and add typed MSW fakes for every endpoint it calls under `src/test/msw/`, built from the fixtures in `src/test/msw/api.ts`. `auth` is the reference: sign-in, the session query, the route guard, step-up, and sign-out.
+Create the folder with the layout above, export the public components and hooks from `index.ts`, and add typed MSW fakes for every endpoint it calls under `src/test/msw/`, built from the fixtures in `src/test/msw/api.ts`. `auth` is the reference for flows (sign-in, the session query, the route guard, step-up, sign-out); `conversation` is the reference for a compound component over one scoped context.
 
 ## How to test
 

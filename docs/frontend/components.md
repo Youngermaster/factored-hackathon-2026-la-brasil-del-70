@@ -127,3 +127,28 @@ const table = useTableSort(rows, { key: 'date', direction: 'descending' }, compa
 ## Feature-level compounds (auth)
 
 `StepUp` (from `@/features/auth`) is a compound dialog: `StepUp.Root` owns the challenge and the verification, and `StepUp.Title`, `StepUp.Description`, and `StepUp.CodeForm` compose its content. Features do not render it; they call `useStepUp().requestStepUp()`, which resolves `true` once the session is stepped up and `false` if the person cancels or the session ends. `AuthProvider` hosts the default composition.
+
+## Additions in phase 13
+
+- `Textarea compact` drops the default minimum height (the chat composer grows with its rows).
+- `DataTable.Root` now puts the caption's id on the `<caption>`, so each scrollable table region is named by its caption (two unnamed regions failed axe's `landmark-unique` on the evaluation view).
+- `useFormat().day(isoDate)` shows a date-only value (`2026-06-15`) as that calendar day in every time zone; `date` would read it as UTC midnight and show the previous day west of Greenwich. Transaction, option, period, and expiry dates use it.
+- `LanguageScope` (`@/shared/i18n`) renders a subtree in another language with that language's copy and formats.
+- Icons added to `shared/ui/icons.ts`: `SendIcon`, `RetryIcon`, `NewIcon`, `PanelIcon`, `TraceIcon`, `CopyIcon`, `InfoIcon`, `InboxIcon`, `ChartIcon`, `BookIcon`, `SearchIcon`, `FilterIcon`, `SwitchIcon`, `BackIcon`, `ForwardIcon`, `CaretRightIcon`, `DocumentIcon`, `PersonIcon`, `QuestionIcon`.
+
+## Feature-level compounds (conversation and glass box)
+
+```tsx
+<TurnSelectionProvider>
+  <Conversation.Root>
+    <Conversation.Header>{/* slot: page actions, for example the glass box toggle */}</Conversation.Header>
+    <Conversation.Starters />
+    <Conversation.Messages />
+    <Conversation.HumanButton />
+    <Conversation.Composer />
+  </Conversation.Root>
+  <GlassBox.Panel conversationId={id} />
+</TurnSelectionProvider>
+```
+
+`Conversation.Root` owns the scope (the `?conversation=` id, the history, the messages in flight) and every part reads it through `useConversation()`. `GlassBox.Panel`, `GlassBox.SheetTrigger`, and `GlassBox.Standalone` render the same customer trace in a panel, a sheet, or a page; `StaffTrace` is the evaluator's view. The composition diagrams are in [features.md](features.md).

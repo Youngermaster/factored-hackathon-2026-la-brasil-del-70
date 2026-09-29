@@ -38,6 +38,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [design/audit.md](design/audit.md) | The design pre-flight audit of the phase 12 foundation |
 | [frontend/components.md](frontend/components.md) | The UI primitives and how to use them |
 | [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
+| [frontend/features.md](frontend/features.md) | The product features: composition diagrams, context boundaries, and TanStack Query data flow |
 | [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 | [adr/0032](adr/0032-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
 | [adr/0033](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
@@ -171,6 +172,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [security/data-isolation.md](security/data-isolation.md) | Tool-layer scoping, row-level security, database roles and policies, and the tests that prove them |
 | [security/threat-model.md](security/threat-model.md) | STRIDE per component (web, API, engine, LLM gateway, database, identity) with mitigations and their tests |
 | [demo/personas.md](demo/personas.md) | Demo personas: selection criteria, what each demonstrates, and how to seed and log in |
+| [demo/script.md](demo/script.md) | Outline of the pitch video: scenes, inputs, and what each proves |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
