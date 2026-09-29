@@ -1,0 +1,50 @@
+{
+  "run_id": "test-local",
+  "generated_at": "2026-09-29T20:37:10+00:00",
+  "git_sha": "6bc2e9d",
+  "split": "test",
+  "scenario_file": "scenarios.test.jsonl",
+  "scenario_set_hash": "292c7c0b17c3f04d80e70c479f8e1cbb8d51e6865d516f9340bc19eec069f7c2",
+  "test_set_lock": "292c7c0b17c3f04d80e70c479f8e1cbb8d51e6865d516f9340bc19eec069f7c2",
+  "scenarios": 332,
+  "cases": 1284,
+  "runs": 3,
+  "repeat": "subset",
+  "systems": {
+    "b0": "none",
+    "p": "ollama/qwen2.5:7b-instruct (litellm)",
+    "b1": "ollama/qwen2.5:7b-instruct (litellm)"
+  },
+  "llm_mode": "record",
+  "model_label": "ollama/qwen2.5:7b-instruct (litellm)",
+  "driver": "auto",
+  "cassette_dir": "evals/cassettes/eval/test",
+  "cassette_misses": {},
+  "workflow_settings": {
+    "llm_understanding": true,
+    "llm_phrasing": false,
+    "router": "keyword@1",
+    "resolver": "rules@1",
+    "risk_estimator": "score_band@1"
+  },
+  "prompts": [
+    "classify_intent_fallback@1",
+    "detect_escalation_signals@1",
+    "extract_account_inquiry_slots@1",
+    "extract_card_support_slots@1",
+    "extract_credit_slots@1",
+    "extract_dispute_slots@1",
+    "judge_transcript@1",
+    "naive_agent_step@1",
+    "paraphrase_router_eval@1",
+    "paraphrase_router_seed@1",
+    "phrase_response@1",
+    "simulate_customer@1",
+    "summarize_for_handoff@1",
+    "translate_to_portuguese@1"
+  ],
+  "world": "eval-world-1",
+  "wall_clock_seconds": 10247.1,
+  "notes": [],
+  "harness_errors": 0
+}
