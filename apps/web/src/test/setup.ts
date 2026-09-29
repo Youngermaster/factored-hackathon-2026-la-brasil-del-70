@@ -37,6 +37,7 @@ beforeAll(() => {
 afterEach(() => {
   cleanup();
   server.resetHandlers();
+  server.events.removeAllListeners();
   if (hasDom) {
     document.documentElement.removeAttribute('data-theme');
     window.localStorage.clear();
