@@ -33,6 +33,12 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions |
 | [adr/0002](adr/0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers |
 | [adr/0003](adr/0003-frontend-layering-and-state.md) | Frontend layering and state rules |
+| [adr/0018](adr/0018-design-system.md) | Design system on Radix primitives, Tailwind tokens, Phosphor icons, and the deck's typefaces |
+| [design/DESIGN.md](design/DESIGN.md) | The design system: principles, type, spacing, color tokens with contrast, motion, data display, states, voice |
+| [design/audit.md](design/audit.md) | The design pre-flight audit of the phase 12 foundation |
+| [frontend/components.md](frontend/components.md) | The UI primitives and how to use them |
+| [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
+| [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 | [adr/0030](adr/0032-local-eda-and-progressive-viewer.md) | Local EDA and progressive aggregate viewer |
 | [adr/0031](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 
@@ -166,4 +172,4 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
 | [SECURITY.md](../SECURITY.md) | Scope and how to report a vulnerability |
 
-Later phases add the workflow pages to `docs/workflows/`, more of `docs/evaluation/`, and `docs/operations/`, `docs/frontend/`, and `docs/design/`, each listed here when it lands.
+Later phases add the workflow pages to `docs/workflows/`, more of `docs/evaluation/`, and `docs/operations/`, each listed here when it lands.

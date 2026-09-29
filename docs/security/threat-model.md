@@ -28,13 +28,15 @@ flowchart LR
 
 Trust boundaries: the browser to the API (everything from the browser is untrusted input), the API to the model provider (prompts leave the process, replies come back as untrusted text), and the application role to the database (row-level security holds even if a query is wrong).
 
-## Web app (SPA, phase 12)
+## Web app (SPA)
 
 | Threat | Mitigation | Evidence |
 |---|---|---|
 | S: a malicious page acts as the signed-in user (CSRF) | `SameSite=Strict` cookies plus a signed double-submit token on every POST ([ADR 0031](../adr/0031-cookie-sessions-with-signed-double-submit-csrf.md)) | `tests/integration/api/test_http_security.py::test_every_state_changing_route_refuses_a_missing_or_mismatched_csrf_token` |
-| T: injected script changes what the user sees | Model output rendered as plain text, no `dangerouslySetInnerHTML`, no inline scripts, strict CSP from the server | ESLint rules in `apps/web/eslint.config.js`; CSP header tests below. Phase 12 builds the pages |
-| I: the session token is stolen by script | The token lives only in an `HttpOnly` cookie; web storage is forbidden by lint | `test_auth_flow.py::test_development_cookie_flags`, `test_production_cookies_use_the_host_prefix_and_are_secure`; ESLint `no-restricted-globals` |
+| T: injected script changes what the user sees | Model output rendered as plain text, no `dangerouslySetInnerHTML`, no inline scripts (the pre-paint theme script is the external `public/theme-init.js`), self-hosted fonts, strict CSP from the server | ESLint rules in `apps/web/eslint.config.js`; `apps/web/src/shared/ui/display.test.tsx` (JSON view shows markup as text); CSP header tests below |
+| I: the session token is stolen by script | The token lives only in an `HttpOnly` cookie; the CSRF token lives in memory; web storage holds only the theme and locale (one module, allowed by lint) | `test_auth_flow.py::test_development_cookie_flags`, `test_production_cookies_use_the_host_prefix_and_are_secure`; ESLint `no-restricted-globals` |
+| S: a crafted sign-in link sends the user elsewhere after login (open redirect) | `next` accepts same-app paths only (`safeNextPath`) | `apps/web/src/shared/lib/lib.test.ts` |
+| I: a stale session cookie lingers after expiry or revocation | A lost-session `401` deletes the cookie; the SPA drops every cached record when the identity changes | `test_auth_flow.py::test_a_lost_session_answer_also_deletes_the_stale_cookie`; `apps/web/src/features/auth/session.test.tsx` |
 | E: clickjacking of a confirmation button | `frame-ancestors 'none'` and `X-Frame-Options: DENY` on every response | `tests/unit/api/test_security_middleware.py::test_every_response_class_carries_the_security_headers` |
 
 ## HTTP API
