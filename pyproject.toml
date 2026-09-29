@@ -106,7 +106,7 @@ warn_unreachable = true
 plugins = ["pydantic.mypy"]
 # Module names come from these bases, so the several tests/ directories and conftest.py files never collide.
 explicit_package_bases = true
-mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "data_platform/tests", "ml/src", "evals/src"]
+mypy_path = ["services/api/src", "services/api/tests", "data_platform/src", "data_platform/tests", "ml/src", "evals/src", "evals/tests/support"]
 files = [
   "services/api/src",
   "services/api/tests",
@@ -231,7 +231,7 @@ forbidden_modules = [
 minversion = "9.0"
 testpaths = ["services/api/tests", "data_platform/tests", "ml/tests", "evals/tests", "scripts/tests"]
 # Shared test-support modules; each has a package-unique name so paths never collide.
-pythonpath = ["services/api/tests", "data_platform/tests"]
+pythonpath = ["services/api/tests", "data_platform/tests", "evals/tests/support"]
 addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib", "--allow-unix-socket"]
 markers = [
   "unit: fast tests with no network, database, or filesystem access outside tmp_path",

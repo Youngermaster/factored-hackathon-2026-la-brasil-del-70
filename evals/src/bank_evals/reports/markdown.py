@@ -144,7 +144,7 @@ def render_failures(manifest: dict[str, Any], results: Sequence[CaseResult], sta
             "| Scenario | Category | System | Expected | Observed | Root cause | Findings | Fix status |",
             "|---|---|---|---|---|---|---|---|",
         ]
-        causes = Counter(r.grade.root_cause for r in items if r.grade)
+        causes = Counter(r.grade.root_cause or "none" for r in items if r.grade)
         for r in sorted(items, key=lambda r: (r.scenario_id, r.system, r.run_index)):
             grade = r.grade
             if grade is None:
