@@ -112,7 +112,9 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
     if kind is RouteKind.GREETING:
         return greeting(ctx)
     if kind is RouteKind.CLARIFY_WORKFLOW:
-        return clarify_workflow(ctx, route.options)
+        # A request an enabled workflow recognizes as its own unsupported request (a transfer) is abstained with that
+        # workflow's clauses instead of asking which workflow it belongs to (phase 14b, found on the dev split).
+        return in_domain_unsupported(ctx, registry) or clarify_workflow(ctx, route.options)
     if kind is RouteKind.CONFIRM_SWITCH and route.target is not None:
         return confirm_switch(ctx, route.target)
     if kind in (RouteKind.START, RouteKind.SWITCH) and route.target is not None:
