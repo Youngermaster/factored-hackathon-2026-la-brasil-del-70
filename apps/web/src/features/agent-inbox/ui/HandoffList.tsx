@@ -124,8 +124,11 @@ export function HandoffList() {
                 to={`/console/inbox/${handoff.handoff_id}`}
                 className="font-semibold text-fg underline-offset-4 hover:underline"
               >
-                {handoff.request.summary}
+                {labels.code('intent', handoff.request.intent)}
               </Link>
+              <span className="line-clamp-2 block text-caption text-fg-secondary">
+                {handoff.request.summary}
+              </span>
               <span className="block text-caption text-fg-muted">
                 {labels.workflow(handoff.workflow?.id)} {' / '}
                 {labels.value('language', handoff.language)}

@@ -1,4 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { errorMessageKey, errorRequestId, hasProblem } from '@/shared/api';
@@ -19,6 +20,16 @@ export function TraceBody({
   readonly excerpts?: ReadonlyMap<string, ReadonlyMap<string, string>>;
 }) {
   const { t } = useTranslation();
+  const listRef = useRef<HTMLOListElement>(null);
+  const count = query.data?.records.length ?? 0;
+  const seen = useRef<number | null>(null);
+  // A new turn scrolls its entry into view; the first load keeps the top of the list.
+  useEffect(() => {
+    if (seen.current !== null && count > seen.current) {
+      listRef.current?.lastElementChild?.scrollIntoView({ block: 'nearest' });
+    }
+    seen.current = count;
+  }, [count]);
   if (query.isPending && query.fetchStatus === 'idle') {
     return (
       <EmptyState
@@ -70,7 +81,7 @@ export function TraceBody({
   return (
     <>
       <h2 className="sr-only">{t('glass.turns')}</h2>
-      <ol className="flex flex-col gap-3">
+      <ol ref={listRef} className="flex flex-col gap-3">
         {query.data.records.map((record, index) => (
           <li key={record.turn_id}>
             <TurnTrace

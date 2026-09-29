@@ -8,7 +8,7 @@ import { TraceIcon } from '@/shared/ui';
 
 import type { AssistantMessage as Message } from '../api/conversation';
 import { MessageContext } from '../model/message-context';
-import { withoutCitedParagraphs } from '../model/text';
+import { AnswerText } from './AnswerText';
 import * as Parts from './parts';
 
 /**
@@ -51,9 +51,7 @@ export function AssistantMessage({
       <LanguageScope language={message.language}>
         <MessageContext value={scope}>
           <Parts.Notices />
-          <p className="text-body whitespace-pre-line text-fg">
-            {withoutCitedParagraphs(message.text, message.citations)}
-          </p>
+          <AnswerText />
           <Parts.Options />
           <Parts.Confirmation />
           <Parts.Balances />

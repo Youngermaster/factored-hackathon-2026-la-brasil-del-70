@@ -217,7 +217,8 @@
     "hideTracePanel": "Hide record",
     "showTracePanel": "Show record",
     "traceFull": "Full record",
-    "backToChat": "Back to the chat"
+    "backToChat": "Back to the chat",
+    "fullText": "Full text of the answer"
   },
   "parts": {
     "maskedPrefix": "Ending in",
@@ -241,7 +242,7 @@
       "adjustment": "Adjustment"
     },
     "transactionStatuses": {
-      "approved": "Authorized",
+      "approved": "Completed",
       "declined": "Declined",
       "pending": "Pending",
       "reversed": "Reversed"
@@ -741,6 +742,25 @@
         "under_human_review": "Under human review",
         "withdrawn": "Withdrawn",
         "closed": "Closed"
+      },
+      "intent": {
+        "dispute_new": "Dispute a charge",
+        "dispute_status": "Dispute status",
+        "card_block": "Card block",
+        "informational": "Informational question",
+        "unsupported": "Unsupported request",
+        "human_request": "Asked for a person",
+        "greeting_or_other": "Greeting or other",
+        "balance_inquiry": "Balance inquiry",
+        "payment_status": "Payment status",
+        "statement_request": "Statement summary",
+        "card_status": "Card status",
+        "card_unblock_request": "Card unblock",
+        "card_replacement_request": "Card replacement",
+        "credit_product_info": "Credit products",
+        "credit_eligibility": "Credit eligibility",
+        "credit_application": "Credit application",
+        "credit_application_status": "Credit application status"
       }
     },
     "dueIn": "Due {{relative}}",

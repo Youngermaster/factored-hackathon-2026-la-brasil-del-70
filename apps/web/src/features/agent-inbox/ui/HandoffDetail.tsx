@@ -78,8 +78,9 @@ function DetailBody({ handoff }: { readonly handoff: HandoffView }) {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-2">
           <h1 className="font-display text-heading font-semibold tracking-tight text-fg">
-            {handoff.request.summary}
+            {labels.code('intent', handoff.request.intent)}
           </h1>
+          <p className="max-w-prose text-body text-fg-secondary">{handoff.request.summary}</p>
           <div className="flex flex-wrap items-center gap-2 text-small">
             <Badge tone={handoff.priority === 'critical' ? 'risk' : 'neutral'}>
               {labels.value('priority', handoff.priority)}

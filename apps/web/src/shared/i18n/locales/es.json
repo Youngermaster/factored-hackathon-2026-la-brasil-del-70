@@ -217,7 +217,8 @@
     "hideTracePanel": "Ocultar registro",
     "showTracePanel": "Mostrar registro",
     "traceFull": "Registro completo",
-    "backToChat": "Volver al chat"
+    "backToChat": "Volver al chat",
+    "fullText": "Texto completo de la respuesta"
   },
   "parts": {
     "maskedPrefix": "Terminada en",
@@ -241,7 +242,7 @@
       "adjustment": "Ajuste"
     },
     "transactionStatuses": {
-      "approved": "Autorizada",
+      "approved": "Aplicada",
       "declined": "Rechazada",
       "pending": "Pendiente",
       "reversed": "Revertida"
@@ -741,6 +742,25 @@
         "under_human_review": "En revisión humana",
         "withdrawn": "Retirada",
         "closed": "Cerrada"
+      },
+      "intent": {
+        "dispute_new": "Aclaración de un cargo",
+        "dispute_status": "Estado de una aclaración",
+        "card_block": "Bloqueo de tarjeta",
+        "informational": "Consulta informativa",
+        "unsupported": "Solicitud no soportada",
+        "human_request": "Pidió una persona",
+        "greeting_or_other": "Saludo u otro",
+        "balance_inquiry": "Consulta de saldo",
+        "payment_status": "Estado de un pago",
+        "statement_request": "Resumen de movimientos",
+        "card_status": "Estado de tarjeta",
+        "card_unblock_request": "Desbloqueo de tarjeta",
+        "card_replacement_request": "Reposición de tarjeta",
+        "credit_product_info": "Productos de crédito",
+        "credit_eligibility": "Elegibilidad de crédito",
+        "credit_application": "Solicitud de crédito",
+        "credit_application_status": "Estado de una solicitud de crédito"
       }
     },
     "dueIn": "Vence {{relative}}",

@@ -89,6 +89,8 @@ describe.each(CASES)(
         name: language === 'es' ? 'Orientación de elegibilidad' : 'Orientação de elegibilidade',
       });
       expect(card.querySelector(`[data-outcome="${outcome}"]`)).not.toBeNull();
+      // The plain text repeats the view's sentences, so it sits in a disclosure.
+      expect(screen.getByText(/Texto completo d/)).toBeInTheDocument();
       expect(card.textContent).not.toMatch(APPROVAL);
       // No verified pill, no yellow fill, and no score, probability, or band anywhere in the view.
       expect(card.querySelector('[data-status]')).toBeNull();

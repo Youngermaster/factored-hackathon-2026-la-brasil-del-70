@@ -39,19 +39,20 @@ function ChatLayout() {
           <div className="lg:hidden">
             <GlassBox.SheetTrigger conversationId={conversationId} />
           </div>
-          <Button
-            variant="secondary"
-            size="sm"
-            className="hidden lg:inline-flex"
-            aria-expanded={traceOpen}
-            aria-controls="glass-box"
-            onClick={() => {
-              setTraceOpen((open) => !open);
-            }}
-          >
-            <PanelIcon aria-hidden="true" size={16} />
-            {traceOpen ? t('chat.hideTracePanel') : t('chat.showTracePanel')}
-          </Button>
+          <div className="hidden lg:block">
+            <Button
+              variant="secondary"
+              size="sm"
+              aria-expanded={traceOpen}
+              aria-controls="glass-box"
+              onClick={() => {
+                setTraceOpen((open) => !open);
+              }}
+            >
+              <PanelIcon aria-hidden="true" size={16} />
+              {traceOpen ? t('chat.hideTracePanel') : t('chat.showTracePanel')}
+            </Button>
+          </div>
           {conversationId !== null && (
             <Button asChild variant="ghost" size="sm">
               <Link to={`/glass-box/${conversationId}`}>

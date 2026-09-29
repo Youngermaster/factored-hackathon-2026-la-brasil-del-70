@@ -59,8 +59,8 @@ describe('the agent inbox', () => {
     await screen.findByRole('table', { name: '3 traspasos' });
     expect(rowNames()).toEqual([
       'Desbloqueo de tarjeta',
-      'Revisión de elegibilidad',
-      'Saldo impugnado',
+      'Elegibilidad de crédito',
+      'Consulta de saldo',
     ]);
     expect(screen.getByText(/Vencido, hace 1 hora/)).toBeInTheDocument();
     expect(screen.getByText(/Vence dentro de 2 horas/)).toBeInTheDocument();
@@ -68,28 +68,23 @@ describe('the agent inbox', () => {
     await userEvent.click(screen.getByRole('button', { name: /Prioridad/ }));
     expect(rowNames()).toEqual([
       'Desbloqueo de tarjeta',
-      'Revisión de elegibilidad',
-      'Saldo impugnado',
+      'Elegibilidad de crédito',
+      'Consulta de saldo',
     ]);
     await userEvent.click(screen.getByRole('button', { name: /Prioridad/ }));
     expect(rowNames()).toEqual([
-      'Saldo impugnado',
-      'Revisión de elegibilidad',
+      'Consulta de saldo',
+      'Elegibilidad de crédito',
       'Desbloqueo de tarjeta',
     ]);
   });
 
   it.each([
     ['Flujo', 'Tarjetas', 'workflow=card_support', ['Desbloqueo de tarjeta']],
-    ['Prioridad', 'Alta', 'priority=high', ['Revisión de elegibilidad']],
-    [
-      'Motivo',
-      'Revisión de crédito',
-      'reason=credit_review_required',
-      ['Revisión de elegibilidad'],
-    ],
+    ['Prioridad', 'Alta', 'priority=high', ['Elegibilidad de crédito']],
+    ['Motivo', 'Revisión de crédito', 'reason=credit_review_required', ['Elegibilidad de crédito']],
     ['Idioma', 'Portugués', 'language=pt', ['Desbloqueo de tarjeta']],
-    ['Estado', 'Tomado', 'status=claimed', ['Revisión de elegibilidad']],
+    ['Estado', 'Tomado', 'status=claimed', ['Elegibilidad de crédito']],
     ['Vencimiento', 'Vencidos', 'due=overdue', ['Desbloqueo de tarjeta']],
   ])('filters by %s through the URL and the API', async (label, option, param, expected) => {
     const { agent, router } = openInbox();
@@ -151,7 +146,7 @@ describe('a handoff', () => {
     renderApp({ path: '/console/inbox/ho-full' });
     await screen.findByRole('heading', {
       level: 1,
-      name: 'El cliente impugna el saldo de su cuenta.',
+      name: 'Consulta de saldo',
     });
     const facts = screen.getByRole('region', { name: 'Hechos verificados' });
     expect(within(facts).getByText('products:prd-fixture-1')).toBeInTheDocument();
@@ -204,7 +199,7 @@ describe('a handoff', () => {
 
     await userEvent.click(screen.getByRole('link', { name: 'Volver a la bandeja' }));
     const table = await screen.findByRole('table');
-    const row = within(table).getByRole('link', { name: 'Saldo impugnado' }).closest('tr');
+    const row = within(table).getByRole('link', { name: 'Consulta de saldo' }).closest('tr');
     expect(row).toHaveTextContent('Resuelto');
   });
 
