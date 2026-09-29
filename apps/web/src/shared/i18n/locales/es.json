@@ -10,12 +10,8 @@
     "retry": "Reintentar",
     "close": "Cerrar",
     "cancel": "Cancelar",
-    "continue": "Continuar",
-    "back": "Volver",
     "goHome": "Ir al inicio",
     "reload": "Recargar la página",
-    "copy": "Copiar",
-    "notAvailable": "Sin dato",
     "opensInNewTab": "se abre en una pestaña nueva",
     "notifications": "Avisos ({hotkey})",
     "notification": "Aviso"
@@ -78,7 +74,6 @@
     "logout": "Cerrar sesión",
     "stepUpTitle": "Confirma que eres tú",
     "stepUpBody": "Esta acción cambia algo en tu cuenta, así que necesitamos un código nuevo.",
-    "stepUpConfirm": "Confirmar",
     "stepUpDone": "Identidad confirmada.",
     "stepUpStart": "Confirmar identidad",
     "stepUpFailed": "No pudimos abrir la verificación.",
@@ -89,7 +84,6 @@
   },
   "session": {
     "title": "Tu sesión",
-    "role": "Perfil",
     "authLevel": "Verificación",
     "idleExpires": "Cierre por inactividad",
     "absoluteExpires": "Cierre definitivo",
@@ -117,19 +111,12 @@
   },
   "data": {
     "asOf": "Datos al {{date}}",
-    "maskedNumber": "Terminada en {{last4}}",
-    "sortBy": "Ordenar por {{column}}",
     "sortedAscending": "orden ascendente",
-    "sortedDescending": "orden descendente",
-    "empty": "Sin registros"
+    "sortedDescending": "orden descendente"
   },
   "layout": {
-    "mainNav": "Navegación principal",
     "consoleNav": "Navegación de la consola",
-    "openMenu": "Abrir menú",
-    "closeMenu": "Cerrar menú",
-    "overview": "Resumen",
-    "home": "Inicio"
+    "overview": "Resumen"
   },
   "home": {
     "heading": "¿En qué te ayudamos hoy?",

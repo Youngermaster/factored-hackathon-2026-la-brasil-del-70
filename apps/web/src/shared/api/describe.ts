@@ -2,11 +2,17 @@ import { ApiError, NetworkError } from './problem';
 
 /** The locale key of the plain-language message for a failed call that the screen does not handle itself. */
 export type ErrorMessageKey =
-  'errors.network' | 'errors.server' | 'errors.rateLimited' | 'errors.forbidden' | 'errors.generic';
+  | 'errors.offline'
+  | 'errors.network'
+  | 'errors.server'
+  | 'errors.rateLimited'
+  | 'errors.forbidden'
+  | 'errors.generic';
 
 export function errorMessageKey(error: unknown): ErrorMessageKey {
   if (error instanceof NetworkError) {
-    return 'errors.network';
+    // The browser knows when the device itself is offline; otherwise the bank could not be reached.
+    return navigator.onLine ? 'errors.network' : 'errors.offline';
   }
   if (error instanceof ApiError) {
     if (error.status >= 500) {

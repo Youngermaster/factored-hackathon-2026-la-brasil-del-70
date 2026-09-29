@@ -10,12 +10,8 @@
     "retry": "Try again",
     "close": "Close",
     "cancel": "Cancel",
-    "continue": "Continue",
-    "back": "Back",
     "goHome": "Go to the start",
     "reload": "Reload the page",
-    "copy": "Copy",
-    "notAvailable": "Not available",
     "opensInNewTab": "opens in a new tab",
     "notifications": "Notifications ({hotkey})",
     "notification": "Notification"
@@ -78,7 +74,6 @@
     "logout": "Sign out",
     "stepUpTitle": "Confirm it is you",
     "stepUpBody": "This action changes something in your account, so we need a new code.",
-    "stepUpConfirm": "Confirm",
     "stepUpDone": "Identity confirmed.",
     "stepUpStart": "Confirm identity",
     "stepUpFailed": "We could not open the verification.",
@@ -89,7 +84,6 @@
   },
   "session": {
     "title": "Your session",
-    "role": "Profile",
     "authLevel": "Verification",
     "idleExpires": "Ends if idle",
     "absoluteExpires": "Ends at the latest",
@@ -117,19 +111,12 @@
   },
   "data": {
     "asOf": "Data as of {{date}}",
-    "maskedNumber": "Ending in {{last4}}",
-    "sortBy": "Sort by {{column}}",
     "sortedAscending": "ascending",
-    "sortedDescending": "descending",
-    "empty": "No records"
+    "sortedDescending": "descending"
   },
   "layout": {
-    "mainNav": "Main navigation",
     "consoleNav": "Console navigation",
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "overview": "Overview",
-    "home": "Home"
+    "overview": "Overview"
   },
   "home": {
     "heading": "How can we help today?",

@@ -10,12 +10,8 @@
     "retry": "Tentar de novo",
     "close": "Fechar",
     "cancel": "Cancelar",
-    "continue": "Continuar",
-    "back": "Voltar",
     "goHome": "Ir para o início",
     "reload": "Recarregar a página",
-    "copy": "Copiar",
-    "notAvailable": "Sem dado",
     "opensInNewTab": "abre em uma nova aba",
     "notifications": "Avisos ({hotkey})",
     "notification": "Aviso"
@@ -78,7 +74,6 @@
     "logout": "Sair",
     "stepUpTitle": "Confirme que é você",
     "stepUpBody": "Esta ação altera algo na sua conta, por isso precisamos de um código novo.",
-    "stepUpConfirm": "Confirmar",
     "stepUpDone": "Identidade confirmada.",
     "stepUpStart": "Confirmar identidade",
     "stepUpFailed": "Não conseguimos abrir a verificação.",
@@ -89,7 +84,6 @@
   },
   "session": {
     "title": "Sua sessão",
-    "role": "Perfil",
     "authLevel": "Verificação",
     "idleExpires": "Encerramento por inatividade",
     "absoluteExpires": "Encerramento definitivo",
@@ -117,19 +111,12 @@
   },
   "data": {
     "asOf": "Dados de {{date}}",
-    "maskedNumber": "Final {{last4}}",
-    "sortBy": "Ordenar por {{column}}",
     "sortedAscending": "ordem crescente",
-    "sortedDescending": "ordem decrescente",
-    "empty": "Nenhum registro"
+    "sortedDescending": "ordem decrescente"
   },
   "layout": {
-    "mainNav": "Navegação principal",
     "consoleNav": "Navegação do console",
-    "openMenu": "Abrir menu",
-    "closeMenu": "Fechar menu",
-    "overview": "Resumo",
-    "home": "Início"
+    "overview": "Resumo"
   },
   "home": {
     "heading": "Como podemos ajudar hoje?",
