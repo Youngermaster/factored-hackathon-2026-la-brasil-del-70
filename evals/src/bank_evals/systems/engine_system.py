@@ -119,9 +119,11 @@ class EngineCase:
         self.turns += 1
         turn_id = f"9e7a0000-0000-4000-8000-{self.tag[:4]}{self.turns:08d}"
         request = TurnRequest(
-            turn_id=TurnId(turn_id), text=text, session=self.session,
+            turn_id=TurnId(turn_id),
+            text=text,
+            session=self.session,
             conversation_id=ConversationId(self.conversation) if self.conversation else None,
-        )  # fmt: skip
+        )
         started = time.perf_counter()
         result = await self.engine.process_turn(request)
         latency = int((time.perf_counter() - started) * 1000)
@@ -162,34 +164,57 @@ class EngineSystem:
         case_world = apply_fixtures(scenario, world.copy())
         store = InMemoryStore()
         store.seed(
-            customers=case_world.customers, products=case_world.products, transactions=case_world.transactions,
-            complaints=case_world.complaints, cases=case_world.cases, credit_profiles=case_world.credit_profiles,
+            customers=case_world.customers,
+            products=case_world.products,
+            transactions=case_world.transactions,
+            complaints=case_world.complaints,
+            cases=case_world.cases,
+            credit_profiles=case_world.credit_profiles,
             credit_applications=case_world.credit_applications,
-        )  # fmt: skip
+        )
         tag = hashlib.sha256(f"{scenario.id}:{self.name}:{run_index}".encode()).hexdigest()[:10]
         clock, ids = FixedClock(NOW), CaseIds(tag)
         uow_factory = InMemoryUnitOfWorkFactory(store)
         banking = BankingTools(
             ToolDependencies(
-                uow_factory=uow_factory, catalog=parts.policy.catalog, clock=clock, ids=ids,
-                settings=ToolSettings(policy=parts.policy.tool_policy,
-                                      balance_convention=DATASET_CREDIT_BALANCE_CONVENTION),
+                uow_factory=uow_factory,
+                catalog=parts.policy.catalog,
+                clock=clock,
+                ids=ids,
+                settings=ToolSettings(
+                    policy=parts.policy.tool_policy, balance_convention=DATASET_CREDIT_BALANCE_CONVENTION
+                ),
             )
-        )  # fmt: skip
+        )
         schedule = FailureSchedule(scenario.tool_failure_plan)
         tools: ToolProvider = ScheduledFailureTools(banking, schedule, environment=ENVIRONMENT)
         services = build_workflows(
-            parts.settings, uow_factory=uow_factory, session_store=InMemorySessionStore(), tools=tools,
-            policy=parts.policy, grounding=parts.grounding, llm=parts.llm, clock=clock, ids=ids,
-            environment=ENVIRONMENT, router=parts.router, resolver=parts.resolver,
-            risk_estimator=self._estimator(scenario, clock, ids), model_registry=parts.models,
+            parts.settings,
+            uow_factory=uow_factory,
+            session_store=InMemorySessionStore(),
+            tools=tools,
+            policy=parts.policy,
+            grounding=parts.grounding,
+            llm=parts.llm,
+            clock=clock,
+            ids=ids,
+            environment=ENVIRONMENT,
+            router=parts.router,
+            resolver=parts.resolver,
+            risk_estimator=self._estimator(scenario, clock, ids),
+            model_registry=parts.models,
             embedder=parts.embedder,
-        )  # fmt: skip
+        )
         customer = case_world.persona(scenario.persona_ref).customer.customer_id
         return EngineCase(
-            services.engine(SYSTEM_VARIANTS[self.name]), store, clock, customer, schedule, tag,
+            services.engine(SYSTEM_VARIANTS[self.name]),
+            store,
+            clock,
+            customer,
+            schedule,
+            tag,
             before=end_state(store, None),
-        )  # fmt: skip
+        )
 
     def _estimator(self, scenario: Scenario, clock: FixedClock, ids: CaseIds) -> RiskEstimator:
         unavailable = any(

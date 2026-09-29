@@ -84,15 +84,24 @@ def turn_view(
 
 def end_state(store: InMemoryStore, before: EndState | None) -> EndState:
     cases = [
-        {"case_id": case.case_id, "transaction_id": case.transaction_id, "customer_id": case.customer_id,
-         "reason": case.reason.value, "status": case.status.value}
+        {
+            "case_id": case.case_id,
+            "transaction_id": case.transaction_id,
+            "customer_id": case.customer_id,
+            "reason": case.reason.value,
+            "status": case.status.value,
+        }
         for case in store.cases.values()
-    ]  # fmt: skip
+    ]
     applications = [
-        {"application_id": item.application_id, "customer_id": item.customer_id,
-         "product_code": item.product_code, "status": item.status.value}
+        {
+            "application_id": item.application_id,
+            "customer_id": item.customer_id,
+            "product_code": item.product_code,
+            "status": item.status.value,
+        }
         for item in store.credit_applications.values()
-    ]  # fmt: skip
+    ]
     handoffs = []
     for stored in store.handoffs.values():
         document = stored.handoff.model_dump(mode="json")

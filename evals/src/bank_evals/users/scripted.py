@@ -98,8 +98,9 @@ async def play_scripted(
             break
         if view is not None and "language_question" in view.notices and not answered_language:
             answered_language = True
-            view = await send_with_session_events(case, log, LANGUAGE_WORD[language], language, driver=driver,
-                                                  expired=False)  # fmt: skip
+            view = await send_with_session_events(
+                case, log, LANGUAGE_WORD[language], language, driver=driver, expired=False
+            )
             continue
         if view is not None and view.state in OFFER_STATES and not answered_offer:
             answered_offer = True

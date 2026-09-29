@@ -56,27 +56,49 @@ class MissTolerantCassettes:
         self._inner, self.misses, self.model_id = inner, misses, inner.model_id
 
     async def generate_structured[OutputT: BaseModel](
-        self, prompt: PromptRef, variables: Mapping[str, PromptValue], output_model: type[OutputT], *,
-        language: Language, max_output_tokens: int, temperature: float, call_context: LlmCallContext,
-    ) -> StructuredGeneration[OutputT]:  # fmt: skip
+        self,
+        prompt: PromptRef,
+        variables: Mapping[str, PromptValue],
+        output_model: type[OutputT],
+        *,
+        language: Language,
+        max_output_tokens: int,
+        temperature: float,
+        call_context: LlmCallContext,
+    ) -> StructuredGeneration[OutputT]:
         try:
             return await self._inner.generate_structured(
-                prompt, variables, output_model, language=language, max_output_tokens=max_output_tokens,
-                temperature=temperature, call_context=call_context,
-            )  # fmt: skip
+                prompt,
+                variables,
+                output_model,
+                language=language,
+                max_output_tokens=max_output_tokens,
+                temperature=temperature,
+                call_context=call_context,
+            )
         except CassetteMissingError:
             self.misses.by_prompt[str(prompt)] += 1
             raise LlmProviderRejectedError(f"no cassette for {prompt}") from None
 
     async def generate_text(
-        self, prompt: PromptRef, variables: Mapping[str, PromptValue], *, language: Language,
-        max_output_tokens: int, temperature: float, call_context: LlmCallContext,
-    ) -> TextGeneration:  # fmt: skip
+        self,
+        prompt: PromptRef,
+        variables: Mapping[str, PromptValue],
+        *,
+        language: Language,
+        max_output_tokens: int,
+        temperature: float,
+        call_context: LlmCallContext,
+    ) -> TextGeneration:
         try:
             return await self._inner.generate_text(
-                prompt, variables, language=language, max_output_tokens=max_output_tokens,
-                temperature=temperature, call_context=call_context,
-            )  # fmt: skip
+                prompt,
+                variables,
+                language=language,
+                max_output_tokens=max_output_tokens,
+                temperature=temperature,
+                call_context=call_context,
+            )
         except CassetteMissingError:
             self.misses.by_prompt[str(prompt)] += 1
             raise LlmProviderRejectedError(f"no cassette for {prompt}") from None
@@ -127,13 +149,20 @@ def build_run_llm(
         inner = None
         if mode == "record":
             inner = LiteLLMClient(
-                registry, model=settings.primary_model, api_key=settings.api_key_primary,
-                timeout_seconds=settings.timeout_seconds, api_base=settings.api_base or None,
-            )  # fmt: skip
+                registry,
+                model=settings.primary_model,
+                api_key=settings.api_key_primary,
+                timeout_seconds=settings.timeout_seconds,
+                api_base=settings.api_base or None,
+            )
         cassettes = CassetteLLM(
-            directory, model_id=settings.primary_model, redactor=Redactor(), clock=SystemClock(),
-            mode=CassetteMode.RECORD if mode == "record" else CassetteMode.REPLAY, inner=inner,
-        )  # fmt: skip
+            directory,
+            model_id=settings.primary_model,
+            redactor=Redactor(),
+            clock=SystemClock(),
+            mode=CassetteMode.RECORD if mode == "record" else CassetteMode.REPLAY,
+            inner=inner,
+        )
         primary = MissTolerantCassettes(cassettes, misses) if mode == "replay" else cassettes
     client = build_llm_client(
         settings.model_copy(update={"provider": "fake", "fallback_model": ""}),

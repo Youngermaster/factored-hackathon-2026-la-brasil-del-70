@@ -25,8 +25,16 @@ CREDIT, DEBIT = ProductType.CREDIT_CARD, ProductType.DEBIT_CARD
 SCORES = {"cre": 780, "crenoinc": 745, "creborder": 700, "crepast": 760, "creapp": 770, "other": 720}
 
 
-def transaction(transaction_id: str, persona: Persona, product: Product, amount: Money, occurred_at: datetime,
-                merchant: str, status: Status, kind: Kind) -> Transaction:  # fmt: skip
+def transaction(
+    transaction_id: str,
+    persona: Persona,
+    product: Product,
+    amount: Money,
+    occurred_at: datetime,
+    merchant: str,
+    status: Status,
+    kind: Kind,
+) -> Transaction:
     channel = TransactionChannel.TRANSFER if kind is Kind.TRANSFER else TransactionChannel.POS
     return Transaction(
         transaction_id=transaction_id,  # type: ignore[arg-type]
@@ -46,17 +54,26 @@ def transaction(transaction_id: str, persona: Persona, product: Product, amount:
 
 def _card(b: Builder, p: Persona, book: CountryBook, ref: str = "credit_card", **extra: object) -> Product:
     fields: dict[str, object] = {
-        "current_balance": b.money(book, "card_balance"), "credit_limit": b.money(book, "card_limit"),
-        "balance_as_of": AS_OF, **extra,
-    }  # fmt: skip
+        "current_balance": b.money(book, "card_balance"),
+        "credit_limit": b.money(book, "card_limit"),
+        "balance_as_of": AS_OF,
+        **extra,
+    }
     return b.product(p, book, ref, CREDIT, **fields)
 
 
 def _accounts(b: Builder, p: Persona, book: CountryBook) -> None:
-    checking = b.product(p, book, "checking", ProductType.CHECKING_ACCOUNT,
-                         current_balance=b.money(book, "checking"), balance_as_of=AS_OF)  # fmt: skip
-    b.product(p, book, "savings", ProductType.SAVINGS_ACCOUNT, current_balance=b.money(book, "savings"),
-              balance_as_of=AS_OF)  # fmt: skip
+    checking = b.product(
+        p,
+        book,
+        "checking",
+        ProductType.CHECKING_ACCOUNT,
+        current_balance=b.money(book, "checking"),
+        balance_as_of=AS_OF,
+    )
+    b.product(
+        p, book, "savings", ProductType.SAVINGS_ACCOUNT, current_balance=b.money(book, "savings"), balance_as_of=AS_OF
+    )
     card = _card(b, p, book)
     m, a = book.merchants, book.amounts
     b.txn(p, book, "transfer_earlier", checking, a["transfer"], 7, m["payee"], kind=Kind.TRANSFER)
@@ -71,8 +88,7 @@ def _accounts(b: Builder, p: Persona, book: CountryBook) -> None:
 def _cards(b: Builder, p: Persona, book: CountryBook) -> None:
     card = _card(b, p, book)
     b.product(p, book, "debit_card", DEBIT, expires_on=date(2027, 11, 30))
-    b.txn(p, book, "declined_purchase", card, book.amounts["declined"], 2, book.merchants["declined"],
-          Status.DECLINED)  # fmt: skip
+    b.txn(p, book, "declined_purchase", card, book.amounts["declined"], 2, book.merchants["declined"], Status.DECLINED)
     b.txn(p, book, "recent_card_purchase", card, book.amounts["recent"], 4, book.merchants["recent"])
 
 
@@ -103,14 +119,18 @@ def _cases(b: Builder, p: Persona, book: CountryBook) -> None:
     within = b.world.transaction(p.refs["case_within_sla_txn"])
     past = b.world.transaction(p.refs["case_past_sla_txn"])
     sla = {"MX": 45, "CO": 15, "AR": 30}[book.country.value]
-    for ref, txn, opened in (("case_within_sla", within, NOW - timedelta(days=5)),
-                             ("case_past_sla", past, NOW - timedelta(days=70))):  # fmt: skip
+    for ref, txn, opened in (
+        ("case_within_sla", within, NOW - timedelta(days=5)),
+        ("case_past_sla", past, NOW - timedelta(days=70)),
+    ):
         case = DisputeCase.open(
             case_id=f"case-{p.customer.customer_id[4:].lower()}-{ref[5:9]}",  # type: ignore[arg-type]
-            transaction=txn, reason=DisputeReason.UNRECOGNIZED, opened_at=opened,
+            transaction=txn,
+            reason=DisputeReason.UNRECOGNIZED,
+            opened_at=opened,
             sla_due_at=opened + timedelta(days=sla),
             idempotency_key=f"idem-eval-{p.customer.customer_id[4:].lower()}-{ref}",  # type: ignore[arg-type]
-        )  # fmt: skip
+        )
         b.world.cases.append(case)
         p.refs[ref] = case.case_id
 
@@ -119,35 +139,50 @@ def _repeat_complainer(b: Builder, p: Persona, book: CountryBook) -> None:
     card = _card(b, p, book)
     b.txn(p, book, "recent_card_purchase", card, book.amounts["recent"], 3, book.merchants["recent"])
     for index, days in enumerate((40, 120, 200)):
-        b.world.complaints.append(HistoricalComplaint(
-            complaint_id=f"CMP-{p.customer.customer_id[4:]}-{index + 1}",  # type: ignore[arg-type]
-            customer_id=p.customer.customer_id, created_at=NOW - timedelta(days=days),
-            case_type=ComplaintCaseType.CLAIM, category="Cards", reception_channel=ComplaintChannel.APP,
-            priority=Priority.MEDIUM,
-        ))  # fmt: skip
+        b.world.complaints.append(
+            HistoricalComplaint(
+                complaint_id=f"CMP-{p.customer.customer_id[4:]}-{index + 1}",  # type: ignore[arg-type]
+                customer_id=p.customer.customer_id,
+                created_at=NOW - timedelta(days=days),
+                case_type=ComplaintCaseType.CLAIM,
+                category="Cards",
+                reception_channel=ComplaintChannel.APP,
+                priority=Priority.MEDIUM,
+            )
+        )
 
 
 def _credit(b: Builder, p: Persona, book: CountryBook, role: str) -> None:
-    b.product(p, book, "savings", ProductType.SAVINGS_ACCOUNT, current_balance=b.money(book, "savings"),
-              balance_as_of=AS_OF)  # fmt: skip
+    b.product(
+        p, book, "savings", ProductType.SAVINGS_ACCOUNT, current_balance=b.money(book, "savings"), balance_as_of=AS_OF
+    )
     card = _card(b, p, book, days_past_due=45 if role == "crepast" else 0)
     income = None if role == "crenoinc" else b.money(book, "income")
-    b.world.credit_profiles.append(CreditProfile(
-        customer_id=p.customer.customer_id, credit_score=SCORES[role], estimated_monthly_income=income,
-        tenure_months=40, credit_product_count=1, max_days_past_due=45 if role == "crepast" else 0,
-        as_of=AS_OF.date(),
-    ))  # fmt: skip
+    b.world.credit_profiles.append(
+        CreditProfile(
+            customer_id=p.customer.customer_id,
+            credit_score=SCORES[role],
+            estimated_monthly_income=income,
+            tenure_months=40,
+            credit_product_count=1,
+            max_days_past_due=45 if role == "crepast" else 0,
+            as_of=AS_OF.date(),
+        )
+    )
     if role == "other":
         b.txn(p, book, "recent_card_purchase", card, book.amounts["recent"], 3, book.merchants["other"])
     if role == "creapp":
         code = f"{book.country.value}-PL-STANDARD"
         intake = CreditApplicationIntake.submit(
             application_id=f"app-eval-{book.country.value.lower()}-0001",  # type: ignore[arg-type]
-            customer_id=p.customer.customer_id, product_code=code,  # type: ignore[arg-type]
-            requested_amount=Money.of(book.amounts["large"], book.currency), requested_term_months=24,
-            purpose="general_purpose", created_at=NOW - timedelta(days=6),
+            customer_id=p.customer.customer_id,
+            product_code=code,  # type: ignore[arg-type]
+            requested_amount=Money.of(book.amounts["large"], book.currency),
+            requested_term_months=24,
+            purpose="general_purpose",
+            created_at=NOW - timedelta(days=6),
             idempotency_key=f"idem-eval-app-{book.country.value.lower()}-0001",  # type: ignore[arg-type]
-        )  # fmt: skip
+        )
         b.world.credit_applications.append(intake)
         p.refs["application"] = intake.application_id
 
@@ -171,8 +206,14 @@ DEMONSTRATES = {
 def populate(b: Builder, book: CountryBook) -> None:
     from bank_evals.world.build import ROLES
 
-    handlers = {"acc": _accounts, "crd": _cards, "crdx": _expired_and_blocked, "dsp": _disputes, "dspcase": _cases,
-                "dsprep": _repeat_complainer}  # fmt: skip
+    handlers = {
+        "acc": _accounts,
+        "crd": _cards,
+        "crdx": _expired_and_blocked,
+        "dsp": _disputes,
+        "dspcase": _cases,
+        "dsprep": _repeat_complainer,
+    }
     for index, role in enumerate(ROLES):
         persona = b.persona(book, index, role, DEMONSTRATES[role])
         if role in handlers:
