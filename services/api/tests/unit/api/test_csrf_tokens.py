@@ -10,6 +10,19 @@ TOKEN = secrets.token_urlsafe(32)
 OTHER = secrets.token_urlsafe(32)
 
 
+def _tampered(signature: str) -> str:
+    """The signature with its last hex digit changed, so it always differs from the original."""
+    last = "1" if signature[-1] == "0" else "0"
+    return f"{signature[:-1]}{last}"
+
+
+def test_tampering_changes_a_signature_even_when_it_ends_in_zero() -> None:
+    signature = "ab" * 31 + "f0"
+
+    assert _tampered(signature) != signature
+    assert _tampered(signature[:-1] + "7") != signature[:-1] + "7"
+
+
 def test_a_token_is_valid_only_for_the_binding_it_was_issued_for() -> None:
     tokens = CsrfTokens(SECRET)
     token = tokens.issue(binding_for("session-token-a"))
@@ -33,7 +46,7 @@ def test_tampered_malformed_foreign_and_oversized_tokens_are_refused() -> None:
     token = tokens.issue(ANONYMOUS_BINDING)
     nonce, _, signature = token.partition(".")
 
-    assert not tokens.is_valid(f"{nonce}.{signature[:-1]}0", ANONYMOUS_BINDING)
+    assert not tokens.is_valid(f"{nonce}.{_tampered(signature)}", ANONYMOUS_BINDING)
     assert not tokens.is_valid(f"x{nonce}.{signature}", ANONYMOUS_BINDING)
     assert not tokens.is_valid(nonce, ANONYMOUS_BINDING)
     assert not tokens.is_valid(".", ANONYMOUS_BINDING)

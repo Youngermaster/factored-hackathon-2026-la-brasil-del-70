@@ -9,12 +9,13 @@ from bank_agent.domain.evaluation import EvaluationSummary
 class EvaluationSummaryReader(Protocol):
     """Reads the evaluation summaries the harness has published.
 
-    Preconditions: none; summaries are aggregate offline measurements with no customer data, so any caller may read
-    them (the HTTP layer decides who may).
+    Preconditions: the summaries are published by the evaluation harness before the API reads them; the reader
+    never writes or recomputes them.
     Postconditions: newest first (``generated_at``, ties broken by ``run_id`` and ``system``); an empty sequence
     when nothing is published yet.
     Errors: a published summary that does not validate raises ``ConfigurationError``; it is never skipped silently.
-    Isolation: not applicable; a summary holds counts and rates over a workload, never a customer record.
+    Isolation: summaries hold aggregate metrics only, no customer data; the API layer decides who may read them
+    (an evaluator session unless ``EVAL_SUMMARIES_PUBLIC=true``).
     """
 
     async def list(self) -> Sequence[EvaluationSummary]:

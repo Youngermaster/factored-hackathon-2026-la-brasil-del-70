@@ -3,6 +3,7 @@
 from types import TracebackType
 from typing import Protocol, Self
 
+from bank_agent.adapters.persistence.memory.assistant_profiles import InMemoryAssistantProfileRepository
 from bank_agent.adapters.persistence.memory.repositories import (
     InMemoryActionLedger,
     InMemoryAuditLog,
@@ -52,6 +53,7 @@ class InMemoryUnitOfWork:
         self._credit_profiles = TableView(store.credit_profiles)
         self._credit_applications = TableView(store.credit_applications)
         self._action_ledger = TableView(store.action_ledger)
+        self._assistant_profiles = TableView(store.assistant_profiles)
         self._views: tuple[Transactional, ...] = (
             self._customers,
             self._products,
@@ -66,6 +68,7 @@ class InMemoryUnitOfWork:
             self._credit_profiles,
             self._credit_applications,
             self._action_ledger,
+            self._assistant_profiles,
         )
 
     @property
@@ -95,6 +98,10 @@ class InMemoryUnitOfWork:
     @property
     def conversations(self) -> InMemoryConversationRepository:
         return InMemoryConversationRepository(self._conversations, self._turns, self._context)
+
+    @property
+    def assistant_profiles(self) -> InMemoryAssistantProfileRepository:
+        return InMemoryAssistantProfileRepository(self._assistant_profiles, self._context)
 
     @property
     def execution_records(self) -> InMemoryExecutionRecordRepository:

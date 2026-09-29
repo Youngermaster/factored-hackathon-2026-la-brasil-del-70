@@ -55,7 +55,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 35. **Review the phase 11 HTTP security design**: [ADR 0031](adr/0031-cookie-sessions-with-signed-double-submit-csrf.md), [the threat model](security/threat-model.md), and [the API catalog](api/README.md): the rate limit defaults, the separate evaluator trace operation, and the agent visibility of credit intakes (handoff-referenced only until phase 13).
 36. **Check any `.env` made from an older `.env.example`.** A line with an empty value and an inline comment (`POLICY_DIR=     # default: policies/`) is read as the comment text, not as empty; the old example had 21 such lines (for example `POLICY_DIR`, the `RETRIEVAL_*` directories and thresholds, `LLM_PRICES_FILE`, `LLM_CASSETTE_DIR`, `WORKFLOW_MODEL_REGISTRY_DIR`, `BANK_DATA_DIR`). Delete those inline comments, or move your values aside and run `make env` (it writes `.env` only when none exists). The new example keeps such comments on the line above. Its dev-only database passwords differ from the ones an existing compose volume was created with, so keep your current passwords.
 
-37. **Merge `origin/main` into local `main` before pushing.** The two have diverged (local: phases 10b, 11, and 12; origin: PRs 7, 8, 12, 15, 16, 17), so the phase 12 pull failed and the phase ran on local `main`. Upstream `ea3a7b3` (Markdown lint skips `.git`) was cherry-picked; expect conflicts in `docs/PROGRESS.md`, `docs/BACKLOG.md`, `docs/adr/README.md` (origin adds ADR 0034), and possibly `.markdownlint-cli2.jsonc` (identical change).
+37. **Resolved (2026-09-29): `origin/main` merged into local `main`.** The orchestrator merged PRs 7, 8, 12, 15, 16, and 17 (organizer data and collaboration skills, the local gold seed with ADR 0034, the chat persistence migration 0009, and the assistant preferences). Conflicts in `.env.example`, `Makefile`, `docs/BACKLOG.md`, `docs/PROGRESS.md`, `docs/README.md`, and the evaluation summary port were resolved by keeping both sides; `.env.example` keeps the phase 11 copy-and-run layout, which already carries the data-platform variables.
 38. **Review the web copy and the design direction** (`apps/web/src/shared/i18n/locales/{es,pt,en}.json`, [DESIGN.md](design/DESIGN.md), [audit.md](design/audit.md), screenshots in `apps/web/.shots/` after `node tooling/screenshots.mjs`): a native Portuguese review, and a check that the deck-derived palette and type work for the team. Reviewers: pending. Date: pending.
 
 ## Phase log
@@ -219,6 +219,39 @@ Results recorded in this phase:
 #### Next phase
 
 Phase 12, frontend foundation (`kit/prompts/12-frontend-foundation.md`): the typed client over `schema.d.ts` with `credentials: 'include'`, the CSRF header, and problem-details parsing, and the `/v1` dev proxy.
+
+### Local gold seed for the MVP (2026-09-28)
+
+Decision: [ADR 0034](adr/0034-bounded-local-gold-seed-for-mvp.md). Guide:
+[data/local-postgres-mvp.md](data/local-postgres-mvp.md). This is an independent data deliverable on the
+`dbseed` branch; it does not complete a numbered phase. The record was written as ADR 0032 on the branch
+and renumbered to 0034 when `main` was merged, because 0032 and 0033 now hold the EDA records.
+
+#### What changed
+
+- `make pipeline`, `seed`, and `verify-seed` accept `DATA_SOURCE=local LOCAL_DIR=data`. Local discovery
+  lists only contracted table layouts before hashing, so EDA outputs, context files, and warehouses under
+  `data/` are never ingested.
+- Added `bank-data verify-seed`: a read-only reconciliation of the selected gold IDs, identity digests,
+  staff, and synthetic demo records against PostgreSQL, requiring the Alembic head. It exits nonzero on a
+  mismatch and prints only counts.
+- `.env.example` moved the comments of empty values to their own lines, with a test that the example
+  parses.
+
+#### Validation
+
+- Full local build: 7,671 objects unchanged on rerun; `dbt build` `PASS=313 WARN=2 ERROR=0`; tests and
+  freshness pass; all five serving Parquet files exist.
+- `make seed` and `make verify-seed` with 200 customers: revision `0008`, 16 personas, 559 products,
+  6,119 transactions, 84 complaints, 200 credit profiles.
+- The source, seed verification, seed integration, and row-level security tests pass (43 tests).
+
+#### Known limitations
+
+- The `.env.example` DuckDB defaults (8 GB, 8 threads) get the build killed without an error on an 8 GB
+  machine; 3 GB and 2 threads complete it in about 9 minutes (BACKLOG).
+- 149,995 customers and 831 service agents reference branches missing from `branches.csv` (BACKLOG).
+- The seed is bounded by design; the full load needs the batch loader in the guide (BACKLOG, phase 16).
 
 ### Phase 10, session 10b: the learned credit risk estimator (2026-09-27)
 

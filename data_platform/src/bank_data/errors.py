@@ -57,3 +57,9 @@ class SampleError(DataPlatformError):
 
     code = "sample_error"
     exit_code = 6
+
+
+class SeedVerificationError(DataPlatformError):
+    """The PostgreSQL demo slice does not match the selected gold rows."""
+
+    code = "seed_verification_failed"

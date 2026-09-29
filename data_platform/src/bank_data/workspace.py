@@ -60,7 +60,7 @@ class Workspace:
             return LocalSource(DEFAULT_SAMPLE_DIR, kind="sample")
         if self.local_dir is None:
             raise ConfigurationError("--local-dir is required for the local source")
-        return LocalSource(self.local_dir)
+        return LocalSource(self.local_dir, known_tables_only=True)
 
     @property
     def bronze_dir(self) -> Path:

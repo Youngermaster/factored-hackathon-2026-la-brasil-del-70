@@ -14,6 +14,7 @@ from bank_agent.adapters.persistence.postgres.repositories.accounts import (
     PostgresTransactionRepository,
 )
 from bank_agent.adapters.persistence.postgres.repositories.action_ledger import PostgresActionLedger
+from bank_agent.adapters.persistence.postgres.repositories.assistant_profiles import PostgresAssistantProfileRepository
 from bank_agent.adapters.persistence.postgres.repositories.cases import PostgresCaseRepository
 from bank_agent.adapters.persistence.postgres.repositories.conversations import PostgresConversationRepository
 from bank_agent.adapters.persistence.postgres.repositories.credit_applications import (
@@ -75,6 +76,10 @@ class PostgresUnitOfWork:
     @property
     def conversations(self) -> PostgresConversationRepository:
         return PostgresConversationRepository(self._open())
+
+    @property
+    def assistant_profiles(self) -> PostgresAssistantProfileRepository:
+        return PostgresAssistantProfileRepository(self._open())
 
     @property
     def execution_records(self) -> PostgresExecutionRecordRepository:
