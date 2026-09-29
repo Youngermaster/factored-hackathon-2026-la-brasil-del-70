@@ -5,10 +5,12 @@ import asyncio
 import json
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
 from bank_evals.cli import app
+from bank_evals.runner import run as run_module
 from bank_evals.runner.run import RunOptions, execute
 from bank_evals.scenarios.model import Split
 from bank_evals.systems.historical import load_historical
@@ -131,3 +133,15 @@ def test_a_test_split_run_checks_the_lock_and_repeats_the_subset(tmp_path: Path)
     assert output.manifest["test_set_lock"] is not None
     assert output.results_count == 4
     assert output.metrics["b0"]["repeated"]["runs"] == 2
+
+
+def test_the_manifest_records_the_commit_the_run_started_from(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    commits = iter(["aaaaaaa", "bbbbbbb"])
+    monkeypatch.setattr(run_module, "git_sha", lambda: next(commits))
+    options = RunOptions(
+        run_id="sha-it", split=Split.DEV, systems=("b0",), llm="off", out_dir=tmp_path,
+        scenario_ids=("dev-car-normal-001",),
+    )  # fmt: skip
+    output = asyncio.run(execute(options))
+    assert output.manifest["git_sha"] == "aaaaaaa"
+    assert any("from aaaaaaa to bbbbbbb" in note for note in output.manifest["notes"])
