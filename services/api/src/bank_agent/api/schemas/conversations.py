@@ -5,7 +5,8 @@ rendered excerpt), clarification options, one confirmation card (dispute, card a
 statuses with their verification evidence, the escalation reference, the step-up request, notices, and the
 workflow parts from phase 02b: balances with their as-of instant, payment statuses, a statement summary, card
 status, credit product views, and the customer-facing eligibility view. It never carries a credit profile value or
-a risk estimate.
+a risk estimate. Each credit product part carries ``display_name``, the catalog's product name in the message's
+language, added here because display text is not part of the ``CreditProductCatalog`` port.
 """
 
 from datetime import datetime
@@ -14,12 +15,14 @@ from uuid import UUID
 
 from pydantic import Field, StringConstraints
 
+from bank_agent.api.provider import CreditProductNames
 from bank_agent.api.schemas.base import RequestModel, ResponseModel
 from bank_agent.domain.accounts import BalanceView, PaymentStatusView, StatementSummary
 from bank_agent.domain.cards import CardStatusView
 from bank_agent.domain.conversation import (
     MAX_CUSTOMER_MESSAGE_LENGTH,
     ActionStatusView,
+    AssistantResponse,
     CardActionConfirmation,
     Citation,
     Clarification,
@@ -29,11 +32,27 @@ from bank_agent.domain.conversation import (
     EscalationNotice,
     NoticeCode,
 )
-from bank_agent.domain.credit import CreditProduct
+from bank_agent.domain.credit import CreditProduct as CatalogProduct
 from bank_agent.domain.eligibility import EligibilityView
 from bank_agent.domain.identifiers import ConversationId, TurnId
 from bank_agent.domain.locale import Language
 from bank_agent.domain.workflow import Outcome, StateName, WorkflowRef
+from bank_agent.policy.loader.catalog import ProductDisplay
+
+
+class CreditProduct(CatalogProduct):
+    """A catalog entry as a message part: the domain ``CreditProduct`` plus ``display_name``, the catalog's name in
+    the message's language (``None`` for a code the catalog cannot name). Indicative ranges only: never an offer.
+
+    It keeps the domain name so the OpenAPI component stays ``CreditProduct``.
+    """
+
+    display_name: str | None = None
+
+    @classmethod
+    def of(cls, product: CatalogProduct, display_name: str | None) -> "CreditProduct":
+        return cls.model_validate({**dict(product), "display_name": display_name})
+
 
 MessageText = Annotated[str, StringConstraints(min_length=1, max_length=MAX_CUSTOMER_MESSAGE_LENGTH)]
 
@@ -64,6 +83,20 @@ class AssistantMessage(ResponseModel):
     card_status: tuple[CardStatusView, ...] = ()
     credit_products: tuple[CreditProduct, ...] = ()
     eligibility: EligibilityView | None = None
+
+    @classmethod
+    def of(cls, response: AssistantResponse, names: CreditProductNames) -> "AssistantMessage":
+        """The message for a turn's response, naming each credit product in the response's language."""
+        parts = tuple(
+            CreditProduct.of(product, _name(names.display(product.product_code, response.language)))
+            for product in response.credit_products
+        )
+        message = cls.model_validate(response.model_copy(update={"credit_products": ()}))
+        return message.model_copy(update={"credit_products": parts})
+
+
+def _name(display: ProductDisplay | None) -> str | None:
+    return display.name if display is not None else None
 
 
 class TurnResponse(ResponseModel):

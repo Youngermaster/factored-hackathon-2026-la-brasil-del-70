@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, Path, Request, status
 
 from bank_agent.api.config import RateClass
 from bank_agent.api.dependencies import endpoint, role_dependency, services
+from bank_agent.api.provider import CreditProductNames
 from bank_agent.api.schemas.conversations import (
     AssistantMessage,
     ConversationHistoryResponse,
@@ -42,7 +43,7 @@ def conversation_view(conversation: Conversation) -> ConversationView:
     )
 
 
-def turn_response(result: TurnResult) -> TurnResponse:
+def turn_response(result: TurnResult, names: CreditProductNames) -> TurnResponse:
     return TurnResponse(
         turn_id=result.turn_id,
         conversation_id=result.conversation_id,
@@ -50,18 +51,18 @@ def turn_response(result: TurnResult) -> TurnResponse:
         state=result.state,
         outcome=result.outcome,
         replayed=result.replayed,
-        message=AssistantMessage.model_validate(result.response),
+        message=AssistantMessage.of(result.response, names),
     )
 
 
-def turn_view(turn: Turn) -> TurnView:
+def turn_view(turn: Turn, names: CreditProductNames) -> TurnView:
     return TurnView(
         turn_id=turn.turn_id,
         sequence=turn.sequence,
         received_at=turn.received_at,
         customer_text=turn.customer_text,
         language=turn.language,
-        message=AssistantMessage.model_validate(turn.response) if turn.response is not None else None,
+        message=AssistantMessage.of(turn.response, names) if turn.response is not None else None,
         completed_at=turn.completed_at,
     )
 
@@ -87,8 +88,9 @@ async def send_turn(
     request: Request, conversation_id: ConversationPath, body: SendTurnRequest, session: CustomerSession
 ) -> TurnResponse:
     """Send one customer message and get the assistant's reply with every workflow part."""
-    result = await services(request).conversations.send(session, conversation_id, TurnId(str(body.turn_id)), body.text)
-    return turn_response(result)
+    provider = services(request)
+    result = await provider.conversations.send(session, conversation_id, TurnId(str(body.turn_id)), body.text)
+    return turn_response(result, provider.credit_product_names)
 
 
 _CONVERSATIONS_GET = endpoint(
@@ -101,9 +103,11 @@ async def get_conversation(
     request: Request, conversation_id: ConversationPath, session: CustomerSession
 ) -> ConversationHistoryResponse:
     """The conversation and its turns, oldest first."""
-    history = await services(request).conversations.history(session, conversation_id)
+    provider = services(request)
+    history = await provider.conversations.history(session, conversation_id)
+    names = provider.credit_product_names
     return ConversationHistoryResponse(
-        conversation=conversation_view(history.conversation), turns=tuple(turn_view(t) for t in history.turns)
+        conversation=conversation_view(history.conversation), turns=tuple(turn_view(t, names) for t in history.turns)
     )
 
 

@@ -1011,7 +1011,7 @@
       },
       "CreditProduct": {
         "additionalProperties": false,
-        "description": "One synthetic catalog entry. Indicative ranges only: never an offer.\n\n``self_service_eligibility`` is false for products whose eligibility needs facts the data does not have\n(a mortgage needs collateral facts); the eligibility service then returns ``review_required``.",
+        "description": "A catalog entry as a message part: the domain ``CreditProduct`` plus ``display_name``, the catalog's name in\nthe message's language (``None`` for a code the catalog cannot name). Indicative ranges only: never an offer.\n\nIt keeps the domain name so the OpenAPI component stays ``CreditProduct``.",
         "properties": {
           "catalog_version": {
             "maxLength": 64,
@@ -1021,6 +1021,17 @@
           },
           "currency": {
             "$ref": "#/components/schemas/Currency"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
           },
           "eligibility_clause_ids": {
             "default": [],
@@ -1118,7 +1129,8 @@
           "eligibility_clause_ids",
           "self_service_eligibility",
           "catalog_version",
-          "synthetic"
+          "synthetic",
+          "display_name"
         ],
         "title": "CreditProduct",
         "type": "object"

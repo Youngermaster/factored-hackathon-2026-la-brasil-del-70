@@ -783,15 +783,17 @@ export interface components {
         };
         /**
          * CreditProduct
-         * @description One synthetic catalog entry. Indicative ranges only: never an offer.
+         * @description A catalog entry as a message part: the domain ``CreditProduct`` plus ``display_name``, the catalog's name in
+         *     the message's language (``None`` for a code the catalog cannot name). Indicative ranges only: never an offer.
          *
-         *     ``self_service_eligibility`` is false for products whose eligibility needs facts the data does not have
-         *     (a mortgage needs collateral facts); the eligibility service then returns ``review_required``.
+         *     It keeps the domain name so the OpenAPI component stays ``CreditProduct``.
          */
         CreditProduct: {
             /** Catalog Version */
             catalog_version: string;
             currency: components["schemas"]["Currency"];
+            /** Display Name */
+            display_name: string | null;
             /**
              * Eligibility Clause Ids
              * @default []
