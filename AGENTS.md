@@ -398,7 +398,6 @@ CLAUDE.md sections 5 to 9 are the rules. This section is the practical map for a
 | `make pipeline`, `make pipeline DATA_SOURCE=s3` | Data platform from the sample or the full delivery |
 | `make env-check` | Which documented variables are set, never their values |
 
-
-# Repository agent guidance
+## Repository agent guidance
 
 For GitHub pull requests, issues, reviews, comments, or other GitHub operations, read [skills/github-collaboration/SKILL.md](skills/github-collaboration/SKILL.md) before acting. Use the repository's `origin` remote to identify the target repository.
