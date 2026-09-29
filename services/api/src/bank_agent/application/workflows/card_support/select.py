@@ -122,13 +122,18 @@ async def select_card(ctx: TurnContext) -> Step:
             return await _chosen(ctx, data, current)
     if not cards:
         return Step("RESOLVED", Reply(template="card.no_cards"), Outcome.RESOLVED)
-    plausible = _plausible(data, cards)
-    if len(plausible) == 1:
+    # An ending the customer stated that none of their cards has is asked about with every card listed; it is never
+    # replaced by a guess from other hints (phase 14b: the model's card type hint picked a card for "terminada en
+    # 9999" when the customer has no such card).
+    unknown_ending = data.hint_last4 is not None and all(c.masked_number.last4 != data.hint_last4 for c in cards)
+    plausible = cards if unknown_ending else _plausible(data, cards)
+    if len(plausible) == 1 and not unknown_ending:
         return await _chosen(ctx, data, plausible[0])
     stop = spend_clarification(ctx, open_questions=WHICH_CARD)
     if stop is not None:
         return stop
-    save(ctx, data.evolve(option_ids=tuple(ProductId(card.product_ref.key) for card in plausible)))
+    options = tuple(ProductId(card.product_ref.key) for card in plausible)
+    save(ctx, data.evolve(option_ids=options, hint_last4=None))
     return _options_reply(ctx, plausible)
 
 
