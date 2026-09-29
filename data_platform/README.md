@@ -69,7 +69,7 @@ See the [MVP PostgreSQL loading guide](../docs/data/local-postgres-mvp.md) for s
 | `src/bank_data/reports/` | Quality report and lineage page |
 | `src/bank_data/sample/` | Committed-sample selection, pseudonyms, and the provenance README |
 | `src/bank_data/seed/` | The demo seed: persona file model, named SQL criteria, deterministic selection, gold-to-domain bundle, and the runner that migrates and loads through bank-agent's `PostgresSeeder` |
-| `seed/personas.yaml` | Persona criteria and coverage (no customer data) |
+| `seed/personas.yaml`, `seed/personas.sample.yaml` | Persona criteria and coverage (no customer data): full warehouse and bounded offline sample, respectively |
 | `src/bank_data/analysis/` | The phase 04 analysis: reason mapping, metrics, bootstrap statistics, pre-registered scoring, labeling export, figures, and reports |
 | `analysis/` | Analysis inputs: the pre-registered `scoring.yaml` and `cost_assumptions.yaml` (every value an assumption); see [`analysis/README.md`](analysis/README.md) |
 | `mappings/workflow_mapping.csv` | Every observed contact reason and complaint category mapped to a workflow or `other`, with scenarios and rationale |
@@ -90,7 +90,7 @@ The `bank-data` command. Every data command takes `--source sample|s3|local` (de
 | `bank-data test` | part of `make pipeline` | `dbt test` and `dbt source freshness` |
 | `bank-data report` | `make data-report` | The quality report (`docs/data/quality-report.md` for the S3 source) |
 | `bank-data lineage` | `make lineage` | `dbt docs generate` and the Mermaid lineage (`docs/data/lineage.md` for the S3 source) |
-| `bank-data seed [--customers N]` | `make seed` (`SEED_CUSTOMERS`, default 200) | Migrate the compose PostgreSQL, then load the personas and a deterministic subset from gold; idempotent. Needs `POSTGRES_ADMIN_PASSWORD` and `SESSION_SECRET` |
+| `bank-data seed [--customers N]` | `make seed` (`SEED_CUSTOMERS`, default 200) | Migrate the compose PostgreSQL, then load the personas and a deterministic subset from gold; idempotent. The bounded `sample` source uses `seed/personas.sample.yaml`; the full warehouse uses `seed/personas.yaml`. Needs `POSTGRES_ADMIN_PASSWORD` and `SESSION_SECRET` |
 | `bank-data verify-seed [--customers N]` | `make verify-seed` | Read-only comparison of the selected gold IDs, persona lookups, and demo records with PostgreSQL; exits nonzero on a mismatch |
 | `bank-data analysis [--output-dir D] [--labeling-dir D]` | `make analysis` | Demand evidence, pre-registered scores, figures, and the labeling files (`docs/analysis/` and `data/labeling/` for the S3 source; next to the warehouse otherwise) |
 | `bank-data sample` | `make data-sample` | Regenerate `sample/` from the S3 warehouse, then run the guard |

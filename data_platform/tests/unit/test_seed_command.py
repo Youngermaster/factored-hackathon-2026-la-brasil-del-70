@@ -7,8 +7,8 @@ from typer.testing import CliRunner
 from bank_agent.bootstrap.settings import load_settings
 from bank_data.cli import app
 from bank_data.errors import ConfigurationError
-from bank_data.seed.command import seed
-from bank_data.seed.config import load_personas
+from bank_data.seed.command import _personas_file, seed
+from bank_data.seed.config import DEFAULT_PERSONAS_FILE, DEFAULT_SAMPLE_PERSONAS_FILE, load_personas
 from bank_data.seed.criteria import CRITERIA
 from bank_data.workspace import Workspace
 
@@ -23,6 +23,30 @@ def test_the_committed_personas_cover_every_workflow_and_name_known_criteria() -
     assert {item.role for item in personas.staff} == {"agent", "evaluator"}
     assert sum(persona.seeded_case for persona in personas.customers) == 1
     assert sum(persona.seeded_application for persona in personas.customers) == 1
+
+
+def test_sample_personas_are_an_explicit_supported_subset() -> None:
+    full = load_personas()
+    sample = load_personas(DEFAULT_SAMPLE_PERSONAS_FILE)
+    assert {persona.id for persona in sample.customers} < {persona.id for persona in full.customers}
+    assert {persona.criterion for persona in sample.customers} <= set(CRITERIA)
+    assert {workflow for persona in sample.customers for workflow in persona.workflows} == {
+        "account_inquiry",
+        "card_support",
+        "dispute",
+        "credit",
+    }
+    assert {item.role for item in sample.staff} == {"agent", "evaluator"}
+
+
+def test_seed_and_verification_select_the_same_personas_for_the_source(tmp_path: Path) -> None:
+    sample = Workspace.resolve("sample", warehouse_dir=tmp_path)
+    full = Workspace.resolve("s3", warehouse_dir=tmp_path)
+    override = tmp_path / "custom-personas.yaml"
+
+    assert _personas_file(sample, None) == DEFAULT_SAMPLE_PERSONAS_FILE
+    assert _personas_file(full, None) == DEFAULT_PERSONAS_FILE
+    assert _personas_file(sample, override) == override
 
 
 def test_seeding_needs_gold_tables(tmp_path: Path) -> None:

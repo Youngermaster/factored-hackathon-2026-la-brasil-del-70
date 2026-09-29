@@ -11,12 +11,18 @@ from bank_agent.bootstrap.persistence import owner_database_url
 from bank_agent.bootstrap.settings import AppSettings, load_settings
 from bank_agent.domain.locale import Country
 from bank_data.errors import ConfigurationError
-from bank_data.seed.config import DEFAULT_PERSONAS_FILE, load_personas
+from bank_data.seed.config import DEFAULT_PERSONAS_FILE, DEFAULT_SAMPLE_PERSONAS_FILE, load_personas
 from bank_data.seed.runner import SeedReport, plan_seed, run_seed
 from bank_data.seed.verify import VerificationReport, verify_bundle
 from bank_data.workspace import Workspace
 
 DEFAULT_SEED_CUSTOMERS = 200
+
+
+def _personas_file(workspace: Workspace, override: Path | None) -> Path:
+    if override is not None:
+        return override
+    return DEFAULT_SAMPLE_PERSONAS_FILE if workspace.source_kind == "sample" else DEFAULT_PERSONAS_FILE
 
 
 def _checked(settings: AppSettings) -> tuple[bytes, str]:
@@ -40,7 +46,7 @@ def seed(
     workspace: Workspace,
     *,
     customers: int = DEFAULT_SEED_CUSTOMERS,
-    personas_file: Path = DEFAULT_PERSONAS_FILE,
+    personas_file: Path | None = None,
     settings: AppSettings | None = None,
 ) -> SeedReport:
     gold_dir = workspace.dbt_target().gold_dir
@@ -54,7 +60,7 @@ def seed(
         raise ConfigurationError("SESSION_SECRET must be at least 32 bytes long") from error
     return run_seed(
         gold_dir,
-        load_personas(personas_file),
+        load_personas(_personas_file(workspace, personas_file)),
         keys,
         create_engine(owner_database_url(service.database), pooled=False),
         target=customers,
@@ -68,7 +74,7 @@ def verify(
     workspace: Workspace,
     *,
     customers: int = DEFAULT_SEED_CUSTOMERS,
-    personas_file: Path = DEFAULT_PERSONAS_FILE,
+    personas_file: Path | None = None,
     settings: AppSettings | None = None,
 ) -> VerificationReport:
     """Recreate the deterministic selection and compare its rows to PostgreSQL without writing data."""
@@ -83,7 +89,7 @@ def verify(
         raise ConfigurationError("SESSION_SECRET must be at least 32 bytes long") from error
     selection, bundle = plan_seed(
         gold_dir,
-        load_personas(personas_file),
+        load_personas(_personas_file(workspace, personas_file)),
         keys,
         target=customers,
         snapshot=workspace.config.dataset.snapshot_date,

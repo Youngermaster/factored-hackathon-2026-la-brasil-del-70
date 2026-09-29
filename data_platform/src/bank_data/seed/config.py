@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from bank_data.settings import DATA_PLATFORM_ROOT
 
 DEFAULT_PERSONAS_FILE = DATA_PLATFORM_ROOT / "seed" / "personas.yaml"
+DEFAULT_SAMPLE_PERSONAS_FILE = DATA_PLATFORM_ROOT / "seed" / "personas.sample.yaml"
 WorkflowName = Literal["account_inquiry", "card_support", "dispute", "credit"]
 
 
