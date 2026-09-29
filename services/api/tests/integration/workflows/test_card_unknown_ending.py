@@ -3,6 +3,7 @@ before, but with the local model its card type hint narrowed the cards to one an
 the customer did not name. A stated ending that matches none of the cards is now always asked about."""
 
 import pytest
+from pydantic import JsonValue
 
 from bank_agent.domain.workflow import Outcome
 from bank_agent.testing.fake_llm import FakeLLM, ScriptedResponse
@@ -10,7 +11,7 @@ from bank_agent_scenarios import CO, MX, PT
 from bank_agent_workflow_support import CARD_SLOTS, NO_SIGNALS, SIGNALS, Backend
 from bank_agent_workflows import build_harness
 
-GUESS = {"card_hint": {"card_type": "debit_card", "last4": "4321"}, "requested_action": None,
+GUESS: dict[str, JsonValue] = {"card_hint": {"card_type": "debit_card", "last4": "4321"}, "requested_action": None,
          "block_reason_candidates": []}  # fmt: skip
 ASK = {MX: "¿Cómo está mi tarjeta terminada en 4321?", PT: "Como está o meu cartão final 4321?"}
 CARDS = {MX: "Es sobre mis tarjetas", PT: "É sobre os meus cartões"}

@@ -4,6 +4,7 @@ a currency the customer never said, the amount matched no transaction in the rea
 to choose from one option. A date the text does not contain and a currency the text does not state are dropped."""
 
 import pytest
+from pydantic import JsonValue
 
 from bank_agent.testing.fake_llm import FakeLLM, ScriptedResponse
 from bank_agent_scenarios import MX
@@ -13,12 +14,12 @@ from bank_agent_workflows import build_harness
 TEXT = "No reconozco un cargo de 1250 en FIXTURE MARKET"
 
 
-def _guessing_model(currency: str, date: str) -> FakeLLM:
+def _guessing_model(currency: str, date: str | None) -> FakeLLM:
     fake = FakeLLM()
     fake.script(SIGNALS, ScriptedResponse(output=NO_SIGNALS))
-    transaction = {"amount": "1250", "currency_hint": currency, "date_expression": date,
+    transaction: dict[str, JsonValue] = {"amount": "1250", "currency_hint": currency, "date_expression": date,
                    "merchant_text": "FIXTURE MARKET", "card_last4_hint": None, "channel_hint": None}  # fmt: skip
-    output = {"transaction": transaction, "reason_candidates": ["unrecognized"],
+    output: dict[str, JsonValue] = {"transaction": transaction, "reason_candidates": ["unrecognized"],
               "intent_candidates": [{"intent": "dispute_new", "confidence": 1.0}]}  # fmt: skip
     fake.script(DISPUTE_SLOTS, ScriptedResponse(output=output))
     return fake
