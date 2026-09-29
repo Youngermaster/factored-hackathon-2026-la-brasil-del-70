@@ -1,4 +1,4 @@
-"""Published evaluation summaries (offline measurements, per workflow and in aggregate)."""
+"""Published evaluation summaries, per workflow and in aggregate, each labeled offline, simulated, or projected."""
 
 from bank_agent.api.schemas.base import ResponseModel
 from bank_agent.domain.evaluation import EvaluationSummary

@@ -1148,8 +1148,15 @@ export interface components {
         /** EvaluationSummary */
         EvaluationSummary: {
             aggregate: components["schemas"]["OutcomeMetrics"];
+            /**
+             * Breakdowns
+             * @default []
+             */
+            breakdowns: components["schemas"]["SliceSummary"][];
             /** Dataset Version */
             dataset_version: string;
+            /** Failure Table */
+            failure_table: string | null;
             /**
              * Generated At
              * Format: date-time
@@ -1160,9 +1167,9 @@ export interface components {
             /**
              * Measurement
              * @default offline
-             * @constant
+             * @enum {string}
              */
-            measurement: "offline";
+            measurement: "offline" | "simulated" | "projected";
             /**
              * Notes
              * @default []
@@ -1172,10 +1179,10 @@ export interface components {
             run_id: string;
             /**
              * Schema Version
-             * @default 1.0.0
-             * @constant
+             * @default 1.1.0
+             * @enum {string}
              */
-            schema_version: "1.0.0";
+            schema_version: "1.0.0" | "1.1.0";
             /** System */
             system: string;
             /** Workflows */
@@ -1444,11 +1451,14 @@ export interface components {
          * @description The brief's outcome definitions over one slice of the workload.
          */
         OutcomeMetrics: {
+            automation_attempted: components["schemas"]["MetricCount"] | null;
             /** Cases */
             cases: number;
             containment: components["schemas"]["MetricCount"];
             /** Cost Per Attempted Case Usd */
             cost_per_attempted_case_usd: string | null;
+            /** Cost Per Resolution Usd */
+            cost_per_resolution_usd: string | null;
             escalation_missed: components["schemas"]["MetricCount"];
             escalation_unnecessary: components["schemas"]["MetricCount"];
             /** Latency P50 Ms */
@@ -1708,6 +1718,38 @@ export interface components {
             /** Csrf Token */
             csrf_token: string;
             session: components["schemas"]["SessionView"];
+        };
+        /**
+         * SliceSummary
+         * @description The outcome metrics for one slice, for example ``language`` ``pt`` or ``segment`` ``premium`` (added in 1.1.0).
+         *
+         *     ``workflow`` is ``None`` for a slice across every workflow.
+         */
+        SliceSummary: {
+            automation_attempted: components["schemas"]["MetricCount"] | null;
+            /** Cases */
+            cases: number;
+            containment: components["schemas"]["MetricCount"];
+            /** Cost Per Attempted Case Usd */
+            cost_per_attempted_case_usd: string | null;
+            /** Cost Per Resolution Usd */
+            cost_per_resolution_usd: string | null;
+            /**
+             * Dimension
+             * @enum {string}
+             */
+            dimension: "language" | "dialect" | "segment";
+            escalation_missed: components["schemas"]["MetricCount"];
+            escalation_unnecessary: components["schemas"]["MetricCount"];
+            /** Latency P50 Ms */
+            latency_p50_ms: number | null;
+            /** Latency P95 Ms */
+            latency_p95_ms: number | null;
+            safe_automated_resolution: components["schemas"]["MetricCount"];
+            unsafe_outcomes: components["schemas"]["MetricCount"];
+            /** Value */
+            value: string;
+            workflow: components["schemas"]["WorkflowId"] | null;
         };
         /** SourceRef */
         SourceRef: string;
@@ -2036,11 +2078,14 @@ export interface components {
         };
         /** WorkflowSummary */
         WorkflowSummary: {
+            automation_attempted: components["schemas"]["MetricCount"] | null;
             /** Cases */
             cases: number;
             containment: components["schemas"]["MetricCount"];
             /** Cost Per Attempted Case Usd */
             cost_per_attempted_case_usd: string | null;
+            /** Cost Per Resolution Usd */
+            cost_per_resolution_usd: string | null;
             escalation_missed: components["schemas"]["MetricCount"];
             escalation_unnecessary: components["schemas"]["MetricCount"];
             /** Latency P50 Ms */

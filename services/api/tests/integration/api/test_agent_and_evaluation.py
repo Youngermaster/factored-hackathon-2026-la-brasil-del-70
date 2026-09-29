@@ -192,6 +192,9 @@ async def test_evaluation_summaries_are_for_evaluators_unless_published_publicly
     assert refused.status_code == 401
     assert [item["run_id"] for item in listed.json()["summaries"]] == ["run-2", "run-1"]
     assert listed.json()["summaries"][0]["measurement"] == "offline"
+    newest = listed.json()["summaries"][0]
+    assert (newest["schema_version"], newest["breakdowns"], newest["failure_table"]) == ("1.1.0", [], None)
+    assert newest["aggregate"]["automation_attempted"] is None
     monkeypatch.setenv("EVAL_SUMMARIES_PUBLIC", "true")
     public = api_backend.build()
     async with ApiClient(public.app) as anonymous:

@@ -1994,11 +1994,31 @@
           "aggregate": {
             "$ref": "#/components/schemas/OutcomeMetrics"
           },
+          "breakdowns": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/SliceSummary"
+            },
+            "title": "Breakdowns",
+            "type": "array"
+          },
           "dataset_version": {
             "maxLength": 128,
             "minLength": 1,
             "title": "Dataset Version",
             "type": "string"
+          },
+          "failure_table": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9_./-]{1,200}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Table"
           },
           "generated_at": {
             "format": "date-time",
@@ -2011,8 +2031,12 @@
             "type": "string"
           },
           "measurement": {
-            "const": "offline",
             "default": "offline",
+            "enum": [
+              "offline",
+              "simulated",
+              "projected"
+            ],
             "title": "Measurement",
             "type": "string"
           },
@@ -2033,8 +2057,11 @@
             "type": "string"
           },
           "schema_version": {
-            "const": "1.0.0",
-            "default": "1.0.0",
+            "default": "1.1.0",
+            "enum": [
+              "1.0.0",
+              "1.1.0"
+            ],
             "title": "Schema Version",
             "type": "string"
           },
@@ -2062,6 +2089,8 @@
           "measurement",
           "workflows",
           "aggregate",
+          "breakdowns",
+          "failure_table",
           "notes"
         ],
         "title": "EvaluationSummary",
@@ -2799,6 +2828,16 @@
         "additionalProperties": false,
         "description": "The brief's outcome definitions over one slice of the workload.",
         "properties": {
+          "automation_attempted": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricCount"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "cases": {
             "minimum": 0.0,
             "title": "Cases",
@@ -2818,6 +2857,18 @@
               }
             ],
             "title": "Cost Per Attempted Case Usd"
+          },
+          "cost_per_resolution_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Resolution Usd"
           },
           "escalation_missed": {
             "$ref": "#/components/schemas/MetricCount"
@@ -2865,7 +2916,9 @@
           "unsafe_outcomes",
           "latency_p50_ms",
           "latency_p95_ms",
-          "cost_per_attempted_case_usd"
+          "cost_per_attempted_case_usd",
+          "automation_attempted",
+          "cost_per_resolution_usd"
         ],
         "title": "OutcomeMetrics",
         "type": "object"
@@ -3513,6 +3566,132 @@
           "csrf_token"
         ],
         "title": "SignedInResponse",
+        "type": "object"
+      },
+      "SliceSummary": {
+        "additionalProperties": false,
+        "description": "The outcome metrics for one slice, for example ``language`` ``pt`` or ``segment`` ``premium`` (added in 1.1.0).\n\n``workflow`` is ``None`` for a slice across every workflow.",
+        "properties": {
+          "automation_attempted": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricCount"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cases": {
+            "minimum": 0.0,
+            "title": "Cases",
+            "type": "integer"
+          },
+          "containment": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "cost_per_attempted_case_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Attempted Case Usd"
+          },
+          "cost_per_resolution_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Resolution Usd"
+          },
+          "dimension": {
+            "enum": [
+              "language",
+              "dialect",
+              "segment"
+            ],
+            "title": "Dimension",
+            "type": "string"
+          },
+          "escalation_missed": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "escalation_unnecessary": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "latency_p50_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency P50 Ms"
+          },
+          "latency_p95_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency P95 Ms"
+          },
+          "safe_automated_resolution": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "unsafe_outcomes": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "value": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$",
+            "title": "Value",
+            "type": "string"
+          },
+          "workflow": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkflowId"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "cases",
+          "safe_automated_resolution",
+          "containment",
+          "escalation_missed",
+          "escalation_unnecessary",
+          "unsafe_outcomes",
+          "latency_p50_ms",
+          "latency_p95_ms",
+          "cost_per_attempted_case_usd",
+          "automation_attempted",
+          "cost_per_resolution_usd",
+          "dimension",
+          "value",
+          "workflow"
+        ],
+        "title": "SliceSummary",
         "type": "object"
       },
       "SourceRef": {
@@ -4487,6 +4666,16 @@
       "WorkflowSummary": {
         "additionalProperties": false,
         "properties": {
+          "automation_attempted": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricCount"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "cases": {
             "minimum": 0.0,
             "title": "Cases",
@@ -4506,6 +4695,18 @@
               }
             ],
             "title": "Cost Per Attempted Case Usd"
+          },
+          "cost_per_resolution_usd": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Resolution Usd"
           },
           "escalation_missed": {
             "$ref": "#/components/schemas/MetricCount"
@@ -4557,6 +4758,8 @@
           "latency_p50_ms",
           "latency_p95_ms",
           "cost_per_attempted_case_usd",
+          "automation_attempted",
+          "cost_per_resolution_usd",
           "workflow"
         ],
         "title": "WorkflowSummary",
