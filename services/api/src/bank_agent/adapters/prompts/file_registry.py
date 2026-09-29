@@ -21,7 +21,7 @@ from importlib.resources.abc import Traversable
 from typing import Annotated, Final
 
 import yaml
-from pydantic import Field, PositiveInt, StringConstraints, ValidationError
+from pydantic import BaseModel, Field, PositiveInt, StringConstraints, ValidationError
 
 from bank_agent.domain.base import DomainModel
 from bank_agent.domain.errors import ConfigurationError, PromptNotFoundError, PromptVariablesError
@@ -63,8 +63,15 @@ class _FrontMatter(DomainModel):
     changelog: Annotated[tuple[PromptChange, ...], Field(min_length=1)]
 
 
-def parse_prompt_file(text: str, *, prompt_id: str, version: int) -> PromptTemplate:
-    """Parse and validate one prompt file whose path says ``prompt_id`` and ``version``."""
+def parse_prompt_file(
+    text: str, *, prompt_id: str, version: int, output_models: Mapping[str, type[BaseModel]] = OUTPUT_MODELS
+) -> PromptTemplate:
+    """Parse and validate one prompt file whose path says ``prompt_id`` and ``version``.
+
+    ``output_models`` names the structured outputs a prompt may declare; the default is the application's table
+    (``domain.llm_outputs``). The evaluation harness passes its own table for its prompts, so evaluation output
+    models never enter the domain.
+    """
     match = _FRONT_MATTER.match(text)
     if match is None:
         raise ConfigurationError(f"{prompt_id}@{version}: the file must start with a front matter block")
@@ -77,7 +84,7 @@ def parse_prompt_file(text: str, *, prompt_id: str, version: int) -> PromptTempl
         raise ConfigurationError(f"{prompt_id}@{version}: front matter id or version disagrees with the path")
     if version not in {entry.version for entry in front.changelog}:
         raise ConfigurationError(f"{prompt_id}@{version}: the changelog has no entry for this version")
-    if front.output_model is not None and front.output_model not in OUTPUT_MODELS:
+    if front.output_model is not None and front.output_model not in output_models:
         raise ConfigurationError(f"{prompt_id}@{version}: unknown output model {front.output_model}")
     for name in front.inputs:
         reason = forbidden_variable_reason(name)
@@ -168,8 +175,10 @@ class FilePromptRegistry:
             self._templates[key] = template
 
     @classmethod
-    def from_directory(cls, root: Traversable) -> "FilePromptRegistry":
-        """Load every ``<prompt_id>/<version>.md`` under ``root``."""
+    def from_directory(
+        cls, root: Traversable, *, output_models: Mapping[str, type[BaseModel]] = OUTPUT_MODELS
+    ) -> "FilePromptRegistry":
+        """Load every ``<prompt_id>/<version>.md`` under ``root``, with the output models ``output_models`` names."""
         templates: list[PromptTemplate] = []
         for directory in sorted(root.iterdir(), key=lambda entry: entry.name):
             if not directory.is_dir() or directory.name.startswith(("_", ".")):
@@ -178,7 +187,11 @@ class FilePromptRegistry:
                 match = _VERSION_FILE.match(entry.name)
                 if entry.is_file() and match is not None:
                     text = entry.read_text(encoding="utf-8")
-                    templates.append(parse_prompt_file(text, prompt_id=directory.name, version=int(match[1])))
+                    templates.append(
+                        parse_prompt_file(
+                            text, prompt_id=directory.name, version=int(match[1]), output_models=output_models
+                        )
+                    )
         return cls(templates)
 
     @classmethod
@@ -189,6 +202,11 @@ class FilePromptRegistry:
     @property
     def refs(self) -> tuple[PromptRef, ...]:
         return tuple(template.ref for template in self._templates.values())
+
+    @property
+    def templates(self) -> tuple[PromptTemplate, ...]:
+        """Every loaded template, so two registries can be combined into one."""
+        return tuple(self._templates.values())
 
     def get(self, prompt: PromptRef) -> PromptTemplate:
         template = self._templates.get((prompt.prompt_id, prompt.version))
