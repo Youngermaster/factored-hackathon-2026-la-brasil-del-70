@@ -174,6 +174,10 @@ class PostgresUnitOfWork:
     async def __aexit__(
         self, exc_type: type[BaseException] | None, exc: BaseException | None, traceback: TracebackType | None
     ) -> None:
+        if exc is not None and not isinstance(exc, Exception):
+            # Cancelled (a tool timeout) or shutting down: release the connection and let the cancellation through.
+            await self._close_quietly()
+            return
         if exc is not None and is_unavailable(exc):
             self._record(False)
             await self._close_quietly()
