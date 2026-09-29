@@ -25,13 +25,17 @@ class ActionKind(StrEnum):
 
 
 class ToolName(StrEnum):
-    """Every banking tool (phase 05).
+    """Every tool (phase 05, and the Tuesday MVP tools of ADR 0025, added in 1.3.0).
 
-    Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
-    ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and
-    ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The
-    risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
-    select them.
+    Three banking tools are writes and share their value with an ``ActionKind``: ``create_dispute_case``,
+    ``block_card``, and ``submit_credit_application``. Every other banking tool reads. ``get_product_status``
+    also serves card status, and ``list_my_cards`` lists the customer's cards so the card workflow can offer a
+    masked choice. The risk estimator and the eligibility service are not tools: the engine calls them, and no
+    model output can select them.
+
+    The three MVP tools are not banking actions, so they are not in ``WRITE_TOOLS`` and need no step-up:
+    ``escalate_to_human`` records the handoff the engine creates, and ``change_assistant_name`` and
+    ``mock_assistant_image`` change only the customer's assistant profile.
     """
 
     LIST_RECENT_TRANSACTIONS = "list_recent_transactions"
@@ -51,6 +55,9 @@ class ToolName(StrEnum):
     GET_MY_CREDIT_PROFILE = "get_my_credit_profile"
     SUBMIT_CREDIT_APPLICATION = "submit_credit_application"
     GET_CREDIT_APPLICATION_STATUS = "get_credit_application_status"
+    ESCALATE_TO_HUMAN = "escalate_to_human"
+    CHANGE_ASSISTANT_NAME = "change_assistant_name"
+    MOCK_ASSISTANT_IMAGE = "mock_assistant_image"
 
 
 WRITE_TOOLS = frozenset({ToolName.CREATE_DISPUTE_CASE, ToolName.BLOCK_CARD, ToolName.SUBMIT_CREDIT_APPLICATION})

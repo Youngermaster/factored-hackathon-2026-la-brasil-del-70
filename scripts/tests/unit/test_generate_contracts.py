@@ -60,6 +60,7 @@ def test_every_expected_contract_is_generated() -> None:
         "decision.v1.json",
         "scenario.v1.json",
         "policy_clause.v1.json",
+        "model_decision.v1.json",
     ]
 
 
@@ -72,7 +73,9 @@ def test_schema_header_and_strictness(contract: Any) -> None:
     assert document["additionalProperties"] is False
 
 
-@pytest.mark.parametrize("file_name", ["handoff.v1.json", "execution_record.v1.json", "decision.v1.json"])
+@pytest.mark.parametrize(
+    "file_name", ["handoff.v1.json", "execution_record.v1.json", "decision.v1.json", "model_decision.v1.json"]
+)
 def test_output_contracts_have_no_reasoning_field(file_name: str) -> None:
     contract = next(c for c in contracts.CONTRACTS if c.file_name == file_name)
     names = _property_names(json.loads(contracts.render(contract)))
@@ -92,7 +95,7 @@ def test_check_mode_reports_missing_and_stale_files(tmp_path: Path, capsys: pyte
     assert contracts.main(["--check", "--output-dir", str(tmp_path)]) == 1
     assert "handoff.v1.json is stale or missing" in capsys.readouterr().out
     assert contracts.main(["--output-dir", str(tmp_path)]) == 0
-    assert "wrote 5 schema(s), 5 changed" in capsys.readouterr().out
+    assert "wrote 6 schema(s), 6 changed" in capsys.readouterr().out
     assert contracts.main(["--check", "--output-dir", str(tmp_path)]) == 0
     (tmp_path / "decision.v1.json").write_text("{}\n", encoding="utf-8")
     assert contracts.main(["--check", "--output-dir", str(tmp_path)]) == 1

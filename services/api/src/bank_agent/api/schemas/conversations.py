@@ -6,6 +6,9 @@ statuses with their verification evidence, the escalation reference, the step-up
 workflow parts from phase 02b: balances with their as-of instant, payment statuses, a statement summary, card
 status, credit product views, and the customer-facing eligibility view. It never carries a credit profile value or
 a risk estimate.
+
+Since the Tuesday MVP contract (ADR 0025), a message can carry the labeled simulated agent's reply after a handoff,
+and ``TurnResponse`` carries the request's ``correlation_id`` and, when the turn changed it, the assistant profile.
 """
 
 from datetime import datetime
@@ -15,6 +18,7 @@ from uuid import UUID
 from pydantic import Field, StringConstraints
 
 from bank_agent.api.schemas.base import RequestModel, ResponseModel
+from bank_agent.api.schemas.profile import AssistantProfileView
 from bank_agent.domain.accounts import BalanceView, PaymentStatusView, StatementSummary
 from bank_agent.domain.cards import CardStatusView
 from bank_agent.domain.conversation import (
@@ -28,10 +32,11 @@ from bank_agent.domain.conversation import (
     CreditIntakeConfirmation,
     EscalationNotice,
     NoticeCode,
+    SimulatedAgentReply,
 )
 from bank_agent.domain.credit import CreditProduct
 from bank_agent.domain.eligibility import EligibilityView
-from bank_agent.domain.identifiers import ConversationId, TurnId
+from bank_agent.domain.identifiers import ConversationId, CorrelationId, TurnId
 from bank_agent.domain.locale import Language
 from bank_agent.domain.workflow import Outcome, StateName, WorkflowRef
 
@@ -64,6 +69,10 @@ class AssistantMessage(ResponseModel):
     card_status: tuple[CardStatusView, ...] = ()
     credit_products: tuple[CreditProduct, ...] = ()
     eligibility: EligibilityView | None = None
+    simulated_agent: SimulatedAgentReply | None = Field(
+        default=None,
+        description="The simulated service agent's reply after a handoff; always labeled simulated (ADR 0025).",
+    )
 
 
 class TurnResponse(ResponseModel):
@@ -76,6 +85,12 @@ class TurnResponse(ResponseModel):
     outcome: Outcome
     replayed: bool
     message: AssistantMessage
+    correlation_id: CorrelationId = Field(
+        description="The request id (`X-Request-ID`) that links this turn to its logs, records, and model traces."
+    )
+    assistant_profile: AssistantProfileView | None = Field(
+        default=None, description="The assistant profile after this turn, present only when the turn changed it."
+    )
 
 
 class ConversationView(ResponseModel):

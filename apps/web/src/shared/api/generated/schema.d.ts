@@ -417,6 +417,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Profile
+         * @description The customer's first name and the assistant's name and avatar image.
+         */
+        get: operations["profile_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -514,6 +534,8 @@ export interface components {
              * @default []
              */
             payment_statuses: components["schemas"]["PaymentStatusView"][];
+            /** @description The simulated service agent's reply after a handoff; always labeled simulated (ADR 0025). */
+            simulated_agent?: components["schemas"]["SimulatedAgentReply"] | null;
             statement?: components["schemas"]["StatementSummary"] | null;
             /**
              * Step Up Required
@@ -525,12 +547,34 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** AssistantProfileView */
+        AssistantProfileView: {
+            avatar_id: components["schemas"]["AvatarId"];
+            /**
+             * Avatar Url
+             * @description Path of the bundled PNG in the web app, for example `/avatars/avatar-01.png`.
+             */
+            avatar_url: string;
+            /** Name */
+            name: string;
+            /**
+             * Updated At
+             * @description When the customer last changed the profile; null for the default.
+             */
+            updated_at: string | null;
+        };
         /**
          * AuthLevel
          * @description How strongly the session's subject is authenticated, from weakest to strongest.
          * @enum {string}
          */
         AuthLevel: "none" | "identified" | "otp_verified" | "step_up";
+        /**
+         * AvatarId
+         * @description The bundled avatar images. The web app serves ``/avatars/<id>.png`` for each member.
+         * @enum {string}
+         */
+        AvatarId: "avatar-01" | "avatar-02" | "avatar-03" | "avatar-04" | "avatar-05" | "avatar-06";
         /**
          * BalanceView
          * @description One product's balance. ``product_ref`` is grounding evidence; the chat shows only the masked number.
@@ -1004,7 +1048,7 @@ export interface components {
             rule_results: components["schemas"]["RuleResult"][];
             /**
              * Schema Version
-             * @default 1.2.0
+             * @default 1.3.0
              */
             schema_version: string;
             /** State */
@@ -1374,11 +1418,16 @@ export interface components {
             input_tokens: number;
             /** Latency Ms */
             latency_ms: number;
+            /** Model Call Id */
+            model_call_id?: string | null;
             /** Model Id */
             model_id: string;
+            output_schema?: components["schemas"]["OutputSchemaRef"] | null;
             /** Output Tokens */
             output_tokens: number;
             prompt: components["schemas"]["PromptRef"];
+            /** Provider */
+            provider?: string | null;
             status: components["schemas"]["LlmCallStatus"];
         };
         /**
@@ -1455,6 +1504,19 @@ export interface components {
             unsafe_outcomes: components["schemas"]["MetricCount"];
         };
         /**
+         * OutputSchemaRef
+         * @description Which output schema a model reply was validated against: the model name, its contract version, and the
+         *     SHA-256 of its canonical JSON Schema, so a change to the schema is visible in every record and trace.
+         */
+        OutputSchemaRef: {
+            /** Name */
+            name: string;
+            /** Sha256 */
+            sha256: string;
+            /** Version */
+            version: string;
+        };
+        /**
          * PaymentStatusView
          * @description The status of one payment or transfer. ``payee_display`` is sanitized record text, never an instruction.
          */
@@ -1514,6 +1576,12 @@ export interface components {
          * @enum {string}
          */
         ProductType: "checking_account" | "savings_account" | "credit_card" | "debit_card" | "personal_loan" | "mortgage" | "investment" | "other";
+        /** ProfileView */
+        ProfileView: {
+            assistant: components["schemas"]["AssistantProfileView"];
+            /** Customer First Name */
+            customer_first_name: string;
+        };
         /** PromptRef */
         PromptRef: string;
         /** ReadinessResponse */
@@ -1705,6 +1773,30 @@ export interface components {
             csrf_token: string;
             session: components["schemas"]["SessionView"];
         };
+        /**
+         * SimulatedAgentReply
+         * @description A reply from the simulated human service agent that joins the chat after a handoff (ADR 0025).
+         *
+         *     ``simulated`` is always true and the chat labels it: no person joined, read, or acted on the conversation.
+         *     The text comes from a bounded, reviewed template list and never promises an outcome.
+         */
+        SimulatedAgentReply: {
+            /** Agent Display Name */
+            agent_display_name: string;
+            /**
+             * Joined At
+             * Format: date-time
+             */
+            joined_at: string;
+            /**
+             * Simulated
+             * @default true
+             * @constant
+             */
+            simulated: true;
+            /** Text */
+            text: string;
+        };
         /** SourceRef */
         SourceRef: string;
         /**
@@ -1885,6 +1977,8 @@ export interface components {
             sequence: number;
             status: components["schemas"]["ToolCallStatus"];
             tool: components["schemas"]["ToolName"];
+            /** Tool Call Id */
+            tool_call_id?: string | null;
             verification: components["schemas"]["Verification"] | null;
         };
         /**
@@ -1894,16 +1988,20 @@ export interface components {
         ToolCallStatus: "ok" | "not_found" | "failed" | "unknown" | "rejected_by_allowlist";
         /**
          * ToolName
-         * @description Every banking tool (phase 05).
+         * @description Every tool (phase 05, and the Tuesday MVP tools of ADR 0025, added in 1.3.0).
          *
-         *     Three are writes and share their value with an ``ActionKind``: ``create_dispute_case``, ``block_card``, and
-         *     ``submit_credit_application``. Every other tool reads. ``get_product_status`` also serves card status, and
-         *     ``list_my_cards`` lists the customer's cards so the card workflow can offer a masked choice. The
-         *     risk estimator and the eligibility service are not tools: the engine calls them, and no model output can
-         *     select them.
+         *     Three banking tools are writes and share their value with an ``ActionKind``: ``create_dispute_case``,
+         *     ``block_card``, and ``submit_credit_application``. Every other banking tool reads. ``get_product_status``
+         *     also serves card status, and ``list_my_cards`` lists the customer's cards so the card workflow can offer a
+         *     masked choice. The risk estimator and the eligibility service are not tools: the engine calls them, and no
+         *     model output can select them.
+         *
+         *     The three MVP tools are not banking actions, so they are not in ``WRITE_TOOLS`` and need no step-up:
+         *     ``escalate_to_human`` records the handoff the engine creates, and ``change_assistant_name`` and
+         *     ``mock_assistant_image`` change only the customer's assistant profile.
          * @enum {string}
          */
-        ToolName: "list_recent_transactions" | "get_transaction" | "get_product_status" | "list_my_cards" | "list_my_cases" | "get_case_status" | "create_dispute_case" | "block_card" | "list_my_balances" | "get_payment_status" | "get_statement_summary" | "list_credit_products" | "get_credit_product" | "get_my_credit_profile" | "submit_credit_application" | "get_credit_application_status";
+        ToolName: "list_recent_transactions" | "get_transaction" | "get_product_status" | "list_my_cards" | "list_my_cases" | "get_case_status" | "create_dispute_case" | "block_card" | "list_my_balances" | "get_payment_status" | "get_statement_summary" | "list_credit_products" | "get_credit_product" | "get_my_credit_profile" | "submit_credit_application" | "get_credit_application_status" | "escalate_to_human" | "change_assistant_name" | "mock_assistant_image";
         /**
          * TransactionStatus
          * @enum {string}
@@ -1924,8 +2022,15 @@ export interface components {
          * @description The result of one turn: the assistant message and where the conversation now is.
          */
         TurnResponse: {
+            /** @description The assistant profile after this turn, present only when the turn changed it. */
+            assistant_profile?: components["schemas"]["AssistantProfileView"] | null;
             /** Conversation Id */
             conversation_id: string;
+            /**
+             * Correlation Id
+             * @description The request id (`X-Request-ID`) that links this turn to its logs, records, and model traces.
+             */
+            correlation_id: string;
             message: components["schemas"]["AssistantMessage"];
             outcome: components["schemas"]["Outcome"];
             /** Replayed */
@@ -2824,6 +2929,35 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EvaluationSummariesResponse"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    profile_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfileView"];
                 };
             };
             /** @description Problem details (RFC 9457) */

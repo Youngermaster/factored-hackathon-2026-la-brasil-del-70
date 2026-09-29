@@ -43,6 +43,9 @@ _ApplicationId = NewType("_ApplicationId", str)
 _RiskEstimateId = NewType("_RiskEstimateId", str)
 _AssessmentId = NewType("_AssessmentId", str)
 _CreditProductCode = NewType("_CreditProductCode", str)
+_CorrelationId = NewType("_CorrelationId", str)
+_ModelCallId = NewType("_ModelCallId", str)
+_ToolCallId = NewType("_ToolCallId", str)
 
 CustomerId = Annotated[_CustomerId, _constraint(20)]
 ProductId = Annotated[_ProductId, _constraint(20)]
@@ -69,6 +72,13 @@ AssessmentId = Annotated[_AssessmentId, _constraint(64)]
 """An assessment of the synthetic eligibility service."""
 CreditProductCode = Annotated[_CreditProductCode, StringConstraints(pattern=r"^[A-Z][A-Z0-9_-]{2,31}$")]
 """A public code of a synthetic credit catalog entry, for example ``MX-CC-CLASSIC``."""
+CorrelationId = Annotated[_CorrelationId, StringConstraints(pattern=r"^[A-Za-z0-9-]{8,64}$")]
+"""The id of one HTTP request (``X-Request-ID``), carried to every service, tool call, model call, and record it
+causes, so a customer turn can be followed from the API to PostgreSQL and the model traces."""
+ModelCallId = Annotated[_ModelCallId, _constraint(64)]
+"""One logical language model call (all its retries and its repair), unique across turns."""
+ToolCallId = Annotated[_ToolCallId, _constraint(64)]
+"""One tool call within a turn, unique across turns."""
 
 
 class IdKind(StrEnum):
@@ -85,6 +95,8 @@ class IdKind(StrEnum):
     APPLICATION = "app"
     RISK_ESTIMATE = "rsk"
     ASSESSMENT = "elg"
+    MODEL_CALL = "mc"
+    TOOL_CALL = "tc"
 
 
 class SourceTable(StrEnum):

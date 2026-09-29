@@ -9,7 +9,7 @@ rendered as plain text.
 
 from datetime import date
 from enum import StrEnum
-from typing import Annotated, Self
+from typing import Annotated, Literal, Self
 
 from pydantic import Field, JsonValue, NonNegativeInt, PositiveInt, StringConstraints, model_validator
 
@@ -174,6 +174,19 @@ class EscalationNotice(DomainModel):
     expected_response_by: UtcDatetime
 
 
+class SimulatedAgentReply(DomainModel):
+    """A reply from the simulated human service agent that joins the chat after a handoff (ADR 0025).
+
+    ``simulated`` is always true and the chat labels it: no person joined, read, or acted on the conversation.
+    The text comes from a bounded, reviewed template list and never promises an outcome.
+    """
+
+    agent_display_name: Annotated[str, StringConstraints(min_length=1, max_length=60)]
+    text: Annotated[str, StringConstraints(min_length=1, max_length=1000)]
+    joined_at: UtcDatetime
+    simulated: Literal[True] = True
+
+
 class NoticeCode(StrEnum):
     SESSION_EXPIRED = "session_expired"
     REAUTHENTICATION_REQUIRED = "reauthentication_required"
@@ -199,12 +212,15 @@ class AssistantResponse(DomainModel):
     eligibility: EligibilityView | None = None
     card_action_confirmation: CardActionConfirmation | None = None
     credit_intake_confirmation: CreditIntakeConfirmation | None = None
+    simulated_agent: SimulatedAgentReply | None = None
 
     @model_validator(mode="after")
     def _validate_confirmations(self) -> Self:
         confirmations = (self.confirmation, self.card_action_confirmation, self.credit_intake_confirmation)
         if sum(item is not None for item in confirmations) > 1:
             raise ValueError("a response asks for at most one confirmation")
+        if self.simulated_agent is not None and self.escalation is None:
+            raise ValueError("a simulated agent joins only a conversation that was handed off")
         return self
 
 

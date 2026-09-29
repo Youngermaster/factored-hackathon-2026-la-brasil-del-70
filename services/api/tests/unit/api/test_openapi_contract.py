@@ -10,12 +10,12 @@ from bank_agent import __version__
 from bank_agent.api.app import create_app
 from bank_agent.api.dependencies import ANYONE
 from bank_agent.api.openapi import build_schema_app, render
-from bank_agent.api.routers import agent, auth, conversations, evaluation, health
+from bank_agent.api.routers import agent, auth, conversations, evaluation, health, profile
 
 COMMITTED = Path(__file__).resolve().parents[5] / "contracts" / "openapi.json"
 OPERATION_IDS = {
     "auth_csrf", "auth_start", "auth_verify", "auth_step_up_start", "auth_step_up_verify", "auth_logout", "auth_me",
-    "conversations_create", "conversations_send_turn", "conversations_get", "conversations_trace",
+    "conversations_create", "conversations_send_turn", "conversations_get", "conversations_trace", "profile_get",
     "agent_list_handoffs", "agent_get_handoff", "agent_claim_handoff", "agent_resolve_handoff",
     "agent_list_credit_applications", "agent_get_credit_application",
     "eval_list_summaries", "eval_conversation_trace", "health_live", "health_ready",
@@ -47,7 +47,7 @@ def test_every_operation_has_its_stable_id_and_the_security_extensions() -> None
 
 
 def test_the_roles_each_route_enforces_are_the_roles_it_documents() -> None:
-    for module in (auth, conversations, agent, evaluation):
+    for module in (auth, conversations, profile, agent, evaluation):
         for route in module.router.routes:
             assert isinstance(route, APIRoute)
             enforced = {

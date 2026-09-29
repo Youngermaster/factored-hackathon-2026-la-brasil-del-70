@@ -11,6 +11,12 @@ so the glass box shows them apart; the estimates are internal. The new fields ar
 
 Version 1.2.0 adds ``retrieval`` (the retriever, its decision, threshold, top score, and citations for an
 informational answer) and the ``list_my_cards`` tool name.
+
+Version 1.3.0 adds the correlation identifiers of ADR 0025: ``correlation_id`` (the HTTP request id) on the
+record, ``tool_call_id`` on each tool call, and ``model_call_id``, ``provider``, and ``output_schema`` on each
+language model call, so a turn links to its model traces. It also adds the tool names ``escalate_to_human``,
+``change_assistant_name``, and ``mock_assistant_image``. The fields nested in a call are held to the record's
+version like the top-level ones.
 """
 
 from decimal import Decimal
@@ -28,10 +34,13 @@ from bank_agent.domain.handoff import SchemaVersion
 from bank_agent.domain.identifiers import (
     CaseId,
     ConversationId,
+    CorrelationId,
     CustomerId,
     HandoffId,
     IdempotencyKey,
+    ModelCallId,
     SessionId,
+    ToolCallId,
     TraceId,
     TurnId,
 )
@@ -77,6 +86,16 @@ class ToolCallRecord(DomainModel):
     latency_ms: NonNegativeInt
     result_summary: Code | None = None
     verification: Verification | None = None
+    tool_call_id: Annotated[ToolCallId | None, AddedIn("1.3.0")] = None
+
+
+class OutputSchemaRef(DomainModel):
+    """Which output schema a model reply was validated against: the model name, its contract version, and the
+    SHA-256 of its canonical JSON Schema, so a change to the schema is visible in every record and trace."""
+
+    name: Annotated[str, StringConstraints(pattern=r"^[A-Z][A-Za-z0-9]{0,63}$")]
+    version: SchemaVersion
+    sha256: Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 
 
 class LlmCallStatus(StrEnum):
@@ -95,6 +114,11 @@ class LlmCallRecord(DomainModel):
     latency_ms: NonNegativeInt
     status: LlmCallStatus
     error_code: Code | None = None
+    model_call_id: Annotated[ModelCallId | None, AddedIn("1.3.0")] = None
+    provider: Annotated[Code | None, AddedIn("1.3.0")] = None
+    """The provider that served the call, for example ``anthropic``; ``model_id`` is the model it returned."""
+    output_schema: Annotated[OutputSchemaRef | None, AddedIn("1.3.0")] = None
+    """The structured output schema the reply was validated against; ``None`` for a text generation."""
 
 
 class LatencyBreakdown(DomainModel):
@@ -140,7 +164,7 @@ class RetrievalRecord(DomainModel):
 
 
 class ExecutionRecord(DomainModel):
-    schema_version: SchemaVersion = "1.2.0"
+    schema_version: SchemaVersion = "1.3.0"
     turn_id: TurnId
     conversation_id: ConversationId
     customer_ref: CustomerId | None = None
@@ -176,10 +200,17 @@ class ExecutionRecord(DomainModel):
     risk_estimates: Annotated[tuple[RiskEstimateRecord, ...], AddedIn("1.1.0"), Internal()] = ()
     eligibility_assessments: Annotated[tuple[EligibilityAssessmentRecord, ...], AddedIn("1.1.0")] = ()
     retrieval: Annotated[RetrievalRecord | None, AddedIn("1.2.0")] = None
+    correlation_id: Annotated[CorrelationId | None, AddedIn("1.3.0")] = None
 
     @model_validator(mode="after")
     def _validate(self) -> Self:
         check_added_fields(self, self.schema_version)
+        for call in (*self.tool_calls, *self.llm_calls):
+            check_added_fields(call, self.schema_version)
+        tool_call_ids = [call.tool_call_id for call in self.tool_calls if call.tool_call_id is not None]
+        model_call_ids = [call.model_call_id for call in self.llm_calls if call.model_call_id is not None]
+        if len(set(tool_call_ids)) != len(tool_call_ids) or len(set(model_call_ids)) != len(model_call_ids):
+            raise ValueError("tool call ids and model call ids are unique within a record")
         if self.workflow_before is not None and self.workflow_before == self.workflow:
             raise ValueError("workflow_before is set only when the turn moved to another workflow")
         estimate_ids = [estimate.estimate_id for estimate in self.risk_estimates]

@@ -14,6 +14,7 @@ from bank_agent.api.config import SecurityConfig
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
+from bank_agent.application.profile.service import ProfileService
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
@@ -34,7 +35,8 @@ class ApiConfig:
 
 
 class ServiceProvider(Protocol):
-    """Services the HTTP layer resolves: identity, conversations, the agent inbox, and evaluation summaries."""
+    """Services the HTTP layer resolves: identity, conversations, profiles, the agent inbox, and evaluation
+    summaries."""
 
     @property
     def clock(self) -> Clock:
@@ -48,6 +50,9 @@ class ServiceProvider(Protocol):
 
     @property
     def conversations(self) -> ConversationService: ...
+
+    @property
+    def profiles(self) -> ProfileService: ...
 
     @property
     def inbox(self) -> AgentInbox: ...

@@ -38,7 +38,7 @@ def test_a_record_carries_the_retrieval_decision_threshold_and_score() -> None:
         citations=(ClauseRef.parse("DSP-MX-1@1"),),
     )
     record = execution_record(retrieval=retrieval)
-    assert record.schema_version == "1.2.0"
+    assert record.schema_version == "1.3.0"
     assert ExecutionRecord.model_validate_json(record.model_dump_json()) == record
     _fits(record.model_dump(mode="json"))
 

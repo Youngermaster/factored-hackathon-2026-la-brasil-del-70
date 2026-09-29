@@ -27,6 +27,7 @@ from pydantic import BaseModel
 from bank_agent.domain.decision import Decision
 from bank_agent.domain.execution_record import ExecutionRecord
 from bank_agent.domain.handoff import Handoff
+from bank_agent.domain.llm_outputs import ModelDecision
 from bank_agent.domain.policy import ClauseMetadata
 from bank_evals.scenarios.model import Scenario
 
@@ -45,11 +46,12 @@ class Contract:
 
 
 CONTRACTS = (
-    Contract("handoff.v1.json", Handoff, "serialization", "1.2.0"),
-    Contract("execution_record.v1.json", ExecutionRecord, "serialization", "1.2.0"),
-    Contract("decision.v1.json", Decision, "serialization", "1.2.0"),
-    Contract("scenario.v1.json", Scenario, "validation", "1.2.0"),
-    Contract("policy_clause.v1.json", ClauseMetadata, "validation", "1.2.0"),
+    Contract("handoff.v1.json", Handoff, "serialization", "1.3.0"),
+    Contract("execution_record.v1.json", ExecutionRecord, "serialization", "1.3.0"),
+    Contract("decision.v1.json", Decision, "serialization", "1.3.0"),
+    Contract("scenario.v1.json", Scenario, "validation", "1.3.0"),
+    Contract("policy_clause.v1.json", ClauseMetadata, "validation", "1.3.0"),
+    Contract("model_decision.v1.json", ModelDecision, "validation", "1.3.0"),
 )
 
 

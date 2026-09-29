@@ -11,6 +11,7 @@ from bank_agent.api.provider import ApiConfig
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
+from bank_agent.application.profile.service import ProfileService
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.testing.clock import FixedClock
@@ -62,7 +63,7 @@ class FakeProvider:
     """ServiceProvider for the health and middleware tests: configurable readiness checks, recorded shutdown.
 
     It has no identity service (auth routes answer 503) and fails loudly if a test reaches for the conversation,
-    inbox, or evaluation services, which the API tests take from a real container instead.
+    profile, inbox, or evaluation services, which the API tests take from a real container instead.
     """
 
     def __init__(self, checks: Sequence[ReadinessCheck] = ()) -> None:
@@ -85,6 +86,10 @@ class FakeProvider:
     @property
     def conversations(self) -> ConversationService:
         raise AssertionError("FakeProvider has no conversation service")
+
+    @property
+    def profiles(self) -> ProfileService:
+        raise AssertionError("FakeProvider has no profile service")
 
     @property
     def inbox(self) -> AgentInbox:

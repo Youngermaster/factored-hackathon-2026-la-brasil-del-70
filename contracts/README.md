@@ -15,6 +15,7 @@ The Pydantic models are the single source of truth. `scripts/generate_contracts.
 | `schemas/decision.v1.json` | `bank_agent.domain.decision.Decision` | serialization | policy evaluator (phase 06) | execution records, glass box |
 | `schemas/scenario.v1.json` | `bank_evals.scenarios.model.Scenario` | validation | scenario generators and reviewers (phase 14) | evaluation harness (phase 14) |
 | `schemas/policy_clause.v1.json` | `bank_agent.domain.policy.ClauseMetadata` | validation | policy authors (phase 06) | policy loader (phase 06) |
+| `schemas/model_decision.v1.json` | `bank_agent.domain.llm_outputs.ModelDecision` | validation | the language model (`decide_intent`, Tuesday MVP) | the gateway's output validation and the engine |
 
 - **Serialization mode** is used for documents the system produces. They match what `model_dump(mode="json")` emits: amounts are decimal strings (`"12.50"`), references are single strings (`transactions:T000123`, `DSP-CO-2.1@3`, `router:tfidf@3`), and every field is present, so every field that existed in the major version's first release (`1.0.0`) is required. Fields added in a later minor version are the exception (see "Fields added in a minor version").
 - **Validation mode** is used for documents people and generators author. Fields with defaults may be omitted.
@@ -83,6 +84,12 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 | decision | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
 | scenario | 1.2.0 | 2026-09-27 | Widens tool names (`list_my_cards`); new documents default to `1.2.0` |
 | policy_clause | 1.2.0 | 2026-09-27 | No field change; kept on the shared minor release |
+| handoff | 1.3.0 | 2026-09-28 | No field change; kept on the shared minor release |
+| execution_record | 1.3.0 | 2026-09-28 | Adds optional `correlation_id` on the record, `tool_call_id` on tool calls, and `model_call_id`, `provider`, and `output_schema` (name, version, SHA-256) on language model calls, all marked `x-added-in`; the nested fields follow the record's version gate; widens tool names (`escalate_to_human`, `change_assistant_name`, `mock_assistant_image`); new documents default to `1.3.0` |
+| decision | 1.3.0 | 2026-09-28 | No field change; kept on the shared minor release |
+| scenario | 1.3.0 | 2026-09-28 | Widens tool names (the three MVP tools); new documents default to `1.3.0` |
+| policy_clause | 1.3.0 | 2026-09-28 | No field change; kept on the shared minor release |
+| model_decision | 1.3.0 | 2026-09-28 | Initial version, on the shared minor release: `intent` (every intent plus `change_assistant_name` and `change_assistant_avatar`), `confidence`, `account` slots, and `assistant_name`; no customer, conversation, or tool field (ADR 0025) |
 
 ## How to change a contract
 

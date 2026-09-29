@@ -21,7 +21,7 @@ from bank_agent.api.schemas.conversations import (
 from bank_agent.api.schemas.trace import CustomerTraceRecord, CustomerTraceResponse
 from bank_agent.domain.access import Role
 from bank_agent.domain.conversation import Conversation, Turn, TurnResult
-from bank_agent.domain.identifiers import ID_PATTERN, ConversationId, TurnId
+from bank_agent.domain.identifiers import ID_PATTERN, ConversationId, CorrelationId, TurnId
 from bank_agent.domain.session import Session
 
 router = APIRouter(prefix="/v1/conversations", tags=["conversations"])
@@ -42,7 +42,7 @@ def conversation_view(conversation: Conversation) -> ConversationView:
     )
 
 
-def turn_response(result: TurnResult) -> TurnResponse:
+def turn_response(result: TurnResult, correlation_id: str) -> TurnResponse:
     return TurnResponse(
         turn_id=result.turn_id,
         conversation_id=result.conversation_id,
@@ -51,6 +51,7 @@ def turn_response(result: TurnResult) -> TurnResponse:
         outcome=result.outcome,
         replayed=result.replayed,
         message=AssistantMessage.model_validate(result.response),
+        correlation_id=CorrelationId(correlation_id),
     )
 
 
@@ -88,7 +89,7 @@ async def send_turn(
 ) -> TurnResponse:
     """Send one customer message and get the assistant's reply with every workflow part."""
     result = await services(request).conversations.send(session, conversation_id, TurnId(str(body.turn_id)), body.text)
-    return turn_response(result)
+    return turn_response(result, request.state.request_id)
 
 
 _CONVERSATIONS_GET = endpoint(

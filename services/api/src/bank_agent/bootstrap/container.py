@@ -27,6 +27,7 @@ from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
+from bank_agent.application.profile.service import ProfileService
 from bank_agent.application.tools.banking import BankingTools
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_client
 from bank_agent.bootstrap.models import default_embedder
@@ -122,6 +123,7 @@ class Container:
         self._conversations = ConversationService(
             self._workflows.engine(), self._persistence.uow_factory, self._clock, self._ids
         )
+        self._profiles = ProfileService(self._persistence.uow_factory)
         self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
         self._readiness_checks: tuple[ReadinessCheck, ...] = (
@@ -182,6 +184,11 @@ class Container:
     def conversations(self) -> ConversationService:
         """Open, send, history, and trace over the proposed system's engine."""
         return self._conversations
+
+    @property
+    def profiles(self) -> ProfileService:
+        """The customer's first name and assistant profile for the chat header."""
+        return self._profiles
 
     @property
     def inbox(self) -> AgentInbox:

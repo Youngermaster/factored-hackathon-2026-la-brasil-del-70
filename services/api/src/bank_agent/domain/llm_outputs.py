@@ -16,13 +16,14 @@ from typing import Annotated, Self
 
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
+from bank_agent.domain.assistant_profile import AssistantName
 from bank_agent.domain.base import DomainModel, Pii, SummaryText, UntrustedText, internal_fields
 from bank_agent.domain.cards import CardAction, CardBlockReason
 from bank_agent.domain.credit import CreditProductType, CreditProfile
 from bank_agent.domain.dispute import DisputeReason
 from bank_agent.domain.eligibility import CreditRiskFeatures, RiskEstimate
 from bank_agent.domain.execution_record import ExecutionRecord
-from bank_agent.domain.handoff import Handoff
+from bank_agent.domain.handoff import Handoff, SchemaVersion
 from bank_agent.domain.intelligence import Probability, TransactionDescriptor
 from bank_agent.domain.money import Amount, Currency
 from bank_agent.domain.product import ProductType
@@ -202,9 +203,72 @@ class UtteranceParaphrases(DomainModel):
     paraphrases: Annotated[tuple[ParaphraseText, ...], Field(min_length=1, max_length=5)]
 
 
+class DecisionIntent(StrEnum):
+    """The label set of ``ModelDecision``: every ``Intent`` plus the two assistant profile requests of ADR 0025.
+    A test keeps it in step with ``Intent``. There is no ``clarify`` or ``abstain`` label: the engine clarifies
+    below the router threshold and abstains on ``unsupported``, so the model never picks a policy outcome."""
+
+    DISPUTE_NEW = "dispute_new"
+    DISPUTE_STATUS = "dispute_status"
+    CARD_BLOCK = "card_block"
+    INFORMATIONAL = "informational"
+    UNSUPPORTED = "unsupported"
+    HUMAN_REQUEST = "human_request"
+    GREETING_OR_OTHER = "greeting_or_other"
+    BALANCE_INQUIRY = "balance_inquiry"
+    PAYMENT_STATUS = "payment_status"
+    STATEMENT_REQUEST = "statement_request"
+    CARD_STATUS = "card_status"
+    CARD_UNBLOCK_REQUEST = "card_unblock_request"
+    CARD_REPLACEMENT_REQUEST = "card_replacement_request"
+    CREDIT_PRODUCT_INFO = "credit_product_info"
+    CREDIT_ELIGIBILITY = "credit_eligibility"
+    CREDIT_APPLICATION = "credit_application"
+    CREDIT_APPLICATION_STATUS = "credit_application_status"
+    CHANGE_ASSISTANT_NAME = "change_assistant_name"
+    CHANGE_ASSISTANT_AVATAR = "change_assistant_avatar"
+
+    @property
+    def intent(self) -> Intent | None:
+        """The workflow ``Intent`` with the same value; ``None`` for an assistant profile request."""
+        return Intent(self.value) if self.value in _INTENT_VALUES else None
+
+
+_INTENT_VALUES = frozenset(intent.value for intent in Intent)
+ACCOUNT_INQUIRY_DECISIONS = frozenset(
+    {DecisionIntent.BALANCE_INQUIRY, DecisionIntent.PAYMENT_STATUS, DecisionIntent.STATEMENT_REQUEST}
+)
+
+
+class ModelDecision(DomainModel):
+    """``decide_intent``: the published, versioned model output of the Tuesday MVP (``model_decision.v1.json``).
+
+    It names what the customer wants and the slots the customer stated, nothing else. There is no customer,
+    conversation, session, product id, or tool field: the server takes those from the verified session, so no
+    model output can choose whose data is read or which conversation is written (ADR 0025). ``account`` is set
+    only for an account inquiry and ``assistant_name`` only for a rename; every other combination is invalid, so
+    the gateway repairs once and then falls back to the rule router.
+    """
+
+    schema_version: SchemaVersion = "1.3.0"
+    intent: DecisionIntent
+    confidence: Probability
+    account: AccountInquirySlotExtraction | None
+    assistant_name: AssistantName | None
+
+    @model_validator(mode="after")
+    def _slots_match_the_intent(self) -> Self:
+        if self.account is not None and self.intent not in ACCOUNT_INQUIRY_DECISIONS:
+            raise ValueError("account slots belong to an account inquiry")
+        if (self.assistant_name is not None) != (self.intent is DecisionIntent.CHANGE_ASSISTANT_NAME):
+            raise ValueError("a rename, and only a rename, carries the new assistant name")
+        return self
+
+
 OUTPUT_MODELS: dict[str, type[BaseModel]] = {
     model.__name__: model
     for model in (
+        ModelDecision,
         DisputeSlotExtraction,
         AccountInquirySlotExtraction,
         CardSupportSlotExtraction,
