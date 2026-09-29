@@ -20,7 +20,7 @@ from bank_agent.adapters.persistence.memory.store import InMemoryStore
 from bank_agent.adapters.persistence.memory.unit_of_work import InMemoryUnitOfWorkFactory, standalone_audit_log
 from bank_agent.adapters.persistence.postgres.audit import PostgresStandaloneAuditLog
 from bank_agent.adapters.persistence.postgres.challenges import PostgresChallengeStore
-from bank_agent.adapters.persistence.postgres.database import database_url
+from bank_agent.adapters.persistence.postgres.database import AvailabilityListener, database_url
 from bank_agent.adapters.persistence.postgres.sessions import PostgresSessionStore
 from bank_agent.adapters.persistence.postgres.unit_of_work import PostgresUnitOfWorkFactory
 from bank_agent.application.identity.sessions import SessionService
@@ -53,10 +53,11 @@ class PersistenceServices:
     challenge_store: ChallengeStore
 
 
-def build_persistence(engine: AsyncEngine | None) -> PersistenceServices:
+def build_persistence(engine: AsyncEngine | None, listener: AvailabilityListener | None = None) -> PersistenceServices:
+    """PostgreSQL when ``engine`` is given (``listener`` hears whether each transaction reached the database)."""
     if engine is not None:
         return PersistenceServices(
-            uow_factory=PostgresUnitOfWorkFactory(engine),
+            uow_factory=PostgresUnitOfWorkFactory(engine, listener),
             session_store=PostgresSessionStore(engine),
             audit_log=PostgresStandaloneAuditLog(engine),
             challenge_store=PostgresChallengeStore(engine),

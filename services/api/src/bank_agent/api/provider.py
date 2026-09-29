@@ -40,6 +40,8 @@ class ApiConfig:
     security: SecurityConfig = field(default_factory=SecurityConfig.development)
     monotonic: Callable[[], float] = time.monotonic
     """The clock of the rate limiter's windows; tests pass a controllable one."""
+    database_retry_after_seconds: int = 30
+    """``Retry-After`` on the 503 while the database is unavailable (``DEGRADATION_DATABASE_RETRY_AFTER_SECONDS``)."""
     current_trace_id: Callable[[], str | None] = no_trace
     """The active trace id for ``X-Trace-Id`` (the telemetry adapter's ``current_trace_id``)."""
 

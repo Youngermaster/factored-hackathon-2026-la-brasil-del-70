@@ -9,7 +9,7 @@ import structlog
 from bank_agent.adapters.llm.budget import BudgetGuardDecorator, BudgetLimits
 from bank_agent.adapters.llm.circuit_breaker import CircuitBreakerDecorator
 from bank_agent.adapters.llm.prices import ModelPrice, PriceTable, PriceTableFile
-from bank_agent.adapters.reliability.monitor import DegradationMonitor, LlmHealth
+from bank_agent.adapters.reliability.monitor import DatabaseHealth, DegradationMonitor, LlmHealth
 from bank_agent.application.reliability.ladder import LadderFlags
 from bank_agent.domain.degradation import ComponentState, DegradationLevel
 from bank_agent.domain.errors import LlmBudgetExceededError, LlmProviderError
@@ -106,7 +106,7 @@ def test_startup_failures_and_database_probes_set_l3_and_l4_and_log_level_change
         flags=LadderFlags(),
         models_on_baseline=served,
         credit_catalog=ComponentState.UNAVAILABLE,
-        database_configured=True,
+        database=DatabaseHealth(telemetry),
     )
     assert monitor.current().level is DegradationLevel.MODEL_BASELINES
     served.append("router")
@@ -118,6 +118,7 @@ def test_startup_failures_and_database_probes_set_l3_and_l4_and_log_level_change
         assert monitor.current().level is DegradationLevel.MODEL_BASELINES
     assert [(entry["level_from"], entry["level_to"]) for entry in logs] == [("L3", "L4"), ("L4", "L3")]
     assert telemetry.gauges["bank.degradation.component"].last(**{"bank.component": "database"}) == 0
+    assert telemetry.counters["bank.database.unavailable"].total == 1
 
 
 def test_without_a_database_the_probe_changes_nothing() -> None:

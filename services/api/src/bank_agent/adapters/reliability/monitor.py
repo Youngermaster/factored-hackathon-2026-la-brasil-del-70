@@ -34,6 +34,23 @@ _CIRCUIT_COMPONENT: Final = {
 }
 
 
+class DatabaseHealth:
+    """The latest database availability, told by the unit of work on every transaction and by readiness probes.
+
+    Shared by the persistence adapters (which report) and the monitor (which reads); each failure also increments
+    ``bank.database.unavailable``.
+    """
+
+    def __init__(self, telemetry: Telemetry | None = None) -> None:
+        self.available = True
+        self._failures = telemetry.counter("bank.database.unavailable") if telemetry is not None else None
+
+    def record(self, available: bool) -> None:
+        self.available = available
+        if not available and self._failures is not None:
+            self._failures.add(1)
+
+
 @dataclass(frozen=True)
 class LlmHealth:
     """The breakers and the budget guard of the gateway the composition root built (``None`` when absent)."""
@@ -57,14 +74,14 @@ class DegradationMonitor:
         llm: LlmHealth | None = None,
         models_on_baseline: Sequence[str] = (),
         credit_catalog: ComponentState = ComponentState.OK,
-        database_configured: bool = False,
+        database: DatabaseHealth | None = None,
     ) -> None:
         self._clock = clock
         self._flags = flags
         self._llm = llm or LlmHealth()
         self._models_on_baseline = models_on_baseline
         self._credit_catalog = credit_catalog
-        self._database = ComponentState.OK if database_configured else ComponentState.DISABLED
+        self._database = database
         self._last_level: DegradationLevel | None = None
         self._level = telemetry.gauge("bank.degradation.level")
         self._components = telemetry.gauge("bank.degradation.component")
@@ -76,8 +93,13 @@ class DegradationMonitor:
         return self._flags
 
     def record_database(self, available: bool) -> None:
-        if self._database is not ComponentState.DISABLED:
-            self._database = ComponentState.OK if available else ComponentState.UNAVAILABLE
+        if self._database is not None:
+            self._database.record(available)
+
+    def _database_state(self) -> ComponentState:
+        if self._database is None:
+            return ComponentState.DISABLED
+        return ComponentState.OK if self._database.available else ComponentState.UNAVAILABLE
 
     def _circuit(self, breaker: CircuitBreakerDecorator | None) -> ComponentState:
         return ComponentState.DISABLED if breaker is None else _CIRCUIT_COMPONENT[breaker.state]
@@ -92,7 +114,7 @@ class DegradationMonitor:
             budget_exhausted=budget.daily_exhausted(today) if budget is not None else False,
             models_on_baseline=tuple(self._models_on_baseline),
             credit_catalog=self._credit_catalog,
-            database=self._database,
+            database=self._database_state(),
         )
 
     def current(self) -> DegradationStatus:

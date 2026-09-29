@@ -27,6 +27,7 @@
   "errors": {
     "network": "We could not reach the bank. Check your connection and try again.",
     "server": "Something failed on our side. Try again in a few minutes.",
+    "unavailable": "The service is unavailable right now, so no change was confirmed. Try again in a few minutes.",
     "rateLimited": "Too many requests in a row. Wait a moment and try again.",
     "forbidden": "Your profile has no access to this section.",
     "generic": "The action could not be completed.",

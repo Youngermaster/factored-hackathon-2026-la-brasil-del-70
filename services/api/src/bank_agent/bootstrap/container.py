@@ -22,7 +22,7 @@ from bank_agent.adapters.persistence.postgres.readiness import PostgresReadiness
 from bank_agent.adapters.policy.filesystem import FilesystemCreditCatalog, FilesystemPolicyRepository
 from bank_agent.adapters.policy.unavailable import UnavailableCreditCatalog
 from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
-from bank_agent.adapters.reliability.monitor import DegradationMonitor
+from bank_agent.adapters.reliability.monitor import DatabaseHealth, DegradationMonitor
 from bank_agent.adapters.retrieval.embedding import Embedder
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.system.ids import RandomIdGenerator
@@ -106,7 +106,10 @@ class Container:
                 max_overflow=5,
             )
         self._ids: IdGenerator = ids if ids is not None else RandomIdGenerator()
-        self._persistence = persistence if persistence is not None else build_persistence(self._engine)
+        self._database_health = DatabaseHealth(self._telemetry) if self._engine is not None else None
+        self._persistence = (
+            persistence if persistence is not None else build_persistence(self._engine, self._database_health)
+        )
         self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
         self._policy = build_policy(
             settings.policy, clock=self._clock, ids=self._ids, catalog_fallback=degradation.credit_catalog_fallback
@@ -131,7 +134,7 @@ class Container:
             llm=self._llm_stack.health,
             models_on_baseline=self._model_fallbacks.served_baseline,
             credit_catalog=ComponentState.OK if self._policy.credit_catalog_available else ComponentState.UNAVAILABLE,
-            database_configured=bool(self._readiness_checks),
+            database=self._database_health if self._readiness_checks else None,
         )
         self._grounding = build_grounding(settings.retrieval, self._policy.repository, embedder=embedder)
         self._banking_tools = build_banking_tools(

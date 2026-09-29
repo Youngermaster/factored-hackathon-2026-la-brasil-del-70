@@ -59,6 +59,7 @@ def api_config_from(settings: AppSettings, observability: Observability | None =
         version=__version__,
         expose_docs=not settings.is_production,
         security=security_config_from(settings),
+        database_retry_after_seconds=settings.degradation.database_retry_after_seconds,
     )
     if observability is None:
         return config
