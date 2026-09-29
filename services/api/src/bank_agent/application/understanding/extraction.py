@@ -44,6 +44,15 @@ _BLOCK_REASONS: tuple[tuple[CardBlockReason, str], ...] = (
     ),
     (CardBlockReason.PRECAUTION, r"precaucion|prevencion|por si acaso|precaucao|prevencao|por seguranca|por seguridad"),
 )
+CARD_STATE_QUESTION = (
+    r"\b(?:esta|estan|estao|sigue|siguen|continua|continuam|se encuentra|se encontra|quedo|ficou|fue|foi)"
+    r"(?: [a-z0-9]+){0,4}? bloquead[oa]s?\b"
+    r"|\b(?:activ|ativ)[ao]s? (?:o|ou) bloquead[oa]s?\b|\bbloquead[oa]s? (?:o|ou) (?:activ|ativ)[ao]s?\b"
+)
+"""A question about a card's state that uses the participle ("¿está bloqueada?", "ativo ou bloqueado?"), over
+folded text. It asks for the card status and is never a block request, so the action table and the keyword router
+read it as status."""
+_STATE_QUESTION = re.compile(CARD_STATE_QUESTION)
 _ACTIONS: tuple[tuple[CardAction, str], ...] = (
     (CardAction.UNBLOCK_REQUEST, r"desbloque|desbloquei|reactiv|reativ"),
     (CardAction.REPLACEMENT_REQUEST, r"reposicion|reponer|reemplaz|reposicao|segunda via|substitu|nuev[ao]|novo|nova"),
@@ -79,8 +88,13 @@ def block_reason(text: str) -> CardBlockReason | None:
     return _first(_BLOCK_REASONS, fold(text))
 
 
+def asks_card_state(text: str) -> bool:
+    return _STATE_QUESTION.search(fold(text)) is not None
+
+
 def card_action(text: str) -> CardAction | None:
-    return _first(_ACTIONS, fold(text))
+    """The card action asked for; a state question ("¿está bloqueada?") is removed first, so it is no block."""
+    return _first(_ACTIONS, _STATE_QUESTION.sub(" ", fold(text)))
 
 
 def channel(text: str) -> TransactionChannel | None:

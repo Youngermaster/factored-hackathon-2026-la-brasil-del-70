@@ -128,6 +128,7 @@ sequenceDiagram
 | Unblock request | Escalate with `card_unblock_requested` and a `card_request` | `CRD-ALL-3` |
 | Replacement request | Escalate with `card_replacement_requested`; a lost or stolen active card gets the block offer first | `CRD-ALL-3` |
 | Several plausible cards | Masked options, then the answer | `CRD-ALL-1` |
+| A state question that names the participle ("¿está bloqueada?", "ativo ou bloqueado?") | Card status, never a block confirmation | `CRD-ALL-1` |
 | Another person's card | Refuse with a trust event | `PRV-ALL-2` |
 | Customer declines the block | Nothing recorded (or the replacement handoff) | none |
 
