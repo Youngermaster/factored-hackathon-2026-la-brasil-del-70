@@ -1,10 +1,9 @@
 """Customer-scoped assistant profile routes for the active conversation."""
 
 from asyncio import to_thread
-from datetime import datetime
 from importlib.resources import files
 from pathlib import Path as FilePath
-from typing import Annotated, Protocol, cast
+from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Path, Request
 from fastapi.responses import FileResponse
@@ -13,7 +12,9 @@ from bank_agent.api.config import RateClass
 from bank_agent.api.dependencies import endpoint, role_dependency, services
 from bank_agent.api.errors import ServiceUnavailableError
 from bank_agent.api.schemas.preferences import AssistantProfileView, AvatarKey, ChangeAssistantNameRequest
+from bank_agent.application.preferences.service import AssistantPreferencesService
 from bank_agent.domain.access import Role
+from bank_agent.domain.assistant_profile import AssistantProfile
 from bank_agent.domain.errors import NotFoundError
 from bank_agent.domain.identifiers import ID_PATTERN, ConversationId
 from bank_agent.domain.session import Session
@@ -25,38 +26,14 @@ ConversationPath = Annotated[ConversationId, Path(max_length=64, pattern=ID_PATT
 AvatarPath = Annotated[AvatarKey, Path()]
 
 
-class _ProfileValue(Protocol):
-    assistant_name: str
-    avatar_key: str
-    updated_at: datetime
-
-
-class _PreferenceValue(Protocol):
-    profile: _ProfileValue
-
-
-class _AssistantPreferences(Protocol):
-    """The application service contract; profile reads are the one method not yet present on the service branch."""
-
-    async def get_assistant_profile(
-        self, session: Session, conversation_id: ConversationId
-    ) -> _PreferenceValue | None: ...
-
-    async def change_assistant_name(
-        self, session: Session, conversation_id: ConversationId, name: str
-    ) -> _PreferenceValue: ...
-
-    async def mock_assistant_image(self, session: Session, conversation_id: ConversationId) -> _PreferenceValue: ...
-
-
-def _profile_service(request: Request) -> _AssistantPreferences:
+def _profile_service(request: Request) -> AssistantPreferencesService:
     service = getattr(services(request), "assistant_preferences", None)
     if service is None:
         raise ServiceUnavailableError("assistant preferences are not configured")
-    return cast(_AssistantPreferences, service)
+    return cast(AssistantPreferencesService, service)
 
 
-def _view(profile: _ProfileValue | None) -> AssistantProfileView:
+def _view(profile: AssistantProfile | None) -> AssistantProfileView:
     name = profile.assistant_name if profile is not None else "Assistant"
     avatar_key = profile.avatar_key if profile is not None else "avatar_1"
     updated_at = profile.updated_at if profile is not None else None

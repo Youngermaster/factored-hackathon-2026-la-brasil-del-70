@@ -37,6 +37,17 @@ class AssistantPreferencesService:
     def __init__(self, uow_factory: UnitOfWorkFactory, clock: Clock) -> None:
         self._uow_factory, self._clock = uow_factory, clock
 
+    async def get_assistant_profile(
+        self, session: Session, conversation_id: ConversationId
+    ) -> AssistantPreference | None:
+        """Read this customer's saved profile after verifying access to the conversation."""
+        _customer_only(session)
+        async with self._uow_factory(session.access_context()) as uow:
+            if await uow.conversations.get(conversation_id) is None:
+                raise ConversationNotFoundError()
+            profile = await uow.assistant_profiles.get_mine()
+        return AssistantPreference(profile, _avatar_path(profile.avatar_key)) if profile is not None else None
+
     async def change_assistant_name(
         self, session: Session, conversation_id: ConversationId, name: str
     ) -> AssistantPreference:

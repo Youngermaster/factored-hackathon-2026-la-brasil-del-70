@@ -1,8 +1,11 @@
 import asyncio
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from types import SimpleNamespace
+from typing import Any
 
+import httpx
 import pytest
 from fastapi import FastAPI
 
@@ -113,10 +116,10 @@ class ApiClient(BaseApiClient):
     async def refresh_csrf(self) -> str:
         return await asyncio.wait_for(super().refresh_csrf(), timeout=5)
 
-    async def get(self, path: str, **kwargs):
+    async def get(self, path: str, **kwargs: Any) -> httpx.Response:
         return await asyncio.wait_for(super().get(path, **kwargs), timeout=5)
 
-    async def post(self, path: str, json=None, **kwargs):
+    async def post(self, path: str, json: Any = None, **kwargs: Any) -> httpx.Response:
         return await asyncio.wait_for(super().post(path, json, **kwargs), timeout=5)
 
 
@@ -124,7 +127,7 @@ class ApiClient(BaseApiClient):
 def inline_pure_sync_dependencies(monkeypatch: pytest.MonkeyPatch) -> None:
     """This sandbox cannot complete worker-thread futures; these FastAPI dependencies are pure and cheap."""
 
-    async def run_inline(func, *args, **kwargs):
+    async def run_inline(func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
         return func(*args, **kwargs)
 
     monkeypatch.setattr("fastapi.dependencies.utils.run_in_threadpool", run_inline)
@@ -137,7 +140,7 @@ def api() -> tuple[PreferencesProvider, FastAPI]:
     return provider, app
 
 
-def _authenticated(client: ApiClient, token: str) -> None:
+def _authenticated(client: BaseApiClient, token: str) -> None:
     client.http.cookies.set("session", token)
 
 
