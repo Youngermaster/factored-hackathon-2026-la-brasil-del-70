@@ -8,6 +8,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse, Response
 from starlette.types import Scope
 
+from bank_agent.api.cookies import clear_lost_session_cookie
 from bank_agent.api.csrf import CSRF_HEADER, CsrfTokens
 from bank_agent.api.domain_problems import api_problem_registry
 from bank_agent.api.middleware import (
@@ -67,7 +68,7 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     app.state.api_config = config
     app.state.csrf = CsrfTokens(security.csrf_secret)
     app.state.rate_limiter = SlidingWindowLimiter(config.monotonic)
-    (problems or api_problem_registry()).install(app)
+    (problems or api_problem_registry()).install(app, response_hooks=(clear_lost_session_cookie,))
     app.add_middleware(BodySizeLimitMiddleware, max_bytes=security.max_request_body_bytes, respond=_payload_too_large)
     app.add_middleware(
         CORSMiddleware,

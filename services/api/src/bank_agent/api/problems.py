@@ -43,6 +43,7 @@ INTERNAL_PROBLEM: Final = ProblemType(HTTPStatus.INTERNAL_SERVER_ERROR, "interna
 PAYLOAD_TOO_LARGE_PROBLEM: Final = ProblemType(413, "payload-too-large", "The request body is too large")
 
 HeaderFactory = Callable[[Exception], dict[str, str]]
+ResponseHook = Callable[[Request, ProblemType, JSONResponse], None]
 
 
 def problem_response(
@@ -117,8 +118,13 @@ class ProblemRegistry:
                 return problem
         return None
 
-    def install(self, app: FastAPI) -> None:
-        """Install the exception handlers on ``app``."""
+    def install(self, app: FastAPI, response_hooks: tuple[ResponseHook, ...] = ()) -> None:
+        """Install the exception handlers on ``app``.
+
+        ``response_hooks`` may adjust a registered problem's response before it is sent (for example, clear a
+        cookie); they are stored per application, so one registry can serve several apps.
+        """
+        app.state.problem_response_hooks = response_hooks
         app.add_exception_handler(StarletteHTTPException, self._handle_http_exception)  # type: ignore[arg-type]
         app.add_exception_handler(RequestValidationError, self._handle_validation_error)  # type: ignore[arg-type]
         for exception_type in self._problems:
@@ -142,7 +148,11 @@ class ProblemRegistry:
         problem = self.problem_for(exc)
         if problem is None:
             return await self._handle_unexpected(request, exc)
-        return problem_response(problem, request, headers=self._headers_for(exc))
+        response = problem_response(problem, request, headers=self._headers_for(exc))
+        hooks: tuple[ResponseHook, ...] = getattr(request.app.state, "problem_response_hooks", ())
+        for hook in hooks:
+            hook(request, problem, response)
+        return response
 
     async def _handle_unexpected(self, request: Request, exc: Exception) -> JSONResponse:
         _logger.error(
