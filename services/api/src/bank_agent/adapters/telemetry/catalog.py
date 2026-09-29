@@ -136,6 +136,14 @@ INSTRUMENTS: Final[tuple[Instrument, ...]] = (
         "bank.workflow",
     ),
     # Reliability and the HTTP layer.
+    _i(
+        "bank.safety.interventions",
+        C,
+        "{turn}",
+        "Safety interventions by code (injection, fallback, blocks)",
+        "bank.intervention",
+        "bank.workflow",
+    ),
     _i("bank.degradation.level", G, "", "Degradation level, 0 (normal) to 4 (database unavailable)"),
     _i(
         "bank.degradation.component",

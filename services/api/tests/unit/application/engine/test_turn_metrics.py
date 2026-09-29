@@ -86,6 +86,9 @@ def test_escalations_eligibility_risk_failures_and_unsafe_detectors() -> None:
         (1, {"bank.credit.product": "MX-PL-FIXTURE", "bank.eligibility.outcome": "indicatively_eligible"})
     ]
     assert telemetry.counters["bank.risk_estimator.failures"].total == 1
+    assert telemetry.counters["bank.safety.interventions"].points == [
+        (1, {"bank.intervention": "risk_estimate_unavailable", "bank.workflow": "credit"})
+    ]
     assert [attrs["bank.detector"] for _, attrs in telemetry.counters["bank.safety.unsafe_blocked"].points] == [
         "approval_wording",
         "internal_credit_value",

@@ -41,6 +41,7 @@ class TurnMetrics:
         self._risk_failures = telemetry.counter("bank.risk_estimator.failures")
         self._fallbacks = telemetry.counter("bank.llm.fallbacks")
         self._unsafe = telemetry.counter("bank.safety.unsafe_blocked")
+        self._interventions = telemetry.counter("bank.safety.interventions")
 
     def observe(self, record: ExecutionRecord, *, escalation_reason: str | None = None) -> None:
         """Measure ``record``; ``escalation_reason`` is the reason code of a handoff created in this turn."""
@@ -74,6 +75,9 @@ class TurnMetrics:
                 error = llm_call.error_code or "unknown"
                 prompt = llm_call.prompt.prompt_id
                 self._fallbacks.add(1, {"bank.prompt.id": prompt, "error.type": error, "bank.workflow": workflow})
+        for code in record.safety_interventions:
+            family = "unsupported_request" if code.startswith("unsupported_") else code
+            self._interventions.add(1, {"bank.intervention": family, "bank.workflow": workflow})
         for kind in record.grounding.violations:
             detector = UNSAFE_DETECTORS.get(kind)
             if detector is not None:
