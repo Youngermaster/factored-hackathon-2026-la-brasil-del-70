@@ -15,7 +15,10 @@
     "goHome": "Go to the start",
     "reload": "Reload the page",
     "copy": "Copy",
-    "notAvailable": "Not available"
+    "notAvailable": "Not available",
+    "opensInNewTab": "opens in a new tab",
+    "notifications": "Notifications ({hotkey})",
+    "notification": "Notification"
   },
   "preferences": {
     "title": "Preferences",

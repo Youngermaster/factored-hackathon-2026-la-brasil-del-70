@@ -15,7 +15,10 @@
     "goHome": "Ir para o início",
     "reload": "Recarregar a página",
     "copy": "Copiar",
-    "notAvailable": "Sem dado"
+    "notAvailable": "Sem dado",
+    "opensInNewTab": "abre em uma nova aba",
+    "notifications": "Avisos ({hotkey})",
+    "notification": "Aviso"
   },
   "preferences": {
     "title": "Preferências",

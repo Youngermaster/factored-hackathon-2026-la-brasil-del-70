@@ -66,6 +66,18 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
   { fg: 'risk-fg', bg: 'risk', min: 4.5, use: 'label on a filled red button' },
   { fg: 'risk-text', bg: 'risk-subtle', min: 4.5, use: 'risk chip and error summary' },
   { fg: 'fg', bg: 'risk-subtle', min: 4.5, use: 'text inside a risk panel' },
+  {
+    fg: 'fg-secondary',
+    bg: 'risk-subtle',
+    min: 4.5,
+    use: 'secondary text in an error state or toast',
+  },
+  {
+    fg: 'fg-secondary',
+    bg: 'decision-subtle',
+    min: 4.5,
+    use: 'secondary text in a verified toast',
+  },
 ];
 
 const channel = (value: number): number => {
