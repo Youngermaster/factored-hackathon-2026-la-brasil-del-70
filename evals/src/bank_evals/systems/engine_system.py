@@ -40,7 +40,8 @@ from bank_agent.ports.models import IntentRouter, ModelRegistry, RiskEstimator, 
 from bank_agent.testing.clock import FixedClock
 from bank_evals.scenarios.model import ModelUnavailable, Scenario
 from bank_evals.systems.base import EndState, TurnView
-from bank_evals.systems.failures import FailureSchedule, ScheduledFailureTools
+from bank_evals.systems.failures import ScheduledFailureTools
+from bank_evals.systems.schedule import FailureSchedule
 from bank_evals.systems.views import end_state, turn_view
 from bank_evals.world.fixtures import apply_fixtures
 from bank_evals.world.model import NOW, World

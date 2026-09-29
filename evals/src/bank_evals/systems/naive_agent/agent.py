@@ -22,9 +22,9 @@ from bank_agent.ports.llm import LLMClient
 from bank_evals.prompts.outputs import NaiveAgentStep
 from bank_evals.scenarios.model import Scenario
 from bank_evals.systems.base import EndState, LlmCallView, ToolCallView, TurnView
-from bank_evals.systems.failures import FailureSchedule
 from bank_evals.systems.naive_agent.database import NaiveDatabase
 from bank_evals.systems.naive_agent.tools import WRITES, NaiveTools, render_result
+from bank_evals.systems.schedule import FailureSchedule
 from bank_evals.world.fixtures import apply_fixtures
 from bank_evals.world.model import World
 

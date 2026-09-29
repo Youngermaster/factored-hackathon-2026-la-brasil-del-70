@@ -16,8 +16,8 @@ from typing import Any
 import yaml
 
 from bank_agent.domain.actions import ToolFailureMode, ToolName
-from bank_evals.systems.failures import FailureSchedule
 from bank_evals.systems.naive_agent.database import NaiveDatabase, NaiveHandoff
+from bank_evals.systems.schedule import FailureSchedule
 from bank_evals.world.model import AS_OF, NOW
 
 CATALOG_DIR = Path(__file__).resolve().parents[5] / "policies" / "credit"

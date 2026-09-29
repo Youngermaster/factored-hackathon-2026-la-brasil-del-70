@@ -135,7 +135,7 @@ warn_required_dynamic_aliases = true
 # ---------------------------------------------------------------------------
 
 [tool.importlinter]
-root_packages = ["bank_agent"]
+root_packages = ["bank_agent", "bank_evals"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
@@ -201,6 +201,26 @@ forbidden_modules = [
   "httpx",
   "boto3",
   "litellm",
+]
+
+[[tool.importlinter.contracts]]
+name = "The application never imports the evaluation harness"
+type = "forbidden"
+source_modules = ["bank_agent"]
+forbidden_modules = ["bank_evals"]
+
+[[tool.importlinter.contracts]]
+name = "Baseline B1 never reaches the kernel, the application, the adapters, or the API"
+type = "forbidden"
+source_modules = ["bank_evals.systems.naive_agent"]
+forbidden_modules = [
+  "bank_agent.policy",
+  "bank_agent.application",
+  "bank_agent.adapters",
+  "bank_agent.bootstrap",
+  "bank_agent.api",
+  "bank_evals.systems.engine_system",
+  "bank_evals.systems.failures",
 ]
 
 # ---------------------------------------------------------------------------

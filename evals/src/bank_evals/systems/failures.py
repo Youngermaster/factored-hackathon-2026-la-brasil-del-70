@@ -8,8 +8,6 @@ that never commit, so the caller gets a plausible result while the read-back fin
 
 from __future__ import annotations
 
-from collections import Counter
-from collections.abc import Sequence
 from typing import Any, cast
 
 from bank_agent.application.engine.tools import CreditProfileSource
@@ -18,7 +16,7 @@ from bank_agent.application.tools.base import ToolDependencies
 from bank_agent.application.tools.context import SessionContext
 from bank_agent.domain.actions import ToolFailureMode, ToolName
 from bank_agent.domain.errors import ConfigurationError, ToolPermanentError, ToolTimeoutError, ToolTransientError
-from bank_evals.scenarios.model import ToolFailureStep
+from bank_evals.systems.schedule import FailureSchedule
 
 _RAISED: dict[ToolFailureMode, type[Exception]] = {
     ToolFailureMode.TIMEOUT: ToolTimeoutError,
@@ -26,24 +24,6 @@ _RAISED: dict[ToolFailureMode, type[Exception]] = {
     ToolFailureMode.PERMANENT_ERROR: ToolPermanentError,
 }
 TOOL_NAMES = frozenset(tool.value for tool in ToolName)
-
-
-class FailureSchedule:
-    """Counts calls per tool over one case and says which call fails, and how."""
-
-    def __init__(self, plan: Sequence[ToolFailureStep]) -> None:
-        self._plan = tuple(plan)
-        self.calls: Counter[str] = Counter()
-        self.injected: list[tuple[str, str]] = []
-
-    def next_mode(self, tool: str) -> ToolFailureMode | None:
-        self.calls[tool] += 1
-        count = self.calls[tool]
-        for step in self._plan:
-            if step.tool.value == tool and step.on_call <= count < step.on_call + step.times:
-                self.injected.append((tool, step.mode.value))
-                return step.mode
-        return None
 
 
 class _ScheduledToolset:
