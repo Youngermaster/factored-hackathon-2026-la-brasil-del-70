@@ -8,6 +8,7 @@ import pytest
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 SCRIPT = REPOSITORY_ROOT / "scripts" / "write_fixture_cassettes.py"
 COMMITTED = REPOSITORY_ROOT / "evals" / "cassettes"
+RECORDINGS = COMMITTED / "eval"  # evaluation run recordings (session 14b), not hand-authored fixtures
 
 
 def _load() -> ModuleType:
@@ -30,7 +31,9 @@ def test_writing_reproduces_the_committed_files_exactly(tmp_path: Path, capsys: 
     assert module.main(["--output-dir", str(tmp_path)]) == 0
 
     written = sorted(path.relative_to(tmp_path) for path in tmp_path.rglob("*.json"))
-    committed = sorted(path.relative_to(COMMITTED) for path in COMMITTED.rglob("*.json"))
+    committed = sorted(
+        path.relative_to(COMMITTED) for path in COMMITTED.rglob("*.json") if not path.is_relative_to(RECORDINGS)
+    )
     assert written == committed
     for relative in written:
         assert (tmp_path / relative).read_bytes() == (COMMITTED / relative).read_bytes()
