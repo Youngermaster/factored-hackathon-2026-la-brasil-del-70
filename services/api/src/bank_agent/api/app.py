@@ -11,6 +11,7 @@ from starlette.types import Scope
 from bank_agent.api.cookies import clear_lost_session_cookie
 from bank_agent.api.csrf import CSRF_HEADER, CsrfTokens
 from bank_agent.api.domain_problems import api_problem_registry
+from bank_agent.api.metrics import HttpMetrics
 from bank_agent.api.middleware import (
     REQUEST_ID_HEADER,
     TRACE_ID_HEADER,
@@ -71,6 +72,7 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     app.state.api_config = config
     app.state.csrf = CsrfTokens(security.csrf_secret)
     app.state.rate_limiter = SlidingWindowLimiter(config.monotonic)
+    app.state.http_metrics = HttpMetrics(provider.telemetry)
     registry = problems or api_problem_registry(config.database_retry_after_seconds)
     registry.install(app, response_hooks=(clear_lost_session_cookie,))
     app.add_middleware(BodySizeLimitMiddleware, max_bytes=security.max_request_body_bytes, respond=_payload_too_large)

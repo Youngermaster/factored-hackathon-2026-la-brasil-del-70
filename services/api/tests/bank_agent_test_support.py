@@ -15,6 +15,7 @@ from bank_agent.application.reliability.ladder import StaticDegradation
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.testing.clock import FixedClock
+from bank_agent.testing.telemetry import RecordingTelemetry
 
 
 class StaticReadinessCheck:
@@ -70,6 +71,7 @@ class FakeProvider:
         self._checks = tuple(checks)
         self.closed = False
         self._degradation = degradation or StaticDegradation()
+        self._telemetry = RecordingTelemetry()
         self._clock = FixedClock(datetime(2026, 6, 18, 15, 0, tzinfo=UTC))
 
     @property
@@ -107,6 +109,10 @@ class FakeProvider:
     @property
     def degradation(self) -> StaticDegradation:
         return self._degradation
+
+    @property
+    def telemetry(self) -> RecordingTelemetry:
+        return self._telemetry
 
     async def aclose(self) -> None:
         self.closed = True

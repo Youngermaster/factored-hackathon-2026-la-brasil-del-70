@@ -22,6 +22,7 @@ from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.reliability import DegradationSource
+from bank_agent.ports.telemetry import Telemetry
 
 
 def no_trace() -> str | None:
@@ -99,6 +100,11 @@ class ServiceProvider(Protocol):
     @property
     def readiness_checks(self) -> Sequence[ReadinessCheck]:
         """Dependencies checked by ``/health/ready``; empty when none are configured."""
+        ...
+
+    @property
+    def telemetry(self) -> Telemetry:
+        """Where the HTTP layer's metrics go (rate-limit rejections, active sessions)."""
         ...
 
     @property
