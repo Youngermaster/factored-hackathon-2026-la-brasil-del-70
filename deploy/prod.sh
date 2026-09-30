@@ -125,7 +125,7 @@ cmd_backup() {
   umask 077
   # pg_dump as the bootstrap superuser over the container's local socket (peer authentication): the owner cannot
   # dump tables with forced row-level security, and no password leaves the container.
-  compose exec -T postgres pg_dump -U postgres -d "${db:-bank_agent}" --format=custom --no-owner > "${target}"
+  compose exec -T postgres pg_dump -U postgres -d "${db:-bank_agent}" --format=custom > "${target}"
   [[ -s "${target}" ]] || fail "the backup is empty"
   say "backup written to ${target}"
 }
@@ -135,7 +135,7 @@ cmd_restore() {
   [[ -f "${source}" ]] || fail "usage: deploy/prod.sh restore <backup file>"
   db="$(env_value POSTGRES_DB)"
   compose stop api purge web
-  compose exec -T postgres pg_restore -U postgres -d "${db:-bank_agent}" --clean --if-exists --no-owner \
+  compose exec -T postgres pg_restore -U postgres -d "${db:-bank_agent}" --clean --if-exists \
     --single-transaction --exit-on-error < "${source}"
   compose up -d --wait --remove-orphans
   say "restored ${source}"
