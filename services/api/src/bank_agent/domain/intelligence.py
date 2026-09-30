@@ -305,6 +305,7 @@ class TextGeneration(DomainModel):
     usage: TokenUsage
     latency_ms: NonNegativeInt
     model_id: ModelId
+    provider_model_id: str | None = None
     prompt: PromptRef
     cost_usd: Annotated[Amount, Field(ge=0)] | None = None
 
@@ -316,6 +317,7 @@ class StructuredGeneration[OutputT: BaseModel](DomainModel):
     usage: TokenUsage
     latency_ms: NonNegativeInt
     model_id: ModelId
+    provider_model_id: str | None = None
     prompt: PromptRef
     repaired: bool = False
     cost_usd: Annotated[Amount, Field(ge=0)] | None = None

@@ -12,6 +12,7 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 from typing import Annotated, Literal
+from urllib.parse import urlsplit
 
 from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
@@ -337,6 +338,17 @@ class ObservabilitySettings(BaseSettings):
     metric_export_interval: int = Field(default=15000, ge=1000, le=300_000)
 
 
+class LangfuseSettings(BaseSettings):
+    """Optional metadata-only export of LLM generation spans to Langfuse."""
+
+    model_config = _config("LANGFUSE_")
+
+    enabled: bool = False
+    base_url: str = "http://localhost:3000"
+    public_key: SecretStr | None = None
+    secret_key: SecretStr | None = None
+
+
 class DegradationSettings(BaseSettings):
     """One feature flag per fallback of the degradation ladder (``docs/operations/degradation.md``).
 
@@ -373,6 +385,7 @@ class AppSettings:
         security: SecuritySettings,
         llm: LLMSettings,
         observability: ObservabilitySettings,
+        langfuse: LangfuseSettings | None = None,
         policy: PolicySettings | None = None,
         retrieval: RetrievalSettings | None = None,
         workflow: WorkflowSettings | None = None,
@@ -384,6 +397,7 @@ class AppSettings:
         self.security = security
         self.llm = llm
         self.observability = observability
+        self.langfuse = langfuse if langfuse is not None else LangfuseSettings(_env_file=None)
         self.policy = policy if policy is not None else PolicySettings()
         self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
         self.workflow = workflow if workflow is not None else WorkflowSettings()
@@ -454,10 +468,46 @@ def production_problems(settings: AppSettings) -> list[str]:
     problems.extend(_origin_problems(settings.security.cors_allowed_origins))
     if settings.llm.api_base and not settings.llm.api_base.startswith("https://"):
         problems.append("LLM_API_BASE must use https in production")
+    if settings.langfuse.enabled and not settings.langfuse.base_url.startswith("https://"):
+        problems.append("LANGFUSE_BASE_URL must use https in production")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:
             problems.append(problem)
+    return problems
+
+
+def langfuse_problems(settings: AppSettings) -> list[str]:
+    """Check opt-in export configuration without including secret values in diagnostics."""
+    if not settings.langfuse.enabled:
+        return []
+    problems: list[str] = []
+    if settings.llm.provider != "litellm":
+        problems.append("LANGFUSE_ENABLED requires LLM_PROVIDER=litellm")
+    if settings.llm.trace_content:
+        problems.append("LLM_TRACE_CONTENT must be false when LANGFUSE_ENABLED=true")
+    if settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(
+        settings.langfuse.base_url.rstrip("/")
+    ):
+        problems.append("OTEL_EXPORTER_OTLP_ENDPOINT must not point to Langfuse when LANGFUSE_ENABLED=true")
+    if not _is_set(settings.langfuse.public_key):
+        problems.append("LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true")
+    if not _is_set(settings.langfuse.secret_key):
+        problems.append("LANGFUSE_SECRET_KEY must be set when LANGFUSE_ENABLED=true")
+    try:
+        target = urlsplit(settings.langfuse.base_url)
+        valid_target = (
+            target.scheme in {"http", "https"}
+            and bool(target.hostname)
+            and target.username is None
+            and target.password is None
+            and not target.query
+            and not target.fragment
+        )
+    except ValueError:
+        valid_target = False
+    if not valid_target:
+        problems.append("LANGFUSE_BASE_URL must be an HTTP URL without credentials, query, or fragment")
     return problems
 
 
@@ -472,13 +522,14 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         security=SecuritySettings(_env_file=env_file),
         llm=LLMSettings(_env_file=env_file),
         observability=ObservabilitySettings(_env_file=env_file),
+        langfuse=LangfuseSettings(_env_file=env_file),
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
         evaluation=EvaluationSettings(_env_file=env_file),
         degradation=DegradationSettings(_env_file=env_file),
     )
-    problems = production_problems(settings)
+    problems = production_problems(settings) + langfuse_problems(settings)
     if problems:
         raise SettingsError(problems)
     return settings

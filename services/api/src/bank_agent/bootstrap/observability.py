@@ -11,6 +11,7 @@ HTTP spans and the ``http.server.request.duration`` histogram follow the stable 
 """
 
 import os
+from base64 import b64encode
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Final
@@ -31,7 +32,8 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from bank_agent import __version__
 from bank_agent.adapters.telemetry.opentelemetry import OpenTelemetryAdapter
-from bank_agent.bootstrap.settings import ObservabilitySettings
+from bank_agent.adapters.telemetry.langfuse import LangfuseGenerationExporter
+from bank_agent.bootstrap.settings import LangfuseSettings, ObservabilitySettings
 
 EXCLUDED_URLS: Final = "/health/live,/health/ready,/health/details"
 STABILITY_OPT_IN: Final = "OTEL_SEMCONV_STABILITY_OPT_IN"
@@ -91,6 +93,7 @@ class Observability:
 def build_observability(
     settings: ObservabilitySettings,
     *,
+    langfuse: LangfuseSettings | None = None,
     environment: str = "development",
     span_processors: Sequence[SpanProcessor] = (),
     metric_readers: Sequence[MetricReader] = (),
@@ -117,6 +120,15 @@ def build_observability(
                 export_interval_millis=settings.metric_export_interval,
             )
         )
+    if langfuse is not None and langfuse.enabled:
+        assert langfuse.public_key is not None and langfuse.secret_key is not None
+        credentials = f"{langfuse.public_key.get_secret_value()}:{langfuse.secret_key.get_secret_value()}"
+        authorization = b64encode(credentials.encode("utf-8")).decode("ascii")
+        exporter = OTLPSpanExporter(
+            endpoint=f"{langfuse.base_url.rstrip('/')}/api/public/otel/v1/traces",
+            headers={"Authorization": f"Basic {authorization}", "x-langfuse-ingestion-version": "4"},
+        )
+        tracer_provider.add_span_processor(BatchSpanProcessor(LangfuseGenerationExporter(exporter)))
     for processor in span_processors:
         tracer_provider.add_span_processor(processor)
     meter_provider = MeterProvider(resource=resource, metric_readers=readers)

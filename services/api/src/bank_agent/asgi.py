@@ -68,7 +68,9 @@ def api_config_from(settings: AppSettings, observability: Observability | None =
 
 def build_app(settings: AppSettings, observability: Observability | None = None, **container: Any) -> FastAPI:
     """The instrumented application: telemetry into the container, trace ids into the HTTP layer, server spans."""
-    observability = observability or build_observability(settings.observability, environment=settings.runtime.app_env)
+    observability = observability or build_observability(
+        settings.observability, langfuse=settings.langfuse, environment=settings.runtime.app_env
+    )
     wired = Container(settings, telemetry=observability.telemetry, on_close=(observability.shutdown,), **container)
     app = create_http_app(wired, api_config_from(settings, observability))
     observability.instrument_app(app)
