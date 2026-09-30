@@ -46,7 +46,7 @@ app.add_typer(db_app, name="db")
 @db_app.command("upgrade")
 def db_upgrade() -> None:
     """Apply every pending migration as the owner role (POSTGRES_ADMIN_USER and POSTGRES_ADMIN_PASSWORD)."""
-    settings = load_settings()
+    settings = load_settings(owner=True)
     if not settings.database.admin_password:
         typer.echo("POSTGRES_ADMIN_PASSWORD is not set", err=True)
         raise typer.Exit(2)

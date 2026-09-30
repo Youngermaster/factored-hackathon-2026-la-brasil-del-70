@@ -52,7 +52,7 @@ def seed(
     gold_dir = workspace.dbt_target().gold_dir
     if not (gold_dir / "customers_serving.parquet").is_file():
         raise ConfigurationError(f"no gold tables for the {workspace.source_kind} source; run make pipeline first")
-    service = settings or load_settings()
+    service = settings or load_settings(owner=True)
     secret, app_role = _checked(service)
     try:
         keys = IdentityKeys(secret)
@@ -81,7 +81,7 @@ def verify(
     gold_dir = workspace.dbt_target().gold_dir
     if not (gold_dir / "customers_serving.parquet").is_file():
         raise ConfigurationError(f"no gold tables for the {workspace.source_kind} source; run make pipeline first")
-    service = settings or load_settings()
+    service = settings or load_settings(owner=True)
     secret, _ = _checked(service)
     try:
         keys = IdentityKeys(secret)
