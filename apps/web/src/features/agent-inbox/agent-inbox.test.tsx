@@ -219,7 +219,7 @@ describe('a handoff', () => {
 });
 
 describe('credit applications', () => {
-  it('lists review items read only and opens one with its links', async () => {
+  it('lists review items and opens one with its links', async () => {
     startAuthServer({ session: sessionView({ role: 'agent' }) });
     startAgentServer({ applications: [creditApplicationView()] });
     renderApp({ path: '/console/credit-applications' });
@@ -228,7 +228,44 @@ describe('credit applications', () => {
     expect(screen.getByText('eligibility_assessments:asm-fixture-1')).toBeInTheDocument();
     expect(screen.getByText('conv-fixture-2')).toBeInTheDocument();
     expect(screen.getByText('Política sintética')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Resolver|Tomar/ })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Resolver|Tomar traspaso/ })).toBeNull();
+  });
+
+  it('is taken into review and then closed, each behind a confirmation, never as a decision', async () => {
+    startAuthServer({ session: sessionView({ role: 'agent' }) });
+    const agent = startAgentServer({ applications: [creditApplicationView()] });
+    renderApp({ path: '/console/credit-applications/app-fixture-1' });
+    await userEvent.click(await screen.findByRole('button', { name: 'Tomar para revisión' }));
+    const review = await screen.findByRole('dialog', {
+      name: '¿Tomar esta solicitud para revisión humana?',
+    });
+    expect(within(review).getByText(/No es una decisión de crédito/)).toBeInTheDocument();
+    await userEvent.click(within(review).getByRole('button', { name: 'Tomar para revisión' }));
+    expect(await screen.findByText('La solicitud está en revisión humana')).toBeInTheDocument();
+    expect(agent.applications.get('app-fixture-1')?.status).toBe('under_human_review');
+
+    await userEvent.click(await screen.findByRole('button', { name: 'Cerrar la revisión' }));
+    const close = await screen.findByRole('dialog', { name: '¿Cerrar esta revisión?' });
+    await userEvent.click(within(close).getByRole('button', { name: 'Cerrar la revisión' }));
+    expect(await screen.findByText('La revisión está cerrada')).toBeInTheDocument();
+    expect(agent.applications.get('app-fixture-1')?.version).toBe(2);
+    expect(
+      screen.queryByRole('button', { name: /Tomar para revisión|Cerrar la revisión/ }),
+    ).toBeNull();
+    expect(screen.getByText('credit_review_closed')).toBeInTheDocument();
+  });
+
+  it('says so when the application changed after it was opened', async () => {
+    startAuthServer({ session: sessionView({ role: 'agent' }) });
+    const agent = startAgentServer({ applications: [creditApplicationView()] });
+    renderApp({ path: '/console/credit-applications/app-fixture-1' });
+    await userEvent.click(await screen.findByRole('button', { name: 'Tomar para revisión' }));
+    agent.applications.set('app-fixture-1', creditApplicationView({ version: 3 }));
+    const review = await screen.findByRole('dialog');
+    await userEvent.click(within(review).getByRole('button', { name: 'Tomar para revisión' }));
+    expect(await within(review).findByRole('alert')).toHaveTextContent(
+      'La solicitud cambió desde que la abriste',
+    );
   });
 
   it('keeps customers and evaluators out of the agent console', async () => {

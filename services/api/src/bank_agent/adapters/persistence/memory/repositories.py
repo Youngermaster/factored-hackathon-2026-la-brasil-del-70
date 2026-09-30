@@ -12,6 +12,7 @@ from bank_agent.domain.conversation import Conversation, Turn
 from bank_agent.domain.credit import (
     CUSTOMER_APPLICATION_TRANSITIONS,
     REVIEWABLE_APPLICATION_STATUSES,
+    REVIEWER_APPLICATION_TRANSITIONS,
     ApplicationStatus,
     CreditApplicationIntake,
     CreditProfile,
@@ -498,11 +499,15 @@ class InMemoryCreditApplicationRepository:
         at: datetime,
         reason_code: str,
     ) -> CreditApplicationIntake:
-        owner = _customer_of(self._context)
-        if status not in CUSTOMER_APPLICATION_TRANSITIONS:
-            raise AccessContextError("a customer can only withdraw an application")
-        current = self._applications.get(application_id)
-        if current is None or current.customer_id != owner:
+        if self._context.role is Role.AGENT:
+            if status not in REVIEWER_APPLICATION_TRANSITIONS:
+                raise AccessContextError("an agent can only take an application into review or close it")
+        else:
+            _customer_of(self._context)
+            if status not in CUSTOMER_APPLICATION_TRANSITIONS:
+                raise AccessContextError("a customer can only withdraw an application")
+        current = await self.get(application_id)
+        if current is None:
             raise CreditApplicationNotFoundError()
         if current.version != expected_version:
             raise ConcurrencyConflictError("the application changed since it was read")

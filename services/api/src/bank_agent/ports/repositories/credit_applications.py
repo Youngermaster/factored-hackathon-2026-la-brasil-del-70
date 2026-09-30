@@ -12,10 +12,10 @@ class CreditApplicationRepository(Protocol):
     """Stores credit application intakes recorded for human review.
 
     Preconditions: bound to an ``AccessContext``. Customers use every method except ``list_for_review`` on their
-    own applications. An agent may only ``get`` and ``list_for_review`` reviewable applications (status
-    ``submitted`` or ``under_human_review``, each a review item of its own) and any application that a handoff's
-    ``credit_review.application_ref`` references (phase 16 adds the agent review moves). Other combinations raise
-    ``AccessContextError``.
+    own applications. An agent may ``get`` and ``list_for_review`` reviewable applications (status ``submitted`` or
+    ``under_human_review``, each a review item of its own) and any application that a handoff's
+    ``credit_review.application_ref`` references, and may ``transition`` a reviewable application to
+    ``under_human_review`` or ``closed``. Other combinations raise ``AccessContextError``.
     Postconditions: ``list_mine`` returns the customer's applications, most recent first, ties broken by
     ``application_id``. A stored application's ``version`` increases by one on every transition.
     Errors: ``create`` with an existing idempotency key and the same request returns the stored intake; with a
@@ -23,7 +23,8 @@ class CreditApplicationRepository(Protocol):
     ``DuplicateEntityError``; an intake for another customer raises ``AccessContextError``. ``transition``
     raises ``CreditApplicationNotFoundError`` for an unknown or foreign id, ``ConcurrencyConflictError`` for a
     stale ``expected_version``, ``InvalidApplicationTransitionError`` for an illegal move, and
-    ``AccessContextError`` when a customer attempts a move other than ``withdrawn``.
+    ``AccessContextError`` when a customer attempts a move other than ``withdrawn`` or an agent a move other than
+    ``under_human_review`` or ``closed``.
     Isolation: another customer's application behaves exactly like a missing one.
     """
 

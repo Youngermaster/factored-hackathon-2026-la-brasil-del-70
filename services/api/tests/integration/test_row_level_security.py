@@ -116,9 +116,15 @@ async def test_the_agent_reads_reviewable_applications_and_referenced_ones(
     existing = ApplicationId("app-000001")
     try:
         assert await _count(app, "credit_applications", role="agent") == 1
+        for status in ("withdrawn", "submitted"):  # agents only move intakes into review or close them (0013)
+            async with app.transaction():
+                await app.execute("SELECT set_config('app.role', 'agent', true)")
+                with pytest.raises(asyncpg.InsufficientPrivilegeError):
+                    await app.execute(f"UPDATE app.credit_applications SET status = '{status}'")  # noqa: S608
         async with app.transaction():
-            await app.execute("SELECT set_config('app.role', 'agent', true)")
-            assert await app.execute("UPDATE app.credit_applications SET status = 'closed'") == "UPDATE 0"
+            await app.execute("SELECT set_config('app.role', 'customer', true)")
+            await app.execute("SELECT set_config('app.customer_id', 'CUS-B-0002', true)")
+            assert await app.execute("UPDATE app.credit_applications SET version = version") == "UPDATE 0"
         async with backend.uow_factory()(CONTEXT_A) as uow:
             await uow.credit_applications.transition(
                 existing, ApplicationStatus.WITHDRAWN, expected_version=0, at=T0, reason_code="customer_request"

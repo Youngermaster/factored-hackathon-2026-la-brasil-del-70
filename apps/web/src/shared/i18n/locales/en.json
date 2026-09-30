@@ -871,7 +871,20 @@
     "assessment": "Assessment",
     "conversation": "Originating conversation",
     "customer": "Customer",
-    "history": "Status history"
+    "history": "Status history",
+    "actions": {
+      "review": "Take into review",
+      "reviewTitle": "Take this application into human review?",
+      "reviewBody": "The application moves to under human review, and the move is recorded with your name. It is not a credit decision.",
+      "reviewConfirm": "Take into review",
+      "reviewDone": "The application is under human review",
+      "close": "Close the review",
+      "closeTitle": "Close this review?",
+      "closeBody": "Closing records that the human review has ended. No credit decision is recorded, and the move is recorded with your name.",
+      "closeConfirm": "Close the review",
+      "closeDone": "The review is closed",
+      "conflict": "The application changed since you opened it. Reload it and try again."
+    }
   },
   "traces": {
     "heading": "Execution records",

@@ -871,7 +871,20 @@
     "assessment": "Avaliação",
     "conversation": "Conversa de origem",
     "customer": "Cliente",
-    "history": "Histórico de situações"
+    "history": "Histórico de situações",
+    "actions": {
+      "review": "Assumir a revisão",
+      "reviewTitle": "Assumir esta solicitação para revisão humana?",
+      "reviewBody": "A solicitação passa para revisão humana e a mudança fica registrada com o seu nome. Não é uma decisão de crédito.",
+      "reviewConfirm": "Assumir a revisão",
+      "reviewDone": "A solicitação está em revisão humana",
+      "close": "Encerrar a revisão",
+      "closeTitle": "Encerrar esta revisão?",
+      "closeBody": "Encerrar registra que a revisão humana terminou. Nenhuma decisão de crédito é registrada, e a mudança fica registrada com o seu nome.",
+      "closeConfirm": "Encerrar a revisão",
+      "closeDone": "A revisão está encerrada",
+      "conflict": "A solicitação mudou desde que você a abriu. Recarregue e tente de novo."
+    }
   },
   "traces": {
     "heading": "Registros de execução",
