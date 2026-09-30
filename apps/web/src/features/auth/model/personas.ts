@@ -3,12 +3,17 @@ import type { Schema } from '@/shared/api';
 /**
  * The demo personas seeded by `make seed` (docs/demo/personas.md). Ids are demo labels, not secrets; the
  * descriptions live in the locale files under `personas.<id>`. Shown only in demo mode.
+ *
+ * `fullDeliveryOnly` marks the four personas that only a seed from the full organizer delivery loads: the committed
+ * sample (the default seed and the deployed demo) has no customer that matches them, so the picker lists them
+ * apart instead of letting a visitor pick a profile that cannot sign in there.
  */
 export interface Persona {
   readonly id: PersonaId;
   readonly role: Schema<'Role'>;
   readonly country?: Schema<'Country'>;
   readonly workflow?: Schema<'WorkflowId'>;
+  readonly fullDeliveryOnly?: true;
 }
 
 export type PersonaId =
@@ -37,18 +42,24 @@ const customer = (
   workflow: Schema<'WorkflowId'>,
 ): Persona => ({ id, role: 'customer', country, workflow });
 
+const fullDeliveryCustomer = (
+  id: PersonaId,
+  country: Schema<'Country'>,
+  workflow: Schema<'WorkflowId'>,
+): Persona => ({ ...customer(id, country, workflow), fullDeliveryOnly: true });
+
 export const PERSONAS: readonly Persona[] = [
   customer('acc-mx-accounts', 'MX', 'account_inquiry'),
-  customer('acc-co-payments', 'CO', 'account_inquiry'),
-  customer('acc-ar-similar-transfers', 'AR', 'account_inquiry'),
+  fullDeliveryCustomer('acc-co-payments', 'CO', 'account_inquiry'),
+  fullDeliveryCustomer('acc-ar-similar-transfers', 'AR', 'account_inquiry'),
   customer('crd-mx-two-cards', 'MX', 'card_support'),
   customer('crd-co-declined', 'CO', 'card_support'),
   customer('crd-ar-expired', 'AR', 'card_support'),
   customer('crd-mx-blocked', 'MX', 'card_support'),
   customer('dsp-co-unrecognized', 'CO', 'dispute'),
   customer('dsp-mx-open-case', 'MX', 'dispute'),
-  customer('dsp-ar-repeat-complainer', 'AR', 'dispute'),
-  customer('dsp-mx-similar-purchases', 'MX', 'dispute'),
+  fullDeliveryCustomer('dsp-ar-repeat-complainer', 'AR', 'dispute'),
+  fullDeliveryCustomer('dsp-mx-similar-purchases', 'MX', 'dispute'),
   customer('cre-mx-complete', 'MX', 'credit'),
   customer('cre-co-no-income', 'CO', 'credit'),
   customer('cre-ar-borderline', 'AR', 'credit'),

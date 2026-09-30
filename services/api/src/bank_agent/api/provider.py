@@ -21,6 +21,7 @@ from bank_agent.policy.loader.catalog import ProductDisplay
 from bank_agent.ports.determinism import Clock
 from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
+from bank_agent.ports.rate_limits import RateLimitStore
 from bank_agent.ports.reliability import DegradationSource
 from bank_agent.ports.telemetry import Telemetry
 
@@ -40,7 +41,9 @@ class ApiConfig:
     readiness_timeout_seconds: float = 2.0
     security: SecurityConfig = field(default_factory=SecurityConfig.development)
     monotonic: Callable[[], float] = time.monotonic
-    """The clock of the rate limiter's windows; tests pass a controllable one."""
+    """The clock of the in-process rate limiter's windows; tests pass a controllable one."""
+    rate_limit_store: RateLimitStore | None = None
+    """Where rate-limit counters live; ``None`` keeps them in this process (the shared store in production)."""
     database_retry_after_seconds: int = 30
     """``Retry-After`` on the 503 while the database is unavailable (``DEGRADATION_DATABASE_RETRY_AFTER_SECONDS``)."""
     current_trace_id: Callable[[], str | None] = no_trace

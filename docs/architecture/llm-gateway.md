@@ -112,4 +112,4 @@ make api-local-llm                    # the API on 127.0.0.1:8000 with the same 
 - Without a database the budget ledger is per process; with one it is shared in PostgreSQL (phase 15).
 - The Portuguese check over cassettes is lexical; it catches Spanish leakage, not awkward phrasing.
 - Name redaction masks the session's known names and names introduced by phrases such as "me llamo"; a name mentioned without such a phrase passes through. Workflow code must never put names in variables (CLAUDE.md rule 6); the redaction is a second line of defense.
-- Workflow callers, their fallbacks, and the grounding verifier that re-checks `summarize_for_handoff` arrive in phase 09.
+- Workflow callers, their deterministic fallbacks, and the grounding verifier that re-checks `summarize_for_handoff` were added in phase 09 ([grounding](../workflows/grounding.md)).

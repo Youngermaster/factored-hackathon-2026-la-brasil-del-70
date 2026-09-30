@@ -63,8 +63,8 @@ Engine states are evaluated and grounded in the canonical binding states of `pol
 
 ## Understanding
 
-- Amounts: `lucas`/`luca` and `mil` and `k` multiply by 1,000, `palos`, `millones`, `milhões` by 1,000,000; `varos` and `pesos` are the unit; separators follow the text; a bare `$` takes the account currency. The normalized amount wins over the model's number when the text has a multiplier or a currency marker.
-- Dates: `ayer`, `anteayer`, `ontem`, `anteontem`, weekdays with `pasado`/`passado`, `la semana pasada`, `el mes pasado`, `hace N días`, `7 de junio`, full dates, and `dd/mm` against the `Clock` in the customer's time zone. `03/04` keeps both readings; readings in the future or before the window are dropped, and two remaining readings are asked.
+- Amounts: `lucas`/`luca` and `mil` and `k` multiply by 1,000, `palos`, `millones`, `milhões` by 1,000,000; `varos` and `pesos` are the unit; separators follow the text; a bare `$` takes the account currency; a currency code before the amount (`COP 1,015,801.59`, as the statement table shows it) names the currency. The normalized amount wins over the model's number when the text has a multiplier or a currency marker.
+- Dates: `ayer`, `anteayer`, `ontem`, `anteontem`, weekdays with `pasado`/`passado`, `la semana pasada`, `el mes pasado`, `hace N días`, `7 de junio`, full dates, the abbreviated dates the statement table shows (`23 abr 2026`, `23 de abr. de 2026`, with the year), and `dd/mm` against the `Clock` in the customer's time zone. `03/04` keeps both readings; readings in the future or before the window are dropped, and two remaining readings are asked.
 - Reason, merchant, card ending, and channel have keyword fallbacks, so the workflow runs with `LLM_PROVIDER=fake` (every model call refused).
 
 ## Sequence: normal path (scenario 1, es-MX)

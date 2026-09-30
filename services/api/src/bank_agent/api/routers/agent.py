@@ -1,6 +1,7 @@
-"""``/v1/agent``: the handoff inbox (list, read, claim, resolve) and read-only credit application intakes.
+"""``/v1/agent``: the handoff inbox (list, read, claim, resolve) and credit application intakes (read, review, close).
 
-Agents act on structured handoffs; they never read a customer's conversation. Claims and resolutions are audited.
+Agents act on structured handoffs; they never read a customer's conversation. Claims, resolutions, and credit review
+moves are audited.
 Every handoff view carries its policy basis with the clause excerpts rendered from the loaded pack.
 """
 
@@ -13,6 +14,7 @@ from bank_agent.api.config import RateClass
 from bank_agent.api.dependencies import endpoint, role_dependency, services
 from bank_agent.api.schemas.agent import (
     CreditApplicationListResponse,
+    CreditApplicationMoveRequest,
     CreditApplicationView,
     HandoffListResponse,
     HandoffView,
@@ -143,3 +145,39 @@ async def get_credit_application(
     return CreditApplicationView.model_validate(
         await services(request).inbox.credit_application(session, application_id)
     )
+
+
+_AGENT_REVIEW_CREDIT_APPLICATION = endpoint(
+    rate=RateClass.WRITE, roles=AGENT, changes_state=True, operation_id="agent_review_credit_application"
+)
+
+
+@router.post(
+    "/credit-applications/{application_id}/review",
+    response_model=CreditApplicationView,
+    **_AGENT_REVIEW_CREDIT_APPLICATION,
+)
+async def review_credit_application(
+    request: Request, application_id: ApplicationPath, body: CreditApplicationMoveRequest, session: AgentSession
+) -> CreditApplicationView:
+    """Take a submitted intake into human review. Audited; never a lending decision."""
+    moved = await services(request).inbox.review_credit_application(session, application_id, body.expected_version)
+    return CreditApplicationView.model_validate(moved)
+
+
+_AGENT_CLOSE_CREDIT_APPLICATION = endpoint(
+    rate=RateClass.WRITE, roles=AGENT, changes_state=True, operation_id="agent_close_credit_application"
+)
+
+
+@router.post(
+    "/credit-applications/{application_id}/close",
+    response_model=CreditApplicationView,
+    **_AGENT_CLOSE_CREDIT_APPLICATION,
+)
+async def close_credit_application(
+    request: Request, application_id: ApplicationPath, body: CreditApplicationMoveRequest, session: AgentSession
+) -> CreditApplicationView:
+    """Close an intake under human review. Audited; there is no approved or declined status."""
+    moved = await services(request).inbox.close_credit_application(session, application_id, body.expected_version)
+    return CreditApplicationView.model_validate(moved)

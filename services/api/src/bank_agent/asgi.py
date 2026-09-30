@@ -12,6 +12,7 @@ import uuid
 from dataclasses import replace
 from typing import Any
 
+import structlog
 from fastapi import FastAPI
 
 from bank_agent import __version__
@@ -22,6 +23,8 @@ from bank_agent.bootstrap.container import Container
 from bank_agent.bootstrap.logging import configure_logging
 from bank_agent.bootstrap.observability import Observability, build_observability
 from bank_agent.bootstrap.settings import AppSettings, load_settings
+
+_log = structlog.get_logger(__name__)
 
 
 def _random_request_id() -> str:
@@ -72,14 +75,24 @@ def build_app(settings: AppSettings, observability: Observability | None = None,
         settings.observability, langfuse=settings.langfuse, environment=settings.runtime.app_env
     )
     wired = Container(settings, telemetry=observability.telemetry, on_close=(observability.shutdown,), **container)
-    app = create_http_app(wired, api_config_from(settings, observability))
+    config = replace(api_config_from(settings, observability), rate_limit_store=wired.rate_limit_store)
+    app = create_http_app(wired, config)
     observability.instrument_app(app)
     observability.instrument_dependencies(wired.database_engine)
     return app
+
+
+def warn_about_public_demo_mode(settings: AppSettings) -> bool:
+    """Log once at startup when production runs the public demo (on-screen demo codes; docs/security/demo-mode.md)."""
+    if not (settings.is_production and settings.runtime.demo_mode):
+        return False
+    _log.warning("public_demo_mode", detail="demo one-time codes are shown on screen; synthetic data only")
+    return True
 
 
 def create_app() -> FastAPI:
     """Build the application from the environment."""
     settings = load_settings()
     configure_logging(settings.runtime.log_level)
+    warn_about_public_demo_mode(settings)
     return build_app(settings)

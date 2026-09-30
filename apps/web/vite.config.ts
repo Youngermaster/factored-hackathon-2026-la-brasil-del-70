@@ -23,6 +23,9 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
+    // Never inline assets as data: URIs (Vite inlines files under 4 KiB by default, such as small font subsets): the
+    // production CSP allows fonts and images from 'self' only (deploy/caddy/Caddyfile).
+    assetsInlineLimit: 0,
   },
   test: {
     environment: 'jsdom',

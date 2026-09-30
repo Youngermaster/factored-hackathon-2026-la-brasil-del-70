@@ -21,6 +21,7 @@ from bank_agent.adapters.persistence.memory.unit_of_work import InMemoryUnitOfWo
 from bank_agent.adapters.persistence.postgres.audit import PostgresStandaloneAuditLog
 from bank_agent.adapters.persistence.postgres.challenges import PostgresChallengeStore
 from bank_agent.adapters.persistence.postgres.database import AvailabilityListener, database_url
+from bank_agent.adapters.persistence.postgres.rate_limits import PostgresRateLimitStore, rate_limit_key
 from bank_agent.adapters.persistence.postgres.sessions import PostgresSessionStore
 from bank_agent.adapters.persistence.postgres.unit_of_work import PostgresUnitOfWorkFactory
 from bank_agent.application.identity.sessions import SessionService
@@ -30,9 +31,11 @@ from bank_agent.application.tools.context import SessionContext, ToolPolicy, Too
 from bank_agent.application.tools.failure_injection import ToolFailureInjector
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
 from bank_agent.domain.actions import ToolFailureMode, ToolName
+from bank_agent.domain.errors import ConfigurationError
 from bank_agent.ports.audit import AuditLog
 from bank_agent.ports.credit_catalog import CreditProductCatalog
 from bank_agent.ports.determinism import Clock, IdGenerator
+from bank_agent.ports.rate_limits import RateLimitStore
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
 
@@ -69,6 +72,16 @@ def build_persistence(engine: AsyncEngine | None, listener: AvailabilityListener
         audit_log=standalone_audit_log(store),
         challenge_store=InMemoryChallengeStore(),
     )
+
+
+def build_rate_limit_store(settings: AppSettings, engine: AsyncEngine | None, clock: Clock) -> RateLimitStore | None:
+    """The shared PostgreSQL store with ``RATE_LIMIT_BACKEND=postgres``; ``None`` keeps the counters in the process."""
+    if settings.security.rate_limit_backend == "memory":
+        return None
+    secret = settings.security.session_secret
+    if engine is None or secret is None or not secret.get_secret_value().strip():
+        raise ConfigurationError("RATE_LIMIT_BACKEND=postgres needs the database settings and SESSION_SECRET")
+    return PostgresRateLimitStore(engine, clock, rate_limit_key(secret.get_secret_value().encode("utf-8")))
 
 
 def build_session_service(

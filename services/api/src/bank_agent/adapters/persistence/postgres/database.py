@@ -66,13 +66,14 @@ def unavailable(error: BaseException) -> DatabaseUnavailableError:
 
 
 class DatabaseRole(StrEnum):
-    """The value of ``app.role``: an access role, or one of the two service roles."""
+    """The value of ``app.role``: an access role, or one of the service roles (identity, seed, retention)."""
 
     CUSTOMER = "customer"
     AGENT = "agent"
     EVALUATOR = "evaluator"
     IDENTITY = "identity"
     SEED = "seed"
+    RETENTION = "retention"
 
 
 def database_url(*, user: str, password: str | None, host: str, port: int, database: str) -> URL:

@@ -1,4 +1,4 @@
-"""Credit application intakes: idempotent creation, customer withdrawal, agent reads of reviewable intakes."""
+"""Credit application intakes: idempotent creation, customer withdrawal, agent reads and review moves."""
 
 from collections.abc import Sequence
 from datetime import datetime
@@ -12,6 +12,7 @@ from bank_agent.domain.access import Role
 from bank_agent.domain.credit import (
     CUSTOMER_APPLICATION_TRANSITIONS,
     REVIEWABLE_APPLICATION_STATUSES,
+    REVIEWER_APPLICATION_TRANSITIONS,
     ApplicationStatus,
     CreditApplicationIntake,
 )
@@ -123,16 +124,20 @@ class PostgresCreditApplicationRepository:
         at: datetime,
         reason_code: str,
     ) -> CreditApplicationIntake:
-        owner = customer_of(self._tx.context)
-        if status not in CUSTOMER_APPLICATION_TRANSITIONS:
-            raise AccessContextError("a customer can only withdraw an application")
+        if self._tx.context.role is Role.AGENT:
+            if status not in REVIEWER_APPLICATION_TRANSITIONS:
+                raise AccessContextError("an agent can only take an application into review or close it")
+        else:
+            customer_of(self._tx.context)
+            if status not in CUSTOMER_APPLICATION_TRANSITIONS:
+                raise AccessContextError("a customer can only withdraw an application")
         current = await self.get(application_id)
         if current is None:
             raise CreditApplicationNotFoundError()
         if current.version != expected_version:
             raise ConcurrencyConflictError("the application changed since it was read")
         moved = current.transition_to(status, at=at, reason_code=reason_code).evolve(version=expected_version + 1)
-        keys = {"customer": owner, "application_id": application_id}
+        keys = {"customer": current.customer_id, "application_id": application_id}
         locked = await self._tx.lock_or_mark_conflicted(
             "SELECT 1 FROM app.credit_applications WHERE customer_id = :customer "
             "AND application_id = :application_id FOR NO KEY UPDATE NOWAIT",

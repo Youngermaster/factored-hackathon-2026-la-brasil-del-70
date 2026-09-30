@@ -14,7 +14,7 @@ import {
 } from '@/shared/ui';
 
 import { useSummaries } from '../api/summaries';
-import { groupRuns, type RunGroup } from '../model/systems';
+import { groupRuns, runNotes, type RunGroup } from '../model/systems';
 import { Breakdowns } from './Breakdowns';
 import { MetricTable } from './MetricTable';
 
@@ -85,7 +85,7 @@ function Run({ group }: { readonly group: RunGroup }) {
   const { t } = useTranslation();
   const format = useFormat();
   const titleId = `run-${group.runId}`;
-  const notes = group.summaries.flatMap((summary) => summary.notes);
+  const notes = runNotes(group.summaries);
   const failureTables = [
     ...new Set(
       group.summaries.flatMap((summary) =>
@@ -116,9 +116,12 @@ function Run({ group }: { readonly group: RunGroup }) {
         {notes.length > 0 && (
           <ul className="flex flex-col gap-1 text-small text-fg-secondary">
             {notes.map((note) => (
-              <li key={note} className="flex items-start gap-1.5">
+              <li key={note.text} className="flex items-start gap-1.5">
                 <InfoIcon aria-hidden="true" size={16} className="mt-0.5 shrink-0" />
-                {note}
+                {note.systems !== null && (
+                  <span className="font-mono text-fg-muted">{note.systems.join(', ')}</span>
+                )}
+                <span>{note.text}</span>
               </li>
             ))}
           </ul>

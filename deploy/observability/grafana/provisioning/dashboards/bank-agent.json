@@ -1067,7 +1067,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(bank_sessions_active)",
+          "expr": "max(bank_sessions_active)",
           "legendFormat": "active sessions",
           "refId": "A"
         },

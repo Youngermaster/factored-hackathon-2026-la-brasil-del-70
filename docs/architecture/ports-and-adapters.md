@@ -67,44 +67,50 @@ The read side of each customer-data repository is its own Protocol (`CustomerRea
 
 ## Ports, adapters, and phases
 
-| Port | Mode | Present adapters | Planned adapters (phase) |
-|---|---|---|---|
-| `CustomerReader`, `CustomerRepository` | async | memory; DuckDB reader over gold Parquet | PostgreSQL (05) |
-| `ProductReader`, `ProductRepository` | async | memory; DuckDB reader over gold Parquet | PostgreSQL (05) |
-| `TransactionReader`, `TransactionRepository` | async | memory; DuckDB reader over gold Parquet | PostgreSQL (05) |
-| `HistoricalComplaintReader`, `HistoricalComplaintRepository` | async | memory; DuckDB reader over gold Parquet | PostgreSQL (05) |
-| `CreditProfileReader` | async | memory; DuckDB reader over gold Parquet | PostgreSQL (05) |
-| `CreditApplicationRepository` | async | memory | PostgreSQL (05) |
-| `CaseRepository` | async | memory | PostgreSQL (05) |
-| `ConversationRepository` | async | memory | PostgreSQL (05) |
-| `ExecutionRecordRepository` | async | memory | PostgreSQL, append-only at the database level (05) |
-| `HandoffRepository` | async | memory | PostgreSQL (05) |
-| `AuditLog` | async | memory (in a unit of work and standalone) | PostgreSQL, append-only at the database level (05) |
-| `UnitOfWork`, `UnitOfWorkFactory` | async | memory | PostgreSQL with row-level security context (05) |
-| `SessionStore` | async | memory | PostgreSQL (05) |
-| `IdentityProvider` | async | none | mock identity provider (05) |
-| `OtpSender` | async | none | `DemoOtpSender` (05) |
-| `Clock` | sync | `SystemClock`; `FixedClock` (testing) | none |
-| `IdGenerator` | sync | `RandomIdGenerator`; `SequentialIdGenerator` (testing) | none |
-| `LLMClient` | async | `LiteLLMClient` (optional extra), `CassetteLLM`, `UnconfiguredLLMClient`, and the decorator stack ([llm-gateway.md](llm-gateway.md)); `FakeLLM` (testing) | provider chosen by evaluation (14) |
-| `PromptRegistry` | sync | `FilePromptRegistry` over `bank_agent/prompts/<id>/<version>.md` | none |
-| `PolicyRepository` | sync | `PolicyPack` (in memory), `FilesystemPolicyRepository` (06); `BoundPolicyLookup` resolves every state at startup (07) | none |
-| `CreditProductCatalog` | sync | memory (fixture entries) | filesystem catalog under `policies/credit/` (06) |
-| `EligibilityPolicy` | sync | `FakeEligibilityPolicy` (testing) | synthetic eligibility service over `ELG` rules in `bank_agent/policy/eligibility` (06) |
-| `RiskEstimator` | sync | `FakeRiskEstimator` (testing) | score-band baseline (09 part B), learned estimators through `ModelRegistry` (10) |
-| `Retriever` | sync | `Bm25Retriever`, `DenseRetriever` (optional `ml` extra), `HybridRetriever` (07, [grounding](../workflows/grounding.md)) | none |
-| `IntentRouter` | sync | `FakeIntentRouter` (testing) | `router:keyword@1` (09), `router:tfidf` and `router:embeddings` (10) |
-| `TransactionResolver` | sync | `FakeTransactionResolver` (testing) | `resolver:rules@1` (09), `resolver:lgbm` (10) |
-| `LanguageDetector` | sync | `FakeLanguageDetector` (testing) | lingua adapter (09) |
-| `ModelRegistry` | sync | none | `FilesystemModelRegistry` (10a, the default); an MLflow registry adapter is optional and not built (BACKLOG) |
-| `Telemetry` | sync | `NoopTelemetry`; `RecordingTelemetry` (testing) | OpenTelemetry (15) |
-| `ReadinessCheck` | async | `PostgresReadinessCheck` | further dependencies (15) |
+Every port with its adapters as built, and the phase that added each. The default the composition root selects is marked; test doubles live in `bank_agent.testing`.
+
+| Port | Mode | Adapters (phase) |
+|---|---|---|
+| `CustomerReader`, `CustomerRepository` | async | memory; DuckDB reader over gold Parquet (03); PostgreSQL (05, default) |
+| `ProductReader`, `ProductRepository` | async | memory; DuckDB reader over gold Parquet (03); PostgreSQL (05, default) |
+| `TransactionReader`, `TransactionRepository` | async | memory; DuckDB reader over gold Parquet (03); PostgreSQL (05, default) |
+| `HistoricalComplaintReader`, `HistoricalComplaintRepository` | async | memory; DuckDB reader over gold Parquet (03); PostgreSQL (05, default) |
+| `CreditProfileReader` | async | memory; DuckDB reader over gold Parquet (03); PostgreSQL (05, default) |
+| `CreditApplicationRepository` | async | memory; PostgreSQL (05), with agent review moves (16) |
+| `CaseRepository` | async | memory; PostgreSQL (05) |
+| `ConversationRepository` | async | memory; PostgreSQL (05) |
+| `ExecutionRecordRepository` | async | memory; PostgreSQL, append-only at the database level (05) |
+| `HandoffRepository` | async | memory; PostgreSQL (05) |
+| `AuditLog` | async | memory (in a unit of work and standalone); PostgreSQL, append-only at the database level (05) |
+| `UnitOfWork`, `UnitOfWorkFactory` | async | memory; PostgreSQL with the row-level security context set in each transaction (05) |
+| `SessionStore` | async | memory; PostgreSQL (05), with a deployment-wide active count (16) |
+| `IdentityProvider` | async | the mock identity provider over keyed lookups (05) |
+| `OtpSender` | async | `DemoOtpSender` (05); a real delivery channel is post-event work (BACKLOG) |
+| `Clock` | sync | `SystemClock`; `FixedClock` (testing) |
+| `IdGenerator` | sync | `RandomIdGenerator`; `SequentialIdGenerator` (testing) |
+| `LLMClient` | async | `UnconfiguredLLMClient` (`LLM_PROVIDER=fake`, default), `CassetteLLM`, `LiteLLMClient` (optional extra; the local Ollama model in 14b, a hosted provider by settings), each wrapped in the decorator stack ([llm-gateway.md](llm-gateway.md)); `FakeLLM` (testing) |
+| `BudgetLedger` | async | `InMemoryBudgetLedger` (08); `PostgresBudgetLedger`, shared by every worker (15, default with a database) |
+| `PromptRegistry` | sync | `FilePromptRegistry` over `bank_agent/prompts/<id>/<version>.md` (08) |
+| `PolicyRepository` | sync | `PolicyPack` (in memory), `FilesystemPolicyRepository` (06); `BoundPolicyLookup` resolves every state at startup (07) |
+| `CreditProductCatalog` | sync | memory (fixture entries); the filesystem catalog under `policies/credit/` (06) |
+| `EligibilityPolicy` | sync | the synthetic eligibility service over `ELG` rules in `bank_agent/policy/eligibility` (06); `FakeEligibilityPolicy` (testing) |
+| `RiskEstimator` | sync | `risk_estimator:score_band@1` (09b, default); `logreg` and `lgbm` through `ModelRegistry` (10b); `FakeRiskEstimator` (testing) |
+| `Retriever` | sync | `Bm25Retriever` (07, the API default), `DenseRetriever` (optional `ml` extra), `HybridRetriever` ([grounding](../workflows/grounding.md)) |
+| `IntentRouter` | sync | `router:keyword@1` (09a, default); `router:tfidf` and `router:embeddings` (10a); `FakeIntentRouter` (testing) |
+| `TransactionResolver` | sync | `resolver:rules@1` (09a, default); `resolver:lgbm` (10a); `FakeTransactionResolver` (testing) |
+| `LanguageDetector` | sync | `language_detector:lexical@1` (09a, default); a lingua adapter waits for a size decision (pending action 22); `FakeLanguageDetector` (testing) |
+| `ModelRegistry` | sync | `FilesystemModelRegistry` (10a, default); an MLflow registry adapter is optional and not built (BACKLOG) |
+| `Telemetry` | sync | OpenTelemetry (15); `NoopTelemetry`; `RecordingTelemetry` (testing) |
+| `DegradationSource` | sync | `DegradationMonitor` over database and model health (15) |
+| `ReadinessCheck` | async | `PostgresReadinessCheck` (11) |
+| `RateLimitStore` | async | the in-process sliding log; a PostgreSQL sliding-window counter shared by every worker (16, production) |
+| `EvaluationSummaryReader` | async | `FilesystemEvaluationSummaries` over `evals/reports/summaries/` (13) |
 
 Async ports may perform I/O. Sync ports run in process on data loaded at startup; a remote implementation (for example a hosted classifier) would need an async variant of the port.
 
 ## Contract suites
 
-Every adapter runs the shared suite for its port in `services/api/tests/contracts/`: one parameterized class per port. Backends are listed in `services/api/tests/bank_agent_contracts.py`: `READ_BACKENDS` for the reader suites and `WRITE_BACKENDS` for the writer, unit of work, audit, and session store suites. The memory backend is marked `unit`; the `duckdb` read backend (phase 03, `services/api/tests/bank_agent_duckdb.py`, which writes the contract dataset as gold serving Parquet with `GOLD_SCHEMAS`) and the PostgreSQL backends of phase 05 are marked `integration`. The DuckDB readers are not wired into the composition root yet: phase 05 seeds PostgreSQL from the same gold files and selects backends by settings. The model and determinism suites parameterize over the test doubles and the system adapters, and phases 09 and 10 add their implementations to the same lists. The credit suites (`test_credit_profile_contract.py`, `test_credit_application_contract.py`, `test_credit_catalog_contract.py`, `test_credit_model_ports_contract.py`) follow the same pattern: phases 03 and 05 added database backends, phase 06 the filesystem catalog (`filesystem`) and the synthetic eligibility service (`synthetic`), both marked `integration` because they read `policies/`, and phases 09 and 10 add the estimators.
+Every adapter runs the shared suite for its port in `services/api/tests/contracts/`: one parameterized class per port. Backends are listed in `services/api/tests/bank_agent_contracts.py`: `READ_BACKENDS` for the reader suites and `WRITE_BACKENDS` for the writer, unit of work, audit, and session store suites. The memory backend is marked `unit`; the `duckdb` read backend (phase 03, `services/api/tests/bank_agent_duckdb.py`, which writes the contract dataset as gold serving Parquet with `GOLD_SCHEMAS`) and the PostgreSQL backends of phase 05 are marked `integration`. The API serves customer data from PostgreSQL, seeded from the same gold files; the DuckDB readers serve the offline packages and the contract suites. The model and determinism suites parameterize over the test doubles and the system adapters, and phases 09 and 10 add their implementations to the same lists. The credit suites (`test_credit_profile_contract.py`, `test_credit_application_contract.py`, `test_credit_catalog_contract.py`, `test_credit_model_ports_contract.py`) follow the same pattern: phases 03 and 05 added database backends, phase 06 the filesystem catalog (`filesystem`) and the synthetic eligibility service (`synthetic`), both marked `integration` because they read `policies/`, and phases 09 and 10 add the estimators.
 
 The suites check, for every adapter: domain objects are returned; another customer's record behaves like a missing one; roles are enforced; ordering and limits are deterministic; idempotent writes return the stored result; append-only records reject changes; optimistic versions reject stale writes; session rotation retires the old token digest; trust state is append-only; and a unit of work applies writes only on commit, rolls back otherwise, and refuses a conflicting commit.
 

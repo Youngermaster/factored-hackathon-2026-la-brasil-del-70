@@ -257,14 +257,14 @@ close:
   i1: bounded retries
   i2: template fallback
   i3: row-level security
-  i4: traced model calls
+  i4: traces, alerts
   i5: redaction
   remaining: next
-  r1: monitoring
-  r2: load test
-  r3: retention
-  r4: model provider
-  r5: deployment
+  r1: hosted model
+  r2: cloud load test
+  r3: managed secrets
+  r4: real identity
+  r5: compliance
   deployed: deployed at
   teamTitle: La Brasil del 70
   m1: Miguel

@@ -6,7 +6,8 @@ import pytest
 
 from bank_agent.bootstrap.settings import MIN_SECRET_LENGTH, SettingsError, load_settings
 
-SECRET_VARIABLES = ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_ADMIN_PASSWORD", "POSTGRES_APP_PASSWORD")
+SECRET_VARIABLES = ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_APP_PASSWORD")
+"""The secrets the API process needs in production (the owner password never reaches it)."""
 
 
 def _strong_secret() -> str:
@@ -21,6 +22,7 @@ def production_environment(monkeypatch: pytest.MonkeyPatch) -> dict[str, str]:
         "DEMO_MODE": "false",
         "RETRIEVAL_INDEX_SOURCE": "stored",
         "CORS_ALLOWED_ORIGINS": "https://bank.example",
+        "RATE_LIMIT_BACKEND": "postgres",
     }
     values.update({name: _strong_secret() for name in SECRET_VARIABLES})
     for name, value in values.items():
@@ -61,7 +63,27 @@ def test_production_refuses_demo_mode(production_environment: dict[str, str], mo
     with pytest.raises(SettingsError) as raised:
         load_settings(env_file=None)
 
-    assert raised.value.problems == ["DEMO_MODE must be false in production"]
+    assert raised.value.problems == ["DEMO_MODE must be false in production unless ALLOW_PUBLIC_DEMO_MODE=true"]
+
+
+def test_production_accepts_demo_mode_only_when_the_public_demo_is_allowed(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("DEMO_MODE", "true")
+    monkeypatch.setenv("ALLOW_PUBLIC_DEMO_MODE", "true")
+
+    settings = load_settings(env_file=None)
+
+    assert settings.runtime.demo_mode is True
+    assert settings.runtime.allow_public_demo_mode is True
+
+
+def test_the_public_demo_flag_alone_does_not_turn_demo_mode_on(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("ALLOW_PUBLIC_DEMO_MODE", "true")
+
+    assert load_settings(env_file=None).runtime.demo_mode is False
 
 
 @pytest.mark.parametrize("variable", SECRET_VARIABLES)
@@ -120,7 +142,7 @@ def test_production_reports_every_problem_at_once(monkeypatch: pytest.MonkeyPatc
     with pytest.raises(SettingsError) as raised:
         load_settings(env_file=None)
 
-    assert len(raised.value.problems) == 3 + len(SECRET_VARIABLES)
+    assert len(raised.value.problems) == 4 + len(SECRET_VARIABLES)
     assert any(problem.startswith("RETRIEVAL_INDEX_SOURCE must be stored") for problem in raised.value.problems)
 
 
@@ -180,6 +202,24 @@ def test_production_with_litellm_accepts_a_strong_primary_key(
     monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
 
     assert load_settings(env_file=None).llm.provider == "litellm"
+
+
+def test_production_langfuse_export_requires_https(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("LANGFUSE_ENABLED", "true")
+    monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", "fixture-public-key")
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", _strong_secret())
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "http://langfuse.example")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LANGFUSE_BASE_URL must use https in production"]
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "https://langfuse.example")
+    assert load_settings(env_file=None).langfuse.enabled
 
 
 def test_cors_origins_parse_from_a_comma_separated_list(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -261,3 +301,132 @@ def test_security_limits_and_evaluation_settings_have_documented_defaults(monkey
     reloaded = load_settings(env_file=None)
     assert reloaded.evaluation.summaries_dir == settings.evaluation.summaries_dir
     assert reloaded.evaluation.summaries_public is True
+
+
+def test_production_refuses_the_owner_password_in_the_api_process(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("POSTGRES_ADMIN_PASSWORD", _strong_secret())
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["POSTGRES_ADMIN_PASSWORD must not be given to the API process in production"]
+
+
+def test_production_refuses_a_per_process_rate_limiter(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "memory")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == [
+        "RATE_LIMIT_BACKEND must be postgres in production, so every worker shares the limits"
+    ]
+
+
+@pytest.fixture
+def owner_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    """What an owner job receives in production: the owner password and the session secret only."""
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("POSTGRES_ADMIN_PASSWORD", _strong_secret())
+    monkeypatch.setenv("SESSION_SECRET", _strong_secret())
+
+
+@pytest.mark.usefixtures("owner_environment")
+def test_owner_jobs_need_only_the_owner_password_and_the_session_secret() -> None:
+    settings = load_settings(env_file=None, owner=True)
+
+    assert settings.is_production
+    assert settings.database.admin_password is not None
+    assert settings.database.app_password is None
+
+
+@pytest.mark.usefixtures("owner_environment")
+@pytest.mark.parametrize("variable", ["POSTGRES_ADMIN_PASSWORD", "SESSION_SECRET"])
+def test_owner_jobs_refuse_a_missing_or_weak_secret(monkeypatch: pytest.MonkeyPatch, variable: str) -> None:
+    monkeypatch.delenv(variable)
+    with pytest.raises(SettingsError) as missing:
+        load_settings(env_file=None, owner=True)
+    monkeypatch.setenv(variable, "changeme")
+    with pytest.raises(SettingsError) as weak:
+        load_settings(env_file=None, owner=True)
+
+    assert missing.value.problems == [f"{variable} must be set in production"]
+    assert weak.value.problems == [f"{variable} must not be a known default value in production"]
+
+
+@pytest.mark.usefixtures("owner_environment")
+def test_owner_jobs_are_not_held_to_the_api_rules(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "*")
+    monkeypatch.setenv("DEMO_MODE", "true")
+    monkeypatch.setenv("LANGFUSE_ENABLED", "true")
+
+    owner = load_settings(env_file=None, owner=True)
+    assert owner.runtime.demo_mode is True
+    assert owner.langfuse.enabled
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+    assert "LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true" in raised.value.problems
+
+
+@pytest.mark.parametrize(
+    "base",
+    ["http://ollama:11434", "http://host.docker.internal:11434", "http://10.0.0.5:11434", "http://127.0.0.1:11434"],
+)
+def test_production_accepts_a_private_http_model_base_only_when_allowed(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch, base: str
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_PRIMARY_MODEL", "ollama/qwen2.5:7b-instruct")
+    monkeypatch.setenv("LLM_API_BASE", base)
+    with pytest.raises(SettingsError) as refused:
+        load_settings(env_file=None)
+    monkeypatch.setenv("LLM_ALLOW_PRIVATE_HTTP_BASE", "true")
+
+    settings = load_settings(env_file=None)
+
+    assert "LLM_API_BASE must use https in production" in refused.value.problems
+    assert "LLM_API_KEY_PRIMARY must be set in production" in refused.value.problems
+    assert settings.llm.api_base == base
+
+
+@pytest.mark.parametrize("base", ["http://api.example.com/v1", "http://203.0.113.9:11434", "ftp://ollama:11434"])
+def test_the_private_http_exception_never_covers_a_public_host(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch, base: str
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_BASE", base)
+    monkeypatch.setenv("LLM_ALLOW_PRIVATE_HTTP_BASE", "true")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == [
+        "LLM_API_BASE must use https in production (plain http only with LLM_ALLOW_PRIVATE_HTTP_BASE=true "
+        "and a private host)",
+        "LLM_API_KEY_PRIMARY must be set in production",
+    ]
+
+
+def test_a_hosted_https_provider_is_a_settings_only_change(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_PRIMARY_MODEL", "openai/gpt-5-mini")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("LLM_API_BASE", "https://api.openai.com/v1")
+
+    assert load_settings(env_file=None).llm.primary_model == "openai/gpt-5-mini"
+
+
+def test_retention_defaults_and_bounds(monkeypatch: pytest.MonkeyPatch) -> None:
+    settings = load_settings(env_file=None)
+    assert (settings.retention.conversation_days, settings.retention.session_days) == (7, 7)
+    assert settings.retention.credit_application_days == 30
+    assert settings.security.rate_limit_backend == "memory"
+    monkeypatch.setenv("RETENTION_CONVERSATION_DAYS", "0")
+    with pytest.raises(ValueError, match="conversation_days"):
+        load_settings(env_file=None)

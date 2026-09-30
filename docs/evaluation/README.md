@@ -59,7 +59,7 @@ flowchart LR
 make eval-scenarios                        # regenerate the set deterministically; lint, leakage, lock
 make eval-smoke                            # 12 dev scenarios, every system, scripted client (what CI runs)
 make eval                                  # the dev suite from cassettes (EVAL_LLM=off runs without a model)
-make eval-test                             # the frozen test split from cassettes: 3 runs on the stratified subset
+make eval-test                             # the test split replayed from cassettes: not the published numbers (methodology)
 uv run bank-eval run --help                # every option: systems, runs, --workflow, --scenario, --set KEY=VALUE
 uv run bank-eval report reports/eval/<run_id>
 uv run bank-eval compare reports/eval/<a> reports/eval/<b>
@@ -81,5 +81,7 @@ uv run --frozen bank-eval publish reports/eval/test-local --title "Evaluation re
 ```
 
 Session 14b ran the test split from a separate worktree pinned at the run's commit, so the code could not change during the run, and ran the judge and `publish` there too.
+
+The published documents come from that run directory, `reports/eval/test-local` (gitignored because `results.jsonl` holds the transcripts; it lives on the technical lead's machine). With a copy of it, the last command above regenerates `evals/reports/summaries/test-local-*.json` and `docs/evaluation/runs/test-local/` byte for byte, and the generated part of `results.md` and `failures.md`; it drops their hand-written analysis sections, so restore those with `git checkout` afterwards. The committed cassettes cannot regenerate the published numbers without that directory: a replay diverges where a later recording overwrote an earlier one ([methodology](methodology.md)).
 
 A hosted model later needs only other settings (`LLM_PRIMARY_MODEL`, a key, and no `LLM_API_BASE`) and a new run; nothing in the harness names a provider.

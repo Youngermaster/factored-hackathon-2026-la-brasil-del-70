@@ -185,10 +185,11 @@ def render_readme(
     lines += [
         "## Data-use terms",
         "",
-        "This is organizer-provided synthetic data and remains subject to the organizer's data-use terms. The terms "
-        "must be checked before the repository is made public; phase 17 re-verifies them "
-        "(`docs/data/data-card.md`). If they forbid redistribution or are unclear, the team asks the human before "
-        "publishing, and history is never rewritten to remove the sample without the human's explicit instruction.",
+        "This is organizer-provided synthetic data and remains subject to the organizer's data-use terms. They were "
+        "checked before the repository was made public: on 2026-09-30 the human confirmed that no restriction on "
+        "redistributing this sample is known, and the reasoning is recorded in `docs/data/data-use.md`. If the "
+        "organizer's terms forbid redistribution, the team asks the human, and history is never rewritten to remove "
+        "the sample without the human's explicit instruction.",
         "",
     ]
     return "\n".join(lines)

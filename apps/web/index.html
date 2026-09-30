@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="no-referrer" />
     <meta name="color-scheme" content="light dark" />
+    <!-- Caddy renders a fresh CSP nonce here per response (deploy/caddy/Caddyfile, shared/lib/csp-nonce.ts). -->
+    <meta property="csp-nonce" nonce="{{placeholder `http.request.uuid`}}" />
     <title>Bank Agent</title>
     <script src="/theme-init.js"></script>
   </head>

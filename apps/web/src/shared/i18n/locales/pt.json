@@ -47,6 +47,8 @@
     "personaHeading": "Escolha um perfil",
     "personaCustomers": "Clientes",
     "personaStaff": "Equipe do banco",
+    "personaFullDelivery": "Somente com os dados completos",
+    "personaFullDeliveryNote": "Estes perfis existem quando a base é carregada com a entrega completa do organizador; a amostra incluída no repositório, usada nesta demonstração, não os tem.",
     "documentNumber": "Número do documento",
     "documentNumberHint": "Letras, números e hífens, de 4 a 20 caracteres.",
     "documentNumberInvalid": "Confira o número: use de 4 a 20 letras, números ou hífens.",
@@ -871,7 +873,20 @@
     "assessment": "Avaliação",
     "conversation": "Conversa de origem",
     "customer": "Cliente",
-    "history": "Histórico de situações"
+    "history": "Histórico de situações",
+    "actions": {
+      "review": "Assumir a revisão",
+      "reviewTitle": "Assumir esta solicitação para revisão humana?",
+      "reviewBody": "A solicitação passa para revisão humana e a mudança fica registrada com o seu nome. Não é uma decisão de crédito.",
+      "reviewConfirm": "Assumir a revisão",
+      "reviewDone": "A solicitação está em revisão humana",
+      "close": "Encerrar a revisão",
+      "closeTitle": "Encerrar esta revisão?",
+      "closeBody": "Encerrar registra que a revisão humana terminou. Nenhuma decisão de crédito é registrada, e a mudança fica registrada com o seu nome.",
+      "closeConfirm": "Encerrar a revisão",
+      "closeDone": "A revisão está encerrada",
+      "conflict": "A solicitação mudou desde que você a abriu. Recarregue e tente de novo."
+    }
   },
   "traces": {
     "heading": "Registros de execução",
@@ -969,9 +984,9 @@
         "title": "Saldos",
         "note": "Cada saldo mostra a data e a hora de corte dos dados."
       },
-      "similar-transfers": {
-        "title": "Transferências parecidas",
-        "note": "Há várias parecidas: o assistente pergunta qual antes de responder."
+      "payment-details": {
+        "title": "Pagamento sem dados",
+        "note": "A pergunta não basta para localizar o pagamento: o assistente pede o valor, a data ou o destinatário."
       },
       "transfer-unsupported": {
         "title": "Transferir dinheiro",
@@ -991,19 +1006,23 @@
       },
       "card-unblock": {
         "title": "Desbloqueio",
-        "note": "Não há ferramenta para desbloquear: passa para uma pessoa com o cartão escolhido."
+        "note": "Não há ferramenta para desbloquear: passa para uma pessoa com o cartão como dado verificado."
       },
       "dispute-intake": {
         "title": "Contestação de uma cobrança",
         "note": "Veja o extrato, conteste uma cobrança por estabelecimento, data e valor, e confirme. Recuse ou aceite o bloqueio oferecido."
       },
+      "dispute-status": {
+        "title": "Situação de um caso",
+        "note": "Procura o caso aberto do cliente e responde com a situação e a data prevista de resposta."
+      },
       "dispute-details": {
         "title": "Cobrança sem dados",
         "note": "O pedido não basta para achar a compra: o assistente pede data, valor e estabelecimento."
       },
-      "dispute-sla": {
-        "title": "Caso com prazo vencido",
-        "note": "O caso aberto passou do prazo de resolução: passa para uma pessoa."
+      "dispute-regulator": {
+        "title": "Reclamação ao regulador",
+        "note": "Mencionar uma reclamação ao regulador passa a conversa para uma pessoa, com a cláusula que o exige."
       },
       "credit-eligibility": {
         "title": "Catálogo e elegibilidade",
@@ -1023,7 +1042,7 @@
       },
       "credit-review": {
         "title": "Revisão humana",
-        "note": "O resultado ainda não atende; o botão de revisão passa o caso com a seção de crédito."
+        "note": "Um resultado que precisa de uma pessoa ou de mais informação; o botão de revisão passa o caso com a seção de crédito."
       }
     },
     "console": {

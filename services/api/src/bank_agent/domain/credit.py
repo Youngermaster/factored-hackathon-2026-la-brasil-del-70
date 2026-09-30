@@ -135,7 +135,9 @@ APPLICATION_TRANSITIONS: dict[ApplicationStatus, frozenset[ApplicationStatus]] =
 }
 TERMINAL_APPLICATION_STATUSES = frozenset(status for status, targets in APPLICATION_TRANSITIONS.items() if not targets)
 CUSTOMER_APPLICATION_TRANSITIONS = frozenset({ApplicationStatus.WITHDRAWN})
-"""The only move a customer makes; reviewers (phase 16) move applications to review and close them."""
+"""The only move a customer makes."""
+REVIEWER_APPLICATION_TRANSITIONS = frozenset({ApplicationStatus.UNDER_HUMAN_REVIEW, ApplicationStatus.CLOSED})
+"""The moves an agent makes: take a submitted intake into human review, then close it. Never an approval."""
 REVIEWABLE_APPLICATION_STATUSES = frozenset({ApplicationStatus.SUBMITTED, ApplicationStatus.UNDER_HUMAN_REVIEW})
 """Statuses that make an intake a review item of its own: agents read these without a handoff (ADR 0021)."""
 

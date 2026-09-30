@@ -60,7 +60,14 @@ def _phone_last4(phone: str) -> str:
     return re.sub(r"[^0-9]", "", phone)[-4:]
 
 
-def _seeded_case(customer_id: str, transactions: list[Transaction], sla: timedelta) -> DisputeCase:
+def _seeded_case(customer_id: str, transactions: list[Transaction], sla: timedelta, seeded_at: datetime) -> DisputeCase:
+    """The open case a persona's status question finds, opened the way the service opens a case.
+
+    The service opens a case on the wall clock and counts its SLA from then (``application/tools/writes.py``),
+    while dispute windows are evaluated against the data's as-of date. The seeded case follows the same rule: it
+    opens at the seeding instant (never before the day after the purchase), so its SLA is live for the demo
+    instead of counting from the data snapshot and reading as overdue.
+    """
     purchases = [
         txn
         for txn in transactions
@@ -69,7 +76,7 @@ def _seeded_case(customer_id: str, transactions: list[Transaction], sla: timedel
         and txn.status is TransactionStatus.APPROVED
     ]
     latest = max(purchases, key=lambda txn: (txn.occurred_at, txn.transaction_id))
-    opened_at = latest.occurred_at + timedelta(days=1)
+    opened_at = max(seeded_at, latest.occurred_at + timedelta(days=1))
     return DisputeCase.open(
         case_id=CaseId(f"case-seed-{customer_id}"),
         transaction=latest,
@@ -102,8 +109,12 @@ def build_bundle(
     *,
     snapshot: date,
     dispute_sla_days: Mapping[Country, int],
+    seeded_at: datetime,
 ) -> SeedBundle:
-    """The seed bundle; the seeded case's SLA is the policy pack's target for the customer's country."""
+    """The seed bundle; the seeded case opens at ``seeded_at`` (timezone-aware) with the policy pack's SLA for
+    the customer's country."""
+    if seeded_at.tzinfo is None:
+        raise ValueError("seeded_at must be timezone-aware")
     ids = selection.customers
     customer_rows = _rows(connection, "customers_serving", ids)
     customers = [_customer(row) for row in customer_rows]
@@ -127,7 +138,7 @@ def build_bundle(
     by_id: dict[str, Customer] = {customer.customer_id: customer for customer in customers}
     flagged = {persona.id: persona for persona in personas.customers}
     cases = [
-        _seeded_case(customer_id, transactions, timedelta(days=dispute_sla_days[by_id[customer_id].country]))
+        _seeded_case(customer_id, transactions, timedelta(days=dispute_sla_days[by_id[customer_id].country]), seeded_at)
         for persona_id, customer_id in selection.personas.items()
         if flagged[persona_id].seeded_case
     ]

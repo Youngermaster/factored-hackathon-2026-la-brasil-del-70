@@ -23,7 +23,7 @@ from bank_agent.api.errors import (
 )
 from bank_agent.api.metrics import HttpMetrics
 from bank_agent.api.provider import ApiConfig, ServiceProvider
-from bank_agent.api.ratelimit import SlidingWindowLimiter
+from bank_agent.api.ratelimit import RateLimiter
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.domain.access import Role
 from bank_agent.domain.errors import SessionNotFoundError
@@ -71,8 +71,6 @@ async def current_session(request: Request) -> Session:
         session = await session_service(request).resolve(token)
     except SessionNotFoundError:
         raise NotAuthenticatedError("unknown session") from None
-    metrics: HttpMetrics = request.app.state.http_metrics
-    metrics.session_seen(session, services(request).clock.now())
     return session
 
 
@@ -102,12 +100,12 @@ def require_csrf(request: Request) -> None:
 
 
 @cache
-def rate_limit(rate_class: RateClass) -> Callable[[Request], None]:
-    def check(request: Request) -> None:
-        limiter: SlidingWindowLimiter = request.app.state.rate_limiter
+def rate_limit(rate_class: RateClass) -> Callable[[Request], Awaitable[None]]:
+    async def check(request: Request) -> None:
+        limiter: RateLimiter = request.app.state.rate_limiter
         limit = security_config(request).rate_limits[rate_class]
         try:
-            limiter.check(rate_class, limit, client_ip=client_ip(request), session_token=session_token(request))
+            await limiter.check(rate_class, limit, client_ip=client_ip(request), session_token=session_token(request))
         except RateLimitedError as refused:
             metrics: HttpMetrics = request.app.state.http_metrics
             metrics.rate_limited(rate_class, refused.key)

@@ -1,0 +1,41 @@
+# Production image build context (services/api/Dockerfile, apps/web/Dockerfile). An allowlist: everything is
+# excluded, then only what an image needs is added back. Secrets (.env files), data/, kit/, the git history,
+# local environments, caches, cassettes, and reports never enter the context.
+*
+
+!pyproject.toml
+!uv.lock
+!services/api/pyproject.toml
+!services/api/README.md
+!services/api/src/
+!services/api/config/
+!data_platform/pyproject.toml
+!data_platform/README.md
+!data_platform/src/
+!data_platform/config/
+!data_platform/dbt/
+!data_platform/sample/
+!data_platform/seed/
+!data_platform/mappings/
+!ml/pyproject.toml
+!ml/README.md
+!evals/pyproject.toml
+!evals/README.md
+!evals/reports/summaries/
+!policies/
+!apps/web/
+!deploy/caddy/
+
+**/__pycache__
+**/*.py[cod]
+**/.DS_Store
+**/.env
+**/.env.*
+apps/web/node_modules
+apps/web/dist
+apps/web/coverage
+apps/web/.shots
+apps/web/.vite
+apps/web/*.tsbuildinfo
+data_platform/dbt/target
+data_platform/dbt/logs

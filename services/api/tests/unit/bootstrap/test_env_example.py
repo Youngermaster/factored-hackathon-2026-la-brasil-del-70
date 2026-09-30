@@ -28,6 +28,15 @@ def example_values() -> dict[str, str]:
 
 
 DEV_ONLY = {name: value for name, value in example_values().items() if value.startswith(DEV_ONLY_SECRET_PREFIX)}
+OWNER_ONLY = "POSTGRES_ADMIN_PASSWORD"
+"""The owner password is for owner jobs only; the API process refuses it in production."""
+API_DEV_ONLY = {name: value for name, value in DEV_ONLY.items() if name != OWNER_ONLY}
+PRODUCTION_API = {
+    "APP_ENV": "production",
+    "RETRIEVAL_INDEX_SOURCE": "stored",
+    "CORS_ALLOWED_ORIGINS": "https://b.example",
+    "RATE_LIMIT_BACKEND": "postgres",
+}
 
 
 @pytest.fixture
@@ -61,32 +70,43 @@ def test_production_refuses_the_example_as_it_is(copied_env: Path, monkeypatch: 
     monkeypatch.setenv("DEMO_MODE", "false")
     monkeypatch.setenv("RETRIEVAL_INDEX_SOURCE", "stored")
     monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "https://bank.example")
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "postgres")
 
     with pytest.raises(SettingsError) as raised:
         load_settings(env_file=copied_env)
+    with pytest.raises(SettingsError) as owner:
+        load_settings(env_file=copied_env, owner=True)
 
     assert sorted(raised.value.problems) == sorted(
-        f"{name} must not be a development-only value in production" for name in DEV_ONLY
+        [
+            *(f"{name} must not be a development-only value in production" for name in API_DEV_ONLY),
+            "POSTGRES_ADMIN_PASSWORD must not be given to the API process in production",
+        ]
+    )
+    assert sorted(owner.value.problems) == sorted(
+        f"{name} must not be a development-only value in production" for name in (OWNER_ONLY, "SESSION_SECRET")
     )
 
 
 @pytest.mark.parametrize("variable", sorted(DEV_ONLY))
 def test_production_refuses_each_dev_only_secret(monkeypatch: pytest.MonkeyPatch, variable: str) -> None:
-    values = {"APP_ENV": "production", "RETRIEVAL_INDEX_SOURCE": "stored", "CORS_ALLOWED_ORIGINS": "https://b.example"}
-    values.update({name: secrets.token_urlsafe(48) for name in DEV_ONLY})
+    owner = variable == OWNER_ONLY
+    values = {"APP_ENV": "production"} if owner else dict(PRODUCTION_API)
+    needed = (OWNER_ONLY, "SESSION_SECRET") if owner else tuple(API_DEV_ONLY)
+    values.update({name: secrets.token_urlsafe(48) for name in needed})
     values[variable] = DEV_ONLY[variable]
     for name, value in values.items():
         monkeypatch.setenv(name, value)
 
     with pytest.raises(SettingsError) as raised:
-        load_settings(env_file=None)
+        load_settings(env_file=None, owner=owner)
 
     assert raised.value.problems == [f"{variable} must not be a development-only value in production"]
 
 
 def test_any_other_dev_only_value_is_refused_too(monkeypatch: pytest.MonkeyPatch) -> None:
-    values = {"APP_ENV": "production", "RETRIEVAL_INDEX_SOURCE": "stored", "CORS_ALLOWED_ORIGINS": "https://b.example"}
-    values.update({name: secrets.token_urlsafe(48) for name in DEV_ONLY})
+    values = dict(PRODUCTION_API)
+    values.update({name: secrets.token_urlsafe(48) for name in API_DEV_ONLY})
     values["LLM_PROVIDER"] = "litellm"
     values["LLM_API_KEY_PRIMARY"] = "DEV-ONLY-placeholder-key-that-is-long-enough"
     for name, value in values.items():

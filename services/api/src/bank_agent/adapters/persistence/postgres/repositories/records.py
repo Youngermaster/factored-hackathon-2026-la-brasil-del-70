@@ -7,6 +7,7 @@ events are appended from contexts that may not read them, so a replay is recogni
 """
 
 from collections.abc import Sequence
+from datetime import datetime
 
 from sqlalchemy.exc import IntegrityError
 
@@ -63,6 +64,14 @@ class PostgresExecutionRecordRepository:
             {"customer": self._reader(), "conversation_id": conversation_id},
         )
         return [record_from_row(row) for row in rows]
+
+    async def count_eligibility_assessments(self, since: datetime) -> int:
+        count = await self._tx.scalar(
+            "SELECT coalesce(sum(jsonb_array_length(coalesce(document -> 'eligibility_assessments', '[]'::jsonb))), 0) "
+            "FROM app.execution_records WHERE customer_id = :customer AND recorded_at >= :since",
+            {"customer": customer_of(self._tx.context), "since": since},
+        )
+        return int(str(count))
 
 
 class PostgresAuditLog:

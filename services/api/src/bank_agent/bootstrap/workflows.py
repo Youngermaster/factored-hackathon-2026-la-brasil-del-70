@@ -15,6 +15,7 @@ estimator, and eligibility service are wrapped in tracing decorators; the engine
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, replace
+from datetime import timedelta
 
 from bank_agent.adapters.models.lexical_language import LexicalLanguageDetector
 from bank_agent.adapters.telemetry.instrumented import (
@@ -146,6 +147,8 @@ def build_workflows(
         max_turns=settings.max_turns,
         tool_timeout_seconds=settings.tool_timeout_seconds,
         environment=environment,
+        max_eligibility_assessments=settings.max_eligibility_assessments,
+        eligibility_assessment_window=timedelta(minutes=settings.eligibility_assessment_window_minutes),
     )
     baseline = EngineSettings(
         enabled=enabled,

@@ -131,7 +131,8 @@ Every other route resolves the cookie with `resolve`: an unknown token, a revoke
 
 ## Limitations
 
-- There is no real delivery channel: `DemoOtpSender` either shows the code (demo mode, labeled in the UI) or emits an event without it. A production deployment needs a real sender adapter.
-- The lockout is per subject key, not per network address; the HTTP layer adds sliding-window limits per IP and per session (auth: 10 per minute each by default), counted per process.
+- There is no real delivery channel: `DemoOtpSender` either shows the code (demo mode, labeled in the UI) or emits an event without it. A production deployment needs a real sender adapter; the public demo shows codes on purpose ([demo mode](demo-mode.md)).
+- Ended sessions, their challenges, and trust events are deleted 7 days after they end by the retention purge ([data retention](data-retention.md)).
+- The lockout is per subject key, not per network address; the HTTP layer adds sliding-window limits per IP and per session (auth: 10 per minute each by default), shared by every worker through PostgreSQL in production.
 - Step-up rotation keeps the absolute expiry of the original login, so a step-up never extends a session.
 - The identity keys derive from `SESSION_SECRET`; rotating that secret invalidates every identity lookup until `make seed` runs again.

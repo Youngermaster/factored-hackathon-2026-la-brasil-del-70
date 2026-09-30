@@ -4,9 +4,11 @@ One section per Prometheus alert in `deploy/observability/alerts.yml` (the secti
 
 First steps for any alert:
 
-1. `curl -s localhost:8000/health/details` shows the level, the reasons, and every component's state.
-2. The Grafana dashboard "Bank agent: reliability and operations" (`localhost:3000`) shows the panel the alert queries.
-3. A customer report comes with the `X-Request-ID` or `X-Trace-Id` of the failing response: search the JSON logs for the request id, open the trace id in Jaeger (`localhost:16686`), and read the turn's execution record in the evaluator trace (`GET /v1/eval/conversations/{id}/trace`), which stores the same trace id.
+1. `curl -s localhost:8000/health/details` (development) or `curl -s https://<host>/health/details` (the deployed stack) shows the level, the reasons, and every component's state.
+2. The Grafana dashboard "Bank agent: reliability and operations" (`localhost:3000`; on the VM through the SSH tunnel in [deploy/README.md](../../deploy/README.md), "Operate") shows the panel the alert queries.
+3. A customer report comes with the `X-Request-ID` or `X-Trace-Id` of the failing response: search the JSON logs for the request id (`deploy/prod.sh logs api` on the VM), open the trace id in the Jaeger UI (`localhost:16686`, through the tunnel on the VM), and read the turn's execution record in the evaluator trace (`GET /v1/eval/conversations/{id}/trace`), which stores the same trace id.
+
+The deployment operations (deploy, update, roll back, back up, restore, rotate secrets, the daily checks, and the take-down) are at the end of this page.
 
 ## LlmProviderDown
 
@@ -67,3 +69,22 @@ First steps for any alert:
 - **Symptom**: more than 30 percent of turns end in a handoff for fifteen minutes.
 - **Diagnose**: the panel "Escalations by workflow and reason": `tool_failure` points at a dependency, `clarification_exhausted` at understanding (often the model in L2), `human_requested` at customer demand.
 - **Act**: fix the dependency; for understanding, check the level and the router's abstention rate. Staff the agent inbox for the backlog.
+
+## Deployment operations
+
+The single-host stack of [ADR 0019](../adr/0019-single-host-compose-deployment.md), operated with `deploy/prod.sh` from the checkout on the VM; the full guide, host setup included, is [deploy/README.md](../../deploy/README.md).
+
+| Situation | Do |
+|---|---|
+| First deployment | `deploy/prod.sh init-env`, edit `deploy/.env.production`, `deploy/prod.sh check`, `build`, `up`, `seed`, `smoke` |
+| New commit to deploy | `deploy/prod.sh update` (pulls, backs up, builds, migrates, starts); then `deploy/prod.sh smoke` |
+| The new release misbehaves | `deploy/prod.sh rollback`; if the update ran a migration the old code cannot use, `deploy/prod.sh restore <the backup update took>` first |
+| Data lost or corrupted | `deploy/prod.sh restore deploy/backups/<file>.dump`; the API, the purge, and the edge stop during the restore and start again after it |
+| A secret leaked or must change | the rotation table in the guide; `SESSION_SECRET` needs `deploy/prod.sh seed` afterwards |
+| The certificate is close to expiry | Caddy renews by itself about 30 days before; if the uptime monitor warns, check `deploy/prod.sh logs web` for ACME errors (DNS, port 80) |
+| Demo data changed by visitors | `deploy/prod.sh seed` restores blocked cards; a restore of an early backup resets everything |
+| After 2026-10-16 | `deploy/prod.sh destroy --yes`, then release the cloud resources (the guide's last section) |
+
+**Daily checks while the demo is up:** the external uptime monitor on `/health/live` (every 5 minutes, with certificate expiry), the daily smoke test from cron (`deploy/smoke_test.sh <PUBLIC_ORIGIN>`; exits non-zero on the first failure and never prints a secret), a glance at `/health/details` for the degradation level and the budget ratio, and the daily backup from cron. A smoke failure: `deploy/prod.sh status`, `deploy/prod.sh logs api`, then the alert section above that matches the symptom.
+
+**Rate limits during a live session:** a room of judges behind one NAT shares one address and can hit the per-address limits (authentication 10 per minute). Raise `RATE_LIMIT_AUTH_PER_MINUTE` and `RATE_LIMIT_READ_PER_MINUTE` in the env file for the session, `deploy/prod.sh up`, and restore them afterwards; the per-session limits and the model budget still apply.

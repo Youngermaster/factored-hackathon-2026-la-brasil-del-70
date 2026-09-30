@@ -40,6 +40,7 @@ from bank_agent.bootstrap.persistence import (
     PersistenceServices,
     build_banking_tools,
     build_persistence,
+    build_rate_limit_store,
     build_session_service,
 )
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
@@ -54,6 +55,7 @@ from bank_agent.ports.evaluation import EvaluationSummaryReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
+from bank_agent.ports.rate_limits import RateLimitStore
 from bank_agent.ports.telemetry import Telemetry
 
 
@@ -126,6 +128,7 @@ class Container:
             persistence if persistence is not None else build_persistence(self._engine, self._database_health)
         )
         self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
+        self._rate_limit_store = build_rate_limit_store(settings, self._engine, self._clock)
         self._policy = build_policy(
             settings.policy, clock=self._clock, ids=self._ids, catalog_fallback=degradation.credit_catalog_fallback
         )
@@ -262,6 +265,11 @@ class Container:
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:
         return self._evaluation_summaries
+
+    @property
+    def rate_limit_store(self) -> RateLimitStore | None:
+        """The shared rate-limit store, or ``None`` when the HTTP layer keeps its counters in this process."""
+        return self._rate_limit_store
 
     @property
     def database_engine(self) -> AsyncEngine | None:

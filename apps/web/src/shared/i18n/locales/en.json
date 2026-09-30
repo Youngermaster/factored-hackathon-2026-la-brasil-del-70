@@ -47,6 +47,8 @@
     "personaHeading": "Choose a profile",
     "personaCustomers": "Customers",
     "personaStaff": "Bank staff",
+    "personaFullDelivery": "Only with the full data",
+    "personaFullDeliveryNote": "These profiles exist when the database is loaded from the organizer's full delivery; the sample committed to the repository, which this demo uses, does not have them.",
     "documentNumber": "Document number",
     "documentNumberHint": "Letters, digits, and hyphens, 4 to 20 characters.",
     "documentNumberInvalid": "Check the number: use 4 to 20 letters, digits, or hyphens.",
@@ -871,7 +873,20 @@
     "assessment": "Assessment",
     "conversation": "Originating conversation",
     "customer": "Customer",
-    "history": "Status history"
+    "history": "Status history",
+    "actions": {
+      "review": "Take into review",
+      "reviewTitle": "Take this application into human review?",
+      "reviewBody": "The application moves to under human review, and the move is recorded with your name. It is not a credit decision.",
+      "reviewConfirm": "Take into review",
+      "reviewDone": "The application is under human review",
+      "close": "Close the review",
+      "closeTitle": "Close this review?",
+      "closeBody": "Closing records that the human review has ended. No credit decision is recorded, and the move is recorded with your name.",
+      "closeConfirm": "Close the review",
+      "closeDone": "The review is closed",
+      "conflict": "The application changed since you opened it. Reload it and try again."
+    }
   },
   "traces": {
     "heading": "Execution records",
@@ -969,9 +984,9 @@
         "title": "Balances",
         "note": "Each balance shows the date and time of the data cut."
       },
-      "similar-transfers": {
-        "title": "Similar transfers",
-        "note": "Several look alike: the assistant asks which one before answering."
+      "payment-details": {
+        "title": "Payment without details",
+        "note": "The question is not enough to find the payment: the assistant asks for the amount, the date, or the payee."
       },
       "transfer-unsupported": {
         "title": "Transfer money",
@@ -991,19 +1006,23 @@
       },
       "card-unblock": {
         "title": "Unblock",
-        "note": "There is no unblock tool: it goes to a person with the chosen card."
+        "note": "There is no unblock tool: it goes to a person, with the card as a verified fact."
       },
       "dispute-intake": {
         "title": "Dispute a charge",
         "note": "Read the statement, dispute a charge by merchant, date, and amount, and confirm. Decline or accept the offered block."
       },
+      "dispute-status": {
+        "title": "Case status",
+        "note": "Finds the customer's open case and answers with its status and the committed answer date."
+      },
       "dispute-details": {
         "title": "Charge without details",
         "note": "The request is not enough to find the purchase: the assistant asks for the date, amount, and merchant."
       },
-      "dispute-sla": {
-        "title": "Case past its deadline",
-        "note": "The open case passed its resolution deadline: it goes to a person."
+      "dispute-regulator": {
+        "title": "Complaint to the regulator",
+        "note": "Mentioning a complaint to the regulator hands the conversation to a person, citing the clause that requires it."
       },
       "credit-eligibility": {
         "title": "Catalog and eligibility",
@@ -1023,7 +1042,7 @@
       },
       "credit-review": {
         "title": "Human review",
-        "note": "The result does not meet the conditions for now; the review button hands the case over with its credit section."
+        "note": "A result that needs a person or more information; the review button hands the case over with its credit section."
       }
     },
     "console": {

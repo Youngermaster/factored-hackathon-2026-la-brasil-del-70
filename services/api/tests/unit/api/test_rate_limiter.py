@@ -1,12 +1,13 @@
-"""The in-process sliding-window rate limiter."""
+"""The rate limiter over the in-process sliding log (the shared store's contract is in the integration suite)."""
 
 import secrets
 
 import pytest
 
+from bank_agent.adapters.ratelimit.memory import InMemoryRateLimitStore
 from bank_agent.api.config import RateClass, RateLimit
 from bank_agent.api.errors import RateLimitedError
-from bank_agent.api.ratelimit import SlidingWindowLimiter
+from bank_agent.api.ratelimit import RateLimiter
 
 TOKEN = secrets.token_urlsafe(32)
 OTHER = secrets.token_urlsafe(32)
@@ -20,41 +21,57 @@ class Ticks:
         return self.now
 
 
-def test_refuses_after_the_limit_and_frees_slots_as_the_window_slides() -> None:
+async def test_refuses_after_the_limit_and_frees_slots_as_the_window_slides() -> None:
     ticks = Ticks()
-    limiter = SlidingWindowLimiter(ticks)
-    assert limiter.hit("k", 2) is None
+    store = InMemoryRateLimitStore(ticks)
+    assert await store.hit("k", 2) is None
     ticks.now += 10
-    assert limiter.hit("k", 2) is None
+    assert await store.hit("k", 2) is None
     ticks.now += 5
-    assert limiter.hit("k", 2) == pytest.approx(45.0)
+    assert await store.hit("k", 2) == pytest.approx(45.0)
     ticks.now += 45
-    assert limiter.hit("k", 2) is None
-    assert limiter.hit("other", 2) is None
+    assert await store.hit("k", 2) is None
+    assert await store.hit("other", 2) is None
 
 
-def test_checks_the_ip_and_then_the_session_and_reports_whole_seconds_to_wait() -> None:
+async def test_checks_the_ip_and_then_the_session_and_reports_whole_seconds_to_wait() -> None:
     ticks = Ticks()
-    limiter = SlidingWindowLimiter(ticks)
+    limiter = RateLimiter(InMemoryRateLimitStore(ticks))
     limit = RateLimit(per_ip=3, per_session=1)
-    limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=TOKEN)
+    await limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=TOKEN)
     with pytest.raises(RateLimitedError) as refused:
-        limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=TOKEN)
+        await limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=TOKEN)
     assert refused.value.retry_after_seconds == 60
-    limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=None)
-    limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN)
+    await limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=None)
+    await limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN)
     with pytest.raises(RateLimitedError):
-        limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=None)
+        await limiter.check(RateClass.WRITE, limit, client_ip="198.51.100.1", session_token=None)
 
 
-def test_stale_keys_are_swept_once_the_table_grows() -> None:
+async def test_the_session_key_is_a_digest_never_the_token() -> None:
+    seen: list[str] = []
+
+    class Recording:
+        async def hit(self, key: str, limit: int) -> float | None:
+            seen.append(key)
+            return None
+
+    limiter = RateLimiter(Recording())
+    await limiter.check(RateClass.AUTH, RateLimit(1, 1), client_ip="192.0.2.1", session_token=OTHER)
+    assert seen[0] == "auth:ip:192.0.2.1"
+    assert seen[1].startswith("auth:session:")
+    assert OTHER not in seen[1]
+    assert limiter.store is not None
+
+
+async def test_stale_keys_are_swept_once_the_table_grows() -> None:
     ticks = Ticks()
-    limiter = SlidingWindowLimiter(ticks)
+    store = InMemoryRateLimitStore(ticks)
     for index in range(10_001):
-        limiter.hit(f"key-{index}", 5)
+        await store.hit(f"key-{index}", 5)
     ticks.now += 61
-    limiter.hit("fresh", 5)
-    assert len(limiter._hits) == 1
+    await store.hit("fresh", 5)
+    assert len(store._hits) == 1
 
 
 def test_a_fraction_of_a_second_still_asks_to_wait_one_second() -> None:

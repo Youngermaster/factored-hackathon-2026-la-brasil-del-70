@@ -102,3 +102,42 @@ export function useCreditApplication(applicationId: string | null) {
             ),
   });
 }
+
+export type CreditReviewMove = 'review' | 'close';
+
+export interface CreditReviewInput {
+  readonly applicationId: string;
+  readonly move: CreditReviewMove;
+  readonly expectedVersion: number;
+}
+
+/**
+ * Take an intake into human review, or close one under review. The detail keeps the server's answer (a closed intake
+ * without a handoff leaves the review list, so it is not read again), and the list refetches.
+ */
+export function useMoveCreditApplication() {
+  const { client } = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ applicationId, move, expectedVersion }: CreditReviewInput) => {
+      const options = {
+        params: { path: { application_id: applicationId } },
+        body: { expected_version: expectedVersion },
+      };
+      return unwrap(
+        move === 'review'
+          ? client.POST('/v1/agent/credit-applications/{application_id}/review', options)
+          : client.POST('/v1/agent/credit-applications/{application_id}/close', options),
+      );
+    },
+    onSuccess: (application: CreditApplicationView) => {
+      queryClient.setQueryData(
+        queryKeys.creditApplications.detail(application.application_id),
+        application,
+      );
+      void queryClient.invalidateQueries({
+        queryKey: [...queryKeys.creditApplications.all, 'list'],
+      });
+    },
+  });
+}

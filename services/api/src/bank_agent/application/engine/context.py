@@ -1,7 +1,7 @@
 """The ports the engine uses, its settings, the per-turn context handlers receive, and the ``Step`` they return."""
 
 from dataclasses import dataclass, field
-from datetime import date, datetime, tzinfo
+from datetime import date, datetime, timedelta, tzinfo
 from typing import Protocol
 
 from pydantic import JsonValue
@@ -83,6 +83,13 @@ class EngineSettings:
     """Baseline B0 answers in one fixed language whatever the customer writes."""
     menu_template: str | None = None
     """Baseline B0 shows a fixed menu instead of the greeting and the workflow question."""
+    max_eligibility_assessments: int = 5
+    """Synthetic eligibility assessments a customer may run within ``eligibility_assessment_window``, across every
+    conversation; past it the credit workflow hands the case to a person instead of assessing again, so repeated
+    assessments cannot be used to map the synthetic rules (``WORKFLOW_MAX_ELIGIBILITY_ASSESSMENTS``)."""
+    eligibility_assessment_window: timedelta = timedelta(minutes=60)
+    """The window of the limit above; 60 minutes is the absolute session lifetime, so signing in again does not reset
+    it (``WORKFLOW_ELIGIBILITY_ASSESSMENT_WINDOW_MINUTES``)."""
 
 
 @dataclass(frozen=True)
@@ -167,6 +174,8 @@ class TurnContext:
     referenced_transaction: TransactionId | None = None
     """A transaction id the customer named that belongs to the session customer (checked by the engine)."""
     prior_complaints: int = 0
+    recent_assessments: int = 0
+    """Synthetic eligibility assessments in the customer's records within the assessment window, before this turn."""
     resumed: bool = False
     reprompt: bool = False
     """Ask the state's question again without parsing the text (after a resume or a declined switch)."""

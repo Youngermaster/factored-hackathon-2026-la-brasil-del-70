@@ -100,7 +100,7 @@ eval.safe_resolution: {value: 0.612, display: "61.2%", kind: offline, source: do
 - A pending metric renders as a dashed "pending" box, so a missing number is visible, never invented.
 - After phase 14 lands, also update the `evidence` section of `script.md` with the numbers and their denominators.
 
-Today 1 metric is pending (the deployment URL, phase 16); the phase 14 evaluation metrics were filled in session 14b. `pnpm check:content` lists what is pending.
+Today 1 metric is pending: `deploy.url`, filled once the human deploys ([docs/submission/SUBMISSION.md](../docs/submission/SUBMISSION.md)); the phase 14 evaluation metrics were filled in session 14b. `pnpm check:content` lists what is pending.
 
 ## Exporting the PDF
 

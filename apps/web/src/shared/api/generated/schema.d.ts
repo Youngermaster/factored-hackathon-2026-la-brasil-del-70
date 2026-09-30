@@ -102,6 +102,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/agent/credit-applications/{application_id}/close": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Close Credit Application
+         * @description Close an intake under human review. Audited; there is no approved or declined status.
+         */
+        post: operations["agent_close_credit_application"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/agent/credit-applications/{application_id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Review Credit Application
+         * @description Take a submitted intake into human review. Audited; never a lending decision.
+         */
+        post: operations["agent_review_credit_application"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/agent/handoffs": {
         parameters: {
             query?: never;
@@ -824,6 +864,14 @@ export interface components {
             applications: components["schemas"]["CreditApplicationView"][];
         };
         /**
+         * CreditApplicationMoveRequest
+         * @description Take an intake into human review, or close it; the version it was read at guards against a concurrent move.
+         */
+        CreditApplicationMoveRequest: {
+            /** Expected Version */
+            expected_version: number;
+        };
+        /**
          * CreditApplicationView
          * @description An intake recorded for human review. It is never a lending decision; the policy behind it is synthetic.
          */
@@ -859,6 +907,11 @@ export interface components {
              * Format: date-time
              */
             updated_at: string;
+            /**
+             * Version
+             * @description Send it back as `expected_version` to move the intake (review, close).
+             */
+            version: number;
         };
         /**
          * CreditIntakeConfirmation
@@ -2396,6 +2449,94 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreditApplicationView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    agent_close_credit_application: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                application_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreditApplicationMoveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreditApplicationView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    agent_review_credit_application: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                application_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreditApplicationMoveRequest"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
