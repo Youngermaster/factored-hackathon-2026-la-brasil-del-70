@@ -12,7 +12,7 @@ The HTTP layer: the FastAPI application factory, routers, request and response m
 | `provider.py` | `ServiceProvider` Protocol (clock, identity, conversations, agent inbox, evaluation summaries, credit product names, policy clauses, readiness) and `ApiConfig` |
 | `config.py` | `SecurityConfig`: production flag, CSRF secret, CORS allowlist, body limit, rate limits per class, cookie names per environment |
 | `dependencies.py` | Services, the session from the cookie, `role_dependency`, `require_csrf`, `rate_limit`, and `endpoint(...)`, which gives each route its dependencies and its `x-roles`, `x-rate-limit`, and `x-csrf` extensions |
-| `cookies.py`, `csrf.py`, `ratelimit.py` | Cookie flags, signed double-submit tokens, the sliding-window limiter per IP and per session |
+| `cookies.py`, `csrf.py`, `ratelimit.py` | Cookie flags, signed double-submit tokens, the limiter per IP and per session over a `RateLimitStore` (in process by default, the shared PostgreSQL store when `ApiConfig.rate_limit_store` is set) |
 | `middleware.py` | `RequestIdMiddleware`, `SecurityHeadersMiddleware`, `BodySizeLimitMiddleware` |
 | `errors.py` | HTTP-layer errors (CSRF, not authenticated, role, payload, rate, service unavailable) |
 | `problems.py`, `domain_problems.py` | `ProblemRegistry` (with `Retry-After` headers) and the mapping of HTTP-layer errors, identity refinements, and every domain error family to RFC 9457 problem types |
