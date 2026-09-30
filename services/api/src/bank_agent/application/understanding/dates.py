@@ -9,6 +9,8 @@ The reference day is today in the customer's time zone. Rules, first match wins:
 - ``la semana pasada``/``semana passada``: the previous Monday to Sunday; ``esta semana``: Monday to today.
 - ``el mes pasado``/``mês passado``: the previous calendar month; ``este mes``: the first of the month to today.
 - ``7 de junio`` (``de 2026`` optional): that day, in the most recent year that is not in the future.
+- ``23 abr 2026`` or ``23 de abr. de 2026``: an abbreviated month with a year, as the web app shows dates in a
+  statement (``es-MX`` and ``es-AR``, ``pt-BR``), so a customer can copy a line from it.
 - ``dd/mm`` or ``dd/mm/yyyy``: both orders when both parts could be a month and they differ (``03/04``), so the
   workflow asks unless context drops one; otherwise the one valid order.
 """
@@ -25,6 +27,10 @@ MONTHS = {
     "maio": 5, "junio": 6, "junho": 6, "julio": 7, "julho": 7, "agosto": 8, "septiembre": 9, "setiembre": 9,
     "setembro": 9, "octubre": 10, "outubro": 10, "noviembre": 11, "novembro": 11, "diciembre": 12, "dezembro": 12,
 }  # fmt: skip
+ABBREVIATED_MONTHS = {
+    "ene": 1, "jan": 1, "feb": 2, "fev": 2, "mar": 3, "abr": 4, "may": 5, "mai": 5, "jun": 6, "jul": 7, "ago": 8,
+    "sep": 9, "sept": 9, "set": 9, "oct": 10, "out": 10, "nov": 11, "dic": 12, "dez": 12,
+}  # fmt: skip
 WEEKDAYS = {
     "lunes": 0, "segunda": 0, "martes": 1, "terca": 1, "miercoles": 2, "quarta": 2, "jueves": 3, "quinta": 3,
     "viernes": 4, "sexta": 4, "sabado": 5, "domingo": 6,
@@ -38,6 +44,12 @@ YEAR = (
 )
 """A year after a named date: 19xx or 20xx, never the start of an amount ("5 de mayo de 1500 pesos")."""
 _NAMED = re.compile(rf"\b(?P<day>\d{{1,2}}) de (?P<month>{'|'.join(MONTHS)})(?: de (?P<year>{YEAR}))?\b")
+_ABBREVIATION = "|".join(ABBREVIATED_MONTHS)
+ABBREVIATED_DATE = rf"\b\d{{1,2}}(?: de)? (?:{_ABBREVIATION})\.?(?: de)? (?:19|20)\d{{2}}\b"
+"""A day, an abbreviated month, and a year: ``23 abr 2026`` or ``23 de abr. de 2026``; the year is required."""
+_ABBREVIATED = re.compile(
+    rf"\b(?P<day>\d{{1,2}})(?: de)? (?P<month>{_ABBREVIATION})\.?(?: de)? (?P<year>(?:19|20)\d{{2}})\b"
+)
 _NUMERIC = re.compile(r"\b(?P<a>\d{1,2})[/-](?P<b>\d{1,2})(?:[/-](?P<year>\d{2,4}))?\b")
 
 
@@ -107,6 +119,9 @@ def _explicit(folded: str, today: date) -> DateMention | None:
     if match := _NAMED.search(folded):
         year = int(match["year"]) if match["year"] else None
         value = _latest_not_future(MONTHS[match["month"]], int(match["day"]), today, year)
+        return DateMention(match[0], _day(value)) if value is not None else None
+    if match := _ABBREVIATED.search(folded):
+        value = _safe(int(match["year"]), ABBREVIATED_MONTHS[match["month"]], int(match["day"]))
         return DateMention(match[0], _day(value)) if value is not None else None
     if match := _NUMERIC.search(folded):
         first, second = int(match["a"]), int(match["b"])

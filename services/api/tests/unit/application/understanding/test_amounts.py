@@ -25,6 +25,10 @@ from bank_agent.domain.money import Currency
         ("3 millones de pesos", "3000000", None, True),
         ("dois milhões", "2000000", None, False),
         ("me cobraron 2000 en el super", "2000", None, False),
+        # Copied from the web app's statement table: a currency code before the amount, next to a medium date.
+        ("el cargo de Internet Plus del 23 abr 2026 por COP 1,015,801.59", "1015801.59", Currency.COP, False),
+        ("a cobrança de 23 de abr. de 2026 por COP 1.015.801,59", "1015801.59", Currency.COP, False),
+        ("la compra del 24 abr 2026 por USD 304.90", "304.90", Currency.USD, False),
     ],
 )
 def test_normalizes_amounts_and_slang(text: str, amount: str, currency: Currency | None, local: bool) -> None:
@@ -41,6 +45,8 @@ def test_normalizes_amounts_and_slang(text: str, amount: str, currency: Currency
         "terminada en 1234",
         "hace 3 días",
         "el 7 de junio de 2026",
+        "el 23 abr 2026",
+        "em 23 de abr. de 2026",
         "mi transacción TRX-01Z3FVAVD6QZ3TAEVVJS",
         "pasó en 2026",
     ],
