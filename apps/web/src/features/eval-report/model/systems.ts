@@ -64,3 +64,26 @@ export function groupRuns(summaries: readonly EvaluationSummary[]): RunGroup[] {
     })
     .sort((a, b) => b.generatedAt.localeCompare(a.generatedAt));
 }
+
+export interface RunNote {
+  readonly text: string;
+  /** The systems that carry the note, or null when every system of the run does. */
+  readonly systems: readonly string[] | null;
+}
+
+/**
+ * The notes of a run, each distinct note once in first-seen order. The systems of one run share most notes (the
+ * split, the cassette count); a note only some of them carry (the model each one used) names those systems.
+ */
+export function runNotes(summaries: readonly EvaluationSummary[]): RunNote[] {
+  const holders = new Map<string, string[]>();
+  for (const summary of summaries) {
+    for (const note of summary.notes) {
+      holders.set(note, [...(holders.get(note) ?? []), summary.system]);
+    }
+  }
+  return [...holders].map(([text, systems]) => ({
+    text,
+    systems: systems.length === summaries.length ? null : systems,
+  }));
+}

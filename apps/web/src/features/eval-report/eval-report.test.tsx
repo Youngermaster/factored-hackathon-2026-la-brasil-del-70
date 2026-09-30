@@ -35,6 +35,7 @@ function metrics(cases: number, overrides: Partial<Metrics> = {}): Metrics {
 function summary(
   system: string,
   measurement: Schema<'EvaluationSummary'>['measurement'] = 'offline',
+  notes: string[] = ['Fixture summary for tests.'],
 ): Schema<'EvaluationSummary'> {
   const workflows = (['account_inquiry', 'card_support', 'dispute', 'credit'] as const).map(
     (workflow, index) => ({
@@ -57,7 +58,7 @@ function summary(
       { ...metrics(20), dimension: 'language', value: 'pt', workflow: null },
     ],
     failure_table: 'docs/evaluation/failures.md',
-    notes: ['Fixture summary for tests.'],
+    notes,
   };
 }
 
@@ -80,6 +81,20 @@ describe('evaluation statistics', () => {
 });
 
 describe('the evaluation view', () => {
+  it('lists each note of a run once and names the systems of a note only some carry', async () => {
+    serve([
+      summary('proposed', 'offline', ['Model and provider: local.', 'Cassette misses: 0.']),
+      summary('baseline_b0', 'offline', ['Model and provider: none.', 'Cassette misses: 0.']),
+    ]);
+    expect(await screen.findAllByText('Cassette misses: 0.')).toHaveLength(1);
+    expect(screen.getByText('Model and provider: none.').closest('li')).toHaveTextContent(
+      /^baseline_b0\s*Model and provider: none\.$/,
+    );
+    expect(screen.getByText('Model and provider: local.').closest('li')).toHaveTextContent(
+      /^proposed\s*Model and provider: local\.$/,
+    );
+  });
+
   it('explains how to publish when nothing is published', async () => {
     serve([]);
     expect(await screen.findByText('Todavía no hay resultados publicados')).toBeInTheDocument();
