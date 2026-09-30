@@ -72,4 +72,4 @@ Start at the [documentation index](docs/README.md). Key entries: the [architectu
 
 ## License
 
-No license has been chosen yet. Until one is added, all rights are reserved by the authors.
+All rights reserved. The repository is public for the hackathon's judging; no license is granted.

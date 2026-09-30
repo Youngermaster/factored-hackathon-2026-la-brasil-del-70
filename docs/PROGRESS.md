@@ -15,8 +15,8 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 0. **Review the phase 02 and phase 02b domain model and contracts before phases 05, 06, and 09 start.** The summaries are in the phase 02b and phase 02 entries below; contracts change cheaply now and expensively later.
 
-1. **License undecided; decide before submission.** No LICENSE file exists and the README says all rights are reserved until the team chooses. Tracked in `docs/BACKLOG.md` for phase 17.
-2. **Check the organizer data-use terms before the repository is made public.** `data_platform/sample/` holds 2,595 pseudonymized organizer rows under CLAUDE.md rule 5; the terms are not in the repository. Tracked for phase 17. Optionally add `BANK_DATA_SOURCE=s3` to your `.env` (see `.env.example`) so `make pipeline` uses the full data by default.
+1. **Resolved (2026-09-30): no license.** The human decided that the repository carries no license: the README states "All rights reserved", and no LICENSE file is added.
+2. **Resolved (2026-09-30): the organizer data-use terms were checked before the repository goes public.** The human confirmed that no restriction on redistributing the committed sample is known, so the 2,595 pseudonymized rows in `data_platform/sample/` stay; the reasoning and the checks re-run are in [data/data-use.md](data/data-use.md). Optionally add `BANK_DATA_SOURCE=s3` to your `.env` (see `.env.example`) so `make pipeline` uses the full data by default.
 3. `.claude/settings.json` still allows `npm ci`, `npm install *`, and `npm run *`, and asks for `npx *`. Sessions did not change permission settings. If you want pnpm commands pre-approved, add equivalents such as `Bash(pnpm install *)`, `Bash(pnpm run *)`, `Bash(pnpm --dir apps/web *)`, and `Bash(pnpm exec *)`, and consider `Bash(pnpm dlx *)` under `ask`.
 4. Run `/status` in Claude Code from the repository root and record the loaded setting sources in the phase 00 entry below.
 5. **Choose the language model provider** (phase 08 left it undecided). Until then `LLM_PROVIDER=fake` refuses every model call and workflows will run on their deterministic fallbacks.
