@@ -257,7 +257,11 @@ services:
       - ./observability/jaeger.yaml:/etc/jaeger/config.yaml:ro
       # The image declares /tmp as a world-writable volume, so this named volume is writable by its non-root user.
       - jaeger-data:/tmp
-    networks: [backend]
+    ports:
+      # The Jaeger UI, for the same SSH tunnel as Grafana (Jaeger 2.21 serves the v3 query API only, which Grafana's
+      # Jaeger datasource does not read yet). It has no login: never open this port in the firewall.
+      - "127.0.0.1:${JAEGER_PORT:-16686}:16686"
+    networks: [backend, egress]
     deploy:
       resources:
         limits:
@@ -300,6 +304,9 @@ services:
       GF_SECURITY_COOKIE_SECURE: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      # No plugin downloads at startup: the bundled Prometheus and Jaeger datasources serve as shipped (an update
+      # would try to replace them on the read-only root filesystem and unload them).
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
       GF_PATHS_DATA: /var/lib/grafana
     volumes:
       - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
