@@ -9,6 +9,8 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [../README.md](../README.md) | What the system is, the four workflows, the evaluation headline, the quickstart |
 | [submission/brief-traceability.md](submission/brief-traceability.md) | Every requirement of the brief mapped to code, tests, docs, and evidence, per workflow |
 | [submission/README.md](submission/README.md) | The submission package: checklist, draft email, pre-submission check |
+| [submission/SUBMISSION.md](submission/SUBMISSION.md) | The submission checklist: what is done and the human steps in order |
+| [submission/email-draft.md](submission/email-draft.md) | The draft email to the organizers (never sent by a session) |
 | [../LIMITATIONS.md](../LIMITATIONS.md) | What the system cannot claim: scope, credit, data, language, evaluation, capacity, deployment, risks |
 | [workflows/README.md](workflows/README.md) | Index of the workflow pages |
 | [security/README.md](security/README.md) | Index of the security documents and the controls on one page |

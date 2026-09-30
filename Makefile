@@ -24,7 +24,7 @@ BANK_DATA := $(UV_RUN) bank-data
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
 	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
-	api-local-llm env api-obs load-test
+	api-local-llm env api-obs load-test submission-check
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -249,6 +249,7 @@ security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, she
 		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
 	docker run --rm -v "$(CURDIR)/deploy:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) \
 		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+	docker run --rm -v "$(CURDIR)/scripts:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) submission_check.sh
 	$(COMPOSE_CHECK_ENV) docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example \
 		--profile '*' config --quiet
 
@@ -270,6 +271,9 @@ scan-images: ## Trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs (syft
 smoke: ## Smoke test a deployed stack: make smoke SMOKE_URL=https://demo.example.org (deploy/smoke_test.sh)
 	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
 	deploy/smoke_test.sh $(SMOKE_URL)
+
+submission-check: ## Pre-submission: check, security, eval-smoke, slides verify, docs-check, then the human steps left
+	scripts/submission_check.sh
 
 csp-check: ## Browser check of a deployed stack's CSP and cookies: make csp-check SMOKE_URL=https://demo.example.org
 	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
