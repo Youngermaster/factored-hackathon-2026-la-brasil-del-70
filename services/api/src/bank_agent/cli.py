@@ -1,6 +1,8 @@
 """Command-line entry point `bank-agent`."""
 
 import asyncio
+import json
+import time
 from pathlib import Path
 
 import typer
@@ -8,17 +10,21 @@ import typer
 from bank_agent import DISTRIBUTION_NAME, __version__
 from bank_agent.adapters.persistence.postgres import migrate
 from bank_agent.adapters.persistence.postgres.database import create_engine
+from bank_agent.adapters.persistence.postgres.retention import PostgresRetentionPurge
 from bank_agent.adapters.policy.tasks import write_catalog, write_lock
 from bank_agent.adapters.retrieval.embedding import DEFAULT_EMBEDDING_MODEL
+from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.bootstrap.persistence import owner_database_url
 from bank_agent.bootstrap.settings import (
     DEFAULT_EMBEDDING_CACHE_DIR,
     DEFAULT_INDEX_DIR,
     DEFAULT_MODEL_CACHE_DIR,
     DEFAULT_POLICY_DIR,
+    AppSettings,
     load_settings,
 )
 from bank_agent.domain.errors import ConfigurationError, PolicyPackInvalidError
+from bank_agent.domain.retention import PurgeReport, RetentionPolicy
 
 app = typer.Typer(
     name="bank-agent",
@@ -60,6 +66,53 @@ def db_upgrade() -> None:
             await engine.dispose()
 
     typer.echo(f"schema at revision {asyncio.run(_run())}")
+
+
+retention_app = typer.Typer(help="Retention commands (run as the owner role).", no_args_is_help=True)
+app.add_typer(retention_app, name="retention")
+SECONDS_PER_HOUR = 3600
+
+
+def _purge_once(settings: AppSettings, policy: RetentionPolicy, *, dry_run: bool) -> PurgeReport:
+    async def _run() -> PurgeReport:
+        engine = create_engine(owner_database_url(settings.database), pooled=False)
+        try:
+            return await PostgresRetentionPurge(engine).purge(policy, SystemClock().now(), dry_run=dry_run)
+        finally:
+            await engine.dispose()
+
+    return asyncio.run(_run())
+
+
+@retention_app.command("purge")
+def retention_purge(
+    dry_run: bool = typer.Option(False, help="Count what would be deleted, then roll back."),
+    every_hours: float = typer.Option(0.0, min=0.0, help="Repeat every N hours (0 runs once); failures are retried."),
+) -> None:
+    """Delete conversation text, ended sessions, challenges, trust events, closed intakes, and old rate windows."""
+    settings = load_settings(owner=True)
+    if not settings.database.admin_password:
+        typer.echo("POSTGRES_ADMIN_PASSWORD is not set", err=True)
+        raise typer.Exit(2)
+    retention = settings.retention
+    policy = RetentionPolicy(
+        conversation_days=retention.conversation_days,
+        session_days=retention.session_days,
+        credit_application_days=retention.credit_application_days,
+    )
+    while True:
+        try:
+            report = _purge_once(settings, policy, dry_run=dry_run)
+        except Exception as error:
+            if every_hours <= 0:
+                raise
+            typer.echo(json.dumps({"event": "retention_purge_failed", "error": type(error).__name__}), err=True)
+        else:
+            summary = {"event": "retention_purge", "dry_run": report.dry_run, "total": report.total}
+            typer.echo(json.dumps({**summary, "counts": report.counts()}))
+        if every_hours <= 0:
+            return
+        time.sleep(every_hours * SECONDS_PER_HOUR)
 
 
 policy_app = typer.Typer(help="Synthetic policy pack commands (they never read the environment).", no_args_is_help=True)
