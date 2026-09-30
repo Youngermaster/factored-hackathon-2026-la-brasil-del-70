@@ -23,6 +23,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0015](0015-router-model-choice.md) | Learned routers (TF-IDF and embeddings) behind the port, rule baseline as the default until end-to-end evaluation | Accepted | 2026-09-27 |
 | [0016](0016-resolver-approach.md) | A LightGBM lambdarank resolver with labels by construction, an evidence gate, and a none-of-these option | Accepted | 2026-09-27 |
 | [0018](0018-design-system.md) | Design system on Radix primitives, Tailwind tokens, Phosphor icons, and the deck's typefaces | Accepted | 2026-09-29 |
+| [0019](0019-single-host-compose-deployment.md) | A single-host Docker Compose deployment for the event, with a documented path to managed services | Accepted | 2026-09-29 |
 | [0020](0020-four-workflows-and-the-workflow-registry.md) | Four workflows and the workflow registry | Accepted | 2026-09-26 |
 | [0021](0021-credit-risk-and-eligibility-separation.md) | Separating conversation handling, risk estimates, and the synthetic eligibility service | Accepted | 2026-09-26 |
 | [0022](0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source | Accepted | 2026-09-26 |

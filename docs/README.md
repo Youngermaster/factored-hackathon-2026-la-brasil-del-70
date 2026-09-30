@@ -166,6 +166,9 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [operations/runbook.md](operations/runbook.md) | Each alert mapped to its symptom, diagnosis, and action |
 | [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |
 | [plans/phase-15.md](plans/phase-15.md) | The phase 15 plan and its decided questions |
+| [../deploy/README.md](../deploy/README.md) | The single-host deployment guide: AWS Lightsail, EC2, Azure VM, DNS, firewall, the env file, deploy, update, back up, restore, roll back, take down |
+| [adr/0019](adr/0019-single-host-compose-deployment.md) | A single-host Docker Compose deployment for the event, with a documented path to managed services |
+| [plans/phase-16.md](plans/phase-16.md) | The phase 16 plan: deployment topology, hardening checklist, and decided questions |
 
 ## Packages and apps
 
@@ -187,7 +190,10 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [security/prompt-injection.md](security/prompt-injection.md) | Prompt injection defense layers, their status, and their tests |
 | [security/identity-and-sessions.md](security/identity-and-sessions.md) | The mock identity service, one-time codes, sessions, step-up, lifetimes and limits |
 | [security/data-isolation.md](security/data-isolation.md) | Tool-layer scoping, row-level security, database roles and policies, and the tests that prove them |
-| [security/threat-model.md](security/threat-model.md) | STRIDE per component (web, API, engine, LLM gateway, database, identity) with mitigations and their tests |
+| [security/threat-model.md](security/threat-model.md) | STRIDE per component across the deployed topology, abuse cases, mitigations linked to code and tests, and residual risks |
+| [security/demo-mode.md](security/demo-mode.md) | Why the public demo shows one-time codes on screen, what that exposes, and what a real deployment does instead |
+| [security/data-retention.md](security/data-retention.md) | What is kept, for how long, the purge job, and what a regulated deployment would change |
+| [security/data-use.md](security/data-use.md) | Which fields reach which model provider and why, redaction, provider retention, and the committed sample |
 | [demo/personas.md](demo/personas.md) | Demo personas: selection criteria, what each demonstrates, and how to seed and log in |
 | [demo/script.md](demo/script.md) | Outline of the pitch video: scenes, inputs, and what each proves |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to set up, change, test, and commit |
