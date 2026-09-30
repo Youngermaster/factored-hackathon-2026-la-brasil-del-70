@@ -114,6 +114,16 @@ for (const theme of ['light', 'dark']) {
     await visit(agent.page, '/console/credit-applications', (page) =>
       page.getByRole('table').waitFor(),
     );
+    // A desktop dialog too (its scroll lock injects a nonced style element): open the review confirmation, then
+    // cancel it, so nothing changes.
+    await agent.page.getByRole('table').getByRole('link').first().click();
+    await heading(agent.page);
+    const review = agent.page.getByRole('button', { name: 'Tomar para revisión' });
+    if ((await review.count()) > 0) {
+      await review.click();
+      await agent.page.getByRole('dialog').waitFor();
+      await agent.page.keyboard.press('Escape');
+    }
     await signOut(agent.page);
     await agent.context.close();
 
