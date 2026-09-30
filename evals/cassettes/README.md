@@ -2,11 +2,10 @@
 
 Recorded language model calls, replayed by `CassetteLLM` (`services/api/src/bank_agent/adapters/llm/cassette.py`) so tests and evaluations are deterministic and never call a provider.
 
-## Status: hand-authored fixtures only
+## Status: two kinds of cassette
 
-The language model provider has not been chosen (human decision pending), so **no cassette here was recorded from a model**. Every file has `"provenance": "hand_authored_fixture"` and `"model_id": "fixture/hand-authored"`. The replies were written by the team to exercise parsing, replay, per-workflow coverage, and the Portuguese language check. They are not evidence of model quality and must never be reported as such.
-
-Recording real cassettes is a pending human action in `docs/PROGRESS.md`: once a provider and key are chosen, record every case below against the chosen models and keep the fixtures only as long as tests need them.
+- **Phase 08 fixtures**, `evals/cassettes/<prompt_id>/<version>/`: hand-authored, `"provenance": "hand_authored_fixture"` and `"model_id": "fixture/hand-authored"`. The team wrote the replies to exercise parsing, replay, per-workflow coverage, and the Portuguese language check. They are not evidence of model quality and must never be reported as such. The tables below describe them.
+- **Evaluation recordings**, `evals/cassettes/eval/<split>/<prompt_id>/<version>/` (`dev`, `test`, and `test-judge`): `"provenance": "recorded"`, from the session 14b runs on the local `ollama/qwen2.5:7b-instruct` (about 13 MB, redacted before writing). `bank-eval run --llm replay` reads them. A replay is a deterministic regression run, not a reproduction of the published numbers: record mode overwrites a file when a later call has identical inputs (every system's first simulated-customer turn of a scenario, the repeated runs), so a replay of the test split misses 214 calls and diverges ([methodology](../../docs/evaluation/methodology.md)). The published documents are regenerated from the run directory with `bank-eval publish` ([evaluation README](../../docs/evaluation/README.md#commands)).
 
 ## Layout
 
