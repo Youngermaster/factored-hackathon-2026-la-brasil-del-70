@@ -5,11 +5,12 @@ from datetime import timedelta
 import httpx
 import pytest
 
+from bank_agent.adapters.ratelimit.memory import InMemoryRateLimitStore
 from bank_agent.api.app import create_app
 from bank_agent.api.config import RateClass, RateLimit, SecurityConfig
 from bank_agent.api.errors import RateLimitedError
 from bank_agent.api.metrics import HttpMetrics
-from bank_agent.api.ratelimit import SlidingWindowLimiter
+from bank_agent.api.ratelimit import RateLimiter
 from bank_agent.testing.telemetry import RecordingTelemetry
 from bank_agent_builders import T0, session
 from bank_agent_test_support import FakeProvider, api_config
@@ -30,15 +31,15 @@ def test_active_sessions_expire_after_their_idle_timeout() -> None:
     assert telemetry.gauges["bank.sessions.active"].last() == 1
 
 
-def test_the_limiter_names_which_limit_refused() -> None:
-    limiter = SlidingWindowLimiter(lambda: 0.0)
+async def test_the_limiter_names_which_limit_refused() -> None:
+    limiter = RateLimiter(InMemoryRateLimitStore(lambda: 0.0))
     limit = RateLimit(per_ip=1, per_session=1)
-    limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_A)
+    await limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_A)
     with pytest.raises(RateLimitedError) as by_ip:
-        limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_B)
+        await limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_B)
     assert by_ip.value.key == "ip"
     with pytest.raises(RateLimitedError) as by_session:
-        limiter.check(RateClass.READ, limit, client_ip="198.51.100.2", session_token=TOKEN_A)
+        await limiter.check(RateClass.READ, limit, client_ip="198.51.100.2", session_token=TOKEN_A)
     assert by_session.value.key == "session"
 
 

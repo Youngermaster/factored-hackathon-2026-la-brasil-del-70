@@ -150,3 +150,20 @@ async def test_a_repeated_turn_id_replays_and_one_from_another_conversation_conf
     turns = history.json()["turns"]
     assert [turn["customer_text"] for turn in turns] == ["Recomiéndame una inversión"]
     assert turns[0]["message"]["text"] == original.json()["message"]["text"]
+
+
+async def test_two_workers_share_the_postgres_rate_limits(
+    postgres_api: ApiBackend, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "postgres")
+    monkeypatch.setenv("RATE_LIMIT_AUTH_PER_MINUTE", "3")
+    first, second = postgres_api.build(), postgres_api.build()
+    async with ApiClient(first.app) as one, ApiClient(second.app) as two:
+        statuses = [
+            (await one.get("/v1/auth/csrf")).status_code,
+            (await two.get("/v1/auth/csrf")).status_code,
+            (await one.get("/v1/auth/csrf")).status_code,
+            (await two.get("/v1/auth/csrf")).status_code,
+        ]
+    assert first.container.rate_limit_store is not None
+    assert statuses == [200, 200, 200, 429]

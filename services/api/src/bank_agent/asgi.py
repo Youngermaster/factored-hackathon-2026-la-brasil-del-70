@@ -73,7 +73,8 @@ def build_app(settings: AppSettings, observability: Observability | None = None,
     """The instrumented application: telemetry into the container, trace ids into the HTTP layer, server spans."""
     observability = observability or build_observability(settings.observability, environment=settings.runtime.app_env)
     wired = Container(settings, telemetry=observability.telemetry, on_close=(observability.shutdown,), **container)
-    app = create_http_app(wired, api_config_from(settings, observability))
+    config = replace(api_config_from(settings, observability), rate_limit_store=wired.rate_limit_store)
+    app = create_http_app(wired, config)
     observability.instrument_app(app)
     observability.instrument_dependencies(wired.database_engine)
     return app

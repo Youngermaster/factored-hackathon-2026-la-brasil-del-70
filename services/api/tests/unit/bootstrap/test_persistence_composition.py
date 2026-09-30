@@ -3,10 +3,12 @@ import secrets
 import pytest
 
 from bank_agent.adapters.persistence.memory.unit_of_work import InMemoryUnitOfWorkFactory
+from bank_agent.adapters.persistence.postgres.rate_limits import PostgresRateLimitStore
 from bank_agent.adapters.persistence.postgres.sessions import PostgresSessionStore
 from bank_agent.adapters.persistence.postgres.unit_of_work import PostgresUnitOfWorkFactory
+from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.bootstrap.container import Container
-from bank_agent.bootstrap.persistence import owner_database_url, tools_with_failures
+from bank_agent.bootstrap.persistence import build_rate_limit_store, owner_database_url, tools_with_failures
 from bank_agent.bootstrap.settings import load_settings
 from bank_agent.domain.actions import ToolFailureMode, ToolName
 from bank_agent.domain.errors import ConfigurationError
@@ -56,3 +58,22 @@ def test_the_failure_injector_is_refused_in_production(monkeypatch: pytest.Monke
     container.settings.runtime.app_env = "production"
     with pytest.raises(ConfigurationError):
         tools_with_failures(container.settings, container.banking_tools, session_context(), plan)
+
+
+def test_the_rate_limit_store_is_in_process_unless_the_shared_backend_is_chosen(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    assert build_rate_limit_store(load_settings(env_file=None), None, SystemClock()) is None
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "postgres")
+    with pytest.raises(ConfigurationError, match="RATE_LIMIT_BACKEND=postgres"):
+        build_rate_limit_store(load_settings(env_file=None), None, SystemClock())
+
+
+async def test_the_shared_backend_builds_the_postgres_store(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "postgres")
+    monkeypatch.setenv("POSTGRES_APP_PASSWORD", secrets.token_urlsafe(32))
+    monkeypatch.setenv("SESSION_SECRET", secrets.token_urlsafe(48))
+    container = Container(load_settings(env_file=None))
+    assert isinstance(container.rate_limit_store, PostgresRateLimitStore)
+    assert "SESSION_SECRET" not in repr(container.rate_limit_store)
+    await container.aclose()
