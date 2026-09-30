@@ -2,10 +2,11 @@
 
 Each record captures one choice between real alternatives, in the [MADR](https://adr.github.io/madr/) format: context, options, decision, and consequences. Records are numbered in order and never rewritten; a later record supersedes an earlier one and both link to each other.
 
-Numbers 0015 to 0019 are reserved for the phases that already name them, so the table lists records by number, not by date.
+The table lists records by number, not by date: 0015 to 0019 were reserved early for the phases that named them. 0017 was never used and stays reserved, so no record takes it. The status column repeats each record's own status line; the notes below the table say where the build departs from a record, without changing the record.
 
 | Number | Title | Status | Date |
 |---|---|---|---|
+| [0000](0000-team-alignment-and-hackathon-strategy.md) | Agentic banking architecture, core tech stack, and team alignment (the team's alignment record) | Proposed (see the notes) | 2026-09-27 |
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted | 2026-09-26 |
 | [0002](0002-uv-workspace-and-hexagonal-backend.md) | Monorepo with a uv workspace and hexagonal backend layers | Accepted | 2026-09-26 |
 | [0003](0003-frontend-layering-and-state.md) | Frontend layering and state rules | Accepted | 2026-09-26 |
@@ -40,6 +41,14 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0033](0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
 | [0034](0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |
 | [0035](0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder | Accepted | 2026-09-29 |
+
+## Notes on status
+
+- **0000** was merged from the team repository during phase 05 (only its whitespace changed so `make docs-check` passes). It is the team's alignment record and states some things the phase log does not record elsewhere (for example a ten-day window and a feature lock on day 1). Its status stays as its authors wrote it, Proposed; whether the team accepts it is its authors' call (pending action 14 in [PROGRESS.md](../PROGRESS.md)).
+- **0025** is accepted by its authors, but the human decided on 2026-09-27 that the build does not follow its scope: all four workflows stay automated, and its mock human agent, assistant profile, and Langfuse traces are not built (pending action 32; the Langfuse branch stays unmerged).
+- **0026 to 0028** describe future product directions (a live agent joining the conversation, opt-in financial memory, mock multi-bank and digital-asset surfaces). None is built; the handoff and the agent inbox of phases 09 to 13 are what exists.
+- **0015, 0016, and 0030** keep their defaults "until phase 14 measures the learned models end to end". Session 14b did, on the dev split with the local model, and kept the rule baselines (`keyword@1`, `rules@1`, `score_band@1`); the evidence is in [results.md](../evaluation/results.md#decision-the-learned-router-resolver-and-risk-estimator-defaults-dev-evidence-only).
+- **0022** asks for the organizer data-use terms to be checked before the repository becomes public; phase 17 recorded the check in [data-use.md](../data/data-use.md).
 
 ## Adding a record
 

@@ -30,7 +30,7 @@ adapters/
 │       ├── audit.py          PostgresStandaloneAuditLog for events outside a customer transaction
 │       ├── seed.py           PostgresSeeder: idempotent upserts as the owner with app.role = 'seed'
 │       ├── migrate.py        programmatic Alembic upgrade and downgrade as the owner role
-│       ├── migrations/       Alembic revisions 0001 to 0008 (schema, RLS, grants, append-only triggers)
+│       ├── migrations/       Alembic revisions 0001 to 0013 (schema, RLS, grants, append-only triggers, chat and profile, reviewable intakes, budget ledger, rate limits and retention, agent credit moves)
 │       └── readiness.py      PostgresReadinessCheck: SELECT 1 as the application role
 ├── identity/
 │   ├── codes.py              IdentityKeys (HMAC keys derived from SESSION_SECRET), code generation and hashing

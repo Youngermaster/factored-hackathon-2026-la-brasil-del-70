@@ -47,7 +47,7 @@ Design thesis: **the language model understands, deterministic code decides, and
 - Handoffs carry the request, verified facts, actions taken, evidence, and open questions, never a raw transcript.
 - Credit keeps conversation, risk estimate, and eligibility behind separate ports (`RiskEstimator`, `EligibilityPolicy`). The model never sees the risk estimate or the credit profile and never states or implies approval.
 
-**Scope is settled.** All four workflows are automated as built. [ADR 0025](docs/adr/0025-tuesday-account-inquiry-mvp-and-observability.md) proposed a narrower "Tuesday MVP" (only `account_inquiry` automated, the other workflows sent to a mock human agent, plus an assistant profile and Langfuse traces). The human decided the build does not follow that scope (pending action 32 in [PROGRESS.md](docs/PROGRESS.md)). Do not reopen the decision, and do not build ADR 0025's mock agent, assistant profile, or Langfuse integration unless the human asks.
+**Scope is settled.** All four workflows are automated as built. [ADR 0025](docs/adr/0025-tuesday-account-inquiry-mvp-and-observability.md) proposed a narrower "Tuesday MVP" (only `account_inquiry` automated, the other workflows sent to a mock human agent, plus an assistant profile and Langfuse traces). The human decided the build does not follow that scope (pending action 32 in [PROGRESS.md](docs/PROGRESS.md)), and the teammate branch `feat/privacy-safe-langfuse-api` stays unmerged. Do not reopen the decision, and do not build ADR 0025's mock agent, assistant profile, or Langfuse integration unless the human asks.
 
 ## 3. Current state
 
@@ -61,8 +61,9 @@ As of this file's last update:
 | Phase 14a | Done: the evaluation harness (`bank-eval`, 332 test and 122 dev scenarios) |
 | Phase 14b | Done: the frozen test run on the local Ollama `qwen2.5:7b-instruct`, published; the cassettes are committed |
 | Phase 15 | Done: OpenTelemetry traces and metrics, the degradation ladder, the chaos suite, alerts, the local load test |
-| Phase 16 | Done: security review and the single-host production stack (`deploy/`), verified locally with TLS and the local model; the host is not chosen yet |
-| Phase 17 | Remaining: license, data-use terms, final docs and audit, video; the human deploys to the chosen host |
+| Phase 16 | Done: security review and the single-host production stack (`deploy/`), verified locally with TLS and the local model |
+| Phase 17 | Done: the final documentation and audit (README, LIMITATIONS, architecture views, the brief traceability matrix, the submission package in `docs/submission/`), the data-use record, no license ("All rights reserved"), the demo-guide fixes |
+| Remaining (human) | Choose the host and deploy, fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email ([docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md)) |
 | Submission deadline | 2026-10-05 |
 
 Runtime defaults (from [.env.example](.env.example)): `LLM_PROVIDER=fake` (no model call; workflows use deterministic fallbacks), `WORKFLOW_ROUTER=keyword@1`, `WORKFLOW_RESOLVER=rules@1`, `WORKFLOW_RISK_ESTIMATOR=score_band@1`, `DEMO_MODE=true`. Learned components exist but are not the defaults.
@@ -136,7 +137,8 @@ S3 credentials come only from the organizer, through the team. They are never co
 | `policies/` | The synthetic policy pack ([README](policies/README.md)): clauses in es, pt, en, bindings, action matrix, credit catalog, eligibility messages, version lock |
 | `contracts/` | JSON Schemas generated from Pydantic models and the committed `contracts/openapi.json` ([README](contracts/README.md)) |
 | `deploy/` | The production stack for one VM (`compose.prod.yml`, `prod.sh`, Caddy, the smoke test, production PostgreSQL roles) with the deployment guide for Lightsail, EC2, and Azure, plus the development stack's role bootstrap and observability configuration ([README](deploy/README.md)) |
-| `docs/` | Architecture, ADRs, workflows, API, security, data, models, evaluation, design, plans, progress ([index](docs/README.md)) |
+| `docs/` | Architecture, ADRs, workflows, API, security, data, models, evaluation, design, demo, submission, plans, progress ([index](docs/README.md)) |
+| `README.md`, `LIMITATIONS.md` | The judge-facing summary and the honest limits; keep their numbers identical to `docs/evaluation/results.md` |
 | `scripts/` | Repository checks (`scripts/checks/`), git hooks (`scripts/hooks/`), contract and OpenAPI export, env generation, the LLM smoke script |
 | `slides/` | The pitch deck ([README](slides/README.md)): a standalone Slidev package, outside the uv workspace and outside `make check` |
 | `skills/` | Tool-agnostic agent skills for this repository (section 11) |
@@ -328,6 +330,7 @@ Detail: [evals/README.md](evals/README.md), [docs/evaluation/plan.md](docs/evalu
 | `make images`, `make scan-images` | Build the production images; trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs |
 | `make smoke`, `make csp-check` | Smoke test and browser CSP check of a deployed stack (`SMOKE_URL=https://...`) |
 | `make eval-smoke` | 12-scenario smoke suite with a scripted client, no model |
+| `make submission-check` | The pre-submission gates (`make check`, `make security`, `make eval-smoke`, the slides verify, `make docs-check`), then the remaining human steps |
 | `make format` | Applies ruff, ESLint, and Prettier fixes |
 
 Narrow runs while iterating: `uv run --frozen pytest services/api/tests/unit/<area> -q`, `pnpm --dir apps/web exec vitest run <path>`.
@@ -356,6 +359,7 @@ Rules:
 | pre-commit runs gitleaks, the emoji guard, the AI-attribution strip on the commit message, ruff, ESLint, Prettier, and a 500 KB file limit; CI runs gitleaks and the attribution guard over the full history | Fix what the hook reports. Never `git commit --no-verify`. An attribution trailer that reaches a shared branch cannot be removed without rewriting history |
 | Some agents add `Co-authored-by` or "Generated with" lines by default | Turn that off in the agent's settings before the first commit |
 | Demo writes persist: a charge can be disputed once per database; `make seed` restores blocked cards but not opened cases or intakes | Run `make seed` on a fresh compose volume before recording a demo or video; run `make db-upgrade` on an existing database after new migrations |
+| The committed sample has no customer for four of the sixteen customer personas (`acc-co-payments`, `acc-ar-similar-transfers`, `dsp-ar-repeat-complainer`, `dsp-mx-similar-purchases`); signing in as one fails on a sample seed | Keep the demo guide on the twelve sample personas (`data_platform/tests/unit/test_demo_guide_personas.py` checks it); drive any new guide message through the API on a fresh sample seed before listing it ([docs/demo/personas.md](docs/demo/personas.md)) |
 | Rotating `SESSION_SECRET` changes the keys derived for identity lookups and one-time codes | Run `make seed` again after rotating it (on the VM: `deploy/prod.sh seed`) |
 | Production settings are validated per process: the API refuses the owner password, `DEMO_MODE` without `ALLOW_PUBLIC_DEMO_MODE`, and the in-process rate limiter; owner jobs need `load_settings(owner=True)` | A new production setting goes in the right branch of `production_problems` in `bootstrap/settings.py`, in `.env.example`, in `deploy/.env.production.example`, and in the service's `environment` in `deploy/compose.prod.yml` (`tests/unit/test_deploy_config.py` checks the template) |
 | The production stack in a worktree or next to the dev stack clashes on ports or project names | Run it with its own project name and ports (`PROJECT=... ENV_FILE=... deploy/prod.sh ...`, `HTTP_PORT=8080 HTTPS_PORT=8443`); it publishes no database port. Remove it with `docker compose ... -p <project> down --volumes` when done |

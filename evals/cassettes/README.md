@@ -42,9 +42,9 @@ Edit the cases in `scripts/write_fixture_cassettes.py` and run it; never edit a 
 
 ## How to record real cassettes (after the provider decision)
 
-1. Install the extra: `uv sync --all-packages --extra litellm`.
+1. Install the extra without removing the others: `uv sync --inexact --all-packages --extra litellm --frozen`.
 2. Set, in the shell or `.env` (never in a session): `LLM_PROVIDER=cassette`, `LLM_CASSETTE_MODE=record`, `LLM_PRIMARY_MODEL=<provider/model>`, `LLM_API_KEY_PRIMARY=<key>`.
-3. Run the calls to record (phase 14 adds the evaluation command that drives them).
+3. Run the calls to record: `uv run --frozen bank-eval run --llm record ...` for evaluation runs ([evals README](../README.md)), or the code path under test for a single prompt case.
 4. Check that every new file has `"provenance": "recorded"`, contains no personal data (variables and outputs are redacted before writing), and passes `uv run pytest services/api/tests/unit/adapters/llm/test_fixture_cassettes.py`.
 
 Recording is refused in production settings.

@@ -4,7 +4,7 @@ Thank you for helping build the banking agent. This guide covers the mechanics; 
 
 ## Set up
 
-Install the prerequisites listed in the [README](README.md#prerequisites), then:
+Install the prerequisites listed in the [README](README.md#quickstart), then:
 
 ```bash
 make setup     # uv sync, pnpm install, pre-commit hooks
@@ -22,6 +22,24 @@ Each package and app explains its responsibility, public interfaces, how to exte
 - [data_platform](data_platform/README.md), [ml](ml/README.md), [evals](evals/README.md), and [deploy](deploy/README.md).
 
 Import boundaries are enforced: backend layers import inward only (import-linter), and web layers import downward only with features reached through their `index.ts` (ESLint). A boundary error means the code belongs in a different layer.
+
+## Extending the system
+
+Each guide names the files to touch and the tests to add. The step-by-step recipes are in [AGENTS.md](AGENTS.md) section 7; the package READMEs have the detail.
+
+| Change | Guide |
+|---|---|
+| A persistence adapter (repository pattern, shared contract suites) | AGENTS.md "Add an adapter, a model, or a new port"; [adapters README](services/api/src/bank_agent/adapters/README.md); [ports and adapters](docs/architecture/ports-and-adapters.md) |
+| A data source adapter | [data_platform README](data_platform/README.md#how-to-extend) |
+| A model (router, resolver, or risk estimator: train, evaluate, register, promote, switch by settings) | [ml README](ml/README.md#how-to-add-a-model); never change a default without an end-to-end evaluation |
+| A workflow, or disabling one | [application README](services/api/src/bank_agent/application/README.md#how-to-extend) and [workflow pages](docs/workflows/README.md#adding-or-disabling-a-workflow); `WORKFLOW_ENABLED` disables one without code changes |
+| A workflow state | AGENTS.md "Add a workflow state" |
+| A synthetic eligibility rule or a catalog product | AGENTS.md "Add or change a policy clause or rule" (credit clauses carry no approval wording); [policies README](policies/README.md); [eligibility](docs/policy/eligibility.md) |
+| A policy clause or rule (parity across es, pt, en, lock, catalog) | AGENTS.md "Add or change a policy clause or rule" |
+| A prompt or a prompt version (registry, cassettes, evaluation) | AGENTS.md "Add a prompt or a prompt version"; [prompts README](services/api/src/bank_agent/prompts/README.md) |
+| A tool, an API route, a migration, a contract schema | The matching AGENTS.md recipes |
+| A UI feature (layers, compound components, context, MSW tests) | AGENTS.md "Add a UI feature"; [features README](apps/web/src/features/README.md) |
+| Evaluation scenarios | AGENTS.md "Add evaluation scenarios"; [evals README](evals/README.md) |
 
 ## Making a change
 

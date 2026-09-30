@@ -56,7 +56,7 @@ Body line length is capped at about 65 characters (`max-w-prose`, `max-w-2xl`). 
 
 - **Spacing:** Tailwind's 4 px scale, used in the steps 4, 8, 12, 16, 24, 32, 48 px (`Stack` and `Inline` expose exactly these as `gap` 1, 2, 3, 4, 6, 8, 12). Customer pages use 32 to 48 px between sections; the consoles use 24 to 32 px.
 - **Radii (one rule, applied everywhere):** controls (buttons, inputs, badges, digit boxes) 6 px (`rounded-control`); containers (cards, dialogs, toasts, tables) 12 px (`rounded-card`); status pills and the timeline markers are fully round, and nothing else is.
-- **Layout:** the customer surface is one centered column, max 1024 px, chat-first (phase 13 adds the glass box beside it on wide screens). The console is a 224 px sidebar plus content on wide screens and a navigation row under the header on narrow ones. Every multi-column layout collapses to one column below 640 px (`sm`) or 1024 px (`lg`).
+- **Layout:** the customer surface is one centered column, max 1024 px, chat-first, with the glass box beside it on wide screens (phase 13). The console is a 224 px sidebar plus content on wide screens and a navigation row under the header on narrow ones. Every multi-column layout collapses to one column below 640 px (`sm`) or 1024 px (`lg`).
 - **z-index scale:** header 30, overlays 40, dialog, sheet, tooltip, and toast content 50. Nothing else sets one.
 
 ## Color tokens
@@ -116,7 +116,7 @@ Motion is state feedback only (`MOTION_INTENSITY` 2): overlays fade in (200 ms),
 
 - **Money.** `Intl.NumberFormat(locale, {style: 'currency', currency})` over the API's decimal string, never a float, so `9007199254740993.01` stays exact. When the amount has more decimals than the locale shows by default (COP in `es-CO` shows none), the cents the API sent are kept. Amounts render in Geist Mono with tabular figures, right-aligned in tables. The currency is the product's (MXN, COP, ARS, USD), and the format is the viewer's chosen locale.
 - **Dates.** `Intl.DateTimeFormat` with `dateStyle: 'medium'` (and `timeStyle: 'short'` for instants) in the viewer's time zone, wrapped in `<time dateTime>`. Relative time (`Intl.RelativeTimeFormat`, numeric auto) only for near events such as session expiry.
-- **Masked numbers.** Only the last four characters are ever shown (for example "Terminada en 4821" / "Final 4821" / "Ending in 4821", copy that phase 13 adds with the account views), in the mono face.
+- **Masked numbers.** Only the last four characters are ever shown (for example "Terminada en 4821" / "Final 4821" / "Ending in 4821", copy added with the account views in phase 13), in the mono face.
 - **Balances.** Every balance shows its as-of instant through `<AsOfNote>` ("Datos al 27 sep 2026, 3:04 p.m."): the data is a snapshot, not a live ledger.
 - **Status.** `<StatusPill>` has five states. Only `verified` (an action whose outcome was read back) gets the yellow fill; `pending` is neutral, `failed` and `escalated` are red-tinted, `review_required` is a neutral outline. Each has an icon and a word.
 - **Eligibility outcomes** (`indicatively_eligible`, `not_eligible`, `review_required`, `insufficient_data`) never use the yellow verified treatment, a check icon, or wording that suggests approval ("aprobado", "aprovado", "approved" are not used anywhere). They render as neutral text with their reasons, the uncertainty, and the review path, always labeled as an indication from a synthetic service (phase 13).
