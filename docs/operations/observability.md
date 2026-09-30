@@ -61,7 +61,7 @@ The instrument catalog in `adapters/telemetry/catalog.py` is the source of truth
 | `bank.llm.budget.daily_used_ratio`, `bank.llm.budget.refusals` | gauge, counter | cap | budget guard and monitor |
 | `bank.degradation.level`, `bank.degradation.component` | gauge | component | `DegradationMonitor` |
 | `bank.database.unavailable` | counter | none | unit of work and probes |
-| `bank.sessions.active` | gauge (per process) | none | `HttpMetrics` |
+| `bank.sessions.active` | gauge (deployment-wide: live sessions counted in the shared session store every 30 s by each worker; dashboards take the maximum) | none | `HttpMetrics` |
 | `bank.http.rate_limited` | counter | rate class, key kind (`ip` or `session`) | `HttpMetrics` |
 
 Spans: `bank.turn` (turn id, conversation id, channel, workflow, state, outcome), `bank.workflow.state` (workflow, state, kind, next state, outcome), `bank.router.dispatch` (language, intent, confidence, below threshold, model), `bank.policy.evaluate` (workflow, policy state, decision, decisive rules, pack version), `bank.tool.call` (tool, status, attempts, error), `bank.risk.estimate` (product type, model), `bank.eligibility.assess` (product, estimate present, outcome, review reasons), `gen_ai.chat` (GenAI attributes), and the SQLAlchemy and HTTP spans.
@@ -70,12 +70,14 @@ Spans: `bank.turn` (turn id, conversation id, channel, workflow, state, outcome)
 
 Logs are JSON lines on stdout with `timestamp`, `level`, `logger`, `event`, `request_id`, and, inside a span, `trace_id` and `span_id`. The redaction processor (`bootstrap/logging.py`) masks sensitive keys and scrubs emails, document numbers, phones, and long digit runs in every value, tracebacks included; `trace_id` and `span_id` pass unredacted only when they are hex ids of the right length (tests: `tests/unit/bootstrap/test_logging.py`, `test_observability.py`).
 
-| Store | Retention (development) | Where configured |
+| Store | Development (`docker-compose.yml`) | Production (`deploy/compose.prod.yml`) |
 |---|---|---|
-| Container logs | 5 files of 10 MB per service, rotated | `x-hardening.logging` in `docker-compose.yml` |
-| Prometheus | 7 days | `--storage.tsdb.retention.time` in `docker-compose.yml` |
-| Jaeger | In memory until the container restarts | Jaeger all-in-one defaults |
-| Execution records, audit events | Kept (append-only by design) | PostgreSQL; purge policy for sessions and challenges is phase 16 |
+| Container logs | 5 files of 10 MB per service | 5 files of 10 MB per service; the API writes no access log (no client addresses) |
+| Prometheus | 7 days | 15 days or 2 GB, on the `prometheus-data` volume |
+| Jaeger | In memory until the container restarts | Badger on the `jaeger-data` volume, 7-day TTL (`deploy/observability/jaeger.yaml`); verified to survive a restart |
+| Execution records, audit events | Kept (append-only by design) | Kept for the life of the deployment; conversation text, sessions, challenges, and trust events are purged ([data retention](../security/data-retention.md)) |
+
+In production the `obs` profile is opt-in (`OBS=1 deploy/prod.sh up` with `OTEL_ENABLED=true`). Grafana requires its admin login (anonymous access off, `GRAFANA_ADMIN_PASSWORD` from the server env file) and, like the Jaeger UI, listens on 127.0.0.1 only; reach both through an SSH tunnel ([deploy/README.md](../../deploy/README.md), "Operate"). Jaeger 2.21 serves only its v3 query API, which Grafana's Jaeger datasource does not read, so traces are read in the Jaeger UI (BACKLOG). The local load test at 50 customers with every trace kept took Jaeger to about 470 MB; set `OTEL_TRACES_SAMPLER_ARG` below 1.0 (for example 0.2) for sustained traffic.
 
 ## How to read the trace of one conversation
 
@@ -96,6 +98,7 @@ Verified in phase 15 on a local stack: traces with the full span tree and SQL sp
 
 ## Limitations
 
-- Grafana runs with anonymous read access and Jaeger keeps traces in memory: development only (phase 16 adds authentication and persistent storage).
-- Active sessions and the degradation level are per process; dashboards sum or take the maximum over processes.
-- The SQLAlchemy instrumentation declares support below SQLAlchemy 2.1; it is enabled past its version check after the spans were verified, and must be rechecked on upgrades.
+- The development `obs` profile keeps Grafana anonymous and Jaeger in memory; the production profile adds a login, loopback-only ports, and persistent storage.
+- The degradation level is per worker (each trips its own circuit breaker; the budget, the rate limits, and the active-session count are shared); dashboards take the maximum over workers.
+- Grafana's Jaeger datasource cannot query Jaeger 2.21 (v3 API only).
+- The SQLAlchemy instrumentation declares support below SQLAlchemy 2.1; it is enabled past its version check after the spans were verified with 2.1.1 (rechecked in phase 16: the lock still holds SQLAlchemy 2.1.1 and the instrumentation 0.66b0), and must be rechecked on upgrades.

@@ -167,6 +167,11 @@ sequenceDiagram
 | A decision now ("just approve it", "Aprove o meu crédito agora", "Aprueba mi crédito ya": an approval verb in the imperative or with an immediacy word; asking what approval needs is not one) | Abstain, disclaimer, and the review path; no approval wording | `CRE-ALL-3`, `CRE-ALL-1` |
 | Distress or over-indebtedness | Escalate | `ESC.distress_signal` (`ESC-ALL-3`) |
 
+## Assessment limit and agent review moves (phase 16)
+
+- **Assessment limit.** Before ESTIMATE_RISK and ASSESS_ELIGIBILITY the engine counts the synthetic assessments in the customer's own execution records over the last `WORKFLOW_ELIGIBILITY_ASSESSMENT_WINDOW_MINUTES` (60, the absolute session lifetime), across every conversation. At `WORKFLOW_MAX_ELIGIBILITY_ASSESSMENTS` (5) it does not assess again: it hands the request to a person (reason `other`, detail `eligibility_assessment_limit`, safety intervention `eligibility_assessment_limit`), so repeated assessments with small changes cannot map the synthetic rules. It is never a refusal of credit (`services/api/tests/integration/api/test_eligibility_assessment_limit.py`).
+- **Agent review moves.** An agent takes a `submitted` intake into `under_human_review` and closes one under review (`POST /v1/agent/credit-applications/{id}/review` and `/close`, with the version it read), each audited (`credit_review_started`, `credit_review_closed`). There is no approved or declined status; closing records that the review ended (`services/api/tests/integration/api/test_agent_credit_review.py`).
+
 ## Tests
 
 Scenarios 24 to 29 with variants run on both backends (`test_credit_workflow.py`, `test_credit_edges.py`); `test_credit_separation.py` drives every credit path with a recording `FakeLLM` (understanding, phrasing, and summaries on) and asserts that no prompt receives a profile or estimate value; `test_credit_properties.py` is the Hypothesis property over profile gaps and estimator outcomes; `test_credit_wording.py` scans every template for approval wording.
