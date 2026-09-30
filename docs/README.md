@@ -45,6 +45,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0033](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 | [adr/0034](adr/0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
 | [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
+| [adr/0036](adr/0036-cloud-secret-management-with-azure-key-vault.md) | Production secrets in Azure Key Vault with workload identity |
 
 ## Exploratory data analysis
 

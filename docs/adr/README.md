@@ -39,6 +39,7 @@ Numbers 0015 to 0019 are reserved for the phases that already name them, so the 
 | [0033](0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
 | [0034](0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |
 | [0035](0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder | Accepted | 2026-09-29 |
+| [0036](0036-cloud-secret-management-with-azure-key-vault.md) | Production secrets in Azure Key Vault with workload identity | Proposed | 2026-09-30 |
 
 ## Adding a record
 
