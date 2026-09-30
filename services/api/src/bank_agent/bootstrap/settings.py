@@ -295,6 +295,8 @@ class WorkflowSettings(BaseSettings):
     model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
     language_detector: Literal["lexical@1"] = "lexical@1"
     risk_estimator: Annotated[str, Field(pattern=RISK_ESTIMATOR_SELECTION)] = "score_band@1"
+    max_eligibility_assessments: int = Field(default=5, ge=1, le=100)
+    eligibility_assessment_window_minutes: int = Field(default=60, ge=1, le=1440)
 
     @field_validator("router", "resolver", "risk_estimator", "model_registry_dir", mode="before")
     @classmethod

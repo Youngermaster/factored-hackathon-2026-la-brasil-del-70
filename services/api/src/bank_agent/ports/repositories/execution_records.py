@@ -1,6 +1,7 @@
 """Execution record repository port."""
 
 from collections.abc import Sequence
+from datetime import datetime
 from typing import Protocol
 
 from bank_agent.domain.execution_record import ExecutionRecord
@@ -29,4 +30,9 @@ class ExecutionRecordRepository(Protocol):
 
     async def list_for_conversation(self, conversation_id: ConversationId) -> Sequence[ExecutionRecord]:
         """Return the visible records of a conversation."""
+        ...
+
+    async def count_eligibility_assessments(self, since: datetime) -> int:
+        """Customers: how many synthetic eligibility assessments their own records hold since ``since`` (every
+        conversation of theirs), for the per-session assessment limit. Other contexts raise ``AccessContextError``."""
         ...

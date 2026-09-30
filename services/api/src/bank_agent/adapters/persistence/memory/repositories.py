@@ -316,6 +316,14 @@ class InMemoryExecutionRecordRepository:
         found = [r for r in self._records.values() if r.conversation_id == conversation_id and self._visible(r, reader)]
         return sorted(found, key=lambda record: (record.recorded_at, record.turn_id))
 
+    async def count_eligibility_assessments(self, since: datetime) -> int:
+        owner = _customer_of(self._context)
+        return sum(
+            len(record.eligibility_assessments)
+            for record in self._records.values()
+            if record.customer_ref == owner and record.recorded_at >= since
+        )
+
 
 class InMemoryHandoffRepository:
     def __init__(self, handoffs: TableView[str, HandoffRecord], context: AccessContext) -> None:

@@ -75,6 +75,7 @@ class Loaded:
     conversation: Conversation | None
     customer: Customer
     prior_complaints: int
+    recent_assessments: int = 0
 
 
 class WorkflowEngine:
@@ -179,7 +180,9 @@ class WorkflowEngine:
                     raise ConversationNotFoundError()
             start = self._services.policy.data_as_of - timedelta(days=days if isinstance(days, int) else 0)
             complaints = await uow.complaints.count_since(datetime.combine(start, time.min, UTC))
-        return Loaded(conversation, customer, complaints)
+            window_start = self._services.clock.now() - self._settings.eligibility_assessment_window
+            assessments = await uow.execution_records.count_eligibility_assessments(window_start)
+        return Loaded(conversation, customer, complaints, assessments)
 
     def new_conversation(
         self, session: Session, customer: Customer, now: datetime, channel: Channel = Channel.WEB_CHAT
@@ -250,6 +253,7 @@ class WorkflowEngine:
             enabled=enabled,
             at_router=at_router,
             prior_complaints=loaded.prior_complaints,
+            recent_assessments=loaded.recent_assessments,
             degradation=degradation,
         )
 
