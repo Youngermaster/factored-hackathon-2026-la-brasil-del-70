@@ -222,3 +222,55 @@ eda: ## Run or resume all EDA phases against local CSVs
 
 eda-ui: ## Open the local EDA viewer and sanitized laboratory
 	uv run --frozen --extra eda-ui streamlit run data_platform/src/bank_data/eda/ui.py --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false --theme.base light --theme.primaryColor '#346538' --theme.backgroundColor '#F7F6F3' --theme.secondaryBackgroundColor '#FFFFFF' --theme.textColor '#2F3437' --theme.font 'Helvetica Neue, sans-serif'
+
+# --- Security and production images (phase 16; deploy/README.md) -----------------------------------------------
+.PHONY: security scan-images images smoke csp-check
+# Container tools run from pinned images, so nothing beyond Docker is needed on the machine.
+HADOLINT_IMAGE := hadolint/hadolint:v2.14.0@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e
+SHELLCHECK_IMAGE := koalaman/shellcheck:v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d
+TRIVY_IMAGE := aquasec/trivy:0.70.0@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e
+SYFT_IMAGE := anchore/syft:v1.40.0@sha256:11a68ff5cd49a1579e1f05b061a96edf0a5add161ea5f38d62fc979704c46918
+IMAGE_TAG ?= $(shell git rev-parse --short=12 HEAD)
+VITE_DEMO_MODE ?= false
+SMOKE_URL ?=
+# Dummy values that only let `docker compose config` interpolate the production file; never used to run anything.
+COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
+	POSTGRES_SUPERUSER_PASSWORD=compose-config-check POSTGRES_ADMIN_PASSWORD=compose-config-check \
+	POSTGRES_APP_PASSWORD=compose-config-check SESSION_SECRET=compose-config-check CSRF_SECRET=compose-config-check
+
+security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, production compose validation
+	requirements="$$(mktemp)"; trap 'rm -f "$$requirements"' EXIT; \
+		uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt -o "$$requirements" > /dev/null; \
+		$(UV_RUN) pip-audit -r "$$requirements" --require-hashes --disable-pip --progress-spinner off
+	$(WEB) audit --prod --audit-level high
+	$(UV_RUN) bandit -q -c pyproject.toml -r $(PYTHON_SOURCES) deploy
+	gitleaks git --redact --no-banner .
+	for dockerfile in services/api/Dockerfile apps/web/Dockerfile services/api/Dockerfile.dev apps/web/Dockerfile.dev; do \
+		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
+	docker run --rm -v "$(CURDIR)/deploy:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) \
+		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+	$(COMPOSE_CHECK_ENV) docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example \
+		--profile '*' config --quiet
+
+images: ## Build the production images (web, api, job) as bank-agent-*:IMAGE_TAG (default: the current commit)
+	docker build -f services/api/Dockerfile --target api -t bank-agent-api:$(IMAGE_TAG) .
+	docker build -f services/api/Dockerfile --target job -t bank-agent-job:$(IMAGE_TAG) .
+	docker build -f apps/web/Dockerfile --build-arg VITE_DEMO_MODE=$(VITE_DEMO_MODE) -t bank-agent-web:$(IMAGE_TAG) .
+
+scan-images: ## Trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs (syft) for the images of IMAGE_TAG
+	mkdir -p reports/sbom
+	for image in api job web; do \
+		docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v bank-agent-trivy-cache:/root/.cache \
+			$(TRIVY_IMAGE) image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress \
+			bank-agent-$$image:$(IMAGE_TAG); \
+		docker run --rm -v /var/run/docker.sock:/var/run/docker.sock $(SYFT_IMAGE) \
+			docker:bank-agent-$$image:$(IMAGE_TAG) -o cyclonedx-json > reports/sbom/bank-agent-$$image.cdx.json; \
+	done
+
+smoke: ## Smoke test a deployed stack: make smoke SMOKE_URL=https://demo.example.org (deploy/smoke_test.sh)
+	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
+	deploy/smoke_test.sh $(SMOKE_URL)
+
+csp-check: ## Browser check of a deployed stack's CSP and cookies: make csp-check SMOKE_URL=https://demo.example.org
+	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
+	$(WEB) exec node tooling/csp-check.mjs $(SMOKE_URL)

@@ -265,8 +265,9 @@ services:
     deploy:
       resources:
         limits:
+          # The local load test at 50 customers with every trace kept reached 470 MB (docs/operations/capacity.md).
           cpus: "0.5"
-          memory: 512M
+          memory: 768M
 
   prometheus:
     profiles: [obs]
