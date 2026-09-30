@@ -137,7 +137,7 @@ Results recorded in this phase:
 
 | Check | Result |
 |---|---|
-| `make check` | See the final line of this entry |
+| `make check` | Exit 0 at `b1eded1` (the commit before this line): lint, format, types, 7 import contracts, bandit (with `deploy/`), ESLint, Prettier, 2,827 unit and 1,488 integration Python tests (3 skipped: the optional `ml` extra), all 11 coverage gates (application 94.5%, adapters 97.3%, api 97.2%, bootstrap 98.8%), 348 web tests, docs (78 Mermaid blocks), data sample, codegen, emoji, attribution, gitleaks |
 | New tests | Settings guards (every refusal case), the rate-limit store on memory and PostgreSQL and across two engines and two apps, the purge and its boundaries, the production-roles suite, the agent credit moves (contracts, RLS, HTTP), the shared session count, the assessment limit in es and pt, the deployment configuration, the CSP nonce |
 
 #### Known limitations
