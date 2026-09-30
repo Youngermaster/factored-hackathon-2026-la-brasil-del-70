@@ -2,8 +2,9 @@
 
 Checks, in order: the TLS certificate (valid for the host, days left), the health endpoints, the security headers of
 the SPA and of the API, the demo sign-in and its cookies, one conversation per workflow across both languages
-(account inquiry in es, card support in pt, a dispute intake in es and in pt that stops at its clarifying question, and
-credit in pt), an out-of-scope request answered with an abstention, and a cross-customer probe answered with 404.
+(account inquiry in es, card support in pt, a dispute intake in es and in pt that stops at its clarifying question, the
+seeded open case's status in es, and credit in pt), an out-of-scope request answered with an abstention, and a
+cross-customer probe answered with 404.
 Every conversation is read only, so the smoke test can run daily against the public demo without changing its data.
 It prints what it checks, never a code, a cookie value, or a token, and exits 1 on the first failure.
 """
@@ -49,6 +50,8 @@ FLOWS = (
          frozenset({"clarified", "in_progress"})),
     Flow("dispute intake (pt)", "dsp-co-unrecognized", "Não reconheço uma cobrança no meu cartão de crédito", "dispute",
          frozenset({"clarified", "in_progress"})),
+    Flow("dispute status (es)", "dsp-mx-open-case", "¿Cómo va mi aclaración?", "dispute",
+         frozenset({"resolved"})),
     Flow("credit catalog (pt)", "cre-mx-complete", "Quais cartões de crédito vocês têm?", "credit",
          frozenset({"resolved", "clarified"})),
     Flow("out of scope (es)", "cre-mx-complete", "¿En qué acciones de la bolsa me recomiendas invertir mis ahorros?",
