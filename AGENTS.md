@@ -385,8 +385,11 @@ For GitHub pull requests, issues, reviews, comments, or other GitHub operations,
 | [github-collaboration](skills/github-collaboration/SKILL.md) | Pull requests, issues, reviews, and comments through the `gh` CLI, with authentication checks and no stored tokens |
 | [download-organizer-data](skills/download-organizer-data/SKILL.md) | Downloading the organizer S3 dataset with credentials the contributor supplies for that run only, never stored or echoed |
 | [setup-postgres-data](skills/setup-postgres-data/SKILL.md) | Setting up the local PostgreSQL, applying migrations, and seeding from an existing warehouse or the committed sample |
+| [UX-Backend-start](skills/UX-Backend-start/SKILL.md) | Starting the whole product (PostgreSQL, API, web UX) from any machine state and opening it in the browser; it runs the skills above when their conditions apply, and uses a toolbox container where Windows Smart App Control blocks Python's native files |
 
-The design skills under `.claude/skills/` (`design-taste-frontend`, `minimalist-ui`, `full-output-enforcement`) are written for Claude Code, but CLAUDE.md section 6 asks all UI work to follow the first two; other agents can read their `SKILL.md` files directly.
+To start the app, read `UX-Backend-start` first. On Windows, once setup is done, a person can double-click `skills/UX-start.bat`: it starts Docker if needed, starts the containers, checks the database and health endpoints, and opens `http://localhost:5173` (`stop`, `status`, `--no-browser`, or a server URL as an argument).
+
+The design skills under `.claude/skills/` (`design-taste-frontend`, `minimalist-ui`, `full-output-enforcement`) are written for Claude Code, but CLAUDE.md section 6 asks all UI work to follow the first two; other agents can read their `SKILL.md` files directly. `.claude/skills/ux-backend-start/` is only a pointer that registers `UX-Backend-start` as the `/ux-backend-start` command in Claude Code; change the instructions in `skills/UX-Backend-start/SKILL.md`, never in the pointer.
 
 ## 12. Keeping this file current
 
