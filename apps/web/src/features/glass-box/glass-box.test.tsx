@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HttpResponse } from 'msw';
 import { describe, expect, it } from 'vitest';
@@ -190,8 +190,11 @@ describe('the glass box', () => {
     startAuthServer({ session: sessionView() });
     startConversationServer();
     renderApp({ path: '/' });
-    const panel = await screen.findByRole('region', { name: 'Registro de ejecución' });
-    expect(await within(panel).findByText('Todavía no hay turnos')).toBeInTheDocument();
+    // The panel can re-render once the chat's other queries settle, so look it up fresh on every retry.
+    await waitFor(() => {
+      const panel = screen.getByRole('region', { name: 'Registro de ejecución' });
+      expect(within(panel).getByText('Todavía no hay turnos')).toBeInTheDocument();
+    });
   });
 });
 
