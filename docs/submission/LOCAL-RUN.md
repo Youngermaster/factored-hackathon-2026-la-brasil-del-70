@@ -73,7 +73,7 @@ Start at `/demo` (the demo guide): it lists, per workflow, the normal, ambiguous
 | Workflow | Persona | What to check |
 |---|---|---|
 | Accounts and payments | `acc-mx-accounts` | Balances name the as-of date ("con datos al 17 de junio de 2026"); "my transfer" without details asks for amount, date, or recipient; a transfer request abstains with cited policies; "Mi saldo está mal, quiero hablar con una persona" hands over with a case reference and a due time |
-| Cards | `crd-mx-two-cards` | "Perdí mi tarjeta, bloquéala por favor" asks which card; "la primera" shows a confirmation card (card, action, reason) with Confirm and Cancel; Confirm opens the "Confirm it is you" dialog with a new demo code; after it the reply says the block is done and the action shows "Verified", with the product id it was checked against |
+| Cards | `crd-mx-two-cards` | "Perdí mi tarjeta, bloquéala por favor" asks which card; "la primera" shows a confirmation card (card, action, reason) with Confirm and Cancel; Confirm opens the "Confirm it is you" dialog with a new demo code; after it the reply says the block is done and the action shows "Verificado" (the conversation's language), with the product id it was checked against |
 | Cards | `crd-co-declined`, `crd-mx-blocked` | Card status asks which card, then answers; an unblock request goes to a person (no unblock tool exists) |
 | Disputes | `dsp-co-unrecognized` | Ask for the April statement of the credit card, pick the first card, then write "No reconozco el cargo de [merchant] del [date] por [amount]" copying one purchase line from the statement table (not the cash withdrawal). The assistant asks to leave the statement question ("Sí"), offers a protective block ("No, gracias"), shows the claim with its deadline, and registers the case only after Confirm and the step-up code |
 | Disputes | `dsp-mx-open-case`, `dsp-co-unrecognized` | Case status answers with the case id and its committed date (45 days after the seed); a complaint to the regulator hands over at once |
@@ -104,7 +104,7 @@ A bare `make llm-smoke` reads the fake provider from `.env` and stops with `llm-
 With the local model all 16 demo-guide scenarios completed in Spanish and in Portuguese through the browser. Per turn: p50 4.8 s, p95 7.7 s, at most 8.2 s (47 turns), against about 0.7 s with the fake provider. The record now lists each model call (`detect_escalation_signals@1`, `extract_<workflow>_slots@1`) with its tokens and latency, at a cost of $0.00. Differences seen against the fake provider:
 
 - In both Spanish runs (dev stack and production stack), "Perdí mi tarjeta, bloquéala por favor" from `crd-mx-two-cards` went straight to the confirmation for the credit card instead of asking which card, so the guide's next message ("la primera") got "No te entendí. Responde sí para confirmar o no para cancelar"; press Confirm (or Cancel) on the card shown instead. The confirmation names the card before anything is written. The Portuguese run on the same model asked which card. Recorded in [BACKLOG](../BACKLOG.md).
-- Everything else followed the same states and outcomes as the fake provider.
+- Every scenario ended in the same final state and outcome as with the fake provider; the card choice above was the only difference in the path.
 
 ## 4. Evaluation: the smoke suite and the published report
 
@@ -206,7 +206,7 @@ make check               # every gate; needs Docker, never reads .env
 make submission-check    # make check, make security, make eval-smoke, the slides verify, make docs-check, then the human steps
 ```
 
-`make check` starts its own PostgreSQL containers through testcontainers, so it does not need `make up` and does not touch the dev database. `make security` needs the network (pip-audit and `pnpm audit`) and pulls pinned tool images on first use.
+Measured: `make check` 8 min 12 s, `make submission-check` 7 min 56 s (it runs `make check` again, then `make security`, `make eval-smoke`, the slides' verify, and `make docs-check`, printing `pass` per gate and then the human steps that remain). `make check` starts its own PostgreSQL containers through testcontainers, so it does not need `make up` and does not touch the dev database. `make security` needs the network (pip-audit and `pnpm audit`) and pulls pinned tool images on first use.
 
 ## Troubleshooting
 
@@ -249,7 +249,7 @@ Date: 2026-09-30. Started from `main` at `b1e1f7b` in a fresh clone, on the bran
 | 4 | Evaluation: `make eval-smoke`; regenerate the published report without a model | Pass for `eval-smoke` and for `bank-eval publish` on the run directory (byte for byte); the committed cassettes alone cannot reproduce the published numbers | Replay: 214 misses, P 165/304 against 177/304, the same at `6bc2e9d`; documented in the methodology, a harness fix is in BACKLOG for a human decision |
 | 5 | Local production stack: `init-env`, `check`, `build`, `up`, `seed`, `make smoke`, `make csp-check`, two write flows in the browser through the model, then down with its volumes | Pass after fixes | `make smoke` and `make csp-check` could not take the local CA flags, and the CSP check timed out on a fresh seed's empty inbox; both fixed |
 | 6 | Slides: `pnpm install`, `pnpm verify`, `pnpm dev`, `pnpm check:fit`, draft `pnpm export` | Pass | 35-page PDF; 1 metric pending (`deploy.url`) by design |
-| 7 | `make check` and `make submission-check` in the clone | Running | Filled in after the runs |
+| 7 | `make check` and `make submission-check` in the clone | Pass | At `dd03fba`: `make check` 8 min 12 s (2,870 unit, 1,489 integration with 3 skipped for the optional `ml` extra, 349 web tests, all 11 coverage gates); `make submission-check` 7 min 56 s, every gate `pass`, then the seven human steps |
 
 Commits on `e2e-verify`:
 
