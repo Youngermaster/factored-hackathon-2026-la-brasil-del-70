@@ -106,7 +106,7 @@ class Sentiment(StrEnum):
 
 
 class Handoff(DomainModel):
-    schema_version: SchemaVersion = "1.4.0"
+    schema_version: SchemaVersion = "1.5.0"
     handoff_id: HandoffId
     created_at: UtcDatetime
     conversation_ref: ConversationId

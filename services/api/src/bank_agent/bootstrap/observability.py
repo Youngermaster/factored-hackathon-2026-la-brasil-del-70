@@ -31,8 +31,8 @@ from opentelemetry.sdk.trace.sampling import ParentBased, TraceIdRatioBased
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from bank_agent import __version__
-from bank_agent.adapters.telemetry.opentelemetry import OpenTelemetryAdapter
 from bank_agent.adapters.telemetry.langfuse import LangfuseGenerationExporter
+from bank_agent.adapters.telemetry.opentelemetry import OpenTelemetryAdapter
 from bank_agent.bootstrap.settings import LangfuseSettings, ObservabilitySettings
 
 EXCLUDED_URLS: Final = "/health/live,/health/ready,/health/details"
@@ -121,7 +121,8 @@ def build_observability(
             )
         )
     if langfuse is not None and langfuse.enabled:
-        assert langfuse.public_key is not None and langfuse.secret_key is not None
+        if langfuse.public_key is None or langfuse.secret_key is None:
+            raise ValueError("Langfuse export requires both keys")
         credentials = f"{langfuse.public_key.get_secret_value()}:{langfuse.secret_key.get_secret_value()}"
         authorization = b64encode(credentials.encode("utf-8")).decode("ascii")
         exporter = OTLPSpanExporter(

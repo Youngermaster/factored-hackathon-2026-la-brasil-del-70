@@ -90,6 +90,8 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 | policy_clause | 1.3.0 | 2026-09-29 | No field change; kept on the shared minor release |
 | scenario | 1.4.0 | 2026-09-29 | Adds optional `scripted_fallback` (the turns a simulated scenario plays when a run has no simulator model) and `template_family` (the generator family, kept within one split), marked `x-added-in`; a `tool_failure` scenario may use a `model_unavailable` fixture instead of a tool failure plan; new documents default to `1.4.0` |
 | handoff, execution_record, decision, policy_clause | 1.4.0 | 2026-09-29 | No field change; they move to the shared 1.4.0 release with the scenario additions |
+| execution_record | 1.5.0 | 2026-09-30 | Adds optional `llm_calls[].model_call_id`, matching the Langfuse generation span id; new documents default to `1.5.0` |
+| handoff, decision | 1.5.0 | 2026-09-30 | No field change; kept on the shared output minor release; scenario and policy_clause input contracts remain at 1.4.0 |
 
 ## How to change a contract
 

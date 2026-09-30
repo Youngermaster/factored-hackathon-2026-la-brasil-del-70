@@ -107,6 +107,7 @@ async def run_assistant_turn(config: Config) -> tuple[str, str, str]:
     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
     try:
         import httpx
+
         from bank_agent.asgi import create_app
     except ImportError as error:
         raise VerificationError(
@@ -216,7 +217,7 @@ async def read_execution_record(config: Config, trace_id: str, conversation_id: 
     provider, separator, model_name = config.model.partition("/")
     if not separator or not provider or not model_name:
         raise VerificationError("The configured model has no provider/model name.")
-    by_name: dict[str, dict[str, Any]] = {}
+    by_id: dict[str, dict[str, Any]] = {}
     for call in calls:
         if not isinstance(call, dict) or call.get("status") != "ok":
             raise VerificationError("PostgreSQL LLM call is missing or its status is not success (ok).")
@@ -228,12 +229,18 @@ async def read_execution_record(config: Config, trace_id: str, conversation_id: 
         for metric in ("input_tokens", "output_tokens", "latency_ms"):
             if not isinstance(call.get(metric), int) or call[metric] <= 0:
                 raise VerificationError(f"PostgreSQL LLM call has no positive {metric}.")
-        name = prompt
-        if name in by_name:
-            raise VerificationError(f"PostgreSQL has duplicate generation name {name}; cannot match calls 1:1.")
-        by_name[name] = call
-    print(f"PASS PostgreSQL record ({len(by_name)} successful calls, provider {provider}, model {model_name}).")
-    return {"calls": by_name, "conversation_id": conversation_id, "turn_id": turn_id}
+        model_call_id = call.get("model_call_id")
+        if (
+            not isinstance(model_call_id, str)
+            or len(model_call_id) != 16
+            or any(char not in "0123456789abcdef" for char in model_call_id)
+        ):
+            raise VerificationError("PostgreSQL LLM call has no valid model_call_id.")
+        if model_call_id in by_id:
+            raise VerificationError("PostgreSQL has duplicate model_call_id values.")
+        by_id[model_call_id] = call
+    print(f"PASS PostgreSQL record ({len(by_id)} successful calls, provider {provider}, model {model_name}).")
+    return {"calls": by_id, "conversation_id": conversation_id, "turn_id": turn_id}
 
 
 def _as_dict(value: Any) -> dict[str, Any]:
@@ -278,7 +285,7 @@ def verify_langfuse(config: Config, trace_id: str, record: dict[str, Any]) -> No
             response = client.api.observations.get_many(
                 trace_id=trace_id,
                 type="GENERATION",
-                fields="core,basic,usage,metrics,model,metadata",
+                fields="core,basic,usage,metrics,model,metadata,io",
                 limit=100,
             )
             observations = [_as_dict(item) for item in (getattr(response, "data", response) or [])]
@@ -309,44 +316,46 @@ def verify_langfuse(config: Config, trace_id: str, record: dict[str, Any]) -> No
     seen: set[str] = set()
     for generation in generations:
         metadata = generation.get("metadata") or {}
-        prompt_id = metadata.get("prompt_id")
-        prompt_version = metadata.get("prompt_version")
-        name = f"{prompt_id}@{prompt_version}"
-        if name not in record["calls"] or name in seen:
-            raise VerificationError(f"Langfuse prompt {name!r} has no unique PostgreSQL call.")
-        seen.add(name)
+        model_call_id = metadata.get("call_id")
+        if not isinstance(model_call_id, str) or model_call_id not in record["calls"] or model_call_id in seen:
+            raise VerificationError("Langfuse model_call_id has no unique PostgreSQL call.")
+        seen.add(model_call_id)
+        call = record["calls"][model_call_id]
+        name = str(call["prompt"])
+        if f"{metadata.get('prompt_id')}@{metadata.get('prompt_version')}" != name:
+            raise VerificationError(f"Langfuse prompt differs from PostgreSQL for model_call_id {model_call_id}.")
         if metadata.get("conversation_id") != record["conversation_id"]:
             raise VerificationError("Langfuse conversation ID differs from PostgreSQL.")
         if metadata.get("correlation_id") != record["turn_id"]:
             raise VerificationError("Langfuse correlation ID differs from PostgreSQL turn ID.")
-        if metadata.get("trace_id") != trace_id or not metadata.get("call_id"):
+        if metadata.get("trace_id") != trace_id:
             raise VerificationError("Langfuse has no matching trace and call IDs.")
         if metadata.get("status") != "success":
             raise VerificationError(f"Langfuse {name} has no success status.")
         if not metadata.get("schema_id") or not metadata.get("schema_version"):
             raise VerificationError(f"Langfuse {name} has no schema ID/version.")
         schema_hash = metadata.get("schema_hash")
-        if not isinstance(schema_hash, str) or len(schema_hash) != 64 or not schema_hash.startswith(
-            str(metadata["schema_version"])
+        if (
+            not isinstance(schema_hash, str)
+            or len(schema_hash) != 64
+            or not schema_hash.startswith(str(metadata["schema_version"]))
         ):
             raise VerificationError(f"Langfuse {name} has no valid schema hash.")
         if not metadata.get("provider_returned_model_id"):
             raise VerificationError(f"Langfuse {name} has no provider-returned model ID.")
         if generation.get("input") is not None or generation.get("output") is not None:
             raise VerificationError(f"Langfuse {name} exported prompt or response content.")
-        if generation.get("user_id") is not None:
+        if generation.get("user_id") not in (None, ""):
             raise VerificationError(f"Langfuse {name} exported a customer identifier.")
         model = generation.get("model")
         provider, _, _ = config.model.partition("/")
         if not isinstance(model, str) or model != config.model:
             raise VerificationError(f"Langfuse {name} provider model differs from LLM_PRIMARY_MODEL.")
-        attributes = metadata.get("attributes") or {}
-        if attributes.get("gen_ai.provider.name") != provider:
+        if metadata.get("attributes.gen_ai.provider.name") != provider:
             raise VerificationError(f"Langfuse {name} configured model metadata differs from LLM_PRIMARY_MODEL.")
         usage = generation.get("usage_details") or {}
         remote_input = usage.get("input")
         remote_output = usage.get("output")
-        call = record["calls"][name]
         for label, remote, local in (
             ("input", remote_input, call["input_tokens"]),
             ("output", remote_output, call["output_tokens"]),

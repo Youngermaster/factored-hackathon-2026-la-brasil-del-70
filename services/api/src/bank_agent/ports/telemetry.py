@@ -19,6 +19,11 @@ class Span(Protocol):
         """The 32-character hex trace id, or ``None`` when tracing is off."""
         ...
 
+    @property
+    def span_id(self) -> str | None:
+        """The 16-character hex span id, or ``None`` when tracing is off."""
+        ...
+
     def set_attribute(self, key: str, value: AttributeValue) -> None: ...
 
     def record_error_code(self, code: str) -> None:

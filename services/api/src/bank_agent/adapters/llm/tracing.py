@@ -116,4 +116,4 @@ class TracingDecorator(LlmDecorator):
                 span.set_attribute("bank.llm.output", output)
             self._tokens.record(result.usage.input_tokens, {**metric_attributes, "gen_ai.token.type": "input"})
             self._tokens.record(result.usage.output_tokens, {**metric_attributes, "gen_ai.token.type": "output"})
-            return result
+            return result.evolve(model_call_id=span.span_id) if span.span_id is not None else result

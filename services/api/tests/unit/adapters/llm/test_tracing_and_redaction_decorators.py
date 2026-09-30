@@ -1,3 +1,5 @@
+import hashlib
+import json
 from decimal import Decimal
 
 import pytest
@@ -13,7 +15,7 @@ from bank_agent.adapters.llm.tracing import (
 from bank_agent.domain.errors import LlmRateLimitedError
 from bank_agent.domain.intelligence import LlmCallContext
 from bank_agent.testing.telemetry import RecordingTelemetry
-from bank_agent_llm import StubClient, call_structured, call_text
+from bank_agent_llm import SimpleOutput, StubClient, call_structured, call_text
 
 
 class Ticks:
@@ -40,10 +42,14 @@ async def test_span_carries_genai_request_and_response_attributes() -> None:
     telemetry = RecordingTelemetry()
     stub = StubClient(model_id="anthropic/claude-sonnet-5", cost_usd=Decimal("0.0021"))
 
-    await call_structured(_tracer(stub, telemetry), max_output_tokens=321)
+    generation = await call_structured(_tracer(stub, telemetry), max_output_tokens=321)
 
     (span,) = telemetry.spans
+    assert generation.model_call_id == span.span_id
     assert span.name == SPAN_NAME
+    schema_hash = hashlib.sha256(
+        json.dumps(SimpleOutput.model_json_schema(), sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
     assert span.attributes == {
         "gen_ai.operation.name": "chat",
         "gen_ai.provider.name": "anthropic",
@@ -54,6 +60,10 @@ async def test_span_carries_genai_request_and_response_attributes() -> None:
         "bank.prompt.id": "phrase_response",
         "bank.prompt.version": 1,
         "bank.language": "es",
+        "bank.schema.id": "SimpleOutput",
+        "bank.schema.version": schema_hash[:12],
+        "bank.schema.hash": schema_hash,
+        "bank.llm.status": "success",
         "gen_ai.response.model": "anthropic/claude-sonnet-5",
         "gen_ai.usage.input_tokens": 1000,
         "gen_ai.usage.output_tokens": 200,

@@ -6,14 +6,14 @@ discarding events, links, exception messages, input, output, and all other span 
 """
 
 import json
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from decimal import Decimal, InvalidOperation
-from typing import Final
+from typing import Final, cast
 
 import structlog
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import ReadableSpan
-from opentelemetry.sdk.trace.export import SpanExportResult, SpanExporter
+from opentelemetry.sdk.trace.export import SpanExporter, SpanExportResult
 from opentelemetry.trace import Status, StatusCode
 
 _log = structlog.get_logger(__name__)
@@ -49,7 +49,7 @@ class LangfuseGenerationExporter(SpanExporter):
         for span in spans:
             if span.name != GENERATION_SPAN or span.context is None or not span.context.is_valid:
                 continue
-            source = span.attributes or {}
+            source = cast(Mapping[str, object], span.attributes or {})
             attributes: dict[str, str | int | float | bool] = {
                 "langfuse.observation.type": "generation",
                 "langfuse.observation.metadata.call_id": format(span.context.span_id, "016x"),
