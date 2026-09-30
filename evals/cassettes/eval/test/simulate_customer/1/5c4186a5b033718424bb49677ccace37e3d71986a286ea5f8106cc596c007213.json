@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5c4186a5b033718424bb49677ccace37e3d71986a286ea5f8106cc596c007213",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1427,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Reclamar um cargo"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:52:03.635913Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 699,
+    "output_tokens": 16
+  },
+  "variables": {
+    "conversation": "Customer: Fui vítima de um golpe e quero registrar uma reclamação sobre essa compra de R$1250 na TIENDA AURORA.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-dis-ambiguou-006#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report a fraudulent charge using estafa (fraud in Spanish) or golpe (Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you were the victim of a scam (estafa in Spanish, golpe in Portuguese) with a charge of 1250 at TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

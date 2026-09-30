@@ -1,0 +1,32 @@
+{
+  "cassette_id": "23c0814e7ab9b1f909f0bba116f413412083461445e8df927dc32837450e12e9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2743,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Entendido, el monto deseado es $3,000,000 ARS y el plazo será de 36 meses."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:24:19.079581Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 965,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber sobre un crédito. ¿Podrías darme más información?\nAssistant: Claro, ¿podrías indicarme qué tipo de crédito te interesa saber más? Tenemos tarjetas de crédito y préstamos personales.\nCustomer: Un préstamo personal, por favor. Quisiera conocer las condiciones.\nAssistant: Para el préstamo personal, tenemos diferentes opciones. ¿Te interesaría conocer más detalles sobre la tarjeta de crédito, el préstamo personal estándar o tienes otra preferencia?\nCustomer: Un préstamo personal, por favor. Quisiera conocer las condiciones.\nAssistant: Por supuesto, para el préstamo personal, necesitamos considerar algunos factores. ¿Podrías proporcionarme tu puntaje crediticio? También, ¿puedes indicarme tu ingreso mensual aproximado?\nCustomer: Mi puntaje crediticio es 750 y gano alrededor de $30,000 pesos argentinos al mes.\nAssistant: Gracias por proporcionar esa información. Con un puntaje crediticio de 780 y un ingreso mensual de $1,800,000 ARS, tienes una buena calificación crediticia. Para el préstamo personal, el límite máximo de crédito sería de $5,400,000 ARS con un plazo máximo de 60 meses. La cuota mensual sería aproximadamente el 30% de tu ingreso, lo que en tu caso sería $54,000 ARS. ¿Te interesa proceder con una solicitud?\nCustomer: Sí, me interesa. ¿Cómo puedo solicitar este préstamo?\nAssistant: Para proceder con tu solicitud, necesitamos que nos proporciones el código del producto que te interesa, el monto deseado y el plazo en meses. ¿Podrías indicarme estos detalles?",
+    "conversation_seed": "test-cre-ambiguou-011#1",
+    "dialect_hint": "es-AR",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

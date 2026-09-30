@@ -1,0 +1,33 @@
+{
+  "cassette_id": "81f3aa7c96243b8ae26dc71a04b7b9718bb5afb01a9f7620ba95b609ec956f90",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5864,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero no puedo ayudar con esa solicitud aquí. Te recomendaría que visites un cajero automático o contactes a nuestro servicio al cliente para cambiar el PIN de tu tarjeta de débito.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:56.074834Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 76
+  },
+  "variables": {
+    "conversation": "Customer: Quiero cambiar el PIN de mi tarjeta de débito",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

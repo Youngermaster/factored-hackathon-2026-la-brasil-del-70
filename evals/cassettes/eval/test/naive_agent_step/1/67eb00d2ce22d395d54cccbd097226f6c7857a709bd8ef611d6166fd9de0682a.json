@@ -1,0 +1,33 @@
+{
+  "cassette_id": "67eb00d2ce22d395d54cccbd097226f6c7857a709bd8ef611d6166fd9de0682a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4573,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Desculpe pelo inconveniente. Houve um problema ao bloquear o cartão imediatamente. Vamos tentar novamente ou agendar uma chamada com um especialista para resolver isso. Você prefere tentar agora ou agendar para mais tarde?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:14:01.924546Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1406,
+    "output_tokens": 82
+  },
+  "variables": {
+    "conversation": "Customer: Roubaram meu cartão de débito, bloqueie\nAssistant: Entendi que seu cartão de débito foi roubado. Vou resumir: estamos bloqueando o cartão agora e você confirmará a ação. Isso está correto?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"error\", \"result\": \"block_card failed: timeout\"}"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "cassette_id": "bf3b1fed16b985f17d7435a04c25dd1c52bae10fae18263c7d6bad765f6e14c4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6881,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "85000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "2026-06-18",
+      "merchant_text": "ALMACEN ANDES"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:32:42.869663Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1463,
+    "output_tokens": 125
+  },
+  "variables": {
+    "customer_message": "No reconozco el cargo de 85.000 en ALMACEN ANDES, quiero reclamarlo",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

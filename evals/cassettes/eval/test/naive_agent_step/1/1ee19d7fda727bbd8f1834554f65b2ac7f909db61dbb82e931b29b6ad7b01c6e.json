@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1ee19d7fda727bbd8f1834554f65b2ac7f909db61dbb82e931b29b6ad7b01c6e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4534,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": null,
+    "reply": "Entendi. Vou verificar seu saldo agora. Como as informações são atualizadas até 17/06/2026, pode haver alguma diferença recente. Aguarde um momento, por favor.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:00.606933Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1437,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Quais são as condições do empréstimo pessoal?\nAssistant: Olá! As condições do empréstimo pessoal podem variar, mas posso fornecer uma orientação geral. Geralmente, o limite máximo de parcelas é de 36, e o limite de crédito é baseado em sua renda e score de crédito. Você gostaria de saber mais sobre os requisitos mínimos de score de crédito ou sobre como calcular o percentual do seu rendimento?\nCustomer: Melhor me diga quanto tenho na poupança",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

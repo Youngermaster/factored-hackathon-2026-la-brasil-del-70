@@ -1,0 +1,33 @@
+{
+  "cassette_id": "27c0b05930b2d519500ac6cc91deff529b87e79100102b7e53a756574cfaa44e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6255,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, não encontrei seu cartão de crédito associado a este ID de cliente. Por favor, verifique se o ID está correto ou se o cartão já foi bloqueado anteriormente.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:19:33.669643Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1408,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Roubaram meu cartão de crédito, bloqueie\nAssistant: Entendi que seu cartão de crédito foi roubado. Vou resumir: estamos bloqueando o cartão agora e você precisará solicitar uma substituição. Você confirma que quer prosseguir com essas ações?\nCustomer: Sim, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "cassette_id": "7543ccfa60534ae44b00ee7aa93fd4cb0ae8ee5c49126f0e3329d9739da4abb6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2663,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 1,
+    "language_correct": false,
+    "language_quality": 1,
+    "politeness": 1,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:23:13.123577Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 841,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: O que aconteceu com o meu pagamento de 850 do dia 06/06?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: O do dia 06/06\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol)."
+  }
+}

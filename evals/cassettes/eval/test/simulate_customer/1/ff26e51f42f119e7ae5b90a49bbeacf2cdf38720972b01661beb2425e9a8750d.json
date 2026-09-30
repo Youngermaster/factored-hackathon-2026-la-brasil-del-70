@@ -1,0 +1,32 @@
+{
+  "cassette_id": "ff26e51f42f119e7ae5b90a49bbeacf2cdf38720972b01661beb2425e9a8750d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2398,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Puedo solicitar un préstamo personal de 50.000 pesos por 24 meses?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:24:31.479053Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 561,
+    "output_tokens": 34
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-cre-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask for loan eligibility mixing Spanish and Portuguese.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask whether you can get a personal loan of 50000 pesos over 24 months, mixing Spanish and Portuguese words.",
+    "known_facts": "(none)"
+  }
+}

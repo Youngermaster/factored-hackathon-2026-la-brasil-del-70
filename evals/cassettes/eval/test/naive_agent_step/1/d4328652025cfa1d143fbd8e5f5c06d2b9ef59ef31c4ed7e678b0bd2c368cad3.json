@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d4328652025cfa1d143fbd8e5f5c06d2b9ef59ef31c4ed7e678b0bd2c368cad3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3699,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "No se encontró información sobre la transferencia a JUAN PEREZ del 15/06. ¿Podrías proporcionar más detalles para poder ayudarte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:33.395956Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1353,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: ¿Ya se acreditó la transferencia de 1500 a JUAN PEREZ del 15/06?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

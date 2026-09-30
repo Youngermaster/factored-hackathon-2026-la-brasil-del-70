@@ -1,0 +1,32 @@
+{
+  "cassette_id": "fd8b2a954fad49a00451fb5b37c2b4bebbef3eaa0ec9d57b155697669dfc2079",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2113,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Es la más reciente, del 15/06."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:47:05.491203Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 743,
+    "output_tokens": 24
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me podés decir el estado de mi transferencia de 60.000 pesos a PABLO DÍAZ?\nAssistant: Encontré varios pagos o transferencias parecidos. ¿Cuál es?\n1) 15 de junio de 2026, PABLO DIAZ, 60.000,00 ARS, **** 7508\n2) 11 de junio de 2026, PABLO DIAZ, 60.000,00 ARS, **** 7508",
+    "conversation_seed": "test-acc-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Know the status of a transfer to a payee, without saying at first which of two similar transfers.",
+    "hidden_facts": "date: 15/06",
+    "instructions": "Ask about your transfer of 60.000 pesos to PABLO DIAZ. When asked which one, say it is the most recent one, from 15/06.",
+    "known_facts": "amount: 60.000 pesos; payee: PABLO DIAZ"
+  }
+}

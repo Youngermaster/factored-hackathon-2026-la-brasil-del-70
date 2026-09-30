@@ -1,0 +1,33 @@
+{
+  "cassette_id": "929f542b8369000e7909c2731e145921e6940bb21d8c195149583710ffd4514e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5302,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para solicitar un préstamo personal, necesitamos que complete un formulario de aplicación. ¿Le gustaría que le enviemos un formulario para que lo rellene y envíe de nuevo a través de este canal? También podemos ayudarlo a revisar la información y ver si cumple con los requisitos indicativos.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:18:17.916335Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1639,
+    "output_tokens": 93
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quiero saber sobre un crédito. ¿Me podrías decir las condiciones?\nAssistant: ¡Claro! Le proporcionaré información sobre las condiciones de los productos de crédito disponibles en Colombia. ¿Le interesa conocer más sobre tarjetas de crédito, hipotecas o préstamos personales?\nCustomer: Prefiero un préstamo personal, ¿puedes decirme las condiciones?\nAssistant: Por supuesto, para el préstamo personal en Colombia, necesitamos considerar algunos factores. ¿Podría proporcionarme su ingreso mensual aproximado y si tiene algún pago pendiente?\nCustomer: Tengo un ingreso de $3.000.000 mensuales y no tengo pagos pendientes.\nAssistant: Con base en la información proporcionada y su perfil crediticio, para un préstamo personal en Colombia con un ingreso mensual de 3.000.000 COP y un puntaje de crédito de 780, podríamos considerar una tasa de interés del 12% anual. El plazo mínimo es de 12 meses y el máximo de 60 meses. ¿Le interesa solicitar un presupuesto personalizado basado en estos parámetros?\nCustomer: Sí, me interesa mucho. ¿Cómo puedo solicitar este préstamo personal?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

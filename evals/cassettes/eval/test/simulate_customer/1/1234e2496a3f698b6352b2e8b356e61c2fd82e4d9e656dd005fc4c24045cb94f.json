@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1234e2496a3f698b6352b2e8b356e61c2fd82e4d9e656dd005fc4c24045cb94f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1556,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quiero bloquear una tarjeta, por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:03:25.828575Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 560,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-car-ambiguou-011#1",
+    "dialect_hint": "es-AR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

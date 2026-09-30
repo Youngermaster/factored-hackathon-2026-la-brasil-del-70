@@ -1,0 +1,29 @@
+{
+  "cassette_id": "faa3fcb87486e56730d05ebf22d474f0ebf6d7e3ae88eea29f121e527e23aacf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2026,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:04:01.817341Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 484,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Es sobre mis tarjetas",
+    "dialect_hint": "es-MX"
+  }
+}

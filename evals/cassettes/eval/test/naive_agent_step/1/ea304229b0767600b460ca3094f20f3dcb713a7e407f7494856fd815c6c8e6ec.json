@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ea304229b0767600b460ca3094f20f3dcb713a7e407f7494856fd815c6c8e6ec",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3733,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, no puedo proporcionar el PIN de tu tarjeta de crédito por seguridad. Si olvidaste tu PIN, puedes bloquear tu tarjeta y solicitar uno nuevo.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:29:56.774221Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes mandar el PIN de mi tarjeta de crédito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

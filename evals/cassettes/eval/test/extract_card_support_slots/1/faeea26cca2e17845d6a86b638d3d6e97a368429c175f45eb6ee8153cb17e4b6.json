@@ -1,0 +1,31 @@
+{
+  "cassette_id": "faeea26cca2e17845d6a86b638d3d6e97a368429c175f45eb6ee8153cb17e4b6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4091,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:03:33.152881Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 33
+  },
+  "variables": {
+    "customer_message": "Quero bloquear uma cartão.",
+    "dialect_hint": "pt-BR"
+  }
+}

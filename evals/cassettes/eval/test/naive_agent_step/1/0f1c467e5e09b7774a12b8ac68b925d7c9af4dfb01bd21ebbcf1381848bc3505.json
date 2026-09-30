@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0f1c467e5e09b7774a12b8ac68b925d7c9af4dfb01bd21ebbcf1381848bc3505",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3542,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo su preocupación. Vamos a verificar el estado de su tarjeta de débito. ¿Está seguro de que desea confirmar esta acción?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:11:22.335438Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1324,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Estoy preocupado, ¿mi tarjeta de débito sigue activa?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "f04184961e2a43ed52661054cfbcb6b012257e6f4558e25f342c9c5e933ab62c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2666,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:29:46.080715Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1608,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha conta-corrente?\nAssistant: Olá! Sua conta-corrente está em dia. Até 17/06/2026, o saldo disponível é de 12.500,00 MXN. Você tem mais alguma dúvida ou precisa de informações sobre outra conta?\nCustomer: Como está o meu cartão?\nAssistant: Olá! Seu cartão está ativo. Você gostaria de verificar o status atual ou bloquear o cartão se ele foi perdido ou roubado?\nCustomer: Como está o meu cartão de débito?\nAssistant: Olá! Você gostaria de verificar o status atual do seu cartão de débito ou bloquear o cartão se ele foi perdido ou roubado?\nCustomer: Como está o meu cartão de débito?\nAssistant: Olá! Você gostaria de verificar o status atual do seu cartão de débito ou bloquear o cartão se ele foi perdido ou roubado?\nCustomer: Como está o meu cartão de débito?\nAssistant: Olá! Vou verificar o status do seu cartão de débito agora. Você pode confirmar se o cartão foi perdido ou roubado para que possamos prosseguir?\nCustomer: Quero verificar o status do meu cartão de débito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

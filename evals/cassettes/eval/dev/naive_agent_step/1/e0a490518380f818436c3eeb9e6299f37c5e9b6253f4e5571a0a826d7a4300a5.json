@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e0a490518380f818436c3eeb9e6299f37c5e9b6253f4e5571a0a826d7a4300a5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 9512,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "En la fecha 15 de junio de 2026, tienes un movimiento pendiente por 1,500.00 MXN con el comercio Juan Pérez. El movimiento del 11 de junio de 2026 por 1,500.00 MXN fue aprobado. Además, el 6 de junio de 2026, se reversó un pago de servicio de luz por 850.00 MXN. ¿Necesitas más detalles sobre alguno de estos movimientos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:07:09.139314Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1476,
+    "output_tokens": 150
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes enviar un resumen de mis movimientos en la tarjeta de crédito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-06-15\", \"merchant\": \"JUAN PEREZ\", \"amount\": \"1500.00 MXN\", \"status\": \"pending\"}, {\"date\": \"2026-06-11\", \"merchant\": \"JUAN PEREZ\", \"amount\": \"1500.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-06-06\", \"merchant\": \"PAGO SERVICIO LUZ\", \"amount\": \"850.00 MXN\", \"status\": \"reversed\"}]}"
+  }
+}

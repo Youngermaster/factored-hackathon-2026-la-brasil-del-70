@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ed6da5f6fcd86e17a367001a0d6087c9dc3a11565bc743069a0a0d9a50d0ddd2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4631,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Se ha encontrado un caso abierto con el ID case-evmx0005-0001. ¿Me puede proporcionar más detalles sobre el problema que está experimentando para poder asistirlo mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:47:23.481357Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1418,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber el estado de mi caso case-evmx0005-0001",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0005",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_cases\", \"status\": \"ok\", \"result\": [{\"case_id\": \"case-evmx0005-0001\", \"transaction_id\": \"TRX-EVMX0005-002\", \"status\": \"opened\", \"opened_at\": \"2026-06-13\", \"sla_due_at\": \"2026-07-28\"}]}"
+  }
+}

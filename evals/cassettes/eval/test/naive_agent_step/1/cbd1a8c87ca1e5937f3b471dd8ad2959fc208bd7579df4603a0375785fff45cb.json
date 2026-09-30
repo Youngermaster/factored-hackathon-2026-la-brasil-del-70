@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cbd1a8c87ca1e5937f3b471dd8ad2959fc208bd7579df4603a0375785fff45cb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4110,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado tu solicitud de préstamo personal. El proceso ahora pasa a una revisión detallada. Te mantendremos informado sobre el progreso. ¿Hay algo más con lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:39:17.458455Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1501,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: ¿Tengo chance de un préstamo personal de 50000 a 24 meses?\nAssistant: Con tu puntuación crediticia de 780, ingresos mensuales de 60,000 MXN y sin días vencidos, tienes una buena oportunidad para un préstamo personal de 50,000 MXN a 24 meses. Sin embargo, necesitamos realizar una evaluación más detallada. ¿Te gustaría que te envíe la información y te ayude a completar la solicitud?\nCustomer: Sí, está bien",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"50000\", \"status\": \"submitted\"}}"
+  }
+}

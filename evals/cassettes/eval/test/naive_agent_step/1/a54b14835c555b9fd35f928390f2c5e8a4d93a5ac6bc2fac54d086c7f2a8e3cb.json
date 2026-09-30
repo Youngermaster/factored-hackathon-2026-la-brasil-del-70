@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a54b14835c555b9fd35f928390f2c5e8a4d93a5ac6bc2fac54d086c7f2a8e3cb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4284,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:11:49.415410Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1515,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha cartão?\nAssistant: Olá! Sua carta está ativa e não há nenhuma restrição atual. Gostaria de bloquear ou trocar algum cartão?\nCustomer: Obrigado, mas eu queria saber como está o meu cartão de débito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0002-01\", \"type\": \"credit_card\", \"number\": \"**** 6155\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVMX0002-02\", \"type\": \"debit_card\", \"number\": \"**** 7052\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "fcde889b111a3807727378dc7ac092814f5cc8099dda4d290816d96db5b61d76",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2825,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:02:35.375307Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 494,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero hacer una transferencia de 500 pesos a mi hermana",
+    "dialect_hint": "es-AR"
+  }
+}

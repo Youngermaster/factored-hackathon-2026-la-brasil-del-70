@@ -1,0 +1,32 @@
+{
+  "cassette_id": "292586da1bc07c4c9b639520de1dc09210622c32ca6140ae161f1e2e46bd4dca",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4143,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:38:23.428661Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1129,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "¿Cuánto debo en mi tarjeta de crédito?",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "95a5da59382e0874f0d8dc02d96705cc5d6f55bb447ba5135e5ec30b5216221f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6508,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil, você tem uma pontuação de crédito de 700, que é excelente! Para um empréstimo pessoal de 50.000 MXN em 24 meses, você estaria dentro dos nossos critérios. No entanto, precisamos verificar a viabilidade do seu pedido. Gostaria de prosseguir com a aplicação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:30:43.241015Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1401,
+    "output_tokens": 112
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de 50000 em 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 700, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

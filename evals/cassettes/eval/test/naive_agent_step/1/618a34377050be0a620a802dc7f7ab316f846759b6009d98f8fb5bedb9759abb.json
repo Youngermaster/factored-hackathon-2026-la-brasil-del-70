@@ -1,0 +1,33 @@
+{
+  "cassette_id": "618a34377050be0a620a802dc7f7ab316f846759b6009d98f8fb5bedb9759abb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5110,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la compra de ALMACEN ANDES del 15/06. El plazo para resolver esta disputa es de 15 días desde la fecha de creación del caso. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:42.739304Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1408,
+    "output_tokens": 85
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco la compra de ALMACEN ANDES del 15/06.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"[NUMBER]\", \"reason\": \"no_recognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

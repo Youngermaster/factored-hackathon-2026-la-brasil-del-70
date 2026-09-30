@@ -1,0 +1,30 @@
+{
+  "cassette_id": "a4bcfcfcae9b96ad8b70ae2ed18134d30960b590e297ed0b74bef17c565c556a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3992,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:58.648386Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 839,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Quiero saber el estado del pago de 850 pesos que hice el 06/06\nAssistant: Estado de tu pago de 850.00 MXN del 6 de junio de 2026 a PAGO SERVICIO LUZ: revertido. Datos al 17 de junio de 2026.\n\nPodemos informarte el saldo de tus cuentas y tarjetas, el crédito disponible de tus tarjetas de crédito y el estado de tus pagos y transferencias: aplicado, pendiente, rechazado o revertido. La información proviene de un corte periódico de los registros, por lo que siempre te indicamos la fecha y hora de ese corte; los movimientos posteriores todavía no aparecen."
+  }
+}

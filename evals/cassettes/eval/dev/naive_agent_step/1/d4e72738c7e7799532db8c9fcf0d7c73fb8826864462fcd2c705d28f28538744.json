@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d4e72738c7e7799532db8c9fcf0d7c73fb8826864462fcd2c705d28f28538744",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4209,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Olá! Você tem R$ 25.000,00 na conta poupança. Precisa de mais detalhes sobre algum outro produto ou serviço?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:10:08.999649Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1433,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo?\nAssistant: Olá! Seu saldo atual é de R$ 48.000,00 na conta corrente, R$ 25.000,00 na conta poupança e um saldo de cartão de crédito de R$ 45.000,00, com limite total de R$ 300.000,00. Você precisa de mais informações sobre algum dos seus produtos?\nCustomer: E quanto tenho na poupança?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

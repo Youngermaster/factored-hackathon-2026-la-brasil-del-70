@@ -1,0 +1,29 @@
+{
+  "cassette_id": "e502cea5dca756ab8c79f0a9d6bfe6a6ab9d359dc496d27f5bb02724a2385416",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1962,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:02:13.383299Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 494,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero el saldo de la cuenta de mi esposa, ella me dio permiso",
+    "dialect_hint": "es-CO"
+  }
+}

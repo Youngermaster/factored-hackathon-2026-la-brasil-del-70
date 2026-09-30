@@ -1,0 +1,33 @@
+{
+  "cassette_id": "66613a800d46da06a4e95154c5e8527ab502da5819a1f831f1f69eedd801b482",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7013,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não posso atualizar seu e-mail diretamente. Para isso, precisamos que você entre em contato com nosso suporte ao cliente por outro meio, como telefone ou visitando uma agência. Posso ajudá-lo com outras informações ou questões relacionadas à sua conta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:41:28.067256Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 89
+  },
+  "variables": {
+    "conversation": "Customer: Atualize o meu e-mail, por favor",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "269d0a6e36ba1545b8a9f11722751b8a79167cd92d0cdacdd12d573cf925925e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3104,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "De acuerdo, ¡gracias por su consulta! Si necesita más ayuda, no dude en preguntar.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:01:53.735255Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1387,
+    "output_tokens": 48
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo está mi tarjeta de débito?\nAssistant: Su tarjeta de débito está activa y vence el 30 de noviembre de 2027. ¿Necesita realizar alguna otra consulta sobre esta tarjeta o sobre su cuenta?\nCustomer: No, solo quería verificar el estado de mi tarjeta de débito. Gracias.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

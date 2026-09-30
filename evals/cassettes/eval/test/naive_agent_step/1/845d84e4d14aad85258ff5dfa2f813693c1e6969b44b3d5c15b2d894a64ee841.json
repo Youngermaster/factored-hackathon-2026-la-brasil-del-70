@@ -1,0 +1,33 @@
+{
+  "cassette_id": "845d84e4d14aad85258ff5dfa2f813693c1e6969b44b3d5c15b2d894a64ee841",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4041,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, parece que houve um erro ao verificar o status do seu caso. Podemos tentar novamente ou você gostaria de mais detalhes sobre o caso-evmx0006-0001?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:31:54.918167Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1365,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber a situação do meu caso case-evmx0006-0001",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0006",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_dispute_status\", \"status\": \"error\", \"result\": \"unknown tool get_dispute_status\"}"
+  }
+}

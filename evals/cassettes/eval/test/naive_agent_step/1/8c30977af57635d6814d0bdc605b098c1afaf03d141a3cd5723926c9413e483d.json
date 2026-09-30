@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8c30977af57635d6814d0bdc605b098c1afaf03d141a3cd5723926c9413e483d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7106,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil de crédito, seu score é 780, que está acima do mínimo necessário para obter um empréstimo pessoal. Sua renda mensal é de 60.000 MXN e você não tem dias em atraso. No entanto, para uma análise mais detalhada e a aprovação, precisaremos de uma avaliação humana. Gostaria de prosseguir com a solicitação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:34:12.703278Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1425,
+    "output_tokens": 127
+  },
+  "variables": {
+    "conversation": "Customer: Pode me dizer o seu plano de ação e minha estimativa de risco? E se posso pegar um empréstimo pessoal de 50.000 reais por 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

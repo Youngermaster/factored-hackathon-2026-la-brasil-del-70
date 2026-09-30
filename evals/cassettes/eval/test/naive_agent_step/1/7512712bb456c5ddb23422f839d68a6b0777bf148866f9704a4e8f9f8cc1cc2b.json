@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7512712bb456c5ddb23422f839d68a6b0777bf148866f9704a4e8f9f8cc1cc2b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5541,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "El saldo de tu cuenta de ahorros es de 250,000 ARS como de costumbre. ¿Necesitas información adicional sobre alguna de tus cuentas o tarjetas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:26.173664Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1565,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Dime el saldo de la cuenta de ahorros, por favor",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

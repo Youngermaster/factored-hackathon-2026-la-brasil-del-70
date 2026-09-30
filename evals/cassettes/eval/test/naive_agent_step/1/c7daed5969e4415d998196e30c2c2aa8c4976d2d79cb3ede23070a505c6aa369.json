@@ -1,0 +1,35 @@
+{
+  "cassette_id": "c7daed5969e4415d998196e30c2c2aa8c4976d2d79cb3ede23070a505c6aa369",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2839,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:22:14.039303Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que tendría que pagar en una línea de crédito personal?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

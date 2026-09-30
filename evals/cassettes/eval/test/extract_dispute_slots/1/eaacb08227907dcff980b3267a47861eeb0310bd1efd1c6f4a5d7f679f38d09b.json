@@ -1,0 +1,43 @@
+{
+  "cassette_id": "eaacb08227907dcff980b3267a47861eeb0310bd1efd1c6f4a5d7f679f38d09b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10794,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "56000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "quatro meses atrás",
+      "merchant_text": "LIBRERIA BOGOTA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:29:13.534974Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1481,
+    "output_tokens": 109
+  },
+  "variables": {
+    "customer_message": "Quero contestar a cobrança de 56.000 na LIBRERIA BOGOTA de quatro meses atrás",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

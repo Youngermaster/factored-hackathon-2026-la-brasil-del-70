@@ -1,0 +1,29 @@
+{
+  "cassette_id": "2a5a3324b8747491d92b02ca1abf4f5cb62b38ae5533c0f325666afe19cbc490",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1743,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": true,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:51:15.491120Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero falar com uma pessoa sobre o meu cartão de crédito",
+    "dialect_hint": "pt-BR"
+  }
+}

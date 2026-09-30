@@ -1,0 +1,33 @@
+{
+  "cassette_id": "61a68abdc89cbfd1c71fe6920cfd9815965b4b475aa73d6c77de414d0ffb3c24",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4657,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não encontramos nenhum extrato do seu cartão de crédito do ano passado. Você poderia me fornecer mais detalhes para que eu possa ajudar você melhor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:11:19.665770Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1354,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: Me dá o resumo do meu cartão de crédito do ano passado inteiro",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

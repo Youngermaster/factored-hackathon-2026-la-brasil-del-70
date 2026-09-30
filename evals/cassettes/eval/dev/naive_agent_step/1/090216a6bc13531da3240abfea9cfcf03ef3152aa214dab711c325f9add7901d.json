@@ -1,0 +1,37 @@
+{
+  "cassette_id": "090216a6bc13531da3240abfea9cfcf03ef3152aa214dab711c325f9add7901d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4004,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "debit_card",
+      "reason": "roubado"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:42:24.695556Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1471,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo?\nAssistant: Seu saldo atual é de 12.500,00 MXN na sua conta de cartão de crédito. O limite total é de 60.000,00 MXN. Você precisa de mais informações ou ajuda com algo específico?\nCustomer: Agora quero bloquear meu cartão de débito, foi roubado\nAssistant: Entendi. Vou precisar de alguns detalhes para bloquear seu cartão de débito. Por favor, confirme se o cartão foi realmente roubado e forneça a razão para o bloqueio, como 'roubado'.\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

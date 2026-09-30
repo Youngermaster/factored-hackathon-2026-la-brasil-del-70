@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f7efa6023f729ecef8d8fc29a471eee00e99ff53656933b1a6c73f9d1b2396fe",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3668,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe pelo inconveniente. Houve um problema ao criar a disputa. Vamos tentar novamente mais tarde ou podemos encaminhar isso para uma pessoa para resolver?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:12.156310Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1366,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 85.000 na ALMACEN ANDES",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"error\", \"result\": \"create_dispute failed: timeout\"}"
+  }
+}

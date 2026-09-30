@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d5af0ca76bc16a9bb053ffda681dabde82cad1d86143618effe0ea2e610c0fee",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4556,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "¡Hola! Claro, estaré encantado de ayudarte con información sobre créditos. ¿Podrías indicarme si te interesa un crédito de tarjeta de débito, tarjeta de crédito, préstamo personal o hipoteca?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:20:51.633439Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 78
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola! Me gustaría saber sobre un crédito. ¿Podrías darme más información?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

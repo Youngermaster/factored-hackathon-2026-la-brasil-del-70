@@ -1,0 +1,33 @@
+{
+  "cassette_id": "594d9e603fbd269bb013d2e23db5cb34b6699771a3532ed2211c8d54b9cd1df3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7101,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "CLI-EVAR0010, con base en tu perfil crediticio y tu ingreso mensual, podrías ser candidato para un préstamo personal. Sin embargo, para una evaluación más precisa y una oferta personalizada, te sugeriría que realicemos una solicitud formal. ¿Te interesaría proceder con una aplicación?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:08.074396Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1742,
+    "output_tokens": 97
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si me dan un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 700, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"AR-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"AR\", \"currency\": \"ARS\", \"min_amount\": {\"amount\": \"300000.00\", \"currency\": \"ARS\"}, \"max_amount\": {\"amount\": \"8000000.00\", \"currency\": \"ARS\"}, \"min_term_months\": 1, \"max_term_months\": 18, \"max_annual_rate\": \"110.00\"}, {\"product_code\": \"AR-MG-UVA\", \"product_type\": \"mortgage\", \"jurisdiction\": \"AR\", \"currency\": \"ARS\", \"min_amount\": {\"amount\": \"20000000.00\", \"currency\": \"ARS\"}, \"max_amount\": {\"amount\": \"250000000.00\", \"currency\": \"ARS\"}, \"min_term_months\": 60, \"max_term_months\": 360, \"max_annual_rate\": \"9.00\"}, {\"product_code\": \"AR-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"AR\", \"currency\": \"ARS\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"ARS\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"ARS\"}, \"min_term_months\": 6, \"max_term_months\": 48, \"max_annual_rate\": \"95.00\"}]}"
+  }
+}

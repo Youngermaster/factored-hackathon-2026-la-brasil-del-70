@@ -1,0 +1,33 @@
+{
+  "cassette_id": "167da23563de947b3dd3af9f81b8cac906e56230b64f6fe1e1db6e6186f5d208",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6663,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Señor/a, ya revisé sus tarjetas y veo que ninguna está vencida. Su tarjeta de crédito PRD-EVCO0003-01 aún está activa y válida hasta abril de 2026. ¿Podría aclarar por qué necesita una nueva tarjeta de crédito o si su tarjeta actual no le sirve para sus necesidades?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:15.297701Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1455,
+    "output_tokens": 112
+  },
+  "variables": {
+    "conversation": "Customer: Mándame una tarjeta de crédito nueva, la mía está vencida",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0003-01\", \"type\": \"credit_card\", \"number\": \"**** 7524\", \"status\": \"active\", \"expires_on\": \"2026-04-30\"}, {\"product_id\": \"PRD-EVCO0003-02\", \"type\": \"debit_card\", \"number\": \"**** 6534\", \"status\": \"blocked\", \"expires_on\": \"2028-03-31\"}]}"
+  }
+}

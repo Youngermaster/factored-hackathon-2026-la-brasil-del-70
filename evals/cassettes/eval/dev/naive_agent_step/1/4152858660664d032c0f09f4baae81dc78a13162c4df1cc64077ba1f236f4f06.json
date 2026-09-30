@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4152858660664d032c0f09f4baae81dc78a13162c4df1cc64077ba1f236f4f06",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5493,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "La tarjeta de crédito vence el 30 de abril de 2026. ¿Necesitas que te indique cómo renovarla o tienes alguna otra pregunta sobre tus tarjetas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:20:56.048164Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1449,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuándo vence mi tarjeta de crédito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0003",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0003-01\", \"type\": \"credit_card\", \"number\": \"**** 7845\", \"status\": \"active\", \"expires_on\": \"2026-04-30\"}, {\"product_id\": \"PRD-EVMX0003-02\", \"type\": \"debit_card\", \"number\": \"**** 5791\", \"status\": \"blocked\", \"expires_on\": \"2028-03-31\"}]}"
+  }
+}

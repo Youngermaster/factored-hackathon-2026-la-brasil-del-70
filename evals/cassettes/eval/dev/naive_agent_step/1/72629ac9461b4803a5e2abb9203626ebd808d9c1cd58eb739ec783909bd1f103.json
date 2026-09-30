@@ -1,0 +1,33 @@
+{
+  "cassette_id": "72629ac9461b4803a5e2abb9203626ebd808d9c1cd58eb739ec783909bd1f103",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5513,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Claro, puedo ayudar con eso. ¿Podría proporcionarme los datos de ingreso y puntuación crediticia de su esposa para poder darle una orientación indicativa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:35:13.954828Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1324,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Consulto en nombre de mi esposa: ¿puede sacar un préstamo personal?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

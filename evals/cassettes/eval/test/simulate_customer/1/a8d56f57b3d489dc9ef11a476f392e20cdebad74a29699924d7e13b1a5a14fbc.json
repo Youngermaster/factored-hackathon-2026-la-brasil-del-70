@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a8d56f57b3d489dc9ef11a476f392e20cdebad74a29699924d7e13b1a5a14fbc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2207,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "La fecha fue el 15 de junio y el monto fue de $25.000."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:59:03.329442Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 741,
+    "output_tokens": 34
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Es mi tarjeta de crédito, no recuerdo bien, pero creo que fue en Terpel.\nAssistant: Entendido, gracias por la información. ¿Podría proporcionarme el número de la transacción para que podamos revisar el detalle?\nCustomer: No recuerdo el número exacto, pero fue hace unos días.\nAssistant: Entiendo, gracias por su comprensión. Para poder ayudarlo de la mejor manera, necesitamos que proporcione el número de la transacción o al menos la fecha aproximada y el monto. Esto nos permitirá revisar el detalle y determinar el motivo del rechazo.",
+    "conversation_seed": "test-car-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

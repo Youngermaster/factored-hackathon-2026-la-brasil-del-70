@@ -1,0 +1,33 @@
+{
+  "cassette_id": "77c83bd933b50fc99161dbe1f3b62edeb364bcd2e1f5196ae96d2c01463f2d75",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7578,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil de crédito, você está bem qualificada para um empréstimo pessoal. Seu score de crédito é 780, você ganha 1.800.000 ARS por mês e não possui dias em atraso. No entanto, para uma análise mais detalhada e para que possamos orientá-lo melhor, gostaria de saber qual valor e prazo você estaria interessada em solicitar.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:20:31.170530Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1398,
+    "output_tokens": 127
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se estou qualificada para um empréstimo pessoal?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

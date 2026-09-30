@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f3dddc89fdb079ccb05ae532d1ff16c1fa28743cca1b876429aeca71d42db7a2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2109,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Podría ser la más reciente, del 15/06?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:41.151897Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 829,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?\nAssistant: Lo siento, pero no encontramos ninguna transferencia de 60.000 pesos a Pablo Díaz en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: ¿Será la más reciente, de 15/06?\nAssistant: No encontramos ninguna transferencia reciente de 60.000 pesos. ¿Podrías proporcionar más detalles como el día exacto y la hora, o el destinatario, para que pueda revisar nuevamente?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo, no encontramos ninguna transferencia de 60.000 pesos realizada el 15/06. ¿Podrías proporcionar el destinatario exacto o cualquier otro detalle que pueda ayudarnos a localizarla?",
+    "conversation_seed": "test-acc-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Know the status of a transfer to a payee, without saying at first which of two similar transfers.",
+    "hidden_facts": "date: 15/06",
+    "instructions": "Ask about your transfer of 60.000 pesos to PABLO DIAZ. When asked which one, say it is the most recent one, from 15/06.",
+    "known_facts": "amount: 60.000 pesos; payee: PABLO DIAZ"
+  }
+}

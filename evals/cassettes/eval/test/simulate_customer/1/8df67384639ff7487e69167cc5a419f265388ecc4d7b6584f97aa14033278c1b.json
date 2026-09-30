@@ -1,0 +1,32 @@
+{
+  "cassette_id": "8df67384639ff7487e69167cc5a419f265388ecc4d7b6584f97aa14033278c1b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2698,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Claro, mi tarjeta es la [PHONE] 6789."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:31.403625Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 632,
+    "output_tokens": 39
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber el estado de mi tarjeta y también el saldo actual.\nAssistant: Buenas tardes, CLI-EVMX0002. Su saldo actual es de 12,500.00 MXN como de oficio 17 de junio de 2026. ¿Podría confirmarme el número de su tarjeta para verificar su estado?",
+    "conversation_seed": "test-rtg-switch-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about a card without saying which, then about the balance.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about a card without saying which, then about the balance.",
+    "known_facts": "(none)"
+  }
+}

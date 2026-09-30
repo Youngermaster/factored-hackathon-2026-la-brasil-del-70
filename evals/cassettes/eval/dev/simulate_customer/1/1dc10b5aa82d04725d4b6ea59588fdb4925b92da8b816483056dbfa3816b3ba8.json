@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1dc10b5aa82d04725d4b6ea59588fdb4925b92da8b816483056dbfa3816b3ba8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2672,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "A data é ontem, o valor é R$ 15.000,00 e o estabelecimento é KIOSCO DEL SUR."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:58:39.016825Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 654,
+    "output_tokens": 44
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço esta tarifa. Vou informar o valor e o estabelecimento.\nAssistant: Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.",
+    "conversation_seed": "dev-dis-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 15.000; merchant: KIOSCO DEL SUR",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 15.000 and the merchant KIOSCO DEL SUR. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

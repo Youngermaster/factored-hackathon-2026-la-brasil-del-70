@@ -1,0 +1,30 @@
+{
+  "cassette_id": "ee42d58fbe8df8c3b2889cba82f6850d50483b36cd1f061afe730b51f309378f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1906,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "unrecognized_activity"
+    ],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:04:20.604884Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 950,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Otra cosa: hay un cargo de 85.000 en ALMACEN ANDES que no hice",
+    "dialect_hint": "es-CO"
+  }
+}

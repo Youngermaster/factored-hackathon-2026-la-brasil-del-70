@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bb397728b422e5e41c61408484da3ef1e3bbfc3b1ee522804477fe1bd60bb0a0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4790,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Como está a sua solicitação de crédito? Posso verificar o status para você agora.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:32:58.617165Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1331,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha solicitação de crédito?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0012",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

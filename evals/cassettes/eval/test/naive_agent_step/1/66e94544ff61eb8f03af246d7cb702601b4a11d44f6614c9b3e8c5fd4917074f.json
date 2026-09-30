@@ -1,0 +1,33 @@
+{
+  "cassette_id": "66e94544ff61eb8f03af246d7cb702601b4a11d44f6614c9b3e8c5fd4917074f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7170,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que você gostaria de contestar uma cobrança no valor de 56.000 COP da LIBRERIA BOGOTA há quatro meses. Podemos prosseguir com isso, mas precisamos confirmar alguns detalhes. A cobrança foi realizada em qual mês e por qual motivo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:57.554580Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1351,
+    "output_tokens": 98
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a cobrança de 56.000 na LIBRERIA BOGOTA de quatro meses atrás",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

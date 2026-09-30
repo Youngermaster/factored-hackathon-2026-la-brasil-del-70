@@ -1,0 +1,31 @@
+{
+  "cassette_id": "ad35336da7f34e55052c7d48c55d5ec8577fcaa9efa28f65aafdd776a4fbc3c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6114,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:21:50.128095Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1040,
+    "output_tokens": 53
+  },
+  "variables": {
+    "customer_message": "Me gustaría saber si me dan un préstamo personal de [DOCUMENT] a 24 meses",
+    "dialect_hint": "es-AR"
+  }
+}

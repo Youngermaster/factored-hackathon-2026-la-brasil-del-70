@@ -1,0 +1,30 @@
+{
+  "cassette_id": "278afbd3a24d4ef0d619a5810978aa57d525f3ed77766c47c92e368c047cca99",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4480,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 1,
+    "language_correct": false,
+    "language_quality": 1,
+    "politeness": 1,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:23:17.606180Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1125,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Puedes decirme cómo está mi tarjeta de débito, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol)."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "7ddaed28332efda3b5bad804ddbd8608a9fdeb58d2bc742a9a37ad4323db1af5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2745,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:17:07.061205Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 2133,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal? Sem dizer o valor ainda.\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de verificar seu perfil de crédito para te dar uma orientação indicativa. Isso não é uma decisão, mas sim uma análise baseada em seus dados. Você gostaria de continuar?\nCustomer: Sim, continue.\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. Para um empréstimo pessoal, isso significa que você tem uma boa probabilidade de ser aprovado. No entanto, é importante lembrar que isso é apenas uma orientação indicativa. Vamos continuar e verificar se você atende aos requisitos mínimos de score e renda.\nCustomer: Sim, continue.\nAssistant: Baseado no seu score de crédito de 780, você atende aos requisitos mínimos para um empréstimo pessoal. No entanto, para uma análise mais precisa, precisamos verificar se a sua renda mensal de 60.000 MXN está dentro dos limites permitidos. O máximo permitido é 35% da renda mensal para esse tipo de empréstimo. Vamos verificar isso.\nCustomer: Sim, continue.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"MX-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"5000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"120000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"85.00\"}, {\"product_code\": \"MX-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"10000000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"14.00\"}, {\"product_code\": \"MX-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"10000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"350000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 6, \"max_term_months\": 60, \"max_annual_rate\": \"65.00\"}]}\n{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

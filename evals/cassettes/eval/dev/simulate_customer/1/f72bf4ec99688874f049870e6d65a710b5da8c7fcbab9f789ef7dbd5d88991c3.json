@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f72bf4ec99688874f049870e6d65a710b5da8c7fcbab9f789ef7dbd5d88991c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2954,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "La transacción fue con mi tarjeta de crédito. ¿Por qué fue rechazada?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:17:15.173588Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.\nAssistant: Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?\nCustomer: Sí, la transacción es del día de ayer por $50.000.\nAssistant: No encontramos esa transacción en tu historial. ¿Podrías proporcionar más detalles o verificar el número de transacción?\nCustomer: Sí, la transacción fue por $50.000 ayer en ESTACION TERPEL SUR.\nAssistant: No encontramos una transacción por $50.000 en la fecha que mencionas. Sin embargo, vemos que el día 16 de junio hubo una transacción por $40.000 en ESTACION TERPEL SUR que fue rechazada. ¿Podrías proporcionar más detalles sobre esta transacción o la transacción que te está causando problemas?\nCustomer: Esa transacción fue la que quise hacer ayer. ¿Por qué fue rechazada?\nAssistant: Entendido, CLI-EVCO0002. La transacción de $40.000 del 16 de junio en ESTACION TERPEL SUR fue rechazada. Podría ser por varios motivos, como un perfil de crédito insuficiente o problemas con la información proporcionada. ¿Podrías proporcionar más detalles sobre tu perfil de crédito o la información que ingresaste durante la transacción?",
+    "conversation_seed": "dev-car-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

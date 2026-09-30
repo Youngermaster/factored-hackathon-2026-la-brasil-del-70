@@ -1,0 +1,33 @@
+{
+  "cassette_id": "483596988921f90d44e8cb93711655f70483f6df372a8f8db2e4647c98c4d322",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3456,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vou precisar da ID do seu cartão para poder bloqueá-lo. Você pode me fornecer essa informação, por favor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:00:34.018519Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma de minhas cartões de crédito.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

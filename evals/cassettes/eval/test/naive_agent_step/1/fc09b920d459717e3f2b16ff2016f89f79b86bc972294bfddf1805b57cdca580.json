@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fc09b920d459717e3f2b16ff2016f89f79b86bc972294bfddf1805b57cdca580",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3662,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "transaction_id": "TRX-EVMX0013-003"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:54:19.056589Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar la transacción TRX-EVMX0013-003",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "66276b9589ebe04b40cb573fd32d2221e234a423afc47e445ec882c4c15ada74",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4210,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:59.894188Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1533,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Me envie a resumo das movimentações do meu cartão de crédito.\nAssistant: Olá! Aqui estão as movimentações resumidas do seu cartão de crédito. No dia 15/06/2026, houve uma movimentação pendente no valor de 1.500,00 MXN com o comerciante JUAN PEREZ. No dia 11/06/2026, houve uma movimentação aprovada no valor de 1.500,00 MXN com o mesmo comerciante. E no dia 06/06/2026, houve uma devolução no valor de 850,00 MXN pelo serviço de luz. Você gostaria de saber mais sobre alguma dessas movimentações ou tem alguma dúvida?\nCustomer: Não, não tenho dúvidas por now. Quero ver o resumo do último mês.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "cassette_id": "41c6a5fcbf0fde50ecf4523859d51872d7beccc9e84aa47c5b88966e198d5e73",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3514,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 2,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 3,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:54.652669Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 723,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero marcar um horário na agência para segunda-feira\nAssistant: Para ajudar melhor: o seu pedido é sobre os seus saldos e pagamentos ou sobre os seus cartões?"
+  }
+}

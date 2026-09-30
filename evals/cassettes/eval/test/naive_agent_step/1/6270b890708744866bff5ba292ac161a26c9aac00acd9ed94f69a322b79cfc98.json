@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6270b890708744866bff5ba292ac161a26c9aac00acd9ed94f69a322b79cfc98",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7925,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Você está interessado em um empréstimo pessoal no valor de [DOCUMENT] em 24 meses, correto? Vamos verificar sua pontuação de crédito e suas informações financeiras para avaliar a possibilidade de aprovação. No entanto, é importante lembrar que não podemos garantir a aprovação. Você gostaria que eu verificasse sua pontuação de crédito agora?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:32:18.422284Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1702,
+    "output_tokens": 115
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber se tenho direito a um empréstimo pessoal de [DOCUMENT] em 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"AR-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"AR\", \"currency\": \"ARS\", \"min_amount\": {\"amount\": \"300000.00\", \"currency\": \"ARS\"}, \"max_amount\": {\"amount\": \"8000000.00\", \"currency\": \"ARS\"}, \"min_term_months\": 1, \"max_term_months\": 18, \"max_annual_rate\": \"110.00\"}, {\"product_code\": \"AR-MG-UVA\", \"product_type\": \"mortgage\", \"jurisdiction\": \"AR\", \"currency\": \"ARS\", \"min_amount\": {\"amount\": \"20000000.00\", \"currency\": \"ARS\"}, \"max_amount\": {\"amount\": \"250000000.00\", \"currency\": \"ARS\"}, \"min_term_months\": 60, \"max_term_months\": 360, \"max_annual_rate\": \"9.00\"}, {\"product_code\": \"AR-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"AR\", \"currency\": \"ARS\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"ARS\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"ARS\"}, \"min_term_months\": 6, \"max_term_months\": 48, \"max_annual_rate\": \"95.00\"}]}"
+  }
+}

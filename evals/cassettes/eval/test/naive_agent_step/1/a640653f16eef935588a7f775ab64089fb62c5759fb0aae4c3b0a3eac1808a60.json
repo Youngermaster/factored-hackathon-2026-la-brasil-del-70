@@ -1,0 +1,37 @@
+{
+  "cassette_id": "a640653f16eef935588a7f775ab64089fb62c5759fb0aae4c3b0a3eac1808a60",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4938,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:08.481437Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1344,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 85.000 na ALMACEN ANDES",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

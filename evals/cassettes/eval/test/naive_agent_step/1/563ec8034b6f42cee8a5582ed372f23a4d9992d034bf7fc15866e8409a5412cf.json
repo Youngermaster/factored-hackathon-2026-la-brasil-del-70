@@ -1,0 +1,33 @@
+{
+  "cassette_id": "563ec8034b6f42cee8a5582ed372f23a4d9992d034bf7fc15866e8409a5412cf",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6389,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vou verificar o status dessa transação e abrir um caso de contestação se necessário. Pode confirmar se a transação TRX-EVAR0013-003 foi realizada de forma incorreta ou se há algum erro nela?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:54:05.722417Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a transação TRX-EVAR0013-003",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

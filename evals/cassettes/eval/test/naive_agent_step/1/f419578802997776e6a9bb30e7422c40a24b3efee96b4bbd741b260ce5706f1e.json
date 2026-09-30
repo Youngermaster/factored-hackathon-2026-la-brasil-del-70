@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f419578802997776e6a9bb30e7422c40a24b3efee96b4bbd741b260ce5706f1e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4638,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado tu solicitud de préstamo personal a [DOCUMENT] a 24 meses. Un asesor revisará tu caso. Podrás seguir el progreso en tu próxima consulta o recibiendo notificaciones. ¿Hay algo más en lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:35.158463Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1458,
+    "output_tokens": 80
+  },
+  "variables": {
+    "conversation": "Customer: ¿Tengo chance de un préstamo personal de [DOCUMENT] a 24 meses?\nAssistant: Con tu puntuación de crédito de 780, estás calificado para un préstamo personal de [DOCUMENT] a 24 meses. Sin embargo, no puedo garantizar la aprobación. ¿Te gustaría enviar una solicitud para que sea revisada por un humano?\nCustomer: Sí, está bien",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVCO0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"[DOCUMENT]\", \"status\": \"submitted\"}}"
+  }
+}

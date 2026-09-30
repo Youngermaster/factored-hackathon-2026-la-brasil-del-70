@@ -1,0 +1,30 @@
+{
+  "cassette_id": "3626ad72d1f4529d6a6d303bf30c4e846336c1402cada1017e22670ff53537af",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5106,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:23:10.457426Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1220,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: Quiero hacer una transferencia a mi mamá\nAssistant: Eso no lo puedo hacer en esta conversación. Si quieres, te comunico con una persona del equipo.\n\nEl asistente no realiza transferencias ni pagos en tu nombre, no emite estados de cuenta oficiales ni certificados, y no informa fechas de vencimiento ni saldos de cierre que los registros no contienen. Para esos trámites te ofreceremos hablar con una persona del equipo de atención.\n\nEste asistente opera con una política sintética de demostración, no con condiciones reales de un banco. Puede ayudarte con consultas de saldos, pagos y resúmenes de cuenta; con el estado de tus tarjetas y el bloqueo preventivo de una tarjeta; con la presentación y el seguimiento de una reclamación por una transacción; y con información sobre productos de crédito y una orientación indicativa sobre elegibilidad. Solo realiza las acciones que esta política permite, siempre con tu confirmación, y te informa únicamente de los resultados que pudo verificar.\n\nEl asistente no realiza transferencias ni pagos, no abre ni cierra productos, no modifica tus datos personales, no da asesoría legal, fiscal ni de inversión y no toma decisiones de crédito. Si tu solicitud está fuera de lo que puede hacer, te lo dirá con claridad y, cuando corresponda, te ofrecerá hablar con una persona del equipo de atención.\nCustomer: sí\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 19 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nUna persona del equipo toma la conversación cuando lo pides; cuando mencionas una acción legal o una autoridad; cuando ya presentaste 3 o más reclamos en los últimos 180 días; cuando después de 2 preguntas todavía no logramos entender tu solicitud; cuando un sistema falla después de 2 reintentos; cuando el resultado de una acción no coincide con lo esperado; o cuando detectamos señales de riesgo en la sesión. La persona recibe un resumen de tu solicitud, los datos verificados y las acciones realizadas, para que no tengas que repetirlo todo.\n\nEn Colombia, una persona del equipo te contactará dentro de las 24 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

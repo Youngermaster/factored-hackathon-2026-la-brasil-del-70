@@ -1,0 +1,29 @@
+{
+  "cassette_id": "0317d51843053914e679e24e8536a3d3d4832b0f53b3077c8b27756e7cd72aa1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2820,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": true,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:57:19.685910Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 502,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Preciso falar com um atendente humano",
+    "dialect_hint": "pt-BR"
+  }
+}

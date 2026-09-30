@@ -1,0 +1,29 @@
+{
+  "cassette_id": "97a74167ee17aad0add8b84e2610e221e73b36c7429437a3da085804ee40ff2e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2817,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:36:38.287115Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 515,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero o estorno agora da cobrança de 1250 na TIENDA AURORA",
+    "dialect_hint": "pt-BR"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "15921fb7c6b7e4b4529c7ebdef9f01876f548aa78bfd6c52afdff18713158331",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2801,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "MX"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:34:44.257660Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1380,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Quiero conocer los préstamos personales y si califico para 50000 a 24 meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"error\", \"result\": \"list_credit_products failed: timeout\"}\n{\"tool\": \"list_credit_products\", \"status\": \"error\", \"result\": \"list_credit_products failed: timeout\"}"
+  }
+}

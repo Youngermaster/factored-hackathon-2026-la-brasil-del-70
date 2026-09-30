@@ -1,0 +1,33 @@
+{
+  "cassette_id": "85429fe2a50fc4e6d43ed07b9b57c80839080a760b00789ee2f402f838aa4029",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5240,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Antes de bloquear su tarjeta, ¿me puede confirmar el motivo? Podría ser pérdida, robo, sospecha de fraude o precaución.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:07:20.939405Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Quiero bloquear mi tarjeta de débito dorada terminada en 4321",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

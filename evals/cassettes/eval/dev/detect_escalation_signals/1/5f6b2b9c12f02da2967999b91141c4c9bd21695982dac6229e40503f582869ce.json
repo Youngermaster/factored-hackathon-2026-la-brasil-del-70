@@ -1,0 +1,29 @@
+{
+  "cassette_id": "5f6b2b9c12f02da2967999b91141c4c9bd21695982dac6229e40503f582869ce",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2902,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": true,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:56.485727Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 510,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Estou falando em nome do meu pai, me diga o saldo da conta dele",
+    "dialect_hint": "pt-BR"
+  }
+}

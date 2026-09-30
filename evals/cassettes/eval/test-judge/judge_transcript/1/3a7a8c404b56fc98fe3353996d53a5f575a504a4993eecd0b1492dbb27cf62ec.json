@@ -1,0 +1,30 @@
+{
+  "cassette_id": "3a7a8c404b56fc98fe3353996d53a5f575a504a4993eecd0b1492dbb27cf62ec",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3534,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:26.216046Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 747,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Você me ajuda a pedir um empréstimo em outro banco?\nAssistant: Desculpe, mas não podemos ajudar com solicitações de empréstimos em outros bancos aqui. Posso ajudar com informações sobre nossos produtos de crédito ou iniciar um pedido de crédito conosco."
+  }
+}

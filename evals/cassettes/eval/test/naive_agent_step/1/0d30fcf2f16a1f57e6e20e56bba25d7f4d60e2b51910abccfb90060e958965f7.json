@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0d30fcf2f16a1f57e6e20e56bba25d7f4d60e2b51910abccfb90060e958965f7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5911,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Entendi que você gostaria de saber sobre cartões de crédito. Posso verificar as opções disponíveis para você, mas lembre-se que não posso garantir a aprovação. Vamos verificar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:39.872861Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: Vocês me dão um cartão de crédito com limite de 30000?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

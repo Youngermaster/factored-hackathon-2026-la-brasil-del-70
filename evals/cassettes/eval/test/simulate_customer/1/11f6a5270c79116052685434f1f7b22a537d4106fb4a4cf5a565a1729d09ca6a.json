@@ -1,0 +1,32 @@
+{
+  "cassette_id": "11f6a5270c79116052685434f1f7b22a537d4106fb4a4cf5a565a1729d09ca6a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2235,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, por favor envíenme una evaluación más detallada."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:21:14.444452Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 851,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola! Me gustaría saber sobre un crédito. ¿Podrías darme más información?\nAssistant: ¡Hola! Claro, estaré encantado de ayudarte con información sobre créditos. ¿Podrías indicarme si te interesa un crédito de tarjeta de débito, tarjeta de crédito, préstamo personal o hipoteca?\nCustomer: Un préstamo personal, por favor.\nAssistant: ¡Por supuesto! Para darte una orientación sobre la aprobación, necesitaré algunos detalles sobre tu historial crediticio y tu situación financiera. ¿Podrías proporcionarme tu puntaje de crédito y tu ingreso mensual aproximado?\nCustomer: Mi puntaje de crédito es 750 y gano alrededor de 5,000 pesos mexicanos mensuales.\nAssistant: Gracias por proporcionar esa información. Con un puntaje de crédito de 780, un ingreso mensual de 60,000 pesos mexicanos y no haber tenido pagos vencidos, tienes una buena situación financiera. Basándonos en nuestras reglas indicativas, estás calificado para un préstamo personal. Sin embargo, esto es solo una orientación y no una decisión final. ¿Te gustaría que te enviemos una evaluación más detallada para tu revisión?",
+    "conversation_seed": "test-cre-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

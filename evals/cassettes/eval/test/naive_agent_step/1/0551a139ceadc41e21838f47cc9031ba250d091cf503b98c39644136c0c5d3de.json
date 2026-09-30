@@ -1,0 +1,37 @@
+{
+  "cassette_id": "0551a139ceadc41e21838f47cc9031ba250d091cf503b98c39644136c0c5d3de",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4945,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:25.820574Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco un cargo de 1250 pesos en TIENDA AURORA",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

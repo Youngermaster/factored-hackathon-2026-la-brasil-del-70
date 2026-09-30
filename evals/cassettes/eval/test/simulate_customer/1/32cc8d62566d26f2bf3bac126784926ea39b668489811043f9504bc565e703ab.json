@@ -1,0 +1,32 @@
+{
+  "cassette_id": "32cc8d62566d26f2bf3bac126784926ea39b668489811043f9504bc565e703ab",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1818,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quiero el resumen del mes de Mayo, por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:47:35.505329Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 704,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: Hola, necesito el resumen del mes de Mayo.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Necesito el resumen del mes de Mayo.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-acc-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

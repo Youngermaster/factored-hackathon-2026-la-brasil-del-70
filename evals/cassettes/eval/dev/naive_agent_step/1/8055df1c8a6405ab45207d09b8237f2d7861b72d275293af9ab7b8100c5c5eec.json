@@ -1,0 +1,35 @@
+{
+  "cassette_id": "8055df1c8a6405ab45207d09b8237f2d7861b72d275293af9ab7b8100c5c5eec",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4652,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:13:58.679956Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo agora?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

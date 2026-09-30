@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8748457419b9400d97b6d37e4f6db937fb7d065c960a70aeab01e465e1b8fbec",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 9457,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Baseado no seu perfil, você é elegível para um empréstimo pessoal. No momento, temos o produto 'CO-PL-STANDARD', com um limite mínimo de 2.000.000 COP e um máximo de 80.000.000 COP. O prazo mínimo é de 6 meses e o máximo de 72 meses. A taxa máxima anual é de 27%. Gostaria de saber mais sobre esse produto ou se deseja iniciar uma aplicação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:22:52.956321Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1909,
+    "output_tokens": 140
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de confirmar, você está interessado em saber sobre a elegibilidade para um empréstimo pessoal, correto?\nCustomer: Sim, quero saber sobre a elegibilidade para um empréstimo pessoal.\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de crédito de 780, que é excelente. Sua renda mensal é de 9.000.000 COP e você não tem dias em atraso. Para um empréstimo pessoal, geralmente precisamos de pelo menos 6 meses de histórico de crédito. Como você tem 40 meses de histórico, isso é muito bom. No entanto, para uma orientação mais precisa, precisamos verificar os produtos disponíveis no momento.\nCustomer: Sim, quero saber sobre a elegibilidade para um empréstimo pessoal.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"CO-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"1000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"28.00\"}, {\"product_code\": \"CO-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"60000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"1200000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"15.00\"}, {\"product_code\": \"CO-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"2000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"80000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 6, \"max_term_months\": 72, \"max_annual_rate\": \"27.00\"}]}"
+  }
+}

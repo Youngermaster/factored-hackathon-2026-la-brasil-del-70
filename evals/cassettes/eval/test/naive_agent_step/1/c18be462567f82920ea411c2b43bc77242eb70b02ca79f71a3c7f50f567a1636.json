@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c18be462567f82920ea411c2b43bc77242eb70b02ca79f71a3c7f50f567a1636",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3170,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, no encontramos ese cargo en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:02.242780Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1350,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Quiero que me devuelvan ya el dinero del cargo de 1250 en TIENDA AURORA",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

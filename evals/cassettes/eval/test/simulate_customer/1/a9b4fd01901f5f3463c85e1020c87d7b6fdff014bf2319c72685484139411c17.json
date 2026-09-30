@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a9b4fd01901f5f3463c85e1020c87d7b6fdff014bf2319c72685484139411c17",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2099,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quiero saber el saldo que debo pagar y las condiciones para un préstamo personal."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:16:33.462731Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 819,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber cuánto saldo debo pagar en un préstamo personal y también las condiciones del mismo.\nAssistant: Buen día, CLI-EVMX0008. Ya verifiqué sus saldos. No encontramos un préstamo personal en su cuenta. ¿Podría aclarar si se refiere a un préstamo personal o a otra información relacionada?\nCustomer: Claro, me refiero a un préstamo personal. ¿Cuál sería el saldo pendiente y cuáles son las condiciones?\nAssistant: No encontramos un préstamo personal en su cuenta, CLI-EVMX0008. Parece que sus saldos actuales corresponden a una cuenta de ahorros y una tarjeta de crédito. ¿Podría aclarar si está buscando información sobre uno de estos productos o si desea consultar algo diferente?\nCustomer: Soy cliente nuevo y quisiera saber el saldo y las condiciones para un préstamo personal.\nAssistant: Entendido, CLI-EVMX0008. Vamos a revisar su saldo y las condiciones para un préstamo personal. Primero, necesito confirmar si desea consultar el saldo actual de su cuenta o si desea solicitar información sobre los préstamos personales disponibles.",
+    "conversation_seed": "test-cre-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

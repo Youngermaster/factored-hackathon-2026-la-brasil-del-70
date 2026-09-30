@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e060294a57f69f52cba6b8e4b9969cbe635221512fd19e9b59eaf87e7878cc41",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4025,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Gracias por tu tiempo. Si necesitas más información sobre tu préstamo personal o cualquier otro servicio, no dudes en contactarnos. ¡Estamos aquí para ayudarte!",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:17.673080Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1733,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo para pagar en un préstamo personal? Si me lo dices, también quiero saber las condiciones.\nAssistant: Para tu préstamo personal, el saldo pendiente es de 12,500.00 MXN. El límite de crédito de tu tarjeta de crédito es de 60,000.00 MXN con un saldo actual de 12,500.00 MXN. ¿Necesitas más detalles sobre las condiciones del préstamo personal o tienes alguna otra consulta?\nCustomer: Sí, necesito saber las condiciones del préstamo personal.\nAssistant: Entendido, te proporcionaré información sobre las condiciones del préstamo personal. El mínimo score requerido es de 650 y el máximo porcentaje de pago mensual sobre tu ingreso es del 35%. Además, no se permiten días vencidos. ¿Hay algo más en lo que pueda ayudarte?\nCustomer: Gracias, necesito saber también si hay alguna tasa de interés especial o promoción para nuevos clientes.\nAssistant: Actualmente no ofrecemos tasa de interés especial o promociones para nuevos clientes. Tu puntuación de crédito es de 780, lo cual es muy bueno. No tienes días vencidos y llevas 40 meses de tenencia. ¿Necesitas más información sobre tus condiciones de préstamo personal o tienes alguna otra consulta?\nCustomer: Gracias, solo necesito confirmar las condiciones actuales del préstamo personal.\nAssistant: Entendido, te proporcionaré la información sobre las condiciones actuales del préstamo personal. Actualmente, el monto pendiente es de 12,500.00 MXN. La tasa de interés es del 12.5%, y el plazo es de 36 meses. No hay tasa de interés especial o promociones actuales. ¿Necesitas ayuda con algo más?\nCustomer: Gracias, ya tengo la información sobre el saldo y las condiciones del préstamo personal.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

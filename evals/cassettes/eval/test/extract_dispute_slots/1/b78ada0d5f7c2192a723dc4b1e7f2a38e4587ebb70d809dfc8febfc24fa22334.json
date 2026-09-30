@@ -1,0 +1,43 @@
+{
+  "cassette_id": "b78ada0d5f7c2192a723dc4b1e7f2a38e4587ebb70d809dfc8febfc24fa22334",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 10551,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "85000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "15/06",
+      "merchant_text": "ALMACEN ANDES"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:30:56.361886Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1471,
+    "output_tokens": 108
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar la compra de 85.000 pesos del 15/06 en ALMACEN ANDES, no fui yo",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

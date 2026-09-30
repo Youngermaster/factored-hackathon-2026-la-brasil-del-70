@@ -1,0 +1,43 @@
+{
+  "cassette_id": "0989065f45ac0127843c2af3f1b29b665ce0ffacd121b68246ffd4114a1afca0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6399,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "85000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "2026-06-18",
+      "merchant_text": "ALMACEN ANDES"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:11.693421Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1459,
+    "output_tokens": 113
+  },
+  "variables": {
+    "customer_message": "No reconozco un cargo de 85.000 pesos en ALMACEN ANDES",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

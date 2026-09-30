@@ -1,0 +1,33 @@
+{
+  "cassette_id": "073f56aa7270da230d83d4b79920acf5211a8f037b536446368881295e2417b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6463,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Gracias por tu interés en un crédito personal. ¿Te gustaría saber más sobre las características de cada producto o estás pensando en solicitar uno de ellos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:25:02.893318Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1674,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: Quisiera saber más sobre un crédito personal.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"MX-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"5000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"120000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"85.00\"}, {\"product_code\": \"MX-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"10000000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"14.00\"}, {\"product_code\": \"MX-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"10000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"350000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 6, \"max_term_months\": 60, \"max_annual_rate\": \"65.00\"}]}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0a3738d07d90c892642a32ab8812f1b554b4050af936264f63e465559bb257a2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1878,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, confirmo la reclamación."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:23:40.445820Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco una transacción por $85.000 en ALMACEN ANDES.\nAssistant: Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 5404 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.\nCustomer: No, no quiero bloquearla por ahora.\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en ALMACEN ANDES por 85.000,00 COP (tarjeta **** 5404), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 3 de julio de 2026. ¿Confirmas? Responde sí o no.",
+    "conversation_seed": "test-dis-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 85.000; merchant: ALMACEN ANDES",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 85.000 and the merchant ALMACEN ANDES. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

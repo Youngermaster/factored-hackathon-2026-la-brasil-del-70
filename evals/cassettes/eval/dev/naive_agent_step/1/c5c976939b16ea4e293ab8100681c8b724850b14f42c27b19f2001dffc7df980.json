@@ -1,0 +1,37 @@
+{
+  "cassette_id": "c5c976939b16ea4e293ab8100681c8b724850b14f42c27b19f2001dffc7df980",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4358,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "reason": "rechazo",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:15:26.117472Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1493,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Era con mi tarjeta de crédito en la gasolinera SOL.\nAssistant: Entendido, gracias por proporcionar más detalles. Vamos a revisar el estado de la transacción para ver por qué fue rechazada. ¿Podría decirme el número de transacción, por favor?\nCustomer: No recuerdo el número de transacción, pero fue ayer por la tarde.\nAssistant: Entiendo, no encontramos la transacción específica. Sin embargo, podemos crear un caso de disputa para investigar el rechazo. ¿Está de acuerdo en que creamos este caso?\nCustomer: Sí, por favor crea el caso de disputa.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a706933a2d1bba55fa91c57cdb9800834582036dbd39bb07f65f1fff6571aa35",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1769,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:01:17.606658Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 513,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não, não quero bloquear o cartão. Pode prosseguir com o protesto?",
+    "dialect_hint": "pt-BR"
+  }
+}

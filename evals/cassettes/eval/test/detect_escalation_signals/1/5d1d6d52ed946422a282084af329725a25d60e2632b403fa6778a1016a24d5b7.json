@@ -1,0 +1,29 @@
+{
+  "cassette_id": "5d1d6d52ed946422a282084af329725a25d60e2632b403fa6778a1016a24d5b7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2809,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:55:31.419795Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 487,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Me puede enviar el resumen de mayo?",
+    "dialect_hint": "es-CO"
+  }
+}

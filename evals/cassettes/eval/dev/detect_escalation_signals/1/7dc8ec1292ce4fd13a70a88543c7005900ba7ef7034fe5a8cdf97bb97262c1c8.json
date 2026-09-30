@@ -1,0 +1,29 @@
+{
+  "cassette_id": "7dc8ec1292ce4fd13a70a88543c7005900ba7ef7034fe5a8cdf97bb97262c1c8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2181,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:01:34.588994Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 503,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Hay un cargo en mi tarjeta de 1250 en TIENDA AURORA que yo no hice",
+    "dialect_hint": "es-MX"
+  }
+}

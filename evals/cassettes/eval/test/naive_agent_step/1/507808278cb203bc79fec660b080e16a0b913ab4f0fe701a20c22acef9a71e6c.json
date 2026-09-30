@@ -1,0 +1,33 @@
+{
+  "cassette_id": "507808278cb203bc79fec660b080e16a0b913ab4f0fe701a20c22acef9a71e6c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3811,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Não encontramos nenhum pagamento no valor que você mencionou. Você poderia me informar o número da transação ou mais detalhes para que eu possa verificar novamente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:53:11.086475Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1423,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 850 do dia 06/06?\nAssistant: Olá! Verifiquei e não encontramos nenhum pagamento no valor de 850 realizada no dia 06/06. Você poderia me fornecer mais detalhes para que eu possa ajudar melhor?\nCustomer: O do dia 06/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

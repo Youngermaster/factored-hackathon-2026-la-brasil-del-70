@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7ebebf9b0c34be1d9c3f500bec0a392ae6b0a029ad8040f2311100f81fd6035d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5619,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "El saldo de tu cuenta de ahorros es de 18,000.00 MXN como de 17 de junio de 2026. ¿Necesitas información adicional sobre tus cuentas o tarjetas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:09:33.024488Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1565,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál é o saldo da mi cuenta de ahorros?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0001-01\", \"type\": \"checking_account\", \"number\": \"**** 5056\", \"balance\": \"52300.50 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5231\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0025\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7971a1b1e9da0faac828b63f993c45a53b98ceab3ead7545174f6a78d0766e31",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4098,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, não encontrei seu cartão cadastrado. Por favor, verifique se digitou corretamente o ID do cliente ou forneça mais detalhes para que possamos prosseguir.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:59:34.199103Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1493,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão/tarjeta e preciso bloquear imediatamente.\nAssistant: Entendi, vou bloquear seu cartão imediatamente. Vou precisar de algumas informações para prosseguir: o motivo do bloqueio (perdido, roubado, suspeita de fraude ou precaução) e, se aplicável, o motivo do pedido.\nCustomer: Perdi meu cartão/tarjeta e preciso bloquear imediatamente. O motivo é que perdi.\nAssistant: Entendi que o motivo do bloqueio é que você perdeu o cartão. Vou prosseguir com o bloqueio agora. Confirma que é isso mesmo?\nCustomer: Sí, confirmo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

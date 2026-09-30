@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b44e259a95ae65b52f72c8b720f81cb5b0f7b9b2546b69240d178c1f92d48b91",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4771,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para confirmar, ¿podría proporcionarme el número de la tarjeta o el motivo de la compra rechazada?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:11:26.865530Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 53
+  },
+  "variables": {
+    "conversation": "Customer: ¿Está activa mi tarjeta de crédito? Tuve una compra rechazada",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

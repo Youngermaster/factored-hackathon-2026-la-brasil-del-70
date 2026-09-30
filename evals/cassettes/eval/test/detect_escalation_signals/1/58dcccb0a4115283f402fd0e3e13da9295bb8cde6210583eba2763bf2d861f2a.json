@@ -1,0 +1,29 @@
+{
+  "cassette_id": "58dcccb0a4115283f402fd0e3e13da9295bb8cde6210583eba2763bf2d861f2a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1959,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:37:51.435340Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 490,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Qué tipo de cambio me conviene para comprar dólares hoy?",
+    "dialect_hint": "es-MX"
+  }
+}

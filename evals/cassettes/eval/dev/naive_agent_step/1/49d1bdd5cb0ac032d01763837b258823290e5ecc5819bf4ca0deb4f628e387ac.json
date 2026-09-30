@@ -1,0 +1,37 @@
+{
+  "cassette_id": "49d1bdd5cb0ac032d01763837b258823290e5ecc5819bf4ca0deb4f628e387ac",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7093,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0003",
+      "product_id": "debit_card",
+      "reason": "reactivation"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:20:03.174518Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Ya encontré mi tarjeta de débito, reactívala por favor",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

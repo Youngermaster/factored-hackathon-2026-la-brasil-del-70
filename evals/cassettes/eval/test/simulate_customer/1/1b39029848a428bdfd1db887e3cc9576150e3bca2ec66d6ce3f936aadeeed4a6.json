@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1b39029848a428bdfd1db887e3cc9576150e3bca2ec66d6ce3f936aadeeed4a6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3065,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Putz, bloquearam meu cartão e não foi eu que paguei 15 lucas no KIOSCO DEL SUR! Nenhuma das minhas cartões são essas."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:52:24.440112Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 661,
+    "output_tokens": 50
+  },
+  "variables": {
+    "conversation": "Customer: Putz, bloquearam meu cartão e não foi eu que paguei 15 lucas no KIOSCO DEL SUR!\nAssistant: Tienes varias tarjetas. ¿Sobre cuál me consultas?\n1) tarjeta de crédito **** 1659\n2) tarjeta de débito **** 3074",
+    "conversation_seed": "test-dis-ambiguou-010#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Dispute a charge stated in slang (15 lucas).",
+    "hidden_facts": "(none)",
+    "instructions": "Say, in Argentine slang, that they charged you 15 lucas at KIOSCO DEL SUR and it was not you. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

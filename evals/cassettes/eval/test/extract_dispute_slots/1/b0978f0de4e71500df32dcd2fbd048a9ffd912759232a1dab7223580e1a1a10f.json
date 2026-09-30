@@ -1,0 +1,41 @@
+{
+  "cassette_id": "b0978f0de4e71500df32dcd2fbd048a9ffd912759232a1dab7223580e1a1a10f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4986,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_status"
+      }
+    ],
+    "reason_candidates": [],
+    "transaction": {
+      "amount": null,
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "el 15 de enero",
+      "merchant_text": "la tienda local"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:33:52.163134Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1460,
+    "output_tokens": 95
+  },
+  "variables": {
+    "customer_message": "¡Es la compra del 15 de enero en la tienda local! No necesito más información.",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

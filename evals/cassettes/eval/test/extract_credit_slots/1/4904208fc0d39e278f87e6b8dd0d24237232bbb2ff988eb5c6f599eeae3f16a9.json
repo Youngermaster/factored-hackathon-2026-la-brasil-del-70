@@ -1,0 +1,31 @@
+{
+  "cassette_id": "4904208fc0d39e278f87e6b8dd0d24237232bbb2ff988eb5c6f599eeae3f16a9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6328,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "USD",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:19:23.128248Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1087,
+    "output_tokens": 59
+  },
+  "variables": {
+    "customer_message": "Pode me dizer o seu plano de ação e minha estimativa de risco? E se posso pegar um empréstimo pessoal no valor de R$ 50.000,00 em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

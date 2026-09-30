@@ -1,0 +1,33 @@
+{
+  "cassette_id": "412aca9d425b0117909f2b51d1681032b7eb5be6a1947a0a1eadc85408098eb5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3593,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a abrir un caso de disputa por el pago no autorizado en KIOSCO DEL SUR. ¿Esto está bien para usted?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:32.539361Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Chau, me cargaron 15 lucas en KIOSCO DEL SUR y no fui yo. No quiero que bloqueen la tarjeta.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

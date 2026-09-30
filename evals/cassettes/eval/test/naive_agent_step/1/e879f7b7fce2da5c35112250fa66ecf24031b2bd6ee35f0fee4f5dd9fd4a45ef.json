@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e879f7b7fce2da5c35112250fa66ecf24031b2bd6ee35f0fee4f5dd9fd4a45ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6687,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que você fez uma compra de 1250 MXN na TIENDA AURORA e o pedido não chegou. Vamos abrir um caso de contestação. Você gostaria de confirmar que o pedido não chegou e que a compra foi realizada?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:11.746448Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1348,
+    "output_tokens": 86
+  },
+  "variables": {
+    "conversation": "Customer: Paguei 1250 na TIENDA AURORA e o pedido nunca chegou, quero contestar",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "cassette_id": "156315c70a3d3a8490d7cdf1069e35ba846c456d0c1346029cb55bade2ad1730",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3714,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:07.892340Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 770,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: ¿Cuánto $ tengo en mi cuenta?\nAssistant: En tu cuenta de chequeras tienes un saldo de 52,300.50 MXN, en tu cuenta de ahorros de 18,000.00 MXN y en tu tarjeta de crédito de 12,500.00 MXN, como de costumbre, estos saldos son al 17 de junio de 2026."
+  }
+}

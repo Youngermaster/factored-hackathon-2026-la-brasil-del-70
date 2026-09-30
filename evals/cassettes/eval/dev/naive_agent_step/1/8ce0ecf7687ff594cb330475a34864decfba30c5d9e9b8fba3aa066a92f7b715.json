@@ -1,0 +1,37 @@
+{
+  "cassette_id": "8ce0ecf7687ff594cb330475a34864decfba30c5d9e9b8fba3aa066a92f7b715",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3898,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": "[NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:28.167704Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1390,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 730 do dia 14/06\nAssistant: Desculpe, não encontrei essa cobrança no seu histórico. Vamos verificar novamente. É possível que você tenha digitado incorretamente o valor ou a data?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

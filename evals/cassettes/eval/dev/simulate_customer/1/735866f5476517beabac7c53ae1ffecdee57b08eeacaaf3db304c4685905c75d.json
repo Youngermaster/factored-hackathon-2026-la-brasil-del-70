@@ -1,0 +1,32 @@
+{
+  "cassette_id": "735866f5476517beabac7c53ae1ffecdee57b08eeacaaf3db304c4685905c75d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3381,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Olá, estou querendo verificar o status de uma transferência recente de 1500 pesos para JUAN PEREZ."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:44:45.527780Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 801,
+    "output_tokens": 40
+  },
+  "variables": {
+    "conversation": "Customer: Olá, estou querendo verificar o status de uma transferência de 1500 pesos para JUAN PEREZ.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Olá, estou querendo verificar o status de uma transferência de 1500 pesos para JUAN PEREZ.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "dev-acc-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Know the status of a transfer to a payee, without saying at first which of two similar transfers.",
+    "hidden_facts": "date: 15/06",
+    "instructions": "Ask about your transfer of 1500 pesos to JUAN PEREZ. When asked which one, say it is the most recent one, from 15/06.",
+    "known_facts": "amount: 1500 pesos; payee: JUAN PEREZ"
+  }
+}

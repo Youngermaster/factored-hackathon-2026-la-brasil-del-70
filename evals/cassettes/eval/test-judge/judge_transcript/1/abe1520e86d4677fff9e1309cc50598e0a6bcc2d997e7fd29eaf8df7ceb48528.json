@@ -1,0 +1,30 @@
+{
+  "cassette_id": "abe1520e86d4677fff9e1309cc50598e0a6bcc2d997e7fd29eaf8df7ceb48528",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4033,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 2,
+    "language_correct": false,
+    "language_quality": 2,
+    "politeness": 4,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:29.355851Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1088,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero ver os meus saldos\nAssistant: Estos son tus saldos, con datos al 17 de junio de 2026.\n- cuenta corriente **** 7508: saldo 480.000,00 ARS\n- cuenta de ahorro **** 5049: saldo 250.000,00 ARS\n- tarjeta de crédito **** 3491: saldo 45.000,00 ARS; crédito disponible 255.000,00 ARS de un límite de 300.000,00 ARS\n\nPodemos informarte el saldo de tus cuentas y tarjetas, el crédito disponible de tus tarjetas de crédito y el estado de tus pagos y transferencias: aplicado, pendiente, rechazado o revertido. La información proviene de un corte periódico de los registros, por lo que siempre te indicamos la fecha y hora de ese corte; los movimientos posteriores todavía no aparecen.\nCustomer: Agora me diga só o da poupança\nAssistant: Tu sesión venció. Para continuar necesito que verifiques tu identidad de nuevo; después retomamos donde íbamos.\nCustomer: Pronto, já entrei de novo\nAssistant: Gracias por verificar tu identidad. Retomemos donde íbamos.\n¿Hay algo más en lo que te ayude con tus cuentas?\nCustomer: Agora me diga só o da poupança\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol)."
+  }
+}

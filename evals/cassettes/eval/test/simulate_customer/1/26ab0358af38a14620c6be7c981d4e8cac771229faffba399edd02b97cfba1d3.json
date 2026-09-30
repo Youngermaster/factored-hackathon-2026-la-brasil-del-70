@@ -1,0 +1,32 @@
+{
+  "cassette_id": "26ab0358af38a14620c6be7c981d4e8cac771229faffba399edd02b97cfba1d3",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1535,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Por favor, por que minha compra foi negada?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:01:55.276258Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 576,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-car-ambiguou-008#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

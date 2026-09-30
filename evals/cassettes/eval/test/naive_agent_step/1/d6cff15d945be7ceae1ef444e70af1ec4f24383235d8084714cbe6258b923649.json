@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d6cff15d945be7ceae1ef444e70af1ec4f24383235d8084714cbe6258b923649",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4997,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:41.462443Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Me envie a resumo das movimentações do meu cartão de crédito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

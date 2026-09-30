@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d2f53e503a475e94a3c6dc889fd92bc4ee9b86be984e443a0a287c8ad4902677",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2793,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": true,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:57:22.499549Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 487,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero hablar con una persona sobre mi cuenta",
+    "dialect_hint": "es-MX"
+  }
+}

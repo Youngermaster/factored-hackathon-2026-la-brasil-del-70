@@ -1,0 +1,33 @@
+{
+  "cassette_id": "94650a950e8a4166218be1b258196cbf01d79add370588d854f5f3d979045a0c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4832,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Claro! O saldo atual da sua conta poupança é de 250.000,00 ARS. Precisa de mais alguma informação ou assistência com algo específico?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:46:21.665064Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1444,
+    "output_tokens": 68
+  },
+  "variables": {
+    "conversation": "Customer: Quero ver os meus saldos\nAssistant: Olá! Os seus saldos atualizados estão assim: Conta-corrente: 480.000,00 ARS, Conta-poupança: 250.000,00 ARS, Cartão de crédito: 45.000,00 ARS sobre um limite de 300.000,00 ARS. Precisa de mais informações ou assistência com algo específico?\nCustomer: Agora me diga só o da poupança",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

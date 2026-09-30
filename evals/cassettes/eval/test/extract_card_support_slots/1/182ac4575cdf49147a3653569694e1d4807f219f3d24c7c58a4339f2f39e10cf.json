@@ -1,0 +1,31 @@
+{
+  "cassette_id": "182ac4575cdf49147a3653569694e1d4807f219f3d24c7c58a4339f2f39e10cf",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4293,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "replacement_request"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:50.546834Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 955,
+    "output_tokens": 34
+  },
+  "variables": {
+    "customer_message": "Me mande um cartão de crédito novo, o meu está vencido",
+    "dialect_hint": "pt-BR"
+  }
+}

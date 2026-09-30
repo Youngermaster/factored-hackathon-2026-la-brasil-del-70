@@ -1,0 +1,35 @@
+{
+  "cassette_id": "f0d71ff51c8441cc2d04ee5f09c82600ad4e5fedb22273f3225867b53a0af1c7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2801,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:20:23.588623Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se estou qualificada para um empréstimo pessoal?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

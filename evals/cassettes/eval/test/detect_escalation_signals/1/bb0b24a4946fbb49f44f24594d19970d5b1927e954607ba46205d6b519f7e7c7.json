@@ -1,0 +1,29 @@
+{
+  "cassette_id": "bb0b24a4946fbb49f44f24594d19970d5b1927e954607ba46205d6b519f7e7c7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1903,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:17:28.537286Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 500,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Puedo pedir una tarjeta de crédito con un límite de 30000?",
+    "dialect_hint": "es-MX"
+  }
+}

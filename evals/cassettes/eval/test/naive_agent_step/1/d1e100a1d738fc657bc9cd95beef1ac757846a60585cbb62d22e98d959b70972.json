@@ -1,0 +1,35 @@
+{
+  "cassette_id": "d1e100a1d738fc657bc9cd95beef1ac757846a60585cbb62d22e98d959b70972",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4184,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:27:09.965222Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de [DOCUMENT] a 36 meses?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e5f9bdb9e11c47f57cec9d8510728b3313e53d7f40b8bb0217be408bfcab765a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2274,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:31.090381Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Quiero el resumen de movimientos de mi tarjeta de crédito",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

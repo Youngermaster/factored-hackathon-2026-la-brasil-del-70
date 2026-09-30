@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d349e781803b5fac0a6eae6b037eb343a4346e7782cdb64fca6a622cdc9b5a07",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4313,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Com o último dígito do cartão, podemos tentar localizá-lo. Por favor, forneça também a data de emissão do cartão, se você se lembrar.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:00:46.178784Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1452,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma de minhas cartões de crédito.\nAssistant: Entendi. Vou precisar da ID do seu cartão para poder bloqueá-lo. Você pode me fornecer essa informação, por favor?\nCustomer: Acho que é o último cartão que eu usei, mas não tenho a ID dele aqui.\nAssistant: Entendi que você não tem a ID do cartão. Podemos tentar encontrar outras informações para bloqueá-lo. Você lembra da data de emissão ou do último dígito do cartão?\nCustomer: Só me lembro do último dígito, é 7.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

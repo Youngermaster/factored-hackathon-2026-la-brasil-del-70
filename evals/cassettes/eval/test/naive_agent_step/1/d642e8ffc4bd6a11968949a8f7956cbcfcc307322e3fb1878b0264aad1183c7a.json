@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d642e8ffc4bd6a11968949a8f7956cbcfcc307322e3fb1878b0264aad1183c7a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6421,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que você deseja desbloquear seu cartão de débito. Para podermos prosseguir, preciso confirmar alguns detalhes. Por favor, me informe o número do seu cartão e a razão para o bloqueio.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:30:08.471453Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Quero desbloquear meu cartão de débito",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0003",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

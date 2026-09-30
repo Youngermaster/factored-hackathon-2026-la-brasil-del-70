@@ -1,0 +1,33 @@
+{
+  "cassette_id": "56f532ff5f7bce6641fd8fa96912fa0b52594c7831e8cef88191fbc4c016cea7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3685,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Você gostaria de saber sobre o status do seu cartão de débito com o número **** 0431?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:19.881076Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1568,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber sobre uma de minhas cartões e também verificar o saldo.\nAssistant: Olá! Verifiquei seu saldo. Seu cartão de crédito está com um limite de 8.000.000 COP e um saldo atual de 1.200.000 COP, como de 17/06/2026. Gostaria de saber mais sobre qual cartão específico você precisa de assistência?\nCustomer: É o cartão de débito que usei ontem.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0002-01\", \"type\": \"credit_card\", \"number\": \"**** 8289\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVCO0002-02\", \"type\": \"debit_card\", \"number\": \"**** 0431\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

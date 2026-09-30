@@ -1,0 +1,43 @@
+{
+  "cassette_id": "6c68aa2aca75e4b6609e860334b451c4c94d35ec2db5f556d0f4371d5cf8a6b7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6003,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "15/06",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:32:32.212915Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1470,
+    "output_tokens": 108
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar la compra de 1250 pesos del 15/06 en TIENDA AURORA, no fui yo",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

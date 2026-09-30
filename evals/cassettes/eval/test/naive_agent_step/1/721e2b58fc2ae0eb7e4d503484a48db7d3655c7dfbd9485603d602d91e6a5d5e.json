@@ -1,0 +1,37 @@
+{
+  "cassette_id": "721e2b58fc2ae0eb7e4d503484a48db7d3655c7dfbd9485603d602d91e6a5d5e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5268,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0007",
+      "reason": "unrecognized",
+      "transaction_id": "1250"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:44:49.766093Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1346,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: De novo uma cobrança que não reconheço: 1250 na TIENDA AURORA",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0007",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

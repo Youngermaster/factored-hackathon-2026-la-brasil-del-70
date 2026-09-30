@@ -1,0 +1,29 @@
+{
+  "cassette_id": "4bed389876e5f88f712bed79e88476163710149a7d4395857d9207e478779fbe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1925,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:32:35.981746Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 503,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No reconozco el cargo de 85.000 en ALMACEN ANDES, quiero reclamarlo",
+    "dialect_hint": "es-CO"
+  }
+}

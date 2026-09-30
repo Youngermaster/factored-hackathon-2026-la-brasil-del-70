@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ea57f5bd7e9eaa0a91a445eac84137740ed8c978598f24ea9c1036ebc204ce98",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5481,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Señor/a, hemos recibido su solicitud para bloquear su tarjeta de crédito. Antes de proceder, ¿podría confirmar que su tarjeta se encuentra perdida o robada?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:09:33.894981Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: Extravié mi tarjeta de crédito y quiero bloquearla",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

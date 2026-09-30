@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5444ca742cfbec8f871ee9797ac19023138d091b1d0e29451d9623159e7cc44d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5830,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación crediticia de 780, ingresos mensuales de 60,000 MXN y sin días vencidos, calificas para un préstamo personal. Sin embargo, necesitamos verificar algunos detalles para darte una orientación más precisa. ¿Podrías proporcionarnos tu ingreso neto bruto mensual?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:32:41.862182Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1387,
+    "output_tokens": 104
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si califico para un préstamo personal de 50000 a 24 meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

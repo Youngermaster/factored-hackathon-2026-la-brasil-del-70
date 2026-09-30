@@ -1,0 +1,29 @@
+{
+  "cassette_id": "bfc082568c0420f628e84ec34ab838d3825ccb2f470bd3fe0828dc7577e2789a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1901,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:16:34.006565Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 496,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Me dan una tarjeta de crédito con límite de 30000?",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "377ea81b1cded254afdf258bff9d2f22c977272770a45aa4f12124b6ace1ccca",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1991,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:01:00.884278Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 522,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não lembro os detalhes. Mas o valor é 1250 e o estabelecimento é TIENDA AURORA.",
+    "dialect_hint": "pt-BR"
+  }
+}

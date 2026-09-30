@@ -1,0 +1,35 @@
+{
+  "cassette_id": "e18c47f53ca0d034dbe94bd744d1c81d25a9dc4c54f5e52b2c525e643812445c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 10071,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:17.515275Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1319,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál é o saldo da mi ahorro?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6a03dd420890fbef0e433a44dab5a19df51c7488615f7c1941e6eb2e8924fcbb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 8315,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Você tem um saldo de R$ 480.000,00 em sua conta corrente, R$ 250.000,00 em sua conta poupança e um limite de crédito de R$ 300.000,00 em sua cartão de crédito. Estes valores são válidos até 17/06/2026. Precisa de mais informações?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:29.714496Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1575,
+    "output_tokens": 120
+  },
+  "variables": {
+    "conversation": "Customer: Quanto tenho na minha conta poupança?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

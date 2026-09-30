@@ -1,0 +1,32 @@
+{
+  "cassette_id": "c08547a88cd60b33783a1b08b6203ddfb3993fcd06cbf0adc03da7a5c1c57f99",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2307,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No necesito bloquear ninguna, solo quería confirmar el saldo y el estado de mis tarjetas."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:43.124428Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 737,
+    "output_tokens": 33
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber el estado de mi tarjeta y también el saldo actual.\nAssistant: Buenas tardes, CLI-EVMX0002. Su saldo actual es de 12,500.00 MXN como de oficio 17 de junio de 2026. ¿Podría confirmarme el número de su tarjeta para verificar su estado?\nCustomer: Claro, mi tarjeta es la [PHONE] 6789.\nAssistant: Su tarjeta de crédito [PHONE] 6155 está activa y vence el 31 de marzo de 2028. Su tarjeta de débito [PHONE] 7052 también está activa y vence el 30 de noviembre de 2027. ¿Necesita bloquear alguna de ellas o tiene alguna otra consulta?",
+    "conversation_seed": "test-rtg-switch-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about a card without saying which, then about the balance.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about a card without saying which, then about the balance.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "828d31108edb2106fe616eee3589423f418d6f504c2a5793342f174a0caf5ee9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4147,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, parece que hubo un error al verificar el estado de su tarjeta. Podría ser útil que proporcione más detalles para poder asistirlo mejor.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:07.788776Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1348,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Dame el estado de la tarjeta PRD-EVCO0013-02",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_card_status\", \"status\": \"error\", \"result\": \"unknown tool get_card_status\"}"
+  }
+}

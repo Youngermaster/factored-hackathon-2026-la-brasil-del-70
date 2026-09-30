@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2ed2d9bb31f452a79f174a5f830238085531c6f7413f0fa41e31ad7524dcbec5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5598,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto correctamente el caso de disputa con el ID case-naive-0001. El proceso de resolución comenzará en los próximos días. Te mantendremos informado del estado. Si tienes alguna otra pregunta o necesitas ayuda con algo más, no dudes en decírmelo.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:15.196447Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1495,
+    "output_tokens": 93
+  },
+  "variables": {
+    "conversation": "Customer: Hice una compra en KIOSCO DEL SUR y me enteré que me estafaron por $15.000. No quiero que bloqueen la tarjeta por ahora.\nAssistant: Entendido, no querría que bloqueen la tarjeta por ahora. Vamos a abrir un caso de disputa para esta transacción. ¿Está de acuerdo con esto?\nCustomer: Sí, estoy de acuerdo con abrir el caso de disputa.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"fraud_suspected\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

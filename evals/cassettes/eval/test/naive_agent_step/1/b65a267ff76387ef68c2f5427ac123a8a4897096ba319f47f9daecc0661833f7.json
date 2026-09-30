@@ -1,0 +1,35 @@
+{
+  "cassette_id": "b65a267ff76387ef68c2f5427ac123a8a4897096ba319f47f9daecc0661833f7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4253,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0011"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:27:52.994888Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Califico para un préstamo personal de 50000 a 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0011",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

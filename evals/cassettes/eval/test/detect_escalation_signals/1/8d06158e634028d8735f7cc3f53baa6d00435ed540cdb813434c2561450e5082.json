@@ -1,0 +1,29 @@
+{
+  "cassette_id": "8d06158e634028d8735f7cc3f53baa6d00435ed540cdb813434c2561450e5082",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2319,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:26:28.667401Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 502,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No tengo la fecha ni el comercio, pero fue por $1250 en TIENDA AURORA.",
+    "dialect_hint": "es-MX"
+  }
+}

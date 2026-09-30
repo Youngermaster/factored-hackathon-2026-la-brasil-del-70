@@ -1,0 +1,35 @@
+{
+  "cassette_id": "55d5bfda6292a599677e1d90a8f5cc393a63d608e4a8c44057a08df7a793ec95",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3062,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:17:26.560518Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1391,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal?\nAssistant: Claro, posso te ajudar com isso. Antes, preciso verificar alguns detalhes do seu perfil de crédito. Vou verificar agora.\nCustomer: Pode ser um empréstimo de 50.000 reais em 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

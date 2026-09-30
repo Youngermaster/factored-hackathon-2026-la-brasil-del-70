@@ -1,0 +1,29 @@
+{
+  "cassette_id": "eeda0d58b37b9bd5261c65099ac688e59958d40cdbf1645793d5d010ef8a43b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4254,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:48:54.446749Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Hola, necesito el resumen de mis movimientos en la tarjeta de crédito.",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "69dabbb6951665123433329d3d34cf0c6f9da374cf79c1364ff1561b2d8a4e5c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6091,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "checking_account"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:01:41.341293Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1141,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Saldo da minha conta corrente, por favor",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

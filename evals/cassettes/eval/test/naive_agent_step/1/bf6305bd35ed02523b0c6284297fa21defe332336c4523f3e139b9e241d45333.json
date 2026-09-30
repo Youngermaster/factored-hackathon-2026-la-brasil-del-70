@@ -1,0 +1,35 @@
+{
+  "cassette_id": "bf6305bd35ed02523b0c6284297fa21defe332336c4523f3e139b9e241d45333",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4280,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:25.787350Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quanto devo no meu cartão de crédito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

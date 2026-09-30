@@ -1,0 +1,35 @@
+{
+  "cassette_id": "895d09b4488a814c55206f423b10ec5db35e1204832896b190dda9a3d059b831",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3194,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:34:28.339378Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1763,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que deberé pagar en una loan personal? Si me lo explicas, luego te pido más detalles.\nAssistant: Hola CLI-EVMX0008, según la información disponible como de 17 de junio de 2026, tu saldo en la tarjeta de crédito es de 12,500.00 MXN. Sin embargo, no veo ningún saldo pendiente en tu préstamo personal en esta consulta. ¿Podrías proporcionarme más detalles sobre el préstamo personal para que pueda revisarlo para ti?\nCustomer: El préstamo personal es el 123456. Revisa de nuevo por favor.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?\nCustomer: Voy a intentarlo de nuevo. El préstamo personal es el 123456.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?\nCustomer: Voy a intentarlo de nuevo. El préstamo personal es el 123456.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?\nCustomer: Voy a intentarlo por última vez. El préstamo personal es el 123456.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0008-01\", \"type\": \"savings_account\", \"number\": \"**** 2912\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0008-02\", \"type\": \"credit_card\", \"number\": \"**** 2010\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

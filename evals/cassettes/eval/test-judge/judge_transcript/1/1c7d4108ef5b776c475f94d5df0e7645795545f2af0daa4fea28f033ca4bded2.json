@@ -1,0 +1,30 @@
+{
+  "cassette_id": "1c7d4108ef5b776c475f94d5df0e7645795545f2af0daa4fea28f033ca4bded2",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2464,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:48.967580Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 789,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Carai, eles me cobraram 15 lucas no KIOSCO DEL SUR e não foi comigo. Não quero bloquear a cartão agora, só quero disputar isso!\nAssistant: Obrigado pelo seu feedback! A disputa foi aberta com sucesso. O prazo para resolução é de 30 dias, conforme nossa política. Você receberá um e-mail com mais detalhes sobre o caso. Se precisar de mais assistência, estaremos à disposição!"
+  }
+}

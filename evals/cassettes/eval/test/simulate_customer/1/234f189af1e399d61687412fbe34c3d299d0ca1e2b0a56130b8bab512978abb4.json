@@ -1,0 +1,32 @@
+{
+  "cassette_id": "234f189af1e399d61687412fbe34c3d299d0ca1e2b0a56130b8bab512978abb4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2439,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Poderia me enviar o resumo do mês de maio, por favor? Se for sobre tarjetas, especificamente a de crédito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:54:30.630873Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 611,
+    "output_tokens": 41
+  },
+  "variables": {
+    "conversation": "Customer: Poderia me enviar o resumo do mês de maio, por favor?\nAssistant: Para ayudarte mejor: ¿tu consulta es sobre tus saldos y pagos o sobre tus tarjetas?",
+    "conversation_seed": "test-acc-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

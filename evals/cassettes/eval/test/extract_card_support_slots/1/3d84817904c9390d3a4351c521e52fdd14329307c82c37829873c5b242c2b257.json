@@ -1,0 +1,31 @@
+{
+  "cassette_id": "3d84817904c9390d3a4351c521e52fdd14329307c82c37829873c5b242c2b257",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2394,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:31.848167Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "¿Mi tarjeta de débito está activa?",
+    "dialect_hint": "es-MX"
+  }
+}

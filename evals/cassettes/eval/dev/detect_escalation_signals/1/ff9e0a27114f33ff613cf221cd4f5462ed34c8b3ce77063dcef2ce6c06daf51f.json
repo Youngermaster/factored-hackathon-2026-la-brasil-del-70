@@ -1,0 +1,29 @@
+{
+  "cassette_id": "ff9e0a27114f33ff613cf221cd4f5462ed34c8b3ce77063dcef2ce6c06daf51f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2886,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:50:59.226986Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 503,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Roubaram meu cartão de crédito, bloqueie",
+    "dialect_hint": "pt-BR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8b9e12690d7786cf1cb21d8593a3ae2f8073ad13b74ce0114e6c816269970478",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4913,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "¡Por supuesto! Para darte una orientación sobre la aprobación, necesitaré algunos detalles sobre tu historial crediticio y tu situación financiera. ¿Podrías proporcionarme tu puntaje de crédito y tu ingreso mensual aproximado?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:20:57.904266Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1389,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola! Me gustaría saber sobre un crédito. ¿Podrías darme más información?\nAssistant: ¡Hola! Claro, estaré encantado de ayudarte con información sobre créditos. ¿Podrías indicarme si te interesa un crédito de tarjeta de débito, tarjeta de crédito, préstamo personal o hipoteca?\nCustomer: Un préstamo personal, por favor.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

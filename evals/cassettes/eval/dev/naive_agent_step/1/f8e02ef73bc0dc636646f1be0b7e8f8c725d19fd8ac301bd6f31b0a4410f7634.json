@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f8e02ef73bc0dc636646f1be0b7e8f8c725d19fd8ac301bd6f31b0a4410f7634",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5124,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos ninguna transferencia realizada el 15 de junio por 1500 pesos en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:11:30.798156Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1344,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Estado de mi transferencia del 15/06 por 1500 pesos",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

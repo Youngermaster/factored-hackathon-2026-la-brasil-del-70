@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d6f93cd162f0aae69eaa23a208b96c1344feb6a4dd616c780fe335f37c11d66b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1904,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": true,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:54.421901Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Mi abogado va a revisar por qué me rechazan la tarjeta de crédito",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7b1f456b82ac095fa19636317fb9119e48248d64918db4301e49102ce26167c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3538,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a desactivar los pagos sin contacto de tu tarjeta de crédito. ¿Esto es correcto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:59.619055Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Desactiva los pagos sin contacto de mi tarjeta de crédito",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

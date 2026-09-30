@@ -1,0 +1,32 @@
+{
+  "cassette_id": "ecab846080fca629363e24f2a6b4e75bfd546b0b53767323471bc0c0f2153fb8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1507,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Prefiero información general primero."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:25:04.403288Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 615,
+    "output_tokens": 16
+  },
+  "variables": {
+    "conversation": "Customer: Quisiera saber más sobre un crédito personal.\nAssistant: Gracias por tu interés en un crédito personal. ¿Te gustaría saber más sobre las características de cada producto o estás pensando en solicitar uno de ellos?",
+    "conversation_seed": "dev-cre-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

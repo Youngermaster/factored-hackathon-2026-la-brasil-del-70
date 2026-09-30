@@ -1,0 +1,29 @@
+{
+  "cassette_id": "750e68715b476509f57c052dd887e09287f7a12499d997a62e2693fc8cd8a030",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1842,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:30:24.667891Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 519,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço a cobrança de 15.000 na KIOSCO DEL SUR, quero contestar",
+    "dialect_hint": "pt-BR"
+  }
+}

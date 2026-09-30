@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0eeb1646c366944df29f20cbeaceae266331b0c47f70956d97160448f163c494",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4227,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "2026-06-06-PAGO SERVICIO GAS"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:50:17.854546Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1424,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 21.000 para PAGO SERVICIO GAS do dia 06/06?\nAssistant: Olá! Verifiquei e não encontramos nenhum pagamento no valor de R$ 21.000 para PAGO SERVICIO GAS no dia 06/06. Você poderia fornecer mais detalhes para que eu possa ajudar melhor?\nCustomer: O do dia 06/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

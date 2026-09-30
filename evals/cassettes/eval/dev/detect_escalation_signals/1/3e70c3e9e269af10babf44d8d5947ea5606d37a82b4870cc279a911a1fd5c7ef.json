@@ -1,0 +1,29 @@
+{
+  "cassette_id": "3e70c3e9e269af10babf44d8d5947ea5606d37a82b4870cc279a911a1fd5c7ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2880,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:02:01.429028Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 513,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço uma cobrança de 730 do dia 14/06",
+    "dialect_hint": "pt-BR"
+  }
+}

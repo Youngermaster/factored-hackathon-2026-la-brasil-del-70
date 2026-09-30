@@ -1,0 +1,33 @@
+{
+  "cassette_id": "548f9358a756348d192534d1545db67ae2538d9a9ad219d5ae1d738aa153c61f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4090,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, CLI-EVAR0002. Vamos a revisar su perfil crediticio y las razones del rechazo. ¿Esto está bien para usted?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:07:05.902742Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Mi abogado va a revisar por qué me rechazan la tarjeta de crédito",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

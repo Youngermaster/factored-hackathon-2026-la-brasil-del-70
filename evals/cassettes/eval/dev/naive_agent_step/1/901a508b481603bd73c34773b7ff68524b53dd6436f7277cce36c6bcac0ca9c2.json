@@ -1,0 +1,33 @@
+{
+  "cassette_id": "901a508b481603bd73c34773b7ff68524b53dd6436f7277cce36c6bcac0ca9c2",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10559,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, CLI-EVAR0002. No entanto, gostaria de confirmar se você gostaria de discutir sobre o bloqueio ou a substituição do seu cartão de crédito, ou se há outro assunto relacionado que gostaria de abordar. Se puder fornecer mais detalhes, poderei ajudá-lo melhor.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:20:18.407442Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 103
+  },
+  "variables": {
+    "conversation": "Customer: Quero falar com uma pessoa sobre o meu cartão de crédito",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

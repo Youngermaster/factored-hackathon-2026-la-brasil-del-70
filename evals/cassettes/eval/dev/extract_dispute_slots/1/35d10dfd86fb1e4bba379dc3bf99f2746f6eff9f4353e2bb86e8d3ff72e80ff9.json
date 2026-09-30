@@ -1,0 +1,47 @@
+{
+  "cassette_id": "35d10dfd86fb1e4bba379dc3bf99f2746f6eff9f4353e2bb86e8d3ff72e80ff9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 12071,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "15000.0",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "2026-06-18",
+      "merchant_text": "KIOSCO DEL SUR"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:24.232678Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1486,
+    "output_tokens": 125
+  },
+  "variables": {
+    "customer_message": "Tem uma cobrança de 15.000 na KIOSCO DEL SUR que não fiz\nÉ sobre uma cobrança que não reconheço",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

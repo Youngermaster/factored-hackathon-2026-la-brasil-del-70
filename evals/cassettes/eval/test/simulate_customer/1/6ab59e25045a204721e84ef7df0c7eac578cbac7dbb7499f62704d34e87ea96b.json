@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6ab59e25045a204721e84ef7df0c7eac578cbac7dbb7499f62704d34e87ea96b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1368,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, continue."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:51.976157Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 868,
+    "output_tokens": 14
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal? Sem dizer o valor ainda.\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de verificar seu perfil de crédito para te dar uma orientação indicativa. Isso não é uma decisão, mas sim uma análise baseada em seus dados. Você gostaria de continuar?\nCustomer: Sim, continue.\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. Para um empréstimo pessoal, isso significa que você tem uma boa probabilidade de ser aprovado. No entanto, é importante lembrar que isso é apenas uma orientação indicativa. Vamos continuar e verificar se você atende aos requisitos mínimos de score e renda.\nCustomer: Sim, continue.\nAssistant: Baseado no seu score de crédito de 780, você atende aos requisitos mínimos para um empréstimo pessoal. No entanto, para uma análise mais precisa, precisamos verificar se a sua renda mensal de 60.000 MXN está dentro dos limites permitidos. O máximo permitido é 35% da renda mensal para esse tipo de empréstimo. Vamos verificar isso.",
+    "conversation_seed": "test-cre-ambiguou-002#2",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about eligibility for a loan without the amount, then give it.",
+    "hidden_facts": "amount: 50000 pesos; term: 24 months",
+    "instructions": "Ask whether you can get a personal loan without saying the amount. When asked, say 50000 pesos over 24 months.",
+    "known_facts": "(none)"
+  }
+}

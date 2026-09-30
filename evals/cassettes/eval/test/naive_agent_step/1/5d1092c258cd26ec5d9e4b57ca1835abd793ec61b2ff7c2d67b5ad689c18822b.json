@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5d1092c258cd26ec5d9e4b57ca1835abd793ec61b2ff7c2d67b5ad689c18822b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3984,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, no encontramos ninguna transferencia de 1500 MXN del 15 de junio en su historial. ¿Podría proporcionar más detalles para poder ayudarlo mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:54:23.895569Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1345,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: ¿Llegó la transferencia de 1500 del 15/06?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

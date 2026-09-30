@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b7103a934ba04cd56aa5cbb828fb1836c28fae6352b1126b77a6d535809859ea",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5418,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "transaction_id": "06/06/PAGO SERVICIO AGUA"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:51.812554Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1355,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 120.000 para PAGO SERVICIO AGUA do dia 06/06?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

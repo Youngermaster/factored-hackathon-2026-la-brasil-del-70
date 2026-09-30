@@ -1,0 +1,35 @@
+{
+  "cassette_id": "e330f4a1f283a7838a29e15b1d6a465bf3a30c424d496ed254632afa6f4fbe6d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2716,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:23.313236Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber el estado de mi tarjeta y también el saldo actual.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

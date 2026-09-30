@@ -1,0 +1,31 @@
+{
+  "cassette_id": "7a37c6e815c4545c0bc56569908e3d40d2916d9d3d2492d34efb0c634794982b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3049,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:22:17.725262Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1041,
+    "output_tokens": 49
+  },
+  "variables": {
+    "customer_message": "Dime mi puntaje de crédito y el ingreso que tienen registrado\nEs sobre productos de crédito",
+    "dialect_hint": "es-CO"
+  }
+}

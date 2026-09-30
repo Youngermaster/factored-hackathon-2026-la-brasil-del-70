@@ -1,0 +1,32 @@
+{
+  "cassette_id": "dc663b766e227c0e3fcd6e40b3f202d1c3be467189b7d2b1e04df5df1f043062",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3029,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, por favor. Quero verificar minha elegibilidade para um empréstimo pessoal no valor de 50.000 pesos ao longo de 24 meses."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:35:07.471384Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 667,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: Posso pedir por um empréstimo pessoal sem dizer o valor primeiro?\nAssistant: Claro, posso fornecer informações sobre empréstimos pessoais sem precisar do valor exato no momento. Gostaria de saber mais sobre quais opções estão disponíveis e como posso ser elegível para um deles?",
+    "conversation_seed": "test-cre-ambiguou-002#3",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about eligibility for a loan without the amount, then give it.",
+    "hidden_facts": "amount: 50000 pesos; term: 24 months",
+    "instructions": "Ask whether you can get a personal loan without saying the amount. When asked, say 50000 pesos over 24 months.",
+    "known_facts": "(none)"
+  }
+}

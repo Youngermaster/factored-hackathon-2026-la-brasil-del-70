@@ -1,0 +1,33 @@
+{
+  "cassette_id": "39702ad797b2ffcf953d09998753c189e767e55cb7d1710addac9d21b64c9941",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4355,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha creado correctamente tu caso de reclamo. El número de caso es case-naive-0001. Se resolverá en 30 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:49:03.769841Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1422,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Pagué 15.000 en KIOSCO DEL SUR y nunca me llegó el pedido, quiero reclamar",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

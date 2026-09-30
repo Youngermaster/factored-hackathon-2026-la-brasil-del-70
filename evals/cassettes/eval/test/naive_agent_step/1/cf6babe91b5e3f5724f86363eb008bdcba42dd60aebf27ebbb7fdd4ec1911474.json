@@ -1,0 +1,35 @@
+{
+  "cassette_id": "cf6babe91b5e3f5724f86363eb008bdcba42dd60aebf27ebbb7fdd4ec1911474",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2737,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:39:01.897185Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Tengo chance de un préstamo personal de 50000 a 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

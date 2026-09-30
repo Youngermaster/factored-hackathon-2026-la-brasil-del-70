@@ -1,0 +1,33 @@
+{
+  "cassette_id": "87a7f62e27630bc712a904997e1746dc8c2e95605339850295ec0bb6494bca86",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4672,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para el cargo en TIENDA AURORA. El plazo para resolver este caso es de 45 días. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:06.754702Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1412,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Hay un cargo en mi tarjeta de 1250 en TIENDA AURORA que yo no hice",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"no_recibido\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

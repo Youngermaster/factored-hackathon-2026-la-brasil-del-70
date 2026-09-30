@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1655be2b0a6be195f057346ffc773de99dbde0aa8cfef34379ac72b862f3bbfb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5701,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Ótimo, uma contestação foi registrada com sucesso. O prazo para resolver essa contestação é de 45 dias, conforme nossa política. Você será notificado sobre o andamento do caso. Se precisar de mais alguma coisa, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:08.061783Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1513,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: Fui vítima de um golpe na TIENDA AURORA no valor de R$1250,00. Não quero bloquear a carta por now.\nAssistant: Entendi. Vamos registrar uma contestação para essa transação suspeita. Pode confirmar que a transação de R$1250,00 na TIENDA AURORA foi realizada sem sua autorização?\nCustomer: Sim, foi realizada sem minha autorização.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

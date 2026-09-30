@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f8ef5241cfe0c310a0f9e5f7960f05727eb8179a519c69b27a4b36562edc3b23",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1518,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Como está o meu cartão de débito?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:02:21.653449Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "Customer: Como está o meu cartão de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Como está o meu cartão de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Como está o meu cartão de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Como está o meu cartão de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Como está o meu cartão de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-car-ambiguou-002#2",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

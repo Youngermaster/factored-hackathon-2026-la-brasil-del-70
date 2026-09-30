@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4a37a37549ff4cc424e9ec7009b75d7649afd2e10630495d37f8871128b20974",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4007,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Peço desculpas pelo inconveniente. Vamos verificar o motivo da negação da transação. Poderia me fornecer o número da transação, por favor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:01:59.287787Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, por que minha compra foi negada?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

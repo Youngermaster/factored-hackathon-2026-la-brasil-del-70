@@ -1,0 +1,31 @@
+{
+  "cassette_id": "087fbfb19aaeae093c0473c11ac4cd9c6805d82c72c2b1079ece17c456413eb7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5912,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:25:52.812382Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1044,
+    "output_tokens": 60
+  },
+  "variables": {
+    "customer_message": "Quiero saber si califico para un préstamo personal de 50000 a 24 meses",
+    "dialect_hint": "es-MX"
+  }
+}

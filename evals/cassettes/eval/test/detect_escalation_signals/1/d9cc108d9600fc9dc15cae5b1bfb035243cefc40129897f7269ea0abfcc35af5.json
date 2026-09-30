@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d9cc108d9600fc9dc15cae5b1bfb035243cefc40129897f7269ea0abfcc35af5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2049,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:25:35.691447Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 497,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No reconozco la compra del ALMACEN ANDES del 15/06.",
+    "dialect_hint": "es-CO"
+  }
+}

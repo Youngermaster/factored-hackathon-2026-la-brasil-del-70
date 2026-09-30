@@ -1,0 +1,31 @@
+{
+  "cassette_id": "895eda4c8106bbeaf9e0dc5bf2ba11a48d3d49c3747f527e8a448a1ef1b60502",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6583,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "credit_card",
+    "purpose": null,
+    "requested_amount": "30000",
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:15:52.634271Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1061,
+    "output_tokens": 56
+  },
+  "variables": {
+    "customer_message": "Vocês me dão um cartão de crédito com limite de 30000?\nÉ sobre produtos de crédito",
+    "dialect_hint": "pt-BR"
+  }
+}

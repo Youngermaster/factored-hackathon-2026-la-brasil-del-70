@@ -1,0 +1,37 @@
+{
+  "cassette_id": "6a4faa5918c48f3f01a3a20e5d9154a6ef0b1bea8fb4cb21cf19600509572939",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3246,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "CC",
+      "reason": "lost"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:05:23.084209Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1369,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão de crédito, quero bloquear\nAssistant: Entendi. Vou bloquear o seu cartão de crédito agora. É correto que você perdeu o cartão?\nCustomer: Sim, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

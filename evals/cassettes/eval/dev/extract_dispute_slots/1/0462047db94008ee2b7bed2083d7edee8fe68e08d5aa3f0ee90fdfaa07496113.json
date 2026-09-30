@@ -1,0 +1,43 @@
+{
+  "cassette_id": "0462047db94008ee2b7bed2083d7edee8fe68e08d5aa3f0ee90fdfaa07496113",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10760,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "7300",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "14/06",
+      "merchant_text": "cobrança"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:02:46.855318Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1475,
+    "output_tokens": 103
+  },
+  "variables": {
+    "customer_message": "Não reconheço uma cobrança de 7.300 do dia 14/06",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

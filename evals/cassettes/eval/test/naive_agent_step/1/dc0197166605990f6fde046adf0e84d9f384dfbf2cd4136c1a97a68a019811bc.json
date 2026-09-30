@@ -1,0 +1,36 @@
+{
+  "cassette_id": "dc0197166605990f6fde046adf0e84d9f384dfbf2cd4136c1a97a68a019811bc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4795,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "transaction_id": "999"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:48:13.936286Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 52
+  },
+  "variables": {
+    "conversation": "Customer: ¿Qué pasó con mi transferencia de 999 pesos a Carlos Ruiz?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

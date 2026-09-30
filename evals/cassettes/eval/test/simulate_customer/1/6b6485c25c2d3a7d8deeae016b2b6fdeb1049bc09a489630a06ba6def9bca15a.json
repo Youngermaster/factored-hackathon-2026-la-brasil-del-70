@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6b6485c25c2d3a7d8deeae016b2b6fdeb1049bc09a489630a06ba6def9bca15a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1550,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, quiero abrir el caso de disputa."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:31:14.871705Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 657,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "Customer: Fui víctima de una estafa en TIENDA AURORA por 1250 pesos. No quiero bloquear la tarjeta por ahora.\nAssistant: Entendido. No bloquearemos la tarjeta por ahora. ¿Puedes confirmar si deseas abrir un caso de disputa para esta transacción?",
+    "conversation_seed": "test-dis-ambiguou-001#3",
+    "dialect_hint": "es-MX",
+    "goal": "Report a fraudulent charge using estafa (fraud in Spanish) or golpe (Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you were the victim of a scam (estafa in Spanish, golpe in Portuguese) with a charge of 1250 at TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

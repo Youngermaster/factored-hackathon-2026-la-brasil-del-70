@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a54d6793952cd6533617ce3051992d693a77f43aed8ad0b366e53b745e587489",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2245,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No, no quiero bloquearla."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:00:40.998897Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 18
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco este cargo de 300 pesos en CAFE LUNA.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\n2) 9 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\nCustomer: El 12 de junio de 2026, la tarjeta **** 3791.\nAssistant: Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 3791 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.",
+    "conversation_seed": "dev-dis-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Dispute one of two similar purchases at the same merchant.",
+    "hidden_facts": "date: 12/06",
+    "instructions": "Say you do not recognize a charge of 300 pesos at CAFE LUNA. When shown options, pick the one from 12/06. Decline the card block, confirm the dispute.",
+    "known_facts": "amount: 300; merchant: CAFE LUNA"
+  }
+}

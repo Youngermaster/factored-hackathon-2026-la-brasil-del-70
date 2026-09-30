@@ -1,0 +1,32 @@
+{
+  "cassette_id": "c9596705696562f545528b1565a70c4c82b349a38e46125a41d45cccd55fd864",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1703,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, confirmo la reclamación."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:58:18.190638Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1066,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco esta compra de 18.000 pesos en PANADERIA LA 70.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, PANADERIA LA 70, 18.000,00 COP, tarjeta **** 5404\n2) 9 de junio de 2026, PANADERIA LA 70, 18.000,00 COP, tarjeta **** 5404\nCustomer: El 12 de junio de 2026.\nAssistant: Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 5404 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.\nCustomer: No, no bloquees mi tarjeta por favor.\nAssistant: Voy a registrar una reclamación por la transacción del 12 de junio de 2026 en PANADERIA LA 70 por 18.000,00 COP (tarjeta **** 5404), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 3 de julio de 2026. ¿Confirmas? Responde sí o no.",
+    "conversation_seed": "dev-dis-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Dispute one of two similar purchases at the same merchant.",
+    "hidden_facts": "date: 12/06",
+    "instructions": "Say you do not recognize a charge of 18.000 pesos at PANADERIA LA 70. When shown options, pick the one from 12/06. Decline the card block, confirm the dispute.",
+    "known_facts": "amount: 18.000; merchant: PANADERIA LA 70"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a9c4b7aa54bcb6e507532aa3e554e7baa5641ea68a15a0ff27aeb660d4e26699",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1766,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:04:17.225145Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 510,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Só queria saber como está o meu cartão de débito, por favor.",
+    "dialect_hint": "pt-BR"
+  }
+}

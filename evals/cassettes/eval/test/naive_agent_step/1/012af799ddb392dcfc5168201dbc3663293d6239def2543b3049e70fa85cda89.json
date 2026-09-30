@@ -1,0 +1,36 @@
+{
+  "cassette_id": "012af799ddb392dcfc5168201dbc3663293d6239def2543b3049e70fa85cda89",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3761,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "2026-06-15"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:59.680056Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1703,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?\nAssistant: Lo siento, pero no encontramos ninguna transferencia de 60.000 pesos a Pablo Díaz en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: ¿Será la más reciente, de 15/06?\nAssistant: No encontramos ninguna transferencia reciente de 60.000 pesos. ¿Podrías proporcionar más detalles como el día exacto y la hora, o el destinatario, para que pueda revisar nuevamente?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo, no encontramos ninguna transferencia de 60.000 pesos realizada el 15/06. ¿Podrías proporcionar el destinatario exacto o cualquier otro detalle que pueda ayudarnos a localizarla?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo, no encontramos ninguna transferencia de 60.000 pesos realizada el 15/06. ¿Podrías proporcionar el destinatario exacto o cualquier otro detalle que pueda ayudarnos a localizarla?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo que estás buscando una transferencia específica. ¿Podrías proporcionar el destinatario o cualquier otro detalle que pueda ayudarnos a localizarla? También, ¿puedes confirmar si estás buscando la transferencia más reciente del 15/06?\nCustomer: Sí, es la transferencia más reciente del 15/06.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

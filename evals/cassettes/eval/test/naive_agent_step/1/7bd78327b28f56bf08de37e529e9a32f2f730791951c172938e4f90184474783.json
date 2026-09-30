@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7bd78327b28f56bf08de37e529e9a32f2f730791951c172938e4f90184474783",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6253,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não podemos agendar horários diretamente aqui. Sugiro que entre em contato com a central de atendimento da sua agência local para marcar um horário para segunda-feira. Pode ser por telefone ou pelo site oficial do banco.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:37.545954Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 82
+  },
+  "variables": {
+    "conversation": "Customer: Quero marcar um horário na agência para segunda-feira",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

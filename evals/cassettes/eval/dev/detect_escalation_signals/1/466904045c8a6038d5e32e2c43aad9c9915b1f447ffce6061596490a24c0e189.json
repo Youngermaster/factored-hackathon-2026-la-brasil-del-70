@@ -1,0 +1,29 @@
+{
+  "cassette_id": "466904045c8a6038d5e32e2c43aad9c9915b1f447ffce6061596490a24c0e189",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2880,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:51:02.135955Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Ya encontré mi tarjeta de débito, reactívala por favor",
+    "dialect_hint": "es-MX"
+  }
+}

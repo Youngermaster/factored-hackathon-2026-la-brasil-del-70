@@ -1,0 +1,35 @@
+{
+  "cassette_id": "0025a1cd426c75f2dc0fad9d48c8a0f24f7df864819a67f5dcb4569600ef3fc8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4040,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": "clarified",
+    "reply": "Lo siento, actualmente no puedo obtener su saldo. Vamos a intentarlo de nuevo más tarde. ¿Hay algo más con lo que pueda ayudarlo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:55:54.831628Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Saldo de mi cuenta corriente, por favor",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"error\", \"result\": \"get_balances failed: timeout\"}"
+  }
+}

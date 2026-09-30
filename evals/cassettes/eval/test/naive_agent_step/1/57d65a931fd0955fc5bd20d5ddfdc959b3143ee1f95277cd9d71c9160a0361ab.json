@@ -1,0 +1,36 @@
+{
+  "cassette_id": "57d65a931fd0955fc5bd20d5ddfdc959b3143ee1f95277cd9d71c9160a0361ab",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4798,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "transaction_id": "1250"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:54:31.544902Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1345,
+    "output_tokens": 53
+  },
+  "variables": {
+    "conversation": "Customer: Quero o estorno agora da cobrança de 1250 na TIENDA AURORA",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

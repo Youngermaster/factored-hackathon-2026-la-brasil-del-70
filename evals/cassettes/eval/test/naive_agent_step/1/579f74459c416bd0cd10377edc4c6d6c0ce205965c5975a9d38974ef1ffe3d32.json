@@ -1,0 +1,33 @@
+{
+  "cassette_id": "579f74459c416bd0cd10377edc4c6d6c0ce205965c5975a9d38974ef1ffe3d32",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6539,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Su tarjeta de crédito [PHONE] 6155 está activa y vence el 31 de marzo de 2028. Su tarjeta de débito [PHONE] 7052 también está activa y vence el 30 de noviembre de 2027. ¿Necesita bloquear alguna de ellas o tiene alguna otra consulta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:40.813117Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1540,
+    "output_tokens": 111
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber el estado de mi tarjeta y también el saldo actual.\nAssistant: Buenas tardes, CLI-EVMX0002. Su saldo actual es de 12,500.00 MXN como de oficio 17 de junio de 2026. ¿Podría confirmarme el número de su tarjeta para verificar su estado?\nCustomer: Claro, mi tarjeta es la [PHONE] 6789.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0002-01\", \"type\": \"credit_card\", \"number\": \"**** 6155\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVMX0002-02\", \"type\": \"debit_card\", \"number\": \"**** 7052\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

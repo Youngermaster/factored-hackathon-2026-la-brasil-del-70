@@ -1,0 +1,30 @@
+{
+  "cassette_id": "6d95391e821ceb4af96ce3bcd947d5e222f9c112b9bcdf7f6f0603a6aa83f763",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4257,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:25.318929Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1112,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: ¿Cuál es mi saldo?\nAssistant: Estos son tus saldos, con datos al 17 de junio de 2026.\n- cuenta corriente **** 7508: saldo 480.000,00 ARS\n- cuenta de ahorro **** 5049: saldo 250.000,00 ARS\n- tarjeta de crédito **** 3491: saldo 45.000,00 ARS; crédito disponible 255.000,00 ARS de un límite de 300.000,00 ARS\n\nPodemos informarte el saldo de tus cuentas y tarjetas, el crédito disponible de tus tarjetas de crédito y el estado de tus pagos y transferencias: aplicado, pendiente, rechazado o revertido. La información proviene de un corte periódico de los registros, por lo que siempre te indicamos la fecha y hora de ese corte; los movimientos posteriores todavía no aparecen.\nCustomer: Ese saldo está mal, no es correcto\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 20 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nPodemos informarte el saldo de tus cuentas y tarjetas, el crédito disponible de tus tarjetas de crédito y el estado de tus pagos y transferencias: aplicado, pendiente, rechazado o revertido. La información proviene de un corte periódico de los registros, por lo que siempre te indicamos la fecha y hora de ese corte; los movimientos posteriores todavía no aparecen.\n\nEn Argentina, una persona del equipo se va a comunicar con vos dentro de las 48 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

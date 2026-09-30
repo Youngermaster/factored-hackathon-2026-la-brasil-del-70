@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e567d3590ce4399aebfd6c20538124b8bcd74bf6479555867e883ba5c70451bf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7228,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación crediticia de 780, estás calificado para varias opciones. ¿Te interesaría más una tarjeta de crédito, un préstamo personal o información sobre hipotecas? También puedo ayudarte a determinar si estás calificado para un límite de 30,000 MXN.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:32:06.596394Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1746,
+    "output_tokens": 97
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo pedir una tarjeta de crédito con un límite de 30000?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"MX-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"5000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"120000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"85.00\"}, {\"product_code\": \"MX-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"10000000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"14.00\"}, {\"product_code\": \"MX-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"10000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"350000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 6, \"max_term_months\": 60, \"max_annual_rate\": \"65.00\"}]}"
+  }
+}

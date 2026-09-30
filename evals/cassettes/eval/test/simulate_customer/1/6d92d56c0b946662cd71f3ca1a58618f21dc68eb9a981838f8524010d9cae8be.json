@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6d92d56c0b946662cd71f3ca1a58618f21dc68eb9a981838f8524010d9cae8be",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1390,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Como está o meu cartão de débito?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:29:37.655760Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 782,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha conta-corrente?\nAssistant: Olá! Sua conta-corrente está em dia. Até 17/06/2026, o saldo disponível é de 12.500,00 MXN. Você tem mais alguma dúvida ou precisa de informações sobre outra conta?\nCustomer: Como está o meu cartão?\nAssistant: Olá! Seu cartão está ativo. Você gostaria de verificar o status atual ou bloquear o cartão se ele foi perdido ou roubado?\nCustomer: Como está o meu cartão de débito?\nAssistant: Olá! Você gostaria de verificar o status atual do seu cartão de débito ou bloquear o cartão se ele foi perdido ou roubado?\nCustomer: Como está o meu cartão de débito?\nAssistant: Olá! Você gostaria de verificar o status atual do seu cartão de débito ou bloquear o cartão se ele foi perdido ou roubado?",
+    "conversation_seed": "test-car-ambiguou-002#3",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

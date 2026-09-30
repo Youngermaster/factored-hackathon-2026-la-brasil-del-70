@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6f0a7164bd9b5f8902fc6ed9d8fd2b0fddc883cdf3aa2b5b14810197bd60970e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2192,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Entendido, espero que verifiquem corretamente os detalhes."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:02.139668Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 773,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma carta de crédito.\nAssistant: Entendido, vamos proceder com o bloqueio da sua carta de crédito. Vou precisar de alguns detalhes para confirmar a solicitação. Qual é o motivo do bloqueio? Pode ser por perda, roubo, suspeita de fraude ou precaução.\nCustomer: Bloqueio por perda.\nAssistant: Não encontrei uma carta de crédito associada a sua conta. Por favor, verifique se digitou corretamente o número da sua conta ou se a carta de crédito ainda não foi emitida. Se necessário, podemos tentar novamente.\nCustomer: Verifiquei o número da conta e tudo parece correto. A carta de crédito já foi emitida.\nAssistant: Entendi. Vou verificar novamente os detalhes da sua conta para confirmar a existência da carta de crédito e proceder com o bloqueio. Por favor, aguarde um momento.",
+    "conversation_seed": "dev-car-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

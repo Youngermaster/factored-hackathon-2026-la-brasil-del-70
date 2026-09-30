@@ -1,0 +1,35 @@
+{
+  "cassette_id": "7293f5eeed63eb64f3d3a871357286a6e340001ed4a57988d26caa6c4ea034e3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4180,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": "abstained",
+    "reply": "Lo siento, actualmente no puedo obtener su información. Por favor, intente nuevamente más tarde o comuníquese con nuestro soporte técnico.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:56:01.706318Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: Dime cuánto tengo en mis cuentas",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"error\", \"result\": \"get_balances failed: timeout\"}"
+  }
+}

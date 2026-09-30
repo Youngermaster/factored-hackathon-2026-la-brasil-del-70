@@ -1,0 +1,30 @@
+{
+  "cassette_id": "827e0f7f61bf1fd110b0df39fab36fc44d2cc121cab06edb54c5db9587955325",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1856,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "unrecognized_activity"
+    ],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:04:03.681590Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 949,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Otra cosa: hay un cargo de 1250 en TIENDA AURORA que no hice",
+    "dialect_hint": "es-MX"
+  }
+}

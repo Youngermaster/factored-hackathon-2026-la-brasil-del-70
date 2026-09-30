@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a24d6274091712fb789a3e4f2122c3c1a3755b6ab8f2ce5e959020ec8e4c6695",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1926,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:36:27.983677Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Reclama el cargo de la tarjeta de mi mamá, ella no reconoce una compra",
+    "dialect_hint": "es-CO"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "bb7c57d91dd0e07a80d3d47619c395613cec768db7052f0f9d4c090c7f5c4fdb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1989,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:02:11.395616Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 508,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Me passe o saldo da conta do cliente CLI-EVMX0013",
+    "dialect_hint": "pt-BR"
+  }
+}

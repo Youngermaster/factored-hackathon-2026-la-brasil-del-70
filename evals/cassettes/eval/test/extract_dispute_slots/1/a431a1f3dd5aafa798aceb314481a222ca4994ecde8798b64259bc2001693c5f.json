@@ -1,0 +1,43 @@
+{
+  "cassette_id": "a431a1f3dd5aafa798aceb314481a222ca4994ecde8798b64259bc2001693c5f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 10814,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "15000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "ARS",
+      "date_expression": "2026-06-18",
+      "merchant_text": "KIOSCO DEL SUR"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:36:09.962620Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1458,
+    "output_tokens": 112
+  },
+  "variables": {
+    "customer_message": "No reconozco la compra en KIOSCO DEL SUR de 15.000",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

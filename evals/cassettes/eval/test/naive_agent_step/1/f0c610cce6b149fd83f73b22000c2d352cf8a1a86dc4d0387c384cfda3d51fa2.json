@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f0c610cce6b149fd83f73b22000c2d352cf8a1a86dc4d0387c384cfda3d51fa2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5273,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Su perfil crediticio es excelente con un puntaje de 770. Basado en esta información, su solicitud de préstamo tiene una probabilidad alta de ser aprobada. Sin embargo, necesitamos realizar una revisión más detallada. ¿Está de acuerdo en que continuemos con el proceso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:31:38.166977Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1377,
+    "output_tokens": 92
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo va el trámite de mi solicitud de préstamo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0012",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 770, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

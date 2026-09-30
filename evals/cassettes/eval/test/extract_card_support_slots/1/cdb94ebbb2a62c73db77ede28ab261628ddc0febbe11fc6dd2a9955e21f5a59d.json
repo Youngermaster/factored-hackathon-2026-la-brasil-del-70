@@ -1,0 +1,36 @@
+{
+  "cassette_id": "cdb94ebbb2a62c73db77ede28ab261628ddc0febbe11fc6dd2a9955e21f5a59d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3992,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "lost",
+      "stolen",
+      "unrecognized_activity",
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": "0000"
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:06:38.154910Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 69
+  },
+  "variables": {
+    "customer_message": "Bloquea la tarjeta que termina en 0000",
+    "dialect_hint": "es-MX"
+  }
+}

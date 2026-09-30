@@ -1,0 +1,35 @@
+{
+  "cassette_id": "af6cb20cd67bf448d6c294ab6c844b396187eb946450b120a3cf6d45639fb2e1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4271,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0006"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cases"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:44:58.923731Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber el estado de mi caso case-evmx0006-0001",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0006",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

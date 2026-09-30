@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4a39dd1d88d5a5afee6c46d98a0d2d9b9a76b0c0fc336a81b23f260d90d901b7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3389,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado su solicitud de préstamo personal. El proceso ahora pasará a una revisión por persona. ¿Necesita ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:55.743120Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1389,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Me gustaría saber si me dan un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVAR0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"[DOCUMENT]\", \"status\": \"submitted\"}}"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "93ce40759203d7c3958f5b625338994176857b06874f4815a9756c0de34def9f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4766,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:55:03.987382Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1144,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "Olá, preciso saber quanto $ tenho no meu saldo.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

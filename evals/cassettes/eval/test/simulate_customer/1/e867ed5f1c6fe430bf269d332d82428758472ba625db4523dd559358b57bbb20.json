@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e867ed5f1c6fe430bf269d332d82428758472ba625db4523dd559358b57bbb20",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1898,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Voy a intentarlo de nuevo. El préstamo personal es el 123456."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:34:56.639816Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 969,
+    "output_tokens": 31
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que deberé pagar en una loan personal? Si me lo explicas, luego te pido más detalles.\nAssistant: Hola CLI-EVMX0008, según la información disponible como de 17 de junio de 2026, tu saldo en la tarjeta de crédito es de 12,500.00 MXN. Sin embargo, no veo ningún saldo pendiente en tu préstamo personal en esta consulta. ¿Podrías proporcionarme más detalles sobre el préstamo personal para que pueda revisarlo para ti?\nCustomer: El préstamo personal es el 123456. Revisa de nuevo por favor.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?\nCustomer: Voy a intentarlo de nuevo. El préstamo personal es el 123456.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?\nCustomer: Voy a intentarlo de nuevo. El préstamo personal es el 123456.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?\nCustomer: Voy a intentarlo por última vez. El préstamo personal es el 123456.\nAssistant: CLI-EVMX0008, he aquí el saldo de tu préstamo personal como de 17 de junio de 2026: no se encontró ningún saldo pendiente. ¿Podrías proporcionar más detalles sobre el préstamo personal 123456 para que pueda revisarlo para ti?\nCustomer: Revisa de nuevo el saldo para el préstamo personal 123456, por favor.\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?",
+    "conversation_seed": "test-cre-ambiguou-001#3",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

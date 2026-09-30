@@ -1,0 +1,32 @@
+{
+  "cassette_id": "63e5ca1a7856274446462fb0f435d26674c0c0503b0221e74cf594e8e9f1574c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1969,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Necesito el resumen del mes de Mayo de mi tarjeta de crédito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:47:41.379650Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Hola, necesito el resumen del mes de Mayo.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Necesito el resumen del mes de Mayo.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Quiero el resumen del mes de Mayo, por favor.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Necesito el resumen del mes de Mayo.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Necesito el resumen del mes de Mayo de mi tarjeta de crédito.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-acc-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

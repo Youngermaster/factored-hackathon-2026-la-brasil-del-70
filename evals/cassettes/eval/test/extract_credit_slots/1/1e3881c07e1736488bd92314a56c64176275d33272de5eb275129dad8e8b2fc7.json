@@ -1,0 +1,31 @@
+{
+  "cassette_id": "1e3881c07e1736488bd92314a56c64176275d33272de5eb275129dad8e8b2fc7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3544,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "ARS",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "1000000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:11:49.181637Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1053,
+    "output_tokens": 61
+  },
+  "variables": {
+    "customer_message": "Puedo preguntar si me podrían ofrecer un préstamo personal de 1.000.000 pesos a 24 meses?",
+    "dialect_hint": "es-AR"
+  }
+}

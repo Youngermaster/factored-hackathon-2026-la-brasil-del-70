@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b8ad286c2396e1c92f4590995dff01d4a126e005c067667eceaa466275af8f9e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2115,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:01:05.337917Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 519,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Tem uma cobrança de 15.000 na KIOSCO DEL SUR no meu cartão que eu não fiz",
+    "dialect_hint": "pt-BR"
+  }
+}

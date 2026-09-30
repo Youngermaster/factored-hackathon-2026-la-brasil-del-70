@@ -1,0 +1,35 @@
+{
+  "cassette_id": "09e899a443a2f72d426b983a3fe8b42e86b1e706928cdb9ab6c4b55f44ab5f09",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4141,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:57:11.631383Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Pueden informarme sobre una de mis tarjetas y el saldo actual?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

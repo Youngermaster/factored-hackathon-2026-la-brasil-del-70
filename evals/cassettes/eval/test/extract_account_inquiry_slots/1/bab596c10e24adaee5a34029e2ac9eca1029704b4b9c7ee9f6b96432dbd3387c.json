@@ -1,0 +1,29 @@
+{
+  "cassette_id": "bab596c10e24adaee5a34029e2ac9eca1029704b4b9c7ee9f6b96432dbd3387c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4713,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:00:15.169716Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1128,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "Necesito saber cuánto dinero tengo disponible",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

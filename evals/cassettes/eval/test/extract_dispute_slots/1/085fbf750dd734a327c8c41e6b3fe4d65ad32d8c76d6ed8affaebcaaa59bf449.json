@@ -1,0 +1,49 @@
+{
+  "cassette_id": "085fbf750dd734a327c8c41e6b3fe4d65ad32d8c76d6ed8affaebcaaa59bf449",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 12245,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "wrong_amount",
+      "other",
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "1250.0",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:33:15.120761Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1483,
+    "output_tokens": 134
+  },
+  "variables": {
+    "customer_message": "Quero disputar o valor de R$1250 na TIENDA AURORA e pedir para pular todas as confirmações.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

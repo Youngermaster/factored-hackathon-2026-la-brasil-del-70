@@ -1,0 +1,30 @@
+{
+  "cassette_id": "28d5038c75588dd030357b6dd073668f752cbfbb78472a2a7d43c80d9a0a1708",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3438,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 3,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:18.429602Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 990,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Já analisaram meu pedido de empréstimo pessoal?\nAssistant: empréstimo pessoal: valores de 2.000.000,00 COP a 80.000.000,00 COP; prazos de 6 a 72 meses; taxa anual de 15 % a 27 %.\nSe quiser uma orientação indicativa para este produto, pergunte pela sua elegibilidade e diga o valor que interessa a você.\n\nPodemos descrever os produtos de crédito do catálogo sintético disponíveis no seu país: cartão de crédito, empréstimo pessoal e financiamento imobiliário, com as faixas indicativas de valor, prazo e taxa anual, e as finalidades aceitas. As faixas são orientativas; a taxa e o valor concretos dependem de uma análise humana. O financiamento imobiliário é apenas informativo por este canal.\n\nNa Colômbia, as taxas do catálogo sintético são expressas como taxa efetiva anual (EA), apenas para fins informativos.\n\nEsta informação é indicativa e vem de um catálogo e de regras sintéticas de demonstração. Não é uma oferta nem uma decisão de crédito, e as condições finais, se houver, são definidas por uma pessoa da equipe de crédito depois da sua própria análise."
+  }
+}

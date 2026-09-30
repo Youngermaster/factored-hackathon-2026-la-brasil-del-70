@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f775a2cdde01ca3955b78713b05cf09b9e76b29366cb4deca8762c7055760b48",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6847,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación crediticia actual, ingresos y días en mora, puedes calificar para un préstamo personal de 50,000 MXN a 24 meses. La tasa de interés y el monto exacto dependerán de tu historial crediticio completo. ¿Deseas que te indique la tasa de interés aproximada y el monto total a pagar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:28:08.850131Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1477,
+    "output_tokens": 112
+  },
+  "variables": {
+    "conversation": "Customer: ¿Califico para un préstamo personal de 50000 a 24 meses?\nAssistant: Con tu puntuación crediticia de 760, ingresos mensuales de 60,000 MXN y 45 días sin pagar, calificas para un préstamo personal. Sin embargo, ten en cuenta que el pago pendiente podría afectar la aprobación. ¿Deseas que te indique la tasa de interés y el monto aproximado?\nCustomer: Sí, por favor",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0011",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 760, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 45, \"tenure_months\": 40}}"
+  }
+}

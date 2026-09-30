@@ -1,0 +1,31 @@
+{
+  "cassette_id": "13060c0f24a77015d5614cf5eb0fdc61e2f205693b7cc58bab7509171536ce28",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5973,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "COP",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:18:03.092430Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1059,
+    "output_tokens": 60
+  },
+  "variables": {
+    "customer_message": "Posso pegar um empréstimo pessoal de 50000 pesos em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

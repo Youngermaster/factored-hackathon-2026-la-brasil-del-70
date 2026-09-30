@@ -1,0 +1,30 @@
+{
+  "cassette_id": "5082a3ed924a11ea79830d651f5d9245a72dd7cd77af9d8afb66abc5ec120e70",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3574,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:39.679881Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 719,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero abrir uma conta poupança nova\nAssistant: Para ajudar melhor: o seu pedido é sobre os seus saldos e pagamentos ou sobre os seus cartões?"
+  }
+}

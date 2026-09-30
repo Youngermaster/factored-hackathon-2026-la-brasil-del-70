@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e953162a33adf46dc546fbfa69c058760c2f76a12a96ed06ec12cd6bf069d51f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5387,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que você perdeu seu cartão de crédito. Vou proceder com o bloqueio imediatamente. Você confirma que deseja bloquear o cartão?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:14:15.645326Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão de crédito, bloqueie já",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

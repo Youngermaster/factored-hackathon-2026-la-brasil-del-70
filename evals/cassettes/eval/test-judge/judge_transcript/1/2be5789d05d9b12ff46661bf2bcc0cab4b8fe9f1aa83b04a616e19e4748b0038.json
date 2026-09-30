@@ -1,0 +1,30 @@
+{
+  "cassette_id": "2be5789d05d9b12ff46661bf2bcc0cab4b8fe9f1aa83b04a616e19e4748b0038",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2641,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 2,
+    "language_correct": false,
+    "language_quality": 1,
+    "politeness": 2,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:58.085069Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 800,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Não reconheço essa cobrança. Vou fornecer os detalhes quando solicitado.\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 19 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nEn Colombia, una persona del equipo te contactará dentro de las 24 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

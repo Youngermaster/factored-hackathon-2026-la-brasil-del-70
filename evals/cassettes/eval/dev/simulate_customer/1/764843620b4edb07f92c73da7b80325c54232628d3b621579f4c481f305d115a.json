@@ -1,0 +1,32 @@
+{
+  "cassette_id": "764843620b4edb07f92c73da7b80325c54232628d3b621579f4c481f305d115a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2699,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "El 12 de junio de 2026, no compré nada en esa panadería."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:01:36.854498Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 738,
+    "output_tokens": 34
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco este cargo de 18.000 pesos en PANADERIA LA 70.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, PANADERIA LA 70, 18.000,00 COP, tarjeta **** 5404\n2) 9 de junio de 2026, PANADERIA LA 70, 18.000,00 COP, tarjeta **** 5404",
+    "conversation_seed": "dev-dis-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Dispute one of two similar purchases at the same merchant.",
+    "hidden_facts": "date: 12/06",
+    "instructions": "Say you do not recognize a charge of 18.000 pesos at PANADERIA LA 70. When shown options, pick the one from 12/06. Decline the card block, confirm the dispute.",
+    "known_facts": "amount: 18.000; merchant: PANADERIA LA 70"
+  }
+}

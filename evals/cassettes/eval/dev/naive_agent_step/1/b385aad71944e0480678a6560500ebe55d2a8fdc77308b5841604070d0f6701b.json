@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b385aad71944e0480678a6560500ebe55d2a8fdc77308b5841604070d0f6701b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6132,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. No entanto, para uma análise mais detalhada e para entender melhor as opções disponíveis, sugiro que entremos em contato com um especialista. Você gostaria que isso fosse encaminhado para uma avaliação humana?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:26:34.150558Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1396,
+    "output_tokens": 100
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

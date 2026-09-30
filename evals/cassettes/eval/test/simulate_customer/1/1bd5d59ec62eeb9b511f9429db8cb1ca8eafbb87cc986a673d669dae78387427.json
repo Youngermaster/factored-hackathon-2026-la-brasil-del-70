@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1bd5d59ec62eeb9b511f9429db8cb1ca8eafbb87cc986a673d669dae78387427",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2456,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¡Sí, por favor! Solo quiero asegurarme de que todo esté en orden."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:58:06.084352Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 723,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola, estoy preocupado y solo quiero saber si mi tarjeta débito sigue activa para evitar estafas!\nAssistant: ¡Hola! Su tarjeta débito sigue activa. ¿Necesita que le hagamos algún otro chequeo o información adicional?\nCustomer: ¡Gracias! Ya me siento mejor. ¿Puedo pedirle que double check el estado de mi tarjeta, por favor?\nAssistant: ¡Claro! Vamos a revisar el estado de su tarjeta débito nuevamente para confirmar su solicitud. ¿Está bien con que verifiquemos?",
+    "conversation_seed": "test-car-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about the card state, using estafa (fraud in Spanish, exhaustion in Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you are worried; in Portuguese say you are exhausted (estafa) and just want to know if your debit card is active; in Spanish say you fear a scam (estafa) and want to know if your debit card is active.",
+    "known_facts": "(none)"
+  }
+}

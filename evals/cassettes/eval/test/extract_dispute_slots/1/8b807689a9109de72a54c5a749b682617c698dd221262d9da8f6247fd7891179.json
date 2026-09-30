@@ -1,0 +1,43 @@
+{
+  "cassette_id": "8b807689a9109de72a54c5a749b682617c698dd221262d9da8f6247fd7891179",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7303,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "300",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "CAFE LUNA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:24:55.749824Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1457,
+    "output_tokens": 111
+  },
+  "variables": {
+    "customer_message": "No reconozco esta transacción de 300 pesos en CAFE LUNA.",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

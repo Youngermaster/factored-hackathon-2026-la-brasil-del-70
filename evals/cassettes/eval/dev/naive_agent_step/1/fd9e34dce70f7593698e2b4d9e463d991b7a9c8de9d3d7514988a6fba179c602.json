@@ -1,0 +1,33 @@
+{
+  "cassette_id": "fd9e34dce70f7593698e2b4d9e463d991b7a9c8de9d3d7514988a6fba179c602",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5819,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "La tarjeta de crédito CLI-EVCO0003-01 vence el 30 de abril de 2026. ¿Necesitas que te indique cómo renovarla o tienes alguna otra pregunta sobre tu tarjeta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:21:17.369286Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1449,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuándo vence mi tarjeta de crédito?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0003-01\", \"type\": \"credit_card\", \"number\": \"**** 7524\", \"status\": \"active\", \"expires_on\": \"2026-04-30\"}, {\"product_id\": \"PRD-EVCO0003-02\", \"type\": \"debit_card\", \"number\": \"**** 6534\", \"status\": \"blocked\", \"expires_on\": \"2028-03-31\"}]}"
+  }
+}

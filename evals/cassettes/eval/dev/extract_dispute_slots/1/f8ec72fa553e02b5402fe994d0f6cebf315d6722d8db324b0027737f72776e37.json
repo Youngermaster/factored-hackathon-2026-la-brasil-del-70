@@ -1,0 +1,43 @@
+{
+  "cassette_id": "f8ec72fa553e02b5402fe994d0f6cebf315d6722d8db324b0027737f72776e37",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6185,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "730",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "compra"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:01:56.699566Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1454,
+    "output_tokens": 108
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar la compra de 730 pesos que no hice",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

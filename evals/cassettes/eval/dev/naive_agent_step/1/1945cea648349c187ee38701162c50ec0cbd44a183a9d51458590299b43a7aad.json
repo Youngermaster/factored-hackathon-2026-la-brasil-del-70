@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1945cea648349c187ee38701162c50ec0cbd44a183a9d51458590299b43a7aad",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6014,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Seu saldo atual é de 45.000,00 ARS no cartão de crédito PRD-EVAR0002-01, como de costume. Você precisa de mais informações sobre seu saldo ou deseja realizar outra consulta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:43:05.297755Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1423,
+    "output_tokens": 80
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0002-01\", \"type\": \"credit_card\", \"number\": \"**** 0186\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b0944eff1ea6dc25ffdb8a29f5284e58116acd976e409ecb6bfb24d47a0990b6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6450,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, CLI-EVAR0004. Vou abrir um caso de contestação para a compra no valor de 15.000 pesos ARS realizada no dia 15/06 no KIOSCO DEL SUR. É correto isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:36.225591Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1355,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a compra de 15.000 pesos do dia 15/06 na KIOSCO DEL SUR, não fui eu",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "cassette_id": "4d9b953936ac2d0aa32712047dd0e6ab06fc3014e27299766cd7d4e8b9abb615",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4517,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "amount": "50000",
+      "customer_id": "CLI-EVMX0008",
+      "product_code": "PERSONAL_LOAN",
+      "term_months": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "submit_credit_application"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:39:13.343503Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1433,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: ¿Tengo chance de un préstamo personal de 50000 a 24 meses?\nAssistant: Con tu puntuación crediticia de 780, ingresos mensuales de 60,000 MXN y sin días vencidos, tienes una buena oportunidad para un préstamo personal de 50,000 MXN a 24 meses. Sin embargo, necesitamos realizar una evaluación más detallada. ¿Te gustaría que te envíe la información y te ayude a completar la solicitud?\nCustomer: Sí, está bien",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

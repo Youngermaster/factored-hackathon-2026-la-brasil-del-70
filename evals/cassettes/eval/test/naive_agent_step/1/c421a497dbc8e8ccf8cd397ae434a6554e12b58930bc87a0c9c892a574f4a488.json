@@ -1,0 +1,37 @@
+{
+  "cassette_id": "c421a497dbc8e8ccf8cd397ae434a6554e12b58930bc87a0c9c892a574f4a488",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3655,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "CRD-0001",
+      "reason": "lost"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:05:47.275959Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1380,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão de crédito, quero bloquear\nAssistant: Entendi, você perdeu seu cartão de crédito e quer bloqueá-lo. Vou proceder com o bloqueio agora. Confirma que é isso que deseja?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

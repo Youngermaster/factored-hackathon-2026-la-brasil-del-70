@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2649183b7d1edb782a2576602408618285e20a888ffcac0f08d558e1e9dd6443",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4658,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "transaction_id": "4040"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:47.154993Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1326,
+    "output_tokens": 53
+  },
+  "variables": {
+    "conversation": "Customer: Me cobraron 4040 en una tienda que no conozco",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

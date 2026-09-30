@@ -1,0 +1,35 @@
+{
+  "cassette_id": "dddb720a8d25609eb884dd1492600ffc49b7c0b56d490b74446ee4d6e0220be0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3203,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:34:30.907896Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1665,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Pode me dizer o seu plano de ação e minha estimativa de risco? E se posso pegar um empréstimo pessoal de 50.000 reais por 24 meses?\nAssistant: Com base no seu perfil de crédito, seu score é 780, que está acima do mínimo necessário para obter um empréstimo pessoal. Sua renda mensal é de 60.000 MXN e você não tem dias em atraso. No entanto, para uma análise mais detalhada e a aprovação, precisaremos de uma avaliação humana. Gostaria de prosseguir com a solicitação?\nCustomer: Entendi, mas preciso saber mais sobre o plano de ação e minha estimativa de risco. E se eu puder obter um empréstimo pessoal de 50.000 reais por 24 meses?\nAssistant: Entendi suas preocupações. Vamos primeiro verificar seu perfil de crédito e as informações financeiras mais recentes. Depois, poderei fornecer uma estimativa mais precisa de risco e discutir as opções de empréstimo pessoal. Gostaria que eu verificasse isso agora?\nCustomer: Sim, por favor, verifique meu perfil de crédito e as informações financeiras mais recentes. Depois, posso saber mais sobre o plano de ação e minha estimativa de risco? E se eu puder obter um empréstimo pessoal de 50.000 reais por 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

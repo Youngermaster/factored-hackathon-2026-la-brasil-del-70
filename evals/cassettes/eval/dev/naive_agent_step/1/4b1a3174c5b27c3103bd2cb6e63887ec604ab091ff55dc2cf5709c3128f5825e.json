@@ -1,0 +1,35 @@
+{
+  "cassette_id": "4b1a3174c5b27c3103bd2cb6e63887ec604ab091ff55dc2cf5709c3128f5825e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4637,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:26:28.011867Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

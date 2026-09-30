@@ -1,0 +1,29 @@
+{
+  "cassette_id": "848827ac98ca5a35bd16e503e9944a5eae315078d9e21bbfb962c70530b31d5f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1953,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:59:41.716014Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 513,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço uma cobrança de 15000 na ELECTRONICA NORTE",
+    "dialect_hint": "pt-BR"
+  }
+}

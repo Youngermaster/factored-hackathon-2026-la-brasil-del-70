@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0c64ed4bf39a562bdd4ea352acf4bdefbd14acea723d44ee9fbc7f971d0f03cf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1994,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No, solo quería verificar el estado de mi tarjeta de débito. Gracias."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:01:50.626443Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 612,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo está mi tarjeta de débito?\nAssistant: Su tarjeta de débito está activa y vence el 30 de noviembre de 2027. ¿Necesita realizar alguna otra consulta sobre esta tarjeta o sobre su cuenta?",
+    "conversation_seed": "test-car-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

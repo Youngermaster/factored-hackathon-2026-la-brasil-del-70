@@ -1,0 +1,33 @@
+{
+  "cassette_id": "9e4f6f5f9600464c7a5b20cc6f63cbfb137aa9b463ff632a20a91861c7a0da10",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6399,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lamento informarle que no podemos ayudar con transferencias aquí. Le sugeriría que visite una sucursal o contacte al servicio al cliente para realizar la transferencia. ¿Necesita ayuda con algo relacionado a sus cuentas o tarjetas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:46:52.878264Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: Quiero hacer una transferencia a mi mamá",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

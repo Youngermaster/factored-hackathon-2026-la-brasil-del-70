@@ -1,0 +1,29 @@
+{
+  "cassette_id": "1ab1d93f1fc23a93417060e09dafafae29ae64f80c5004b5c7621a46e701e114",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1890,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:59:02.851299Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 523,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "O que aconteceu com o meu pagamento de 21.000 para PAGO SERVICIO GAS do dia 06/06?",
+    "dialect_hint": "pt-BR"
+  }
+}

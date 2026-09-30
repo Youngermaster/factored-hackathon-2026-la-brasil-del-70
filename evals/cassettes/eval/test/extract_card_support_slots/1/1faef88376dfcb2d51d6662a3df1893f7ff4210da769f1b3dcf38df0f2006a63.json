@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1faef88376dfcb2d51d6662a3df1893f7ff4210da769f1b3dcf38df0f2006a63",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2836,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "unrecognized_activity"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:05:32.105270Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 957,
+    "output_tokens": 49
+  },
+  "variables": {
+    "customer_message": "Hola, reporto una estafa con una compra de $1250 en TIENDA AURORA. No quiero que bloqueen mi tarjeta.",
+    "dialect_hint": "es-MX"
+  }
+}

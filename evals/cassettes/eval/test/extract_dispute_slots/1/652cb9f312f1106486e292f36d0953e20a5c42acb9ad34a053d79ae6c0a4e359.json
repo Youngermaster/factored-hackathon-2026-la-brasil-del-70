@@ -1,0 +1,43 @@
+{
+  "cassette_id": "652cb9f312f1106486e292f36d0953e20a5c42acb9ad34a053d79ae6c0a4e359",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 10119,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "910",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "hace cuatro meses",
+      "merchant_text": "LIBROS DEL SUR"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:24:00.037359Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1458,
+    "output_tokens": 104
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar el cargo de 910 en LIBROS DEL SUR de hace cuatro meses",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

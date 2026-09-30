@@ -1,0 +1,30 @@
+{
+  "cassette_id": "2037b5a78801105bbc365befc654a4fdb4f25e49c94feee8804a0639490086a4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3486,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:35.753677Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 981,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: O que aconteceu com o meu pagamento de 21.000 para PAGO SERVICIO GAS do dia 06/06?\nAssistant: Para ajudar melhor: o seu pedido é sobre os seus saldos e pagamentos ou sobre os seus cartões?\nCustomer: É sobre os meus saldos e pagamentos\nAssistant: Estes são os seus saldos, com dados de 17 de junho de 2026.\n- conta corrente **** 7508: saldo 480.000,00 ARS\n- conta poupança **** 5049: saldo 250.000,00 ARS\n- cartão de crédito **** 3491: saldo 45.000,00 ARS; limite disponível 255.000,00 ARS de um limite total de 300.000,00 ARS\n\nPodemos informar o saldo das suas contas e cartões, o limite disponível dos seus cartões de crédito e a situação dos seus pagamentos e transferências: efetivado, pendente, recusado ou estornado. As informações vêm de um recorte periódico dos registros, por isso sempre indicamos a data e a hora desse recorte; movimentações posteriores ainda não aparecem."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f99d057ffac7e84e0776f6c1f431f1f6d7d6c9daea757b00c80a8e307de2d0b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5250,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no puedo ayudar con esa solicitud. ¿Podría por favor proporcionarme más detalles sobre tu consulta o necesidad relacionada con tu cuenta o tarjeta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:57:25.776721Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo cambiar la fecha de corte de mi tarjeta?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "02e19579b2849d9a95d8686f96665980861b37231ea5207626ea1d8524562db2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5265,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo que estás en una situación complicada. ¿Podrías proporcionarme algunos detalles sobre tu situación financiera para poder asistirte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:30:57.544178Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1324,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: Estoy muy endeudado y necesito un préstamo para pagar mis deudas",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

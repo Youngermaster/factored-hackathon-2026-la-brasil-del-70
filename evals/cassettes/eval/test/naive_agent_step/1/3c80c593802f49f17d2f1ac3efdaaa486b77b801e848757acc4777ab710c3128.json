@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3c80c593802f49f17d2f1ac3efdaaa486b77b801e848757acc4777ab710c3128",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4663,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, CLI-EVAR0001. Puedo ayudarte con consultas sobre tu cuenta, pagos, tarjetas, disputas o información crediticia. ¿Podrías indicarme qué necesitas específicamente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:47:52.638658Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Necesito hablar con un asesor, no con un robot",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

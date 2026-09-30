@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6e88cd0afa1acd0be5d97162f560efdff0b9632e1cb9aeb4179e1d6315770920",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1715,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No, solo quería saber sobre las condiciones del préstamo personal."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:21:24.231114Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola! Me gustaría saber sobre un crédito. ¿Podrías darme más información?\nAssistant: ¡Hola! Claro, estaré encantado de ayudarte con información sobre créditos. ¿Podrías indicarme si te interesa un crédito de tarjeta de débito, tarjeta de crédito, préstamo personal o hipoteca?\nCustomer: Un préstamo personal, por favor.\nAssistant: ¡Por supuesto! Para darte una orientación sobre la aprobación, necesitaré algunos detalles sobre tu historial crediticio y tu situación financiera. ¿Podrías proporcionarme tu puntaje de crédito y tu ingreso mensual aproximado?\nCustomer: Mi puntaje de crédito es 750 y gano alrededor de 5,000 pesos mexicanos mensuales.\nAssistant: Gracias por proporcionar esa información. Con un puntaje de crédito de 780, un ingreso mensual de 60,000 pesos mexicanos y no haber tenido pagos vencidos, tienes una buena situación financiera. Basándonos en nuestras reglas indicativas, estás calificado para un préstamo personal. Sin embargo, esto es solo una orientación y no una decisión final. ¿Te gustaría que te enviemos una evaluación más detallada para tu revisión?\nCustomer: Sí, por favor envíenme una evaluación más detallada.\nAssistant: Excelente, ya he solicitado una evaluación más detallada basada en la información que me proporcionaste. Te contactaremos con los detalles una vez que esté lista. ¿Hay algo más en lo que pueda ayudarte en este momento?",
+    "conversation_seed": "test-cre-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

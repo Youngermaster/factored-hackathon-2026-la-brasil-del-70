@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b449ad1ae0253ca7e36baf65d900dcf87b353a609408215146c7093b50529162",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5314,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, CLI-EVAR0003. ¿Podrías confirmarme si la tarjeta que necesitas reemplazar es la principal o una de las adicionales?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:32.332213Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1324,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Necesito una reposición de mi tarjeta de crédito, ya venció",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0003",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

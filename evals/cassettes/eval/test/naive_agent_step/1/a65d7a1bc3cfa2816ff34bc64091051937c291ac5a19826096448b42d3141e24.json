@@ -1,0 +1,35 @@
+{
+  "cassette_id": "a65d7a1bc3cfa2816ff34bc64091051937c291ac5a19826096448b42d3141e24",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2768,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:20.629121Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Dime el saldo de la cuenta de ahorros, por favor",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

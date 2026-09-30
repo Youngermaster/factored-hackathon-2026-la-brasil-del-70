@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c9b4cda96e0327e16965964b8dff4806d907714581f8574f64ed0251d6dc5618",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6561,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación de crédito de 780, estás calificado para un préstamo personal de [DOCUMENT] a 24 meses. Sin embargo, no puedo garantizar la aprobación. ¿Te gustaría enviar una solicitud para que sea revisada por un humano?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:26.332006Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1755,
+    "output_tokens": 86
+  },
+  "variables": {
+    "conversation": "Customer: ¿Tengo chance de un préstamo personal de [DOCUMENT] a 24 meses?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"CO-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"1000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"28.00\"}, {\"product_code\": \"CO-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"60000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"1200000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"15.00\"}, {\"product_code\": \"CO-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"2000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"80000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 6, \"max_term_months\": 72, \"max_annual_rate\": \"27.00\"}]}"
+  }
+}

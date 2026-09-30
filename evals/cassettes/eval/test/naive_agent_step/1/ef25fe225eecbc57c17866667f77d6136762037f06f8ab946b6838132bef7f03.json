@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ef25fe225eecbc57c17866667f77d6136762037f06f8ab946b6838132bef7f03",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7886,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! As condições do empréstimo pessoal podem variar, mas posso fornecer uma orientação geral. Geralmente, o limite máximo de parcelas é de 36, e o limite de crédito é baseado em sua renda e score de crédito. Você gostaria de saber mais sobre os requisitos mínimos de score de crédito ou sobre como calcular o percentual do seu rendimento?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:56.066380Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 114
+  },
+  "variables": {
+    "conversation": "Customer: Quais são as condições do empréstimo pessoal?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

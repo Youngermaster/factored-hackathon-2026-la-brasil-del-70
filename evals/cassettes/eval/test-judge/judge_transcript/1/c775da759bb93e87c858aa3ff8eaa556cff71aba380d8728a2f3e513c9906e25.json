@@ -1,0 +1,30 @@
+{
+  "cassette_id": "c775da759bb93e87c858aa3ff8eaa556cff71aba380d8728a2f3e513c9906e25",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3920,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 4,
+    "tone": 4
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:27.400965Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 790,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Posso pegar um empréstimo pessoal de 50000 pesos em 24 meses?\nAssistant: Solicitação de empréstimo pessoal enviada com sucesso! Seu score de crédito é 780, renda mensal de 60,000 MXN e nenhum dia em atraso. O seu pedido foi processado e você receberá um e-mail com mais informações. Se precisar de mais assistência, estaremos à disposição."
+  }
+}

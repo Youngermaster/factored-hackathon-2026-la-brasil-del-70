@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bf984b73a0238aa6974473007b19da2694da533bbb2e25bd7cb09566e10d0f2c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5103,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Entendido, no procederemos con el bloqueo de la tarjeta. Si necesita cancelarla definitivamente, por favor comuníquese con nuestro equipo de atención al cliente para que puedan asistirle en la cancelación de la tarjeta. Gracias por su comprensión.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:10:24.109535Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1376,
+    "output_tokens": 89
+  },
+  "variables": {
+    "conversation": "Customer: Bloquea mi tarjeta de crédito\nAssistant: Para bloquear su tarjeta de crédito, necesito confirmar algunos detalles. ¿Podría proporcionarme la razón por la que desea bloquearla? Las opciones son: perdida, robada, sospecha de fraude o precaución.\nCustomer: No, cancelar",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

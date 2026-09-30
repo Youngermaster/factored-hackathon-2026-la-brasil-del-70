@@ -1,0 +1,33 @@
+{
+  "cassette_id": "19cfbd03b5ae863fb91ccee5337741284fd018f68a790f44f8ad6e0e75a6f032",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7128,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Olá! Seu saldo atual é de R$ 52.300,50 na conta corrente, R$ 18.000,00 na conta poupança e R$ 12.500,00 no cartão de crédito, tudo como de 17/06/2026. Precisa de mais alguma informação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:09:45.841257Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1578,
+    "output_tokens": 111
+  },
+  "variables": {
+    "conversation": "Customer: Olá, pode me informar meu saldo, por favor?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0001-01\", \"type\": \"checking_account\", \"number\": \"**** 5056\", \"balance\": \"52300.50 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5231\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0025\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

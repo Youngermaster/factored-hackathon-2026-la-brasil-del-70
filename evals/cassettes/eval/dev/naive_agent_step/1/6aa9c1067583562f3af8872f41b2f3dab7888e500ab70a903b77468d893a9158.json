@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6aa9c1067583562f3af8872f41b2f3dab7888e500ab70a903b77468d893a9158",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8910,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "CLI-EVCO0008, basándonos en tu perfil crediticio, te ofrezco un crédito personal con un monto máximo de 80.000.000 COP, un plazo mínimo de 6 meses y un máximo de 72 meses, con una tasa máxima anual de 27%. ¿Te interesa solicitar este producto? También puedes preguntar si tienes dudas o necesitas más información.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:27:37.959239Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1984,
+    "output_tokens": 125
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me podrías informar sobre un crédito personal?\nAssistant: Por supuesto, CLI-EVCO0008. ¿Te interesa conocer más sobre un crédito personal o prefieres explorar otras opciones como tarjetas de crédito o hipotecas?\nCustomer: Me interesa un crédito personal, por favor.\nAssistant: CLI-EVCO0008, excelente elección. Vamos a revisar tu perfil crediticio y las opciones disponibles para un crédito personal en Colombia. ¿Estás listo para continuar?\nCustomer: Sí, claro. ¿Cuáles son las condiciones?\nAssistant: CLI-EVCO0008, basándonos en tu perfil crediticio, tienes una puntuación de crédito de 780 en Colombia. Estamos en condiciones de ofrecerte un crédito personal. ¿Te interesa conocer más detalles sobre el producto CO-PL-STANDARD con un monto máximo de 80.000.000 COP, un plazo mínimo de 6 meses y un máximo de 72 meses, con una tasa máxima anual de 27%?\nCustomer: Sí, me interesa conocer más detalles.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"CO-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"1000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"28.00\"}, {\"product_code\": \"CO-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"60000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"1200000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"15.00\"}, {\"product_code\": \"CO-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"2000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"80000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 6, \"max_term_months\": 72, \"max_annual_rate\": \"27.00\"}]}"
+  }
+}

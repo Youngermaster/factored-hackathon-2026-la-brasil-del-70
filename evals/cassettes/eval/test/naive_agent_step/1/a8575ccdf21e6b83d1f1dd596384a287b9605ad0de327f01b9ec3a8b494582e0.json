@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a8575ccdf21e6b83d1f1dd596384a287b9605ad0de327f01b9ec3a8b494582e0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5270,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Caso confirmado, CLI-EVAR0004. Um caso de contestação foi aberto com sucesso. O prazo para resolução é de 30 dias, e você será notificado sobre o andamento. Se precisar de mais alguma coisa, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:45.594636Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1509,
+    "output_tokens": 89
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a compra de 15.000 pesos do dia 15/06 na KIOSCO DEL SUR, não fui eu\nAssistant: Entendi, CLI-EVAR0004. Vou abrir um caso de contestação para a compra no valor de 15.000 pesos ARS realizada no dia 15/06 no KIOSCO DEL SUR. É correto isso?\nCustomer: Sim, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"TXN-20260615\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2877e9c4d8ac728f92014a55eb23a94fa1aa5c95a8d3972f2c88743fff573c46",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5141,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo, gracias por su comprensión. Para poder ayudarlo de la mejor manera, necesitamos que proporcione el número de la transacción o al menos la fecha aproximada y el monto. Esto nos permitirá revisar el detalle y determinar el motivo del rechazo.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:59:01.118824Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1422,
+    "output_tokens": 89
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Es mi tarjeta de crédito, no recuerdo bien, pero creo que fue en Terpel.\nAssistant: Entendido, gracias por la información. ¿Podría proporcionarme el número de la transacción para que podamos revisar el detalle?\nCustomer: No recuerdo el número exacto, pero fue hace unos días.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

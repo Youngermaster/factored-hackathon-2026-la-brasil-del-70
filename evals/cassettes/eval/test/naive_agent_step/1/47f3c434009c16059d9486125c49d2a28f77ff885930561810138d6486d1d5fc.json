@@ -1,0 +1,35 @@
+{
+  "cassette_id": "47f3c434009c16059d9486125c49d2a28f77ff885930561810138d6486d1d5fc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3362,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:33:31.825497Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1450,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que deberé pagar en una loan personal? Si me lo explicas, luego te pido más detalles.\nAssistant: Hola CLI-EVMX0008, según la información disponible como de 17 de junio de 2026, tu saldo en la tarjeta de crédito es de 12,500.00 MXN. Sin embargo, no veo ningún saldo pendiente en tu préstamo personal en esta consulta. ¿Podrías proporcionarme más detalles sobre el préstamo personal para que pueda revisarlo para ti?\nCustomer: El préstamo personal es el 123456. Revisa de nuevo por favor.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

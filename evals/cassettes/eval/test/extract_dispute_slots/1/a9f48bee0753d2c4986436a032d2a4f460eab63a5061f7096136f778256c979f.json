@@ -1,0 +1,43 @@
+{
+  "cassette_id": "a9f48bee0753d2c4986436a032d2a4f460eab63a5061f7096136f778256c979f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 10899,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "8200",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "ARS",
+      "date_expression": "2026-06-18",
+      "merchant_text": "FARMACIA PLAZA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:29:26.371244Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1459,
+    "output_tokens": 113
+  },
+  "variables": {
+    "customer_message": "No reconozco una compra de 8.200 en FARMACIA PLAZA",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

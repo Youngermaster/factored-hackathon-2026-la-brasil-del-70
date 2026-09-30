@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6eb941f5d8b435c759cdd70298a6c2d98c6710cbd0e5220ce7f9c3d0f735c2cd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1895,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:01:58.123217Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 489,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Saldo de mi cuenta corriente, por favor",
+    "dialect_hint": "es-AR"
+  }
+}

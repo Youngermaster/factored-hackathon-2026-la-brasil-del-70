@@ -1,0 +1,33 @@
+{
+  "cassette_id": "94cb064e468d21b1f78c3534812e7ae241aa1f11e6add3bb871d4aaa26fb0d3e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5597,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, pode me informar o número da fatura que você não reconhece para que eu possa verificar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:35:58.930122Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 52
+  },
+  "variables": {
+    "conversation": "Customer: Tenho uma fatura que não reconheço.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

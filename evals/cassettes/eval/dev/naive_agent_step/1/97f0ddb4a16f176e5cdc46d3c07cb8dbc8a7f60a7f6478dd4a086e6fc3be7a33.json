@@ -1,0 +1,35 @@
+{
+  "cassette_id": "97f0ddb4a16f176e5cdc46d3c07cb8dbc8a7f60a7f6478dd4a086e6fc3be7a33",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4957,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0009"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:31:26.145114Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 50000 a 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

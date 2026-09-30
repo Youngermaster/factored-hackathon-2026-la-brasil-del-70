@@ -1,0 +1,37 @@
+{
+  "cassette_id": "f327c97f24721e7c29b446d4c019879f9d3c5f9b61ca2bad270e03965fa8a0de",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4453,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "[PRODUCT_ID]",
+      "reason": "lost"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:18:15.157784Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1479,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de bloquear uma de minhas cartões de crédito.\nAssistant: Olá! Para poder bloquear seu cartão, preciso confirmar alguns detalhes. Podemos bloquear o cartão por perda, roubo, suspeita de fraude ou como precaução. Qual é a razão para bloquear o cartão?\nCustomer: Por perda.\nAssistant: Entendido. Vamos proceder com o bloqueio do cartão por perda. Preciso confirmar alguns detalhes do seu cartão para garantir que seja o correto. Podemos bloquear o cartão de crédito com o número de produto [PRODUCT_ID]? Confirme se é isso mesmo.\nCustomer: Sim, é o cartão de crédito.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

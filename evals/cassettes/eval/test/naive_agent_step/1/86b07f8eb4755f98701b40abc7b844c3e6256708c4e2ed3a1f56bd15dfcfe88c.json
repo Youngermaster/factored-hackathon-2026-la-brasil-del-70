@@ -1,0 +1,36 @@
+{
+  "cassette_id": "86b07f8eb4755f98701b40abc7b844c3e6256708c4e2ed3a1f56bd15dfcfe88c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3491,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "PRD-EVMX0013-02"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_card_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:14:49.229569Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: Dame el estado de la tarjeta PRD-EVMX0013-02",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

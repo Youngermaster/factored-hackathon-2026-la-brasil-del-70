@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ae8f95a7457eeec34b7ebac1fdade6670477980413bafc84c41ade662e167fca",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6457,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Perfeito! Sua solicitação de empréstimo pessoal no valor de 10.000.000 COP a prazo de 24 meses foi enviada com sucesso. O número da sua aplicação é app-naive-0001. Em até 15 dias, você receberá uma resposta. Caso tenha alguma dúvida, entre em contato conosco novamente.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:18:56.268776Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1560,
+    "output_tokens": 115
+  },
+  "variables": {
+    "conversation": "Customer: Puedo pedir un préstamo personal de 10.000.000 pesos a plazo fijo de 24 meses?\nAssistant: Olá! Sua pontuação de crédito é 780, que está acima do mínimo necessário para um empréstimo pessoal. Seu rendimento mensal é de 9.000.000 COP e você não tem dias em atraso. Podemos prosseguir com a solicitação? Seria um empréstimo de 10.000.000 COP a prazo de 24 meses?\nCustomer: Sí, puedo pedir un préstamo personal de 10.000.000 COP a 24 meses e iría a plazo fijo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVCO0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"{[NUMBER]}\", \"status\": \"submitted\"}}"
+  }
+}

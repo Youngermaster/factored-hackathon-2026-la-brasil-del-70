@@ -1,0 +1,29 @@
+{
+  "cassette_id": "4013b10f002c8966ea2e71844f89cdae0e9e365764243ad30560effc8024dc23",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1859,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:56:25.290726Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 496,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Soy sobre el crédito, ¿podrías decirme las condiciones para un préstamo personal?",
+    "dialect_hint": "es-CO"
+  }
+}

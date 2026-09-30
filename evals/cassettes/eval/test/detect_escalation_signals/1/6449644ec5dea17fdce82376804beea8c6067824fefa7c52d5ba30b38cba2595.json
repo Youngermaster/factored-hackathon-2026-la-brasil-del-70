@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6449644ec5dea17fdce82376804beea8c6067824fefa7c52d5ba30b38cba2595",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1807,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:23.824272Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 503,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Perdi meu cartão de crédito, bloqueie já",
+    "dialect_hint": "pt-BR"
+  }
+}

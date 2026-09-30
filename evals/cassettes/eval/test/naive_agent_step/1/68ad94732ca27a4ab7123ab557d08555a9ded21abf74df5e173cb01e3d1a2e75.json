@@ -1,0 +1,33 @@
+{
+  "cassette_id": "68ad94732ca27a4ab7123ab557d08555a9ded21abf74df5e173cb01e3d1a2e75",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4407,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para el cargo no reconocido en KIOSCO DEL SUR. El caso se abrirá en 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:18.717395Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1495,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto debo en mi tarjeta de crédito?\nAssistant: Según la información disponible, en tu tarjeta de crédito PRD-EVAR0004-01 tienes un saldo de 45,000 ARS como de 17 de junio de 2026. ¿Necesitas más detalles o ayuda con algo más?\nCustomer: No reconozco un cargo de 15.000 en KIOSCO DEL SUR",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"TXN-EVAR0004-01\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

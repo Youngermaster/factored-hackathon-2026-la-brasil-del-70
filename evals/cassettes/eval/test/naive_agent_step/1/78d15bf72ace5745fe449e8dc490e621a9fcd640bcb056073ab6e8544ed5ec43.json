@@ -1,0 +1,33 @@
+{
+  "cassette_id": "78d15bf72ace5745fe449e8dc490e621a9fcd640bcb056073ab6e8544ed5ec43",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5395,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para desbloquear su tarjeta de débito, necesito confirmar algunos detalles. ¿Podría proporcionarme la razón por la cual la bloquearon y el ID de la tarjeta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:43.408007Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 68
+  },
+  "variables": {
+    "conversation": "Customer: Quiero desbloquear mi tarjeta de débito",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0003",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

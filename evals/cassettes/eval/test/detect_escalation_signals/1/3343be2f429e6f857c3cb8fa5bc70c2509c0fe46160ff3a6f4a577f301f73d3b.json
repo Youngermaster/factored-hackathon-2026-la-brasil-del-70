@@ -1,0 +1,29 @@
+{
+  "cassette_id": "3343be2f429e6f857c3cb8fa5bc70c2509c0fe46160ff3a6f4a577f301f73d3b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1783,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:23:15.483077Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 509,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não foi essa data. Quero contestar a de 12/06.",
+    "dialect_hint": "pt-BR"
+  }
+}

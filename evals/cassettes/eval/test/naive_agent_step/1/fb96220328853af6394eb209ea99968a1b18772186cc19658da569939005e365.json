@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fb96220328853af6394eb209ea99968a1b18772186cc19658da569939005e365",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4804,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "4321"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:48:32.345490Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 52
+  },
+  "variables": {
+    "conversation": "Customer: Quiero el estado del pago de 4321 pesos que hice ayer a la escuela",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

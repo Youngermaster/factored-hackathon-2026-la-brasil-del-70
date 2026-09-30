@@ -1,0 +1,30 @@
+{
+  "cassette_id": "3505a923b9421b5ecc78d32ec0486f399a5442b7daa10b4a9a3f5995d3692ba6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4027,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:39.458214Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 787,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: Quiero pedir un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 20 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nEn Argentina, una persona del equipo se va a comunicar con vos dentro de las 48 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

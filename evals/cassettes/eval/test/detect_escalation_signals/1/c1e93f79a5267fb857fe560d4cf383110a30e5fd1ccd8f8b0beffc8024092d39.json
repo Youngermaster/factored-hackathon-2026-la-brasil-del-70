@@ -1,0 +1,29 @@
+{
+  "cassette_id": "c1e93f79a5267fb857fe560d4cf383110a30e5fd1ccd8f8b0beffc8024092d39",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1905,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:02:37.314051Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 490,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Necesito un certificado bancario de mi cuenta",
+    "dialect_hint": "es-MX"
+  }
+}

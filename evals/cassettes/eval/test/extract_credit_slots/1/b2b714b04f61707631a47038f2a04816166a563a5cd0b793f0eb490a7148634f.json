@@ -1,0 +1,31 @@
+{
+  "cassette_id": "b2b714b04f61707631a47038f2a04816166a563a5cd0b793f0eb490a7148634f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4041,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:12:36.730049Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1048,
+    "output_tokens": 60
+  },
+  "variables": {
+    "customer_message": "¿Puedo solicitar un préstamo personal de 50.000 pesos a plazos de 24 meses?",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "c4d27e1b8813b58979a2c90a9c9140f32d8c431a69f5f15580c725f827f0782a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1289,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "$ disponível?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:08.776271Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 577,
+    "output_tokens": 12
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-006#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Know how much money is available, asked with a bare dollar sign.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask how much $ you have, with a bare $ sign and no currency. If asked, say pesos in your accounts.",
+    "known_facts": "(none)"
+  }
+}

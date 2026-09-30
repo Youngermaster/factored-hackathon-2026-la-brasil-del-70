@@ -1,0 +1,29 @@
+{
+  "cassette_id": "1c3e78ce677b83634a015c880a3c5802e0974023fcdcdd0db2febd3a1ba10802",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2405,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:46:24.952132Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Me puedes enviar un resumen de mis movimientos del crédito de la última semana?",
+    "dialect_hint": "es-MX"
+  }
+}

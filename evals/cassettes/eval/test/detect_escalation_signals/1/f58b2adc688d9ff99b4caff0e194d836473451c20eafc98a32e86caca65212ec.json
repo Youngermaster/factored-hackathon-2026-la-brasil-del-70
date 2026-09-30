@@ -1,0 +1,29 @@
+{
+  "cassette_id": "f58b2adc688d9ff99b4caff0e194d836473451c20eafc98a32e86caca65212ec",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1932,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:11:53.226115Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cuál sería el saldo que me quedaría por pagar en un préstamo personal?",
+    "dialect_hint": "es-CO"
+  }
+}

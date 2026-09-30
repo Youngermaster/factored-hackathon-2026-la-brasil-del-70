@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e650ee29b52f54cca5db05cfce6be04079d0539152675b4322141716d162ea53",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4551,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos tu perfil crediticio. ¿Podrías proporcionar más detalles sobre la compra que intentaste realizar y el error que recibiste?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:23:22.635061Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué me rechazaron una compra con la tarjeta de crédito?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

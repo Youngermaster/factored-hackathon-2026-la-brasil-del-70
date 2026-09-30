@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b5a2dc60ec4998e82226133534064fd7e6886cf90a09e5c5cc7e1b59d5d2b79a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2106,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:48:03.008595Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No puede ser, ese saldo no es correcto, falta dinero",
+    "dialect_hint": "es-CO"
+  }
+}

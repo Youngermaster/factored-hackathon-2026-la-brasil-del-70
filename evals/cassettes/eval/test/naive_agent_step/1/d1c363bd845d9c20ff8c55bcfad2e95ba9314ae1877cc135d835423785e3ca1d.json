@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d1c363bd845d9c20ff8c55bcfad2e95ba9314ae1877cc135d835423785e3ca1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4648,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa con el motivo de que no se recibió la transacción. El plazo para resolver este caso es de 15 días desde la fecha de creación. ¿Necesita ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:59:11.555875Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1589,
+    "output_tokens": 78
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Es mi tarjeta de crédito, no recuerdo bien, pero creo que fue en Terpel.\nAssistant: Entendido, gracias por la información. ¿Podría proporcionarme el número de la transacción para que podamos revisar el detalle?\nCustomer: No recuerdo el número exacto, pero fue hace unos días.\nAssistant: Entiendo, gracias por su comprensión. Para poder ayudarlo de la mejor manera, necesitamos que proporcione el número de la transacción o al menos la fecha aproximada y el monto. Esto nos permitirá revisar el detalle y determinar el motivo del rechazo.\nCustomer: La fecha fue el 15 de junio y el monto fue de $25.000.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0002\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

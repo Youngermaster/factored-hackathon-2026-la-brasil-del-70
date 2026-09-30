@@ -1,0 +1,35 @@
+{
+  "cassette_id": "35ad85826fe4b6665fa0de7f281859533cf32b2fec94ef5b63c969aeb2ae6835",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3262,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0009"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:32:13.114047Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1414,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?\nAssistant: Com base no seu perfil de crédito, você tem a possibilidade de obter um empréstimo pessoal. No entanto, para uma análise mais precisa, precisamos considerar seu rendimento mensal. Você pode nos fornecer essa informação?\nCustomer: Ganho 1.500.000 pesos por mês",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0009",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

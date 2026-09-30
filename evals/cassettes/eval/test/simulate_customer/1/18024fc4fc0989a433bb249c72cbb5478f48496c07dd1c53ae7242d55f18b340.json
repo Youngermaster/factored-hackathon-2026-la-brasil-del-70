@@ -1,0 +1,32 @@
+{
+  "cassette_id": "18024fc4fc0989a433bb249c72cbb5478f48496c07dd1c53ae7242d55f18b340",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2191,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No reconozco esta compra. Elige la del 12 de junio."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:52:08.110080Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 715,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco esta compra de 300 pesos en CAFE LUNA.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\n2) 9 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791",
+    "conversation_seed": "test-dis-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Dispute one of two similar purchases at the same merchant.",
+    "hidden_facts": "date: 12/06",
+    "instructions": "Say you do not recognize a charge of 300 pesos at CAFE LUNA. When shown options, pick the one from 12/06. Decline the card block, confirm the dispute.",
+    "known_facts": "amount: 300; merchant: CAFE LUNA"
+  }
+}

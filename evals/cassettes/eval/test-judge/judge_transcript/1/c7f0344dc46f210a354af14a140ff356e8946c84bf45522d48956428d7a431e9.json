@@ -1,0 +1,30 @@
+{
+  "cassette_id": "c7f0344dc46f210a354af14a140ff356e8946c84bf45522d48956428d7a431e9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5076,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:10.357127Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1011,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Preciso bloquear uma de minhas cartões de crédito.\nAssistant: Entendi. Vou precisar da ID do seu cartão para poder bloqueá-lo. Você pode me fornecer essa informação, por favor?\nCustomer: Acho que é o último cartão que eu usei, mas não tenho a ID dele aqui.\nAssistant: Entendi que você não tem a ID do cartão. Podemos tentar encontrar outras informações para bloqueá-lo. Você lembra da data de emissão ou do último dígito do cartão?\nCustomer: Só me lembro do último dígito, é 7.\nAssistant: Entendi. Com o último dígito do cartão, podemos tentar localizá-lo. Por favor, forneça também a data de emissão do cartão, se você se lembrar.\nCustomer: A data de emissão foi em 2023, mas não tenho certeza exata do dia.\nAssistant: Desculpe, tive um problema para processar o seu pedido. Pode tentar de novo?\nCustomer: Entendi, vou tentar novamente. A data de emissão foi em 2023, no final do ano.\nAssistant: Desculpe, tive um problema para processar o seu pedido. Pode tentar de novo?\nCustomer: Tentei novamente e a data de emissão foi em dezembro de 2023.\nAssistant: Desculpe, tive um problema para processar o seu pedido. Pode tentar de novo?"
+  }
+}

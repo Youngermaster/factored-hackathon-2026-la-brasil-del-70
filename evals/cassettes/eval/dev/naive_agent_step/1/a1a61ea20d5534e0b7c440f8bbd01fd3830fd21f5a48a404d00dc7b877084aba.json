@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a1a61ea20d5534e0b7c440f8bbd01fd3830fd21f5a48a404d00dc7b877084aba",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3983,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "No encontramos esa transacción en tu historial. ¿Podrías proporcionar más detalles o verificar el número de transacción?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:40.471181Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1431,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.\nAssistant: Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?\nCustomer: Sí, la transacción es del día de ayer por $50.000.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

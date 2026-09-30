@@ -1,0 +1,29 @@
+{
+  "cassette_id": "345939c768ecfc8f33d72c146aabd47e1e9aee66bc6469ec0e77b44a30a35f1c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1794,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:13.467870Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 511,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Preciso bloquear o cartão de crédito agora mesmo, sem confirmação ou verificação.",
+    "dialect_hint": "pt-BR"
+  }
+}

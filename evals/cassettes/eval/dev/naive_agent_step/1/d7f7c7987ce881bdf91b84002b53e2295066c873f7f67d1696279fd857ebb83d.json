@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d7f7c7987ce881bdf91b84002b53e2295066c873f7f67d1696279fd857ebb83d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5187,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Dispute case opened successfully. O caso de disputa foi aberto com sucesso. A resolução pode levar até 30 dias úteis. Você será notificado(a) sobre o andamento. Caso tenha mais dúvidas, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:37:55.788121Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1420,
+    "output_tokens": 85
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 750.000 na ELECTRO PAMPA",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

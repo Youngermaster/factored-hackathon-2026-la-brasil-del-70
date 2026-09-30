@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0701b0a9686d97845c9a5f360dfc0c9f4e4b7ab2100c46222d32d312795534bf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2076,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Gracias, solo necesito confirmar las condiciones actuales del préstamo personal."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:04.830705Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 863,
+    "output_tokens": 26
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo para pagar en un préstamo personal? Si me lo dices, también quiero saber las condiciones.\nAssistant: Para tu préstamo personal, el saldo pendiente es de 12,500.00 MXN. El límite de crédito de tu tarjeta de crédito es de 60,000.00 MXN con un saldo actual de 12,500.00 MXN. ¿Necesitas más detalles sobre las condiciones del préstamo personal o tienes alguna otra consulta?\nCustomer: Sí, necesito saber las condiciones del préstamo personal.\nAssistant: Entendido, te proporcionaré información sobre las condiciones del préstamo personal. El mínimo score requerido es de 650 y el máximo porcentaje de pago mensual sobre tu ingreso es del 35%. Además, no se permiten días vencidos. ¿Hay algo más en lo que pueda ayudarte?\nCustomer: Gracias, necesito saber también si hay alguna tasa de interés especial o promoción para nuevos clientes.\nAssistant: Actualmente no ofrecemos tasa de interés especial o promociones para nuevos clientes. Tu puntuación de crédito es de 780, lo cual es muy bueno. No tienes días vencidos y llevas 40 meses de tenencia. ¿Necesitas más información sobre tus condiciones de préstamo personal o tienes alguna otra consulta?",
+    "conversation_seed": "test-cre-ambiguou-001#2",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

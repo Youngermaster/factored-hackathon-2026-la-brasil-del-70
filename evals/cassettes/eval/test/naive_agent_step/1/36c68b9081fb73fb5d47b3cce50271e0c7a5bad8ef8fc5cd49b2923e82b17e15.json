@@ -1,0 +1,33 @@
+{
+  "cassette_id": "36c68b9081fb73fb5d47b3cce50271e0c7a5bad8ef8fc5cd49b2923e82b17e15",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6211,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que seu cartão de crédito foi roubado. Vou precisar confirmar algumas informações antes de bloqueá-lo e emitir um novo. Poderia me fornecer o motivo do bloqueio e, se possível, o número do cartão?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:21.519711Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1336,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: Roubaram meu cartão de crédito e preciso de um novo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

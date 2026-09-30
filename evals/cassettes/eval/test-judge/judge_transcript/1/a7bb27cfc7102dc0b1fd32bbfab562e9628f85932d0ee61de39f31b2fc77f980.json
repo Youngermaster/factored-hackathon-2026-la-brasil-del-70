@@ -1,0 +1,30 @@
+{
+  "cassette_id": "a7bb27cfc7102dc0b1fd32bbfab562e9628f85932d0ee61de39f31b2fc77f980",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2446,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:00.536628Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 742,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: ¿Conviene comprar criptomonedas este mes?\nAssistant: Lo siento, pero aquí no podemos asesorar sobre inversiones. Te recomendaría consultar con un asesor financiero o revisar nuestra sección de noticias financieras para obtener información actualizada. ¿Necesitas ayuda con alguna de las áreas que mencionaste antes?"
+  }
+}

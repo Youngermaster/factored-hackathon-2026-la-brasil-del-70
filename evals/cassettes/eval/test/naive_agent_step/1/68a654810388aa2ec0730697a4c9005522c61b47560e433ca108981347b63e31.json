@@ -1,0 +1,35 @@
+{
+  "cassette_id": "68a654810388aa2ec0730697a4c9005522c61b47560e433ca108981347b63e31",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4137,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0010"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:35:58.551811Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1704,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber se consigo um empréstimo pessoal de 50000 em 24 meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"MX-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"5000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"120000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"85.00\"}, {\"product_code\": \"MX-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"10000000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"14.00\"}, {\"product_code\": \"MX-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"10000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"350000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 6, \"max_term_months\": 60, \"max_annual_rate\": \"65.00\"}]}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2f3c034a24d67cc4b12c1ac52859a368f82fe957e9c84014cc1f7dda1368c903",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4814,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lamento informarle que no encontramos ninguna tarjeta bloqueada en su nombre. ¿Podría proporcionarme más detalles para poder asistirle mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:19:45.012605Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Ya encontré mi tarjeta de débito, reactívala por favor",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0003",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

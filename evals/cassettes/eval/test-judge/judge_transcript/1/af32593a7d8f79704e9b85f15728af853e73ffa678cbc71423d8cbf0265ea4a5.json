@@ -1,0 +1,30 @@
+{
+  "cassette_id": "af32593a7d8f79704e9b85f15728af853e73ffa678cbc71423d8cbf0265ea4a5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2812,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:08.123898Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 841,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Bloqueie meu cartão de débito por precaução\nAssistant: O seu cartão de débito **** 3406 já está bloqueado.\n\nPara consultar informações dos seus produtos, você precisa de uma sessão verificada com um código de uso único enviado ao seu telefone cadastrado. Para qualquer ação, como bloquear um cartão, abrir uma contestação ou registrar uma solicitação de crédito, pediremos também uma verificação reforçada com um novo código, válida por 5 minutos. A sessão é encerrada após 15 minutos sem atividade.\n\nSe detectarmos sinais de risco na conversa, poderemos pedir a verificação reforçada também antes de mostrar informações."
+  }
+}

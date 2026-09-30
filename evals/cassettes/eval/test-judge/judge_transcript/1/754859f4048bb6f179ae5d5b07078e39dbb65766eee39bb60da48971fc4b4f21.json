@@ -1,0 +1,30 @@
+{
+  "cassette_id": "754859f4048bb6f179ae5d5b07078e39dbb65766eee39bb60da48971fc4b4f21",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3879,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:05.308619Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1042,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Perdí mi tarjeta de crédito, bloquéala por favor\nAssistant: Voy a bloquear tu tarjeta de crédito **** 6155. El bloqueo es inmediato y la tarjeta dejará de funcionar. ¿Confirmas? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.\nCustomer: Sí, confirmo\nAssistant: Para hacer esto necesito una verificación reforzada de tu identidad. Complétala y escríbeme para continuar.\nCustomer: Listo, ya confirmé mi identidad\nAssistant: Listo: bloqueamos tu tarjeta de crédito **** 6155 y lo comprobamos en los registros.\n\nCon la tarjeta bloqueada, nadie puede usarla. Si más adelante quieres desbloquearla o necesitas una tarjeta de reposición, pídelo aquí y una persona del equipo atenderá la solicitud después de verificar tu identidad. Si además ves transacciones que no reconoces, podemos ayudarte a registrar una reclamación."
+  }
+}

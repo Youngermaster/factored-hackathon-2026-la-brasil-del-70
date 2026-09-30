@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2a7b603e8ab3268dc2258f07d9e9ddb1c278f6ca766dd3961f4fdcfa5aa31860",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3821,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Por favor, proporciona el número de tu tarjeta de crédito y la razón para bloquearla. Esto nos ayudará a proceder con tu solicitud.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:10:02.724592Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1360,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, bloquéala por favor\nAssistant: Lo siento, no encontramos tu tarjeta registrada. ¿Podrías proporcionar más detalles para poder asistirte mejor?\nCustomer: Sí, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

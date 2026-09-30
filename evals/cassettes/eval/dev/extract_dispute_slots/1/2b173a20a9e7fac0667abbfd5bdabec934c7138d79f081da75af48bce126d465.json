@@ -1,0 +1,49 @@
+{
+  "cassette_id": "2b173a20a9e7fac0667abbfd5bdabec934c7138d79f081da75af48bce126d465",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 12535,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "wrong_amount",
+      "other"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:59:12.429695Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1468,
+    "output_tokens": 132
+  },
+  "variables": {
+    "customer_message": "Ese cargo de 1250 en TIENDA AURORA no es mío\nEs sobre un cargo que no reconozco",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

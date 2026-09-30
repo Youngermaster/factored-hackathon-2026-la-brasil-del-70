@@ -1,0 +1,29 @@
+{
+  "cassette_id": "dfc1d710510f4472ca0ac84f3a950df67e27720ef899933b22ddcea6fd4c161b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2356,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:48:53.887778Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 515,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Situação da minha transferência de 15/06 de 300.000 pesos",
+    "dialect_hint": "pt-BR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6a480012a736245489b83a3048cbf408875b880fc940dabe6a8ad98b841855cd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8014,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "En su cuenta de ahorros tiene un saldo disponible de 5.200.000 COP y en su cuenta corriente de 3.450.000 COP. Su tarjeta de crédito tiene un saldo restante de 1.200.000 COP de su límite de 8.000.000 COP. ¿Hay algo más que necesite saber?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:17.852130Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1566,
+    "output_tokens": 117
+  },
+  "variables": {
+    "conversation": "Customer: Necesito saber cuánto dinero tengo disponible",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0001-01\", \"type\": \"checking_account\", \"number\": \"**** 4995\", \"balance\": \"3450000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-02\", \"type\": \"savings_account\", \"number\": \"**** 0684\", \"balance\": \"5200000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0235\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

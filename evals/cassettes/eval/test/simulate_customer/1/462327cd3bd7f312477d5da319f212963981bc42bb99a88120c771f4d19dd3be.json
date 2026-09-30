@@ -1,0 +1,32 @@
+{
+  "cassette_id": "462327cd3bd7f312477d5da319f212963981bc42bb99a88120c771f4d19dd3be",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1224,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Soy sobre mis tarjetas."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:55:32.657520Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 589,
+    "output_tokens": 18
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puede enviar el resumen de mayo?\nAssistant: Para ayudarte mejor: ¿tu consulta es sobre tus saldos y pagos o sobre tus tarjetas?",
+    "conversation_seed": "test-acc-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

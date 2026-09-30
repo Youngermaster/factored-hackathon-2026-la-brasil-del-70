@@ -1,0 +1,29 @@
+{
+  "cassette_id": "fa1fb4ae488541520c5350ddbd79692f1551dbf45de9f4bb66ca2a9784238ba9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1759,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:37:49.459892Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 505,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero marcar um horário na agência para segunda-feira",
+    "dialect_hint": "pt-BR"
+  }
+}

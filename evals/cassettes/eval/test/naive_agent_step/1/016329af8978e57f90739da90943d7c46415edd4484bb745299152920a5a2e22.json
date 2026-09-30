@@ -1,0 +1,33 @@
+{
+  "cassette_id": "016329af8978e57f90739da90943d7c46415edd4484bb745299152920a5a2e22",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5025,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Actualmente tienes disponible un saldo total de 80,300.50 MXN en tus cuentas. ¿Necesitas más detalles sobre alguna de ellas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:50:31.088671Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1562,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Necesito saber cuánto dinero tengo disponible",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0001-01\", \"type\": \"checking_account\", \"number\": \"**** 5056\", \"balance\": \"52300.50 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5231\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0025\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

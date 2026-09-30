@@ -1,0 +1,36 @@
+{
+  "cassette_id": "43207d40606e709eb997a9b0dd97d26924889e11afa805f20945a8b9abdf8c98",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3354,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "transaction_id": "123456"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:04:29.079255Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1423,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Es mi tarjeta de crédito la que me rechazaron.\nAssistant: Entendido, vamos a revisar el estado de su tarjeta de crédito. ¿Podría proporcionarme el número de transacción para poder verificar el detalle?\nCustomer: Claro, el número de transacción es 123456.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

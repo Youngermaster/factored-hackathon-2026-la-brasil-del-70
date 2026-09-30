@@ -1,0 +1,43 @@
+{
+  "cassette_id": "6f979218a1c24ae4ee6ebbd75e432fb70e6175f576b7e30f20039e0d48c79662",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 10633,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": null,
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "15/06",
+      "merchant_text": "ALMACEN ANDES"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:25:46.333128Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1457,
+    "output_tokens": 101
+  },
+  "variables": {
+    "customer_message": "No reconozco la compra del ALMACEN ANDES del 15/06.",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

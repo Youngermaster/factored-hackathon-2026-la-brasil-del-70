@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d6bb09d6d5203314f0cb4164f7e0b836f00f9f469e0b4ef83b09313f25fe90cd",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4962,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, houve um problema ao consultar seu cartão de débito. Por favor, tente novamente mais tarde ou entre em contato com nosso suporte para mais assistência.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:24:14.792968Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1355,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Situação do meu cartão de débito, por favor",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"error\", \"result\": \"list_cards failed: transient_error\"}"
+  }
+}

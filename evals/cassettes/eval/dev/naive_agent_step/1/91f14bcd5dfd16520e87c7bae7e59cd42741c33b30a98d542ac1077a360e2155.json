@@ -1,0 +1,33 @@
+{
+  "cassette_id": "91f14bcd5dfd16520e87c7bae7e59cd42741c33b30a98d542ac1077a360e2155",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7495,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Su saldo actual es de 480,000 ARS en la cuenta corriente, 250,000 ARS en la cuenta de ahorros y 45,000 ARS en su tarjeta de crédito, como de costumbre estas cifras son al 17 de junio de 2026.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:34.373935Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1563,
+    "output_tokens": 105
+  },
+  "variables": {
+    "conversation": "Customer: Hola, ¿me decís cuál es mi saldo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

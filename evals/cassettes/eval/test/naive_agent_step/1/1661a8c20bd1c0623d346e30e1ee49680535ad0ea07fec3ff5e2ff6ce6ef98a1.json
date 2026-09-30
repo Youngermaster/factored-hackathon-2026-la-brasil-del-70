@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1661a8c20bd1c0623d346e30e1ee49680535ad0ea07fec3ff5e2ff6ce6ef98a1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4229,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Debes 12,500.00 MXN en tu tarjeta de crédito como deudas actuales. ¿Necesitas más información sobre tu saldo o tus próximas cuotas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:41.390673Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1417,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto debo en mi tarjeta de crédito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0004-01\", \"type\": \"credit_card\", \"number\": \"**** 3791\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

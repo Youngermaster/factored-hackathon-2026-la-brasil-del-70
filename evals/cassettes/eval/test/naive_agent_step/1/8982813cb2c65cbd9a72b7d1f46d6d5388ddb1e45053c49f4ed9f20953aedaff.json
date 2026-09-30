@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8982813cb2c65cbd9a72b7d1f46d6d5388ddb1e45053c49f4ed9f20953aedaff",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 9457,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Olá! Aqui está o resumo das suas transações do mês de maio: 25 de maio - PAGO TARJETA: 120.000 COP; 19 de maio - LIBRERIA BOGOTA: 56.000 COP; 9 de maio - PAGO SERVICIO AGUA: 120.000 COP; 8 de maio - DROGUERIA CENTRAL: 42.000 COP. Você precisa de mais informações sobre alguma delas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:06.266402Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1538,
+    "output_tokens": 151
+  },
+  "variables": {
+    "conversation": "Customer: Poderia me enviar um resumo do mês de maio?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-19\", \"merchant\": \"LIBRERIA BOGOTA\", \"amount\": \"56000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO AGUA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-08\", \"merchant\": \"DROGUERIA CENTRAL\", \"amount\": \"42000.00 COP\", \"status\": \"approved\"}]}"
+  }
+}

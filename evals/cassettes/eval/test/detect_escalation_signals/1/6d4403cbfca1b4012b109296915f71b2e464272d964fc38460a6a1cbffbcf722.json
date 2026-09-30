@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6d4403cbfca1b4012b109296915f71b2e464272d964fc38460a6a1cbffbcf722",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1707,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:24:20.293158Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 501,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Reclamo la compra de 1250 en TIENDA AURORA, no la hice",
+    "dialect_hint": "es-MX"
+  }
+}

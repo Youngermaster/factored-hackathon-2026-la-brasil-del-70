@@ -1,0 +1,32 @@
+{
+  "cassette_id": "dc477e16e3752ea7252057fd01791dd775601cb8967ccd87caaa14cf2704fb31",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2268,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No, no quiero bloquearla."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:25:48.630520Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 796,
+    "output_tokens": 18
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco la compra del ALMACEN ANDES del 15/06.\nAssistant: Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 5404 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.",
+    "conversation_seed": "test-dis-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Dispute a charge giving the date as day and month digits.",
+    "hidden_facts": "(none)",
+    "instructions": "Say you do not recognize the ALMACEN ANDES charge of 15/06, writing the date as digits. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d780d959fb8de1e55543636f543a7ce20df424a514976055ab35f79cd727b746",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2050,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:21:54.196160Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Tengo chance de un préstamo personal de 50000 a 24 meses?",
+    "dialect_hint": "es-MX"
+  }
+}

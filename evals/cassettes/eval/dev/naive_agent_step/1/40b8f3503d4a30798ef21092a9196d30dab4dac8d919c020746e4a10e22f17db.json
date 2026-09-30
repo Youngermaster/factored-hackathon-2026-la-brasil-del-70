@@ -1,0 +1,35 @@
+{
+  "cassette_id": "40b8f3503d4a30798ef21092a9196d30dab4dac8d919c020746e4a10e22f17db",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3159,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:05.302117Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1540,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma carta de crédito.\nAssistant: Entendido, vamos proceder com o bloqueio da sua carta de crédito. Vou precisar de alguns detalhes para confirmar a solicitação. Qual é o motivo do bloqueio? Pode ser por perda, roubo, suspeita de fraude ou precaução.\nCustomer: Bloqueio por perda.\nAssistant: Não encontrei uma carta de crédito associada a sua conta. Por favor, verifique se digitou corretamente o número da sua conta ou se a carta de crédito ainda não foi emitida. Se necessário, podemos tentar novamente.\nCustomer: Verifiquei o número da conta e tudo parece correto. A carta de crédito já foi emitida.\nAssistant: Entendi. Vou verificar novamente os detalhes da sua conta para confirmar a existência da carta de crédito e proceder com o bloqueio. Por favor, aguarde um momento.\nCustomer: Entendido, espero que verifiquem corretamente os detalhes.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

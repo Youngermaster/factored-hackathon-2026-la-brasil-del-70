@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5aee9f9a857f7e6c6c2d7785177f1015e4d11259f776ca4c9115d79855a05a76",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 8076,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Olá! Sua conta corrente tem um saldo disponível de 480.000,00 ARS, sua conta poupança tem 250.000,00 ARS e seu cartão de crédito tem um limite de 300.000,00 ARS com um saldo atual de 45.000,00 ARS. Precisa de mais informações sobre algum dos seus produtos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:21.036533Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1567,
+    "output_tokens": 124
+  },
+  "variables": {
+    "conversation": "Customer: $ disponível?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

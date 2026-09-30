@@ -1,0 +1,33 @@
+{
+  "cassette_id": "82b43806e1dfba37b2e3930d7620692e3d2e07d4bd138b56fd73fbd4f59ca910",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4427,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para el cargo no reconocido en TIENDA AURORA. El caso se abrirá en 45 días se resolverá. ¿Necesitas más información sobre este proceso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:50.007747Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1479,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto debo en mi tarjeta de crédito?\nAssistant: Debes 12,500.00 MXN en tu tarjeta de crédito como deudas actuales. ¿Necesitas más información sobre tu saldo o tus próximas cuotas?\nCustomer: No reconozco un cargo de 1250 en TIENDA AURORA",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "87d085dd65081b06ee036cfee79f97e02d3482f22cea9bfc99d7b3ce798d972e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4050,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0005"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cases"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:43.560994Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1315,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo va mi reclamación?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0005",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

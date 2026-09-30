@@ -1,0 +1,48 @@
+{
+  "cassette_id": "e19f2acf3605360b2a7aed27101eb63446dc03a0421519c9b7cb532f15c9b766",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 8637,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "other"
+    ],
+    "transaction": {
+      "amount": "15000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "Reference date: 2026-06-18",
+      "merchant_text": "KIOSCO DEL SUR"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:37:10.363693Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1488,
+    "output_tokens": 137
+  },
+  "variables": {
+    "customer_message": "Quero o estorno agora da cobrança de 15.000 na KIOSCO DEL SUR\nÉ sobre uma cobrança que não reconheço",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

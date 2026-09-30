@@ -1,0 +1,31 @@
+{
+  "cassette_id": "1369b1cb38c914d8c4a00a8214b05c23659577d04453810e2bca27268085ca08",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3439,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": "45000",
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:54:49.713980Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1032,
+    "output_tokens": 56
+  },
+  "variables": {
+    "customer_message": "Gano 45000 pesos al mes",
+    "dialect_hint": "es-MX"
+  }
+}

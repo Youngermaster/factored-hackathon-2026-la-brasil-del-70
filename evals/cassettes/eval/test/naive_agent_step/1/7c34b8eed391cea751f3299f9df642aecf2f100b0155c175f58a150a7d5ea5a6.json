@@ -1,0 +1,37 @@
+{
+  "cassette_id": "7c34b8eed391cea751f3299f9df642aecf2f100b0155c175f58a150a7d5ea5a6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4300,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "unrecognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:25.252458Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço essa despesa. Vou relatar.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

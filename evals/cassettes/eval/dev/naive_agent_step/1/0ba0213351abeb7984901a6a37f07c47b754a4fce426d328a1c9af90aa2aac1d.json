@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0ba0213351abeb7984901a6a37f07c47b754a4fce426d328a1c9af90aa2aac1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10573,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Aqui estão as movimentações recentes do seu cartão de crédito. Você pode ver que há uma transação pendente de 300.000 COP com a Maria Gomez. As outras transações foram aprovadas e incluem pagamentos e compras. Gostaria de mais detalhes sobre alguma delas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:09:20.163438Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1981,
+    "output_tokens": 101
+  },
+  "variables": {
+    "conversation": "Customer: Preciso da resumo das movimentações do meu cartão de crédito.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_transactions\", \"status\": \"ok\", \"result\": [{\"transaction_id\": \"TRX-EVCO0001-005\", \"date\": \"2026-06-15\", \"merchant\": \"MARIA GOMEZ\", \"amount\": \"300000.00 COP\", \"status\": \"pending\", \"type\": \"transfer\", \"product_id\": \"PRD-EVCO0001-01\"}, {\"transaction_id\": \"TRX-EVCO0001-004\", \"date\": \"2026-06-11\", \"merchant\": \"MARIA GOMEZ\", \"amount\": \"300000.00 COP\", \"status\": \"approved\", \"type\": \"transfer\", \"product_id\": \"PRD-EVCO0001-01\"}, {\"transaction_id\": \"TRX-EVCO0001-006\", \"date\": \"2026-06-06\", \"merchant\": \"PAGO SERVICIO AGUA\", \"amount\": \"120000.00 COP\", \"status\": \"reversed\", \"type\": \"payment\", \"product_id\": \"PRD-EVCO0001-01\"}, {\"transaction_id\": \"TRX-EVCO0001-010\", \"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\", \"type\": \"payment\", \"product_id\": \"PRD-EVCO0001-03\"}, {\"transaction_id\": \"TRX-EVCO0001-009\", \"date\": \"2026-05-19\", \"merchant\": \"LIBRERIA BOGOTA\", \"amount\": \"56000.00 COP\", \"status\": \"approved\", \"type\": \"purchase\", \"product_id\": \"PRD-EVCO0001-03\"}, {\"transaction_id\": \"TRX-EVCO0001-007\", \"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO AGUA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\", \"type\": \"payment\", \"product_id\": \"PRD-EVCO0001-01\"}, {\"transaction_id\": \"TRX-EVCO0001-008\", \"date\": \"2026-05-08\", \"merchant\": \"DROGUERIA CENTRAL\", \"amount\": \"42000.00 COP\", \"status\": \"approved\", \"type\": \"purchase\", \"product_id\": \"PRD-EVCO0001-03\"}]}"
+  }
+}

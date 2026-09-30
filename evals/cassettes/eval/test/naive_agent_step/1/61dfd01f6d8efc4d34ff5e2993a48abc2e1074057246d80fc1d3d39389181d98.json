@@ -1,0 +1,35 @@
+{
+  "cassette_id": "61dfd01f6d8efc4d34ff5e2993a48abc2e1074057246d80fc1d3d39389181d98",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4317,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:30.212931Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1337,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Olá, por favor, pode me informar o saldo da minha conta?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

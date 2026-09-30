@@ -1,0 +1,33 @@
+{
+  "cassette_id": "9b16b899ac8e0eb964c9b1bea6832ad49772495999a8bfe7cef1238c799c7772",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5850,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não podemos ajudar com solicitações de empréstimos em outros bancos aqui. Posso ajudar com informações sobre nossos produtos de crédito ou iniciar um pedido de crédito conosco.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:13.274996Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1337,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Você me ajuda a pedir um empréstimo em outro banco?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

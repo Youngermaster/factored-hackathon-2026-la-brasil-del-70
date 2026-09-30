@@ -1,0 +1,36 @@
+{
+  "cassette_id": "53a89cd9ca496848f9a1d15aa2fad3efcb4fc061234c54633a23e4f1fa98e989",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5998,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "15/06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:11:25.670558Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Estado de mi transferencia del 15/06 por 1500 pesos",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

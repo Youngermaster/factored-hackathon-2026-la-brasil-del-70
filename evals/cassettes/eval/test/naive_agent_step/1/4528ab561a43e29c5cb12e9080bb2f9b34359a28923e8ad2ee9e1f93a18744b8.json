@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4528ab561a43e29c5cb12e9080bb2f9b34359a28923e8ad2ee9e1f93a18744b8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5146,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "TXN-15062023"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:54:19.906944Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: ¿Llegó la transferencia de 1500 del 15/06?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

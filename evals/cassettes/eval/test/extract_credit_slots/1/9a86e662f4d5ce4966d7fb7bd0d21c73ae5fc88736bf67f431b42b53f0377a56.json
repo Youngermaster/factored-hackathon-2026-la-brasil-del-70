@@ -1,0 +1,31 @@
+{
+  "cassette_id": "9a86e662f4d5ce4966d7fb7bd0d21c73ae5fc88736bf67f431b42b53f0377a56",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3338,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "USD",
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": "150000",
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:20:12.499152Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1053,
+    "output_tokens": 56
+  },
+  "variables": {
+    "customer_message": "El monto que me interesa es $150.000, ¿podría responder a mis preguntas con este monto, por favor?",
+    "dialect_hint": "es-AR"
+  }
+}

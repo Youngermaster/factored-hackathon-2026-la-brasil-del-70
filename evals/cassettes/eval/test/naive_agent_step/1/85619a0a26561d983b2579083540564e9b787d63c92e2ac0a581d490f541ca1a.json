@@ -1,0 +1,35 @@
+{
+  "cassette_id": "85619a0a26561d983b2579083540564e9b787d63c92e2ac0a581d490f541ca1a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4046,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:55:50.788919Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Saldo de mi cuenta corriente, por favor",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

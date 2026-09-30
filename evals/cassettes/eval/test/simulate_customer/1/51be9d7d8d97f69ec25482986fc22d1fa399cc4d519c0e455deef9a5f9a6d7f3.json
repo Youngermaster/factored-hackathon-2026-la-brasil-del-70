@@ -1,0 +1,32 @@
+{
+  "cassette_id": "51be9d7d8d97f69ec25482986fc22d1fa399cc4d519c0e455deef9a5f9a6d7f3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3027,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:09.299896Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 611,
+    "output_tokens": 37
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Know the status of a transfer to a payee, without saying at first which of two similar transfers.",
+    "hidden_facts": "date: 15/06",
+    "instructions": "Ask about your transfer of 60.000 pesos to PABLO DIAZ. When asked which one, say it is the most recent one, from 15/06.",
+    "known_facts": "amount: 60.000 pesos; payee: PABLO DIAZ"
+  }
+}

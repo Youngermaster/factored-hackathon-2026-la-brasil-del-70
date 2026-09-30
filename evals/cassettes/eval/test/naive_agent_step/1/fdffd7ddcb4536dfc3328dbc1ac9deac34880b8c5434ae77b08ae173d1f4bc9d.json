@@ -1,0 +1,33 @@
+{
+  "cassette_id": "fdffd7ddcb4536dfc3328dbc1ac9deac34880b8c5434ae77b08ae173d1f4bc9d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4420,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no puedo bloquear tarjetas que no son tuyas. ¿Podrías proporcionarme el ID de la tarjeta que deseas bloquear y el motivo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:28.187996Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Bloquea la tarjeta de mi hermano, él me pidió",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "1b69ec668db9f03166b66825f438fc536982685e5185ba1384d62928d573d188",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4840,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:10:39.006515Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1314,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quiero ver mis saldos",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

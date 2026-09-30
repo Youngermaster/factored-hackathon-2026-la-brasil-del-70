@@ -1,0 +1,32 @@
+{
+  "cassette_id": "2df79b2e470f53cfe4b412a309943dbb7b8f0542ea53569fe6301bf804f26348",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2290,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Olá, poderia me informar como está o meu cartão de débito, por favor?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:02:55.109222Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 805,
+    "output_tokens": 32
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber como está o meu cartão de débito.\nAssistant: Olá. Posso ajudar com saldos, pagamentos e resumos da conta, a situação dos seus cartões e o bloqueio preventivo, abrir ou acompanhar uma contestação de transação e informações sobre produtos de crédito. Como posso ajudar?\nCustomer: Olá, preciso saber como está o meu cartão de débito, por favor.\nAssistant: Olá. Posso ajudar com saldos, pagamentos e resumos da conta, a situação dos seus cartões e o bloqueio preventivo, abrir ou acompanhar uma contestação de transação e informações sobre produtos de crédito. Como posso ajudar?\nCustomer: Olá, gostaria de saber como está o meu cartão de débito, por favor.\nAssistant: Olá. Posso ajudar com saldos, pagamentos e resumos da conta, a situação dos seus cartões e o bloqueio preventivo, abrir ou acompanhar uma contestação de transação e informações sobre produtos de crédito. Como posso ajudar?",
+    "conversation_seed": "test-car-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

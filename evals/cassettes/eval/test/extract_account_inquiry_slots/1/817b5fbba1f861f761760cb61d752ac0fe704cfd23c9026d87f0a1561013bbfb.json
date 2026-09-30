@@ -1,0 +1,32 @@
+{
+  "cassette_id": "817b5fbba1f861f761760cb61d752ac0fe704cfd23c9026d87f0a1561013bbfb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2320,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "savings_account"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:59:22.347247Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1129,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "Me diga o saldo da poupança, por favor",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0b961a14ef4f9542011e63241ebcd0d7f97f21bcff35fd3d3b09af667a162ba1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2663,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Claro, me refiero a un préstamo personal. ¿Cuál sería el saldo pendiente y cuáles son las condiciones?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:16:13.244163Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 643,
+    "output_tokens": 37
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber cuánto saldo debo pagar en un préstamo personal y también las condiciones del mismo.\nAssistant: Buen día, CLI-EVMX0008. Ya verifiqué sus saldos. No encontramos un préstamo personal en su cuenta. ¿Podría aclarar si se refiere a un préstamo personal o a otra información relacionada?",
+    "conversation_seed": "test-cre-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

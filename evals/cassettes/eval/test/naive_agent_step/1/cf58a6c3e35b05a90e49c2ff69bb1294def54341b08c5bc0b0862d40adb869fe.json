@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cf58a6c3e35b05a90e49c2ff69bb1294def54341b08c5bc0b0862d40adb869fe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4208,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Su puntaje de crédito es 780 y el ingreso mensual registrado es de 60000.00 MXN. ¿Necesita más información sobre su perfil crediticio?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:39:52.503115Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1378,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Dime mi puntaje de crédito y el ingreso que tienen registrado",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

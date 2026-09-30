@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a183507d85a4d353e43c886792e1b7d9cf27bec8661f4c53a69df44de9fdf58f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1822,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Estoy exhausto, ¿mi tarjeta de débito sigue activa?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:19:46.093431Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 833,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: Estoy preocupado, ¿mi tarjeta de débito still está activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Estoy exhausto, ¿mi tarjeta de débito sigue activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Estoy preocupado, ¿mi tarjeta de débito sigue activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-car-ambiguou-001#3",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about the card state, using estafa (fraud in Spanish, exhaustion in Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you are worried; in Portuguese say you are exhausted (estafa) and just want to know if your debit card is active; in Spanish say you fear a scam (estafa) and want to know if your debit card is active.",
+    "known_facts": "(none)"
+  }
+}

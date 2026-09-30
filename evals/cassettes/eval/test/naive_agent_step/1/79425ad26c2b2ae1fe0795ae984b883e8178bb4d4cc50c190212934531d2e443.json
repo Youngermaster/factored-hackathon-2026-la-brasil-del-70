@@ -1,0 +1,33 @@
+{
+  "cassette_id": "79425ad26c2b2ae1fe0795ae984b883e8178bb4d4cc50c190212934531d2e443",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5717,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Entendido. Vou encaminhar sua solicitação para nossa equipe de análise. Eles irão revisar seu perfil de crédito e outras informações relevantes para fornecer uma decisão precisa. O processo pode levar até 30 dias úteis. Você será notificado assim que tivermos uma resposta.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:13.309358Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1451,
+    "output_tokens": 94
+  },
+  "variables": {
+    "conversation": "Customer: Gostaria de saber se consigo um empréstimo pessoal de 50000 em 24 meses\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. Com renda mensal de 60,000 MXN e nenhum dia em atraso, você seria um bom candidato para um empréstimo pessoal. No entanto, precisamos verificar a elegibilidade detalhadamente. Posso ajudar você a enviar uma aplicação agora?\nCustomer: Sim, prefiro a análise de uma pessoa",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

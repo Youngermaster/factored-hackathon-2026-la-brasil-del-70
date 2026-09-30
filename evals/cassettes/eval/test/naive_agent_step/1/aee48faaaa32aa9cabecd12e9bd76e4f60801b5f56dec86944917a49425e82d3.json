@@ -1,0 +1,33 @@
+{
+  "cassette_id": "aee48faaaa32aa9cabecd12e9bd76e4f60801b5f56dec86944917a49425e82d3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5088,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, actualmente no podemos emitir certificados bancarios a través de este servicio. ¿Podría solicitarlo en una de nuestras sucursales o a través de nuestro sitio web? Si necesita ayuda con otro asunto, estaré encantado de asistirlo.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:57:44.910628Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1319,
+    "output_tokens": 88
+  },
+  "variables": {
+    "conversation": "Customer: Necesito un certificado bancario de mi cuenta",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

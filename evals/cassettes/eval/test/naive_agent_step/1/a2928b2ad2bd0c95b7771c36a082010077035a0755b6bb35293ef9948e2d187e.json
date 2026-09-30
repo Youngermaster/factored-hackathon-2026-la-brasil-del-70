@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a2928b2ad2bd0c95b7771c36a082010077035a0755b6bb35293ef9948e2d187e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7306,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Buenas, en tu cuenta corriente tienes 480.000 ARS, en tu cuenta de ahorros 250.000 ARS y en tu tarjeta de crédito 45.000 ARS, como deudas pendientes. ¿Necesitas más detalles sobre alguna de estas cuentas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:16.850743Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1565,
+    "output_tokens": 103
+  },
+  "variables": {
+    "conversation": "Customer: Buenas, quiero ver cuánta plata tengo en mis cuentas",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

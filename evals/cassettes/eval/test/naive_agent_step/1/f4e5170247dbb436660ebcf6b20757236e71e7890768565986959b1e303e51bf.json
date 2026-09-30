@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f4e5170247dbb436660ebcf6b20757236e71e7890768565986959b1e303e51bf",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5043,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido. Vou bloquear o seu cartão de débito por precaução. Você confirma que deseja realizar essa ação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:09:28.409665Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: Bloqueie meu cartão de débito por precaução",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0003",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3f1ba5c5a6877cadf778507c0f91e6950d94d84dea5cf27cc2d915e984ebf95a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6698,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lamento informarle que no podemos agendar citas en sucursales a través de este servicio. Le sugeriría contactar directamente la sucursal más cercana o visitar su sitio web para hacer tal solicitud. ¿Hay algo relacionado con sus cuentas o tarjetas que pueda ayudarlo hoy?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:19.983454Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 93
+  },
+  "variables": {
+    "conversation": "Customer: Quiero agendar una cita en la sucursal para el lunes",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

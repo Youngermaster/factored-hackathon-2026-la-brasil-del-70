@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c39911eaf15f64616b7ade0e01a387a8f1293d63e0360306f12826e20838f80e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4251,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Dispute case opened successfully. O caso de disputa foi aberto com sucesso. A espera do prazo de 90 dias para resolver a disputa. Caso precise de mais assistência, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:52:54.057798Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1418,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço a compra na TIENDA AURORA de 1250",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

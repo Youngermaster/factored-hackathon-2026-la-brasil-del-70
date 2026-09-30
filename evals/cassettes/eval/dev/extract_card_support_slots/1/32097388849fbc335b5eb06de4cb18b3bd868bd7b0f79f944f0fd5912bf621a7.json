@@ -1,0 +1,31 @@
+{
+  "cassette_id": "32097388849fbc335b5eb06de4cb18b3bd868bd7b0f79f944f0fd5912bf621a7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4739,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:44.905562Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Voy a viajar a España, activa mi tarjeta para usarla en el extranjero",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "01ce256a72b8c5430ab474a630330a39e9aa86bb5daa574c89836d46e3780ae4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4479,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": "abstained",
+    "reply": "Lo siento, actualmente no puedo verificar sus saldos. Por favor, intente nuevamente más tarde o póngase en contacto con nuestro soporte técnico si el problema persiste.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:28:16.047915Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1337,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: Quiero ver mis saldos",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"error\", \"result\": \"get_balances failed: transient_error\"}"
+  }
+}

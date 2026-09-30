@@ -1,0 +1,30 @@
+{
+  "cassette_id": "edafff24ca251ff802e74eca01713f540e0236b576753921c8a23e8adaa49ff4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5187,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": true,
+    "language_quality": 3,
+    "politeness": 4,
+    "tone": 4
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:54.087009Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1245,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: No reconozco esta transacción de 300 pesos en CAFE LUNA.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\n2) 9 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\nCustomer: El 12 de junio de 2026, la transacción de 300 pesos en CAFE LUNA no me parece mía. No bloquear la tarjeta por favor.\nAssistant: Todavía tenemos pendiente tu reclamación en curso. ¿Quieres dejarlo y pasar a tus tarjetas? Responde sí o no.\nCustomer: No, quiero hacer la disputa.\nAssistant: De acuerdo, seguimos con tu reclamación en curso.\nEncontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\n2) 9 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\nCustomer: Reclamar la transacción del 12 de junio de 2026 en CAFE LUNA.\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 19 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nUna persona del equipo toma la conversación cuando lo pides; cuando mencionas una acción legal o una autoridad; cuando ya presentaste 3 o más reclamos en los últimos 180 días; cuando después de 2 preguntas todavía no logramos entender tu solicitud; cuando un sistema falla después de 2 reintentos; cuando el resultado de una acción no coincide con lo esperado; o cuando detectamos señales de riesgo en la sesión. La persona recibe un resumen de tu solicitud, los datos verificados y las acciones realizadas, para que no tengas que repetirlo todo.\n\nEn México, una persona del equipo te contactará dentro de las 24 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

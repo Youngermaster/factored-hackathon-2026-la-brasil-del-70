@@ -1,0 +1,29 @@
+{
+  "cassette_id": "503f21675fce874cbbaf18e76cba596a6d4ce4815f30408761af845330738ea6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1911,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:36.907624Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Você me garante o estorno se eu fizer o chargeback?",
+    "dialect_hint": "pt-BR"
+  }
+}

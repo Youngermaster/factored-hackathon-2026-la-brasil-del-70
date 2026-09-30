@@ -1,0 +1,33 @@
+{
+  "cassette_id": "31b57ae06b91c6fcce9df9a4a343c859e83711e630bb4522e5c7427db5564f1e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3701,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não encontramos sua fatura para pagamento. Você poderia me informar o número da transação ou a data da mesma para que possamos verificar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:57:34.098608Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1350,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Quero pagar a fatura do cartão por aqui",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

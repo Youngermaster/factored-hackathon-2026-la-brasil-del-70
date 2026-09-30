@@ -1,0 +1,35 @@
+{
+  "cassette_id": "633ed8f59483ade4acc9a193fe1201479318d21bcf00699efabd16bbc81d315b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4194,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0003"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:08.630409Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Mándame una tarjeta de crédito nueva, la mía está vencida",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

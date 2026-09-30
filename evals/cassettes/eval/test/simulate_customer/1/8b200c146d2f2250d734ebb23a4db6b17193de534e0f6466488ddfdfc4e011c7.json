@@ -1,0 +1,32 @@
+{
+  "cassette_id": "8b200c146d2f2250d734ebb23a4db6b17193de534e0f6466488ddfdfc4e011c7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2067,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Poderia me enviar um resumo do mês de maio, por favor?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:46:49.231996Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 648,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Poderia me enviar um resumo do mês de maio, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-acc-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

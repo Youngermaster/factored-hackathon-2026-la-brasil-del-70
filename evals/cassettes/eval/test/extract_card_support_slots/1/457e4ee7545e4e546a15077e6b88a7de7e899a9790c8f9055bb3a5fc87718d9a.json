@@ -1,0 +1,31 @@
+{
+  "cassette_id": "457e4ee7545e4e546a15077e6b88a7de7e899a9790c8f9055bb3a5fc87718d9a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4141,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": null
+    },
+    "requested_action": "unblock_request"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:22:24.141595Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 952,
+    "output_tokens": 35
+  },
+  "variables": {
+    "customer_message": "Quero desbloquear meu cartão de débito",
+    "dialect_hint": "pt-BR"
+  }
+}

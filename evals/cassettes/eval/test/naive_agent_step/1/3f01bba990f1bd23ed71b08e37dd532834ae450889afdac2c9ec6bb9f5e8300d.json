@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3f01bba990f1bd23ed71b08e37dd532834ae450889afdac2c9ec6bb9f5e8300d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4879,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora, ou tem alguma outra dúvida sobre ele?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:12:09.412015Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1679,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha cartão?\nAssistant: Olá! Sua carta está ativa e não há nenhuma restrição atual. Gostaria de bloquear ou trocar algum cartão?\nCustomer: Obrigado, mas eu queria saber como está o meu cartão de débito.\nAssistant: Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora?\nCustomer: Não preciso verificar o saldo agora, mas obrigado pela informação.\nAssistant: Ótimo! Se precisar de mais informações sobre seu cartão ou tiver outras dúvidas, estou à disposição.\nCustomer: Preciso saber como está o meu cartão de débito mesmo.\nAssistant: Entendido! Vou verificar o status do seu cartão de débito agora. Como está o seu saldo atual?\nCustomer: Não preciso do saldo atual, mas obrigado. Quero saber se está tudo bem com o meu cartão de débito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0002-01\", \"type\": \"credit_card\", \"number\": \"**** 6155\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVMX0002-02\", \"type\": \"debit_card\", \"number\": \"**** 7052\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

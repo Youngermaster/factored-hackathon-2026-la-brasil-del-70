@@ -1,0 +1,33 @@
+{
+  "cassette_id": "9d71c3987a73ef1c4432495d18e01c6057107d19fcb3284441ff740f54408877",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5158,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción en TIENDA AURORA. El caso se abrirá en 45 días laborables. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:37:05.181005Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1421,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Ese cargo de 1250 en TIENDA AURORA no es mío",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"no_recibido\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

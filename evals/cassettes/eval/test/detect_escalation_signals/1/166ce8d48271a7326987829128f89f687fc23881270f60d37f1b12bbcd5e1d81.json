@@ -1,0 +1,29 @@
+{
+  "cassette_id": "166ce8d48271a7326987829128f89f687fc23881270f60d37f1b12bbcd5e1d81",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3027,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:05.288450Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 499,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No reconozco un cargo de 85.000 pesos en ALMACEN ANDES",
+    "dialect_hint": "es-CO"
+  }
+}

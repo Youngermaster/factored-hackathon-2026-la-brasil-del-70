@@ -1,0 +1,29 @@
+{
+  "cassette_id": "62517e73fc3af82923fd20a81c4af292b9de0694cb6a2d2146228d7c3495f72f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1996,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:02:09.395316Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 497,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cuánto tiene el producto PRD-EVMX0013-02?",
+    "dialect_hint": "es-MX"
+  }
+}

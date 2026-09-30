@@ -1,0 +1,32 @@
+{
+  "cassette_id": "bd4ce23d267172f190bc9b14c4a62feb082a9b0b640440f7c27c39e24da11d0c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2451,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Cuál sería el saldo para pagar en un préstamo personal? Si me lo dices, también quiero saber las condiciones."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:15:34.512582Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 566,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-cre-ambiguou-001#2",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

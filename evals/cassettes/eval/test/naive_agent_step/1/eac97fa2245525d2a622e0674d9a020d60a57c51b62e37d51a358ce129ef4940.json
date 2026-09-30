@@ -1,0 +1,37 @@
+{
+  "cassette_id": "eac97fa2245525d2a622e0674d9a020d60a57c51b62e37d51a358ce129ef4940",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3673,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "product_id": "CO-CREDIT-CARD",
+      "reason": "perdida"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:48.110040Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1518,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: Hola, mi tarjeta de crédito se perdió y quiero bloquearla. ¡Por favor!\nAssistant: Entendido, vamos a proceder a bloquear tu tarjeta de crédito. Primero, necesito confirmar algunos detalles. ¿Podrías proporcionarme la razón por la cual estás bloqueando la tarjeta? Las opciones son: perdida, robada, sospecha de fraude o precaución.\nCustomer: Es perdida, ¡no robada!\nAssistant: Lo siento, pero no encontramos tu tarjeta asociada a este ID de cliente. ¿Podrías proporcionar más detalles para que podamos asistirte mejor?\nCustomer: ¡Mi tarjeta se perdió! No robada, solo perdida.\nAssistant: Entendido, vamos a proceder a bloquear tu tarjeta de crédito. Por favor, confirma si la razón es 'perdida' o 'precaución'.\nCustomer: La tarjeta se perdió, por favor.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

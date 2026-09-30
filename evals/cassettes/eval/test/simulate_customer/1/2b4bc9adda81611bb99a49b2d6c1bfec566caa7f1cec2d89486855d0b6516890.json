@@ -1,0 +1,32 @@
+{
+  "cassette_id": "2b4bc9adda81611bb99a49b2d6c1bfec566caa7f1cec2d89486855d0b6516890",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1418,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:51:59.348584Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 705,
+    "output_tokens": 13
+  },
+  "variables": {
+    "conversation": "Customer: Me cargaron 15 lucas en KIOSCO DEL SUR y no fui yo. Rechazo el bloqueo de la tarjeta y quiero hacer una disputa.\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en KIOSCO DEL SUR por 15.000,00 ARS (tarjeta **** 1659), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 18 de julio de 2026. ¿Confirmas? Responde sí o no.",
+    "conversation_seed": "test-dis-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Dispute a charge stated in slang (15 lucas).",
+    "hidden_facts": "(none)",
+    "instructions": "Say, in Argentine slang, that they charged you 15 lucas at KIOSCO DEL SUR and it was not you. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

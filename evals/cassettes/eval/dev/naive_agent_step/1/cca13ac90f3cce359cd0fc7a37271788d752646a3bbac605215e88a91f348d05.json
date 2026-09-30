@@ -1,0 +1,35 @@
+{
+  "cassette_id": "cca13ac90f3cce359cd0fc7a37271788d752646a3bbac605215e88a91f348d05",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5439,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "MX"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:24:56.399432Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Quisiera saber más sobre un crédito personal.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

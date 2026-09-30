@@ -1,0 +1,37 @@
+{
+  "cassette_id": "e48f3cfa3246a6e565fe5bd664f6f6f7cdd53e61dbd4ee22c82c9d5547b7762a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4878,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "no_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:52:58.941736Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar el cargo de 85.000 en ALMACEN ANDES, no lo hice",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "183682cb0e77b07c762f6ce15af37f5feb20c21ff2a6ad1221e66f08e5509b6b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4270,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Verificarei o status do seu cartão e o motivo da recusa da compra. Pode me confirmar o número do cartão ou a data da transação recusada, por favor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:12:35.916908Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Meu cartão de crédito está ativo? Tive uma compra recusada",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

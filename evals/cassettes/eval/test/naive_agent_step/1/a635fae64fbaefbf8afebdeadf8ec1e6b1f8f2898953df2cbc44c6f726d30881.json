@@ -1,0 +1,35 @@
+{
+  "cassette_id": "a635fae64fbaefbf8afebdeadf8ec1e6b1f8f2898953df2cbc44c6f726d30881",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2684,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:55:57.519983Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Dime cuánto tengo en mis cuentas",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

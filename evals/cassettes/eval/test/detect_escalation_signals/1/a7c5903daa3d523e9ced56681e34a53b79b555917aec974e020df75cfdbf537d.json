@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a7c5903daa3d523e9ced56681e34a53b79b555917aec974e020df75cfdbf537d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1909,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:36:33.710125Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar la transacción TRX-EVMX0013-003",
+    "dialect_hint": "es-MX"
+  }
+}

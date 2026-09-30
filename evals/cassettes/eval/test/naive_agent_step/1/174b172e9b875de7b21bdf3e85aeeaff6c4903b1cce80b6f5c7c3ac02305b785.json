@@ -1,0 +1,37 @@
+{
+  "cassette_id": "174b172e9b875de7b21bdf3e85aeeaff6c4903b1cce80b6f5c7c3ac02305b785",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4953,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:56.988384Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1344,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Contesto a compra de 1250 na TIENDA AURORA, não fui eu",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

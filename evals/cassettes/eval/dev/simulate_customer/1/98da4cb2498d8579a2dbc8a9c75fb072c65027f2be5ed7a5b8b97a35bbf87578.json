@@ -1,0 +1,32 @@
+{
+  "cassette_id": "98da4cb2498d8579a2dbc8a9c75fb072c65027f2be5ed7a5b8b97a35bbf87578",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2205,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Necesito el resumen de mis movimientos en la tarjeta de crédito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:48:56.663425Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 643,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Hola, necesito el resumen de mis movimientos en la tarjeta de crédito.\nAssistant: Hola. Puedo ayudarte con saldos, pagos y resúmenes de cuenta, el estado de tus tarjetas y su bloqueo preventivo, presentar o consultar una reclamación por una transacción y información sobre productos de crédito. ¿En qué te ayudo?",
+    "conversation_seed": "dev-acc-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Get a card statement summary without giving the period at first.",
+    "hidden_facts": "period: last month (May)",
+    "instructions": "Ask for a summary of your credit card movements. When asked for the period, say last month.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b3a4c3894f8b8cb7494ce5169d87ba76eb02813298442ee7aa23d96c27bdd22d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5052,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:10:05.284176Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 50
+  },
+  "variables": {
+    "customer_message": "Desactiva los pagos sin contacto de mi tarjeta de crédito",
+    "dialect_hint": "es-CO"
+  }
+}

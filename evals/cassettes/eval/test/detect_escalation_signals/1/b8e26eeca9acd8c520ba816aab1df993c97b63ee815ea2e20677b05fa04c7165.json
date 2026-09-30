@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b8e26eeca9acd8c520ba816aab1df993c97b63ee815ea2e20677b05fa04c7165",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2007,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:00:17.197868Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 492,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Dime el saldo de la cuenta de ahorros, por favor",
+    "dialect_hint": "es-AR"
+  }
+}

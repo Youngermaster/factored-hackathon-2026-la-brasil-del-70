@@ -1,0 +1,33 @@
+{
+  "cassette_id": "85a003865a2788b3c881928a321489df5cba0cd1aabdd166f3b6df3da5e8bbf4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5828,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, CLI-EVCO0004. Vou abrir um caso de disputa para essa cobrança não reconhecida. Você confirma que gostaria de prosseguir com isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:44:35.132893Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1339,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Quero falar com uma pessoa sobre uma cobrança que não reconheço",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "24f4885bf2c9e20921d5c9a959b949ce4265733c7d34d58f4eb3015517dee7f4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4070,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0003"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:59.277409Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1319,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber el estado de mi tarjeta de crédito",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

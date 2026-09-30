@@ -1,0 +1,35 @@
+{
+  "cassette_id": "a6ec76f91a9ef23680491c8e702d57691c07f0ed8d263692b71936296ba6fd10",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5181,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:23.649517Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1085046a502810d253ea37413ae382d545b1b6c27116b3054c1285dc7fba439a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5676,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Entendido, CLI-EVAR0001. Vou encaminhar sua solicitação para um atendente humano. Ele entrará em contato com você o mais breve possível.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:47:24.714905Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1331,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Preciso falar com um atendente humano",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

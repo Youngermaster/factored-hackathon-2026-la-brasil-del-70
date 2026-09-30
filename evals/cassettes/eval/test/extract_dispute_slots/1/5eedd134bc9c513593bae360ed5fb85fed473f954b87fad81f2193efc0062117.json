@@ -1,0 +1,43 @@
+{
+  "cassette_id": "5eedd134bc9c513593bae360ed5fb85fed473f954b87fad81f2193efc0062117",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10756,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "300.0",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "ARS",
+      "date_expression": "2026-06-18",
+      "merchant_text": "CAFÉ LUNA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:32.763946Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1474,
+    "output_tokens": 112
+  },
+  "variables": {
+    "customer_message": "Não reconheço essa compra no CAFÉ LUNA no valor de 300 reais.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "37fb2e19b790924233d6134e42c9c31541b76b921b079fabb7ea8adbb30fcee7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1926,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:31.498127Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 496,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Necesito una reposición de mi tarjeta de crédito, ya venció",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2d93c01777b0159b449adf456fc99e1564774a70ed30fc0857d8d92c9e2a0162",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5548,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Claro, o saldo da sua conta poupança é de 18.000,00 MXN. Está tudo em dia conforme a data de 17/06/2026. Precisa de mais alguma informação ou assistência com isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:45:40.563621Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1468,
+    "output_tokens": 86
+  },
+  "variables": {
+    "conversation": "Customer: Quero ver os meus saldos\nAssistant: Olá! Verifiquei seus saldos e aqui estão os detalhes: conta corrente com saldo de 52.300,50 MXN, conta poupança com saldo de 18.000,00 MXN e cartão de crédito com saldo de 12.500,00 MXN e limite total de 60.000,00 MXN. Está tudo em dia conforme a data de 17/06/2026. Você precisa de mais informações sobre algum dos seus produtos?\nCustomer: Agora me diga só o da poupança",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

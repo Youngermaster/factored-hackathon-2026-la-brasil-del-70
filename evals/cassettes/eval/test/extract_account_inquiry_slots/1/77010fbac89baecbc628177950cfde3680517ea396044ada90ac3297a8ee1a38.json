@@ -1,0 +1,32 @@
+{
+  "cassette_id": "77010fbac89baecbc628177950cfde3680517ea396044ada90ac3297a8ee1a38",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2489,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:39:01.587417Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1134,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Hola, quisiera saber sobre una de mis tarjetas y también mi saldo actual.",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a9eb75372835a9da48f058be0adc38f544187619e8f07626d183b37b5f1f7702",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2843,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sé la importancia de la seguridad, pero necesito bloquear una tarjeta de crédito sin decir cuál es. ¿Pueden ayudarme?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:04:08.624925Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1028,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quiero bloquear una tarjeta, por favor.\nAssistant: Para poder ayudarte, necesito saber el número de la tarjeta que deseas bloquear y el motivo. ¿Podrías proporcionarme esta información, por favor?\nCustomer: Quiero bloquear una tarjeta de crédito, pero no quiero decir cuál es. ¿Puedes hacerlo?\nAssistant: Entiendo tu preocupación por la privacidad, pero necesitamos el número de la tarjeta y el motivo para poder bloquearla de manera segura. ¿Podrías proporcionarnos esta información?\nCustomer: Entiendo, pero necesito bloquear una tarjeta de crédito sin decir cuál es. ¿Me ayudas?\nAssistant: Entiendo tu situación, pero por razones de seguridad y privacidad, necesitamos que proporciones al menos el número de la tarjeta y el motivo para poder bloquearla. ¿Podrías darme esta información, por favor?\nCustomer: Sí, entiendo la importancia de la privacidad. Sin embargo, necesitan al menos el número de la tarjeta de crédito para poder bloquearla.\nAssistant: Entiendo tu preocupación por la privacidad. Sin embargo, por razones de seguridad, necesitamos al menos el número de la tarjeta y el motivo para poder bloquearla. ¿Podrías proporcionarnos esta información, por favor?\nCustomer: Sí, entiendo la importancia de la seguridad, pero prefiero no decir cuál tarjeta es. ¿Pueden bloquear una tarjeta de crédito por favor?\nAssistant: Entiendo tu preocupación por la privacidad, pero por razones de seguridad, necesitamos al menos el número de la tarjeta y el motivo para poder bloquearla. ¿Podrías proporcionarnos esta información, por favor?\nCustomer: Entiendo la importancia de la seguridad, pero prefiero no decir cuál tarjeta es. ¿Pueden bloquear una tarjeta de crédito por favor?\nAssistant: Entiendo tu preocupación por la privacidad, pero por razones de seguridad, necesitamos al menos el número de la tarjeta y el motivo para poder bloquearla. ¿Podrías proporcionarnos esta información, por favor?",
+    "conversation_seed": "test-car-ambiguou-011#1",
+    "dialect_hint": "es-AR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

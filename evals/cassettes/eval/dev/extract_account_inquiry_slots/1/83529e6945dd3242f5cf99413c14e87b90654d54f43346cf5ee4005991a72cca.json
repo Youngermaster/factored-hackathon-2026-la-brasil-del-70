@@ -1,0 +1,32 @@
+{
+  "cassette_id": "83529e6945dd3242f5cf99413c14e87b90654d54f43346cf5ee4005991a72cca",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2998,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "savings_account"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:47:42.980371Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1139,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "E quanto tenho na poupança?",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

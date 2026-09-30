@@ -1,0 +1,31 @@
+{
+  "cassette_id": "64790bb1bff2205232dad546dfb2a91462b60934c7e8c94ee231230c8b86dbbe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4472,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:08:45.917343Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "¿Está activa mi tarjeta de crédito? Tuve una compra rechazada",
+    "dialect_hint": "es-CO"
+  }
+}

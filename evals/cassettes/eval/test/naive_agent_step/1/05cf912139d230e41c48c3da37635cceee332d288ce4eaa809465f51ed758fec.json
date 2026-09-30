@@ -1,0 +1,35 @@
+{
+  "cassette_id": "05cf912139d230e41c48c3da37635cceee332d288ce4eaa809465f51ed758fec",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2270,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "CO"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:28:33.732736Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1383,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de [DOCUMENT] a 36 meses?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

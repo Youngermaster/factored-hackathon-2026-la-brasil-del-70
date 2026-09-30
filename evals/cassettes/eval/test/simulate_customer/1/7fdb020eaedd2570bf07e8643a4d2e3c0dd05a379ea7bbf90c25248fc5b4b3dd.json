@@ -1,0 +1,32 @@
+{
+  "cassette_id": "7fdb020eaedd2570bf07e8643a4d2e3c0dd05a379ea7bbf90c25248fc5b4b3dd",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1479,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, quero saber sobre o status desse cartão."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:21.365434Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 710,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber sobre uma de minhas cartões e também verificar o saldo.\nAssistant: Olá! Verifiquei seu saldo. Seu cartão de crédito está com um limite de 8.000.000 COP e um saldo atual de 1.200.000 COP, como de 17/06/2026. Gostaria de saber mais sobre qual cartão específico você precisa de assistência?\nCustomer: É o cartão de débito que usei ontem.\nAssistant: Entendi. Você gostaria de saber sobre o status do seu cartão de débito com o número **** 0431?",
+    "conversation_seed": "test-rtg-switch-008#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about a card without saying which, then about the balance.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about a card without saying which, then about the balance.",
+    "known_facts": "(none)"
+  }
+}

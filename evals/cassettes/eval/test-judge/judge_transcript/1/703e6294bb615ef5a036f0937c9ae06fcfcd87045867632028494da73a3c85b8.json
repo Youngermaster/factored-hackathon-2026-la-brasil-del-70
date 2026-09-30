@@ -1,0 +1,30 @@
+{
+  "cassette_id": "703e6294bb615ef5a036f0937c9ae06fcfcd87045867632028494da73a3c85b8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3832,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 4,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:46.500155Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 797,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: No reconozco un cargo de 1250 en TIENDA AURORA\nAssistant: Lo siento, hubo un problema al crear el caso de disputa. Vamos a intentarlo de nuevo. ¿Podrías proporcionar la fecha y el monto del cargo en TIENDA AURORA para que podamos revisarlo de nuevo?\nCustomer: Sí, confirmo\nAssistant: Entendido, vamos a intentarlo de nuevo. Por favor, confirma la fecha y el monto del cargo en TIENDA AURORA para que podamos abrir el caso de disputa."
+  }
+}

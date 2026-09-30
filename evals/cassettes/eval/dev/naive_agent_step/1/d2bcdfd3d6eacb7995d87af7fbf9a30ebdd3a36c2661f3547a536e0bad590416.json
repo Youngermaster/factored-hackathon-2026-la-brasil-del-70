@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d2bcdfd3d6eacb7995d87af7fbf9a30ebdd3a36c2661f3547a536e0bad590416",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6080,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base nos seus dados, você é elegível para um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses. No entanto, isso é apenas uma orientação indicativa. Gostaria que eu prosseguisse com a solicitação de um empréstimo pessoal agora?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:29:28.802966Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1953,
+    "output_tokens": 103
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Olá! Você pode solicitar um empréstimo pessoal, mas precisamos verificar sua pontuação de crédito e renda para avaliar a sua elegibilidade. Gostaria que eu verificasse sua pontuação de crédito agora?\nCustomer: Sim, pode verificar meu crédito agora?\nAssistant: Sua pontuação de crédito é 780, você tem uma renda mensal de 1.800.000 ARS e não há dias em atraso. Com base nesses dados, você é considerado um candidato elegível para empréstimos pessoais. No entanto, isso é apenas uma orientação indicativa e não uma decisão final. Gostaria que eu prosseguisse com a solicitação de um empréstimo pessoal agora?\nCustomer: Pode verificar se tenho direito a um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses?\nAssistant: Com base nos seus dados, você é elegível para um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses. No entanto, isso é apenas uma orientação indicativa. Gostaria que eu prosseguisse com a solicitação de um empréstimo pessoal agora?\nCustomer: Pode me informar se tenho direito a um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses?\nAssistant: Com base nos seus dados, você é elegível para um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses. No entanto, isso é apenas uma orientação indicativa. Gostaria que eu prosseguisse com a solicitação de um empréstimo pessoal agora?\nCustomer: Pode me informar se tenho direito a um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses?\nAssistant: Entendi. Vou verificar sua pontuação de crédito e renda novamente para confirmar a sua elegibilidade para um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses. Gostaria que eu prosseguisse com a verificação agora?\nCustomer: Pode me informar se tenho direito a um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

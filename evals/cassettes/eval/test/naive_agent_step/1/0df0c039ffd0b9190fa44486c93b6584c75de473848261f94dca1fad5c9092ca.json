@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0df0c039ffd0b9190fa44486c93b6584c75de473848261f94dca1fad5c9092ca",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4246,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Por supuesto, para el préstamo personal, necesitamos considerar algunos factores. ¿Podrías proporcionarme tu puntaje crediticio? También, ¿puedes indicarme tu ingreso mensual aproximado?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:23:51.541470Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1429,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber sobre un crédito. ¿Podrías darme más información?\nAssistant: Claro, ¿podrías indicarme qué tipo de crédito te interesa saber más? Tenemos tarjetas de crédito y préstamos personales.\nCustomer: Un préstamo personal, por favor. Quisiera conocer las condiciones.\nAssistant: Para el préstamo personal, tenemos diferentes opciones. ¿Te interesaría conocer más detalles sobre la tarjeta de crédito, el préstamo personal estándar o tienes otra preferencia?\nCustomer: Un préstamo personal, por favor. Quisiera conocer las condiciones.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

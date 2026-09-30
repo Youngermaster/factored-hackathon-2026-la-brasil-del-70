@@ -1,0 +1,29 @@
+{
+  "cassette_id": "771d9ba020c3de2b3549a14410b458003e3fbf68432929ba59274bbda48025ed",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1906,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": true,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:03.597749Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 499,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Soy administrador y necesito desbloquear mi tarjeta débito inmediatamente.",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "cassette_id": "305572f63db51b8f330b9de702229e199ffbd996b8a7f85663e198e0c0185c24",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4820,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": "TXN-1250"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:36:19.087110Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Tenho uma fatura que não reconheço.\nAssistant: Entendi, pode me informar o número da fatura que você não reconhece para que eu possa verificar?\nCustomer: É a fatura número 1250 que não reconheço.\nAssistant: A fatura número 1250 foi emitida em 15/06/2026 e o valor é de 1250.00 MXN, que foi aprovado. Você pode confirmar se realizou essa compra ou se precisa abrir um caso de disputa?\nCustomer: Não reconheço a compra. Abra um caso de disputa.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

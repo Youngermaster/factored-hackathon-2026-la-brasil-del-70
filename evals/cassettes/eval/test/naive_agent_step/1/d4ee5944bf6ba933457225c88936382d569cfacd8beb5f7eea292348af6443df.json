@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d4ee5944bf6ba933457225c88936382d569cfacd8beb5f7eea292348af6443df",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3407,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a revisar esto. ¿Podría confirmarme su número de cuenta para poder verificar el saldo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:47:19.030488Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1407,
+    "output_tokens": 52
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál es mi saldo?\nAssistant: Su saldo actual es de 480,000 ARS en su cuenta corriente, 250,000 ARS en su cuenta de ahorros y 45,000 ARS en su tarjeta de crédito, como de costumbre estas cifras son al 17 de junio de 2026.\nCustomer: Ese saldo está mal, no es correcto",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

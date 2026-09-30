@@ -1,0 +1,29 @@
+{
+  "cassette_id": "00f44d26707657a375edadc3b8d10ab39f9ed205a928515f94432b6a02ecd420",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1797,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:22:57.700033Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 514,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço essa despesa de 300 reais no CAFÉ LUNA.",
+    "dialect_hint": "pt-BR"
+  }
+}

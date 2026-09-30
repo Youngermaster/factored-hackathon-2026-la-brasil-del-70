@@ -1,0 +1,37 @@
+{
+  "cassette_id": "989dfb23c295fccc1ad1309f97b85a49ad4d42cad216d84235f24d83bc6e86fa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4902,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0004",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:37.509255Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1344,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Contesto a compra de 15.000 na KIOSCO DEL SUR, não fui eu",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "817fc4b3947d3872de1d2f190fdbaa868a67a3519a6ba26d2c787c2af72a9a9c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6892,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vou resumir: você deseja bloquear o cartão de crédito de sua mãe, pois ela não sabe usar o aplicativo. É correto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:24:30.531435Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Quero bloquear o cartão de crédito da minha mãe, ela não sabe usar o app",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

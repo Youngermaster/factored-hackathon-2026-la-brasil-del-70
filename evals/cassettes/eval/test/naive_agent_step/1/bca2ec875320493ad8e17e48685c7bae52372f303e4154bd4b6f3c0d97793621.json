@@ -1,0 +1,35 @@
+{
+  "cassette_id": "bca2ec875320493ad8e17e48685c7bae52372f303e4154bd4b6f3c0d97793621",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2666,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:29:07.318354Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Estoy cansado, solo quiero saber si mi tarjeta de débito está activa, ¿podrías ayudarme?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

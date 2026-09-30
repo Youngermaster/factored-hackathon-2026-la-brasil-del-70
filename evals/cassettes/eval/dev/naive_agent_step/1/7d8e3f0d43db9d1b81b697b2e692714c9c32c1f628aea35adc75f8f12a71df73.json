@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7d8e3f0d43db9d1b81b697b2e692714c9c32c1f628aea35adc75f8f12a71df73",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4458,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "transaction_id": "ayer50000"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:36.485624Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1414,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.\nAssistant: Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?\nCustomer: Sí, la transacción es del día de ayer por $50.000.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

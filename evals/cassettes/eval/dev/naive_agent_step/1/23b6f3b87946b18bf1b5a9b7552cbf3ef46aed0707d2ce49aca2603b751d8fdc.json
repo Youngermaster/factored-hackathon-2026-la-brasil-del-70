@@ -1,0 +1,33 @@
+{
+  "cassette_id": "23b6f3b87946b18bf1b5a9b7552cbf3ef46aed0707d2ce49aca2603b751d8fdc",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7999,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos proceder com o bloqueio da sua carta de crédito. Vou precisar de alguns detalhes para confirmar a solicitação. Qual é o motivo do bloqueio? Pode ser por perda, roubo, suspeita de fraude ou precaução.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:15:41.361720Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1330,
+    "output_tokens": 88
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma carta de crédito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

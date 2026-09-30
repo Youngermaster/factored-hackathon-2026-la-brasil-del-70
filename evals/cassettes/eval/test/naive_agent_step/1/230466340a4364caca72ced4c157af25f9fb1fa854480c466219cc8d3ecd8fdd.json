@@ -1,0 +1,35 @@
+{
+  "cassette_id": "230466340a4364caca72ced4c157af25f9fb1fa854480c466219cc8d3ecd8fdd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4160,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_transactions"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:45:44.731149Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quiero el resumen de movimientos de mi tarjeta de crédito",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

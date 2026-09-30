@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a31e29b9643dea9b709ce024ab24475d2a61c6ecaf80b9c0c108a7b759ed4fef",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5812,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "1500_pesos_JUAN_PEREZ"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:07:32.466844Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1347,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber o status do meu pagamento de 1500 pesos para JUAN PEREZ.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

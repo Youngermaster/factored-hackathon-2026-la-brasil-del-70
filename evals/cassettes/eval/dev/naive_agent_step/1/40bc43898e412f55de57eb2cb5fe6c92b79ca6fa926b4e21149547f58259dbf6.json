@@ -1,0 +1,36 @@
+{
+  "cassette_id": "40bc43898e412f55de57eb2cb5fe6c92b79ca6fa926b4e21149547f58259dbf6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5636,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "month": "2025-12"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:11:03.613701Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Dame el resumen de mi tarjeta de crédito de todo el año pasado",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

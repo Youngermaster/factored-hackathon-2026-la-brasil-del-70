@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b7d43e23b4effb2b17cc1a138797b9ffc9a4c23f000bc14d4693b699cb68a8ab",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5060,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:40:01.875878Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 50
+  },
+  "variables": {
+    "customer_message": "Bloquea también mi tarjeta de crédito por precaución",
+    "dialect_hint": "es-MX"
+  }
+}

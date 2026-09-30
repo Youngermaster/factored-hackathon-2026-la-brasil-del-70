@@ -1,0 +1,33 @@
+{
+  "cassette_id": "40a86564d9f20ef064502953c6950e76365bddb77b2a02552e963dd69ec223c8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4257,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado su solicitud de tarjeta de crédito. Su solicitud ha sido enviada con éxito y su número de aplicación es app-naive-0001. ¿Necesita más información o ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:30:38.990446Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1391,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me dan una tarjeta de crédito con límite de 30000?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0009\", \"product_code\": \"CRD-MX-01\", \"amount\": \"\", \"status\": \"submitted\"}}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cebcc1e848d12ff7192108e8ae258a30c2bb11a9d1dbdcef3b19a8d066b570b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3955,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Por supuesto, para el préstamo personal en Colombia, necesitamos considerar algunos factores. ¿Podría proporcionarme su ingreso mensual aproximado y si tiene algún pago pendiente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:17:54.492086Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1386,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quiero saber sobre un crédito. ¿Me podrías decir las condiciones?\nAssistant: ¡Claro! Le proporcionaré información sobre las condiciones de los productos de crédito disponibles en Colombia. ¿Le interesa conocer más sobre tarjetas de crédito, hipotecas o préstamos personales?\nCustomer: Prefiero un préstamo personal, ¿puedes decirme las condiciones?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

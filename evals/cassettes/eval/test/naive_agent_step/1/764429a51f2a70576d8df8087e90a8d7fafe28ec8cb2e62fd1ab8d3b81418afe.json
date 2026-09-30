@@ -1,0 +1,33 @@
+{
+  "cassette_id": "764429a51f2a70576d8df8087e90a8d7fafe28ec8cb2e62fd1ab8d3b81418afe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4154,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción no reconocida. El plazo para resolver este caso es de 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:07.659543Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1398,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco esta transacción. ¿Podría ayudarme?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

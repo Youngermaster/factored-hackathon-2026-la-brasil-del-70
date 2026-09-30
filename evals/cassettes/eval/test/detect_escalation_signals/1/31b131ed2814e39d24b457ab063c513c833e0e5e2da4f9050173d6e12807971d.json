@@ -1,0 +1,29 @@
+{
+  "cassette_id": "31b131ed2814e39d24b457ab063c513c833e0e5e2da4f9050173d6e12807971d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2109,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:22:53.186040Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 504,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Hola, soy el victimario de una estafa con una compra de $1250 en TIENDA AURORA.",
+    "dialect_hint": "es-MX"
+  }
+}

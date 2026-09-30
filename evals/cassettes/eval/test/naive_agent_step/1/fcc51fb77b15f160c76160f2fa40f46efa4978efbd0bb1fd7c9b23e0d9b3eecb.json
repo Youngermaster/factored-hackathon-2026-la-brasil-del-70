@@ -1,0 +1,33 @@
+{
+  "cassette_id": "fcc51fb77b15f160c76160f2fa40f46efa4978efbd0bb1fd7c9b23e0d9b3eecb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6587,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero aquí no podemos asesorar sobre inversiones. Te recomendaría consultar con un asesor financiero o revisar nuestra sección de noticias financieras para obtener información actualizada. ¿Necesitas ayuda con alguna de las áreas que mencionaste antes?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:07.416080Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 87
+  },
+  "variables": {
+    "conversation": "Customer: ¿Conviene comprar criptomonedas este mes?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

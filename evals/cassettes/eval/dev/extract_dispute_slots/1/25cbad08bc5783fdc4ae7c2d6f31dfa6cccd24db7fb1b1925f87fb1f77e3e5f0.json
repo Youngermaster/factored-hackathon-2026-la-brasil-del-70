@@ -1,0 +1,43 @@
+{
+  "cassette_id": "25cbad08bc5783fdc4ae7c2d6f31dfa6cccd24db7fb1b1925f87fb1f77e3e5f0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7792,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "15000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "2026-06-18",
+      "merchant_text": "ELECTRONICA NORTE"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:59:49.512813Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1473,
+    "output_tokens": 112
+  },
+  "variables": {
+    "customer_message": "Não reconheço uma cobrança de 15000 na ELECTRONICA NORTE",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "0d20e26953d6ce984f31f83821ec6b696fcfb5167996c4bc53761f0bd95d5caa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3681,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:20:05.766210Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 2046,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que tendría que pagar si contrato un préstamo personal?\nAssistant: Para poder darte una respuesta precisa, necesito conocer el monto del préstamo personal al que te refieres. ¿Podrías proporcionarme más detalles?\nCustomer: Ese detalle es que no tengo un préstamo personal activo, pero me gustaría saber cuál sería el saldo a pagar. También, ¿podrías darme los términos y condiciones para obtener uno?\nAssistant: Entiendo. Para darte una estimación del saldo a pagar y los términos y condiciones de un préstamo personal, necesitaría algunos detalles sobre tu perfil crediticio. ¿Podrías proporcionarme tu puntaje crediticio y tu ingreso mensual? Esto nos ayudará a darte una orientación indicativa.\nCustomer: Mis ingresos son buenos pero no tengo un puntaje crediticio específico. Quiero saber el saldo para un préstamo personal y las condiciones generales.\nAssistant: Entiendo, para darte una orientación indicativa sobre los términos y condiciones de un préstamo personal, necesitamos considerar algunos factores. Como no tienes un puntaje crediticio específico, realizaremos una evaluación basada en los requisitos mínimos. Los préstamos personales en Argentina suelen tener tasas de interés entre el 25% y el 40% anual, con plazos que van desde 12 hasta 60 meses. El monto máximo que podrías solicitar dependerá de tu ingreso mensual y otros factores. ¿Te interesaría recibir una orientación indicativa basada en estos parámetros?\nCustomer: Sí, me interesa la orientación indicativa. ¿Podrías darme el saldo a pagar y las condiciones generales del préstamo?\nAssistant: Para darte una orientación indicativa, necesitamos considerar algunos factores. Dado que no tienes un puntaje crediticio específico, realizaremos una evaluación basada en los requisitos mínimos. Los préstamos personales en Argentina suelen tener tasas de interés entre el 25% y el 40% anual, con plazos que van desde 12 hasta 60 meses. El monto máximo que podrías solicitar dependerá de tu ingreso mensual y otros factores. ¿Podrías proporcionarme tu ingreso mensual para poder darte una estimación?\nCustomer: Mi ingreso mensual es de 500.000 pesos. ¿Podrías darme el saldo a pagar y las condiciones generales del préstamo?\nAssistant: Gracias por proporcionar tu ingreso mensual. Basándonos en tu puntaje crediticio de 780, que es excelente, y tu ingreso de 1.800.000 ARS, podríamos ofrecerte un préstamo personal con una tasa de interés de alrededor del 25% anual. El plazo mínimo es de 12 meses y el máximo de 60 meses. El monto máximo que podrías solicitar sería aproximadamente el 30% de tu ingreso mensual, lo que sería 540.000 ARS. ¿Te interesaría recibir una orientación más detallada y, si lo deseas, iniciar el proceso de solicitud?\nCustomer: Sí, me interesa la orientación más detallada. ¿Podrías darme el saldo a pagar y las condiciones generales del préstamo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

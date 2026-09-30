@@ -1,0 +1,29 @@
+{
+  "cassette_id": "86233511ab3a41927c27063b7c73adc7b2879c37613b49bf876662d988f92dbc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1702,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:57:28.786033Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 501,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No reconozco la transacción del 9 de junio, solo la del 12 de junio.",
+    "dialect_hint": "es-MX"
+  }
+}

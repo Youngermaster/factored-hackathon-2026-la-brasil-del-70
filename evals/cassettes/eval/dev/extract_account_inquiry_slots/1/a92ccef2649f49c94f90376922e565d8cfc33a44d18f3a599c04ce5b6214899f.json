@@ -1,0 +1,37 @@
+{
+  "cassette_id": "a92ccef2649f49c94f90376922e565d8cfc33a44d18f3a599c04ce5b6214899f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4689,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "120.5",
+      "currency_hint": "MXN",
+      "date_expression": null,
+      "payee_text": "conta de luz"
+    },
+    "product_hint": {
+      "last4": null,
+      "product_type": "checking_account"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:50:07.903356Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1141,
+    "output_tokens": 81
+  },
+  "variables": {
+    "customer_message": "Pague a conta de luz com a minha conta",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

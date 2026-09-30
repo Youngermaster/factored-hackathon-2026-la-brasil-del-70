@@ -1,0 +1,35 @@
+{
+  "cassette_id": "9c252612b7c254a9e6bbf45f980dfbcf48ae4e5a6591bcddc0882a3c004e834f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3013,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:23:57.314647Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1509,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber sobre un crédito. ¿Podrías darme más información?\nAssistant: Claro, ¿podrías indicarme qué tipo de crédito te interesa saber más? Tenemos tarjetas de crédito y préstamos personales.\nCustomer: Un préstamo personal, por favor. Quisiera conocer las condiciones.\nAssistant: Para el préstamo personal, tenemos diferentes opciones. ¿Te interesaría conocer más detalles sobre la tarjeta de crédito, el préstamo personal estándar o tienes otra preferencia?\nCustomer: Un préstamo personal, por favor. Quisiera conocer las condiciones.\nAssistant: Por supuesto, para el préstamo personal, necesitamos considerar algunos factores. ¿Podrías proporcionarme tu puntaje crediticio? También, ¿puedes indicarme tu ingreso mensual aproximado?\nCustomer: Mi puntaje crediticio es 750 y gano alrededor de $30,000 pesos argentinos al mes.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

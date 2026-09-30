@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a7996fec8dd12878671008ee4ebc7161b69c8cf2be501fb7795d8d0c84a44e48",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1476,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "$ ¿Cuánto me queda en mi cuenta?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:47:24.336969Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "Customer: $ ¿Cuánto me queda en mi cuenta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ ¿Cuánto me queda en mi cuenta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ ¿Cuánto me queda en mi cuenta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ ¿Cuánto me queda en mi cuenta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ ¿Cuánto me queda en mi cuenta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-acc-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Know how much money is available, asked with a bare dollar sign.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask how much $ you have, with a bare $ sign and no currency. If asked, say pesos in your accounts.",
+    "known_facts": "(none)"
+  }
+}

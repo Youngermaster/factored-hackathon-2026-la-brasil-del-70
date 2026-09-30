@@ -1,0 +1,35 @@
+{
+  "cassette_id": "951f9795aa30b068733e93655db5585f32ea5f7f9345e37c7804c31192234af9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2701,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:26:22.376652Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto gasté con mi tarjeta de crédito en mayo?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

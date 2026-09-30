@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1ab1b6a871ea17fd6f8a8f7005858f2e68142097048d6e5ea0adcdc28a8d1ada",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10497,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu rendimento mensal e no seu perfil de crédito, você tem uma boa chance de obter um empréstimo pessoal. No entanto, o limite máximo de parcelas mensais sobre o seu rendimento é de 30%, que neste caso seria R$ 450.000,00. O valor solicitado de R$ 1.500.000,00 excede esse limite. Vamos precisar de uma análise mais detalhada para determinar a viabilidade. Gostaria que eu abrisse uma solicitação de crédito para você?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:32:23.613851Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 159
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?\nAssistant: Com base no seu perfil de crédito, você tem a possibilidade de obter um empréstimo pessoal. No entanto, para uma análise mais precisa, precisamos considerar seu rendimento mensal. Você pode nos fornecer essa informação?\nCustomer: Ganho 1.500.000 pesos por mês",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0009",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 745, \"monthly_income\": \"none\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

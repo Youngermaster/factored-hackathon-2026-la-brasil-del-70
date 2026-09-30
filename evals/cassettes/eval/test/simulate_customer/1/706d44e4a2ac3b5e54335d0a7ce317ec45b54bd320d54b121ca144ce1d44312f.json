@@ -1,0 +1,32 @@
+{
+  "cassette_id": "706d44e4a2ac3b5e54335d0a7ce317ec45b54bd320d54b121ca144ce1d44312f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2166,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Soy víctima de una estafa con la tarjeta de crédito **** 3791."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:20:08.165944Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 672,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: Hola, soy víctima de una estafa con una compra de $1250 en TIENDA AURORA. No quiero bloquear la tarjeta por ahora.\nAssistant: Tienes varias tarjetas. ¿Sobre cuál me consultas?\n1) tarjeta de crédito **** 3791\n2) tarjeta de débito **** 1187",
+    "conversation_seed": "test-dis-ambiguou-001#3",
+    "dialect_hint": "es-MX",
+    "goal": "Report a fraudulent charge using estafa (fraud in Spanish) or golpe (Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you were the victim of a scam (estafa in Spanish, golpe in Portuguese) with a charge of 1250 at TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f540207b41b2124efb36f48fad68f72c73815244b79b85a9326e09ce457bfe63",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5927,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Sua solicitação de empréstimo pessoal foi enviada com sucesso. O processo agora será analisado por nossa equipe. Geralmente, o resultado será informado em até 15 dias úteis. Você receberá um e-mail com mais detalhes. Se precisar de mais assistência, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:25:07.682756Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1408,
+    "output_tokens": 99
+  },
+  "variables": {
+    "conversation": "Customer: Quero pedir um empréstimo pessoal de [DOCUMENT] em 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVAR0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"10000\", \"status\": \"submitted\"}}"
+  }
+}

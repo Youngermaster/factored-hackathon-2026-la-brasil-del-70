@@ -1,0 +1,32 @@
+{
+  "cassette_id": "c2e118327c5267fff7ac83d5874f6e6306b166d7f2fce41f6dd6ef5be29854e3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2994,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": "mayo"
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:17.201996Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1134,
+    "output_tokens": 43
+  },
+  "variables": {
+    "customer_message": "Quiero un resumen de los movimientos de mi tarjeta de crédito de mayo",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

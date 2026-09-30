@@ -1,0 +1,33 @@
+{
+  "cassette_id": "20c07bfea600a2772f5bfd9bced529fa57b10f2003c9cf804bb720f6b9d2925a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7586,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "En tu cuenta de chequeras tienes un saldo de 52,300.50 MXN, en tu cuenta de ahorros de 18,000.00 MXN y en tu tarjeta de crédito de 12,500.00 MXN, como de costumbre, estos saldos son al 17 de junio de 2026.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:34.540942Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1561,
+    "output_tokens": 115
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto $ tengo en mi cuenta?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0001-01\", \"type\": \"checking_account\", \"number\": \"**** 5056\", \"balance\": \"52300.50 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5231\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0025\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

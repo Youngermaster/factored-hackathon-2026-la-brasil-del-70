@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a2a7af466afc0f67d59724f6514a0a0911a2bbfe0daf3963804482b2e3d4da9a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2982,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": true,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:29.009737Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 494,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Soy apoderado de Rafael, abre una reclamación por su compra",
+    "dialect_hint": "es-MX"
+  }
+}

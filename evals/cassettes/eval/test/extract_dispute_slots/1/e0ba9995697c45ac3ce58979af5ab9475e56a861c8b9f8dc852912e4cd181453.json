@@ -1,0 +1,40 @@
+{
+  "cassette_id": "e0ba9995697c45ac3ce58979af5ab9475e56a861c8b9f8dc852912e4cd181453",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8063,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": null
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:28:59.045280Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1466,
+    "output_tokens": 59
+  },
+  "variables": {
+    "customer_message": "Me cobraron 4040 en una tienda que no conozco\nEs sobre un cargo que no reconozco",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

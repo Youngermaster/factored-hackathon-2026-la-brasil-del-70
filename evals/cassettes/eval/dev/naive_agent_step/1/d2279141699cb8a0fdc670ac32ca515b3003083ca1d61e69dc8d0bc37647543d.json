@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d2279141699cb8a0fdc670ac32ca515b3003083ca1d61e69dc8d0bc37647543d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5785,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Por supuesto, CLI-EVCO0008. ¿Te interesa conocer más sobre un crédito personal o prefieres explorar otras opciones como tarjetas de crédito o hipotecas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:26:59.289361Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1688,
+    "output_tokens": 68
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me podrías informar sobre un crédito personal?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"CO-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"1000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"28.00\"}, {\"product_code\": \"CO-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"60000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"1200000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"15.00\"}, {\"product_code\": \"CO-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"2000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"80000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 6, \"max_term_months\": 72, \"max_annual_rate\": \"27.00\"}]}"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "cassette_id": "729e3e7b95326ba0f1bc1c9e9afe454ebb891b33a87a5e4789231d76d4c1b132",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5294,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "amount": "[DOCUMENT]",
+      "customer_id": "CLI-EVAR0008",
+      "product_code": "PERSONAL_LOAN",
+      "term_months": "24"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "submit_credit_application"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:52.347975Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1326,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Me gustaría saber si me dan un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

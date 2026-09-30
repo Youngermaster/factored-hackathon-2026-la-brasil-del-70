@@ -1,0 +1,32 @@
+{
+  "cassette_id": "062fcb19853384c7363d28973dd42572b55e4d82c89040bd4c5ccb0007658a19",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1851,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Obrigado, mas eu queria saber como está o meu cartão de débito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:11:42.451905Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 610,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha cartão?\nAssistant: Olá! Sua carta está ativa e não há nenhuma restrição atual. Gostaria de bloquear ou trocar algum cartão?",
+    "conversation_seed": "test-car-ambiguou-002#2",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "663baba0f19f971e6bc4c6f82b201c491aca78e4ce0fbe013955ae0fd16402d2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5941,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Gracias por proporcionarnos tu ingreso mensual. Con tu puntuación crediticia de 745 y un ingreso de [DOCUMENT] pesos argentinos, calificas para un préstamo personal. Sin embargo, necesitamos verificar si tu ingreso es suficiente para cubrir el monto solicitado. ¿Te gustaría que realicemos una solicitud formal?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:30:30.975300Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1441,
+    "output_tokens": 106
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: Con tu puntuación crediticia de 745, calificas para un préstamo personal. Sin embargo, para una aprobación definitiva se requiere más información sobre tu ingreso mensual. ¿Podrías proporcionarnos este dato?\nCustomer: Mi ingreso mensual es de [DOCUMENT]",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0009",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 745, \"monthly_income\": \"none\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

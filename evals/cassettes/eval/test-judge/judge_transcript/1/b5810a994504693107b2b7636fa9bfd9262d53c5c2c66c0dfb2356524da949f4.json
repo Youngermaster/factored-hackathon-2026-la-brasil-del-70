@@ -1,0 +1,30 @@
+{
+  "cassette_id": "b5810a994504693107b2b7636fa9bfd9262d53c5c2c66c0dfb2356524da949f4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4295,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:23.476740Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 849,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: Con tu puntuación crediticia de 745, calificas para un préstamo personal. Sin embargo, para una aprobación definitiva se requiere más información sobre tu ingreso mensual. ¿Podrías proporcionarnos este dato?\nCustomer: Mi ingreso mensual es de [DOCUMENT]\nAssistant: Gracias por proporcionarnos tu ingreso mensual. Con tu puntuación crediticia de 745 y un ingreso de [DOCUMENT] mensual, calificas para un préstamo personal de hasta [CALCULATED AMOUNT] COP a 24 meses. Sin embargo, necesitamos verificar si este monto se ajusta a tu capacidad de pago. ¿Te interesa que continuemos con la solicitud?"
+  }
+}

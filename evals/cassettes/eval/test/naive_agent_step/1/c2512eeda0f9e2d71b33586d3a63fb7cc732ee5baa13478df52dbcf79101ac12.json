@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c2512eeda0f9e2d71b33586d3a63fb7cc732ee5baa13478df52dbcf79101ac12",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7795,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil de crédito, você tem uma pontuação de crédito de 780, que é excelente. Sua renda mensal é de 9.000.000 COP e você não tem dias em atraso. Para um empréstimo pessoal, geralmente precisamos de pelo menos 6 meses de histórico de crédito. Como você tem 40 meses de histórico, isso é muito bom. No entanto, para uma orientação mais precisa, precisamos verificar os produtos disponíveis no momento.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:22:38.442311Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 140
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de confirmar, você está interessado em saber sobre a elegibilidade para um empréstimo pessoal, correto?\nCustomer: Sim, quero saber sobre a elegibilidade para um empréstimo pessoal.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

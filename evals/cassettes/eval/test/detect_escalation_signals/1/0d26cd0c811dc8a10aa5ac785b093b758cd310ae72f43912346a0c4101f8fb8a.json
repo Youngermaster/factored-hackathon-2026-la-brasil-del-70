@@ -1,0 +1,29 @@
+{
+  "cassette_id": "0d26cd0c811dc8a10aa5ac785b093b758cd310ae72f43912346a0c4101f8fb8a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2048,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:21:10.874875Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 519,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Gostaria de saber se consigo um empréstimo pessoal de 50000 em 24 meses",
+    "dialect_hint": "pt-BR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b2d8604dab86d30a293f3434905c522ca259238582fe503d4da91cd7cf317b84",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5099,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "La vencimiento de tu tarjeta de débito es el 30 de noviembre de 2027. ¿Necesitas más información sobre ella o alguna otra tarjeta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:21:45.268445Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1451,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuándo vence mi tarjeta de débito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0002-01\", \"type\": \"credit_card\", \"number\": \"**** 6155\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVMX0002-02\", \"type\": \"debit_card\", \"number\": \"**** 7052\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

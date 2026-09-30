@@ -1,0 +1,33 @@
+{
+  "cassette_id": "88bc7935877442ca2b193261a8250d5864cb80a22f50f8439a89c997de5f06b8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 11412,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Aqui estão as movimentações resumidas do seu cartão de crédito. No dia 15/06/2026, houve uma movimentação pendente no valor de 1.500,00 MXN com o comerciante JUAN PEREZ. No dia 11/06/2026, houve uma movimentação aprovada no valor de 1.500,00 MXN com o mesmo comerciante. E no dia 06/06/2026, houve uma devolução no valor de 850,00 MXN pelo serviço de luz. Você gostaria de saber mais sobre alguma dessas movimentações ou tem alguma dúvida?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:52.880184Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1489,
+    "output_tokens": 196
+  },
+  "variables": {
+    "conversation": "Customer: Me envie a resumo das movimentações do meu cartão de crédito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-06-15\", \"merchant\": \"JUAN PEREZ\", \"amount\": \"1500.00 MXN\", \"status\": \"pending\"}, {\"date\": \"2026-06-11\", \"merchant\": \"JUAN PEREZ\", \"amount\": \"1500.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-06-06\", \"merchant\": \"PAGO SERVICIO LUZ\", \"amount\": \"850.00 MXN\", \"status\": \"reversed\"}]}"
+  }
+}

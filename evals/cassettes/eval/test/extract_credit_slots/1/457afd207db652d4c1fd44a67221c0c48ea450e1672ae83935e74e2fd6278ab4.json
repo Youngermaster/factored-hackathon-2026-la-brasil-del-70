@@ -1,0 +1,31 @@
+{
+  "cassette_id": "457afd207db652d4c1fd44a67221c0c48ea450e1672ae83935e74e2fd6278ab4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3307,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": "1000000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:11:32.081144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1055,
+    "output_tokens": 60
+  },
+  "variables": {
+    "customer_message": "Pode ser de 1.000.000 pesos em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

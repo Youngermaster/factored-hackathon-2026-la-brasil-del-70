@@ -1,0 +1,36 @@
+{
+  "cassette_id": "428a9fe1a6bce38b4be9346a6049248b88dd4486a7787d2fe42bf33b5742bc65",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4361,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "transaction_id": "TRX-EVCO0002-003"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:57:50.408730Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1940,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: ¿Pueden informarme sobre una de mis tarjetas y el saldo actual?\nAssistant: El saldo actual de su tarjeta de crédito es de 1.200.000 COP, como de costumbre, este monto está actualizado hasta el 17 de junio de 2026. ¿Necesita información adicional sobre esta tarjeta o hay algo más con lo que pueda ayudarlo?\nCustomer: Sí, necesito información sobre mi tarjeta débito también y si hay algún movimiento reciente.\nAssistant: El saldo de su tarjeta débito es de 0 COP, ya que no tiene ningún saldo pendiente. Además, hay dos movimientos recientes: uno rechazado el 16 de junio en ESTACION TERPEL SUR por 40.000 COP y otro aprobado el 14 de junio en ALMACEN ANDES por 85.000 COP. ¿Necesita más información sobre estos movimientos o hay algo más con lo que pueda ayudarlo?\nCustomer: Quiero saber el detalle de esos movimientos rechazados.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"list_transactions\", \"status\": \"ok\", \"result\": [{\"transaction_id\": \"TRX-EVCO0002-003\", \"date\": \"2026-06-16\", \"merchant\": \"ESTACION TERPEL SUR\", \"amount\": \"40000.00 COP\", \"status\": \"declined\", \"type\": \"purchase\", \"product_id\": \"PRD-EVCO0002-01\"}, {\"transaction_id\": \"TRX-EVCO0002-004\", \"date\": \"2026-06-14\", \"merchant\": \"ALMACEN ANDES\", \"amount\": \"85000.00 COP\", \"status\": \"approved\", \"type\": \"purchase\", \"product_id\": \"PRD-EVCO0002-01\"}]}\n{\"tool\": \"list_transactions\", \"status\": \"ok\", \"result\": [{\"transaction_id\": \"TRX-EVCO0002-003\", \"date\": \"2026-06-16\", \"merchant\": \"ESTACION TERPEL SUR\", \"amount\": \"40000.00 COP\", \"status\": \"declined\", \"type\": \"purchase\", \"product_id\": \"PRD-EVCO0002-01\"}, {\"transaction_id\": \"TRX-EVCO0002-004\", \"date\": \"2026-06-14\", \"merchant\": \"ALMACEN ANDES\", \"amount\": \"85000.00 COP\", \"status\": \"approved\", \"type\": \"purchase\", \"product_id\": \"PRD-EVCO0002-01\"}]}"
+  }
+}

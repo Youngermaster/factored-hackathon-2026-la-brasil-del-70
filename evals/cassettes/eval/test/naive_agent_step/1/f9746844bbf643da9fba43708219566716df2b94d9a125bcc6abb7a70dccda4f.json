@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f9746844bbf643da9fba43708219566716df2b94d9a125bcc6abb7a70dccda4f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5452,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Entendido, CLI-EVMX0010. Sua aplicação foi enviada com sucesso. O número da sua aplicação é app-naive-0001. Vamos aguardar a análise. Você pode verificar o status em qualquer momento. Se precisar de mais informações, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:36:20.102102Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1608,
+    "output_tokens": 95
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber se consigo um empréstimo pessoal de 50000 em 24 meses\nAssistant: Olá CLI-EVMX0010, com base no seu perfil de crédito, você tem uma pontuação de 700, que é boa. No entanto, para um empréstimo pessoal de 50.000 MXN em 24 meses, precisamos verificar se você atende aos critérios mínimos. O limite máximo de parcelas mensais sobre o rendimento é de 35%, e você tem 60000 MXN de rendimento mensal. Vamos verificar se você está dentro desses limites.\nCustomer: Sim",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 700, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0010\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"50000.00 MXN\", \"status\": \"submitted\"}}"
+  }
+}

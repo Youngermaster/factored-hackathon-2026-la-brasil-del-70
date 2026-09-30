@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d091b14d89afa9dfe43115f509e9e7717d916c981edf4013c5f7cf470efc6507",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1846,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:25:28.987238Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço essa cobrança. Não sei os detalhes.",
+    "dialect_hint": "pt-BR"
+  }
+}

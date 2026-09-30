@@ -1,0 +1,34 @@
+{
+  "cassette_id": "9bbd64eb1a7e1a28858fb6f9f7db93a99b3b0726efbd75033a9fd7b596e565b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7444,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_status"
+      }
+    ],
+    "reason_candidates": [],
+    "transaction": null
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:01:32.382831Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1444,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "¿Cómo viene mi reclamo?",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

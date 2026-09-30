@@ -1,0 +1,30 @@
+{
+  "cassette_id": "950993411512e6e6c989812a17a393cd8918909b1917853f0d3df8f2c67833e0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2746,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:35.472490Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 833,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: ¿Mi tarjeta de crédito está activa?\nAssistant: Sí, su tarjeta de crédito está activa. ¿Necesita realizar alguna otra consulta o acción relacionada con su tarjeta?\nCustomer: Por cierto, no reconozco un cargo de 85.000 en ALMACEN ANDES\nAssistant: Se ha identificado un cargo no reconocido de 85.000 COP en ALMACEN ANDES. ¿Desea abrir un caso de disputa para este cargo?\nCustomer: Sí, confirmo\nAssistant: Se ha abierto correctamente un caso de disputa para el cargo no reconocido. El SLA para resolver este caso es de 15 días hábiles. ¿Necesita ayuda con algo más?"
+  }
+}

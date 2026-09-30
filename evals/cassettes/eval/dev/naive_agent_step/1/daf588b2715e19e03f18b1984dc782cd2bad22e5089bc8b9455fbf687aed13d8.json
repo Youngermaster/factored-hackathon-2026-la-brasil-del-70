@@ -1,0 +1,35 @@
+{
+  "cassette_id": "daf588b2715e19e03f18b1984dc782cd2bad22e5089bc8b9455fbf687aed13d8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3981,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:17:35.967400Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1819,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.\nAssistant: Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?\nCustomer: Sí, la transacción es del día de ayer por $50.000.\nAssistant: No encontramos esa transacción en tu historial. ¿Podrías proporcionar más detalles o verificar el número de transacción?\nCustomer: Sí, la transacción fue por $50.000 ayer en ESTACION TERPEL SUR.\nAssistant: No encontramos una transacción por $50.000 en la fecha que mencionas. Sin embargo, vemos que el día 16 de junio hubo una transacción por $40.000 en ESTACION TERPEL SUR que fue rechazada. ¿Podrías proporcionar más detalles sobre esta transacción o la transacción que te está causando problemas?\nCustomer: Esa transacción fue la que quise hacer ayer. ¿Por qué fue rechazada?\nAssistant: Entendido, CLI-EVCO0002. La transacción de $40.000 del 16 de junio en ESTACION TERPEL SUR fue rechazada. Podría ser por varios motivos, como un perfil de crédito insuficiente o problemas con la información proporcionada. ¿Podrías proporcionar más detalles sobre tu perfil de crédito o la información que ingresaste durante la transacción?\nCustomer: La transacción fue con mi tarjeta de crédito. ¿Por qué fue rechazada?\nAssistant: Entendido, CLI-EVCO0002. La transacción de $40.000 del 16 de junio en ESTACION TERPEL SUR fue rechazada. Podría ser debido a un perfil de crédito insuficiente o problemas con la información proporcionada. ¿Podrías proporcionar más detalles sobre tu perfil de crédito o la información que ingresaste durante la transacción?\nCustomer: Esa transacción fue con mi tarjeta de crédito. ¿Podrías darme más detalles sobre por qué fue rechazada?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

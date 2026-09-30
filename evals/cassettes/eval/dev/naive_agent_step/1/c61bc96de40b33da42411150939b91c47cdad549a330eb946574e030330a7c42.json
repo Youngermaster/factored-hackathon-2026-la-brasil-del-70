@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c61bc96de40b33da42411150939b91c47cdad549a330eb946574e030330a7c42",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4873,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "No encontramos tu tarjeta de crédito en nuestros registros. ¿Podrías proporcionar más detalles para que podamos asistirte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:19:13.909612Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1383,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Me robaron la tarjeta de crédito, bloquéala\nAssistant: Lo siento por lo que te ha ocurrido. Vamos a proceder a bloquear tu tarjeta de crédito. ¿Estás seguro de que quieres bloquearla?\nCustomer: Sí, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

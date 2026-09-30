@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b3ac650b02d36b08f9265a025778f714e3ed72f27a2f200d0e459ef40a3614fb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5136,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Sua solicitação de empréstimo pessoal foi encaminhada para uma avaliação humana. Um especialista entrará em contato com você em breve para discutir mais detalhes e coletar informações necessárias. Obrigado pelo seu interesse!",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:26:47.520882Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1520,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. No entanto, para uma análise mais detalhada e para entender melhor as opções disponíveis, sugiro que entremos em contato com um especialista. Você gostaria que isso fosse encaminhado para uma avaliação humana?\nCustomer: Sim, gostaria de uma avaliação humana para um empréstimo pessoal de 50.000 pesos, parcelado em 24 meses.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"{50000}\", \"status\": \"submitted\"}}"
+  }
+}

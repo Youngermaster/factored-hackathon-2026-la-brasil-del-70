@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a86e721fa076e2ee09d8a9bca780f214c3946e8989d548ff8069c5b92a34cf1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2272,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:12.118311Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero un resumen de los movimientos de mi tarjeta de crédito de mayo",
+    "dialect_hint": "es-MX"
+  }
+}

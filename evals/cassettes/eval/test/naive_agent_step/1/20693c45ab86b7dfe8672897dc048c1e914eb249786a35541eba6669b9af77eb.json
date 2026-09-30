@@ -1,0 +1,36 @@
+{
+  "cassette_id": "20693c45ab86b7dfe8672897dc048c1e914eb249786a35541eba6669b9af77eb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4822,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "month": "2026-02"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:27:59.032212Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Quiero el resumen de movimientos de mi tarjeta de crédito de los últimos 8 meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

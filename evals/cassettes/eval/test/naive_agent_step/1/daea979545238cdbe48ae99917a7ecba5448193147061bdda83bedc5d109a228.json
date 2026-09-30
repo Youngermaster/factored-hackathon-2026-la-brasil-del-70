@@ -1,0 +1,37 @@
+{
+  "cassette_id": "daea979545238cdbe48ae99917a7ecba5448193147061bdda83bedc5d109a228",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3581,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "debit",
+      "reason": "roubado"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:51.074892Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1404,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Roubaram meu cartão de débito, bloqueiem\nAssistant: Entendido, vamos proceder com o bloqueio do seu cartão de débito. Vou precisar de algumas informações para confirmar a ação. Você pode me fornecer o número do seu cartão ou a razão para a qual você está solicitando este bloqueio?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

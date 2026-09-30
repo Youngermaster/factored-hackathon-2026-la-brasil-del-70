@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cce7349d6cef35ca0d38d3ec44a737a6257a26407f56f580011730e1d9b8af93",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6106,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não posso ajudar com isso aqui. Você pode falar com nosso suporte ao cliente para mudar seu endereço e telefone. Posso te auxiliar com outras questões relacionadas às suas contas e cartões.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:49.045418Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 79
+  },
+  "variables": {
+    "conversation": "Customer: Quero mudar o meu endereço e o meu telefone",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

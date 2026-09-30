@@ -1,0 +1,34 @@
+{
+  "cassette_id": "ecb71451ce3ba00bb4f23cf99ad4ec6d32d414158214a186dc8a434837130288",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7006,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "850",
+      "currency_hint": "USD",
+      "date_expression": "06/06",
+      "payee_text": null
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:00:45.409512Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1152,
+    "output_tokens": 62
+  },
+  "variables": {
+    "customer_message": "O que aconteceu com o meu pagamento de 850 do dia 06/06?",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "33b6d57bcd9e700c2875a190307b688700c56da7547eb419edbe57f8319e6317",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2013,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No reconozco esta transacción. ¿Podría ayudarme?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:00.174456Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 594,
+    "output_tokens": 24
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-dis-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 85.000; merchant: ALMACEN ANDES",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 85.000 and the merchant ALMACEN ANDES. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

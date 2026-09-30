@@ -1,0 +1,36 @@
+{
+  "cassette_id": "150dcec3f092059e5a2d3758b83db684095109b29429e3b660a9121a8ea693e5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4555,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "transaction_id": "15/06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:16.457279Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1413,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Situação da minha transferência de 15/06 de 300.000 pesos\nAssistant: Desculpe, mas não encontrei a transferência que você mencionou de 15/06 no valor de 300.000 COP. Poderia fornecer mais detalhes para que eu possa ajudar melhor?\nCustomer: O do dia 15/06",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

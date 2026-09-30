@@ -1,0 +1,29 @@
+{
+  "cassette_id": "28d540dad9bc0d4553d4352f4b528aa79ce6c7f40c9e312497ceb0a57dbfc2a7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2798,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:22:43.435026Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 490,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Puedo tener una hipoteca para comprar un departamento?",
+    "dialect_hint": "es-AR"
+  }
+}

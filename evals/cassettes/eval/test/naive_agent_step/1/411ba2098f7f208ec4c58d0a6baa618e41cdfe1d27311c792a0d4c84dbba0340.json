@@ -1,0 +1,35 @@
+{
+  "cassette_id": "411ba2098f7f208ec4c58d0a6baa618e41cdfe1d27311c792a0d4c84dbba0340",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4210,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:11:31.081510Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber a situação do meu cartão de crédito e das compras recusadas",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

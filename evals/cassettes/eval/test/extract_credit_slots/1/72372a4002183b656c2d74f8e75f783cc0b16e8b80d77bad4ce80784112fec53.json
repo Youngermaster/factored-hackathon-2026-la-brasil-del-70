@@ -1,0 +1,31 @@
+{
+  "cassette_id": "72372a4002183b656c2d74f8e75f783cc0b16e8b80d77bad4ce80784112fec53",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3383,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:10:51.520548Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1067,
+    "output_tokens": 60
+  },
+  "variables": {
+    "customer_message": "Pode me informar se tenho direito a um empréstimo pessoal de 50.000 pesos por 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

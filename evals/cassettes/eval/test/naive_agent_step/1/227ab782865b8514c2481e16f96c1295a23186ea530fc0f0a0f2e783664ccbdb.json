@@ -1,0 +1,33 @@
+{
+  "cassette_id": "227ab782865b8514c2481e16f96c1295a23186ea530fc0f0a0f2e783664ccbdb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5359,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto correctamente el caso de disputa. El plazo para resolverlo es de 30 días desde la fecha de apertura. Durante este tiempo, mantente atento a cualquier comunicación del banco. ¿Hay algo más que necesites?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:46.166949Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1479,
+    "output_tokens": 79
+  },
+  "variables": {
+    "conversation": "Customer: Chau, me cargaron 15 lucas en KIOSCO DEL SUR y no fui yo. No quiero que bloqueen la tarjeta.\nAssistant: Entendido, vamos a abrir un caso de disputa por el pago no autorizado en KIOSCO DEL SUR. ¿Esto está bien para usted?\nCustomer: Sí, así es. No fui yo quien compró nada en ese kiosco.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"TID-KIOSCO_DEL_SUR\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

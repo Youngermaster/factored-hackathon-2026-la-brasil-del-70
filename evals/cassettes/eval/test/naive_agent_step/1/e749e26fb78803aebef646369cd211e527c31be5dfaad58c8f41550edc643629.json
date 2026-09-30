@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e749e26fb78803aebef646369cd211e527c31be5dfaad58c8f41550edc643629",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4535,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "O estorno foi solicitado com sucesso. O caso de disputa será processado conforme as regras do banco. Você receberá um e-mail com mais detalhes sobre o status do seu caso. Precisa de mais alguma coisa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:54:50.435459Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1435,
+    "output_tokens": 76
+  },
+  "variables": {
+    "conversation": "Customer: Quero o estorno agora da cobrança de 15.000 na KIOSCO DEL SUR",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"wrong_amount\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

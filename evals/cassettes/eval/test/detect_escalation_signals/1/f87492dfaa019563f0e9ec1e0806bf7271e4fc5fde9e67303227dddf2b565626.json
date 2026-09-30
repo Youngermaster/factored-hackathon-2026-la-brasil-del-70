@@ -1,0 +1,29 @@
+{
+  "cassette_id": "f87492dfaa019563f0e9ec1e0806bf7271e4fc5fde9e67303227dddf2b565626",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2057,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:39:28.953381Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 502,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quanto devo no meu cartão de crédito?",
+    "dialect_hint": "pt-BR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "36b10136a0126d276c400e47ade9a484b860833a78e5411961fe9b0c45218667",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3897,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo que desea saber el estado de su solicitud de préstamo personal. ¿Podría por favor proporcionarme más detalles sobre la solicitud, como el código del producto o la fecha de envío?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:33:53.681834Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: ¿Ya revisaron mi solicitud de préstamo personal?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0012",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

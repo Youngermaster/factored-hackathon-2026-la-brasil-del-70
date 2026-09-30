@@ -1,0 +1,49 @@
+{
+  "cassette_id": "bdfa6a9e7ed5dd246bbde6be7f31c058ca05252bf40aafe0ca2372ab7bacd669",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7711,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "not_received",
+      "other",
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "Reference date: 2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:22:57.643437Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1463,
+    "output_tokens": 142
+  },
+  "variables": {
+    "customer_message": "Pagué 1250 en TIENDA AURORA y nunca me llegó el pedido, quiero reclamar",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b0f2aa0ea4cb5257075b0c91a62a4a511a4f7731679e344d0c3b552642274f0e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2047,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:25:02.048947Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 521,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "El 12 de junio de 2026, la transacción de 300 pesos en CAFE LUNA no me parece mía. No bloquear la tarjeta por favor.",
+    "dialect_hint": "es-MX"
+  }
+}

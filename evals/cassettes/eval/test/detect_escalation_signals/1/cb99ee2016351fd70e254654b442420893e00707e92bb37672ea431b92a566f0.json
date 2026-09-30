@@ -1,0 +1,29 @@
+{
+  "cassette_id": "cb99ee2016351fd70e254654b442420893e00707e92bb37672ea431b92a566f0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1766,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:08:47.711225Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 510,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero saber a situação do meu cartão de crédito e das compras recusadas",
+    "dialect_hint": "pt-BR"
+  }
+}

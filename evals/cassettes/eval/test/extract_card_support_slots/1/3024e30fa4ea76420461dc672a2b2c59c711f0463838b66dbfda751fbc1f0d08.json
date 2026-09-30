@@ -1,0 +1,36 @@
+{
+  "cassette_id": "3024e30fa4ea76420461dc672a2b2c59c711f0463838b66dbfda751fbc1f0d08",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6075,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "lost",
+      "stolen",
+      "unrecognized_activity",
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": "4321"
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:06:17.403932Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 69
+  },
+  "variables": {
+    "customer_message": "Quiero bloquear mi tarjeta de débito dorada terminada en 4321",
+    "dialect_hint": "es-CO"
+  }
+}

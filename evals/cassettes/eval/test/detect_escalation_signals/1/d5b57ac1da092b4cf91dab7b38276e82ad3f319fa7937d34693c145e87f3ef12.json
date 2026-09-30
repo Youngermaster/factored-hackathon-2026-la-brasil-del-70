@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d5b57ac1da092b4cf91dab7b38276e82ad3f319fa7937d34693c145e87f3ef12",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1778,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:04:30.952105Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 487,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero bloquear una tarjeta de crédito.",
+    "dialect_hint": "es-AR"
+  }
+}

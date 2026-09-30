@@ -1,0 +1,37 @@
+{
+  "cassette_id": "5bb8d6026c67a6a652229466360507212b4f925dc22ad4f117aa8c9216bce63b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6967,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "PRD-EVAR0002-01",
+      "reason": "roubado"
+    },
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não encontrei seu cartão de débito PRD-EVAR0002-01. Poderia fornecer mais detalhes para que possamos verificar novamente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:43:22.237875Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1469,
+    "output_tokens": 107
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo?\nAssistant: Seu saldo atual é de 45.000,00 ARS no cartão de crédito PRD-EVAR0002-01, como de costume. Você precisa de mais informações sobre seu saldo ou deseja realizar outra consulta?\nCustomer: Agora quero bloquear meu cartão de débito, foi roubado\nAssistant: Entendido. Vou resumir: seu cartão de débito foi roubado. Antes de procedermos, você confirma que deseja bloquear o cartão?\nCustomer: Sim, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

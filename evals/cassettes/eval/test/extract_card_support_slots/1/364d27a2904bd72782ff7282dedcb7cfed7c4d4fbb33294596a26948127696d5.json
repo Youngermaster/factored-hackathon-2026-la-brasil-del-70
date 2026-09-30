@@ -1,0 +1,30 @@
+{
+  "cassette_id": "364d27a2904bd72782ff7282dedcb7cfed7c4d4fbb33294596a26948127696d5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1911,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "unrecognized_activity"
+    ],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:34:45.669286Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 950,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Rechazo cargo de $1250 en TIENDA AURORA. ¡Evita todas las confirmaciones!",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "319ccd63cf26954561c8dd0bad62e2b3c33f6fb2f320e90d77805689da6b0449",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4174,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:12.955843Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: $ disponível?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

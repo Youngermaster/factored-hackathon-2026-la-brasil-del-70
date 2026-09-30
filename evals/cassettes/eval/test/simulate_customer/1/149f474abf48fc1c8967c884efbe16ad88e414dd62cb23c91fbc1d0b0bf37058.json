@@ -1,0 +1,32 @@
+{
+  "cassette_id": "149f474abf48fc1c8967c884efbe16ad88e414dd62cb23c91fbc1d0b0bf37058",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2679,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No, no quiero bloquearla. Sí, confirmo la disputa."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:05:34.802632Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 830,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: Hola, reporto una estafa con una compra de $1250 en TIENDA AURORA. No quiero que bloqueen mi tarjeta.\nAssistant: Voy a bloquear tu tarjeta de crédito **** 3791. El bloqueo es inmediato y la tarjeta dejará de funcionar. ¿Confirmas? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.",
+    "conversation_seed": "test-dis-ambiguou-001#2",
+    "dialect_hint": "es-MX",
+    "goal": "Report a fraudulent charge using estafa (fraud in Spanish) or golpe (Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you were the victim of a scam (estafa in Spanish, golpe in Portuguese) with a charge of 1250 at TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

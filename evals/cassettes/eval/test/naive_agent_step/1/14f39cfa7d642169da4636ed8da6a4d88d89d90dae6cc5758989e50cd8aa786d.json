@@ -1,0 +1,33 @@
+{
+  "cassette_id": "14f39cfa7d642169da4636ed8da6a4d88d89d90dae6cc5758989e50cd8aa786d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3750,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Não encontramos nenhum pagamento no valor que você mencionou. Você poderia me informar o número da transação ou mais detalhes para que possamos verificar novamente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:54:14.752814Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1430,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 21.000 do dia 06/06?\nAssistant: Olá! Verifiquei e não encontramos nenhum pagamento no valor de R$ 21.000 realizado no dia 06/06. Você poderia me fornecer mais detalhes para que possamos esclarecer essa situação?\nCustomer: O do dia 06/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

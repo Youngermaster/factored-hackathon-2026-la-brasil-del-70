@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5e49a50365e63c7eadc477d785284abc54c4449a13176c86069d589b6eaa4557",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5699,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a proceder con tu solicitud de préstamo personal por 50,000 pesos mexicanos a 24 meses. Antes de continuar, necesito confirmar algunos detalles de tu perfil crediticio y tu situación financiera. ¿Estás de acuerdo en que se realice esta solicitud?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:29:51.946852Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1393,
+    "output_tokens": 94
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 50000 a 24 meses?\nAssistant: Se ha enviado tu solicitud de préstamo personal. El proceso de aprobación puede llevar hasta 15 días hábiles. Durante este tiempo, revisaremos tu perfil crediticio y otros detalles. ¿Hay algo más en lo que pueda ayudarte?\nCustomer: Sí, quiero solicitarlo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

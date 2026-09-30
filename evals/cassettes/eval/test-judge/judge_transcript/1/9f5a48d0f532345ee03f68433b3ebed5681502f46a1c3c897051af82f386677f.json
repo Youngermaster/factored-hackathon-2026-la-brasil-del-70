@@ -1,0 +1,30 @@
+{
+  "cassette_id": "9f5a48d0f532345ee03f68433b3ebed5681502f46a1c3c897051af82f386677f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2775,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 1,
+    "politeness": 3,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:01.425847Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 840,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quanto tem no produto PRD-EVCO0013-02?\nAssistant: ¿En qué idioma prefieres que te atienda: español o portugués?\nEm qual idioma você prefere ser atendido: espanhol ou português?\nCustomer: português\nAssistant: Não encontrei esse registro entre os seus produtos. Só posso ajudar com os seus próprios produtos e transações.\n\nSó exibimos informações dos produtos da pessoa verificada na sessão. Os números de cartões e contas aparecem mascarados, com os últimos 4 dígitos. Não confirmamos nem negamos a existência de produtos, transações ou pessoas que não pertencem a você."
+  }
+}

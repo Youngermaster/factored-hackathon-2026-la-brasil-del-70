@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f07f552b3ad8b0ef2c1cc52c38ef43146f58469d8c86b361b75dfa106b1b6568",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3534,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Gracias por tu solicitud. Ahora tu caso pasará a una revisión detallada. Te contactaremos con la decisión final en los próximos días.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:35:50.554201Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1370,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 250000 a 36 meses?\nAssistant: Se ha enviado tu solicitud de préstamo personal. El proceso ahora pasa a una revisión por persona. Te contactaremos con la decisión final.\nCustomer: Sí, que lo revisen",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c8b30ab571d6fcb662408b3930cb41613401035aaa4a16ff0d061ef5d3238d44",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4614,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Claro, posso encaminhar sua solicitação para uma pessoa que poderá analisar sua situação. Por favor, forneça alguns detalhes sobre sua renda e histórico financeiro para que possamos ter uma avaliação mais precisa.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:30:13.562803Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1412,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Vocês me dão um cartão de crédito com limite de 900.000?\nAssistant: Olá! Entendi que você gostaria de saber sobre cartões de crédito. No entanto, antes de prosseguir, gostaria de confirmar se você está interessado em solicitar um cartão de crédito ou apenas quer saber sobre as opções disponíveis.\nCustomer: Sim, prefiro que uma pessoa analise",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0009",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

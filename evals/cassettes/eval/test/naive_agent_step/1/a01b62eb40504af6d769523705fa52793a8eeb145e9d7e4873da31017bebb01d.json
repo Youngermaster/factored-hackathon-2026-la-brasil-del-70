@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a01b62eb40504af6d769523705fa52793a8eeb145e9d7e4873da31017bebb01d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 9149,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Estimado cliente, aquí está el resumen de sus movimientos del mes de mayo: 25 de mayo, pago de tarjeta por $120.000 COP; 19 de mayo, compra en Librería Bogotá por $56.000 COP; 9 de mayo, pago de servicio de agua por $120.000 COP; 8 de mayo, compra en Droguería Central por $42.000 COP. ¿Hay algún detalle que desee revisar o alguna pregunta adicional?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:46:04.033173Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1567,
+    "output_tokens": 148
+  },
+  "variables": {
+    "conversation": "Customer: Quiero el resumen de movimientos de mi tarjeta de crédito\nAssistant: Estimado cliente, aquí está el resumen de sus movimientos recientes. ¿Hay algún detalle en particular que desee revisar o alguna pregunta sobre estos movimientos?\nCustomer: De mayo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-19\", \"merchant\": \"LIBRERIA BOGOTA\", \"amount\": \"56000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO AGUA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-08\", \"merchant\": \"DROGUERIA CENTRAL\", \"amount\": \"42000.00 COP\", \"status\": \"approved\"}]}"
+  }
+}

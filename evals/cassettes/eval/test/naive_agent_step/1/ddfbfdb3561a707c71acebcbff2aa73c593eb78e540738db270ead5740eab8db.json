@@ -1,0 +1,35 @@
+{
+  "cassette_id": "ddfbfdb3561a707c71acebcbff2aa73c593eb78e540738db270ead5740eab8db",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2606,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:00:11.741210Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 41
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo está mi tarjeta de débito?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

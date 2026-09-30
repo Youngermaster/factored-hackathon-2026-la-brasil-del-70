@@ -1,0 +1,35 @@
+{
+  "cassette_id": "8c27608b8fa11399d493936013fab321e77b8168ebc0860fb6e01669acd05664",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5285,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:23:54.319952Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Estado de mi tarjeta de débito, por favor",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

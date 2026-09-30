@@ -1,0 +1,33 @@
+{
+  "cassette_id": "90502c1e183e3d50fbd0a0f215bc35d30b683a7e688dcfe9d09cefbee3c64d9f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5714,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lamento informarle que no podemos realizar transferencias aquí. Le sugerimos que visite un cajero automático o nuestra aplicación móvil para efectuar la transferencia. ¿Necesita ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:57:39.817466Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Quiero hacer una transferencia de 500 pesos a mi hermana",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

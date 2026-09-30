@@ -1,0 +1,32 @@
+{
+  "cassette_id": "d51a257dbf75c2a052fd9c30c039856ef67c86e99a2ac4205fc03e1955a516f8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2366,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Me puede enviar el resumen de mis movimientos del último mes de mi tarjeta de crédito?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:44:25.469462Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 728,
+    "output_tokens": 31
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puede enviar el resumen de mis movimientos del último mes de mi tarjeta de crédito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Me puede enviar el resumen de mis movimientos del último mes de mi tarjeta de crédito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "dev-acc-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Get a card statement summary without giving the period at first.",
+    "hidden_facts": "period: last month (May)",
+    "instructions": "Ask for a summary of your credit card movements. When asked for the period, say last month.",
+    "known_facts": "(none)"
+  }
+}

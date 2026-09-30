@@ -1,0 +1,35 @@
+{
+  "cassette_id": "643c67f15c8c1c6e6f23b9f400f0428eec65ebe13694dd0003839caab02acbcb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4213,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:26.950144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto $ tengo en mi cuenta?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

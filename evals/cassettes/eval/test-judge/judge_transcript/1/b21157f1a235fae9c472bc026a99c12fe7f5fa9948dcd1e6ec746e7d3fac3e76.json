@@ -1,0 +1,30 @@
+{
+  "cassette_id": "b21157f1a235fae9c472bc026a99c12fe7f5fa9948dcd1e6ec746e7d3fac3e76",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3615,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:16.910384Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 985,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: No reconozco el cargo de 85.000 en ALMACEN ANDES, quiero reclamarlo\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en ALMACEN ANDES por 85.000,00 COP (tarjeta **** 5404), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 3 de julio de 2026. ¿Confirmas? Responde sí o no.\nCustomer: Sí, confirmo\nAssistant: Para hacer esto necesito una verificación reforzada de tu identidad. Complétala y escríbeme para continuar.\nCustomer: Listo, ya confirmé mi identidad\nAssistant: Listo: registramos tu reclamación con el número de caso case-8e66e052e100001. Te responderemos a más tardar el 3 de julio de 2026.\n\nDespués de registrar tu reclamación recibirás un número de caso. El equipo de revisión analiza la transacción y puede pedirte información adicional. Puedes consultar el estado del caso aquí mismo: abierto, en revisión, escalado, resuelto o rechazado, junto con la fecha comprometida de respuesta. Registrar el caso no garantiza un reembolso ni un abono provisional."
+  }
+}

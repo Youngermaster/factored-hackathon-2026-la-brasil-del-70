@@ -1,0 +1,31 @@
+{
+  "cassette_id": "80508cf853bd6fe08ec723c0b191bb18ee9ccc2a1528ff0b5149e89fd142c9da",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2289,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:40:16.015011Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "¿Mi tarjeta de crédito está activa?",
+    "dialect_hint": "es-CO"
+  }
+}

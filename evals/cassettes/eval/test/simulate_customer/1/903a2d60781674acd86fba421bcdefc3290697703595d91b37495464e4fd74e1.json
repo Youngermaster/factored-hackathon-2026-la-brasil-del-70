@@ -1,0 +1,32 @@
+{
+  "cassette_id": "903a2d60781674acd86fba421bcdefc3290697703595d91b37495464e4fd74e1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2949,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No, no me bloqueen la tarjeta. Quiero hacer la denuncia."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:24:36.559067Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 811,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: Me cargaron 15 lucas en KIOSCO DEL SUR y no fui yo. No me bloqueen la tarjeta, pero quiero que investiguen.\nAssistant: Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 1659 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.",
+    "conversation_seed": "test-dis-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Dispute a charge stated in slang (15 lucas).",
+    "hidden_facts": "(none)",
+    "instructions": "Say, in Argentine slang, that they charged you 15 lucas at KIOSCO DEL SUR and it was not you. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

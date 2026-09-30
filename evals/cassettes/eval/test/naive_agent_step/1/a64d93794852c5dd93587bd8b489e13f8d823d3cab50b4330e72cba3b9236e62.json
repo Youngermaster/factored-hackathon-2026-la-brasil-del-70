@@ -1,0 +1,35 @@
+{
+  "cassette_id": "a64d93794852c5dd93587bd8b489e13f8d823d3cab50b4330e72cba3b9236e62",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4069,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0012"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:31:32.889577Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1319,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo va el trámite de mi solicitud de préstamo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0012",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

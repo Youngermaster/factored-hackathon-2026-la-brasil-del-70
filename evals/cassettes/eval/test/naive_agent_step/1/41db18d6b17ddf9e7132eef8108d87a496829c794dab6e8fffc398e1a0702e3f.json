@@ -1,0 +1,35 @@
+{
+  "cassette_id": "41db18d6b17ddf9e7132eef8108d87a496829c794dab6e8fffc398e1a0702e3f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4431,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:50:35.528093Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Me diga o saldo da poupança, por favor",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

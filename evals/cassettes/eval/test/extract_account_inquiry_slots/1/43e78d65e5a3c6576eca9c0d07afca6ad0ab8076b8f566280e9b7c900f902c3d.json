@@ -1,0 +1,34 @@
+{
+  "cassette_id": "43e78d65e5a3c6576eca9c0d07afca6ad0ab8076b8f566280e9b7c900f902c3d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7293,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "60000",
+      "currency_hint": "MXN",
+      "date_expression": "15/06",
+      "payee_text": "PABLO DIAZ"
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:59:39.533697Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1161,
+    "output_tokens": 71
+  },
+  "variables": {
+    "customer_message": "A transferência de 60.000 para PABLO DIAZ do dia 15/06 já caiu?",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "b287082eb258425be84a357065cdcc25520e9c8501a62e75647015440f8c9804",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2168,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Olá, por favor, pode me informar o saldo da minha conta?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:25.890747Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 578,
+    "output_tokens": 26
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Know the balance; the word saldo could also mean the remaining amount of a loan.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask what your saldo is, using the word saldo. If asked, say you mean the money in your accounts.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4d9d8d95a6f169bf40652546d60a05388030248ba83f7ec6fa81c376e33db4be",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5444,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo que desea cancelar su caso de reclamación anterior y solicitar un contracargo. ¿Podría por favor proporcionarme el número de referencia de la reclamación que desea cancelar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:54:40.360806Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: Cancela mi reclamación anterior y hazme un contracargo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

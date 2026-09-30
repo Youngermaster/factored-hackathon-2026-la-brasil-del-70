@@ -1,0 +1,34 @@
+{
+  "cassette_id": "5a2341abc9d6828676b9830f273139502cd6d895f48b337e4175d49f98e94dd0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6637,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "4321",
+      "currency_hint": "ARS",
+      "date_expression": "ayer",
+      "payee_text": "escuela"
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:58:14.591519Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1139,
+    "output_tokens": 61
+  },
+  "variables": {
+    "customer_message": "Quiero el estado del pago de 4321 pesos que hice ayer a la escuela",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

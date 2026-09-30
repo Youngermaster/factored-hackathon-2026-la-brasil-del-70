@@ -1,0 +1,31 @@
+{
+  "cassette_id": "81beda6e8ebb0c78a51bf2786c8d28bfb081dc0a8bb3cba1b838fe7bc8b0dfd9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3304,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "250000",
+    "requested_term_months": 36
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:25:32.634640Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1043,
+    "output_tokens": 61
+  },
+  "variables": {
+    "customer_message": "¿Puedo sacar un préstamo personal de 250000 a 36 meses?",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "85d34af9748af6d2e2e6ee368d83faf6e1dac642bd3e158edb6fe1c341df50ed",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5106,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lamento informarle que no podemos asistir con refinanciamiento de préstamos en este momento. Le sugeriría que se ponga en contacto con nuestro equipo de atención al cliente para este tipo de solicitudes. ¿Hay algo más con lo que pueda ayudarle hoy?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:40:30.922909Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1315,
+    "output_tokens": 88
+  },
+  "variables": {
+    "conversation": "Customer: Quiero refinanciar mi préstamo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

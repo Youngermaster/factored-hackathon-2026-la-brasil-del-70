@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b5014717fff4d40f330d2c6aa7c139cc8ebee9acb52c632844583274c4b0a864",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2850,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:35:59.139292Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No reconozco la compra en KIOSCO DEL SUR de 15.000",
+    "dialect_hint": "es-AR"
+  }
+}

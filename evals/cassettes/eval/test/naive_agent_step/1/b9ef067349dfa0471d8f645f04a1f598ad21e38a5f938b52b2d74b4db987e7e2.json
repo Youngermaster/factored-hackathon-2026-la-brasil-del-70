@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b9ef067349dfa0471d8f645f04a1f598ad21e38a5f938b52b2d74b4db987e7e2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4199,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, actualmente no puedo verificar el estado de su tarjeta de débito. Por favor, intente nuevamente más tarde o póngase en contacto con nuestro equipo de soporte para obtener más ayuda.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:14:10.249897Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 75
+  },
+  "variables": {
+    "conversation": "Customer: ¿Mi tarjeta de débito está activa?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"error\", \"result\": \"list_cards failed: transient_error\"}"
+  }
+}

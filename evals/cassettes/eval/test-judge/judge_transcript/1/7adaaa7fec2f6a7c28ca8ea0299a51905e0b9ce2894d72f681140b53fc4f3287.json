@@ -1,0 +1,30 @@
+{
+  "cassette_id": "7adaaa7fec2f6a7c28ca8ea0299a51905e0b9ce2894d72f681140b53fc4f3287",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3688,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 1,
+    "language_correct": false,
+    "language_quality": 1,
+    "politeness": 1,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:17:49.423842Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 754,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero contratar um seguro de vida\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol)."
+  }
+}

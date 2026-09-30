@@ -1,0 +1,35 @@
+{
+  "cassette_id": "54b9e16196e2941d92e44e783f501c8679aafc3b24823dbaa8f06b5fd2fb4786",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4271,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:56:36.790368Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1339,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quanto tem no produto PRD-EVCO0013-02?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

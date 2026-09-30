@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c6e0a216ba045d3e69c6f2beed02a4cbdeeaffb1085d64241a3d41bc66e4e529",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4535,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Posso ajudar com algo mais sobre ele ou sobre outros cartões que você possui?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:03:18.524144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1469,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber como está o meu cartão de débito, por favor?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0002-01\", \"type\": \"credit_card\", \"number\": \"**** 0186\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVAR0002-02\", \"type\": \"debit_card\", \"number\": \"**** 8250\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

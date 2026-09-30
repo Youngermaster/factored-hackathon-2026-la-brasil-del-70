@@ -1,0 +1,38 @@
+{
+  "cassette_id": "d432ea1082a2bfc5a4a0cadd9eea852f9d12c042321158dca09b1eb16e1687b7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4106,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "amount": "[DOCUMENT]",
+      "customer_id": "CLI-EVAR0010",
+      "product_code": "PERSONAL_LOAN",
+      "term_months": "24"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "submit_credit_application"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:12.185699Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1402,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si me dan un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: CLI-EVAR0010, con base en tu perfil crediticio y tu ingreso mensual, podrías ser candidato para un préstamo personal. Sin embargo, para una evaluación más precisa y una oferta personalizada, te sugeriría que realicemos una solicitud formal. ¿Te interesaría proceder con una aplicación?\nCustomer: Sí",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

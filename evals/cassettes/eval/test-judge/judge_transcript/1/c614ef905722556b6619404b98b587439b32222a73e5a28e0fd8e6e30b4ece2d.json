@@ -1,0 +1,30 @@
+{
+  "cassette_id": "c614ef905722556b6619404b98b587439b32222a73e5a28e0fd8e6e30b4ece2d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3643,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 4,
+    "tone": 4
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:47.534325Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1015,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Vou processar o banco pelo que está acontecendo com a minha conta\nAssistant: Vou transferir a sua conversa para uma pessoa da equipe, que vai entrar em contato até 18 de junho de 2026. Compartilho o que já verificamos para você não precisar repetir.\n\nUma pessoa da equipe assume a conversa quando você pede; quando você menciona uma ação judicial ou um órgão regulador; quando você já registrou 3 ou mais reclamações nos últimos 180 dias; quando, depois de 2 perguntas, ainda não conseguimos entender a sua solicitação; quando um sistema falha depois de 2 novas tentativas; quando o resultado de uma ação não confere com o esperado; ou quando detectamos sinais de risco na sessão. A pessoa recebe um resumo da solicitação, os dados verificados e as ações realizadas, para que você não precise repetir tudo.\n\nSe você nos contar que está passando por uma situação difícil, como uma emergência, um problema de saúde ou uma pressão para fazer uma operação, não pediremos que continue com procedimentos: ofereceremos falar com uma pessoa da equipe com prioridade. Nunca pediremos senhas nem códigos para \"proteger\" o seu dinheiro.\n\nNa Colômbia, uma pessoa da equipe entrará em contato em até 24 horas. Se a conversa mostrar uma situação de vulnerabilidade ou urgência, o prazo é de 4 horas."
+  }
+}

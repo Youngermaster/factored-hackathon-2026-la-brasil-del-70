@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4e3e4da560e9863d50fd628de4e753c6d472e5893a0ce7eee439800bf0201fb4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4586,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "O saldo da sua conta de poupança é de 5.200.000 COP. Como mais posso ajudar você hoje?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:44:34.476125Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1588,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál es el saldo de mi ahorro? Quiero saber, por favor.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0001-01\", \"type\": \"checking_account\", \"number\": \"**** 4995\", \"balance\": \"3450000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-02\", \"type\": \"savings_account\", \"number\": \"**** 0684\", \"balance\": \"5200000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0235\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e634740f488d040a67efd0c377669ebe1fa927df3ea4ad10c3ae1972bc6a5a3f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3969,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que o motivo do bloqueio é que você perdeu o cartão. Vou prosseguir com o bloqueio agora. Confirma que é isso mesmo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:59:25.087801Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1430,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão/tarjeta e preciso bloquear imediatamente.\nAssistant: Entendi, vou bloquear seu cartão imediatamente. Vou precisar de algumas informações para prosseguir: o motivo do bloqueio (perdido, roubado, suspeita de fraude ou precaução) e, se aplicável, o motivo do pedido.\nCustomer: Perdi meu cartão/tarjeta e preciso bloquear imediatamente. O motivo é que perdi.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

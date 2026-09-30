@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e9319e24db4e28e260be98d751b3e6f90ea4935c66a88bc2a32a7dc513452f5d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4274,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:09:27.235246Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1438,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Preciso da resumo das movimentações do meu cartão de crédito.\nAssistant: Olá! Aqui estão as movimentações recentes do seu cartão de crédito. Você pode ver que há uma transação pendente de 300.000 COP com a Maria Gomez. As outras transações foram aprovadas e incluem pagamentos e compras. Gostaria de mais detalhes sobre alguma delas?\nCustomer: Não, não preciso dos detalhes das transações. Quero apenas o resumo do último mês.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

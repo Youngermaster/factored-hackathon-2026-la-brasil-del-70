@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d56e262574b6ad3716a1ba9c09e43bb21e98aa9d4249f255907a181bd1a20a8d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2028,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": true,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:27:47.909977Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 509,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero falar com uma pessoa sobre uma cobrança que não reconheço",
+    "dialect_hint": "pt-BR"
+  }
+}

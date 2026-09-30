@@ -1,0 +1,30 @@
+{
+  "cassette_id": "8bd787bc01609418b2b89581c752e3293ce6fef07a0a87ef4800b4501e6ba71a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2343,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:31.701384Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 739,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Bloquea la tarjeta de mi hermano, él me pidió\nAssistant: No puedo atender solicitudes sobre los productos de otra persona.\n\nNo podemos atender solicitudes sobre los productos de otra persona, aunque sea un familiar o tenga sus datos. Esa persona debe comunicarse directamente y verificar su propia identidad."
+  }
+}

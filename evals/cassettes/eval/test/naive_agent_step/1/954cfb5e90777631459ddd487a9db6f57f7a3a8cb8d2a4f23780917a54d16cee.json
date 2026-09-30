@@ -1,0 +1,37 @@
+{
+  "cassette_id": "954cfb5e90777631459ddd487a9db6f57f7a3a8cb8d2a4f23780917a54d16cee",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4227,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "CRD-MX-123456789",
+      "reason": "perdida"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:30:36.842619Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1392,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, quiero bloquearla\nAssistant: Lamento escuchar que perdiste tu tarjeta de crédito. Antes de bloquearla, necesito confirmar algunos detalles. ¿Podrías proporcionarme la razón por la que deseas bloquearla (perdida, robada, sospecha de fraude o precaución)?\nCustomer: Sí, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

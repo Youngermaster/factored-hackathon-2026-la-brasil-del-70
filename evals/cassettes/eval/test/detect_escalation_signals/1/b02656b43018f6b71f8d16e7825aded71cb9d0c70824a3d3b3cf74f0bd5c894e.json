@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b02656b43018f6b71f8d16e7825aded71cb9d0c70824a3d3b3cf74f0bd5c894e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1773,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:00:36.595189Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 513,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "O que aconteceu com o meu pagamento de 850 do dia 06/06?",
+    "dialect_hint": "pt-BR"
+  }
+}

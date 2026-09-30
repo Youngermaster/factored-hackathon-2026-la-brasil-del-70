@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6638893f2ecb91bd41199b801059887ac8a63301880829a60d6874ff7bd4092e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6117,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Caso confirmado. Um caso de contestação foi aberto para a compra de 85.000 COP no dia 15/06 na ALMACEN ANDES. O prazo para resolução é de 15 dias úteis. Você será notificado sobre o andamento do caso. Se precisar de mais alguma coisa, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:46:56.104431Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1487,
+    "output_tokens": 109
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a compra de 85.000 pesos do dia 15/06 na ALMACEN ANDES, não fui eu\nAssistant: Entendi, você gostaria de abrir um caso de contestação para a compra de 85.000 COP no dia 15/06 na ALMACEN ANDES, correto?\nCustomer: Sim, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"[NUMBER]\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

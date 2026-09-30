@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1f776f4f36096e2a38d2e08737b5cc53709b4355a4281bd47db85bcece151123",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6575,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Sua solicitação foi enviada com sucesso. O seu empréstimo pessoal de 50.000 MXN por 24 meses foi submetido. O processo agora será analisado por nossa equipe. Você receberá um e-mail com mais informações sobre o andamento da sua solicitação. Obrigado pelo seu interesse!",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:17:38.167722Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1523,
+    "output_tokens": 102
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal?\nAssistant: Claro, posso te ajudar com isso. Antes, preciso verificar alguns detalhes do seu perfil de crédito. Vou verificar agora.\nCustomer: Pode ser um empréstimo de 50.000 reais em 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"50000.00 MXN\", \"status\": \"submitted\"}}"
+  }
+}

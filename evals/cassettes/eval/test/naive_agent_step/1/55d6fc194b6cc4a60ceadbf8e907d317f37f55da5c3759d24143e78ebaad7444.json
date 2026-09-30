@@ -1,0 +1,33 @@
+{
+  "cassette_id": "55d6fc194b6cc4a60ceadbf8e907d317f37f55da5c3759d24143e78ebaad7444",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6311,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. Para um empréstimo pessoal, isso significa que você tem uma boa probabilidade de ser aprovado. No entanto, é importante lembrar que isso é apenas uma orientação indicativa. Vamos continuar e verificar se você atende aos requisitos mínimos de score e renda.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:35.832389Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1457,
+    "output_tokens": 113
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal? Sem dizer o valor ainda.\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de verificar seu perfil de crédito para te dar uma orientação indicativa. Isso não é uma decisão, mas sim uma análise baseada em seus dados. Você gostaria de continuar?\nCustomer: Sim, continue.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

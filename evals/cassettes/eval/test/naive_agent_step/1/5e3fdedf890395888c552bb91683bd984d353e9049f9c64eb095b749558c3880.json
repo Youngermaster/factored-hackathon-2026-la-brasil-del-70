@@ -1,0 +1,35 @@
+{
+  "cassette_id": "5e3fdedf890395888c552bb91683bd984d353e9049f9c64eb095b749558c3880",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3794,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:58:09.882753Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola, estoy preocupado y solo quiero saber si mi tarjeta débito sigue activa para evitar estafas!\nAssistant: ¡Hola! Su tarjeta débito sigue activa. ¿Necesita que le hagamos algún otro chequeo o información adicional?\nCustomer: ¡Gracias! Ya me siento mejor. ¿Puedo pedirle que double check el estado de mi tarjeta, por favor?\nAssistant: ¡Claro! Vamos a revisar el estado de su tarjeta débito nuevamente para confirmar su solicitud. ¿Está bien con que verifiquemos?\nCustomer: ¡Sí, por favor! Solo quiero asegurarme de que todo esté en orden.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

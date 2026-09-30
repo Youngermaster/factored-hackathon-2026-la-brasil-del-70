@@ -1,0 +1,30 @@
+{
+  "cassette_id": "6e239ec63f0c00a51f2d676ba4f7211c1716f8dff1f0acac3afca0b29fee7600",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5277,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:23:25.253284Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1011,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: ¿Cómo va el trámite de mi solicitud de préstamo?\nAssistant: préstamo personal: montos de 500.000,00 ARS a 25.000.000,00 ARS; plazos de 6 a 48 meses; tasa anual de 55 % a 95 %.\nSi quieres una orientación indicativa para este producto, pregúntame por tu elegibilidad y dime el monto que te interesa.\n\nTe podemos describir los productos de crédito del catálogo sintético disponibles en tu país: tarjeta de crédito, préstamo personal y crédito hipotecario, con sus rangos indicativos de monto, plazo y tasa anual, y los propósitos que admiten. Los rangos son orientativos; la tasa y el monto concretos dependen de una revisión humana. El crédito hipotecario es solo informativo por este medio.\n\nEn Argentina, las tasas del catálogo sintético se expresan como tasa nominal anual y, cuando se muestra un costo total, como CFTEA (costo financiero total efectivo anual), solo con fines informativos. En los créditos hipotecarios UVA el capital se ajusta por la unidad de valor adquisitivo.\n\nEsta información es indicativa y proviene de un catálogo y unas reglas sintéticas de demostración. No es una oferta ni una decisión de crédito, y las condiciones finales, si las hubiera, las define una persona del equipo de crédito después de su propia revisión."
+  }
+}

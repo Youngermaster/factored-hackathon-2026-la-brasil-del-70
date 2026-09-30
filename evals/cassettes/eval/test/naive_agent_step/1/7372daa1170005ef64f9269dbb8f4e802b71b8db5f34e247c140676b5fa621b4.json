@@ -1,0 +1,35 @@
+{
+  "cassette_id": "7372daa1170005ef64f9269dbb8f4e802b71b8db5f34e247c140676b5fa621b4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4148,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:17.482544Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Tengo chance de un préstamo personal de [DOCUMENT] a 24 meses?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

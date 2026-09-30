@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ee863df6f0f103752a4520e0063f18d4bb5be06e7f40b0cf08e52c440fe4721a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4908,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Parece que você não reconhece uma cobrança no ALMACEN ANDES no valor de 85.000 COP. Podemos abrir um caso de disputa para investigar isso. Você gostaria que eu avançasse com isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:02.139138Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1386,
+    "output_tokens": 85
+  },
+  "variables": {
+    "conversation": "Customer: Meu cartão de crédito está ativo?\nAssistant: Olá! Sim, seu cartão de crédito está ativo. Posso verificar mais detalhes se você quiser.\nCustomer: Aliás, não reconheço uma cobrança de 85.000 na ALMACEN ANDES",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4be78355cc00cf89545f5c608addfd35390a5f84d5a5c908b79219879cdd54d1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3380,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:04.775088Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1398,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, por que minha compra foi negada?\nAssistant: Olá! Peço desculpas pelo inconveniente. Vamos verificar o motivo da negação da transação. Poderia me fornecer o número da transação, por favor?\nCustomer: Não me lembro do número da transação, mas a compra era com meu cartão de crédito.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

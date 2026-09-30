@@ -1,0 +1,34 @@
+{
+  "cassette_id": "c433dba8f6675e72a0c992467a23b2c90c734f91c9511f4c402c39d12b8d66a6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7253,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "1500",
+      "currency_hint": "MXN",
+      "date_expression": "el 15/06",
+      "payee_text": null
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:01:24.903274Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1137,
+    "output_tokens": 66
+  },
+  "variables": {
+    "customer_message": "¿Llegó la transferencia de 1500 del 15/06?",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

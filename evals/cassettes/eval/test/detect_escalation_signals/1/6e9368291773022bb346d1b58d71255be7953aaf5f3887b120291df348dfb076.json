@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6e9368291773022bb346d1b58d71255be7953aaf5f3887b120291df348dfb076",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1756,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:17:20.768703Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 507,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero um empréstimo pessoal, quais são as condições?",
+    "dialect_hint": "pt-BR"
+  }
+}

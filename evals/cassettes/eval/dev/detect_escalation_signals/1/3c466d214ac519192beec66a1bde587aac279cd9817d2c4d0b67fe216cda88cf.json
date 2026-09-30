@@ -1,0 +1,29 @@
+{
+  "cassette_id": "3c466d214ac519192beec66a1bde587aac279cd9817d2c4d0b67fe216cda88cf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1937,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:55:45.074050Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 497,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Me interesa un crédito para una necesidad personal. ¿Podrías darme más detalles?",
+    "dialect_hint": "es-MX"
+  }
+}

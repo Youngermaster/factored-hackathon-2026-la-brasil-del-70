@@ -1,0 +1,29 @@
+{
+  "cassette_id": "5502e9da5ab21451635c3755e033396f77e7df1d75221277a5782393112665ee",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2422,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:14:23.881420Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 496,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Puedo sacar un préstamo personal de [DOCUMENT] a 36 meses?",
+    "dialect_hint": "es-AR"
+  }
+}

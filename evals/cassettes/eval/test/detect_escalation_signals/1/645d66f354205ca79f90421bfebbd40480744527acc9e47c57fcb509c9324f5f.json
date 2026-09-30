@@ -1,0 +1,29 @@
+{
+  "cassette_id": "645d66f354205ca79f90421bfebbd40480744527acc9e47c57fcb509c9324f5f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1641,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:39.107400Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 507,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Bloqueie o cartão do meu irmão, ele me pediu",
+    "dialect_hint": "pt-BR"
+  }
+}

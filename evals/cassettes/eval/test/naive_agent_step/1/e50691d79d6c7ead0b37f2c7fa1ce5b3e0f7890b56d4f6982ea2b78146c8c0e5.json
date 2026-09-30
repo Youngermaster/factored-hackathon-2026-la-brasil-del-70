@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e50691d79d6c7ead0b37f2c7fa1ce5b3e0f7890b56d4f6982ea2b78146c8c0e5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7935,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Buenas, CLI-EVMX0001. Según la información disponible, en tu cuenta corriente tienes 52,300.50 MXN, en tu cuenta de ahorros 18,000.00 MXN y en tu tarjeta de crédito 12,500.00 MXN. ¿Puedes detallar más sobre tu situación financiera para que pueda asistirte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:27:47.319079Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1573,
+    "output_tokens": 126
+  },
+  "variables": {
+    "conversation": "Customer: Estoy desesperada, no me alcanza para pagar mis deudas, ¿cuánto tengo?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0001-01\", \"type\": \"checking_account\", \"number\": \"**** 5056\", \"balance\": \"52300.50 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5231\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0025\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "69cdcbc6e0f1ef6345202245a3fbd877fe7f7077cc5bc37dc9d43e5371d45df8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1918,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Poderia me enviar um resumo do mês de maio?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:51.845146Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 568,
+    "output_tokens": 25
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

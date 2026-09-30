@@ -1,0 +1,35 @@
+{
+  "cassette_id": "e86693c7c603b8a0196afac8151aaa255928cf980345edae0669ae5503dafe4f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4420,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0010"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:30:36.728118Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1345,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de 50000 em 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

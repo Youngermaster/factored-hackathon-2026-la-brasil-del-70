@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ae1cdb6a990b5619ee5592e1237c2443cd1ba8cb7b9263070d791ab4a98cccf8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3643,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido. No bloquearemos la tarjeta por ahora. ¿Puedes confirmar si deseas abrir un caso de disputa para esta transacción?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:31:13.317976Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1339,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Fui víctima de una estafa en TIENDA AURORA por 1250 pesos. No quiero bloquear la tarjeta por ahora.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

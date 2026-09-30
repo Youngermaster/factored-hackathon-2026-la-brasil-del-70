@@ -1,0 +1,37 @@
+{
+  "cassette_id": "2b11ec450705a1a7df0691ca17295b99fe3d9a181cca65546d028404976391eb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5051,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "CRD-0001",
+      "reason": "roubado"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:19:27.410297Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1392,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Roubaram meu cartão de crédito, bloqueie\nAssistant: Entendi que seu cartão de crédito foi roubado. Vou resumir: estamos bloqueando o cartão agora e você precisará solicitar uma substituição. Você confirma que quer prosseguir com essas ações?\nCustomer: Sim, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

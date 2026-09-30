@@ -1,0 +1,30 @@
+{
+  "cassette_id": "2a562f0df932683cf31d0eeb7ce79a9383eaa8fa838408aac728526668a3e286",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3619,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 4,
+    "tone": 4
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:49.833296Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1003,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Não reconheço a cobrança de 15.000 na KIOSCO DEL SUR, quero contestar\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en KIOSCO DEL SUR por 15.000,00 ARS (tarjeta **** 1659), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 18 de julio de 2026. ¿Confirmas? Responde sí o no.\nCustomer: Sim, confirmo\nAssistant: Para hacer esto necesito una verificación reforzada de tu identidad. Complétala y escríbeme para continuar.\nCustomer: Pronto, já confirmei minha identidade\nAssistant: Listo: registramos tu reclamación con el número de caso case-233fdad6d500001. Te responderemos a más tardar el 18 de julio de 2026.\n\nDespués de registrar tu reclamación recibirás un número de caso. El equipo de revisión analiza la transacción y puede pedirte información adicional. Puedes consultar el estado del caso aquí mismo: abierto, en revisión, escalado, resuelto o rechazado, junto con la fecha comprometida de respuesta. Registrar el caso no garantiza un reembolso ni un abono provisional."
+  }
+}

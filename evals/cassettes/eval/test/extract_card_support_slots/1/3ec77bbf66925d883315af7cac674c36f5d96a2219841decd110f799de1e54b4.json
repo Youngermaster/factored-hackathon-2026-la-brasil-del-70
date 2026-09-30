@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3ec77bbf66925d883315af7cac674c36f5d96a2219841decd110f799de1e54b4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3714,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "unrecognized_activity"
+    ],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": "1500"
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:26:07.751789Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 965,
+    "output_tokens": 53
+  },
+  "variables": {
+    "customer_message": "Hice una compra en KIOSCO DEL SUR por $15.000 y ahora me doy cuenta que fue una estafa. No quiero que bloqueen la tarjeta por ahora.",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "cassette_id": "26b5cc54c8500ea6517a5f074539112d3bf20b3d6e8fd203a1388edc39aafdaa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2480,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:12.841023Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 768,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: ¿Puedo sacar un préstamo personal de 250000 a 36 meses?\nAssistant: Se ha enviado tu solicitud de préstamo personal. El proceso ahora pasa a una revisión por persona. Te contactaremos con la decisión final.\nCustomer: Sí, que lo revisen\nAssistant: Gracias por tu solicitud. Ahora tu caso pasará a una revisión detallada. Te contactaremos con la decisión final en los próximos días."
+  }
+}

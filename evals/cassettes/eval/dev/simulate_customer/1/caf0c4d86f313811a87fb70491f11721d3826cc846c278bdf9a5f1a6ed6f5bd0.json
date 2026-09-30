@@ -1,0 +1,32 @@
+{
+  "cassette_id": "caf0c4d86f313811a87fb70491f11721d3826cc846c278bdf9a5f1a6ed6f5bd0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2303,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quisiera más información sobre el plazo de devolución y el monto máximo."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:26:03.071608Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1028,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Quisiera saber más sobre un crédito personal.\nAssistant: Gracias por tu interés en un crédito personal. ¿Te gustaría saber más sobre las características de cada producto o estás pensando en solicitar uno de ellos?\nCustomer: Prefiero información general primero.\nAssistant: Podría proporcionarte información general sobre nuestros productos de crédito personal. ¿Te interesaría conocer los requisitos básicos, las tasas de interés aproximadas y el plazo de devolución?\nCustomer: Sí, eso me interesa.\nAssistant: Basándonos en tu perfil crediticio, podrías calificar para un crédito personal. La tasa de interés aproximada podría estar entre el 65% anual y el 85% anual, dependiendo del monto y plazo que elijas. ¿Te gustaría conocer más detalles sobre el plazo de devolución y el monto máximo que podrías solicitar?\nCustomer: Sí, me gustaría conocer más detalles sobre el plazo de devolución y el monto máximo que podrían ofrecer.\nAssistant: Basado en tu perfil crediticio, podrías calificar para un crédito personal con un monto máximo de 350,000 MXN y un plazo de hasta 60 meses. La tasa de interés aproximada podría estar entre el 65% anual y el 85% anual, dependiendo del monto y plazo que elijas. ¿Te gustaría conocer más detalles sobre el plazo de devolución y el monto máximo que podrías solicitar?\nCustomer: Sí, me gustaría conocer más detalles sobre el plazo de devolución y el monto máximo que podrían ofrecer.\nAssistant: Basado en tu perfil crediticio, podrías calificar para un crédito personal con un monto máximo de 350,000 MXN y un plazo de hasta 60 meses. La tasa de interés aproximada podría estar entre el 65% anual y el 85% anual, dependiendo del monto y plazo que elijas. ¿Te gustaría proceder a solicitar este crédito o necesitas más información?",
+    "conversation_seed": "dev-cre-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

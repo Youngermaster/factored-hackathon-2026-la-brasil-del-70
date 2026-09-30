@@ -1,0 +1,32 @@
+{
+  "cassette_id": "14d97fe536a5dce5a293ab2395309222c191e129df9b6cfea505b6b0f5692a4e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1918,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Soy sobre el crédito, ¿podrías decirme las condiciones para un préstamo personal?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:56:23.429449Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 606,
+    "output_tokens": 29
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me podrías decir sobre las condiciones para un crédito?\nAssistant: Para ayudarte mejor: ¿tu consulta es sobre tus saldos y pagos o sobre tus tarjetas?",
+    "conversation_seed": "dev-cre-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "606ca5c63d048c83745e31ef90f784d96b10dda597a8b19dd249d07507326aa8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2839,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:12:04.525068Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1549,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha cartão?\nAssistant: Olá! Sua carta está ativa e não há nenhuma restrição atual. Gostaria de bloquear ou trocar algum cartão?\nCustomer: Obrigado, mas eu queria saber como está o meu cartão de débito.\nAssistant: Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora?\nCustomer: Não preciso verificar o saldo agora, mas obrigado pela informação.\nAssistant: Ótimo! Se precisar de mais informações sobre seu cartão ou tiver outras dúvidas, estou à disposição.\nCustomer: Preciso saber como está o meu cartão de débito mesmo.\nAssistant: Entendido! Vou verificar o status do seu cartão de débito agora. Como está o seu saldo atual?\nCustomer: Não preciso do saldo atual, mas obrigado. Quero saber se está tudo bem com o meu cartão de débito.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

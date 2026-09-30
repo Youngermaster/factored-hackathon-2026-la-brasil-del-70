@@ -1,0 +1,32 @@
+{
+  "cassette_id": "db70272b92e86315cdf794bcf22c6dac4cbe5b43b236bd6fde2064443b190b0d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2791,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não, não tenho dúvidas por now. Quero ver o resumo do último mês."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:55.677364Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 762,
+    "output_tokens": 32
+  },
+  "variables": {
+    "conversation": "Customer: Me envie a resumo das movimentações do meu cartão de crédito.\nAssistant: Olá! Aqui estão as movimentações resumidas do seu cartão de crédito. No dia 15/06/2026, houve uma movimentação pendente no valor de 1.500,00 MXN com o comerciante JUAN PEREZ. No dia 11/06/2026, houve uma movimentação aprovada no valor de 1.500,00 MXN com o mesmo comerciante. E no dia 06/06/2026, houve uma devolução no valor de 850,00 MXN pelo serviço de luz. Você gostaria de saber mais sobre alguma dessas movimentações ou tem alguma dúvida?",
+    "conversation_seed": "test-acc-ambiguou-008#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Get a card statement summary without giving the period at first.",
+    "hidden_facts": "period: last month (May)",
+    "instructions": "Ask for a summary of your credit card movements. When asked for the period, say last month.",
+    "known_facts": "(none)"
+  }
+}

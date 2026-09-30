@@ -1,0 +1,30 @@
+{
+  "cassette_id": "a25cd87342864e7bdd4b1ff5b406cc8bcc93fef57f3e5a8531597e44e581a609",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2164,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:51.135427Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 707,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: ¿Qué tipo de cambio me conviene para comprar dólares hoy?\nAssistant: Para ayudarte mejor: ¿tu consulta es sobre tus saldos y pagos o sobre tus tarjetas?"
+  }
+}

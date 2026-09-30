@@ -1,0 +1,29 @@
+{
+  "cassette_id": "928f7f7355c281303bc613b45021d98c898ab9fbd60a65b851a88946413eb9aa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1643,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:06:19.071414Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 504,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Bloqueie o cartão final 0000",
+    "dialect_hint": "pt-BR"
+  }
+}

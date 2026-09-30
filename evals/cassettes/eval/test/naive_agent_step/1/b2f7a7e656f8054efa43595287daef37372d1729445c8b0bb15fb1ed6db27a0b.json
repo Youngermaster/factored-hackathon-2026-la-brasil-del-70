@@ -1,0 +1,37 @@
+{
+  "cassette_id": "b2f7a7e656f8054efa43595287daef37372d1729445c8b0bb15fb1ed6db27a0b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3341,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "no_recognized_purchase",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:40.220538Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: Reclama el cargo de la tarjeta de mi mamá, ella no reconoce una compra",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

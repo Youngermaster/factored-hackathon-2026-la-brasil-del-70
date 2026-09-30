@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a28076ad5794066f7dc8a3da58e4809c4382a9698382ea0429bb55fbc0991480",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4077,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Você gostaria de cancelar o seu cartão de crédito permanentemente ou apenas bloqueá-lo temporariamente? Se for um bloqueio temporário, podemos desbloqueá-lo mais tarde.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:28:54.279879Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1386,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Bloqueie meu cartão de crédito\nAssistant: Entendi. Vou precisar de alguns detalhes para bloquear seu cartão. Por favor, confirme se o cartão foi perdido, roubado ou se há alguma suspeita de fraude.\nCustomer: Não, cancelar",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

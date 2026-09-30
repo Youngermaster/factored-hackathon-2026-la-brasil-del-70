@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a759dd0545654e6ce938df1a5d1d630a913fa2414c10c658a7ae7d3623471ff8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5403,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "transaction_id": "15/06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:06.891009Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1345,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Situação da minha transferência de 15/06 de 300.000 pesos",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

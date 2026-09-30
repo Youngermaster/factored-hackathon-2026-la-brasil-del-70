@@ -1,0 +1,33 @@
+{
+  "cassette_id": "85ccc2b3d4669e46f8dd4366722aa3f4f3b20fbf3c25b24515f237b64ff3b6cd",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6331,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Claro, posso te ajudar com isso. Antes, gostaria de verificar seu perfil de crédito para te dar uma orientação indicativa. Isso não é uma decisão, mas sim uma análise baseada em seus dados. Você gostaria de continuar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:25.550650Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1339,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal? Sem dizer o valor ainda.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "459ca3d962e787cfb4b1dcdcb1415dd6ce7e2b17df9f32398761eb90aecf9ccb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1881,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:28:20.676597Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 502,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Otra vez un cargo que no reconozco: 15.000 en KIOSCO DEL SUR",
+    "dialect_hint": "es-AR"
+  }
+}

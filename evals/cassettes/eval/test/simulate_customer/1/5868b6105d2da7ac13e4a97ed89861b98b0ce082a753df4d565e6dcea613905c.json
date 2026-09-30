@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5868b6105d2da7ac13e4a97ed89861b98b0ce082a753df4d565e6dcea613905c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1289,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Soy sobre saldos y pagos."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:55:09.797434Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 598,
+    "output_tokens": 19
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto $ tengo en mi cuenta?\nAssistant: Para ayudarte mejor: ¿tu consulta es sobre tus saldos y pagos o sobre tus tarjetas?",
+    "conversation_seed": "test-acc-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Know how much money is available, asked with a bare dollar sign.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask how much $ you have, with a bare $ sign and no currency. If asked, say pesos in your accounts.",
+    "known_facts": "(none)"
+  }
+}

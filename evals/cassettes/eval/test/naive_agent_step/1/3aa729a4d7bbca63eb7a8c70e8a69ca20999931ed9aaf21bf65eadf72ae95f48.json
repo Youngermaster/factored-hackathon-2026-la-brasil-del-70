@@ -1,0 +1,37 @@
+{
+  "cassette_id": "3aa729a4d7bbca63eb7a8c70e8a69ca20999931ed9aaf21bf65eadf72ae95f48",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3471,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:32:21.907732Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1391,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco un cargo de 1250 en TIENDA AURORA\nAssistant: Lo siento, hubo un problema al crear el caso de disputa. Vamos a intentarlo de nuevo. ¿Podrías proporcionar la fecha y el monto del cargo en TIENDA AURORA para que podamos revisarlo de nuevo?\nCustomer: Sí, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

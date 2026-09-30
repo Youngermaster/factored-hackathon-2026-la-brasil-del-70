@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b231476146366c12d70460ea01bce10af596cc26e18b9b6b1f701fda60b6a524",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6069,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, vamos proceder com o bloqueio do seu cartão de débito. Vou precisar de alguns detalhes para confirmar a ação. Você pode me fornecer o número do cartão que deseja bloquear?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:25.847061Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Bloqueie meu cartão de débito, fui roubado no metrô",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

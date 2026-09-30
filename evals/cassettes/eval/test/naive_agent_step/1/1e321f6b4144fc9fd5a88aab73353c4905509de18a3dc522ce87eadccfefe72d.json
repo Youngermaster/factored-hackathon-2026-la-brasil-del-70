@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1e321f6b4144fc9fd5a88aab73353c4905509de18a3dc522ce87eadccfefe72d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4581,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Desculpe, parece que houve um erro ao verificar o status do seu cartão de débito. Vamos tentar novamente mais tarde ou encaminhar isso para uma pessoa especializada. Você gostaria que isso fosse verificado imediatamente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:29.164553Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1505,
+    "output_tokens": 82
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber sobre uma de minhas cartões e também verificar o saldo.\nAssistant: Olá! Verifiquei seu saldo. Seu cartão de crédito está com um limite de 8.000.000 COP e um saldo atual de 1.200.000 COP, como de 17/06/2026. Gostaria de saber mais sobre qual cartão específico você precisa de assistência?\nCustomer: É o cartão de débito que usei ontem.\nAssistant: Entendi. Você gostaria de saber sobre o status do seu cartão de débito com o número **** 0431?\nCustomer: Sim, quero saber sobre o status desse cartão.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_card_status\", \"status\": \"error\", \"result\": \"unknown tool get_card_status\"}"
+  }
+}

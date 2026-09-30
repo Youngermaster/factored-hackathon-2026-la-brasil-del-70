@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5dd4f4cfe29ef996cecb5f48ef18dc130467bed8d5ac8df94c31f0d2490e8c39",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5383,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Lo siento, pero no podemos abrir una cuenta de ahorro directamente aquí. Te sugiero que te pongas en contacto con un asesor para que te oriente sobre los productos de ahorro disponibles y el proceso de solicitud. ¿Te interesa que te transfiera a una persona para que puedas hacerlo ahora?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:34.475868Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 96
+  },
+  "variables": {
+    "conversation": "Customer: Quiero abrir una cuenta de ahorro nueva",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

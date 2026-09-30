@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e0366923c29cbd9d90429e36739835888d9f99305e4a588c311aa75cb890704d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2262,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Olá, eu gostaria de saber como está o meu cartão de débito, por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:49:53.527500Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 821,
+    "output_tokens": 32
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber como está o meu cartão de débito, por favor.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Olá, gostaria de saber como está o meu cartão de débito, por favor.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Olá, gostaria de saber como está o meu cartão de débito, por favor.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-car-ambiguou-010#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

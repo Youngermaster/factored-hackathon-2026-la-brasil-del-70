@@ -1,0 +1,33 @@
+{
+  "cassette_id": "52c18c28a30ecbffff23a59649a25fe18e4e7faf19b0e506ef53b5b7f6082762",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4504,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, não entendi sua última mensagem. Você gostaria de bloquear o cartão de crédito imediatamente ou agendar para outro momento? Por favor, forneça a razão para o bloqueio.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:09:15.597130Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1395,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: Bloqueie meu cartão de crédito\nAssistant: Entendi. Vou precisar de alguns detalhes para poder bloquear seu cartão. Por favor, me informe a razão para o bloqueio e se você deseja que seja feito de forma imediata ou se preferir agendar para um momento específico.\nCustomer: Não, cancelar",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

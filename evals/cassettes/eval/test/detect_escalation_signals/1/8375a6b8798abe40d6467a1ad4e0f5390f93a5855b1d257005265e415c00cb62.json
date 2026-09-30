@@ -1,0 +1,29 @@
+{
+  "cassette_id": "8375a6b8798abe40d6467a1ad4e0f5390f93a5855b1d257005265e415c00cb62",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1732,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:55:39.342681Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 492,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Me diga, ¿quanto saldo tengo en mi poupança?",
+    "dialect_hint": "es-CO"
+  }
+}

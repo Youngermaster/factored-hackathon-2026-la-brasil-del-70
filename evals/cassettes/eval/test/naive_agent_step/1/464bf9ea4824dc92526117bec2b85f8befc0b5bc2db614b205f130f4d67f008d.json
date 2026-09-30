@@ -1,0 +1,33 @@
+{
+  "cassette_id": "464bf9ea4824dc92526117bec2b85f8befc0b5bc2db614b205f130f4d67f008d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4158,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, no querría que bloqueen la tarjeta por ahora. Vamos a abrir un caso de disputa para esta transacción. ¿Está de acuerdo con esto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:03.453882Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1345,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Hice una compra en KIOSCO DEL SUR y me enteré que me estafaron por $15.000. No quiero que bloqueen la tarjeta por ahora.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

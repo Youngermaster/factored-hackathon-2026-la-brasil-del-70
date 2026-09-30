@@ -1,0 +1,33 @@
+{
+  "cassette_id": "edef1adecaf1fd106f3422cca33677f84ce926eb5ceedd23033a36bcbb2df1e7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4035,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos ninguna transferencia de 60.000 pesos a Pablo Díaz en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:18.693855Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1350,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

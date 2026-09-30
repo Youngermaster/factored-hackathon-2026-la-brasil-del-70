@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e4be5621e72544bd8efcd9206f0004df2e58215ae3c62e60687b369d837a479a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3793,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Não encontramos nenhum pagamento com esse valor no dia 06/06. Você gostaria de abrir um caso de disputa para investigar isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:50:21.650688Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1441,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 21.000 para PAGO SERVICIO GAS do dia 06/06?\nAssistant: Olá! Verifiquei e não encontramos nenhum pagamento no valor de R$ 21.000 para PAGO SERVICIO GAS no dia 06/06. Você poderia fornecer mais detalhes para que eu possa ajudar melhor?\nCustomer: O do dia 06/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

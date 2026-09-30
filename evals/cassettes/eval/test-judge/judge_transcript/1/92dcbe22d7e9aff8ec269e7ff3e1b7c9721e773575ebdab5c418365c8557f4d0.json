@@ -1,0 +1,30 @@
+{
+  "cassette_id": "92dcbe22d7e9aff8ec269e7ff3e1b7c9721e773575ebdab5c418365c8557f4d0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2302,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:52.136532Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 739,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: ¿Qué tipo de cambio me conviene para comprar dólares hoy?\nAssistant: Lamento que la pregunta no esté dentro de nuestros servicios actuales. Le sugeriría consultar con un broker o servicio de cambio de divisas externo para obtener la mejor tasa de cambio actual. ¿Necesita ayuda con alguna de nuestras funciones disponibles?"
+  }
+}

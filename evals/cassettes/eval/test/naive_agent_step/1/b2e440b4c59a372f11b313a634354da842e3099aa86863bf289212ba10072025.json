@@ -1,0 +1,37 @@
+{
+  "cassette_id": "b2e440b4c59a372f11b313a634354da842e3099aa86863bf289212ba10072025",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4891,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:52:49.802443Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço a compra na TIENDA AURORA de 1250",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

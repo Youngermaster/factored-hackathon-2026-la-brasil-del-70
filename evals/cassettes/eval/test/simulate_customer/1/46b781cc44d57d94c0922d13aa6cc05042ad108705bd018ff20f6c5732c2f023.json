@@ -1,0 +1,32 @@
+{
+  "cassette_id": "46b781cc44d57d94c0922d13aa6cc05042ad108705bd018ff20f6c5732c2f023",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1516,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¡Hola! Quiero saber sobre un crédito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:50:50.917583Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 641,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola! Quiero saber sobre un crédito.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-cre-ambiguou-011#1",
+    "dialect_hint": "es-AR",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

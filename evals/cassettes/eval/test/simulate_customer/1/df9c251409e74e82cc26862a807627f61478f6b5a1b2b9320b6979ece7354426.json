@@ -1,0 +1,32 @@
+{
+  "cassette_id": "df9c251409e74e82cc26862a807627f61478f6b5a1b2b9320b6979ece7354426",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1826,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¡Mi tarjeta se perdió! Por favor, blocéela."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:53.626646Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 808,
+    "output_tokens": 26
+  },
+  "variables": {
+    "conversation": "Customer: Hola, mi tarjeta de crédito se perdió y quiero bloquearla. ¡Por favor!\nAssistant: Entendido, vamos a proceder a bloquear tu tarjeta de crédito. Primero, necesito confirmar algunos detalles. ¿Podrías proporcionarme la razón por la cual estás bloqueando la tarjeta? Las opciones son: perdida, robada, sospecha de fraude o precaución.\nCustomer: Es perdida, ¡no robada!\nAssistant: Lo siento, pero no encontramos tu tarjeta asociada a este ID de cliente. ¿Podrías proporcionar más detalles para que podamos asistirte mejor?\nCustomer: ¡Mi tarjeta se perdió! No robada, solo perdida.\nAssistant: Entendido, vamos a proceder a bloquear tu tarjeta de crédito. Por favor, confirma si la razón es 'perdida' o 'precaución'.\nCustomer: La tarjeta se perdió, por favor.\nAssistant: Lo siento, pero no encontramos tu tarjeta asociada a este ID de cliente. ¿Podrías proporcionar más detalles para que podamos asistirte mejor?",
+    "conversation_seed": "test-car-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Block the lost credit card, mixing cartão and tarjeta.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask to block your lost credit card mixing Spanish and Portuguese (tarjeta, cartão). Confirm the block.",
+    "known_facts": "(none)"
+  }
+}

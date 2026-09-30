@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bb7b618581d0b6c09dbb7c6cf808f6a10ee4857271182b292a01791464993c19",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3902,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "[CARD_NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:34.181327Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1468,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?\nAssistant: Lo siento, pero no encontramos ninguna transferencia de 60.000 pesos a Pablo Díaz en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: ¿Será la más reciente, de 15/06?\nAssistant: No encontramos ninguna transferencia reciente de 60.000 pesos. ¿Podrías proporcionar más detalles como el día exacto y la hora, o el destinatario, para que pueda revisar nuevamente?\nCustomer: ¿Podría ser la más reciente, del 15/06?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

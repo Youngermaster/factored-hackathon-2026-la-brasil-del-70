@@ -1,0 +1,35 @@
+{
+  "cassette_id": "343cdbf529833f9804bd2d2608239429bc57150884c634c4ac474dd60a64c8e8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2334,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "MX"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:31:59.365876Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1386,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo pedir una tarjeta de crédito con un límite de 30000?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "cd66664f96a1382f2b9db2e241b5a9165a6f91a826486f696fe09f1902ec436f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2851,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:40.042130Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1495,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal? Sem dizer o valor ainda.\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de verificar seu perfil de crédito para te dar uma orientação indicativa. Isso não é uma decisão, mas sim uma análise baseada em seus dados. Você gostaria de continuar?\nCustomer: Sim, continue.\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. Para um empréstimo pessoal, isso significa que você tem uma boa probabilidade de ser aprovado. No entanto, é importante lembrar que isso é apenas uma orientação indicativa. Vamos continuar e verificar se você atende aos requisitos mínimos de score e renda.\nCustomer: Sim, continue.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

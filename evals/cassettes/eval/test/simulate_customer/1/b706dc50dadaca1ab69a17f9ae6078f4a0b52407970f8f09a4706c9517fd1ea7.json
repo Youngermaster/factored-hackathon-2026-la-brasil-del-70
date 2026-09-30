@@ -1,0 +1,32 @@
+{
+  "cassette_id": "b706dc50dadaca1ab69a17f9ae6078f4a0b52407970f8f09a4706c9517fd1ea7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1781,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, quiero hacer la solicitud ahora."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:21:57.561726Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 707,
+    "output_tokens": 19
+  },
+  "variables": {
+    "conversation": "Customer: Puedo pedir un préstamo personal de 1.000.000 pesos a plazos durante 24 meses?\nAssistant: Olá! Sua pontuação de crédito é 780, que está acima do mínimo necessário para solicitar um empréstimo pessoal. Com renda mensal de 1.800.000 ARS e nenhum dia em atraso, você está bem qualificado. No entanto, precisamos verificar se você deseja realmente fazer essa solicitação. Você gostaria que eu processe sua aplicação agora?",
+    "conversation_seed": "test-cre-ambiguou-008#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask for loan eligibility mixing Spanish and Portuguese.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask whether you can get a personal loan of 1.000.000 pesos over 24 months, mixing Spanish and Portuguese words.",
+    "known_facts": "(none)"
+  }
+}

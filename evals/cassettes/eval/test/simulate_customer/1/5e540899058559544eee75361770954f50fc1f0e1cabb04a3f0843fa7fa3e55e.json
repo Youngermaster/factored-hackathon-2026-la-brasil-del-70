@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5e540899058559544eee75361770954f50fc1f0e1cabb04a3f0843fa7fa3e55e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2693,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Puedo pedir un préstamo personal de 1.000.000 pesos a plazos durante 24 meses?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:21:46.286480Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 579,
+    "output_tokens": 40
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-cre-ambiguou-008#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask for loan eligibility mixing Spanish and Portuguese.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask whether you can get a personal loan of 1.000.000 pesos over 24 months, mixing Spanish and Portuguese words.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4b42c92708b748d2ebc2134e2fe1e591b01f324bbedd25f5c7e0bd21dafe5de6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4297,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de reclamo para la compra realizada en ALMACEN ANDES. El plazo para resolver este caso es de 15 días hábiles. ¿Necesitas alguna otra información?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:52.029331Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1409,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Reclamo la compra de 85.000 en ALMACEN ANDES, no la hice",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

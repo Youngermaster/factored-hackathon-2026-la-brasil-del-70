@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f438395c75a21b7e9fc9967d34b52d6d62adb8c524591d767426319fecafc635",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2496,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "personal_loan"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:11:15.332622Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "¿Cuál sería el saldo que debo pagar para mi préstamo personal?",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

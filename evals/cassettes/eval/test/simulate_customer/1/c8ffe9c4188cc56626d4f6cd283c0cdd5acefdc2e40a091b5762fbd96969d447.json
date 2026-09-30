@@ -1,0 +1,32 @@
+{
+  "cassette_id": "c8ffe9c4188cc56626d4f6cd283c0cdd5acefdc2e40a091b5762fbd96969d447",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1486,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Posso solicitar um empréstimo pessoal?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:12:12.942788Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 666,
+    "output_tokens": 22
+  },
+  "variables": {
+    "conversation": "Customer: Posso solicitar um empréstimo pessoal?\nAssistant: Qual valor interessa a você e em qual prazo, em meses?\nCustomer: Posso solicitar um empréstimo pessoal?\nAssistant: Qual valor interessa a você e em qual prazo, em meses?",
+    "conversation_seed": "test-cre-ambiguou-010#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about eligibility for a loan without the amount, then give it.",
+    "hidden_facts": "amount: 10.000.000 pesos; term: 24 months",
+    "instructions": "Ask whether you can get a personal loan without saying the amount. When asked, say 10.000.000 pesos over 24 months.",
+    "known_facts": "(none)"
+  }
+}

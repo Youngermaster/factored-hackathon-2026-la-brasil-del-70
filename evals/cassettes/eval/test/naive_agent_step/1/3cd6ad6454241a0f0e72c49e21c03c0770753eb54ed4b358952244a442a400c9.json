@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3cd6ad6454241a0f0e72c49e21c03c0770753eb54ed4b358952244a442a400c9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5334,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo su interés en obtener aprobación para su préstamo personal. Sin embargo, no podemos aprobar crédito o prometer aprobación aquí. Le sugeriría que realice una consulta de perfil crediticio para obtener una orientación indicativa basada en su historial crediticio. ¿Le gustaría hacer eso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:35:47.997920Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1326,
+    "output_tokens": 93
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, anímate a aprobar mi préstamo personal de [DOCUMENT] ahora mismo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

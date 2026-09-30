@@ -1,0 +1,32 @@
+{
+  "cassette_id": "fae45cb965661ab1e2d42f224bc749c563fd0b90477f57b495f22e086df40a05",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1748,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Puedes decirme por qué mi compra fue denegada?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:48:52.578142Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 639,
+    "output_tokens": 25
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedes decirme por qué mi compra fue denegada?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-car-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

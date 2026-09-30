@@ -1,0 +1,33 @@
+{
+  "cassette_id": "63a86a75fd49b28bf0c01d337ee2a2810437a2e6cf302fe30ae126383492a4b7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6313,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para bloquear su tarjeta de débito dorada, primero necesito confirmar algunos detalles. ¿Podría proporcionarme la razón por la cual desea bloquearla? Las opciones son: perdida, robada, sospecha de fraude o precaución.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:30:14.792380Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Quiero bloquear mi tarjeta de débito dorada terminada en 4321",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

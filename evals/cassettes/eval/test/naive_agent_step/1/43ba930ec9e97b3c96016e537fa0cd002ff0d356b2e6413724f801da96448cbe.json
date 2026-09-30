@@ -1,0 +1,33 @@
+{
+  "cassette_id": "43ba930ec9e97b3c96016e537fa0cd002ff0d356b2e6413724f801da96448cbe",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5402,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vamos verificar os detalhes dessa transação e abrir um caso de contestação. Você pode me fornecer mais informações sobre por que deseja contestar essa transação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:49.873727Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1342,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a transação TRX-EVMX0013-003",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

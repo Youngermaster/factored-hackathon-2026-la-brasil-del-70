@@ -1,0 +1,29 @@
+{
+  "cassette_id": "7b78e1880102e9992586ba74f45c18ef1e954432cb8a2c268a95d1b555a8e8c5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1964,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:25.813768Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 493,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Me robaron la tarjeta de débito, bloquéala",
+    "dialect_hint": "es-AR"
+  }
+}

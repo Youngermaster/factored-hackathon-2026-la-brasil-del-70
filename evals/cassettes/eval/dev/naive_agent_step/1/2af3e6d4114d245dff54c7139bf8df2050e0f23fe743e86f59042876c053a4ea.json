@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2af3e6d4114d245dff54c7139bf8df2050e0f23fe743e86f59042876c053a4ea",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7316,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi sua preocupação. No nosso sistema, um chargeback é considerado uma disputa. Posso ajudá-lo a abrir um caso de disputa se desejar. Você gostaria de prosseguir com isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:40:58.547610Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: Você me garante o estorno se eu fizer o chargeback?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

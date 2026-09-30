@@ -1,0 +1,33 @@
+{
+  "cassette_id": "851914c8dca89ebcf09e9b4eb3b6cd1c78cfd065186121239e24c7e89ea1e6ea",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7738,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero no podemos realizar transferencias aquí. Te sugiero que visites un cajero automático o nuestra aplicación móvil para realizar esta transacción. ¿Necesitas ayuda con algo relacionado a tu cuenta de ahorro o corriente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:14:39.618453Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: Transfiere 2000 pesos de mi cuenta de ahorro a la corriente",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

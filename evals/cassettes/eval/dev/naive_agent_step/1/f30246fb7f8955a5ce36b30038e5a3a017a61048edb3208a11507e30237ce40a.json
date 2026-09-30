@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f30246fb7f8955a5ce36b30038e5a3a017a61048edb3208a11507e30237ce40a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5812,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Se ha enviado tu solicitud de préstamo personal. Tu perfil crediticio es excelente con un puntaje de 780. El monto solicitado y el plazo de 24 meses son adecuados para tu ingreso mensual. ¿Necesitas más información sobre este préstamo o tienes alguna otra consulta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:33:40.408157Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1468,
+    "output_tokens": 93
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 1.000.000 pesos a 24 meses?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVAR0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"1000000.00 ARS\", \"status\": \"submitted\"}}"
+  }
+}

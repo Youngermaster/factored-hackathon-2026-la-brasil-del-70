@@ -1,0 +1,32 @@
+{
+  "cassette_id": "067ec34fb731d7cc3fe0a4667726b73becdbbcfffbbdd0fd493dd2cd1f4bfee4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2189,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não reconheço a compra. Abra um caso de disputa."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:36:14.264583Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 729,
+    "output_tokens": 25
+  },
+  "variables": {
+    "conversation": "Customer: Tenho uma fatura que não reconheço.\nAssistant: Entendi, pode me informar o número da fatura que você não reconhece para que eu possa verificar?\nCustomer: É a fatura número 1250 que não reconheço.\nAssistant: A fatura número 1250 foi emitida em 15/06/2026 e o valor é de 1250.00 MXN, que foi aprovado. Você pode confirmar se realizou essa compra ou se precisa abrir um caso de disputa?",
+    "conversation_seed": "dev-dis-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 1250; merchant: TIENDA AURORA",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 1250 and the merchant TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

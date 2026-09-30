@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a9bae5fd6416003ae180797e81e8c0866b2a74c67b919dea86b8bdc20d36e876",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2253,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Olá, foi o mais recente, feito dia 15/06."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:07:53.905128Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 798,
+    "output_tokens": 29
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber o status do meu pagamento de 1500 pesos para JUAN PEREZ.\nAssistant: Olá! Infelizmente, não encontramos o registro do seu pagamento para JUAN PEREZ. Você poderia fornecer mais detalhes para que possamos auxiliá-lo melhor?\nCustomer: Olá, eu gostaria de verificar o status do meu pagamento mais recente de 1500 pesos para JUAN PEREZ, feito no dia 15/06.\nAssistant: Olá! Infelizmente, não encontramos o registro do seu pagamento de 1500 pesos feito no dia 15/06. Você poderia nos fornecer mais detalhes, como a data exata ou o ID do pagamento, para que possamos auxiliá-lo melhor?",
+    "conversation_seed": "dev-acc-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Know the status of a transfer to a payee, without saying at first which of two similar transfers.",
+    "hidden_facts": "date: 15/06",
+    "instructions": "Ask about your transfer of 1500 pesos to JUAN PEREZ. When asked which one, say it is the most recent one, from 15/06.",
+    "known_facts": "amount: 1500 pesos; payee: JUAN PEREZ"
+  }
+}

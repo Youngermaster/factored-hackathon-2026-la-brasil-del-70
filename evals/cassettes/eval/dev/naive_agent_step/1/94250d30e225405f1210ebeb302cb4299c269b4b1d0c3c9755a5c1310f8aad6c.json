@@ -1,0 +1,33 @@
+{
+  "cassette_id": "94250d30e225405f1210ebeb302cb4299c269b4b1d0c3c9755a5c1310f8aad6c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5677,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:29.330032Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1351,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

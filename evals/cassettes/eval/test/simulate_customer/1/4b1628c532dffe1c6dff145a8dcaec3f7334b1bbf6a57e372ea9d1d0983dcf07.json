@@ -1,0 +1,32 @@
+{
+  "cassette_id": "4b1628c532dffe1c6dff145a8dcaec3f7334b1bbf6a57e372ea9d1d0983dcf07",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1971,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Poderia me enviar um resumo do mês de maio, por favor?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:46:57.300865Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 976,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Poderia me enviar um resumo do mês de maio, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Poderia me enviar um resumo do mês de maio, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Poderia me enviar um resumo do mês de maio, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Poderia me enviar um resumo do mês de maio, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Poderia me enviar um resumo do mês de maio, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-acc-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

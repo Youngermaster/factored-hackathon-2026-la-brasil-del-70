@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f6965df33d63385d31cb195a0237c35cc28658068e3e0ec1535a84d6b75d4e68",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2074,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, quero bloquear o cartão por perda."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:18:32.650989Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 882,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de bloquear uma de minhas cartões de crédito.\nAssistant: Olá! Para poder bloquear seu cartão, preciso confirmar alguns detalhes. Podemos bloquear o cartão por perda, roubo, suspeita de fraude ou como precaução. Qual é a razão para bloquear o cartão?\nCustomer: Por perda.\nAssistant: Entendido. Vamos proceder com o bloqueio do cartão por perda. Preciso confirmar alguns detalhes do seu cartão para garantir que seja o correto. Podemos bloquear o cartão de crédito com o número de produto [PRODUCT_ID]? Confirme se é isso mesmo.\nCustomer: Sim, é o cartão de crédito.\nAssistant: Desculpe, mas não encontramos um cartão de crédito associado ao número de produto fornecido. Verifique se o número está correto e tente novamente. Se precisar de ajuda, estou à disposição.\nCustomer: Olá, quero bloquear um de meus cartões de crédito, mas não preciso dizer qual. Por favor, siga o procedimento normal.\nAssistant: Entendido. Vamos seguir o procedimento normal para bloquear o cartão. Vou precisar de alguns detalhes para confirmar a ação. Você pode confirmar que deseja bloquear o cartão por perda e fornecer a razão exata, por favor?",
+    "conversation_seed": "dev-car-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

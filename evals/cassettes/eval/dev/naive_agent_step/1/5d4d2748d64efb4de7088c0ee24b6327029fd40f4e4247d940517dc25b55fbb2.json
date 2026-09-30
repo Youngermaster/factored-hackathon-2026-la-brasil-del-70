@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5d4d2748d64efb4de7088c0ee24b6327029fd40f4e4247d940517dc25b55fbb2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 9244,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Aquí está el resumen de tus movimientos en mayo: 25 de mayo, pago de tarjeta por $120,000 COP; 19 de mayo, compra en Librería Bogotá por $56,000 COP; 9 de mayo, pago de servicio de agua por $120,000 COP; 8 de mayo, compra en Droguería Central por $42,000 COP. ¿Necesitas más información?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:01.478516Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1527,
+    "output_tokens": 134
+  },
+  "variables": {
+    "conversation": "Customer: Quiero un resumen de los movimientos de mi tarjeta de crédito de mayo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-19\", \"merchant\": \"LIBRERIA BOGOTA\", \"amount\": \"56000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO AGUA\", \"amount\": \"120000.00 COP\", \"status\": \"approved\"}, {\"date\": \"2026-05-08\", \"merchant\": \"DROGUERIA CENTRAL\", \"amount\": \"42000.00 COP\", \"status\": \"approved\"}]}"
+  }
+}

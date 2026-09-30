@@ -1,0 +1,29 @@
+{
+  "cassette_id": "04c6f3523813d3f47e4c6b90494ded0a480b60b1ab663d3276ead42b1e6389b3",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1917,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:53:03.253778Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 504,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Preciso bloquear uma de minhas cartões de crédito.",
+    "dialect_hint": "pt-BR"
+  }
+}

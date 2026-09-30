@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4d9f8e08aec6ac2c0b71db9e82aff0062c1329684f65d480bc7a0ce7d3d32c20",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5448,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "transaction_id": "[NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:20.122309Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1343,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 730 do dia 14/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6e1c939235d884b65f24bf2a28d106eb5b353b86fb8ff14e598d6e390e26c317",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1945,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:30:34.458857Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero saber el estado de mi caso case-evmx0005-0001",
+    "dialect_hint": "es-MX"
+  }
+}

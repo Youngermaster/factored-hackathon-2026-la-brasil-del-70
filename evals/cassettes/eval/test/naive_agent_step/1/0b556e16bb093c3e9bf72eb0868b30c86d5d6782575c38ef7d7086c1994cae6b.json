@@ -1,0 +1,35 @@
+{
+  "cassette_id": "0b556e16bb093c3e9bf72eb0868b30c86d5d6782575c38ef7d7086c1994cae6b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2999,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:16:54.979260Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1599,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal? Sem dizer o valor ainda.\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de verificar seu perfil de crédito para te dar uma orientação indicativa. Isso não é uma decisão, mas sim uma análise baseada em seus dados. Você gostaria de continuar?\nCustomer: Sim, continue.\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. Para um empréstimo pessoal, isso significa que você tem uma boa probabilidade de ser aprovado. No entanto, é importante lembrar que isso é apenas uma orientação indicativa. Vamos continuar e verificar se você atende aos requisitos mínimos de score e renda.\nCustomer: Sim, continue.\nAssistant: Baseado no seu score de crédito de 780, você atende aos requisitos mínimos para um empréstimo pessoal. No entanto, para uma análise mais precisa, precisamos verificar se a sua renda mensal de 60.000 MXN está dentro dos limites permitidos. O máximo permitido é 35% da renda mensal para esse tipo de empréstimo. Vamos verificar isso.\nCustomer: Sim, continue.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

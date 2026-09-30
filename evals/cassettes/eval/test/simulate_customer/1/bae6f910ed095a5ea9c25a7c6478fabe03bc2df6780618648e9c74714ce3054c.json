@@ -1,0 +1,32 @@
+{
+  "cassette_id": "bae6f910ed095a5ea9c25a7c6478fabe03bc2df6780618648e9c74714ce3054c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1573,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Cómo se encuentra mi tarjeta de débito?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:49:31.425523Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 777,
+    "output_tokens": 22
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Cómo está mi tarjeta de débito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-car-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

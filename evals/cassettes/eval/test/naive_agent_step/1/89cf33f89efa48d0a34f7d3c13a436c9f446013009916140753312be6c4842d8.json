@@ -1,0 +1,35 @@
+{
+  "cassette_id": "89cf33f89efa48d0a34f7d3c13a436c9f446013009916140753312be6c4842d8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4390,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:09.537951Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Buenas, quiero ver cuánta plata tengo en mis cuentas",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

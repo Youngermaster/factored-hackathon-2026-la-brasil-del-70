@@ -1,0 +1,29 @@
+{
+  "cassette_id": "df3b24c653c4803ad0784110985e64f378137ea9472051e4b4dbfe8883ab9735",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1994,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:00:02.266763Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 497,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No reconozco un cargo de 777 pesos en ZAPATERIA LUZ",
+    "dialect_hint": "es-MX"
+  }
+}

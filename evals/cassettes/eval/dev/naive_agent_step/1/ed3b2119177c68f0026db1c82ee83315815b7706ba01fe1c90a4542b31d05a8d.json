@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ed3b2119177c68f0026db1c82ee83315815b7706ba01fe1c90a4542b31d05a8d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7321,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "A fatura número 1250 foi emitida em 15/06/2026 e o valor é de 1250.00 MXN, que foi aprovado. Você pode confirmar se realizou essa compra ou se precisa abrir um caso de disputa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:36:12.070986Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1661,
+    "output_tokens": 92
+  },
+  "variables": {
+    "conversation": "Customer: Tenho uma fatura que não reconheço.\nAssistant: Entendi, pode me informar o número da fatura que você não reconhece para que eu possa verificar?\nCustomer: É a fatura número 1250 que não reconheço.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-06-17\", \"merchant\": \"FARMACIA CENTRO\", \"amount\": \"640.00 MXN\", \"status\": \"pending\"}, {\"date\": \"2026-06-15\", \"merchant\": \"TIENDA AURORA\", \"amount\": \"1250.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-06-14\", \"merchant\": \"PAPELERIA SOL\", \"amount\": \"730.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-06-13\", \"merchant\": \"ELECTRONICA NORTE\", \"amount\": \"15000.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-06-12\", \"merchant\": \"CAFE LUNA\", \"amount\": \"300.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-06-09\", \"merchant\": \"CAFE LUNA\", \"amount\": \"300.00 MXN\", \"status\": \"approved\"}]}"
+  }
+}

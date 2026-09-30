@@ -1,0 +1,29 @@
+{
+  "cassette_id": "cc0adbfc2d1c20fbbaa3b31410542feb195c1c4b01ab7cdd909d6a369bfbaec7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2992,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": true,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:32.012092Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Sou procurador do Rafael, abra uma contestação pela compra dele",
+    "dialect_hint": "pt-BR"
+  }
+}

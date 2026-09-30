@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b1975d9bbb9fb06bbda63b6079d8dc2d644edbc2c673f9fc264e5bd3a2418ccf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6167,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero aquí no podemos ayudar con la declaración de impuestos. Te recomendaría contactar a un asesor fiscal o visitar el sitio web del Servicio de Rentas Internas de Argentina para obtener más información.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:41:34.242901Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo declaro mis impuestos de este año?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

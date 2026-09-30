@@ -1,0 +1,29 @@
+{
+  "cassette_id": "db3246e25653b0328146eea1ba86456d75e36b3b666cc42f8ba76fb86db70923",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1777,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:49.176602Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 488,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cómo declaro mis impuestos de este año?",
+    "dialect_hint": "es-AR"
+  }
+}

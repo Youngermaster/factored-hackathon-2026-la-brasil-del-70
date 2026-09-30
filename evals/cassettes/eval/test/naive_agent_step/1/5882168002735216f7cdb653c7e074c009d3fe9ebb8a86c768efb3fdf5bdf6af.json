@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5882168002735216f7cdb653c7e074c009d3fe9ebb8a86c768efb3fdf5bdf6af",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3250,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos ninguna tarjeta asociada a su cuenta. ¿Podría proporcionar más detalles para poder ayudarlo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:05:38.257252Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1368,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, quiero bloquearla\nAssistant: Se ha perdido su tarjeta de crédito y desea bloquearla. ¿Esto es correcto?\nCustomer: Sí, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

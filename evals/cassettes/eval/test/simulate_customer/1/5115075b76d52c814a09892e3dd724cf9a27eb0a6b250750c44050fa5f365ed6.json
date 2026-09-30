@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5115075b76d52c814a09892e3dd724cf9a27eb0a6b250750c44050fa5f365ed6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1686,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Cuánto $ tengo en mi cuenta?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:22.729794Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 563,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-007#1",
+    "dialect_hint": "es-MX",
+    "goal": "Know how much money is available, asked with a bare dollar sign.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask how much $ you have, with a bare $ sign and no currency. If asked, say pesos in your accounts.",
+    "known_facts": "(none)"
+  }
+}

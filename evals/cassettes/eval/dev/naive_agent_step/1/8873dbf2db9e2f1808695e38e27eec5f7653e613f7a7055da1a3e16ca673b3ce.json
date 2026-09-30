@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8873dbf2db9e2f1808695e38e27eec5f7653e613f7a7055da1a3e16ca673b3ce",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6244,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Seu saldo atual é de 12.500,00 MXN na sua conta de cartão de crédito. O limite total é de 60.000,00 MXN. Você precisa de mais informações ou ajuda com algo específico?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:42:14.403453Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1424,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0002-01\", \"type\": \"credit_card\", \"number\": \"**** 6155\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

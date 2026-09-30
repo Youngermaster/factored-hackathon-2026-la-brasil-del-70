@@ -1,0 +1,29 @@
+{
+  "cassette_id": "cfd27e4ebd0b7b2ead00bc9f6fc196b158786cd04016a486c3a5b07ad2738b76",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1797,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:39.724375Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 489,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero saber el estado de mi tarjeta de crédito",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "cassette_id": "d5c8ebdc0a7a6104b43b116713123c10bbf44550a934cdb6d8f00dfe26074833",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3356,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:13:46.702333Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1342,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço esta compra de 300 reais no CAFÉ LUNA.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

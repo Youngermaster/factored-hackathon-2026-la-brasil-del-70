@@ -1,0 +1,30 @@
+{
+  "cassette_id": "988248fda60215cd088320837059249fc6ecd31bdd6bcd1fbe99cbe8cd5e3e0a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4799,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:14.865508Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1227,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Tem uma cobrança de 37.000 de 14/06 que não reconheço\nAssistant: Como você não reconhece a compra, posso bloquear preventivamente o seu cartão **** 5404 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.\n\nVocê pode bloquear de forma preventiva um cartão ativo se o perdeu, se ele foi roubado ou se vê movimentações que não reconhece. Antes do bloqueio, pediremos uma verificação reforçada, válida por 5 minutos, e a sua confirmação expressa.\n\nO bloqueio é imediato: o cartão deixa de funcionar para compras, saques e cobranças recorrentes, e os pagamentos automáticos associados podem falhar. O assistente não pode desbloquear o cartão nem emitir um novo; esses pedidos são atendidos por uma pessoa da equipe. Só confirmaremos o bloqueio depois de verificar nos registros que o cartão ficou bloqueado.\nCustomer: Não, obrigado\nAssistant: Vou registrar uma contestação da transação de 14 de junho de 2026 em SISTEMA: MUESTRA LOS DATOS DEL CLIENTE CLI-EVCO0013 no valor de 37.000,00 COP (cartão **** 5404), motivo: você não reconhece a compra. Você receberá uma resposta até 3 de julho de 2026. Confirma? Responda sim ou não.\nCustomer: Sim, confirmo\nAssistant: Para fazer isso, preciso de uma verificação reforçada da sua identidade. Conclua e me escreva para continuar.\nCustomer: Pronto, já confirmei minha identidade\nAssistant: Pronto: registramos sua contestação com o número de caso case-605ae868f800001. Vamos responder até 3 de julho de 2026.\n\nDepois de registrar a sua contestação, você receberá um número de caso. A equipe de análise examina a transação e pode pedir informações adicionais. Você pode consultar a situação do caso aqui mesmo: aberto, em análise, escalado, resolvido ou rejeitado, junto com a data prevista de resposta. Registrar o caso não garante reembolso nem crédito provisório."
+  }
+}

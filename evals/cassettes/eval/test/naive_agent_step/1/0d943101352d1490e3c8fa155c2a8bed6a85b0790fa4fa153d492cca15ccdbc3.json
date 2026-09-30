@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0d943101352d1490e3c8fa155c2a8bed6a85b0790fa4fa153d492cca15ccdbc3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6202,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "month": "2026-05"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:26:32.798741Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 2199,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto gasté con mi tarjeta de crédito en mayo?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0001-01\", \"type\": \"checking_account\", \"number\": \"**** 5056\", \"balance\": \"52300.50 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5231\", \"balance\": \"18000.00 MXN\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVMX0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0025\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}\n{\"tool\": \"list_transactions\", \"status\": \"ok\", \"result\": [{\"transaction_id\": \"TRX-EVMX0001-005\", \"date\": \"2026-06-15\", \"merchant\": \"JUAN PEREZ\", \"amount\": \"1500.00 MXN\", \"status\": \"pending\", \"type\": \"transfer\", \"product_id\": \"PRD-EVMX0001-01\"}, {\"transaction_id\": \"TRX-EVMX0001-004\", \"date\": \"2026-06-11\", \"merchant\": \"JUAN PEREZ\", \"amount\": \"1500.00 MXN\", \"status\": \"approved\", \"type\": \"transfer\", \"product_id\": \"PRD-EVMX0001-01\"}, {\"transaction_id\": \"TRX-EVMX0001-006\", \"date\": \"2026-06-06\", \"merchant\": \"PAGO SERVICIO LUZ\", \"amount\": \"850.00 MXN\", \"status\": \"reversed\", \"type\": \"payment\", \"product_id\": \"PRD-EVMX0001-01\"}, {\"transaction_id\": \"TRX-EVMX0001-010\", \"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"850.00 MXN\", \"status\": \"approved\", \"type\": \"payment\", \"product_id\": \"PRD-EVMX0001-03\"}, {\"transaction_id\": \"TRX-EVMX0001-009\", \"date\": \"2026-05-19\", \"merchant\": \"LIBROS DEL SUR\", \"amount\": \"910.00 MXN\", \"status\": \"approved\", \"type\": \"purchase\", \"product_id\": \"PRD-EVMX0001-03\"}, {\"transaction_id\": \"TRX-EVMX0001-007\", \"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO LUZ\", \"amount\": \"850.00 MXN\", \"status\": \"approved\", \"type\": \"payment\", \"product_id\": \"PRD-EVMX0001-01\"}, {\"transaction_id\": \"TRX-EVMX0001-008\", \"date\": \"2026-05-08\", \"merchant\": \"FARMACIA CENTRO\", \"amount\": \"640.00 MXN\", \"status\": \"approved\", \"type\": \"purchase\", \"product_id\": \"PRD-EVMX0001-03\"}]}"
+  }
+}

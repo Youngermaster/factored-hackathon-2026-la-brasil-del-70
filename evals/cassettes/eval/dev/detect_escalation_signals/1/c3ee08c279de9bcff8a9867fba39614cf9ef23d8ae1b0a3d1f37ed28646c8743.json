@@ -1,0 +1,29 @@
+{
+  "cassette_id": "c3ee08c279de9bcff8a9867fba39614cf9ef23d8ae1b0a3d1f37ed28646c8743",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1975,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:04.181836Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cuándo vence mi tarjeta de débito?",
+    "dialect_hint": "es-MX"
+  }
+}

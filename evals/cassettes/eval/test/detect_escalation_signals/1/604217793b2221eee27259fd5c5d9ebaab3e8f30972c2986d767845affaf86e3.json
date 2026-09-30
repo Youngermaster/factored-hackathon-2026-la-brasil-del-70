@@ -1,0 +1,29 @@
+{
+  "cassette_id": "604217793b2221eee27259fd5c5d9ebaab3e8f30972c2986d767845affaf86e3",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1728,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:22.000124Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 514,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço essa compra no CAFÉ LUNA no valor de 300 reais.",
+    "dialect_hint": "pt-BR"
+  }
+}

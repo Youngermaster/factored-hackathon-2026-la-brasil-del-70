@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3b021a507bab114bfe76a27d6c18f8aee74d84973da530ffa9566e5f1de68fe5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4921,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Desculpe, parece haver um erro ao verificar o status do seu cartão. Vamos tentar novamente ou encaminhar isso para uma pessoa especializada. Você gostaria que isso fosse verificado de novo agora ou preferiria que fosse analisado por um especialista?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:58:38.602345Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1482,
+    "output_tokens": 88
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha conta-corrente?\nAssistant: Olá! Sua conta-corrente está em dia. Até 17/06/2026, o saldo disponível é de 12.500,00 MXN. Você tem mais alguma dúvida ou precisa de informações sobre outra conta?\nCustomer: Como está o meu cartão de débito?\nAssistant: Olá! Seu cartão de débito está ativo. Você gostaria de verificar o status de alguma transação específica ou tem outra pergunta sobre seu cartão?\nCustomer: Quero verificar o status do meu cartão de débito, por favor.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_card_status\", \"status\": \"error\", \"result\": \"unknown tool get_card_status\"}"
+  }
+}

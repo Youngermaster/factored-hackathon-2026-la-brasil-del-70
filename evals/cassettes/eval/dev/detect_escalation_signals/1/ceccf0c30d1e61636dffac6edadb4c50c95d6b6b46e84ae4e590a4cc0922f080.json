@@ -1,0 +1,29 @@
+{
+  "cassette_id": "ceccf0c30d1e61636dffac6edadb4c50c95d6b6b46e84ae4e590a4cc0922f080",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2066,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:36.179062Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 511,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero bloquear o cartão de crédito da minha mãe, ela não sabe usar o app",
+    "dialect_hint": "pt-BR"
+  }
+}

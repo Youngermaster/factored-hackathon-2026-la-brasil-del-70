@@ -1,0 +1,29 @@
+{
+  "cassette_id": "803fba1d69e5a657cb81abab10a8bff449cea27bc70909c8a0b966b477032e26",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2015,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:39:24.333741Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 493,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Mejor dime cuánto tengo en mi cuenta de ahorro",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1e57a0228ea5b2b283b1f064b7cb44dc7ef437b9f09361701e8c3aca7d5ebd42",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3489,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos tu tarjeta de crédito en nuestro sistema. ¿Podrías proporcionar más detalles para que podamos asistirte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:58.708730Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1435,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo va mi reclamación?\nAssistant: Actualmente tienes una disputa abierta con la transacción TRX-EVMX0005-002. ¿Necesitas saber más sobre el estado de esta disputa?\nCustomer: Bloquea también mi tarjeta de crédito por precaución\nAssistant: Para tu seguridad, te confirmo que estás solicitando bloquear tu tarjeta de crédito por precaución. ¿Estás seguro de que deseas realizar esta acción?\nCustomer: Sí, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0005",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

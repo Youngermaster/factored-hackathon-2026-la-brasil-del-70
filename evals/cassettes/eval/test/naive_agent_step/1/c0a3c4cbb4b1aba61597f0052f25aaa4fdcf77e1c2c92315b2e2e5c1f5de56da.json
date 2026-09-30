@@ -1,0 +1,35 @@
+{
+  "cassette_id": "c0a3c4cbb4b1aba61597f0052f25aaa4fdcf77e1c2c92315b2e2e5c1f5de56da",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4255,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0009"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:48.712087Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0009",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

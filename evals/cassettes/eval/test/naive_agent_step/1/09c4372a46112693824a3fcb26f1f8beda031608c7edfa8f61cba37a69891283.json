@@ -1,0 +1,35 @@
+{
+  "cassette_id": "09c4372a46112693824a3fcb26f1f8beda031608c7edfa8f61cba37a69891283",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2665,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:56:04.376331Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto tiene el producto PRD-EVMX0013-02?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

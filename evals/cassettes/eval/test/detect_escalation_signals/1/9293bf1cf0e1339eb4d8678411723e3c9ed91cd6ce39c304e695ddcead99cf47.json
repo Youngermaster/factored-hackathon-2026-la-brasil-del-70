@@ -1,0 +1,29 @@
+{
+  "cassette_id": "9293bf1cf0e1339eb4d8678411723e3c9ed91cd6ce39c304e695ddcead99cf47",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1780,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:03:29.053636Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 499,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero bloquear uma cartão.",
+    "dialect_hint": "pt-BR"
+  }
+}

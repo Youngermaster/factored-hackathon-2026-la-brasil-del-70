@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c67dd3efaf3fb578aff7a7caa3a7cfab069b26ed5a1eddf20d06477266355bf6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3966,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Seu cartão de crédito foi bloqueado com sucesso. Recomendamos que você solicite um novo cartão o mais rápido possível. Se precisar de assistência para isso, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:14:23.144297Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1409,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão de crédito, bloqueie já\nAssistant: Entendi que você perdeu seu cartão de crédito. Vou proceder com o bloqueio imediatamente. Você confirma que deseja bloquear o cartão?\nCustomer: Sim, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"ok\", \"result\": {\"blocked\": true, \"product_id\": \"CO-CREDIT-CARD\"}}"
+  }
+}

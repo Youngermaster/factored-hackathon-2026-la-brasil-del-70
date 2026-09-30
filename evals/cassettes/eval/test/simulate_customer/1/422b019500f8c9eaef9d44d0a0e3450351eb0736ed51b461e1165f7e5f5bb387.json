@@ -1,0 +1,32 @@
+{
+  "cassette_id": "422b019500f8c9eaef9d44d0a0e3450351eb0736ed51b461e1165f7e5f5bb387",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2348,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Pode ser um empréstimo de 50.000 reais em 24 meses?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:17:23.495786Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 640,
+    "output_tokens": 34
+  },
+  "variables": {
+    "conversation": "Customer: Posso fazer um empréstimo pessoal?\nAssistant: Claro, posso te ajudar com isso. Antes, preciso verificar alguns detalhes do seu perfil de crédito. Vou verificar agora.",
+    "conversation_seed": "test-cre-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about eligibility for a loan without the amount, then give it.",
+    "hidden_facts": "amount: 50000 pesos; term: 24 months",
+    "instructions": "Ask whether you can get a personal loan without saying the amount. When asked, say 50000 pesos over 24 months.",
+    "known_facts": "(none)"
+  }
+}

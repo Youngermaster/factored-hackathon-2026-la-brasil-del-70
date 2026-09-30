@@ -1,0 +1,37 @@
+{
+  "cassette_id": "c5e46e88127200914c0cc54c1ab5d63bcc1e36a93b45b5f4fdd150f18ab55bcd",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3536,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:15.256053Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1476,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, por que minha compra foi negada?\nAssistant: Olá! Peço desculpas pelo inconveniente. Vamos verificar o motivo da negação da transação. Poderia me fornecer o número da transação, por favor?\nCustomer: Não me lembro do número da transação, mas a compra era com meu cartão de crédito.\nAssistant: Entendi. Infelizmente, não conseguimos localizar a transação com seu cartão de crédito. Vamos abrir um caso de disputa para investigar. Isso pode levar até 15 dias para ser resolvido. Gostaria de prosseguir com isso?\nCustomer: Sim, gostaria de abrir o caso de disputa.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

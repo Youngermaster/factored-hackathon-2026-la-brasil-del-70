@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f8440169220a9b032a5617b611f60bb40cfbea5035a3a56837f3789ce325e160",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2712,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Perdi meu cartão/tarjeta e preciso bloquear imediatamente. O ID do produto é 123456."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:59:44.308294Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 862,
+    "output_tokens": 41
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão/tarjeta e preciso bloquear imediatamente.\nAssistant: Entendi, vou bloquear seu cartão imediatamente. Vou precisar de algumas informações para prosseguir: o motivo do bloqueio (perdido, roubado, suspeita de fraude ou precaução) e, se aplicável, o motivo do pedido.\nCustomer: Perdi meu cartão/tarjeta e preciso bloquear imediatamente. O motivo é que perdi.\nAssistant: Entendi que o motivo do bloqueio é que você perdeu o cartão. Vou prosseguir com o bloqueio agora. Confirma que é isso mesmo?\nCustomer: Sí, confirmo.\nAssistant: Desculpe, não encontrei seu cartão cadastrado. Por favor, verifique se digitou corretamente o ID do cliente ou forneça mais detalhes para que possamos prosseguir.\nCustomer: Desculpe, verifiquei e o ID está correto. Perdi o cartão/tarjeta e preciso bloquear imediatamente.\nAssistant: Entendi que você perdeu o cartão e precisa bloqueá-lo imediatamente. Vou precisar do ID do produto do cartão para prosseguir. Poderia me fornecer o ID do produto, por favor?",
+    "conversation_seed": "test-car-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block the lost credit card, mixing cartão and tarjeta.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask to block your lost credit card mixing Spanish and Portuguese (tarjeta, cartão). Confirm the block.",
+    "known_facts": "(none)"
+  }
+}

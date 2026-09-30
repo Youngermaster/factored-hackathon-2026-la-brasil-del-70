@@ -1,0 +1,36 @@
+{
+  "cassette_id": "69a50833c012b2a716537a579f1e26ead462c8f5a0cf89bd9b2f7d8ef1a47143",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3360,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "06/06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:50.391076Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Estado del pago que hice el 06/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

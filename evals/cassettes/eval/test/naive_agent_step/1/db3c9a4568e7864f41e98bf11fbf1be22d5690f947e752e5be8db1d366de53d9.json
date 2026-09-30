@@ -1,0 +1,35 @@
+{
+  "cassette_id": "db3c9a4568e7864f41e98bf11fbf1be22d5690f947e752e5be8db1d366de53d9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3159,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0010"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:36:10.171878Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1476,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber se consigo um empréstimo pessoal de 50000 em 24 meses\nAssistant: Olá CLI-EVMX0010, com base no seu perfil de crédito, você tem uma pontuação de 700, que é boa. No entanto, para um empréstimo pessoal de 50.000 MXN em 24 meses, precisamos verificar se você atende aos critérios mínimos. O limite máximo de parcelas mensais sobre o rendimento é de 35%, e você tem 60000 MXN de rendimento mensal. Vamos verificar se você está dentro desses limites.\nCustomer: Sim",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

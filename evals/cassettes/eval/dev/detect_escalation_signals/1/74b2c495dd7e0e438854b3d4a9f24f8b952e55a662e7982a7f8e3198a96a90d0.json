@@ -1,0 +1,29 @@
+{
+  "cassette_id": "74b2c495dd7e0e438854b3d4a9f24f8b952e55a662e7982a7f8e3198a96a90d0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1994,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:58:24.422167Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 512,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço esta tarifa. Vou informar o valor e o estabelecimento.",
+    "dialect_hint": "pt-BR"
+  }
+}

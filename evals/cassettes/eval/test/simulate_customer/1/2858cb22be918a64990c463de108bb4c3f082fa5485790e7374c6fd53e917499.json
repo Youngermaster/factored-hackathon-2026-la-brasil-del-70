@@ -1,0 +1,32 @@
+{
+  "cassette_id": "2858cb22be918a64990c463de108bb4c3f082fa5485790e7374c6fd53e917499",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1465,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Como está a minha conta-corrente?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:58:15.457552Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 568,
+    "output_tokens": 18
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-car-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

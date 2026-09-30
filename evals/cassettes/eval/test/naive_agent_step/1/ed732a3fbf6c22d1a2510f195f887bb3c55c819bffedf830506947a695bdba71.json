@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ed732a3fbf6c22d1a2510f195f887bb3c55c819bffedf830506947a695bdba71",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7628,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Señor/a, confirmamos que su tarjeta de débito ha sido robada. Antes de bloquearla, necesitamos que nos proporcione la razón exacta para asegurarnos de que es correcta. Las opciones son: perdida, robada, sospecha de fraude o precaución. ¿Podría confirmarnos cuál es la razón?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:14:30.779430Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 109
+  },
+  "variables": {
+    "conversation": "Customer: Me robaron la tarjeta de débito, bloquéala",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

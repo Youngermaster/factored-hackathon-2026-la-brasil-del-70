@@ -1,0 +1,35 @@
+{
+  "cassette_id": "90b174e02e165a2219891d0c302738e663f25d8c35565d21ed0591b8ae33d926",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4712,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:21:22.085037Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 41
+  },
+  "variables": {
+    "conversation": "Customer: Quando vence o meu cartão de débito?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

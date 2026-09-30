@@ -1,0 +1,35 @@
+{
+  "cassette_id": "161b5eea9591f66e2bfb7bae53f51a0085f7eddaa2110c5f94547e93a0c2d45c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2539,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:27:39.378251Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Estoy desesperada, no me alcanza para pagar mis deudas, ¿cuánto tengo?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

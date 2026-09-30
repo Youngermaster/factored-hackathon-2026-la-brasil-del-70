@@ -1,0 +1,36 @@
+{
+  "cassette_id": "46f957ea3bebcbc3c93ba83df30cf5256f7295660278fd81ec08c3f7b74c7bfe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3713,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "lost",
+      "stolen",
+      "unrecognized_activity",
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:02.366810Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 65
+  },
+  "variables": {
+    "customer_message": "Perdí mi tarjeta de crédito, quiero bloquearla",
+    "dialect_hint": "es-CO"
+  }
+}

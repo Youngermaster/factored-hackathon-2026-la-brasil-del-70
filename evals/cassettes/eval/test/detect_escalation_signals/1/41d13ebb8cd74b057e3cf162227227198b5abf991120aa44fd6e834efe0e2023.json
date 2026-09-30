@@ -1,0 +1,29 @@
+{
+  "cassette_id": "41d13ebb8cd74b057e3cf162227227198b5abf991120aa44fd6e834efe0e2023",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1724,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:54:59.216048Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 505,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Olá, preciso saber quanto $ tenho no meu saldo.",
+    "dialect_hint": "pt-BR"
+  }
+}

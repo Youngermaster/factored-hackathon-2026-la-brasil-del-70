@@ -1,0 +1,32 @@
+{
+  "cassette_id": "fb8c4717551a516448781b23a1fa8b5bf557bd44cc589b2d4e6a1e410968a7aa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1554,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Por qué mi compra fue rechazada?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:04:10.189201Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 561,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-car-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: GASOLINERA SOL",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a42c112fc8ec172e2b798d64ca74bfb66e80c479c60ac542fb4d02dc7b56c762",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1911,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Era con mi tarjeta de crédito en la gasolinera SOL."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:15:00.053527Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 607,
+    "output_tokens": 25
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?",
+    "conversation_seed": "dev-car-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: GASOLINERA SOL",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

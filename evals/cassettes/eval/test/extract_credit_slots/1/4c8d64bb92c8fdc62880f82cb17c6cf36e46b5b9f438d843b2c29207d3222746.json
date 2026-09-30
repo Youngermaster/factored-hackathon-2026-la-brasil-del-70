@@ -1,0 +1,31 @@
+{
+  "cassette_id": "4c8d64bb92c8fdc62880f82cb17c6cf36e46b5b9f438d843b2c29207d3222746",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3193,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "mortgage",
+    "purpose": "comprar un departamento",
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:22:46.635705Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1033,
+    "output_tokens": 55
+  },
+  "variables": {
+    "customer_message": "¿Puedo tener una hipoteca para comprar un departamento?",
+    "dialect_hint": "es-AR"
+  }
+}

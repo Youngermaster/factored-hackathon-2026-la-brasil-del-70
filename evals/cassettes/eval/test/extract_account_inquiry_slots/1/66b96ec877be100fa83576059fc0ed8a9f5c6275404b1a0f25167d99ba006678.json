@@ -1,0 +1,32 @@
+{
+  "cassette_id": "66b96ec877be100fa83576059fc0ed8a9f5c6275404b1a0f25167d99ba006678",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2535,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "savings_account"
+    },
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:39:26.871239Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1132,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "Mejor dime cuánto tengo en mi cuenta de ahorro",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

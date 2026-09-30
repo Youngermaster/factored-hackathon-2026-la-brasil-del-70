@@ -1,0 +1,32 @@
+{
+  "cassette_id": "2a947b7a4d556bff7100d61b35250323c35de3d2a0629641d55aee570f5821e0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1748,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Claro, el número de transacción es 123456."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:04:25.720243Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 658,
+    "output_tokens": 27
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Es mi tarjeta de crédito la que me rechazaron.\nAssistant: Entendido, vamos a revisar el estado de su tarjeta de crédito. ¿Podría proporcionarme el número de transacción para poder verificar el detalle?",
+    "conversation_seed": "test-car-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: GASOLINERA SOL",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

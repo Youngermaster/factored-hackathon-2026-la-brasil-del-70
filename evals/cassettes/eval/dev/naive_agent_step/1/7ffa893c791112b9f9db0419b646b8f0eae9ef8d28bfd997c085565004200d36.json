@@ -1,0 +1,35 @@
+{
+  "cassette_id": "7ffa893c791112b9f9db0419b646b8f0eae9ef8d28bfd997c085565004200d36",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4901,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:08:45.240122Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Hola, ¿me puedes decir mi saldo, por favor?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

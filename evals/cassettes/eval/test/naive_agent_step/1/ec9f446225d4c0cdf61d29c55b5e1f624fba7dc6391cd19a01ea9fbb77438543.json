@@ -1,0 +1,35 @@
+{
+  "cassette_id": "ec9f446225d4c0cdf61d29c55b5e1f624fba7dc6391cd19a01ea9fbb77438543",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2947,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:16.192093Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1438,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber sobre uma de minhas cartões e também verificar o saldo.\nAssistant: Olá! Verifiquei seu saldo. Seu cartão de crédito está com um limite de 8.000.000 COP e um saldo atual de 1.200.000 COP, como de 17/06/2026. Gostaria de saber mais sobre qual cartão específico você precisa de assistência?\nCustomer: É o cartão de débito que usei ontem.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

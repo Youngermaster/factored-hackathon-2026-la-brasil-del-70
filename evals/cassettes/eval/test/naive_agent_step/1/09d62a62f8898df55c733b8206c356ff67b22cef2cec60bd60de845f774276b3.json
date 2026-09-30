@@ -1,0 +1,37 @@
+{
+  "cassette_id": "09d62a62f8898df55c733b8206c356ff67b22cef2cec60bd60de845f774276b3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3781,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": "[NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:32:06.752319Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Hay un cargo de 730 del 14/06 que no reconozco",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d29298a1d5af94993c3614dd10aa60638a0a8e1b5f683d6443fe0fa9bb5c80c6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3914,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:53:56.518869Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 489,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cuál é o saldo da mi ahorro?",
+    "dialect_hint": "es-MX"
+  }
+}

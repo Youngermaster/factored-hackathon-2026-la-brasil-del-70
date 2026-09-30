@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c4ba0eb5ec6ddded1483b2b6f1f75004e724ee256fff22c22c497664ffb4d32b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4074,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "¿Podrías confirmar la razón por la que deseas bloquear la tarjeta que termina en 0000? Esto nos ayudará a procesar tu solicitud de manera más rápida.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:07:35.239347Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: Bloquea la tarjeta que termina en 0000",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

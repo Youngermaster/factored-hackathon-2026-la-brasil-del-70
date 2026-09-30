@@ -1,0 +1,43 @@
+{
+  "cassette_id": "b38083612b7e5251d637bf45d488063363d2bc9e5d32d0c0b4d31c58f87b0820",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5456,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "730",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "14/06",
+      "merchant_text": null
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:24:07.299751Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1458,
+    "output_tokens": 101
+  },
+  "variables": {
+    "customer_message": "Hay un cargo de 730 del 14/06 que no reconozco",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

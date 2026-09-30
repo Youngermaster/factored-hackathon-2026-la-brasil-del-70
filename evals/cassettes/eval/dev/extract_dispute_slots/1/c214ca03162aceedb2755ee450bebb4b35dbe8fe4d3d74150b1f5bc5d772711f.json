@@ -1,0 +1,43 @@
+{
+  "cassette_id": "c214ca03162aceedb2755ee450bebb4b35dbe8fe4d3d74150b1f5bc5d772711f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 11899,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "18000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "Reference date: 2026-06-18",
+      "merchant_text": "PANADERIA LA 70"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:01:34.142461Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 120
+  },
+  "variables": {
+    "customer_message": "No reconozco este cargo de 18.000 pesos en PANADERIA LA 70.",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

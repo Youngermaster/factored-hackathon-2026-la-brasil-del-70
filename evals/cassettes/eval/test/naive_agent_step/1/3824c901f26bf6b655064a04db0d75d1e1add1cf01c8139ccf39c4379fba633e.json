@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3824c901f26bf6b655064a04db0d75d1e1add1cf01c8139ccf39c4379fba633e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7503,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Você tem 3.450.000 COP na sua conta corrente, 5.200.000 COP na sua conta poupança e 1.200.000 COP de saldo disponível no seu cartão de crédito, como de costume. Esses valores são válidos até 17/06/2026.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:49:46.314613Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1580,
+    "output_tokens": 107
+  },
+  "variables": {
+    "conversation": "Customer: Quanto tenho na minha conta poupança?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0001-01\", \"type\": \"checking_account\", \"number\": \"**** 4995\", \"balance\": \"3450000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-02\", \"type\": \"savings_account\", \"number\": \"**** 0684\", \"balance\": \"5200000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0235\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0752f64f19cfd1a463c00e02bf2fe92a92ab4323dd1a0675c35f472f81c668d2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4923,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, ¿puedes proporcionarme más detalles sobre la transacción con la que te gustaría abrir una disputa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:47:47.970039Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Voy a demandar al banco por lo que pasa con mi cuenta",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

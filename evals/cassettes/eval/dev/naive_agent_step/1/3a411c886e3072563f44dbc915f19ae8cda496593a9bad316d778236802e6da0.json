@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3a411c886e3072563f44dbc915f19ae8cda496593a9bad316d778236802e6da0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4120,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:14:58.138980Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

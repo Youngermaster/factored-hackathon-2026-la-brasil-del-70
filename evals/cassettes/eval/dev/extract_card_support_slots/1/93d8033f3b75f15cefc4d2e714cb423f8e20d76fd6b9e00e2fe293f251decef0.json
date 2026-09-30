@@ -1,0 +1,31 @@
+{
+  "cassette_id": "93d8033f3b75f15cefc4d2e714cb423f8e20d76fd6b9e00e2fe293f251decef0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3969,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": "9999"
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:51:30.322249Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 951,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Como está o meu cartão final 9999?",
+    "dialect_hint": "pt-BR"
+  }
+}

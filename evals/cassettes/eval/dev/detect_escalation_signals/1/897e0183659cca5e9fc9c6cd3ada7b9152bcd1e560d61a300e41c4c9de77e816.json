@@ -1,0 +1,29 @@
+{
+  "cassette_id": "897e0183659cca5e9fc9c6cd3ada7b9152bcd1e560d61a300e41c4c9de77e816",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2889,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:54:14.175741Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 494,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Estoy muy endeudado y necesito un préstamo para pagar mis deudas",
+    "dialect_hint": "es-MX"
+  }
+}

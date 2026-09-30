@@ -1,0 +1,32 @@
+{
+  "cassette_id": "518bcfbcb5bf9df281158e5d7e0bcb6769bd1fdeb668b67a373cd1e13aa745b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3155,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, puedo pedir un préstamo personal de 10.000.000 COP a 24 meses e iría a plazo fijo."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:18:44.739925Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 715,
+    "output_tokens": 46
+  },
+  "variables": {
+    "conversation": "Customer: Puedo pedir un préstamo personal de 10.000.000 pesos a plazo fijo de 24 meses?\nAssistant: Olá! Sua pontuação de crédito é 780, que está acima do mínimo necessário para um empréstimo pessoal. Seu rendimento mensal é de 9.000.000 COP e você não tem dias em atraso. Podemos prosseguir com a solicitação? Seria um empréstimo de 10.000.000 COP a prazo de 24 meses?",
+    "conversation_seed": "test-cre-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask for loan eligibility mixing Spanish and Portuguese.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask whether you can get a personal loan of 10.000.000 pesos over 24 months, mixing Spanish and Portuguese words.",
+    "known_facts": "(none)"
+  }
+}

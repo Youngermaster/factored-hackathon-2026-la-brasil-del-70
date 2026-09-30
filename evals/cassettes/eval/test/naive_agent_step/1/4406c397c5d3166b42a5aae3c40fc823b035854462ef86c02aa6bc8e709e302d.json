@@ -1,0 +1,35 @@
+{
+  "cassette_id": "4406c397c5d3166b42a5aae3c40fc823b035854462ef86c02aa6bc8e709e302d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4064,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0012"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:32:49.623503Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1316,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Ya revisaron mi solicitud de préstamo personal?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0012",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

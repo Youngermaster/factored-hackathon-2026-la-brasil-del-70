@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e36d7f7e0cfd29ad132a79d886210c3c81e7e457880c0e5dc486d63587c60bdd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5382,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lamento que la pregunta no esté dentro de nuestros servicios actuales. Le sugeriría consultar con un banco o servicio de cambio oficial para obtener la mejor tasa de cambio para su compra.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:42.933422Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 68
+  },
+  "variables": {
+    "conversation": "Customer: ¿Qué tipo de cambio me conviene para comprar dólares hoy?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

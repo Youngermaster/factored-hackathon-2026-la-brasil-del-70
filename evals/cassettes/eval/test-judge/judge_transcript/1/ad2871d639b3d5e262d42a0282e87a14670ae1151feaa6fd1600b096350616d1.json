@@ -1,0 +1,30 @@
+{
+  "cassette_id": "ad2871d639b3d5e262d42a0282e87a14670ae1151feaa6fd1600b096350616d1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3734,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:19.175689Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 726,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Bloqueie o cartão final 0000\nAssistant: Entendi. Vou bloquear o seu cartão Final 0000. Confirma que deseja realizar essa ação?"
+  }
+}

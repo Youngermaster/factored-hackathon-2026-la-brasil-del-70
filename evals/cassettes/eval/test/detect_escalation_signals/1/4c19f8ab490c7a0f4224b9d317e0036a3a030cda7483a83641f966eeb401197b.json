@@ -1,0 +1,29 @@
+{
+  "cassette_id": "4c19f8ab490c7a0f4224b9d317e0036a3a030cda7483a83641f966eeb401197b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1947,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:32:26.202648Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 510,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar la compra de 1250 pesos del 15/06 en TIENDA AURORA, no fui yo",
+    "dialect_hint": "es-MX"
+  }
+}

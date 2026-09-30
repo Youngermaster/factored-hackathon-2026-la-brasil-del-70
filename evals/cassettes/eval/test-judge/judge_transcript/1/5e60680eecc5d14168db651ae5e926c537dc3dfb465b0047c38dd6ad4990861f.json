@@ -1,0 +1,30 @@
+{
+  "cassette_id": "5e60680eecc5d14168db651ae5e926c537dc3dfb465b0047c38dd6ad4990861f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2818,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:41.088021Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 862,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero trocar a senha do meu cartão de débito\nAssistant: Para ajudar melhor: o seu pedido é sobre os seus saldos e pagamentos ou sobre os seus cartões?\nCustomer: É sobre os meus cartões\nAssistant: O seu cartão de débito **** 7052 está ativo e vence em 30 de novembro de 2027.\n\nPodemos informar se cada um dos seus cartões está ativo, bloqueado, suspenso ou encerrado, e a data de validade quando os registros a possuem. Se você tiver vários cartões, pediremos que indique qual, pelo tipo e pelos últimos dígitos. Uma compra recusada é informada sem o motivo, porque os registros não incluem uma tabela de códigos de resposta."
+  }
+}

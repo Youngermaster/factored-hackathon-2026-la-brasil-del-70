@@ -1,0 +1,33 @@
+{
+  "cassette_id": "dc7e97d8bbf5f866a3a76a06a8f1565bc68cdf15c63f0c1b120b9446bedd824a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3326,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Ótimo! Se precisar de mais informações sobre seu cartão ou tiver outras dúvidas, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:11:54.429849Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1443,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha cartão?\nAssistant: Olá! Sua carta está ativa e não há nenhuma restrição atual. Gostaria de bloquear ou trocar algum cartão?\nCustomer: Obrigado, mas eu queria saber como está o meu cartão de débito.\nAssistant: Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora?\nCustomer: Não preciso verificar o saldo agora, mas obrigado pela informação.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

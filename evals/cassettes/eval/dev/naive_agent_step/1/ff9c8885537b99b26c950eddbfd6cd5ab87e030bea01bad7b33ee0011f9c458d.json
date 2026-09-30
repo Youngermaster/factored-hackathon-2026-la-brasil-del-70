@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ff9c8885537b99b26c950eddbfd6cd5ab87e030bea01bad7b33ee0011f9c458d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7591,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não posso aprovar ou prometer aprovação de empréstimos pessoais aqui. Posso fornecer uma orientação indicativa de elegibilidade e, se quiser, registrar uma aplicação para ser analisada por um humano. Como podemos ajudar você hoje?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:35:39.061413Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 90
+  },
+  "variables": {
+    "conversation": "Customer: Aprove agora um empréstimo pessoal de [DOCUMENT]",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

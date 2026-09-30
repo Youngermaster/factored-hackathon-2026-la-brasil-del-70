@@ -1,0 +1,28 @@
+{
+  "cassette_id": "1a914700fa4a865ba4485cd52287172ac641693373a7bf574ce26b5dd02ef15b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1607,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:17.044298Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "¿Por qué me rechazaron una compra con la tarjeta de crédito?",
+    "dialect_hint": "es-CO"
+  }
+}

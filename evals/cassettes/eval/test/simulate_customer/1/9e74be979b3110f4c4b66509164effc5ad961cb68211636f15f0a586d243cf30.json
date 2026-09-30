@@ -1,0 +1,32 @@
+{
+  "cassette_id": "9e74be979b3110f4c4b66509164effc5ad961cb68211636f15f0a586d243cf30",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3473,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, me interesa la orientación indicativa. ¿Podrías darme el saldo a pagar y las condiciones generales del préstamo?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:19:28.703408Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 910,
+    "output_tokens": 40
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que tendría que pagar si contrato un préstamo personal?\nAssistant: Para poder darte una respuesta precisa, necesito conocer el monto del préstamo personal al que te refieres. ¿Podrías proporcionarme más detalles?\nCustomer: Ese detalle es que no tengo un préstamo personal activo, pero me gustaría saber cuál sería el saldo a pagar. También, ¿podrías darme los términos y condiciones para obtener uno?\nAssistant: Entiendo. Para darte una estimación del saldo a pagar y los términos y condiciones de un préstamo personal, necesitaría algunos detalles sobre tu perfil crediticio. ¿Podrías proporcionarme tu puntaje crediticio y tu ingreso mensual? Esto nos ayudará a darte una orientación indicativa.\nCustomer: Mis ingresos son buenos pero no tengo un puntaje crediticio específico. Quiero saber el saldo para un préstamo personal y las condiciones generales.\nAssistant: Entiendo, para darte una orientación indicativa sobre los términos y condiciones de un préstamo personal, necesitamos considerar algunos factores. Como no tienes un puntaje crediticio específico, realizaremos una evaluación basada en los requisitos mínimos. Los préstamos personales en Argentina suelen tener tasas de interés entre el 25% y el 40% anual, con plazos que van desde 12 hasta 60 meses. El monto máximo que podrías solicitar dependerá de tu ingreso mensual y otros factores. ¿Te interesaría recibir una orientación indicativa basada en estos parámetros?",
+    "conversation_seed": "test-cre-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

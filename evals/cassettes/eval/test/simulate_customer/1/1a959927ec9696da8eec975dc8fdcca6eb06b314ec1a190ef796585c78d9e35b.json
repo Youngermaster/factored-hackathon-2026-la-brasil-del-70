@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1a959927ec9696da8eec975dc8fdcca6eb06b314ec1a190ef796585c78d9e35b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2099,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não me lembro do número da transação, mas a compra era com meu cartão de crédito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:01.389942Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 629,
+    "output_tokens": 32
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, por que minha compra foi negada?\nAssistant: Olá! Peço desculpas pelo inconveniente. Vamos verificar o motivo da negação da transação. Poderia me fornecer o número da transação, por favor?",
+    "conversation_seed": "test-car-ambiguou-008#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

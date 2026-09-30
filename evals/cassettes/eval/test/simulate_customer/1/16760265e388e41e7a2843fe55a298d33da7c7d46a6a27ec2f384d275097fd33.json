@@ -1,0 +1,32 @@
+{
+  "cassette_id": "16760265e388e41e7a2843fe55a298d33da7c7d46a6a27ec2f384d275097fd33",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2246,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "A data de emissão foi em 2023, mas não tenho certeza exata do dia."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:00:48.429584Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 752,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma de minhas cartões de crédito.\nAssistant: Entendi. Vou precisar da ID do seu cartão para poder bloqueá-lo. Você pode me fornecer essa informação, por favor?\nCustomer: Acho que é o último cartão que eu usei, mas não tenho a ID dele aqui.\nAssistant: Entendi que você não tem a ID do cartão. Podemos tentar encontrar outras informações para bloqueá-lo. Você lembra da data de emissão ou do último dígito do cartão?\nCustomer: Só me lembro do último dígito, é 7.\nAssistant: Entendi. Com o último dígito do cartão, podemos tentar localizá-lo. Por favor, forneça também a data de emissão do cartão, se você se lembrar.",
+    "conversation_seed": "test-car-ambiguou-006#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

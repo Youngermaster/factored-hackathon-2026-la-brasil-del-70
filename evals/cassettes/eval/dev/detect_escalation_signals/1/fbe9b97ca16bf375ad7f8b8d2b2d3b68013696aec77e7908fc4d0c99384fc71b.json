@@ -1,0 +1,29 @@
+{
+  "cassette_id": "fbe9b97ca16bf375ad7f8b8d2b2d3b68013696aec77e7908fc4d0c99384fc71b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1704,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:04:25.158912Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 511,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Agora quero bloquear meu cartão de débito, foi roubado",
+    "dialect_hint": "pt-BR"
+  }
+}

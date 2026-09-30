@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ac53d918f83e234e2a350ac848f9c170e0b9b32899aec0b01008a556289f7759",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4716,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "transaction_id": "910"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:31:59.640588Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 52
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar el cargo de 910 en LIBROS DEL SUR de hace cuatro meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

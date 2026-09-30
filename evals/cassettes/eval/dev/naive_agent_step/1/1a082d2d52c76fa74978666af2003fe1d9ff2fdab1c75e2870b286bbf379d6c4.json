@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1a082d2d52c76fa74978666af2003fe1d9ff2fdab1c75e2870b286bbf379d6c4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 9429,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Su saldo actual es de 3.450.000 COP en la cuenta corriente y 5.200.000 COP en la cuenta de ahorros. Además, su tarjeta de crédito tiene un saldo de 1.200.000 COP con un límite de 8.000.000 COP. ¿Necesita información adicional sobre alguna de estas cuentas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:08:54.673246Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1568,
+    "output_tokens": 123
+  },
+  "variables": {
+    "conversation": "Customer: Hola, ¿me puedes decir mi saldo, por favor?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0001-01\", \"type\": \"checking_account\", \"number\": \"**** 4995\", \"balance\": \"3450000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-02\", \"type\": \"savings_account\", \"number\": \"**** 0684\", \"balance\": \"5200000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0235\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

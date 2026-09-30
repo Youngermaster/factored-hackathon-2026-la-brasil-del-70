@@ -1,0 +1,29 @@
+{
+  "cassette_id": "515dd290fcb20c389cae31e996bdf1006c8786b1cc0bcf3c7f03740ca1f7879e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1860,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:54:58.011485Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 507,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Bloqueie meu cartão de crédito imediatamente, por favor.",
+    "dialect_hint": "pt-BR"
+  }
+}

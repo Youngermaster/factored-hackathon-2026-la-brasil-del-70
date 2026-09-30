@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e20ca0a6de4f7cca074569d55fc1a5e051f0b2848918a519bf11c6a27e586401",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4589,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para el cargo de 85.000 COP en ALMACEN ANDES. El caso será resuelto dentro de 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:03.534745Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1410,
+    "output_tokens": 80
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar el cargo de 85.000 en ALMACEN ANDES, no lo hice",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

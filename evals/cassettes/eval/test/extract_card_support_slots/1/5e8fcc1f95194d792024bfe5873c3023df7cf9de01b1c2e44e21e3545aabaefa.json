@@ -1,0 +1,31 @@
+{
+  "cassette_id": "5e8fcc1f95194d792024bfe5873c3023df7cf9de01b1c2e44e21e3545aabaefa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3991,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:56.493332Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 953,
+    "output_tokens": 32
+  },
+  "variables": {
+    "customer_message": "Quero trocar a senha do meu cartão de débito",
+    "dialect_hint": "pt-BR"
+  }
+}

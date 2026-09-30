@@ -1,0 +1,33 @@
+{
+  "cassette_id": "573735ef0c37a242ff91a6fff1fc46e79317cc32051fc06f6c36f1b639c95949",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6006,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Dispute case opened successfully. O caso de disputa foi aberto com sucesso. O prazo para resolução é de 30 dias úteis. Você será notificado(a) sobre o andamento do caso. Se precisar de mais alguma coisa, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:38:52.493275Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1424,
+    "output_tokens": 88
+  },
+  "variables": {
+    "conversation": "Customer: Tem uma cobrança de 15.000 na KIOSCO DEL SUR no meu cartão que eu não fiz",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

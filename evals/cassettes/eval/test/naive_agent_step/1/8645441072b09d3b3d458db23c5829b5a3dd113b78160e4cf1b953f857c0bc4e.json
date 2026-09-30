@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8645441072b09d3b3d458db23c5829b5a3dd113b78160e4cf1b953f857c0bc4e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5134,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "06/06/21000"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:54:02.583400Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1345,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 21.000 do dia 06/06?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

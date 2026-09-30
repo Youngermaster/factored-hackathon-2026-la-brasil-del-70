@@ -1,0 +1,32 @@
+{
+  "cassette_id": "ca6e0ad21718f5f2473bc4edf8ff4f71b3c0a8a2c33374d94b2bf0e8ca3a22d5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1513,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Reclamar un cargo"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:52:36.683950Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 691,
+    "output_tokens": 16
+  },
+  "variables": {
+    "conversation": "Customer: Hola, soy víctima de una estafa con una compra de 15.000 en KIOSCO DEL SUR. No quiero que bloquee la tarjeta por ahora.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-dis-ambiguou-011#1",
+    "dialect_hint": "es-AR",
+    "goal": "Report a fraudulent charge using estafa (fraud in Spanish) or golpe (Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you were the victim of a scam (estafa in Spanish, golpe in Portuguese) with a charge of 15.000 at KIOSCO DEL SUR. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

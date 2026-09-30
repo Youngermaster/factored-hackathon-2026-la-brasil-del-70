@@ -1,0 +1,29 @@
+{
+  "cassette_id": "0996144f0410740525d8bd98b1368fc8ba6bb85cd8ed36c3b6c7f719368ec038",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1920,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:06:26.223468Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 499,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero bloquear mi tarjeta de débito dorada terminada en 4321",
+    "dialect_hint": "es-AR"
+  }
+}

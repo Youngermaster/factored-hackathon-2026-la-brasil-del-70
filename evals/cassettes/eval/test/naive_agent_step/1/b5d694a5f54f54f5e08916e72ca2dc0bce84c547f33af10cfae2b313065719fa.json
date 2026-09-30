@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b5d694a5f54f54f5e08916e72ca2dc0bce84c547f33af10cfae2b313065719fa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4827,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto correctamente el caso de disputa para tu transacción con TIENDA AURORA. El SLA para resolver este caso es de 45 días. Te mantendremos informado del progreso. ¿Hay algo más con lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:40:47.510448Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1469,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: Hice una compra en TIENDA AURORA por $1250 y ahora me doy cuenta que fue una estafa. No quiero bloquear la tarjeta por ahora.\nAssistant: Entendido. Vamos a abrir un caso de disputa para esta transacción. ¿Estás de acuerdo en que se abra un caso?\nCustomer: Sí, abra el caso de disputa.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"estafa\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

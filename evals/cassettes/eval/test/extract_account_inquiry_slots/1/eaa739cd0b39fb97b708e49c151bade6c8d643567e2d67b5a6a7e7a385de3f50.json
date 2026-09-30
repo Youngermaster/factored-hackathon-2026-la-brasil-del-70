@@ -1,0 +1,32 @@
+{
+  "cassette_id": "eaa739cd0b39fb97b708e49c151bade6c8d643567e2d67b5a6a7e7a385de3f50",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2532,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": "mayo"
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:59:28.544373Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 43
+  },
+  "variables": {
+    "customer_message": "¿Cuánto gasté con mi tarjeta de crédito en mayo?",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

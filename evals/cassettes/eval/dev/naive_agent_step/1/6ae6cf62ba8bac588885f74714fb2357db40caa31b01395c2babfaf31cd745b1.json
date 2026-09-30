@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6ae6cf62ba8bac588885f74714fb2357db40caa31b01395c2babfaf31cd745b1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6044,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Infelizmente, não encontramos o registro do seu pagamento de 1500 pesos feito no dia 15/06. Você poderia nos fornecer mais detalhes, como a data exata ou o ID do pagamento, para que possamos auxiliá-lo melhor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:07:51.648698Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1450,
+    "output_tokens": 92
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber o status do meu pagamento de 1500 pesos para JUAN PEREZ.\nAssistant: Olá! Infelizmente, não encontramos o registro do seu pagamento para JUAN PEREZ. Você poderia fornecer mais detalhes para que possamos auxiliá-lo melhor?\nCustomer: Olá, eu gostaria de verificar o status do meu pagamento mais recente de 1500 pesos para JUAN PEREZ, feito no dia 15/06.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

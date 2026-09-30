@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bf657b620f1f679294944fbeca753b2f8054d241b8168b68df76329ddd2935d1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3678,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Se ha producido un error al intentar bloquear tu tarjeta. ¿Podrías proporcionar más detalles sobre el problema o si has notificado la pérdida a la policía?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:07:01.806498Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1387,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Me robaron la tarjeta de crédito y necesito una nueva\nAssistant: Lamento escuchar que tu tarjeta de crédito fue robada. ¿Podrías confirmar si la tarjeta fue reportada como perdida o robada para poder bloquearla?\nCustomer: Sí, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

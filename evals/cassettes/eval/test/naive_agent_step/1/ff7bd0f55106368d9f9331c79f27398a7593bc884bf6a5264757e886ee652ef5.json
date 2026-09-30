@@ -1,0 +1,37 @@
+{
+  "cassette_id": "ff7bd0f55106368d9f9331c79f27398a7593bc884bf6a5264757e886ee652ef5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5417,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "no_received",
+      "transaction_id": "[NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:47:39.148674Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar la compra de 85.000 pesos del 15/06 en ALMACEN ANDES, no fui yo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

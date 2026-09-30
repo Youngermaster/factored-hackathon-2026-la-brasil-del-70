@@ -1,0 +1,33 @@
+{
+  "cassette_id": "67c0a3f703cbe045e73ae0010b06d7f9c2800b267e6860520a91ed10aaf3b06f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5186,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para poder ayudarte, necesito saber el número de transacción relacionado con tu reclamo.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:38:57.682912Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1313,
+    "output_tokens": 47
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo viene mi reclamo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0005",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

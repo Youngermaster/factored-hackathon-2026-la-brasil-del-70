@@ -1,0 +1,33 @@
+{
+  "cassette_id": "811b7c98409bdceacad2beac792a6bc757673dcb626a8246d6c13fdcdee74965",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4568,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Entendido. Vou encaminhar sua solicitação para uma pessoa que poderá analisar sua situação com mais detalhes. Precisarei de alguns dados pessoais para prosseguir. Você pode fornecê-los agora?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:44.445825Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1402,
+    "output_tokens": 79
+  },
+  "variables": {
+    "conversation": "Customer: Vocês me dão um cartão de crédito com limite de 30000?\nAssistant: Olá! Entendi que você gostaria de saber sobre cartões de crédito. Posso verificar as opções disponíveis para você, mas lembre-se que não posso garantir a aprovação. Vamos verificar?\nCustomer: Sim, prefiro que uma pessoa analise",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

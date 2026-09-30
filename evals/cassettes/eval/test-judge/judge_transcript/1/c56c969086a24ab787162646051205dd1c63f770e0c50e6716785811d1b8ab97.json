@@ -1,0 +1,30 @@
+{
+  "cassette_id": "c56c969086a24ab787162646051205dd1c63f770e0c50e6716785811d1b8ab97",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2636,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:32.722575Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 832,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: A transferência de 60.000 para PABLO DIAZ do dia 15/06 já caiu?\nAssistant: A transferência de R$ 60.000 para Pablo Díaz de 15/06 não foi encontrada em nossos registros. Você gostaria que eu verificasse novamente ou que abríssemos um caso de disputa?\nCustomer: O do dia 15/06\nAssistant: Entendi. Vou verificar novamente a transferência de R$ 60.000 para Pablo Díaz de 15/06. Você confirma que este valor e data estão corretos?"
+  }
+}

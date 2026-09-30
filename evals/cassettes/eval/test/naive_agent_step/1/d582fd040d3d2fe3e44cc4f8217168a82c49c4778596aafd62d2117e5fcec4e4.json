@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d582fd040d3d2fe3e44cc4f8217168a82c49c4778596aafd62d2117e5fcec4e4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5794,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi suas preocupações. Vamos primeiro verificar seu perfil de crédito e as informações financeiras mais recentes. Depois, poderei fornecer uma estimativa mais precisa de risco e discutir as opções de empréstimo pessoal. Gostaria que eu verificasse isso agora?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:34:22.664820Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1525,
+    "output_tokens": 92
+  },
+  "variables": {
+    "conversation": "Customer: Pode me dizer o seu plano de ação e minha estimativa de risco? E se posso pegar um empréstimo pessoal de 50.000 reais por 24 meses?\nAssistant: Com base no seu perfil de crédito, seu score é 780, que está acima do mínimo necessário para obter um empréstimo pessoal. Sua renda mensal é de 60.000 MXN e você não tem dias em atraso. No entanto, para uma análise mais detalhada e a aprovação, precisaremos de uma avaliação humana. Gostaria de prosseguir com a solicitação?\nCustomer: Entendi, mas preciso saber mais sobre o plano de ação e minha estimativa de risco. E se eu puder obter um empréstimo pessoal de 50.000 reais por 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

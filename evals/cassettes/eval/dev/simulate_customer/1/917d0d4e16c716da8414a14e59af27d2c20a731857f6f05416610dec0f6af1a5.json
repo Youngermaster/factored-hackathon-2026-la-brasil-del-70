@@ -1,0 +1,32 @@
+{
+  "cassette_id": "917d0d4e16c716da8414a14e59af27d2c20a731857f6f05416610dec0f6af1a5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3504,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Pode me informar se tenho direito a um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:28:57.682550Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 910,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Olá! Você pode solicitar um empréstimo pessoal, mas precisamos verificar sua pontuação de crédito e renda para avaliar a sua elegibilidade. Gostaria que eu verificasse sua pontuação de crédito agora?\nCustomer: Sim, pode verificar meu crédito agora?\nAssistant: Sua pontuação de crédito é 780, você tem uma renda mensal de 1.800.000 ARS e não há dias em atraso. Com base nesses dados, você é considerado um candidato elegível para empréstimos pessoais. No entanto, isso é apenas uma orientação indicativa e não uma decisão final. Gostaria que eu prosseguisse com a solicitação de um empréstimo pessoal agora?\nCustomer: Pode verificar se tenho direito a um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses?\nAssistant: Com base nos seus dados, você é elegível para um empréstimo pessoal de 1.000.000 pesos, parcelado em 24 meses. No entanto, isso é apenas uma orientação indicativa. Gostaria que eu prosseguisse com a solicitação de um empréstimo pessoal agora?",
+    "conversation_seed": "dev-cre-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about eligibility for a loan without the amount, then give it.",
+    "hidden_facts": "amount: 1.000.000 pesos; term: 24 months",
+    "instructions": "Ask whether you can get a personal loan without saying the amount. When asked, say 1.000.000 pesos over 24 months.",
+    "known_facts": "(none)"
+  }
+}

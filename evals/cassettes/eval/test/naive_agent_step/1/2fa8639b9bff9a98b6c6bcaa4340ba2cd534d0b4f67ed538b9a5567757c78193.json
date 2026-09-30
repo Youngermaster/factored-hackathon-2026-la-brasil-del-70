@@ -1,0 +1,35 @@
+{
+  "cassette_id": "2fa8639b9bff9a98b6c6bcaa4340ba2cd534d0b4f67ed538b9a5567757c78193",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2287,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "AR"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:00.966692Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1383,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si me dan un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 700, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

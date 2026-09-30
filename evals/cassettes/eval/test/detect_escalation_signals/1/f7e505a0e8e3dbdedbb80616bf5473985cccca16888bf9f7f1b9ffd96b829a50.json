@@ -1,0 +1,29 @@
+{
+  "cassette_id": "f7e505a0e8e3dbdedbb80616bf5473985cccca16888bf9f7f1b9ffd96b829a50",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2079,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:12:32.678525Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 505,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Puedo solicitar un préstamo personal de 50.000 pesos a plazos de 24 meses?",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "1a3ee3cb93a29ece9f63396f1070470d3be4da9483d696ed88e119e3293bada0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4336,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:45:25.596683Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1330,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quero ver os meus saldos",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

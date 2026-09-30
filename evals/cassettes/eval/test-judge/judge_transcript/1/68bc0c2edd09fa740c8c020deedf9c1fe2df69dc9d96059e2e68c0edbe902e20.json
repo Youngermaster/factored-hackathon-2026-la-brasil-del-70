@@ -1,0 +1,30 @@
+{
+  "cassette_id": "68bc0c2edd09fa740c8c020deedf9c1fe2df69dc9d96059e2e68c0edbe902e20",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3378,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 2,
+    "language_correct": false,
+    "language_quality": 2,
+    "politeness": 3,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:24.266718Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 705,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: Quiero abrir una cuenta de ahorro nueva\nAssistant: Para ayudarte mejor: ¿tu consulta es sobre tus saldos y pagos o sobre tus tarjetas?"
+  }
+}

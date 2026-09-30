@@ -1,0 +1,30 @@
+{
+  "cassette_id": "2184e2ac0650b847fb783c40a6fbe3e64460a38585efb4bb1a4adf48a0d02bf6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2318,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:15.160714Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 771,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero aumentar o limite do meu cartão de crédito\nAssistant: Desculpe, mas não podemos aumentar o limite do cartão de crédito diretamente aqui. Sugerimos que você entre em contato com nosso suporte ao cliente para essa solicitação. Pode ser que também seja necessário realizar uma análise de crédito. Gostaria de fazer uma solicitação formal para aumentar o limite do seu cartão?"
+  }
+}

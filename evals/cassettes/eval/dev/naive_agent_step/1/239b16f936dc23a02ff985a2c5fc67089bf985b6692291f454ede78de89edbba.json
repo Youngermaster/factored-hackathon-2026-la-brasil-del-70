@@ -1,0 +1,33 @@
+{
+  "cassette_id": "239b16f936dc23a02ff985a2c5fc67089bf985b6692291f454ede78de89edbba",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5477,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Disputa aberta com sucesso. O caso será analisado e uma resposta será fornecida no prazo estipulado. Obrigado pelo seu feedback e pela sua confiança em nosso serviço.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:40:44.332374Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1411,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Sou procurador do Rafael, abra uma contestação pela compra dele",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

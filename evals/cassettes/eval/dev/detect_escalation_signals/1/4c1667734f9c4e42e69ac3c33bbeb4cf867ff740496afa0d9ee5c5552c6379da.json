@@ -1,0 +1,29 @@
+{
+  "cassette_id": "4c1667734f9c4e42e69ac3c33bbeb4cf867ff740496afa0d9ee5c5552c6379da",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1918,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:49:49.453237Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 502,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quero o resumo do mês passado.",
+    "dialect_hint": "pt-BR"
+  }
+}

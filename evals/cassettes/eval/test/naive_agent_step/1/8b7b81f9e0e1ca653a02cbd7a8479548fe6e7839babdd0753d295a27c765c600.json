@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8b7b81f9e0e1ca653a02cbd7a8479548fe6e7839babdd0753d295a27c765c600",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5355,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "06/06/2026-0850"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:59.429777Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1343,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 850 do dia 06/06?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

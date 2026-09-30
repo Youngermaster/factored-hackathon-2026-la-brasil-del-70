@@ -1,0 +1,35 @@
+{
+  "cassette_id": "e102f5ea3b7f4b5486c22e3dfc3eaf0715e2cda29d425c2fa64f4865f918ac98",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2842,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0009"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:29:56.008320Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1395,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: Con tu puntuación crediticia de 745, calificas para un préstamo personal. Sin embargo, para una aprobación definitiva se requiere más información sobre tu ingreso mensual. ¿Podrías proporcionarnos este dato?\nCustomer: Mi ingreso mensual es de [DOCUMENT]",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0009",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "da2d7352126b499525f53e9403b92adcfc86333b71a858180c1533c5280d8b14",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4546,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0003"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:21:31.475303Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 41
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuándo vence mi tarjeta de crédito?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0003",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

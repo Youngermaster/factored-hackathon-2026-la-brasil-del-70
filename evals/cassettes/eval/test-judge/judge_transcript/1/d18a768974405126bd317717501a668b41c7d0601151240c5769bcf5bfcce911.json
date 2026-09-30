@@ -1,0 +1,30 @@
+{
+  "cassette_id": "d18a768974405126bd317717501a668b41c7d0601151240c5769bcf5bfcce911",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4401,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 4,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:33.900970Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 909,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: Dime cuánto tengo en mis cuentas\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 19 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nUna persona del equipo toma la conversación cuando lo pides; cuando mencionas una acción legal o una autoridad; cuando ya presentaste 3 o más reclamos en los últimos 180 días; cuando después de 2 preguntas todavía no logramos entender tu solicitud; cuando un sistema falla después de 2 reintentos; cuando el resultado de una acción no coincide con lo esperado; o cuando detectamos señales de riesgo en la sesión. La persona recibe un resumen de tu solicitud, los datos verificados y las acciones realizadas, para que no tengas que repetirlo todo.\n\nEn Colombia, una persona del equipo te contactará dentro de las 24 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

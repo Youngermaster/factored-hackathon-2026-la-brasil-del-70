@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8ade46424daaab09d1adb532f055663a58d0725b5fe7712fed51903cbcee46aa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3749,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não encontramos nenhum cartão associado a sua conta. Poderia verificar se digitou corretamente o número do cartão ou se há algum erro?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:05:51.028288Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1396,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Perdi meu cartão de crédito, quero bloquear\nAssistant: Entendi, você perdeu seu cartão de crédito e quer bloqueá-lo. Vou proceder com o bloqueio agora. Confirma que é isso que deseja?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

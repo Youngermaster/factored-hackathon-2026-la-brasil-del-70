@@ -1,0 +1,35 @@
+{
+  "cassette_id": "dec30acb710452eaccb59bd0494e82254d9f1a3d09053a47b02c1050b28dcb99",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4262,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:31:57.025212Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1330,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo pedir una tarjeta de crédito con un límite de 30000?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

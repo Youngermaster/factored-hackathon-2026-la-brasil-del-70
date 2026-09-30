@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0cb401507aa2e2e8d07840d3f06f0e211ff2c41c27f8e3f08572868f0fc04cbe",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4862,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Caso confirmado. Um caso de contestação foi aberto com sucesso. O prazo para resolução é de 45 dias, e você será notificado sobre o andamento. Se precisar de mais alguma coisa, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:20.866759Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1507,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: Paguei 1250 na TIENDA AURORA e o pedido nunca chegou, quero contestar\nAssistant: Entendi que você fez uma compra de 1250 MXN na TIENDA AURORA e o pedido não chegou. Vamos abrir um caso de contestação. Você gostaria de confirmar que o pedido não chegou e que a compra foi realizada?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

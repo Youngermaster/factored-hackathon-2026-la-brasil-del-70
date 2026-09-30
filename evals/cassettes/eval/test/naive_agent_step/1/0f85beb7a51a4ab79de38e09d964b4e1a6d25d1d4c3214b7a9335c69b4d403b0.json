@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0f85beb7a51a4ab79de38e09d964b4e1a6d25d1d4c3214b7a9335c69b4d403b0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6102,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base na sua pontuação de crédito de 700, renda mensal de 1.800.000 ARS e nenhum dia em atraso, você tem uma boa chance de aprovação. No entanto, a análise é indicativa e não garante a aprovação. Gostaria de prosseguir com a aplicação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:27:48.737232Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1487,
+    "output_tokens": 108
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber se consigo um empréstimo pessoal de [DOCUMENT] em 24 meses\nAssistant: Olá! Você está interessado em um empréstimo pessoal no valor de [DOCUMENT] em 24 meses, correto? Vamos verificar sua pontuação de crédito e suas informações financeiras para avaliar a possibilidade de aprovação. No entanto, é importante lembrar que não podemos garantir a aprovação e que a análise será indicativa.\nCustomer: Sim",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 700, \"monthly_income\": \"1800000.00 ARS\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

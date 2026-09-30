@@ -1,0 +1,33 @@
+{
+  "cassette_id": "84d1169eb19223c60e0b67a153adab9125c6df020c24a4caa49fcbe29398211f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5447,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero no puedo asistir con solicitudes de préstamos en otros bancos. Te recomendaría que contactes directamente al banco al que deseas solicitar el préstamo.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:31.286936Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1319,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me ayudas a pedir un préstamo en otro banco?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

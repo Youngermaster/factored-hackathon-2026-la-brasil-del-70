@@ -1,0 +1,49 @@
+{
+  "cassette_id": "ae9298fe41f11984ecf7b5c847c6e98e246c2fd32fd31a5a0364f9e14f2d73de",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 12469,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "not_received",
+      "other",
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "15000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "ARS",
+      "date_expression": "Reference date: 2026-06-18",
+      "merchant_text": "KIOSCO DEL SUR"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:32:22.373064Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1464,
+    "output_tokens": 141
+  },
+  "variables": {
+    "customer_message": "Pagué 15.000 en KIOSCO DEL SUR y nunca me llegó el pedido, quiero reclamar",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

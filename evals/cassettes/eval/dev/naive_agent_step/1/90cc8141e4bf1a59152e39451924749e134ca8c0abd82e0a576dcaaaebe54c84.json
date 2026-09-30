@@ -1,0 +1,33 @@
+{
+  "cassette_id": "90cc8141e4bf1a59152e39451924749e134ca8c0abd82e0a576dcaaaebe54c84",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7176,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não podemos realizar pagamentos diretamente por aqui. Posso ajudá-lo a verificar o saldo da sua conta ou a status de uma transação relacionada. Como podemos prosseguir?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:14:46.799122Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Pague a conta de luz com a minha conta",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

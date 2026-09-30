@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b8b4b9217489d7368076a493fad89035bc8c2cb7d2838971753e021bc981b277",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1794,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:57.782042Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 488,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Me podrías decir más sobre los créditos?",
+    "dialect_hint": "es-MX"
+  }
+}

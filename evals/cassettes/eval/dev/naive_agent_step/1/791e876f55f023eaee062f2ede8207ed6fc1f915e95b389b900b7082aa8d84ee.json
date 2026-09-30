@@ -1,0 +1,33 @@
+{
+  "cassette_id": "791e876f55f023eaee062f2ede8207ed6fc1f915e95b389b900b7082aa8d84ee",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 9455,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Para poder bloquear seu cartão, preciso confirmar alguns detalhes. Podemos bloquear o cartão por perda, roubo, suspeita de fraude ou como precaução. Qual é a razão para bloquear o cartão?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:17:59.720651Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1337,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de bloquear uma de minhas cartões de crédito.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

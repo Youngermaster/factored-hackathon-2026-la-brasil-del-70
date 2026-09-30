@@ -1,0 +1,31 @@
+{
+  "cassette_id": "adbe92e7a390efa5528fa5a1044090261f179bc4cd8290922e6e5b80f1e531fc",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5930,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": "credit_card",
+    "purpose": null,
+    "requested_amount": "900000",
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:18:33.912931Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1055,
+    "output_tokens": 59
+  },
+  "variables": {
+    "customer_message": "Posso pedir um cartão de crédito com limite de 900.000?",
+    "dialect_hint": "pt-BR"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4ba203d4482e1de837bf873ac557d7d9185c658e318ee49da8bd24470c2fc180",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3806,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a proceder a bloquear tu tarjeta de débito por precaución. ¿Esto es correcto y deseas confirmar esta acción?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:10:27.921280Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Bloquea mi tarjeta de débito por precaución",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

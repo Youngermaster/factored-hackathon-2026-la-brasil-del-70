@@ -1,0 +1,33 @@
+{
+  "cassette_id": "df34bcbcd4c62482f7be0d2d035879e4ea6efd77c310a313c88e6028b4c464c1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5307,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não podemos ajudar com isso aqui. Recomendamos que você entre em contato com um representante para mais informações sobre seguros de vida.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:00.822779Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1330,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Quero contratar um seguro de vida",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

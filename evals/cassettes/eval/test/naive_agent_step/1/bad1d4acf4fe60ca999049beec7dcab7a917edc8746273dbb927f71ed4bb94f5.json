@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bad1d4acf4fe60ca999049beec7dcab7a917edc8746273dbb927f71ed4bb94f5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5158,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la compra de 85.000 COP del 15/06 en ALMACEN ANDES. El caso será resuelto en un plazo máximo de 15 días hábiles. ¿Necesitas alguna otra información?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:47:44.311338Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1420,
+    "output_tokens": 90
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar la compra de 85.000 pesos del 15/06 en ALMACEN ANDES, no fui yo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"[NUMBER]\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

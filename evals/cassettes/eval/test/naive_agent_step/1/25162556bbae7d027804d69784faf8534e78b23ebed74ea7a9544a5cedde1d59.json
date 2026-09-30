@@ -1,0 +1,36 @@
+{
+  "cassette_id": "25162556bbae7d027804d69784faf8534e78b23ebed74ea7a9544a5cedde1d59",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3285,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "15/06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:26:43.168343Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1349,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: A transferência de 1500 para JUAN PEREZ do dia 15/06 já caiu?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

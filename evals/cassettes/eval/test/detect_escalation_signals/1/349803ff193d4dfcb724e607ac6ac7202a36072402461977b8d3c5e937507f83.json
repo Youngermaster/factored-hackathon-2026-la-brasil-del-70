@@ -1,0 +1,29 @@
+{
+  "cassette_id": "349803ff193d4dfcb724e607ac6ac7202a36072402461977b8d3c5e937507f83",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1747,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:44.769116Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 501,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Otra vez un cargo que no reconozco: 1250 en TIENDA AURORA",
+    "dialect_hint": "es-MX"
+  }
+}

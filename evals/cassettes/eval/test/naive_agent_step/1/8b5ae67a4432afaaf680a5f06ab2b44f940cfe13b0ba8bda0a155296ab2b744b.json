@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8b5ae67a4432afaaf680a5f06ab2b44f940cfe13b0ba8bda0a155296ab2b744b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5249,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para poder informar sobre las condiciones del préstamo personal, necesito conocer su perfil crediticio y la información del producto. ¿Podría proporcionarme el código del producto que está interesado?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:17.798708Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1314,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: ¿Qué condiciones tiene el préstamo personal?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

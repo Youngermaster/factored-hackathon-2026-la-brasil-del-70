@@ -1,0 +1,29 @@
+{
+  "cassette_id": "f0af47d78535b2c50c3c00ac4534c904da14284e86212715cd41df46fcc26fed",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1761,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:07:41.518960Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 489,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Mi tarjeta de débito está activa?",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6716d23af34c06fe6fba24d695c8c5f68898ba8bc7950323a74e07ae32ec8daa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7487,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": null
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:05:49.562821Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1463,
+    "output_tokens": 43
+  },
+  "variables": {
+    "customer_message": "É sobre uma cobrança que não reconheço",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

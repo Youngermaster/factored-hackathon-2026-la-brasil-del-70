@@ -1,0 +1,31 @@
+{
+  "cassette_id": "2e90f9670d8b814b71c6d2bca6b08d41412741b105fd353de04c1278b4cc75a7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5537,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:53:31.311797Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1053,
+    "output_tokens": 49
+  },
+  "variables": {
+    "customer_message": "Posso pedir por um empréstimo pessoal sem dizer o valor primeiro?",
+    "dialect_hint": "pt-BR"
+  }
+}

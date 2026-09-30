@@ -1,0 +1,30 @@
+{
+  "cassette_id": "d9e21321502cf68b3b42d64d084551a328342e1e6de153c8e10df1b31e34db82",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4804,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:10.060676Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1235,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: Hice una compra en KIOSCO DEL SUR por $15.000 y ahora me doy cuenta que fue una estafa. No quiero que bloqueen la tarjeta por ahora.\nAssistant: Tienes varias tarjetas. ¿Sobre cuál me consultas?\n1) tarjeta de crédito **** 1659\n2) tarjeta de débito **** 3074\nCustomer: Soy sobre la tarjeta de crédito **** 1659.\nAssistant: Voy a bloquear tu tarjeta de crédito **** 1659. El bloqueo es inmediato y la tarjeta dejará de funcionar. ¿Confirmas? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.\nCustomer: No, no quiero bloquearla por ahora. Sí, confirmo el pleito por estafa.\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 20 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nUna persona del equipo toma la conversación cuando lo pides; cuando mencionas una acción legal o una autoridad; cuando ya presentaste 3 o más reclamos en los últimos 180 días; cuando después de 2 preguntas todavía no logramos entender tu solicitud; cuando un sistema falla después de 2 reintentos; cuando el resultado de una acción no coincide con lo esperado; o cuando detectamos señales de riesgo en la sesión. La persona recibe un resumen de tu solicitud, los datos verificados y las acciones realizadas, para que no tengas que repetirlo todo.\n\nEn Argentina, una persona del equipo se va a comunicar con vos dentro de las 48 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

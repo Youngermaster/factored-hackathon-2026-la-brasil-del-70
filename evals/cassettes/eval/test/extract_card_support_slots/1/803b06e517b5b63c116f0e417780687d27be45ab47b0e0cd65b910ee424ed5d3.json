@@ -1,0 +1,31 @@
+{
+  "cassette_id": "803b06e517b5b63c116f0e417780687d27be45ab47b0e0cd65b910ee424ed5d3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2264,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:22:35.760957Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Quiero saber el estado de mi tarjeta de crédito y las compras rechazadas",
+    "dialect_hint": "es-MX"
+  }
+}

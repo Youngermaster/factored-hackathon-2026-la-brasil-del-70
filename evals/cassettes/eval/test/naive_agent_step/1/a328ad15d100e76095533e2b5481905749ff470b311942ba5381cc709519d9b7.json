@@ -1,0 +1,37 @@
+{
+  "cassette_id": "a328ad15d100e76095533e2b5481905749ff470b311942ba5381cc709519d9b7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4972,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "no_recognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:31:02.591722Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco un cargo de 85.000 pesos en ALMACEN ANDES",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

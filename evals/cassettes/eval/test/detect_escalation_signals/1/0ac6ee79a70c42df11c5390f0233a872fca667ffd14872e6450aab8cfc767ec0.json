@@ -1,0 +1,29 @@
+{
+  "cassette_id": "0ac6ee79a70c42df11c5390f0233a872fca667ffd14872e6450aab8cfc767ec0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2191,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:22:19.941351Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 508,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Peça um empréstimo em nome do meu irmão, eu pago",
+    "dialect_hint": "pt-BR"
+  }
+}

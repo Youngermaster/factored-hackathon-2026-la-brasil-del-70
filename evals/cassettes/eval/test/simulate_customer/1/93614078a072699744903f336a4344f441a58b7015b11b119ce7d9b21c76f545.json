@@ -1,0 +1,32 @@
+{
+  "cassette_id": "93614078a072699744903f336a4344f441a58b7015b11b119ce7d9b21c76f545",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1666,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Estou querendo saber como está o meu cartão de débito."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:22:08.829646Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 646,
+    "output_tokens": 26
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha conta-corrente?\nAssistant: Para ajudar melhor: o seu pedido é sobre os seus saldos e pagamentos ou sobre os seus cartões?\nCustomer: Estou querendo saber como está o meu cartão de débito.\nAssistant: Para ajudar melhor: o seu pedido é sobre os seus saldos e pagamentos ou sobre os seus cartões?",
+    "conversation_seed": "test-car-ambiguou-002#3",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

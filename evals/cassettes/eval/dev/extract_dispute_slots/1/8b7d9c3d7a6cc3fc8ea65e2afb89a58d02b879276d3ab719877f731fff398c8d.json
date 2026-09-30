@@ -1,0 +1,45 @@
+{
+  "cassette_id": "8b7d9c3d7a6cc3fc8ea65e2afb89a58d02b879276d3ab719877f731fff398c8d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7167,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "other",
+      "wrong_amount"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:01:08.060505Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1482,
+    "output_tokens": 120
+  },
+  "variables": {
+    "customer_message": "Não lembro os detalhes. Mas o valor é 1250 e o estabelecimento é TIENDA AURORA.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

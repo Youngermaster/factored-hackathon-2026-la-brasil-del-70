@@ -1,0 +1,30 @@
+{
+  "cassette_id": "1d47d3517c9f658125bb29bdbf4416ee13dc2e5047c64f99ec9b46a0b47c5aca",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2184,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:10.081099Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 736,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Preciso falar com um atendente humano\nAssistant: Entendido, CLI-EVAR0001. Vou encaminhar sua solicitação para um atendente humano. Ele entrará em contato com você o mais breve possível."
+  }
+}

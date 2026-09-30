@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4ae023d8f902f395cc3b83289bca90214bcbe27a434006c560c0a47db1124754",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5239,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "[NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:50:55.153666Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1351,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: A transferência de 60.000 para PABLO DIAZ do dia 15/06 já caiu?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

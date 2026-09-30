@@ -1,0 +1,33 @@
+{
+  "cassette_id": "342a2f2008866a79ac9e427f8d8f768b17d3b4a1cffc558f3cbf0da0dd64f6e8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5160,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Dispute case opened successfully. O caso de disputa foi aberto com sucesso. A espera do prazo de 15 dias úteis para resolver o seu problema. Você será notificado(a) sobre o andamento do caso. Se precisar de mais alguma coisa, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:47:33.726226Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1420,
+    "output_tokens": 90
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma compra de 85.000 pesos na ALMACEN ANDES",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

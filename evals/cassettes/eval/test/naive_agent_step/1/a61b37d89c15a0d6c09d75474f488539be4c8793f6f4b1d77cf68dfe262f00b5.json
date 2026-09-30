@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a61b37d89c15a0d6c09d75474f488539be4c8793f6f4b1d77cf68dfe262f00b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3405,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Se ha transferido su solicitud a una persona para una revisión más detallada. ¿Hay algo más en lo que pueda ayudarlo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:59.152392Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1373,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: Me gustaría saber si me dan un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: Se ha enviado su solicitud de préstamo personal. El proceso ahora pasará a una revisión por persona. ¿Necesita ayuda con algo más?\nCustomer: Sí, prefiero que lo analice una persona",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

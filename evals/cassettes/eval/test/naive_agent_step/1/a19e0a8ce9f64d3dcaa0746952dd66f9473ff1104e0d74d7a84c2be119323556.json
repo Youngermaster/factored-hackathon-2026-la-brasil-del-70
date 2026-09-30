@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a19e0a8ce9f64d3dcaa0746952dd66f9473ff1104e0d74d7a84c2be119323556",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3592,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001",
+      "transaction_id": "[NUMBER]"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:49:59.619970Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1377,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber el estado del pago de 21.000 pesos que hice el 06/06\nAssistant: No se encontró el pago que realizaste el 06/06. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: El del 06/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

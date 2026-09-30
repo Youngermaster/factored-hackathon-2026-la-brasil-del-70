@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0859a5d59f369e1cf4919915b2b7256532508e78f6554ace274c7c0858539f2e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4370,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Lamento informarle que no podemos ayudarlo con esa solicitud aquí. Le sugerimos que pase a una persona para que pueda actualizar su dirección y número de teléfono. ¿Está de acuerdo en que le transmitamos su solicitud?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:56:29.087501Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 75
+  },
+  "variables": {
+    "conversation": "Customer: Quiero cambiar mi dirección y mi número de teléfono",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

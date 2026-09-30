@@ -1,0 +1,34 @@
+{
+  "cassette_id": "732021acbc20ff26410e79bbc0222d72714d6cf282d6f89a865ef7a1ad3b5ff5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 8238,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "300000",
+      "currency_hint": "MXN",
+      "date_expression": "15/06",
+      "payee_text": null
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:02.132787Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1154,
+    "output_tokens": 66
+  },
+  "variables": {
+    "customer_message": "Situação da minha transferência de 15/06 de 300.000 pesos",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

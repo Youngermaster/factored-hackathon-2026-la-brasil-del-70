@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3cf79eb71c7b73794accda6c3aaa4de8b795c614ecf9d94f989cd77301b92a7e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5375,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "O pedido de disputa foi criado com sucesso. A sua solicitação será analisada e você receberá um e-mail com o status do caso. O prazo para resolução é de 15 dias úteis. Se precisar de mais alguma coisa, estou à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:26.119618Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1509,
+    "output_tokens": 91
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço a compra no ALMACEN ANDES no dia 15/06.\nAssistant: Entendi. Vou verificar essa transação para você e abrir um pedido de disputa se necessário. Pode confirmar que foi uma compra não reconhecida no ALMACEN ANDES no dia 15/06?\nCustomer: Confirmo. Não reconheço a compra no ALMACEN ANDES no dia 15/06.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

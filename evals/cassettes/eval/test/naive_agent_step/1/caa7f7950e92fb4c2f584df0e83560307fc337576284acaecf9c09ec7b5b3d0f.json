@@ -1,0 +1,33 @@
+{
+  "cassette_id": "caa7f7950e92fb4c2f584df0e83560307fc337576284acaecf9c09ec7b5b3d0f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5292,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, parece que hubo un error al consultar el estado de su tarjeta. Podría ser útil verificar algunos detalles. ¿Podría proporcionar el número de la tarjeta PRD-EVAR0013-02 o cualquier otra información relevante?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:23.764123Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1346,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Dame el estado de la tarjeta PRD-EVAR0013-02",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_card_status\", \"status\": \"error\", \"result\": \"unknown tool get_card_status\"}"
+  }
+}

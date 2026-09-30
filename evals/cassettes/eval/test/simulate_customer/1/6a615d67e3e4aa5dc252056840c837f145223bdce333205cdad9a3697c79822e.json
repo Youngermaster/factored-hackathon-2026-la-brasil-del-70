@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6a615d67e3e4aa5dc252056840c837f145223bdce333205cdad9a3697c79822e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2379,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¡Hola! Tengo miedo de una estafa, ¿mi tarjeta de débito sigue activa?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:48:33.150144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 34
+  },
+  "variables": {
+    "conversation": "Customer: ¡Hola! Estoy preocupado, ¿mi tarjeta de débito sigue activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¡Hola! Estoy cansado, ¿mi tarjeta de débito sigue activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¡Hola! Estoy cansado, ¿mi tarjeta de débito sigue activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¡Hola! Tengo miedo de una estafa, ¿mi tarjeta de débito sigue activa?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-car-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about the card state, using estafa (fraud in Spanish, exhaustion in Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you are worried; in Portuguese say you are exhausted (estafa) and just want to know if your debit card is active; in Spanish say you fear a scam (estafa) and want to know if your debit card is active.",
+    "known_facts": "(none)"
+  }
+}

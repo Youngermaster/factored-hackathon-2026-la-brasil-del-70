@@ -1,0 +1,35 @@
+{
+  "cassette_id": "89fd504642e42d91ab37b5a68aea3ccf5e3a7fddd687163b041d6d64d725d14a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3160,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:27:43.332791Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1675,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me podrías informar sobre un crédito personal?\nAssistant: Por supuesto, CLI-EVCO0008. ¿Te interesa conocer más sobre un crédito personal o prefieres explorar otras opciones como tarjetas de crédito o hipotecas?\nCustomer: Me interesa un crédito personal, por favor.\nAssistant: CLI-EVCO0008, excelente elección. Vamos a revisar tu perfil crediticio y las opciones disponibles para un crédito personal en Colombia. ¿Estás listo para continuar?\nCustomer: Sí, claro. ¿Cuáles son las condiciones?\nAssistant: CLI-EVCO0008, basándonos en tu perfil crediticio, tienes una puntuación de crédito de 780 en Colombia. Estamos en condiciones de ofrecerte un crédito personal. ¿Te interesa conocer más detalles sobre el producto CO-PL-STANDARD con un monto máximo de 80.000.000 COP, un plazo mínimo de 6 meses y un máximo de 72 meses, con una tasa máxima anual de 27%?\nCustomer: Sí, me interesa conocer más detalles.\nAssistant: CLI-EVCO0008, basándonos en tu perfil crediticio, te ofrezco un crédito personal con un monto máximo de 80.000.000 COP, un plazo mínimo de 6 meses y un máximo de 72 meses, con una tasa máxima anual de 27%. ¿Te interesa solicitar este producto? También puedes preguntar si tienes dudas o necesitas más información.\nCustomer: Sí, me interesa. ¿Puedes darme más detalles sobre las condiciones?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

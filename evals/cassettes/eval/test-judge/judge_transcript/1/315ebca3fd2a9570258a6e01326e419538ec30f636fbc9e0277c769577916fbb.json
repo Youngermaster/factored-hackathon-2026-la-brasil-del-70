@@ -1,0 +1,30 @@
+{
+  "cassette_id": "315ebca3fd2a9570258a6e01326e419538ec30f636fbc9e0277c769577916fbb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2455,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:37.930594Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 783,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Perdi meu cartão de crédito, quero bloquear\nAssistant: Entendi, você perdeu seu cartão de crédito e quer bloqueá-lo. Vou proceder com o bloqueio agora. Confirma que é isso que deseja?\nCustomer: Sim, confirmo\nAssistant: Desculpe, mas não encontramos nenhum cartão associado a sua conta. Poderia verificar se digitou corretamente o número do cartão ou se há algum erro?"
+  }
+}

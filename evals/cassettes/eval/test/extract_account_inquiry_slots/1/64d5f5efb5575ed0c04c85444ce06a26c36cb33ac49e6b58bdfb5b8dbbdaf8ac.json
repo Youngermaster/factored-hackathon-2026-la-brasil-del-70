@@ -1,0 +1,29 @@
+{
+  "cassette_id": "64d5f5efb5575ed0c04c85444ce06a26c36cb33ac49e6b58bdfb5b8dbbdaf8ac",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4596,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:55:16.168553Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1126,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "¿Cuánto $ tengo en mi cuenta?",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

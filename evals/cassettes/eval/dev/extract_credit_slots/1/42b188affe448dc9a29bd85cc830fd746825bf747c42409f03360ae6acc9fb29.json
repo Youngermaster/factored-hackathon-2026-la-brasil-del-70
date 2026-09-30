@@ -1,0 +1,31 @@
+{
+  "cassette_id": "42b188affe448dc9a29bd85cc830fd746825bf747c42409f03360ae6acc9fb29",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5902,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:53:21.952353Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1030,
+    "output_tokens": 51
+  },
+  "variables": {
+    "customer_message": "Hola, quisiera saber sobre un crédito personal.",
+    "dialect_hint": "es-CO"
+  }
+}

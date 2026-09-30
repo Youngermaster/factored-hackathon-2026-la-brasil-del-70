@@ -1,0 +1,29 @@
+{
+  "cassette_id": "7fbfa849e7dd115e22736be8512c7374009fd14b1e060290cc2809314d073cda",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4510,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:20:48.347391Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1130,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "Buenas, quiero consultar los saldos de mis cuentas",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

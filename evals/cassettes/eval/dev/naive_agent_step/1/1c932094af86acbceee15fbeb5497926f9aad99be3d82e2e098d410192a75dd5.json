@@ -1,0 +1,37 @@
+{
+  "cassette_id": "1c932094af86acbceee15fbeb5497926f9aad99be3d82e2e098d410192a75dd5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5326,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "CRD-0001",
+      "reason": "robo"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:19:09.032408Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1367,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Me robaron la tarjeta de crédito, bloquéala\nAssistant: Lo siento por lo que te ha ocurrido. Vamos a proceder a bloquear tu tarjeta de crédito. ¿Estás seguro de que quieres bloquearla?\nCustomer: Sí, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

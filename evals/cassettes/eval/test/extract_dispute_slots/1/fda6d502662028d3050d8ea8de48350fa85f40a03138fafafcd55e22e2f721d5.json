@@ -1,0 +1,43 @@
+{
+  "cassette_id": "fda6d502662028d3050d8ea8de48350fa85f40a03138fafafcd55e22e2f721d5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8284,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "85000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "2026-06-18",
+      "merchant_text": "ALMACEN ANDES"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:27:09.051960Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1462,
+    "output_tokens": 113
+  },
+  "variables": {
+    "customer_message": "Reclamo la compra de 85.000 en ALMACEN ANDES, no la hice",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

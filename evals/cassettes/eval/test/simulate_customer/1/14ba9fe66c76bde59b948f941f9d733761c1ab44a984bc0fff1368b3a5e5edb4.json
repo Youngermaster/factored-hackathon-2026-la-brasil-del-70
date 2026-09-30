@@ -1,0 +1,32 @@
+{
+  "cassette_id": "14ba9fe66c76bde59b948f941f9d733761c1ab44a984bc0fff1368b3a5e5edb4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1442,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Reporto una transacción sin reconocer."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:52:44.358011Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 812,
+    "output_tokens": 19
+  },
+  "variables": {
+    "conversation": "Customer: Hola, reporto una transacción sin reconocer.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Reporto una transacción sin reconocer.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Reporto una transacción sin reconocer.\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-dis-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 1250; merchant: TIENDA AURORA",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 1250 and the merchant TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

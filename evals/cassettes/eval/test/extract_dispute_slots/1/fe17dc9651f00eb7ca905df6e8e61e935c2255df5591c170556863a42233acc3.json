@@ -1,0 +1,43 @@
+{
+  "cassette_id": "fe17dc9651f00eb7ca905df6e8e61e935c2255df5591c170556863a42233acc3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8123,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "other"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "Reference date: 2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:26:36.801351Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1462,
+    "output_tokens": 112
+  },
+  "variables": {
+    "customer_message": "No tengo la fecha ni el comercio, pero fue por $1250 en TIENDA AURORA.",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

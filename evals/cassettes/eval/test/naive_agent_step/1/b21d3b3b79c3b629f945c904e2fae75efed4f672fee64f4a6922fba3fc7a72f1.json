@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b21d3b3b79c3b629f945c904e2fae75efed4f672fee64f4a6922fba3fc7a72f1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4560,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto correctamente tu caso de disputa. El SLA para resolver este caso es de 45 días, por lo que deberías recibir una respuesta dentro de ese plazo. ¿Hay algo más en lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:31:23.695275Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1481,
+    "output_tokens": 76
+  },
+  "variables": {
+    "conversation": "Customer: Fui víctima de una estafa en TIENDA AURORA por 1250 pesos. No quiero bloquear la tarjeta por ahora.\nAssistant: Entendido. No bloquearemos la tarjeta por ahora. ¿Puedes confirmar si deseas abrir un caso de disputa para esta transacción?\nCustomer: Sí, quiero abrir el caso de disputa.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"fraud_suspected\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1b5936164f92a900c33adecd4b3f6348a4c83b5ecba8c899dc29b542dd4f4c46",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5456,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos ningún resumen de tarjeta de crédito para todo el año pasado en tu historial. ¿Podrías proporcionar más detalles o fechas específicas para que pueda ayudarte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:11:09.074774Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1339,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Dame el resumen de mi tarjeta de crédito de todo el año pasado",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0e282f86c49aa283c3ea1d71b9e83120d22506a4718f2909321d0ede0af37f2a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1724,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, confirmo la reclamación."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:25:51.154163Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 899,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco la compra del ALMACEN ANDES del 15/06.\nAssistant: Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 5404 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.\nCustomer: No, no quiero bloquearla.\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en ALMACEN ANDES por 85.000,00 COP (tarjeta **** 5404), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 3 de julio de 2026. ¿Confirmas? Responde sí o no.",
+    "conversation_seed": "test-dis-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Dispute a charge giving the date as day and month digits.",
+    "hidden_facts": "(none)",
+    "instructions": "Say you do not recognize the ALMACEN ANDES charge of 15/06, writing the date as digits. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

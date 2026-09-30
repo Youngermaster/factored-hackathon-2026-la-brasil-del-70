@@ -1,0 +1,29 @@
+{
+  "cassette_id": "172df91dc3d63b2afafe81df34c7a5d398f2a62bb2399c71d4bc2fdfe8d6e340",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1923,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:10:14.887474Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero cambiar el PIN de mi tarjeta de débito",
+    "dialect_hint": "es-AR"
+  }
+}

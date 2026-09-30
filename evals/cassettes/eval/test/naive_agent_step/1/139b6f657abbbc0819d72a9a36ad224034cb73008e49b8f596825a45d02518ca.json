@@ -1,0 +1,35 @@
+{
+  "cassette_id": "139b6f657abbbc0819d72a9a36ad224034cb73008e49b8f596825a45d02518ca",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2645,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0010"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:28:58.676238Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si me dan un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

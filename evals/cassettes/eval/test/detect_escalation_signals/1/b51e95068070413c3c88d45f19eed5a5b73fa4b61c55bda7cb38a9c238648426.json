@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b51e95068070413c3c88d45f19eed5a5b73fa4b61c55bda7cb38a9c238648426",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1708,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:42.998032Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 492,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Cancela mi reclamación anterior y hazme un contracargo",
+    "dialect_hint": "es-MX"
+  }
+}

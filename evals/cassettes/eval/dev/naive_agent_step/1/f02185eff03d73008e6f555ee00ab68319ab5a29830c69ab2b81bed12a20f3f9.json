@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f02185eff03d73008e6f555ee00ab68319ab5a29830c69ab2b81bed12a20f3f9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5695,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no puedo proporcionar información sobre tasas y plazos específicos de préstamos personales. Puedo ayudarte a conocer tu perfil crediticio y orientarte sobre las posibilidades generales. ¿Te interesa conocer tu perfil crediticio?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:33:57.005392Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1319,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: ¿Qué tasa y plazo tiene el préstamo personal?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

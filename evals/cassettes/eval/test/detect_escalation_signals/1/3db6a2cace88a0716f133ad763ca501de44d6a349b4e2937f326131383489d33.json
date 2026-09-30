@@ -1,0 +1,29 @@
+{
+  "cassette_id": "3db6a2cace88a0716f133ad763ca501de44d6a349b4e2937f326131383489d33",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1878,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:21:35.910673Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 512,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

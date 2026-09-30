@@ -1,0 +1,33 @@
+{
+  "cassette_id": "629242cf0258f558eca41e772404f71a478d499a47ac67fe5452ea25e8ac3806",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5564,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não posso fornecer conselhos sobre investimentos aqui. Sugiro que você entre em contato com nosso departamento de investimentos para obter orientações personalizadas.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:25.827045Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 68
+  },
+  "variables": {
+    "conversation": "Customer: Vale a pena comprar criptomoedas este mês?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

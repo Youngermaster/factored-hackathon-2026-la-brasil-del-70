@@ -1,0 +1,32 @@
+{
+  "cassette_id": "9cc51b36d9a4b69e84f3d0d4a0a80fec303bee918dc21f847767f2e97f25dd67",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1915,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Pueden informarme sobre una de mis tarjetas y el saldo actual?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:57:07.483720Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 548,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-rtg-switch-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask about a card without saying which, then about the balance.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about a card without saying which, then about the balance.",
+    "known_facts": "(none)"
+  }
+}

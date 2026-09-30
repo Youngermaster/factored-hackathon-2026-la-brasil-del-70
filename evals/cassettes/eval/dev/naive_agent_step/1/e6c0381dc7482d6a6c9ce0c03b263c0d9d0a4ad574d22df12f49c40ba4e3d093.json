@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e6c0381dc7482d6a6c9ce0c03b263c0d9d0a4ad574d22df12f49c40ba4e3d093",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8837,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a proceder a bloquear la tarjeta de crédito. Primero, necesito confirmar algunos detalles. ¿Podría proporcionarme el número de la tarjeta y el motivo para bloquearla? Las opciones son: perdida, robada, sospecha de fraude o precaución.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:24:23.635111Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1328,
+    "output_tokens": 93
+  },
+  "variables": {
+    "conversation": "Customer: Quiero bloquear la tarjeta de crédito de mi mamá, ella no sabe usar la app",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

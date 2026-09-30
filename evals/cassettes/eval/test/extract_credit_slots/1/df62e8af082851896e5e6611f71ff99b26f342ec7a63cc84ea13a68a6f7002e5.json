@@ -1,0 +1,31 @@
+{
+  "cassette_id": "df62e8af082851896e5e6611f71ff99b26f342ec7a63cc84ea13a68a6f7002e5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3608,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "COP",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "[NUMBER]",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:11:08.928530Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1050,
+    "output_tokens": 63
+  },
+  "variables": {
+    "customer_message": "Puedo pedir un préstamo personal de 10.000.000 pesos a cuotas durante 24 meses?",
+    "dialect_hint": "es-CO"
+  }
+}

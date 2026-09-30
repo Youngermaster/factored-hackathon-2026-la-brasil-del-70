@@ -1,0 +1,32 @@
+{
+  "cassette_id": "8d9f759317f6c7c020944fa71e11e258718dcce7dd4f72f02539b8bef35da578",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2312,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "El préstamo personal es el 123456. Revisa de nuevo por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:33:28.458725Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 687,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que deberé pagar en una loan personal? Si me lo explicas, luego te pido más detalles.\nAssistant: Hola CLI-EVMX0008, según la información disponible como de 17 de junio de 2026, tu saldo en la tarjeta de crédito es de 12,500.00 MXN. Sin embargo, no veo ningún saldo pendiente en tu préstamo personal en esta consulta. ¿Podrías proporcionarme más detalles sobre el préstamo personal para que pueda revisarlo para ti?",
+    "conversation_seed": "test-cre-ambiguou-001#3",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

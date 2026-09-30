@@ -1,0 +1,29 @@
+{
+  "cassette_id": "c26a77294d155ed6a587f9c6e66ae02d088ce5b6ef3e8da3a58abb041958875b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1898,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:02.955437Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Pueden darme información sobre una de mis tarjetas y su saldo?",
+    "dialect_hint": "es-MX"
+  }
+}

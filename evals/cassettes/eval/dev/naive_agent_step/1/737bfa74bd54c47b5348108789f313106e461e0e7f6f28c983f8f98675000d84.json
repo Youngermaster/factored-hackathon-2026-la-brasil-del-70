@@ -1,0 +1,33 @@
+{
+  "cassette_id": "737bfa74bd54c47b5348108789f313106e461e0e7f6f28c983f8f98675000d84",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4473,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción que mencionó. El plazo para resolver este caso es de 45 días. ¿Necesita ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:14.664982Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1401,
+    "output_tokens": 68
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar la compra de 730 pesos que no hice",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

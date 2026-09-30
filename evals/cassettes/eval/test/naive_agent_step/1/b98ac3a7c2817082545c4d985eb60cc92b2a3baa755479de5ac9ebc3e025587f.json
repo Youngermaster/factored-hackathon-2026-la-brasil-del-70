@@ -1,0 +1,35 @@
+{
+  "cassette_id": "b98ac3a7c2817082545c4d985eb60cc92b2a3baa755479de5ac9ebc3e025587f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3155,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_transactions"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:57:42.748709Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1553,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Pueden informarme sobre una de mis tarjetas y el saldo actual?\nAssistant: El saldo actual de su tarjeta de crédito es de 1.200.000 COP, como de costumbre, este monto está actualizado hasta el 17 de junio de 2026. ¿Necesita información adicional sobre esta tarjeta o hay algo más con lo que pueda ayudarlo?\nCustomer: Sí, necesito información sobre mi tarjeta débito también y si hay algún movimiento reciente.\nAssistant: El saldo de su tarjeta débito es de 0 COP, ya que no tiene ningún saldo pendiente. Además, hay dos movimientos recientes: uno rechazado el 16 de junio en ESTACION TERPEL SUR por 40.000 COP y otro aprobado el 14 de junio en ALMACEN ANDES por 85.000 COP. ¿Necesita más información sobre estos movimientos o hay algo más con lo que pueda ayudarlo?\nCustomer: Quiero saber el detalle de esos movimientos rechazados.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "449fd9585100a04fe5cfb0c17987bed8fbf08e11075a9efc3d3b90d8dc4861a8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1677,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, claro. ¿Cuáles son las condiciones?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:27:06.816738Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 678,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me podrías informar sobre un crédito personal?\nAssistant: Por supuesto, CLI-EVCO0008. ¿Te interesa conocer más sobre un crédito personal o prefieres explorar otras opciones como tarjetas de crédito o hipotecas?\nCustomer: Me interesa un crédito personal, por favor.\nAssistant: CLI-EVCO0008, excelente elección. Vamos a revisar tu perfil crediticio y las opciones disponibles para un crédito personal en Colombia. ¿Estás listo para continuar?",
+    "conversation_seed": "dev-cre-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

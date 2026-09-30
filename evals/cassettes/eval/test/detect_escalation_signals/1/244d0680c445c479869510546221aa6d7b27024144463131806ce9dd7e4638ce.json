@@ -1,0 +1,29 @@
+{
+  "cassette_id": "244d0680c445c479869510546221aa6d7b27024144463131806ce9dd7e4638ce",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1940,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:19:16.791941Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 544,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Pode me dizer o seu plano de ação e minha estimativa de risco? E se posso pegar um empréstimo pessoal no valor de R$ 50.000,00 em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

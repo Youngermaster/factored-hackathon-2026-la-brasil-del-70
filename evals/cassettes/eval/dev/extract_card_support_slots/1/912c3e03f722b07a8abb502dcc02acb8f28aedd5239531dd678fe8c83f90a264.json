@@ -1,0 +1,36 @@
+{
+  "cassette_id": "912c3e03f722b07a8abb502dcc02acb8f28aedd5239531dd678fe8c83f90a264",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5059,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "lost",
+      "stolen",
+      "unrecognized_activity",
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:50:25.032320Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 48
+  },
+  "variables": {
+    "customer_message": "Preciso bloquear uma carta.",
+    "dialect_hint": "pt-BR"
+  }
+}

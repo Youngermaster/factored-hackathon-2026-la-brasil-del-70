@@ -1,0 +1,33 @@
+{
+  "cassette_id": "76a0eef264707a3c2b9abe70aa9bb3a89a863426c09902cd68d726a8759acbc1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3752,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Señor/a, lamento informarle que no encontramos su tarjeta registrada en nuestros sistemas. ¿Podría proporcionarnos más detalles para poder asistirle mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:09:41.306640Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1389,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Extravié mi tarjeta de crédito y quiero bloquearla\nAssistant: Señor/a, hemos recibido su solicitud para bloquear su tarjeta de crédito. Antes de proceder, ¿podría confirmar que su tarjeta se encuentra perdida o robada?\nCustomer: Sí, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

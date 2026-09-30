@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5dad39a68db7da8859d844d537205daf6cc8556d41446ecaf7ee61367ee9a570",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2816,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": null,
+    "reply": "Entendi. Vou verificar novamente o status dessa transferência para você. Aguarde um momento, por favor.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:26:53.578273Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1429,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: A transferência de 1500 para JUAN PEREZ do dia 15/06 já caiu?\nAssistant: A transferência que você fez para JUAN PEREZ no dia 15/06 não foi encontrada em nosso sistema. Você gostaria que eu verificasse novamente ou que eu procure mais informações sobre essa transferência?\nCustomer: O do dia 15/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

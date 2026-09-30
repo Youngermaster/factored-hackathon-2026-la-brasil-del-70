@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d759ae2e40d2b23a2bded52f1cea3edb21b02e61ebcc8e39d63ece017b18188c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2983,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:49:11.214947Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 517,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Olá, gostaria de saber o status do meu pagamento de 1500 pesos para JUAN PEREZ.",
+    "dialect_hint": "pt-BR"
+  }
+}

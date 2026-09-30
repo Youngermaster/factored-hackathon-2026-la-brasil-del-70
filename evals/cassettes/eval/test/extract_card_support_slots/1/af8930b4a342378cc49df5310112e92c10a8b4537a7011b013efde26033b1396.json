@@ -1,0 +1,31 @@
+{
+  "cassette_id": "af8930b4a342378cc49df5310112e92c10a8b4537a7011b013efde26033b1396",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1834,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:39:07.233978Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 32
+  },
+  "variables": {
+    "customer_message": "Meu cartão de crédito está ativo?",
+    "dialect_hint": "pt-BR"
+  }
+}

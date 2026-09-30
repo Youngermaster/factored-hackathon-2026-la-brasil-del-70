@@ -1,0 +1,34 @@
+{
+  "cassette_id": "8d76b64e3aa3663b7d9899957b787c1c8d09c7b34bda291537e1868afc3b7e45",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6939,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_status"
+      }
+    ],
+    "reason_candidates": [],
+    "transaction": null
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:38:46.111024Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1458,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Como está a minha contestação?",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

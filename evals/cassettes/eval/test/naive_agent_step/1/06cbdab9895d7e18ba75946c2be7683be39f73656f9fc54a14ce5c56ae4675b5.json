@@ -1,0 +1,35 @@
+{
+  "cassette_id": "06cbdab9895d7e18ba75946c2be7683be39f73656f9fc54a14ce5c56ae4675b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4399,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:50:26.057238Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Necesito saber cuánto dinero tengo disponible",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

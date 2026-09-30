@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8a7a49d4d63991da9e1f66032b7f2766784ed9f647a92918e3e67040015a1e75",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6502,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Entendi que você gostaria de saber sobre cartões de crédito. No entanto, antes de prosseguir, gostaria de confirmar se você está interessado em solicitar um cartão de crédito ou apenas quer saber sobre as opções disponíveis.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:30:08.944033Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1342,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Vocês me dão um cartão de crédito com limite de 900.000?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0009",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

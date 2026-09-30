@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e1748d137a8d53bde96c0db79f54b800e08ab7032eaabffffffa98090d5b8718",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4170,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a revisar los detalles de la transacción para confirmar el saldo actual. ¿Está de acuerdo en que revisemos esto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:10:52.901344Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1453,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: Quiero ver mis saldos\nAssistant: Sus saldos actuales son los siguientes: Cuenta corriente con el número **** 4995 y saldo de 3.450.000 COP, Cuenta de ahorros con el número **** 0684 y saldo de 5.200.000 COP, Tarjeta de crédito con el número **** 0235 y saldo de 1.200.000 COP, todos como de 17 de junio de 2026. ¿Necesita información adicional?\nCustomer: No puede ser, ese saldo no es correcto, falta dinero",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

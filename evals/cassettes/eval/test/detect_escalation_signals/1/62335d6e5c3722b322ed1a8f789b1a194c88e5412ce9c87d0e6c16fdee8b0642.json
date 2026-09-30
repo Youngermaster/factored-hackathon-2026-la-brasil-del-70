@@ -1,0 +1,29 @@
+{
+  "cassette_id": "62335d6e5c3722b322ed1a8f789b1a194c88e5412ce9c87d0e6c16fdee8b0642",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1769,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:25:54.607812Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Mi ingreso mensual es de 45000",
+    "dialect_hint": "es-MX"
+  }
+}

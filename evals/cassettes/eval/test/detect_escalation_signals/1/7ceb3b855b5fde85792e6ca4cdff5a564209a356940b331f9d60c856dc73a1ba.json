@@ -1,0 +1,29 @@
+{
+  "cassette_id": "7ceb3b855b5fde85792e6ca4cdff5a564209a356940b331f9d60c856dc73a1ba",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2960,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:31:01.133066Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 524,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Me cobraram 15.000 na KIOSCO DEL SUR e não fui eu, acho que clonaram meu cartão",
+    "dialect_hint": "pt-BR"
+  }
+}

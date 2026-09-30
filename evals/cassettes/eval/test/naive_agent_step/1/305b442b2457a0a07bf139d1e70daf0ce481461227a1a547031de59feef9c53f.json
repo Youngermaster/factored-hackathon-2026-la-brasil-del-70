@@ -1,0 +1,33 @@
+{
+  "cassette_id": "305b442b2457a0a07bf139d1e70daf0ce481461227a1a547031de59feef9c53f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5311,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero no puedo ayudar con cambios de dirección y número de teléfono aquí. Te sugiero que visites un punto de servicio o contactes a un representante humano para este tipo de solicitud. ¿Puedo ayudarte con algo relacionado a tu cuenta o tarjeta bancaria?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:55:07.558374Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 90
+  },
+  "variables": {
+    "conversation": "Customer: Quiero cambiar mi dirección y mi número de teléfono",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

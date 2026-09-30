@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7f74812d4dee0dff16dcd8ea3f8d44186ccb3b4550b70a468a5a766ce77c27aa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3931,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Por favor, proporciona la hora exacta de la transferencia o cualquier otro detalle que puedas recordar para poder verificar el estado.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:11:34.732810Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1386,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Estado de mi transferencia del 15/06 por 1500 pesos\nAssistant: Lo siento, pero no encontramos ninguna transferencia realizada el 15 de junio por 1500 pesos en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: El del 15/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6189841b2155f0b8793da9004927b46137d876c3e008fdbf36eaba9c96ceb56c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1786,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": true,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:37.953944Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 510,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Meu advogado vai ver por que recusam o meu cartão de crédito",
+    "dialect_hint": "pt-BR"
+  }
+}

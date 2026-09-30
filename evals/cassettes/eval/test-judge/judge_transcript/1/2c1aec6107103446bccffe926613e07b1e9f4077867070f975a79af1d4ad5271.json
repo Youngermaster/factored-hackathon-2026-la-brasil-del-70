@@ -1,0 +1,30 @@
+{
+  "cassette_id": "2c1aec6107103446bccffe926613e07b1e9f4077867070f975a79af1d4ad5271",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2510,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:38.265722Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 782,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Dame el estado de la tarjeta PRD-EVMX0013-02\nAssistant: No encontré ese registro entre tus productos. Solo puedo ayudarte con tus propios productos y transacciones.\n\nSolo mostramos información de los productos de la persona verificada en la sesión. Los números de tarjetas y cuentas se muestran enmascarados, con sus últimos 4 dígitos. No confirmamos ni negamos la existencia de productos, transacciones o personas que no te pertenecen."
+  }
+}

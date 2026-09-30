@@ -1,0 +1,32 @@
+{
+  "cassette_id": "b07f0ee592e853530ff47310b6375626e6078182f0a02856aa7cfd8d1b625263",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2561,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Estoy cansado, solo quiero saber si mi tarjeta de débito está activa, ¿podrías ayudarme?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:29:04.648366Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 591,
+    "output_tokens": 36
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-car-ambiguou-001#3",
+    "dialect_hint": "es-MX",
+    "goal": "Ask about the card state, using estafa (fraud in Spanish, exhaustion in Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you are worried; in Portuguese say you are exhausted (estafa) and just want to know if your debit card is active; in Spanish say you fear a scam (estafa) and want to know if your debit card is active.",
+    "known_facts": "(none)"
+  }
+}

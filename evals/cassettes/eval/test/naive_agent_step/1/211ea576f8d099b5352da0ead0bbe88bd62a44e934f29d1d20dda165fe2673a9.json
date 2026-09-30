@@ -1,0 +1,33 @@
+{
+  "cassette_id": "211ea576f8d099b5352da0ead0bbe88bd62a44e934f29d1d20dda165fe2673a9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4788,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Gracias por proporcionarnos tu ingreso mensual. Hemos enviado tu solicitud de crédito. Un asesor se pondrá en contacto contigo para recopilar más información y realizar una evaluación más detallada. ¿Hay algo más en lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:36:38.121516Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1470,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si califico para un préstamo personal de 50000 a 24 meses\nAssistant: Con tu puntuación crediticia de 745, calificas para un préstamo personal. Sin embargo, para una aprobación definitiva se requiere más información sobre tu ingreso mensual. ¿Podrías proporcionarnos este dato?\nCustomer: Mi ingreso mensual es de 45000",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0009\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"{50000}\", \"status\": \"submitted\"}}"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a799ae4aa6d5be64f846ca81260c225229bd446531846c1a1c5bbb6e4eb2ddb1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2078,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:14.203906Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 486,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Es sobre mis saldos y pagos",
+    "dialect_hint": "es-MX"
+  }
+}

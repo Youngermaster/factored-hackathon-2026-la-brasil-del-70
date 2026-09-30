@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a84321cc3d6a6a964742c79edbc3ac08b7eacf35140a1f3e880ecd7a800bef95",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 9713,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Sus saldos actuales son los siguientes: Cuenta corriente con el número **** 4995 y saldo de 3.450.000 COP, Cuenta de ahorros con el número **** 0684 y saldo de 5.200.000 COP, Tarjeta de crédito con el número **** 0235 y saldo de 1.200.000 COP, todos como de 17 de junio de 2026. ¿Necesita información adicional?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:10:48.724506Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1562,
+    "output_tokens": 147
+  },
+  "variables": {
+    "conversation": "Customer: Quiero ver mis saldos",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0001-01\", \"type\": \"checking_account\", \"number\": \"**** 4995\", \"balance\": \"3450000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-02\", \"type\": \"savings_account\", \"number\": \"**** 0684\", \"balance\": \"5200000.00 COP\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVCO0001-03\", \"type\": \"credit_card\", \"number\": \"**** 0235\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

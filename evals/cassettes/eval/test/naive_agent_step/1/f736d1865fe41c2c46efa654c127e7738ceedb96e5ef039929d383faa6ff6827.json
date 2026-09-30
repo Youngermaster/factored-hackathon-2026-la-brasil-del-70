@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f736d1865fe41c2c46efa654c127e7738ceedb96e5ef039929d383faa6ff6827",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3694,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para poder verificar su saldo, primero necesito confirmar su identidad. ¿Podría proporcionarme el último número de su tarjeta y la fecha de su última transacción?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:21.498594Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1371,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: ¿Qué condiciones tiene el préstamo personal?\nAssistant: Para poder informar sobre las condiciones del préstamo personal, necesito conocer su perfil crediticio y la información del producto. ¿Podría proporcionarme el código del producto que está interesado?\nCustomer: Mejor dime cuánto tengo en mi cuenta de ahorro",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

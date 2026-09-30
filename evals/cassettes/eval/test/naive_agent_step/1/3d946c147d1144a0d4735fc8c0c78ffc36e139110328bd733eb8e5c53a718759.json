@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3d946c147d1144a0d4735fc8c0c78ffc36e139110328bd733eb8e5c53a718759",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3216,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para confirmarmos, por favor, forneça o número do cartão de débito que deseja bloquear.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:09:50.586048Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1400,
+    "output_tokens": 53
+  },
+  "variables": {
+    "conversation": "Customer: Bloqueie meu cartão de débito, fui roubado no metrô\nAssistant: Entendi, vamos proceder com o bloqueio do seu cartão de débito. Vou precisar de alguns detalhes para confirmar a ação. Você pode me fornecer o número do cartão que deseja bloquear?\nCustomer: Sim, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

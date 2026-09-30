@@ -1,0 +1,32 @@
+{
+  "cassette_id": "76cb6895f1a55a0046a5ac095fb19d541a85e22ccfe657ea5036dfdec0ae19cf",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1654,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não reconheço essa cobrança. Não sei detalhes."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:57:42.089532Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 645,
+    "output_tokens": 24
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço essa cobrança. Não sei detalhes.\nAssistant: Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.",
+    "conversation_seed": "dev-dis-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 1250; merchant: TIENDA AURORA",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 1250 and the merchant TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

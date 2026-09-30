@@ -1,0 +1,33 @@
+{
+  "cassette_id": "599ded17dde7508e3f49ce3c1dc7a950cfa69af5df0e6267733175ef99b2ae26",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4411,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Se ha perdido su tarjeta de crédito y desea bloquearla. ¿Esto es correcto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:05:31.448234Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, quiero bloquearla",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "2118cc38f69d07a1da855c45a583fcaa3f547a794a414d5f999dfd2fb21761e5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2822,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:57:25.510061Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1523,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Pueden informarme sobre una de mis tarjetas y el saldo actual?\nAssistant: El saldo actual de su tarjeta de crédito es de 1.200.000 COP, como de costumbre, este monto está actualizado hasta el 17 de junio de 2026. ¿Necesita información adicional sobre esta tarjeta o hay algo más con lo que pueda ayudarlo?\nCustomer: Sí, necesito información sobre mi tarjeta débito también y si hay algún movimiento reciente.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0002-01\", \"type\": \"credit_card\", \"number\": \"**** 8289\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

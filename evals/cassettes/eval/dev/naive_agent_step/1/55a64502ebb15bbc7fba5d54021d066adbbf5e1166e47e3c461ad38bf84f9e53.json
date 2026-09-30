@@ -1,0 +1,33 @@
+{
+  "cassette_id": "55a64502ebb15bbc7fba5d54021d066adbbf5e1166e47e3c461ad38bf84f9e53",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6932,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero aquí no podemos ofrecer recomendaciones de inversión. Te sugiero que contactes a un asesor financiero o revises nuestros productos de inversión disponibles. ¿Necesitas ayuda con alguna de nuestras opciones de ahorro o crédito?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:41:21.028085Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 82
+  },
+  "variables": {
+    "conversation": "Customer: Recomiéndame en qué invertir mis ahorros",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "336bfd75889f9ee0aa89e04009b573cd23fec7c81a751730f08c8fcb6075345b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6597,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não podemos realizar transferências aqui. Sugerimos que você entre em contato com nosso suporte ao cliente para essa solicitação. Pode nos informar mais sobre o que você precisa para que possamos auxiliá-lo da melhor forma possível?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:47:37.077966Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 84
+  },
+  "variables": {
+    "conversation": "Customer: Quero fazer uma transferência para a minha mãe",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

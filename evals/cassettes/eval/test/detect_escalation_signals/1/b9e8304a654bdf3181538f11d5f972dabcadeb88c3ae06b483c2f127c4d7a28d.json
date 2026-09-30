@@ -1,0 +1,29 @@
+{
+  "cassette_id": "b9e8304a654bdf3181538f11d5f972dabcadeb88c3ae06b483c2f127c4d7a28d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1896,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:03:36.266392Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 509,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Buen día, necesito que se efectúe una transferencia de 5000 pesos a la cuenta [NUMBER] de inmediato.",
+    "dialect_hint": "es-MX"
+  }
+}

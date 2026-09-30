@@ -1,0 +1,30 @@
+{
+  "cassette_id": "db6b49863fc136354949a7140032b6219986f8aa7bf242606c31f839cf333afe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6857,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:14.987708Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1603,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses\nAssistant: Orientación sintética de elegibilidad (demostración): no es una decisión de crédito.\nNos falta información para darte una orientación.\nMotivos, con la regla que los respalda:\n- El producto admite una orientación automática. (ELG-ALL-3@1)\n- Hay un puntaje de crédito registrado. (ELG-ALL-1@1)\n- El puntaje de crédito alcanza el mínimo del producto. (ELG-CO-1.2@1)\n- No hay un ingreso mensual disponible. (ELG-ALL-1@1, ELG-CO-1.2@1)\n- No hay atrasos en tus productos de crédito. (ELG-CO-1.2@1)\n- Tu antigüedad como cliente alcanza el mínimo. (ELG-CO-1.2@1)\n- El monto y el plazo están dentro del rango del producto. (ELG-CO-1.2@1)\n- Hay una estimación de riesgo disponible. (ELG-ALL-2@1)\n- La estimación de riesgo está en una banda aceptable. (ELG-CO-1.2@1)\n- La incertidumbre de la estimación no está cerca de un límite entre niveles. (ELG-ALL-2@1)\nInformación que falta:\n- Tu ingreso mensual (puedes declararlo en esta conversación).\nSin la información que falta no podemos dar una orientación.\nSi nos das la información que falta, podemos volver a darte una orientación; también puedes pedir hablar con una persona.\nEsta información es indicativa y proviene de un catálogo y unas reglas sintéticas de demostración. No es una oferta ni una decisión de crédito, y las condiciones finales, si las hubiera, las define una persona del equipo de crédito después de su propia revisión.\nPuedes decirme tu ingreso mensual para darte la orientación de nuevo, o responder sí para que una persona del equipo de crédito revise tu caso.\nCustomer: Mi ingreso mensual es de [DOCUMENT]\nAssistant: Orientación sintética de elegibilidad (demostración): no es una decisión de crédito.\nSegún las reglas sintéticas, tu perfil cumple de forma indicativa las condiciones de este producto.\nMotivos, con la regla que los respalda:\n- El producto admite una orientación automática. (ELG-ALL-3@1)\n- Hay un puntaje de crédito registrado. (ELG-ALL-1@1)\n- El puntaje de crédito alcanza el mínimo del producto. (ELG-CO-1.2@1)\n- Hay un ingreso mensual disponible. (ELG-ALL-1@1)\n- El pago mensual estimado está dentro del máximo respecto de tu ingreso. (ELG-CO-1.2@1)\n- No hay atrasos en tus productos de crédito. (ELG-CO-1.2@1)\n- Tu antigüedad como cliente alcanza el mínimo. (ELG-CO-1.2@1)\n- El monto y el plazo están dentro del rango del producto. (ELG-CO-1.2@1)\n- Hay una estimación de riesgo disponible. (ELG-ALL-2@1)\n- La estimación de riesgo está en una banda aceptable. (ELG-CO-1.2@1)\n- La incertidumbre de la estimación no está cerca de un límite entre niveles. (ELG-ALL-2@1)\nEs una orientación indicativa basada en reglas sintéticas y puede cambiar tras una revisión humana.\nSi quieres, podemos registrar tu solicitud para que la revise una persona del equipo de crédito.\nEsta información es indicativa y proviene de un catálogo y unas reglas sintéticas de demostración. No es una oferta ni una decisión de crédito, y las condiciones finales, si las hubiera, las define una persona del equipo de crédito después de su propia revisión.\n¿Quieres que registre tu solicitud para que la revise una persona del equipo de crédito? Responde sí o no."
+  }
+}

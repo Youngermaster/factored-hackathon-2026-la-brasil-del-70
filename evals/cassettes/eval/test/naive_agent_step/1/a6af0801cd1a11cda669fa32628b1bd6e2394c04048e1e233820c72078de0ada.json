@@ -1,0 +1,37 @@
+{
+  "cassette_id": "a6af0801cd1a11cda669fa32628b1bd6e2394c04048e1e233820c72078de0ada",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5063,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "product_id": "CRD-0001",
+      "reason": "lost"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:34.143057Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1321,
+    "output_tokens": 61
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, bloquéala por favor",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

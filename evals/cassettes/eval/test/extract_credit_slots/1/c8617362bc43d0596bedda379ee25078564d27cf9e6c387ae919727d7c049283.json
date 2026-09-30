@@ -1,0 +1,31 @@
+{
+  "cassette_id": "c8617362bc43d0596bedda379ee25078564d27cf9e6c387ae919727d7c049283",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7811,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "credit_card",
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:27.726014Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1038,
+    "output_tokens": 51
+  },
+  "variables": {
+    "customer_message": "Mándame una tarjeta de crédito nueva, la mía está vencida",
+    "dialect_hint": "es-CO"
+  }
+}

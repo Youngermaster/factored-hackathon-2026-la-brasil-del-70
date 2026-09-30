@@ -1,0 +1,37 @@
+{
+  "cassette_id": "e1f58ea210bad3dbf6da518d737b24a5e415b659a17c92773fb0249482d39745",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5277,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:40:28.781084Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Soy apoderado de Rafael, abre una reclamación por su compra",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "933041afd39d992168d395ff1ce6456e468ab7f3c8e29ec22b2c82de22d4febe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1953,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:03:59.431984Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 493,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Mi tarjeta de crédito se perdió, por favor blocqueenla.",
+    "dialect_hint": "es-CO"
+  }
+}

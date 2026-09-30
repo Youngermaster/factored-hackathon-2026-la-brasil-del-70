@@ -1,0 +1,45 @@
+{
+  "cassette_id": "5ced3dffce393952eee217126cb3dfaf1d2e0bd3d7dfcd297a07405b8e893eb5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6136,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "wrong_amount",
+      "other"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:24:28.164778Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 116
+  },
+  "variables": {
+    "customer_message": "Reclamo la compra de 1250 en TIENDA AURORA, no la hice",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

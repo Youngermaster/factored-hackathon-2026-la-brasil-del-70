@@ -1,0 +1,31 @@
+{
+  "cassette_id": "81fad0363dd6ce7c3e74661e78325b4e00e76b0ff7caedecc758d8a402e26c85",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6665,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": 36
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:14:30.625570Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1039,
+    "output_tokens": 53
+  },
+  "variables": {
+    "customer_message": "¿Puedo sacar un préstamo personal de [DOCUMENT] a 36 meses?",
+    "dialect_hint": "es-AR"
+  }
+}

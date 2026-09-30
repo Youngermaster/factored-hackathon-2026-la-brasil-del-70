@@ -1,0 +1,29 @@
+{
+  "cassette_id": "16acbb831a640ad6a6b14d04b7013bd7037e018e7b46953a960d71d5ab05b28b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1744,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:34.659333Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 480,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "De mayo",
+    "dialect_hint": "es-MX"
+  }
+}

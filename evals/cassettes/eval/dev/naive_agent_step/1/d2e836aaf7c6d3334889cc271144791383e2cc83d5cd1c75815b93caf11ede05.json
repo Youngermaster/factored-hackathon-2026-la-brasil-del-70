@@ -1,0 +1,35 @@
+{
+  "cassette_id": "d2e836aaf7c6d3334889cc271144791383e2cc83d5cd1c75815b93caf11ede05",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4447,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "AR"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:34:59.108432Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1348,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Quero conhecer os empréstimos pessoais e saber se tenho direito a [DOCUMENT] em 24 meses",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

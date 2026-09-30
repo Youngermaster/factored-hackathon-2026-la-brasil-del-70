@@ -1,0 +1,35 @@
+{
+  "cassette_id": "8823c1683aefb9df9cfc6ac0628680503b25f08cc9d026850300277dd1ba1538",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2650,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "CO"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:17:43.001739Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1324,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quiero saber sobre un crédito. ¿Me podrías decir las condiciones?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

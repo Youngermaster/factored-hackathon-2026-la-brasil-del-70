@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bd84fdca0b0d9ba89f0f69b7799dc01a06cba1ce588ac17acc687abe6052cba5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3564,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:53:23.272723Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1379,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: ¿Llegó la transferencia de 300.000 del 15/06?\nAssistant: No se encontró la transferencia de 300.000 del 15/06. ¿Podría proporcionar más detalles para investigar?\nCustomer: La del 15/06",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6a815589c4c2369806b25b9c218340ed2ae4be288df1f63a17e0d28ec4588912",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8359,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con un puntaje de crédito de 745, estás calificado para un préstamo personal. Sin embargo, necesitamos conocer tu ingreso mensual para determinar la cantidad máxima a la que podrías acceder. ¿Podrías proporcionarnos tu ingreso mensual?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:31:37.029971Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1736,
+    "output_tokens": 87
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 50000 a 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 745, \"monthly_income\": \"none\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"MX-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"5000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"120000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"85.00\"}, {\"product_code\": \"MX-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"500000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"10000000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"14.00\"}, {\"product_code\": \"MX-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"MX\", \"currency\": \"MXN\", \"min_amount\": {\"amount\": \"10000.00\", \"currency\": \"MXN\"}, \"max_amount\": {\"amount\": \"350000.00\", \"currency\": \"MXN\"}, \"min_term_months\": 6, \"max_term_months\": 60, \"max_annual_rate\": \"65.00\"}]}"
+  }
+}

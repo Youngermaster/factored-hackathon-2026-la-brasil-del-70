@@ -1,0 +1,33 @@
+{
+  "cassette_id": "31e8f51dd8246b85647c80dcfcb44163e3d7c57ac944625d8672d5e23c7d08ac",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5782,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, CLI-EVCO0003. Vou verificar o status do seu cartão e as opções de crédito disponíveis. Você gostaria que eu verificasse também as suas últimas transações?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:49.194800Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Me mande um cartão de crédito novo, o meu está vencido",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0003",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "dccefb3ac6593049a2fc8833ed1859ec969ec046cbcc7e1d5d27c2ac81c17125",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3195,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, gostaria de uma avaliação humana para um empréstimo pessoal de 50.000 pesos, parcelado em 24 meses."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:26:37.352324Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 690,
+    "output_tokens": 45
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de 780, que é excelente. No entanto, para uma análise mais detalhada e para entender melhor as opções disponíveis, sugiro que entremos em contato com um especialista. Você gostaria que isso fosse encaminhado para uma avaliação humana?",
+    "conversation_seed": "dev-cre-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about eligibility for a loan without the amount, then give it.",
+    "hidden_facts": "amount: 50000 pesos; term: 24 months",
+    "instructions": "Ask whether you can get a personal loan without saying the amount. When asked, say 50000 pesos over 24 months.",
+    "known_facts": "(none)"
+  }
+}

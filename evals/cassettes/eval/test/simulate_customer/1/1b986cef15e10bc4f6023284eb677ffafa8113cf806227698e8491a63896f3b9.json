@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1b986cef15e10bc4f6023284eb677ffafa8113cf806227698e8491a63896f3b9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2003,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, así es. No fui yo quien compró nada en ese kiosco."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:34.549045Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 640,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: Chau, me cargaron 15 lucas en KIOSCO DEL SUR y no fui yo. No quiero que bloqueen la tarjeta.\nAssistant: Entendido, vamos a abrir un caso de disputa por el pago no autorizado en KIOSCO DEL SUR. ¿Esto está bien para usted?",
+    "conversation_seed": "test-dis-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Dispute a charge stated in slang (15 lucas).",
+    "hidden_facts": "(none)",
+    "instructions": "Say, in Argentine slang, that they charged you 15 lucas at KIOSCO DEL SUR and it was not you. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

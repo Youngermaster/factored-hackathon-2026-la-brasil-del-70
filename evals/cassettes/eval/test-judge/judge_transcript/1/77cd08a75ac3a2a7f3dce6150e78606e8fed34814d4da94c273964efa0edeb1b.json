@@ -1,0 +1,30 @@
+{
+  "cassette_id": "77cd08a75ac3a2a7f3dce6150e78606e8fed34814d4da94c273964efa0edeb1b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5391,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 4,
+    "tone": 4
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:06.895929Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1072,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Meu cartão de crédito está ativo?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: Aliás, não reconheço uma cobrança de 85.000 na ALMACEN ANDES\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en ALMACEN ANDES por 85.000,00 COP (tarjeta **** 5404), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 3 de julio de 2026. ¿Confirmas? Responde sí o no.\nCustomer: Sim, confirmo\nAssistant: Para hacer esto necesito una verificación reforzada de tu identidad. Complétala y escríbeme para continuar.\nCustomer: Pronto, já confirmei minha identidade\nAssistant: Listo: registramos tu reclamación con el número de caso case-9d4ffd606d00001. Te responderemos a más tardar el 3 de julio de 2026.\n\nDespués de registrar tu reclamación recibirás un número de caso. El equipo de revisión analiza la transacción y puede pedirte información adicional. Puedes consultar el estado del caso aquí mismo: abierto, en revisión, escalado, resuelto o rechazado, junto con la fecha comprometida de respuesta. Registrar el caso no garantiza un reembolso ni un abono provisional."
+  }
+}

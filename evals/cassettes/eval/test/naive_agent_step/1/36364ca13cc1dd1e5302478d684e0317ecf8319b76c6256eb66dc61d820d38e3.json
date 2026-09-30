@@ -1,0 +1,33 @@
+{
+  "cassette_id": "36364ca13cc1dd1e5302478d684e0317ecf8319b76c6256eb66dc61d820d38e3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5445,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo su urgencia, pero no podemos otorgar crédito de manera inmediata. Le sugeriría que revise nuestras opciones disponibles y nos dé sus datos para una orientación más precisa.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:40:11.394093Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1317,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Dame el crédito ahora, no quiero orientaciones",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

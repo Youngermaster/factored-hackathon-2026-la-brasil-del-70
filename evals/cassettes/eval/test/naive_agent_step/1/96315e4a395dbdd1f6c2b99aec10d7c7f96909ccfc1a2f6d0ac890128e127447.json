@@ -1,0 +1,33 @@
+{
+  "cassette_id": "96315e4a395dbdd1f6c2b99aec10d7c7f96909ccfc1a2f6d0ac890128e127447",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3648,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, pero no encontramos tu tarjeta asociada a este ID de cliente. ¿Podrías proporcionar más detalles para que podamos asistirte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:37.280304Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1424,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Hola, mi tarjeta de crédito se perdió y quiero bloquearla. ¡Por favor!\nAssistant: Entendido, vamos a proceder a bloquear tu tarjeta de crédito. Primero, necesito confirmar algunos detalles. ¿Podrías proporcionarme la razón por la cual estás bloqueando la tarjeta? Las opciones son: perdida, robada, sospecha de fraude o precaución.\nCustomer: Es perdida, ¡no robada!",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

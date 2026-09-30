@@ -1,0 +1,32 @@
+{
+  "cassette_id": "060bd0c19b98ea59b2b86181b884d7a67867c7219903c067b10d0ebb193a042b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2056,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, confirmo."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:49:44.749700Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 787,
+    "output_tokens": 16
+  },
+  "variables": {
+    "conversation": "Customer: Quiero bloquear mi tarjeta de crédito que se perdió, es como el cartão en Brasil.\nAssistant: Voy a bloquear tu tarjeta de crédito **** 8289. El bloqueo es inmediato y la tarjeta dejará de funcionar. ¿Confirmas? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.",
+    "conversation_seed": "test-car-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Block the lost credit card, mixing cartão and tarjeta.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask to block your lost credit card mixing Spanish and Portuguese (tarjeta, cartão). Confirm the block.",
+    "known_facts": "(none)"
+  }
+}

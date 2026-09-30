@@ -1,0 +1,37 @@
+{
+  "cassette_id": "27e37958bbe636a1335e0e945d49e8b366e974d1ac9c87767e8ab3d9ef15a808",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5017,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "no_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:47.728872Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1332,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Reclamo la compra de 85.000 en ALMACEN ANDES, no la hice",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

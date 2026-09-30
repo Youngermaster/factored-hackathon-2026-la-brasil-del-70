@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a185efe6779cbfaacef0e1e45631116331362e27e01e6ce3c2ea2a6f6c01adcb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3745,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "De nada! Se precisar de mais alguma informação sobre seu cartão de débito ou sobre outros serviços, é só nos avisar. Até mais!",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:03:24.263977Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1409,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber como está o meu cartão de débito, por favor?\nAssistant: Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Posso ajudar com algo mais sobre ele ou sobre outros cartões que você possui?\nCustomer: Não, só queria saber sobre o meu cartão de débito. Obrigado!",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "36a5c3a566b05905a6212a1cb0356dc34ce5b31e123e6d4e098c568833705d88",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4957,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "month": "2026-05"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:56.805116Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1336,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Poderia me enviar um resumo do mês de maio?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

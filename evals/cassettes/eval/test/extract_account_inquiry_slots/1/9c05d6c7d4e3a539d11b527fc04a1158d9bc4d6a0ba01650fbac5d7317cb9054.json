@@ -1,0 +1,29 @@
+{
+  "cassette_id": "9c05d6c7d4e3a539d11b527fc04a1158d9bc4d6a0ba01650fbac5d7317cb9054",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1494,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": "de mayo"
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:37.901067Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1119,
+    "output_tokens": 26
+  },
+  "variables": {
+    "customer_message": "De mayo",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

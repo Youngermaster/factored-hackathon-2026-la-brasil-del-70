@@ -1,0 +1,29 @@
+{
+  "cassette_id": "79c8b872ce45e5aa0ac610288a334e35f30be45bb2e66dbfb025c7a00e28f81b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2911,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:54:17.118034Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 515,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Posso pegar um empréstimo pessoal de 50000 em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

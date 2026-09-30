@@ -1,0 +1,31 @@
+{
+  "cassette_id": "84db5e0001641d835c5917389d7eea8c17d40af6f2063975ce402fe7d182cec3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5946,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "ARS",
+    "declared_monthly_income": "1500000",
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:55:05.117269Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1038,
+    "output_tokens": 57
+  },
+  "variables": {
+    "customer_message": "Ganho 1.500.000 pesos por mês",
+    "dialect_hint": "es-AR"
+  }
+}

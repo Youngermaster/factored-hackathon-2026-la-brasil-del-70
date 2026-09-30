@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0a22f97bfabf3058a6933f1f112c8acd2e37c852281c52537d241a9a9cec78ce",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4969,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vou verificar novamente a transferência de R$ 60.000 para Pablo Díaz de 15/06. Você confirma que este valor e data estão corretos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:05.137516Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1421,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: A transferência de 60.000 para PABLO DIAZ do dia 15/06 já caiu?\nAssistant: A transferência de R$ 60.000 para Pablo Díaz de 15/06 não foi encontrada em nossos registros. Você gostaria que eu verificasse novamente ou que abríssemos um caso de disputa?\nCustomer: O do dia 15/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

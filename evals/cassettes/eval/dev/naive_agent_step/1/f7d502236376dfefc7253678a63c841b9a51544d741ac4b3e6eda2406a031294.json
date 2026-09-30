@@ -1,0 +1,35 @@
+{
+  "cassette_id": "f7d502236376dfefc7253678a63c841b9a51544d741ac4b3e6eda2406a031294",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4570,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0010"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:31:02.118155Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

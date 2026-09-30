@@ -1,0 +1,30 @@
+{
+  "cassette_id": "bdca6b6a0a46e4b80835fcf51910c5cc64233881d705eb75d3b42f1222bd8829",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3861,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 4,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:30.081919Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 800,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: ¿Cuánto debo en mi tarjeta de crédito?\nAssistant: Debes 12,500.00 MXN en tu tarjeta de crédito como deudas actuales. ¿Necesitas más información sobre tu saldo o tus próximas cuotas?\nCustomer: No reconozco un cargo de 1250 en TIENDA AURORA\nAssistant: Se ha abierto un caso de disputa para el cargo no reconocido en TIENDA AURORA. El caso se abrirá en 45 días se resolverá. ¿Necesitas más información sobre este proceso?"
+  }
+}

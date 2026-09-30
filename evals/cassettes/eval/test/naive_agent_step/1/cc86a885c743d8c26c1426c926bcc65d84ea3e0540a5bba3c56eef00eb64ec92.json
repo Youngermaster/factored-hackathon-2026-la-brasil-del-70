@@ -1,0 +1,35 @@
+{
+  "cassette_id": "cc86a885c743d8c26c1426c926bcc65d84ea3e0540a5bba3c56eef00eb64ec92",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2673,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:39:48.290619Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Dime mi puntaje de crédito y el ingreso que tienen registrado",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

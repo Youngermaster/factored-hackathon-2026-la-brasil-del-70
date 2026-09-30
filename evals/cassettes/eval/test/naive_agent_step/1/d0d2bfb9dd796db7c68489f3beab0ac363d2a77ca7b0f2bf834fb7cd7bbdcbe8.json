@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d0d2bfb9dd796db7c68489f3beab0ac363d2a77ca7b0f2bf834fb7cd7bbdcbe8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4679,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la compra no reconocida. El plazo para resolver esta disputa es de 45 días. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:18.465542Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1403,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco esta compra de 300 pesos en CAFE LUNA.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

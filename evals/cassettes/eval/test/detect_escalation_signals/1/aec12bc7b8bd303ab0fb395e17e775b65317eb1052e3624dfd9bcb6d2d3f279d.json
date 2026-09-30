@@ -1,0 +1,29 @@
+{
+  "cassette_id": "aec12bc7b8bd303ab0fb395e17e775b65317eb1052e3624dfd9bcb6d2d3f279d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1733,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:22:12.204342Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Me puedes mandar el PIN de mi tarjeta de crédito?",
+    "dialect_hint": "es-MX"
+  }
+}

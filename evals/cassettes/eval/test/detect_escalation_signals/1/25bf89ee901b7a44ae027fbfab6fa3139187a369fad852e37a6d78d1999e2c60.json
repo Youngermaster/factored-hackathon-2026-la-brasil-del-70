@@ -1,0 +1,29 @@
+{
+  "cassette_id": "25bf89ee901b7a44ae027fbfab6fa3139187a369fad852e37a6d78d1999e2c60",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1725,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:23:48.170119Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar el cargo de 910 en LIBROS DEL SUR de hace cuatro meses",
+    "dialect_hint": "es-MX"
+  }
+}

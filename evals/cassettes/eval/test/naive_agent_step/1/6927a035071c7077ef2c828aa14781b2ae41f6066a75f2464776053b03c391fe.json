@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6927a035071c7077ef2c828aa14781b2ae41f6066a75f2464776053b03c391fe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4805,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001",
+      "month": "2026-05"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:44:19.087729Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Hola, necesito el resumen de mayo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

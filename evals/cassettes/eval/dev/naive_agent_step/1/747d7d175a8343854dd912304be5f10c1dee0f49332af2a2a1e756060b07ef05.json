@@ -1,0 +1,36 @@
+{
+  "cassette_id": "747d7d175a8343854dd912304be5f10c1dee0f49332af2a2a1e756060b07ef05",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3888,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:36:04.744727Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1377,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Tenho uma fatura que não reconheço.\nAssistant: Entendi, pode me informar o número da fatura que você não reconhece para que eu possa verificar?\nCustomer: É a fatura número 1250 que não reconheço.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

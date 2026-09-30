@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3a1c6e4ef1649da3032396a378d505bba7b924b6566e3e95c61ddc5af123fbfb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4972,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vou bloquear o seu cartão Final 0000. Confirma que deseja realizar essa ação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:07:25.915496Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Bloqueie o cartão final 0000",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

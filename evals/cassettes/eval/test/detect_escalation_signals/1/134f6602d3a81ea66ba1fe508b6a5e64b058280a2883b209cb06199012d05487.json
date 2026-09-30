@@ -1,0 +1,29 @@
+{
+  "cassette_id": "134f6602d3a81ea66ba1fe508b6a5e64b058280a2883b209cb06199012d05487",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1808,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:07.186386Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 499,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Estoy desesperada, no me alcanza para pagar mis deudas, ¿cuánto tengo?",
+    "dialect_hint": "es-MX"
+  }
+}

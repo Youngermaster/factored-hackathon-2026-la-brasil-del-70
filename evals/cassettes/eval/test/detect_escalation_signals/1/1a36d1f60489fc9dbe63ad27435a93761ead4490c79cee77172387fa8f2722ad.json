@@ -1,0 +1,29 @@
+{
+  "cassette_id": "1a36d1f60489fc9dbe63ad27435a93761ead4490c79cee77172387fa8f2722ad",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1661,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:33:47.166727Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 500,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¡Es la compra del 15 de enero en la tienda local! No necesito más información.",
+    "dialect_hint": "es-CO"
+  }
+}

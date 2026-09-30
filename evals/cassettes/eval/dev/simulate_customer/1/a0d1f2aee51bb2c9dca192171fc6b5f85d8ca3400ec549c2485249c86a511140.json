@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a0d1f2aee51bb2c9dca192171fc6b5f85d8ca3400ec549c2485249c86a511140",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2954,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Me puede enviar el resumen de mis movimientos de la última semana de mi tarjeta de crédito?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:44:33.058794Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 983,
+    "output_tokens": 32
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puede enviar el resumen de mis movimientos del último mes de mi tarjeta de crédito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Me puede enviar el resumen de mis movimientos del último mes de mi tarjeta de crédito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Me puede enviar el resumen de mis movimientos del último mes de mi tarjeta de crédito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Puedo ver el resumen de mis movimientos recientes de mi tarjeta de crédito?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: ¿Me puede enviar el resumen de mis movimientos de la tarjeta de crédito, por favor?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "dev-acc-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Get a card statement summary without giving the period at first.",
+    "hidden_facts": "period: last month (May)",
+    "instructions": "Ask for a summary of your credit card movements. When asked for the period, say last month.",
+    "known_facts": "(none)"
+  }
+}

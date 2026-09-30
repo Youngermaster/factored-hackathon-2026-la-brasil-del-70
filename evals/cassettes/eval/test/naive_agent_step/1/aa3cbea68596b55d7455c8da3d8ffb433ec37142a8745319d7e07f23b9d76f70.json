@@ -1,0 +1,33 @@
+{
+  "cassette_id": "aa3cbea68596b55d7455c8da3d8ffb433ec37142a8745319d7e07f23b9d76f70",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3244,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado tu solicitud de préstamo personal. El proceso ahora pasa a una revisión por persona. Te contactaremos con la decisión final.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:35:47.015337Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1463,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 250000 a 36 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"250000.00 MXN\", \"status\": \"submitted\"}}"
+  }
+}

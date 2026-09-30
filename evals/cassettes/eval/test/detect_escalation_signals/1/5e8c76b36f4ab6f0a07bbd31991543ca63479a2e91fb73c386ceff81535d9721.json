@@ -1,0 +1,29 @@
+{
+  "cassette_id": "5e8c76b36f4ab6f0a07bbd31991543ca63479a2e91fb73c386ceff81535d9721",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1925,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:09:58.444271Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 492,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Desactiva los pagos sin contacto de mi tarjeta de crédito",
+    "dialect_hint": "es-CO"
+  }
+}

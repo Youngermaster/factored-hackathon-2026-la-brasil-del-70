@@ -1,0 +1,48 @@
+{
+  "cassette_id": "0b7e3e02b9749175dfa14b67b631d01f579027799bf9b98d566e2ae58b59b2ae",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 12314,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      },
+      {
+        "confidence": 0.5,
+        "intent": "informational"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "other"
+    ],
+    "transaction": {
+      "amount": "15",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "ARS",
+      "date_expression": "2026-06-18",
+      "merchant_text": "KIOSCO DEL SUR"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:24:33.581782Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1471,
+    "output_tokens": 124
+  },
+  "variables": {
+    "customer_message": "Me cargaron 15 lucas en KIOSCO DEL SUR y no fui yo. No me bloqueen la tarjeta, pero quiero que investiguen.",
+    "dialect_hint": "es-AR",
+    "reference_date": "2026-06-18"
+  }
+}

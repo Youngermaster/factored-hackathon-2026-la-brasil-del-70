@@ -1,0 +1,35 @@
+{
+  "cassette_id": "1a98645672e94ec92b379b92c5dad0a6f5e357f6ccf7b8ceff2d13ccc0d03145",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2879,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:35:10.355044Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1433,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Posso pedir por um empréstimo pessoal sem dizer o valor primeiro?\nAssistant: Claro, posso fornecer informações sobre empréstimos pessoais sem precisar do valor exato no momento. Gostaria de saber mais sobre quais opções estão disponíveis e como posso ser elegível para um deles?\nCustomer: Sim, por favor. Quero verificar minha elegibilidade para um empréstimo pessoal no valor de 50.000 pesos ao longo de 24 meses.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

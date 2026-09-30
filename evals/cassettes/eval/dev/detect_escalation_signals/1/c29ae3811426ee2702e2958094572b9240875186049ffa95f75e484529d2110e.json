@@ -1,0 +1,29 @@
+{
+  "cassette_id": "c29ae3811426ee2702e2958094572b9240875186049ffa95f75e484529d2110e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1940,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:01:48.241123Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 494,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar la compra de 730 pesos que no hice",
+    "dialect_hint": "es-MX"
+  }
+}

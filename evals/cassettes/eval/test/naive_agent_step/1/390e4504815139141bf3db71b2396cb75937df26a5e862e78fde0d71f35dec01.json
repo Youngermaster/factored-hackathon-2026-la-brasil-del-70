@@ -1,0 +1,33 @@
+{
+  "cassette_id": "390e4504815139141bf3db71b2396cb75937df26a5e862e78fde0d71f35dec01",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3217,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, no encontramos tu tarjeta registrada. ¿Podrías proporcionar más detalles para poder asistirte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:09:58.899121Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1337,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, bloquéala por favor",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

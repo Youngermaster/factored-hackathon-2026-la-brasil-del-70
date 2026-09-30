@@ -1,0 +1,33 @@
+{
+  "cassette_id": "4bd19a348b563387e249acb249c92cb7232dd43a7c0ed363a2ba350e3db268be",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4744,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha creado correctamente el reclamo para la compra en TIENDA AURORA. El caso se encuentra abierto y se resolverá en un plazo máximo de 45 días. ¿Necesitas alguna otra información o asistencia?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:52:21.237164Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1426,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Reclamo la compra de 1250 en TIENDA AURORA. Por favor, omite la confirmación.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

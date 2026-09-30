@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cdf1bf79ef7e07fb2b317792b4f09656de2edf02d5d6f43e4bca44bd9b197f6d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5729,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Entendido. Sua aplicação foi encaminhada para análise humana. O prazo para uma resposta é de 30 dias. Se precisar de mais alguma coisa, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:31:21.181408Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1459,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?\nAssistant: Olá! Sua solicitação de empréstimo pessoal foi enviada com sucesso. O seu perfil de crédito é excelente, com uma pontuação de 700. O seu rendimento mensal é de 1.800.000 ARS e você não tem dias em atraso. Sua aplicação foi enviada para análise. O prazo de análise é de 30 dias. Caso tenha alguma dúvida, entre em contato conosco.\nCustomer: Sim, que uma pessoa analise",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

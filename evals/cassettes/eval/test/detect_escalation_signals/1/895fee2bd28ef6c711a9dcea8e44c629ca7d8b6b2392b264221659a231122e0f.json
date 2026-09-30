@@ -1,0 +1,29 @@
+{
+  "cassette_id": "895fee2bd28ef6c711a9dcea8e44c629ca7d8b6b2392b264221659a231122e0f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1909,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:24:50.426400Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 505,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Puedo sacar un préstamo personal de 10.000.000 pesos a 24 meses?",
+    "dialect_hint": "es-CO"
+  }
+}

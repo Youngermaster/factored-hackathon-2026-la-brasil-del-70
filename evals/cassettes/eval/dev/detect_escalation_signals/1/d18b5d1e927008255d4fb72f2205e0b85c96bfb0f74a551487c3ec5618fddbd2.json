@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d18b5d1e927008255d4fb72f2205e0b85c96bfb0f74a551487c3ec5618fddbd2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2053,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:51:17.569741Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 492,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cómo está mi tarjeta terminada en 9999?",
+    "dialect_hint": "es-MX"
+  }
+}

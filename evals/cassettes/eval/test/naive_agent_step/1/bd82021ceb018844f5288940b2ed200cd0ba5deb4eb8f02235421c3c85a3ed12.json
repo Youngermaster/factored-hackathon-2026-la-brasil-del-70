@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bd82021ceb018844f5288940b2ed200cd0ba5deb4eb8f02235421c3c85a3ed12",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5877,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, te proporcionaré información sobre las condiciones del préstamo personal. El mínimo score requerido es de 650 y el máximo porcentaje de pago mensual sobre tu ingreso es del 35%. Además, no se permiten días vencidos. ¿Hay algo más en lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:15:51.701225Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1434,
+    "output_tokens": 95
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo para pagar en un préstamo personal? Si me lo dices, también quiero saber las condiciones.\nAssistant: Para tu préstamo personal, el saldo pendiente es de 12,500.00 MXN. El límite de crédito de tu tarjeta de crédito es de 60,000.00 MXN con un saldo actual de 12,500.00 MXN. ¿Necesitas más detalles sobre las condiciones del préstamo personal o tienes alguna otra consulta?\nCustomer: Sí, necesito saber las condiciones del préstamo personal.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

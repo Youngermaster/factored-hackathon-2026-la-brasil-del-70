@@ -1,0 +1,30 @@
+{
+  "cassette_id": "bf37b126b5f0790a2250c77020623756df7f7689087aafda63b9ac25f919a832",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4992,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:17:54.420459Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 993,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: Quiero hacer una transferencia de 500 pesos a mi hermana\nAssistant: Eso no lo puedo hacer en esta conversación. Si quieres, te comunico con una persona del equipo.\n\nEl asistente no realiza transferencias ni pagos en tu nombre, no emite estados de cuenta oficiales ni certificados, y no informa fechas de vencimiento ni saldos de cierre que los registros no contienen. Para esos trámites te ofreceremos hablar con una persona del equipo de atención.\n\nEste asistente opera con una política sintética de demostración, no con condiciones reales de un banco. Puede ayudarte con consultas de saldos, pagos y resúmenes de cuenta; con el estado de tus tarjetas y el bloqueo preventivo de una tarjeta; con la presentación y el seguimiento de una reclamación por una transacción; y con información sobre productos de crédito y una orientación indicativa sobre elegibilidad. Solo realiza las acciones que esta política permite, siempre con tu confirmación, y te informa únicamente de los resultados que pudo verificar.\n\nEl asistente no realiza transferencias ni pagos, no abre ni cierra productos, no modifica tus datos personales, no da asesoría legal, fiscal ni de inversión y no toma decisiones de crédito. Si tu solicitud está fuera de lo que puede hacer, te lo dirá con claridad y, cuando corresponda, te ofrecerá hablar con una persona del equipo de atención."
+  }
+}

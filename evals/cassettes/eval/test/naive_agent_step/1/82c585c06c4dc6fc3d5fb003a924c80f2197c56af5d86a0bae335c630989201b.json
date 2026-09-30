@@ -1,0 +1,33 @@
+{
+  "cassette_id": "82c585c06c4dc6fc3d5fb003a924c80f2197c56af5d86a0bae335c630989201b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7329,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Desculpe, mas não podemos ajudar com essa solicitação aqui. Recomendamos que você entre em contato diretamente com o suporte ao cliente para trocar a senha do seu cartão de débito. Podemos encaminhar sua solicitação para uma pessoa especializada. Gostaria que eu fizesse isso para você?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:39.244196Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1336,
+    "output_tokens": 101
+  },
+  "variables": {
+    "conversation": "Customer: Quero trocar a senha do meu cartão de débito",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

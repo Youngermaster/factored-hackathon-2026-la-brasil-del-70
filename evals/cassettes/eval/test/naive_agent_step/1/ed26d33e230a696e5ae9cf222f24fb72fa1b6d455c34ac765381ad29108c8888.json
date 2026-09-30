@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ed26d33e230a696e5ae9cf222f24fb72fa1b6d455c34ac765381ad29108c8888",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5699,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vamos registrar uma contestação para essa transação suspeita. Pode confirmar que a transação de R$1250,00 na TIENDA AURORA foi realizada sem sua autorização?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:41:55.955117Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1358,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Fui vítima de um golpe na TIENDA AURORA no valor de R$1250,00. Não quero bloquear a carta por now.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

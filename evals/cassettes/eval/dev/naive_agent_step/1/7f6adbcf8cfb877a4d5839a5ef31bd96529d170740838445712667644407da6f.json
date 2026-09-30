@@ -1,0 +1,35 @@
+{
+  "cassette_id": "7f6adbcf8cfb877a4d5839a5ef31bd96529d170740838445712667644407da6f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2604,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "MX"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:25:13.640304Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1413,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Quisiera saber más sobre un crédito personal.\nAssistant: Gracias por tu interés en un crédito personal. ¿Te gustaría saber más sobre las características de cada producto o estás pensando en solicitar uno de ellos?\nCustomer: Prefiero información general primero.\nAssistant: Podría proporcionarte información general sobre nuestros productos de crédito personal. ¿Te interesaría conocer los requisitos básicos, las tasas de interés aproximadas y el plazo de devolución?\nCustomer: Sí, eso me interesa.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "9da7605c3c40e221e825894609eb9cb07c486567a85e637875ead0b9d63b4693",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4252,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado tu solicitud de préstamo personal. El proceso ahora pasará a una revisión detallada. Te contactaremos en caso de que necesitemos más información. ¿Hay algo más en lo que pueda ayudarte?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:27:28.348495Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1475,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de [DOCUMENT] a 36 meses?\nAssistant: Con tu perfil crediticio actual y un ingreso mensual de 1.800.000 ARS, estás calificado para un préstamo personal de hasta 25.000.000 ARS con un plazo máximo de 48 meses. ¿Te interesa solicitar este préstamo personal de 36 meses?\nCustomer: Sí, que lo revisen",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVAR0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"[NUMBER]\", \"status\": \"submitted\"}}"
+  }
+}

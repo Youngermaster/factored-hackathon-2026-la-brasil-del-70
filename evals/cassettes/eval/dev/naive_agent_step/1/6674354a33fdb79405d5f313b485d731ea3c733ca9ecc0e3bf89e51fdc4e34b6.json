@@ -1,0 +1,33 @@
+{
+  "cassette_id": "6674354a33fdb79405d5f313b485d731ea3c733ca9ecc0e3bf89e51fdc4e34b6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4833,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "O seu cartão de débito vence no dia 30 de novembro de 2027. Você gostaria de solicitar uma renovação?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:21:26.925511Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1460,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Quando vence o meu cartão de débito?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"list_cards\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0002-01\", \"type\": \"credit_card\", \"number\": \"**** 0186\", \"status\": \"active\", \"expires_on\": \"2028-03-31\"}, {\"product_id\": \"PRD-EVAR0002-02\", \"type\": \"debit_card\", \"number\": \"**** 8250\", \"status\": \"active\", \"expires_on\": \"2027-11-30\"}]}"
+  }
+}

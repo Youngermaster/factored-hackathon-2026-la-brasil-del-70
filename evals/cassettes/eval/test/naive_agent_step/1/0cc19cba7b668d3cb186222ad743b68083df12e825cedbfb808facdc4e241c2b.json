@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0cc19cba7b668d3cb186222ad743b68083df12e825cedbfb808facdc4e241c2b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4258,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Señor/a, lamento informarle que no encontramos su tarjeta registrada con el número proporcionado. ¿Podría proporcionarnos nuevamente los últimos cuatro dígitos para que podamos verificar su solicitud?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:19.770746Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1395,
+    "output_tokens": 76
+  },
+  "variables": {
+    "conversation": "Customer: Extravié mi tarjeta de crédito y quiero bloquearla\nAssistant: Señor/a, hemos recibido su solicitud para bloquear su tarjeta de crédito. Antes de proceder, ¿puede confirmar su identidad proporcionando el último cuatro dígitos del número de su tarjeta?\nCustomer: Sí, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

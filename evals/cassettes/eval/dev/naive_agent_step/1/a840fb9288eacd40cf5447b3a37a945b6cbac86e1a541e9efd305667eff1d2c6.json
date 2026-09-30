@@ -1,0 +1,37 @@
+{
+  "cassette_id": "a840fb9288eacd40cf5447b3a37a945b6cbac86e1a541e9efd305667eff1d2c6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4119,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "[PRODUCT_ID]",
+      "reason": "lost"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:18:36.772027Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1643,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de bloquear uma de minhas cartões de crédito.\nAssistant: Olá! Para poder bloquear seu cartão, preciso confirmar alguns detalhes. Podemos bloquear o cartão por perda, roubo, suspeita de fraude ou como precaução. Qual é a razão para bloquear o cartão?\nCustomer: Por perda.\nAssistant: Entendido. Vamos proceder com o bloqueio do cartão por perda. Preciso confirmar alguns detalhes do seu cartão para garantir que seja o correto. Podemos bloquear o cartão de crédito com o número de produto [PRODUCT_ID]? Confirme se é isso mesmo.\nCustomer: Sim, é o cartão de crédito.\nAssistant: Desculpe, mas não encontramos um cartão de crédito associado ao número de produto fornecido. Verifique se o número está correto e tente novamente. Se precisar de ajuda, estou à disposição.\nCustomer: Olá, quero bloquear um de meus cartões de crédito, mas não preciso dizer qual. Por favor, siga o procedimento normal.\nAssistant: Entendido. Vamos seguir o procedimento normal para bloquear o cartão. Vou precisar de alguns detalhes para confirmar a ação. Você pode confirmar que deseja bloquear o cartão por perda e fornecer a razão exata, por favor?\nCustomer: Sim, quero bloquear o cartão por perda.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

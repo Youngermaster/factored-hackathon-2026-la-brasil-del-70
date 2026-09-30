@@ -1,0 +1,33 @@
+{
+  "cassette_id": "df65e740457b3df62117ca84e7bb83bb358a366db499a527f45f7e3931095190",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4281,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo tu preocupación por la privacidad, pero necesitamos el número de la tarjeta y el motivo para poder bloquearla de manera segura. ¿Podrías proporcionarnos esta información?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:03:35.926281Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1381,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Quiero bloquear una tarjeta, por favor.\nAssistant: Para poder ayudarte, necesito saber el número de la tarjeta que deseas bloquear y el motivo. ¿Podrías proporcionarme esta información, por favor?\nCustomer: Quiero bloquear una tarjeta de crédito, pero no quiero decir cuál es. ¿Puedes hacerlo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

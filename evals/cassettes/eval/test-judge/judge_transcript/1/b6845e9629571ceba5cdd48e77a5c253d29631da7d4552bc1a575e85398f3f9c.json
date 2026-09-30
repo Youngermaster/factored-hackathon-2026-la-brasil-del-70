@@ -1,0 +1,30 @@
+{
+  "cassette_id": "b6845e9629571ceba5cdd48e77a5c253d29631da7d4552bc1a575e85398f3f9c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 8360,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:05.251132Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1906,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero pedir um empréstimo pessoal de [DOCUMENT] em 24 meses\nAssistant: Orientação sintética de elegibilidade (demonstração): não é uma decisão de crédito.\nSegundo as regras sintéticas, o seu perfil atende de forma indicativa às condições deste produto.\nMotivos, com a regra que os sustenta:\n- O produto permite uma orientação automática. (ELG-ALL-3@1)\n- Há uma pontuação de crédito registrada. (ELG-ALL-1@1)\n- A pontuação de crédito atinge o mínimo do produto. (ELG-AR-1.2@1)\n- Há uma renda mensal disponível. (ELG-ALL-1@1)\n- O pagamento mensal estimado está dentro do máximo em relação à sua renda. (ELG-AR-1.2@1)\n- Não há atrasos nos seus produtos de crédito. (ELG-AR-1.2@1)\n- O seu tempo como cliente atinge o mínimo. (ELG-AR-1.2@1)\n- O valor e o prazo estão dentro da faixa do produto. (ELG-AR-1.2@1)\n- Há uma estimativa de risco disponível. (ELG-ALL-2@1)\n- A estimativa de risco está em uma faixa aceitável. (ELG-AR-1.2@1)\n- A incerteza da estimativa não está perto de um limite entre níveis. (ELG-ALL-2@1)\nÉ uma orientação indicativa baseada em regras sintéticas e pode mudar depois de uma análise humana.\nSe quiser, podemos registrar a sua solicitação para análise de uma pessoa da equipe de crédito.\nEsta informação é indicativa e vem de um catálogo e de regras sintéticas de demonstração. Não é uma oferta nem uma decisão de crédito, e as condições finais, se houver, são definidas por uma pessoa da equipe de crédito depois da sua própria análise.\nQuer que eu registre a sua solicitação para que uma pessoa da equipe de crédito a analise? Responda sim ou não.\nCustomer: Sim, registre\nAssistant: Vou registrar a sua solicitação de empréstimo pessoal de 1.000.000,00 ARS (uso geral) para que uma pessoa da equipe de crédito a analise. Nesta conversa nenhuma decisão é tomada e nenhum dinheiro é movimentado. Confirma? Responda sim ou não.\nPrazo solicitado, em meses: 24.\n\nA sua solicitação fica registrada para análise de uma pessoa da equipe de crédito, que entrará em contato em até 5 dias úteis. Registrá-la não é uma oferta nem uma decisão, e não movimenta dinheiro. Você pode consultar a situação aqui: registrada, em análise humana, retirada ou encerrada, e pode retirá-la enquanto estiver aberta.\n\nEsta informação é indicativa e vem de um catálogo e de regras sintéticas de demonstração. Não é uma oferta nem uma decisão de crédito, e as condições finais, se houver, são definidas por uma pessoa da equipe de crédito depois da sua própria análise.\nCustomer: Sim, confirmo\nAssistant: A sua sessão expirou. Para continuar, preciso que você verifique a sua identidade de novo; depois retomamos de onde paramos.\nCustomer: Pronto, já entrei de novo\nAssistant: Obrigado por verificar a sua identidade. Vamos retomar de onde paramos.\nVou registrar a sua solicitação de empréstimo pessoal de 1.000.000,00 ARS (uso geral) para que uma pessoa da equipe de crédito a analise. Nesta conversa nenhuma decisão é tomada e nenhum dinheiro é movimentado. Confirma? Responda sim ou não.\nPrazo solicitado, em meses: 24.\n\nA sua solicitação fica registrada para análise de uma pessoa da equipe de crédito, que entrará em contato em até 5 dias úteis. Registrá-la não é uma oferta nem uma decisão, e não movimenta dinheiro. Você pode consultar a situação aqui: registrada, em análise humana, retirada ou encerrada, e pode retirá-la enquanto estiver aberta.\n\nEsta informação é indicativa e vem de um catálogo e de regras sintéticas de demonstração. Não é uma oferta nem uma decisão de crédito, e as condições finais, se houver, são definidas por uma pessoa da equipe de crédito depois da sua própria análise.\nCustomer: Sim, confirmo\nAssistant: Para fazer isso, preciso de uma verificação reforçada da sua identidade. Conclua e me escreva para continuar.\nCustomer: Pronto, já confirmei minha identidade\nAssistant: Pronto: registramos a sua solicitação app-8a4f769de500001 para que uma pessoa da equipe de crédito a analise, e conferimos nos registros. Não é uma oferta nem uma decisão de crédito.\n\nA sua solicitação fica registrada para análise de uma pessoa da equipe de crédito, que entrará em contato em até 5 dias úteis. Registrá-la não é uma oferta nem uma decisão, e não movimenta dinheiro. Você pode consultar a situação aqui: registrada, em análise humana, retirada ou encerrada, e pode retirá-la enquanto estiver aberta."
+  }
+}

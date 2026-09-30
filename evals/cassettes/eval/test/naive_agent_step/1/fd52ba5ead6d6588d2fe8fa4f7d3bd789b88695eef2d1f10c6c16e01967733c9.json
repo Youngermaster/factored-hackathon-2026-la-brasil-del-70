@@ -1,0 +1,33 @@
+{
+  "cassette_id": "fd52ba5ead6d6588d2fe8fa4f7d3bd789b88695eef2d1f10c6c16e01967733c9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8816,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Aquí está el resumen de sus movimientos para mayo de 2026: \n- 25 de mayo: Pago tarjeta por 850.00 MXN\n- 19 de mayo: Libros del Sur por 910.00 MXN\n- 9 de mayo: Pago servicio luz por 850.00 MXN\n- 8 de mayo: Farmacia Centro por 640.00 MXN\n¿Hay algún detalle en particular que desee revisar o alguna otra consulta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:28:36.825818Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1548,
+    "output_tokens": 149
+  },
+  "variables": {
+    "conversation": "Customer: Quiero el resumen de movimientos de mi tarjeta de crédito\nAssistant: Aquí está el resumen de sus movimientos recientes. ¿Hay algo en particular sobre estos movimientos que desee consultar?\nCustomer: De mayo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"850.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-05-19\", \"merchant\": \"LIBROS DEL SUR\", \"amount\": \"910.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO LUZ\", \"amount\": \"850.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-05-08\", \"merchant\": \"FARMACIA CENTRO\", \"amount\": \"640.00 MXN\", \"status\": \"approved\"}]}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0e76d0c5505a120d39e146809a944d716a0b7bf91b4f64279b10beb0b733435a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5304,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Com base no seu perfil de crédito, você seria elegível para um empréstimo pessoal. No entanto, infelizmente, não conseguimos listar os produtos disponíveis no momento. Vamos tentar novamente mais tarde ou você gostaria que um especialista entrasse em contato com você para discutir as opções?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:38:47.044833Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1424,
+    "output_tokens": 96
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"list_credit_products\", \"status\": \"error\", \"result\": \"list_credit_products failed: timeout\"}"
+  }
+}

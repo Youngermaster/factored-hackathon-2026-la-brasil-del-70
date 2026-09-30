@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bb857e2a546824fdde4df0fd4567f6cff74904c8b2bd99a5bdf645947bd577a4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5412,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción de 37.000 COP. El plazo para resolver este caso es de 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:44.376987Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1404,
+    "output_tokens": 76
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar la compra de 37.000 pesos que no hice",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

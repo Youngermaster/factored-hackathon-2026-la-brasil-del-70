@@ -1,0 +1,32 @@
+{
+  "cassette_id": "b8988ac606a0d202fe53d64ab731d7eb01002985b9b9bb5dc388aad41f92050e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2378,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não reconheço esta tarifa. Vou informar o valor e o estabelecimento."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:58:22.421430Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 608,
+    "output_tokens": 31
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "dev-dis-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 15.000; merchant: KIOSCO DEL SUR",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 15.000 and the merchant KIOSCO DEL SUR. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

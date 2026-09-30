@@ -1,0 +1,31 @@
+{
+  "cassette_id": "ff1a29f7b740a2bd631624091d31f6eafd197e419c146c3e5772b1fbaeb117a1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4479,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:10:21.169893Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Quiero cambiar el PIN de mi tarjeta de débito",
+    "dialect_hint": "es-AR"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "51ff3cca0f02452f1280efcdde6020d154a29130a8d53441fd6d47af839190d0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1723,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:10.713960Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero el resumen de movimientos de mi tarjeta de crédito de los últimos 8 meses",
+    "dialect_hint": "es-MX"
+  }
+}

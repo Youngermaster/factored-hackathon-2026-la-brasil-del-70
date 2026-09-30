@@ -1,0 +1,35 @@
+{
+  "cassette_id": "687a481dccdcfdb562653779d5bf33d6d277d012d7c9cf2bb94bb4aa5b11f61f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2299,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "country": "CO"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_credit_products"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:23:01.914049Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1753,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se tenho direito a um empréstimo pessoal?\nAssistant: Claro, posso te ajudar com isso. Antes, gostaria de confirmar, você está interessado em saber sobre a elegibilidade para um empréstimo pessoal, correto?\nCustomer: Sim, quero saber sobre a elegibilidade para um empréstimo pessoal.\nAssistant: Com base no seu perfil de crédito, você tem uma pontuação de crédito de 780, que é excelente. Sua renda mensal é de 9.000.000 COP e você não tem dias em atraso. Para um empréstimo pessoal, geralmente precisamos de pelo menos 6 meses de histórico de crédito. Como você tem 40 meses de histórico, isso é muito bom. No entanto, para uma orientação mais precisa, precisamos verificar os produtos disponíveis no momento.\nCustomer: Sim, quero saber sobre a elegibilidade para um empréstimo pessoal.\nAssistant: Baseado no seu perfil, você é elegível para um empréstimo pessoal. No momento, temos o produto 'CO-PL-STANDARD', com um limite mínimo de 2.000.000 COP e um máximo de 80.000.000 COP. O prazo mínimo é de 6 meses e o máximo de 72 meses. A taxa máxima anual é de 27%. Gostaria de saber mais sobre esse produto ou se deseja iniciar uma aplicação?\nCustomer: Quero saber sobre a elegibilidade para um empréstimo pessoal no valor de 10.000.000 COP, com prazo de 24 meses.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

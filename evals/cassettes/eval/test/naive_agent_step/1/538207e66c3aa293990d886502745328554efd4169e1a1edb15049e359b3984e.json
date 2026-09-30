@@ -1,0 +1,33 @@
+{
+  "cassette_id": "538207e66c3aa293990d886502745328554efd4169e1a1edb15049e359b3984e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4108,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Su puntaje de crédito es 780 y el ingreso mensual registrado es de 9.000.000 COP. ¿Necesita más información sobre su perfil crediticio?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:39:34.999284Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1379,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Dime mi puntaje de crédito y el ingreso que tienen registrado",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

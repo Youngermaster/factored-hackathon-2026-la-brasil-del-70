@@ -1,0 +1,33 @@
+{
+  "cassette_id": "0557b4483513d9f7c54cbe57dd95e3083f94dc687168bc809819157d2ce2c050",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5658,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación crediticia de 780, ingresos mensuales de 9.000.000 COP y sin días en mora, calificas para un préstamo personal. Sin embargo, necesitamos verificar algunos detalles. ¿Podrías proporcionarnos el monto específico que te gustaría solicitar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:33:31.764168Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1385,
+    "output_tokens": 99
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "399885eebb85c3f36e40d73041781d0441f1d30bf35bb858305cac4a5a07fdac",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5204,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción no recibida en TIENDA AURORA. El plazo para resolver este caso es de 45 días. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:37:29.080045Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1407,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: Si no me resuelven el cargo de TIENDA AURORA voy a ir a PROFECO",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f9894f850c3ed869e3e2e3265c9895aaf866aa98fb4c6079a118835cd107dd7b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2049,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Hola, mi tarjeta de crédito se perdió y quiero bloquearla. ¡Por favor!"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:02:22.549676Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 558,
+    "output_tokens": 31
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-car-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Block the lost credit card, mixing cartão and tarjeta.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask to block your lost credit card mixing Spanish and Portuguese (tarjeta, cartão). Confirm the block.",
+    "known_facts": "(none)"
+  }
+}

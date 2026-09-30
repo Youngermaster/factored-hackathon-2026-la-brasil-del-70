@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bc2e2ee978dacd5401252ba084f92e9d2322a5a0490f47e5cf0ab4d8c3357802",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2978,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Su tarjeta de crédito ha sido bloqueada con éxito. ¿Necesita que le enviemos una nueva tarjeta?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:30:27.679982Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1351,
+    "output_tokens": 52
+  },
+  "variables": {
+    "conversation": "Customer: Perdí mi tarjeta de crédito, bloquéala ya",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"ok\", \"result\": {\"blocked\": true, \"product_id\": \"CRD-0001\"}}"
+  }
+}

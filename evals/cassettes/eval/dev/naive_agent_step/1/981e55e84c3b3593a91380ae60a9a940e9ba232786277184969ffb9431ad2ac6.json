@@ -1,0 +1,36 @@
+{
+  "cassette_id": "981e55e84c3b3593a91380ae60a9a940e9ba232786277184969ffb9431ad2ac6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3916,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:15:15.021489Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1436,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Era con mi tarjeta de crédito en la gasolinera SOL.\nAssistant: Entendido, gracias por proporcionar más detalles. Vamos a revisar el estado de la transacción para ver por qué fue rechazada. ¿Podría decirme el número de transacción, por favor?\nCustomer: No recuerdo el número de transacción, pero fue ayer por la tarde.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

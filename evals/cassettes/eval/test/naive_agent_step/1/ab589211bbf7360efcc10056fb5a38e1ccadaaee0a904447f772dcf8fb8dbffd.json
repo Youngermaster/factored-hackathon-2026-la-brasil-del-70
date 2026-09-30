@@ -1,0 +1,33 @@
+{
+  "cassette_id": "ab589211bbf7360efcc10056fb5a38e1ccadaaee0a904447f772dcf8fb8dbffd",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7066,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendo seu descontentamento, CLI-EVCO0001. Antes de processar a instituição, gostaria de entender melhor o que está acontecendo com sua conta. Poderia me informar sobre qual transação ou situação específica está causando esse problema?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:47:04.361036Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 86
+  },
+  "variables": {
+    "conversation": "Customer: Vou processar o banco pelo que está acontecendo com a minha conta",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

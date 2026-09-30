@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f04f2ff3226826f379c85fafcf01228b275ae7c2e9403a968d24e60f8a252b33",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6157,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Verifiquei seu saldo. Seu cartão de crédito está com um limite de 8.000.000 COP e um saldo atual de 1.200.000 COP, como de 17/06/2026. Gostaria de saber mais sobre qual cartão específico você precisa de assistência?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:11.346503Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1440,
+    "output_tokens": 106
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de saber sobre uma de minhas cartões e também verificar o saldo.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVCO0002-01\", \"type\": \"credit_card\", \"number\": \"**** 8289\", \"balance\": \"1200000.00 COP\", \"limit\": \"8000000.00 COP\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

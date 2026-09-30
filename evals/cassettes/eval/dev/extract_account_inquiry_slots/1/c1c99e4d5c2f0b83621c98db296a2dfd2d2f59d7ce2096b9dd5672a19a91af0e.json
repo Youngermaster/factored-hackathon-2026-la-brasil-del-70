@@ -1,0 +1,32 @@
+{
+  "cassette_id": "c1c99e4d5c2f0b83621c98db296a2dfd2d2f59d7ce2096b9dd5672a19a91af0e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3108,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": "todo el año pasado"
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:48:12.828452Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1133,
+    "output_tokens": 45
+  },
+  "variables": {
+    "customer_message": "Dame el resumen de mi tarjeta de crédito de todo el año pasado",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "23395f023e6d8fdeb27591dabbd084eed72a60a73462083b5b2ffe8c3b2f23b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5385,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Buenas tardes, CLI-EVMX0002. Su saldo actual es de 12,500.00 MXN como de oficio 17 de junio de 2026. ¿Podría confirmarme el número de su tarjeta para verificar su estado?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:28.701709Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1422,
+    "output_tokens": 92
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber el estado de mi tarjeta y también el saldo actual.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVMX0002-01\", \"type\": \"credit_card\", \"number\": \"**** 6155\", \"balance\": \"12500.00 MXN\", \"limit\": \"60000.00 MXN\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

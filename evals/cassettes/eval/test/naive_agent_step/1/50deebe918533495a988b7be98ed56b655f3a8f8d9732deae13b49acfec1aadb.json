@@ -1,0 +1,37 @@
+{
+  "cassette_id": "50deebe918533495a988b7be98ed56b655f3a8f8d9732deae13b49acfec1aadb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4066,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0004",
+      "reason": "not_received",
+      "transaction_id": "TXN-EVAR0004-01"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:01:14.305274Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1407,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto debo en mi tarjeta de crédito?\nAssistant: Según la información disponible, en tu tarjeta de crédito PRD-EVAR0004-01 tienes un saldo de 45,000 ARS como de 17 de junio de 2026. ¿Necesitas más detalles o ayuda con algo más?\nCustomer: No reconozco un cargo de 15.000 en KIOSCO DEL SUR",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

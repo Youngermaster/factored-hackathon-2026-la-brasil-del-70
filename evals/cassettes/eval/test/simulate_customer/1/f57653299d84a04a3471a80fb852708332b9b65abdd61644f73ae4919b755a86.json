@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f57653299d84a04a3471a80fb852708332b9b65abdd61644f73ae4919b755a86",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1574,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sobre mi tarjeta de crédito, por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:04:42.158300Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 625,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, ¿me puedes decir por qué mi tarjeta fue rechazada?\nAssistant: Tienes varias tarjetas. ¿Sobre cuál me consultas?\n1) tarjeta de crédito **** 6155\n2) tarjeta de débito **** 7052",
+    "conversation_seed": "test-car-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: GASOLINERA SOL",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

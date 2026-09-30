@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e6fc6a04c8301e5f7e2431227bf7eefb8c169704aa2a76360eb7e9f0316dae4b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1593,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "O da 12 de junho."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:51:44.932374Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 840,
+    "output_tokens": 19
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço essa compra de 300 reais no CAFÉ LUNA.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\n2) 9 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\nCustomer: O da 12 de junio.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 12 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791\n2) 9 de junio de 2026, CAFE LUNA, 300.00 MXN, tarjeta **** 3791",
+    "conversation_seed": "test-dis-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Dispute one of two similar purchases at the same merchant.",
+    "hidden_facts": "date: 12/06",
+    "instructions": "Say you do not recognize a charge of 300 pesos at CAFE LUNA. When shown options, pick the one from 12/06. Decline the card block, confirm the dispute.",
+    "known_facts": "amount: 300; merchant: CAFE LUNA"
+  }
+}

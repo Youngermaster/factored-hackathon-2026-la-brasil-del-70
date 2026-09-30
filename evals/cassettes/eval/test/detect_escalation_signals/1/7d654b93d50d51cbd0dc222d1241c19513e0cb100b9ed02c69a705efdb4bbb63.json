@@ -1,0 +1,29 @@
+{
+  "cassette_id": "7d654b93d50d51cbd0dc222d1241c19513e0cb100b9ed02c69a705efdb4bbb63",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2850,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:35:12.247986Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 511,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Não reconheço a compra na TIENDA AURORA de 1250",
+    "dialect_hint": "pt-BR"
+  }
+}

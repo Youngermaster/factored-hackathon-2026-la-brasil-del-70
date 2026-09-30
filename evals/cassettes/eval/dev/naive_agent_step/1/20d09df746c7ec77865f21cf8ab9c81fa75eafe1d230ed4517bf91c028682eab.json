@@ -1,0 +1,33 @@
+{
+  "cassette_id": "20d09df746c7ec77865f21cf8ab9c81fa75eafe1d230ed4517bf91c028682eab",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5682,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, não encontramos nenhuma transferência no dia 15/06 no valor de 300.000 COP. Você gostaria de abrir um caso de disputa para investigar isso?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:22.144467Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1430,
+    "output_tokens": 74
+  },
+  "variables": {
+    "conversation": "Customer: Situação da minha transferência de 15/06 de 300.000 pesos\nAssistant: Desculpe, mas não encontrei a transferência que você mencionou de 15/06 no valor de 300.000 COP. Poderia fornecer mais detalhes para que eu possa ajudar melhor?\nCustomer: O do dia 15/06",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

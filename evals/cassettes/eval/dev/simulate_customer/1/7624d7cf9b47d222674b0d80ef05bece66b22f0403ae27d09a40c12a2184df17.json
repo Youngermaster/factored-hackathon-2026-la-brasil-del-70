@@ -1,0 +1,32 @@
+{
+  "cassette_id": "7624d7cf9b47d222674b0d80ef05bece66b22f0403ae27d09a40c12a2184df17",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1543,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Por perda."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:18:01.269035Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 649,
+    "output_tokens": 14
+  },
+  "variables": {
+    "conversation": "Customer: Olá, gostaria de bloquear uma de minhas cartões de crédito.\nAssistant: Olá! Para poder bloquear seu cartão, preciso confirmar alguns detalhes. Podemos bloquear o cartão por perda, roubo, suspeita de fraude ou como precaução. Qual é a razão para bloquear o cartão?",
+    "conversation_seed": "dev-car-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "624912b13584ae4dc0345bed117c212b19fc1c909571ad35a9c39f9873c63f2d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5061,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Disputa criada com sucesso. O seu caso foi aberto e está sendo analisado. O prazo para resolução é de 15 dias úteis. Você será notificado assim que a situação for resolvida. Precisa de mais alguma coisa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:51:03.664676Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1438,
+    "output_tokens": 85
+  },
+  "variables": {
+    "conversation": "Customer: Tem uma cobrança de 37.000 de 14/06 que não reconheço",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"TXN-1234567890\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

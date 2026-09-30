@@ -1,0 +1,30 @@
+{
+  "cassette_id": "264133e497f90f0c306d94f743c109ac238dea18fe55998a7efa1dd9c61e98a2",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4723,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 2,
+    "politeness": 3,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:17:59.146228Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero ver meus saldos\nAssistant: Estos son tus saldos, con datos al 17 de junio de 2026.\n- cuenta corriente **** 4995: saldo 3.450.000,00 COP\n- cuenta de ahorro **** 0684: saldo 5.200.000,00 COP\n- tarjeta de crédito **** 0235: saldo 1.200.000,00 COP; crédito disponible 6.800.000,00 COP de un límite de 8.000.000,00 COP\n\nPodemos informarte el saldo de tus cuentas y tarjetas, el crédito disponible de tus tarjetas de crédito y el estado de tus pagos y transferencias: aplicado, pendiente, rechazado o revertido. La información proviene de un corte periódico de los registros, por lo que siempre te indicamos la fecha y hora de ese corte; los movimientos posteriores todavía no aparecen."
+  }
+}

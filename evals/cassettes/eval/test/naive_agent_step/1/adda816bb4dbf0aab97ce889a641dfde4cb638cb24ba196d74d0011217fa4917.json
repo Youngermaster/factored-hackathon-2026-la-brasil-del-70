@@ -1,0 +1,33 @@
+{
+  "cassette_id": "adda816bb4dbf0aab97ce889a641dfde4cb638cb24ba196d74d0011217fa4917",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5062,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero no podemos asistir con solicitudes de hipotecas en este momento. Te recomendaría que hables con un asesor financiero o visites una oficina de nuestro banco para obtener más información sobre este producto. ¿Hay algo más con lo que pueda ayudarte hoy?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:35:36.785774Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 91
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo tener una hipoteca para comprar un departamento?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

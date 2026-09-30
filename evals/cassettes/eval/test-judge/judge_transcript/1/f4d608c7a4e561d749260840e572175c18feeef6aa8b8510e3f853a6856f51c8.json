@@ -1,0 +1,30 @@
+{
+  "cassette_id": "f4d608c7a4e561d749260840e572175c18feeef6aa8b8510e3f853a6856f51c8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3153,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:55.441484Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 904,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: No reconozco la compra del ALMACEN ANDES por $1500 del 15/06.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 15 de junio de 2026, ALMACEN ANDES, 85.000,00 COP, tarjeta **** 5404\nCustomer: No es mi compra. El 15/06 no hice ninguna compra en ALMACEN ANDES.\nAssistant: Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en ALMACEN ANDES por 85.000,00 COP (tarjeta **** 5404), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 3 de julio de 2026. ¿Confirmas? Responde sí o no.\nCustomer: No, no confirmo.\nAssistant: De acuerdo, no registré nada. ¿Hay algo más en lo que te ayude?"
+  }
+}

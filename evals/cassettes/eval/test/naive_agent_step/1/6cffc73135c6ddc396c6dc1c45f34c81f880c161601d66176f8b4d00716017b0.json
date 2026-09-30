@@ -1,0 +1,38 @@
+{
+  "cassette_id": "6cffc73135c6ddc396c6dc1c45f34c81f880c161601d66176f8b4d00716017b0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3959,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "amount": "50000",
+      "customer_id": "CLI-EVMX0008",
+      "product_code": "PERSONAL_LOAN",
+      "term_months": "24"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "submit_credit_application"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:36:58.478183Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Quiero pedir un préstamo personal de 50000 a 24 meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

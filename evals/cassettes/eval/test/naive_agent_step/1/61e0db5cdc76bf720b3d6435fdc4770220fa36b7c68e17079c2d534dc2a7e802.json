@@ -1,0 +1,33 @@
+{
+  "cassette_id": "61e0db5cdc76bf720b3d6435fdc4770220fa36b7c68e17079c2d534dc2a7e802",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3704,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "No se encontró el pago que realizaste el 06/06. ¿Podrías proporcionar más detalles para poder ayudarte mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:38.843271Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1348,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: Quiero saber el estado del pago de 850 pesos que hice el 06/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

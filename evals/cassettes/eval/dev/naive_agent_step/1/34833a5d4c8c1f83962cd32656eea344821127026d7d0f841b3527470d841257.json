@@ -1,0 +1,35 @@
+{
+  "cassette_id": "34833a5d4c8c1f83962cd32656eea344821127026d7d0f841b3527470d841257",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4449,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": "escalated",
+    "reply": "Desculpe, houve um erro ao buscar seu saldo no momento. Podemos tentar novamente mais tarde ou passar isso para uma pessoa para resolver?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:14:03.130949Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1350,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo agora?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"error\", \"result\": \"get_balances failed: transient_error\"}"
+  }
+}

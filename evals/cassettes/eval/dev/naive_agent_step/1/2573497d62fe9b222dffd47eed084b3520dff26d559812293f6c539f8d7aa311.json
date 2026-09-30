@@ -1,0 +1,33 @@
+{
+  "cassette_id": "2573497d62fe9b222dffd47eed084b3520dff26d559812293f6c539f8d7aa311",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 8094,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Olá! Seu saldo atual é de R$ 48.000,00 na conta corrente, R$ 25.000,00 na conta poupança e um saldo de cartão de crédito de R$ 45.000,00, com limite total de R$ 300.000,00. Você precisa de mais informações sobre algum dos seus produtos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:10:04.778188Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1570,
+    "output_tokens": 120
+  },
+  "variables": {
+    "conversation": "Customer: Qual é o meu saldo?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

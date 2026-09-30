@@ -1,0 +1,43 @@
+{
+  "cassette_id": "d613c86bf4a6ad6c79ef878ec2188b04c05b2e06ac9f0d5ef611e55b9a47ce75",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 10848,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": null,
+      "date_expression": "2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:35:23.102359Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1471,
+    "output_tokens": 111
+  },
+  "variables": {
+    "customer_message": "Não reconheço a compra na TIENDA AURORA de 1250",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

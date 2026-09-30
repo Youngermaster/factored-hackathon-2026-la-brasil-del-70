@@ -1,0 +1,28 @@
+{
+  "cassette_id": "5d536b7c465166e819ec59a8ce14969d0f2e3586348ab0186c5e51a2e1e6aa54",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6223,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:52:55.938127Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "¿Me puedes decir por qué mi compra fue rechazada?",
+    "dialect_hint": "es-MX"
+  }
+}

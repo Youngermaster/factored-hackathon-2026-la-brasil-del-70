@@ -1,0 +1,37 @@
+{
+  "cassette_id": "f27196de9943f7c27fd2be5ab9c8b56416b52d28c0a9f4f417fee2dcd8536170",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5571,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "unrecognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:36:36.226327Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1331,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco este cargo de 18.000 pesos en PANADERIA LA 70.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

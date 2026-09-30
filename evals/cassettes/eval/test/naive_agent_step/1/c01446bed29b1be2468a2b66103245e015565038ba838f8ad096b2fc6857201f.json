@@ -1,0 +1,37 @@
+{
+  "cassette_id": "c01446bed29b1be2468a2b66103245e015565038ba838f8ad096b2fc6857201f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3602,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "product_id": "CRD001",
+      "reason": "robo"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:58.123746Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1371,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Me robaron la tarjeta de crédito y necesito una nueva\nAssistant: Lamento escuchar que tu tarjeta de crédito fue robada. ¿Podrías confirmar si la tarjeta fue reportada como perdida o robada para poder bloquearla?\nCustomer: Sí, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

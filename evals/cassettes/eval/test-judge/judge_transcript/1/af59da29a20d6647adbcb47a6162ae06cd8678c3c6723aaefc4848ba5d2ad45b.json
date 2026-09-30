@@ -1,0 +1,30 @@
+{
+  "cassette_id": "af59da29a20d6647adbcb47a6162ae06cd8678c3c6723aaefc4848ba5d2ad45b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2486,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:29.891209Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 750,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: No reconozco la compra de ALMACEN ANDES del 15/06.\nAssistant: Se ha abierto un caso de disputa para la compra de ALMACEN ANDES del 15/06. El plazo para resolver esta disputa es de 15 días desde la fecha de creación del caso. ¿Necesitas ayuda con algo más?"
+  }
+}

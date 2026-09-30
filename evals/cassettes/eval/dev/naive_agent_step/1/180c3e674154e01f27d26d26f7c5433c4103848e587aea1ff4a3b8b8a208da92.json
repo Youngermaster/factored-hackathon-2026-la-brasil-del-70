@@ -1,0 +1,33 @@
+{
+  "cassette_id": "180c3e674154e01f27d26d26f7c5433c4103848e587aea1ff4a3b8b8a208da92",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4047,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Sua aplicação foi enviada com sucesso. Um analista entrará em contato com você em breve para revisar seu pedido. Obrigado por escolher nossa instituição bancária!",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:30:52.269578Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1510,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de 50000 em 24 meses?\nAssistant: Com base no seu perfil, você tem uma pontuação de crédito de 700, que é excelente! Para um empréstimo pessoal de 50.000 MXN em 24 meses, você estaria dentro dos nossos critérios. No entanto, precisamos verificar a viabilidade do seu pedido. Gostaria de prosseguir com a aplicação?\nCustomer: Sim, que uma pessoa analise",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0010",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0010\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"{50000}\", \"status\": \"submitted\"}}"
+  }
+}

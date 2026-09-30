@@ -1,0 +1,29 @@
+{
+  "cassette_id": "eeb0d6ff9c70eb923352b020f5405642c705d241682d6af2105894b261852c97",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1891,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": true,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:26:17.296510Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 499,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "No, no quiero bloquearla por ahora. Sí, confirmo el pleito por estafa.",
+    "dialect_hint": "es-AR"
+  }
+}

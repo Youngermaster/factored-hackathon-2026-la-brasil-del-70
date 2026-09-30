@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e5d9c4f937e0ad3ca00c14a3c9a6cba0ccd2f4df491ee9597391cf007718d527",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2530,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não, não quero bloquear o cartão. Pode prosseguir com o protesto?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:01:15.831843Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1016,
+    "output_tokens": 32
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço essa cobrança. Não lembro de ter comprado algo recentemente.\nAssistant: Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.\nCustomer: Não lembro os detalhes. Mas o valor é 1250 e o estabelecimento é TIENDA AURORA.\nAssistant: Como você não reconhece a compra, posso bloquear preventivamente o seu cartão **** 3791 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.\n\nVocê pode bloquear de forma preventiva um cartão ativo se o perdeu, se ele foi roubado ou se vê movimentações que não reconhece. Antes do bloqueio, pediremos uma verificação reforçada, válida por 5 minutos, e a sua confirmação expressa.\n\nO bloqueio é imediato: o cartão deixa de funcionar para compras, saques e cobranças recorrentes, e os pagamentos automáticos associados podem falhar. O assistente não pode desbloquear o cartão nem emitir um novo; esses pedidos são atendidos por uma pessoa da equipe. Só confirmaremos o bloqueio depois de verificar nos registros que o cartão ficou bloqueado.\nCustomer: Não, não quero bloquear o cartão. Pode prosseguir com o protesto?\nAssistant: Vou registrar uma contestação da transação de 15 de junho de 2026 em TIENDA AURORA no valor de 1.250,00 MXN (cartão **** 3791), motivo: você não reconhece a compra. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.",
+    "conversation_seed": "dev-dis-ambiguou-002#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 1250; merchant: TIENDA AURORA",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 1250 and the merchant TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

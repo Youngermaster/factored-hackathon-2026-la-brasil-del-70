@@ -1,0 +1,33 @@
+{
+  "cassette_id": "01d69c71d44d6835324abef6d6b4babc6d83a970edad3106c82579d28698f227",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5759,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, CLI-EVCO0004. Vamos a abrir un caso de disputa para el cargo que no reconoce. ¿Podría por favor proporcionarme el ID de la transacción relacionada?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:18.503275Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Quiero hablar con una persona sobre un cargo que no reconozco",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

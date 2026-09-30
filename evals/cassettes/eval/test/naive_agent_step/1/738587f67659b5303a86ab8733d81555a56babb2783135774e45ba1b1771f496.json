@@ -1,0 +1,33 @@
+{
+  "cassette_id": "738587f67659b5303a86ab8733d81555a56babb2783135774e45ba1b1771f496",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4176,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Actualmente tienes una disputa abierta con la transacción TRX-EVMX0005-002. ¿Necesitas saber más sobre el estado de esta disputa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:59:47.741198Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1405,
+    "output_tokens": 69
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo va mi reclamación?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0005",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"list_cases\", \"status\": \"ok\", \"result\": [{\"case_id\": \"case-evmx0005-0001\", \"transaction_id\": \"TRX-EVMX0005-002\", \"status\": \"opened\", \"opened_at\": \"2026-06-13\", \"sla_due_at\": \"2026-07-28\"}]}"
+  }
+}

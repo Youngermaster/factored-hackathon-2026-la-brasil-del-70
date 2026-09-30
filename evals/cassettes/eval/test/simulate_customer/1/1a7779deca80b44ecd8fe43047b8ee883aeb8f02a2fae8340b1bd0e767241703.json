@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1a7779deca80b44ecd8fe43047b8ee883aeb8f02a2fae8340b1bd0e767241703",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1868,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Es mi tarjeta de crédito, no recuerdo bien, pero creo que fue en Terpel."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:58:48.347163Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 608,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?",
+    "conversation_seed": "test-car-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

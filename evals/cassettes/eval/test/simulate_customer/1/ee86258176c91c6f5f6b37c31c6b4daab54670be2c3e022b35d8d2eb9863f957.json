@@ -1,0 +1,32 @@
+{
+  "cassette_id": "ee86258176c91c6f5f6b37c31c6b4daab54670be2c3e022b35d8d2eb9863f957",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2033,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Tentei novamente e a data de emissão foi no final de dezembro de 2023."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:01:39.907894Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 902,
+    "output_tokens": 33
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma de minhas cartões de crédito.\nAssistant: Entendi. Vou precisar da ID do seu cartão para poder bloqueá-lo. Você pode me fornecer essa informação, por favor?\nCustomer: Acho que é o último cartão que eu usei, mas não tenho a ID dele aqui.\nAssistant: Entendi que você não tem a ID do cartão. Podemos tentar encontrar outras informações para bloqueá-lo. Você lembra da data de emissão ou do último dígito do cartão?\nCustomer: Só me lembro do último dígito, é 7.\nAssistant: Entendi. Com o último dígito do cartão, podemos tentar localizá-lo. Por favor, forneça também a data de emissão do cartão, se você se lembrar.\nCustomer: A data de emissão foi em 2023, mas não tenho certeza exata do dia.\nAssistant: Desculpe, tive um problema para processar o seu pedido. Pode tentar de novo?\nCustomer: Entendi, vou tentar novamente. A data de emissão foi em 2023, no final do ano.\nAssistant: Desculpe, tive um problema para processar o seu pedido. Pode tentar de novo?\nCustomer: Tentei novamente e a data de emissão foi em dezembro de 2023.\nAssistant: Desculpe, tive um problema para processar o seu pedido. Pode tentar de novo?",
+    "conversation_seed": "test-car-ambiguou-006#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

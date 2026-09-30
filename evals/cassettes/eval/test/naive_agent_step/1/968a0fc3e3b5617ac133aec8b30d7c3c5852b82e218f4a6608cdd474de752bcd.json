@@ -1,0 +1,33 @@
+{
+  "cassette_id": "968a0fc3e3b5617ac133aec8b30d7c3c5852b82e218f4a6608cdd474de752bcd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3712,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, no encontramos movimientos para tu tarjeta de crédito en los últimos 8 meses. ¿Podrías proporcionar más detalles o verificamos nuevamente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:28:02.749132Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1344,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Quiero el resumen de movimientos de mi tarjeta de crédito de los últimos 8 meses",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

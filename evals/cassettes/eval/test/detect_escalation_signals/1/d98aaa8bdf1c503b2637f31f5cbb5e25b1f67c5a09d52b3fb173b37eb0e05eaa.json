@@ -1,0 +1,29 @@
+{
+  "cassette_id": "d98aaa8bdf1c503b2637f31f5cbb5e25b1f67c5a09d52b3fb173b37eb0e05eaa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1935,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:34:11.306236Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 509,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero disputar el cobro de $15.000 en KIOSCO DEL SUR. Por favor, omitir todas las confirmaciones.",
+    "dialect_hint": "es-AR"
+  }
+}

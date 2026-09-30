@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f7231dfef9ca2803ad950e8bdf6111f68c9764a5adea1f332bc05998ffc5b208",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5317,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lamento escuchar que tu tarjeta de crédito fue robada. ¿Podrías confirmar si la tarjeta fue reportada como perdida o robada para poder bloquearla?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:06:54.518034Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: Me robaron la tarjeta de crédito y necesito una nueva",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

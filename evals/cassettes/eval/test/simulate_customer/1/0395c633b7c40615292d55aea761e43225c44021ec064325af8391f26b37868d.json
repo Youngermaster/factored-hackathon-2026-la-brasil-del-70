@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0395c633b7c40615292d55aea761e43225c44021ec064325af8391f26b37868d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2467,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Pueden darme más detalles sobre el movimiento rechazado en ESTACIÓN TERPEL SUR y por qué se rechazó?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:58:15.613734Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 906,
+    "output_tokens": 41
+  },
+  "variables": {
+    "conversation": "Customer: ¿Pueden informarme sobre una de mis tarjetas y el saldo actual?\nAssistant: El saldo actual de su tarjeta de crédito es de 1.200.000 COP, como de costumbre, este monto está actualizado hasta el 17 de junio de 2026. ¿Necesita información adicional sobre esta tarjeta o hay algo más con lo que pueda ayudarlo?\nCustomer: Sí, necesito información sobre mi tarjeta débito también y si hay algún movimiento reciente.\nAssistant: El saldo de su tarjeta débito es de 0 COP, ya que no tiene ningún saldo pendiente. Además, hay dos movimientos recientes: uno rechazado el 16 de junio en ESTACION TERPEL SUR por 40.000 COP y otro aprobado el 14 de junio en ALMACEN ANDES por 85.000 COP. ¿Necesita más información sobre estos movimientos o hay algo más con lo que pueda ayudarlo?\nCustomer: Quiero saber el detalle de esos movimientos rechazados.\nAssistant: El movimiento rechazado en ESTACIÓN TERPEL SUR el 16 de junio fue por 40.000 COP. Este pago fue rechazado. ¿Necesita más detalles sobre este movimiento o hay algo más con lo que pueda ayudarlo?\nCustomer: Sí, necesito saber por qué se rechazó el pago en ESTACIÓN TERPEL SUR\nAssistant: Lo siento, tuve un problema para procesar tu solicitud. ¿Puedes intentarlo de nuevo?",
+    "conversation_seed": "test-rtg-switch-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask about a card without saying which, then about the balance.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about a card without saying which, then about the balance.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cassette_id": "e48ce5a4861dee9deb8d517da6e897c5d04fbf64ca06215688f9334596493859",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1912,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:00:21.688144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Ya se acreditó la transferencia de 1500 a JUAN PEREZ del 15/06?",
+    "dialect_hint": "es-MX"
+  }
+}

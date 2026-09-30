@@ -1,0 +1,33 @@
+{
+  "cassette_id": "facc3dacaadd59aa8efcb90df4320bb9560ba05fbbda62aedf6160e05543ddb5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 9186,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Aquí está el resumen de tus movimientos para mayo de 2026: 25 de mayo, pago de tarjeta por 850.00 MXN; 19 de mayo, libros del Sur por 910.00 MXN; 9 de mayo, servicio de luz por 850.00 MXN; 8 de mayo, farmacia Centro por 640.00 MXN. ¿Necesitas más información?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:12:47.025068Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1517,
+    "output_tokens": 132
+  },
+  "variables": {
+    "conversation": "Customer: Quiero un resumen de los movimientos de mi tarjeta de crédito de mayo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_statement\", \"status\": \"ok\", \"result\": [{\"date\": \"2026-05-25\", \"merchant\": \"PAGO TARJETA\", \"amount\": \"850.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-05-19\", \"merchant\": \"LIBROS DEL SUR\", \"amount\": \"910.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-05-09\", \"merchant\": \"PAGO SERVICIO LUZ\", \"amount\": \"850.00 MXN\", \"status\": \"approved\"}, {\"date\": \"2026-05-08\", \"merchant\": \"FARMACIA CENTRO\", \"amount\": \"640.00 MXN\", \"status\": \"approved\"}]}"
+  }
+}

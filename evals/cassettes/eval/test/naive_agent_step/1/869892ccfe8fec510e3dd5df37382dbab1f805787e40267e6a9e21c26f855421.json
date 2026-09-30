@@ -1,0 +1,37 @@
+{
+  "cassette_id": "869892ccfe8fec510e3dd5df37382dbab1f805787e40267e6a9e21c26f855421",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5525,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0004",
+      "reason": "clonacion",
+      "transaction_id": "TXN-ANDES85000"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:51.126537Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1339,
+    "output_tokens": 67
+  },
+  "variables": {
+    "conversation": "Customer: Me cobraron 85.000 en ALMACEN ANDES y no fui yo, creo que clonaron mi tarjeta",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

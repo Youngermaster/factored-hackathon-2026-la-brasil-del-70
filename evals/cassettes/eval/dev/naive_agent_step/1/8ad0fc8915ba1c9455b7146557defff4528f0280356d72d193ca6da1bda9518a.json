@@ -1,0 +1,35 @@
+{
+  "cassette_id": "8ad0fc8915ba1c9455b7146557defff4528f0280356d72d193ca6da1bda9518a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5267,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cards"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:20:23.682738Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo está mi tarjeta terminada en 9999?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

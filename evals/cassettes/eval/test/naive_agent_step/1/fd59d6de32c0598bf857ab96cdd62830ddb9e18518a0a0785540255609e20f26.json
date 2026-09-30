@@ -1,0 +1,33 @@
+{
+  "cassette_id": "fd59d6de32c0598bf857ab96cdd62830ddb9e18518a0a0785540255609e20f26",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3527,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "No se encontró la transferencia de 300.000 del 15/06. ¿Podría proporcionar más detalles para investigar?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:53:19.704253Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1348,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: ¿Llegó la transferencia de 300.000 del 15/06?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

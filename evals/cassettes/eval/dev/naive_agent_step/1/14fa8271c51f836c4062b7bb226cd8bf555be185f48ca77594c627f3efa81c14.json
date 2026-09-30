@@ -1,0 +1,33 @@
+{
+  "cassette_id": "14fa8271c51f836c4062b7bb226cd8bf555be185f48ca77594c627f3efa81c14",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5898,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto correctamente un caso de disputa para el cargo de 85.000 COP en ALMACEN ANDES. El caso será resuelto dentro de los 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:42:53.848916Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1530,
+    "output_tokens": 82
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuándo vence mi tarjeta de crédito?\nAssistant: La tarjeta de crédito vence el 31 de marzo de 2028. ¿Necesitas que te bloqueemos la tarjeta o solicitemos una nueva?\nCustomer: Otra cosa: hay un cargo de 85.000 en ALMACEN ANDES que no hice\nAssistant: Entendido, hay un cargo de 85.000 COP en ALMACEN ANDES que no realizaste. ¿Me confirmas que deseas abrir un caso de disputa para este cargo?\nCustomer: Sí, confirmo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"TXN-ANDES85000\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

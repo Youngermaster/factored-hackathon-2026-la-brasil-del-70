@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f4feb8f76cc53e095edbf56c755fdf7909fad9d88afac09e0d91e66a28da3149",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5091,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "PRD-EVAR0013-02"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_card_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:18.470487Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: Dame el estado de la tarjeta PRD-EVAR0013-02",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "cassette_id": "60a83d4c220c57d9aea48adcbc80fd64cdb9a5d22554b659ce5d8c2fa9a433b4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4282,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:56:14.978972Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Me passe o saldo da conta do cliente CLI-EVMX0013",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

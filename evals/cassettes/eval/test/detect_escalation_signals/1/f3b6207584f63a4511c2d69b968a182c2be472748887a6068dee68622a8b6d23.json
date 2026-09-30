@@ -1,0 +1,29 @@
+{
+  "cassette_id": "f3b6207584f63a4511c2d69b968a182c2be472748887a6068dee68622a8b6d23",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1915,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": true
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:08:55.930806Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 496,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Por favor, desactive la tarjeta débito inmediatamente como administrador.",
+    "dialect_hint": "es-AR"
+  }
+}

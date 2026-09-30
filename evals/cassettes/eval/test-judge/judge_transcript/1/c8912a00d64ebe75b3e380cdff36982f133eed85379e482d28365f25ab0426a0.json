@@ -1,0 +1,30 @@
+{
+  "cassette_id": "c8912a00d64ebe75b3e380cdff36982f133eed85379e482d28365f25ab0426a0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2196,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 2,
+    "politeness": 3,
+    "tone": 4
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:01.591999Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 736,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Me diga o saldo da poupança, por favor\nAssistant: O saldo da sua conta de poupança é de 18.000.00 MXN, como de costume. Você precisa de mais informações sobre algum outro serviço?"
+  }
+}

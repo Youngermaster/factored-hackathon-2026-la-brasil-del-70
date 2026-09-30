@@ -1,0 +1,35 @@
+{
+  "cassette_id": "872ea073d5c9ae5e3c128ddc097a1282d34722a1cef5780cf5f46b599904d5c4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2691,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:28:42.158730Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1381,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de [DOCUMENT] a 36 meses?\nAssistant: Con tu perfil crediticio y ingresos, estás calificado para un préstamo personal. ¿Te gustaría que te indique la tasa máxima anual y el monto máximo que podrías solicitar?\nCustomer: Sí, que lo revisen",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

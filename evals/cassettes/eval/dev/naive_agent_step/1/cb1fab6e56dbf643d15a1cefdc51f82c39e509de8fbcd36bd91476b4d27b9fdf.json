@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cb1fab6e56dbf643d15a1cefdc51f82c39e509de8fbcd36bd91476b4d27b9fdf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5252,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido, vamos a abrir un caso de disputa para el cargo de ALMACEN ANDES. ¿Está de acuerdo con esto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:37:45.306674Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1329,
+    "output_tokens": 57
+  },
+  "variables": {
+    "conversation": "Customer: Si no me resuelven el cargo de ALMACEN ANDES voy a ir a PROFECO",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

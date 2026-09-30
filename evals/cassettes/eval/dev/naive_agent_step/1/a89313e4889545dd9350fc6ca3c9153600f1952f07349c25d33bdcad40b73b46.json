@@ -1,0 +1,35 @@
+{
+  "cassette_id": "a89313e4889545dd9350fc6ca3c9153600f1952f07349c25d33bdcad40b73b46",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3055,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0002"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:21:48.326206Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1324,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué me rechazaron una compra con la tarjeta de crédito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

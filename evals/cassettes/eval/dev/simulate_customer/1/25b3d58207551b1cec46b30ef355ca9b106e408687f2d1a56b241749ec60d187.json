@@ -1,0 +1,32 @@
+{
+  "cassette_id": "25b3d58207551b1cec46b30ef355ca9b106e408687f2d1a56b241749ec60d187",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2667,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Não, não quero bloquear o cartão por agora."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:58:50.301348Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 905,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço esta tarifa. Vou informar o valor e o estabelecimento.\nAssistant: Para encontrar a transação, me diga a data aproximada, o valor e o estabelecimento.\nCustomer: A data é ontem, o valor é R$ 15.000,00 e o estabelecimento é KIOSCO DEL SUR.\nAssistant: Como você não reconhece a compra, posso bloquear preventivamente o seu cartão **** 1659 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.\n\nVocê pode bloquear de forma preventiva um cartão ativo se o perdeu, se ele foi roubado ou se vê movimentações que não reconhece. Antes do bloqueio, pediremos uma verificação reforçada, válida por 5 minutos, e a sua confirmação expressa.\n\nO bloqueio é imediato: o cartão deixa de funcionar para compras, saques e cobranças recorrentes, e os pagamentos automáticos associados podem falhar. O assistente não pode desbloquear o cartão nem emitir um novo; esses pedidos são atendidos por uma pessoa da equipe. Só confirmaremos o bloqueio depois de verificar nos registros que o cartão ficou bloqueado.",
+    "conversation_seed": "dev-dis-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 15.000; merchant: KIOSCO DEL SUR",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 15.000 and the merchant KIOSCO DEL SUR. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

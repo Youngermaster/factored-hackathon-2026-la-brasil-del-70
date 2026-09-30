@@ -1,0 +1,32 @@
+{
+  "cassette_id": "3f0e9a98ac0bb947f88c5f253ed9fe418edd020d8fcf74b20c4ab2858f8474f3",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1415,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "$ disponível na minha conta?"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:47:15.004274Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 995,
+    "output_tokens": 15
+  },
+  "variables": {
+    "conversation": "Customer: $ disponível na minha conta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ disponível na minha conta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ disponível na minha conta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ disponível na minha conta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ disponível na minha conta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).\nCustomer: $ disponível na minha conta?\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol).",
+    "conversation_seed": "test-acc-ambiguou-006#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Know how much money is available, asked with a bare dollar sign.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask how much $ you have, with a bare $ sign and no currency. If asked, say pesos in your accounts.",
+    "known_facts": "(none)"
+  }
+}

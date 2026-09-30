@@ -1,0 +1,35 @@
+{
+  "cassette_id": "511d36b60d19c54e050de1cea2b4c6f556046f89fbd31a6de85ce7dee5513e94",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2770,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:43.268272Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1320,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuánto tengo en mi cuenta de ahorro?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

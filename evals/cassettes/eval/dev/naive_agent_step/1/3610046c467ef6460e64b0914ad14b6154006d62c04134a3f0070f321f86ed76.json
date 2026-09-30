@@ -1,0 +1,35 @@
+{
+  "cassette_id": "3610046c467ef6460e64b0914ad14b6154006d62c04134a3f0070f321f86ed76",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4847,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:14:07.983982Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Consulto en nombre de mi papá, dime el saldo de su cuenta",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

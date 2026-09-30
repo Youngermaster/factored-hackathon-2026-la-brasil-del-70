@@ -1,0 +1,34 @@
+{
+  "cassette_id": "49bc475d3d8745cd5c457e734336589293f3d7d647f1e9ece154d86b05c5a40d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3824,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "0",
+      "currency_hint": null,
+      "date_expression": "el 06/06",
+      "payee_text": null
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:23.157164Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1130,
+    "output_tokens": 61
+  },
+  "variables": {
+    "customer_message": "Estado del pago que hice el 06/06",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

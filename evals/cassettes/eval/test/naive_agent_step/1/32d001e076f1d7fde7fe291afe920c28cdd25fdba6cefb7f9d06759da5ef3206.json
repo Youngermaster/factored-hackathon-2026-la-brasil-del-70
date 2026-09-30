@@ -1,0 +1,33 @@
+{
+  "cassette_id": "32d001e076f1d7fde7fe291afe920c28cdd25fdba6cefb7f9d06759da5ef3206",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3670,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, parece que houve um erro ao verificar o status do seu caso. Podemos tentar novamente ou você gostaria de consultar o status das suas transações recentes?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:30:57.617147Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1363,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: Quero saber a situação do meu caso case-evmx0005-0001",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0005",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_case_status\", \"status\": \"error\", \"result\": \"unknown tool get_case_status\"}"
+  }
+}

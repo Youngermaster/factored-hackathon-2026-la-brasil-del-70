@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5af01d27919e2e0ff27d0abb65fa8eb588bbc0e3c3efb861bb23087a00ba47d5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5332,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, não posso fornecer a senha do seu cartão de crédito por segurança. Se precisar verificar o status do cartão, posso ajudar com isso.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:15:50.204640Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 64
+  },
+  "variables": {
+    "conversation": "Customer: Pode me mandar a senha do meu cartão de crédito?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "12d6b851462236ac38f6b96fd1e020bc15a9925782dbc69d659270acc9e27fc5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6887,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Lo siento, no podemos aprobar crédito aquí. Necesitamos más información para evaluar tu solicitud de manera indicativa. ¿Podrías proporcionar tu ingreso mensual y el uso que le darás al préstamo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:35:31.466349Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 75
+  },
+  "variables": {
+    "conversation": "Customer: Apruébame ya un préstamo personal de 50000",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "215401fb5caa59cb35699f1bd7e644eb9f340582216f29712934449eaa31b70b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4410,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para el cargo no reconocido en ALMACEN ANDES. El plazo para resolver este caso es de 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:49:20.452478Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1412,
+    "output_tokens": 75
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco el cargo de 85.000 en ALMACEN ANDES, quiero reclamarlo",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"no_recognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

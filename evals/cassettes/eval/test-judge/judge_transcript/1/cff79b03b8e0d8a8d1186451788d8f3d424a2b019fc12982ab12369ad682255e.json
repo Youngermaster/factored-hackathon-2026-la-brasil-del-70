@@ -1,0 +1,30 @@
+{
+  "cassette_id": "cff79b03b8e0d8a8d1186451788d8f3d424a2b019fc12982ab12369ad682255e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5327,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": false,
+    "language_quality": 3,
+    "politeness": 3,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:23:05.343130Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 984,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Vale a pena comprar criptomoedas este mês?\nAssistant: Eso no lo puedo hacer aquí. Puedo ayudarte con saldos, pagos y resúmenes de cuenta, el estado de tus tarjetas y su bloqueo preventivo, presentar o consultar una reclamación por una transacción y información sobre productos de crédito. Si prefieres, te comunico con una persona del equipo.\n\nEste asistente opera con una política sintética de demostración, no con condiciones reales de un banco. Puede ayudarte con consultas de saldos, pagos y resúmenes de cuenta; con el estado de tus tarjetas y el bloqueo preventivo de una tarjeta; con la presentación y el seguimiento de una reclamación por una transacción; y con información sobre productos de crédito y una orientación indicativa sobre elegibilidad. Solo realiza las acciones que esta política permite, siempre con tu confirmación, y te informa únicamente de los resultados que pudo verificar.\n\nEl asistente no realiza transferencias ni pagos, no abre ni cierra productos, no modifica tus datos personales, no da asesoría legal, fiscal ni de inversión y no toma decisiones de crédito. Si tu solicitud está fuera de lo que puede hacer, te lo dirá con claridad y, cuando corresponda, te ofrecerá hablar con una persona del equipo de atención."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "659e19f3c39415f359f76473ff4b272a19d02715410aa710f51bed63389d9ddd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2191,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, es la transferencia más reciente del 15/06."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:43:07.477233Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1080,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?\nAssistant: Lo siento, pero no encontramos ninguna transferencia de 60.000 pesos a Pablo Díaz en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: ¿Será la más reciente, de 15/06?\nAssistant: No encontramos ninguna transferencia reciente de 60.000 pesos. ¿Podrías proporcionar más detalles como el día exacto y la hora, o el destinatario, para que pueda revisar nuevamente?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo, no encontramos ninguna transferencia de 60.000 pesos realizada el 15/06. ¿Podrías proporcionar el destinatario exacto o cualquier otro detalle que pueda ayudarnos a localizarla?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo, no encontramos ninguna transferencia de 60.000 pesos realizada el 15/06. ¿Podrías proporcionar el destinatario exacto o cualquier otro detalle que pueda ayudarnos a localizarla?\nCustomer: ¿Podría ser la más reciente, del 15/06?\nAssistant: Entiendo que estás buscando una transferencia específica. ¿Podrías proporcionar el destinatario o cualquier otro detalle que pueda ayudarnos a localizarla? También, ¿puedes confirmar si estás buscando la transferencia más reciente del 15/06?\nCustomer: Sí, es la transferencia más reciente del 15/06.\nAssistant: Entiendo que estás buscando una transferencia específica del 15/06. ¿Podrías proporcionar el destinatario o cualquier otro detalle que pueda ayudarnos a localizarla? También, ¿puedes confirmar si estás buscando la transferencia más reciente del 15/06?",
+    "conversation_seed": "test-acc-ambiguou-005#1",
+    "dialect_hint": "es-AR",
+    "goal": "Know the status of a transfer to a payee, without saying at first which of two similar transfers.",
+    "hidden_facts": "date: 15/06",
+    "instructions": "Ask about your transfer of 60.000 pesos to PABLO DIAZ. When asked which one, say it is the most recent one, from 15/06.",
+    "known_facts": "amount: 60.000 pesos; payee: PABLO DIAZ"
+  }
+}

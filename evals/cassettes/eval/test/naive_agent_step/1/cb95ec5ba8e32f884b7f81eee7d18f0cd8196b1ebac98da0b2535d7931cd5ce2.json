@@ -1,0 +1,35 @@
+{
+  "cassette_id": "cb95ec5ba8e32f884b7f81eee7d18f0cd8196b1ebac98da0b2535d7931cd5ce2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3276,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:16:16.525837Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1413,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber cuánto saldo debo pagar en un préstamo personal y también las condiciones del mismo.\nAssistant: Buen día, CLI-EVMX0008. Ya verifiqué sus saldos. No encontramos un préstamo personal en su cuenta. ¿Podría aclarar si se refiere a un préstamo personal o a otra información relacionada?\nCustomer: Claro, me refiero a un préstamo personal. ¿Cuál sería el saldo pendiente y cuáles son las condiciones?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

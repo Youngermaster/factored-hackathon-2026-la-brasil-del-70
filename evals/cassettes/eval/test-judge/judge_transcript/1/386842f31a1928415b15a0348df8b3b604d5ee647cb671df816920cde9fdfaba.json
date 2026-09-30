@@ -1,0 +1,30 @@
+{
+  "cassette_id": "386842f31a1928415b15a0348df8b3b604d5ee647cb671df816920cde9fdfaba",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3682,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:05.276730Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 745,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-CO",
+    "transcript": "Customer: Perdí mi tarjeta de crédito, quiero bloquearla\nAssistant: Se ha perdido su tarjeta de crédito y desea bloquearla. ¿Esto es correcto?\nCustomer: Sí, confirmo\nAssistant: Lo siento, pero no encontramos ninguna tarjeta asociada a su cuenta. ¿Podría proporcionar más detalles para poder ayudarlo?"
+  }
+}

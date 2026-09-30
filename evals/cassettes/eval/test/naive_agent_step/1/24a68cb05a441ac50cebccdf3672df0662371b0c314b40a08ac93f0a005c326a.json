@@ -1,0 +1,33 @@
+{
+  "cassette_id": "24a68cb05a441ac50cebccdf3672df0662371b0c314b40a08ac93f0a005c326a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3853,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Se ha identificado un cargo no reconocido de 85.000 COP en ALMACEN ANDES. ¿Desea abrir un caso de disputa para este cargo?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:00:40.800766Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1376,
+    "output_tokens": 66
+  },
+  "variables": {
+    "conversation": "Customer: ¿Mi tarjeta de crédito está activa?\nAssistant: Sí, su tarjeta de crédito está activa. ¿Necesita realizar alguna otra consulta o acción relacionada con su tarjeta?\nCustomer: Por cierto, no reconozco un cargo de 85.000 en ALMACEN ANDES",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

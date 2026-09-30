@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5164d9e25d5b21c1bedee2920d8fd1a293fcce2035a2248213c0d1676c06a3d0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5855,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Sua solicitação de empréstimo pessoal no valor de 1.000.000 ARS por 24 meses foi enviada com sucesso. O seu pedido foi encaminhado para análise, e um analista entrará em contato com você em breve para coletar mais informações necessárias. Obrigado pelo seu interesse!",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:20:44.874115Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1540,
+    "output_tokens": 104
+  },
+  "variables": {
+    "conversation": "Customer: Pode me informar se estou qualificada para um empréstimo pessoal?\nAssistant: Com base no seu perfil de crédito, você está bem qualificada para um empréstimo pessoal. Seu score de crédito é 780, você ganha 1.800.000 ARS por mês e não possui dias em atraso. No entanto, para uma análise mais detalhada e para que possamos orientá-lo melhor, gostaria de saber qual valor e prazo você estaria interessada em solicitar.\nCustomer: Interessada em um empréstimo de 1.000.000 pesos por 24 meses.",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVAR0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"{:,.0f} ARS\", \"status\": \"submitted\"}}"
+  }
+}

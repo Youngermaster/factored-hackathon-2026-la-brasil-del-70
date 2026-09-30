@@ -1,0 +1,33 @@
+{
+  "cassette_id": "e39a4c092f16432938e3eedbff62aef705324b7ec945024a7d488b29fa638ec9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3769,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Para poder darte una respuesta precisa, necesito conocer el monto del préstamo personal al que te refieres. ¿Podrías proporcionarme más detalles?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:19:02.187165Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que tendría que pagar si contrato un préstamo personal?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

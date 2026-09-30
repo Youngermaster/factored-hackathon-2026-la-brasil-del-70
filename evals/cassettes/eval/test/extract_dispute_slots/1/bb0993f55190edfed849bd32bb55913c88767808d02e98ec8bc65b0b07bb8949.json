@@ -1,0 +1,43 @@
+{
+  "cassette_id": "bb0993f55190edfed849bd32bb55913c88767808d02e98ec8bc65b0b07bb8949",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 11107,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "85000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "ALMACEN ANDES"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:35:54.560548Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1474,
+    "output_tokens": 113
+  },
+  "variables": {
+    "customer_message": "Não reconheço uma cobrança de 85.000 na ALMACEN ANDES",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

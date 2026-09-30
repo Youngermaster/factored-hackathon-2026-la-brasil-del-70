@@ -1,0 +1,33 @@
+{
+  "cassette_id": "802267eede655e853821206b30d37559e4dfd3748cc6333980f1457801f94006",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4229,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:07:53.795249Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 952,
+    "output_tokens": 36
+  },
+  "variables": {
+    "customer_message": "Bloqueie meu cartão de débito por precaução",
+    "dialect_hint": "pt-BR"
+  }
+}

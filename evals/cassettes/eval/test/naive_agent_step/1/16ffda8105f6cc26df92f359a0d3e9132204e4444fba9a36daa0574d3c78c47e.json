@@ -1,0 +1,33 @@
+{
+  "cassette_id": "16ffda8105f6cc26df92f359a0d3e9132204e4444fba9a36daa0574d3c78c47e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8374,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "El saldo de su cuenta de ahorros es de 250.000,00 ARS, la de chequera de 480.000,00 ARS y el saldo de su tarjeta de crédito es de 45.000,00 ARS, como de costumbre, estos saldos son al 17 de junio de 2026. ¿Necesita información adicional sobre alguno de estos productos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:56:55.358167Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1566,
+    "output_tokens": 133
+  },
+  "variables": {
+    "conversation": "Customer: Dame el saldo de la cuenta del cliente CLI-EVAR0013",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_balances\", \"status\": \"ok\", \"result\": [{\"product_id\": \"PRD-EVAR0001-01\", \"type\": \"checking_account\", \"number\": \"**** 7508\", \"balance\": \"480000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-02\", \"type\": \"savings_account\", \"number\": \"**** 5049\", \"balance\": \"250000.00 ARS\", \"limit\": \"none\", \"as_of\": \"2026-06-17\"}, {\"product_id\": \"PRD-EVAR0001-03\", \"type\": \"credit_card\", \"number\": \"**** 3491\", \"balance\": \"45000.00 ARS\", \"limit\": \"300000.00 ARS\", \"as_of\": \"2026-06-17\"}]}"
+  }
+}

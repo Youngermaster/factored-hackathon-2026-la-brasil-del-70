@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f4bc3cda1bceb4536d6b392ad3ab132f66765fc14c41d21c767760bff241bc63",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2141,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quiero saber el saldo pendiente para un préstamo personal y las condiciones."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:16:46.471848Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 25
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber cuánto saldo debo pagar en un préstamo personal y también las condiciones del mismo.\nAssistant: Buen día, CLI-EVMX0008. Ya verifiqué sus saldos. No encontramos un préstamo personal en su cuenta. ¿Podría aclarar si se refiere a un préstamo personal o a otra información relacionada?\nCustomer: Claro, me refiero a un préstamo personal. ¿Cuál sería el saldo pendiente y cuáles son las condiciones?\nAssistant: No encontramos un préstamo personal en su cuenta, CLI-EVMX0008. Parece que sus saldos actuales corresponden a una cuenta de ahorros y una tarjeta de crédito. ¿Podría aclarar si está buscando información sobre uno de estos productos o si desea consultar algo diferente?\nCustomer: Soy cliente nuevo y quisiera saber el saldo y las condiciones para un préstamo personal.\nAssistant: Entendido, CLI-EVMX0008. Vamos a revisar su saldo y las condiciones para un préstamo personal. Primero, necesito confirmar si desea consultar el saldo actual de su cuenta o si desea solicitar información sobre los préstamos personales disponibles.\nCustomer: Quiero saber el saldo que debo pagar y las condiciones para un préstamo personal.\nAssistant: CLI-EVMX0008, actualmente no encontramos un préstamo personal en su cuenta. Su saldo actual es de 18,000.00 MXN en su cuenta de ahorros y 12,500.00 MXN en su tarjeta de crédito. ¿Podría aclarar si está buscando información sobre un préstamo personal o si desea consultar algo diferente?",
+    "conversation_seed": "test-cre-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask what a loan would leave to pay, using saldo; then ask the conditions.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask about the saldo you would have to pay on a personal loan. If asked, say you want the personal loan conditions.",
+    "known_facts": "(none)"
+  }
+}

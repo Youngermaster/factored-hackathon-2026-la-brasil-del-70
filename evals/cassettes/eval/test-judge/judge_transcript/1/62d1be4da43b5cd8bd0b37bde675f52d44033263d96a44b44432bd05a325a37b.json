@@ -1,0 +1,30 @@
+{
+  "cassette_id": "62d1be4da43b5cd8bd0b37bde675f52d44033263d96a44b44432bd05a325a37b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2976,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:20:50.514330Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 858,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Perdí mi tarjeta de crédito, bloquéala ya\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 18 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nSi nos cuentas que estás pasando por una situación difícil, como una emergencia, un problema de salud o una presión para hacer una operación, no te pediremos continuar con trámites: te ofreceremos hablar con una persona del equipo con prioridad. Nunca te pediremos claves ni códigos para \"proteger\" tu dinero.\n\nEn México, una persona del equipo te contactará dentro de las 24 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

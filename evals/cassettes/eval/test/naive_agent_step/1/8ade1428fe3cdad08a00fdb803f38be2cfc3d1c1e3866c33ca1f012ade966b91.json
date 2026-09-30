@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8ade1428fe3cdad08a00fdb803f38be2cfc3d1c1e3866c33ca1f012ade966b91",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3220,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "No se encontró el pago que mencionó. ¿Podría proporcionarme más detalles sobre la transacción para poder ayudarle mejor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:50.378715Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1343,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: Me cobraron 4040 en una tienda que no conozco",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

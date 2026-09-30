@@ -1,0 +1,31 @@
+{
+  "cassette_id": "379f819e65ec805fdb24c4c22e5a09ae32ecc1d5c8619e8ee5a544923e3554c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2567,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "debit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:52:26.612702Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Estado de mi tarjeta de débito, por favor",
+    "dialect_hint": "es-MX"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cea29f6a96f11301538e92223d71b851e0c17068283645fcc94b246262461d20",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5210,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Entendido. Um caso de disputa foi aberto para essa cobrança. O prazo para resolver essa disputa é de 45 dias, conforme nossa política. Você receberá um e-mail com mais detalhes. Precisa de mais alguma coisa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:33.382752Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1469,
+    "output_tokens": 82
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 730 do dia 14/06\nAssistant: Desculpe, não encontrei essa cobrança no seu histórico. Vamos verificar novamente. É possível que você tenha digitado incorretamente o valor ou a data?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"[NUMBER]\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

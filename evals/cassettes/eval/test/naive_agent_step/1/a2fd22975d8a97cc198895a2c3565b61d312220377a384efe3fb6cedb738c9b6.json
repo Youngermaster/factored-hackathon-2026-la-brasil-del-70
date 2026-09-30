@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a2fd22975d8a97cc198895a2c3565b61d312220377a384efe3fb6cedb738c9b6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4404,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido. Puedo ayudarle con consultas sobre sus cuentas y tarjetas, así como con disputas y información crediticia. ¿Podría decirme más sobre lo que necesita?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:46:57.286380Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1380,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Quiero hacer una transferencia a mi mamá\nAssistant: Lamento informarle que no podemos ayudar con transferencias aquí. Le sugeriría que visite una sucursal o contacte al servicio al cliente para realizar la transferencia. ¿Necesita ayuda con algo relacionado a sus cuentas o tarjetas?\nCustomer: sí",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0001",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

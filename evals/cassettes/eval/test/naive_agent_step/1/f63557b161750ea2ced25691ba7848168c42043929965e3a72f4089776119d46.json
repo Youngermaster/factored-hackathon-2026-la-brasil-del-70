@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f63557b161750ea2ced25691ba7848168c42043929965e3a72f4089776119d46",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8881,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación crediticia de 780, estás calificado para un préstamo personal. Basado en tu ingreso mensual de 60,000 MXN, podrías solicitar hasta 21,000 MXN sin que supere el 35% de tu ingreso mensual. Sin embargo, necesitamos que nos proporciones el monto deseado y el plazo en meses para darte una orientación más precisa. ¿Puedes indicarme cuánto deseas prestar y en cuántos meses lo necesitas?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:33:11.662789Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1374,
+    "output_tokens": 152
+  },
+  "variables": {
+    "conversation": "Customer: Quiero un préstamo personal, ¿qué condiciones tiene?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"60000.00 MXN\", \"days_past_due\": 0, \"tenure_months\": 40}}"
+  }
+}

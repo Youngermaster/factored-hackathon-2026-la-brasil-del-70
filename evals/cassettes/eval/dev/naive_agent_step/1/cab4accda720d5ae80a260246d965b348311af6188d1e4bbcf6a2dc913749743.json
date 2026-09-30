@@ -1,0 +1,37 @@
+{
+  "cassette_id": "cab4accda720d5ae80a260246d965b348311af6188d1e4bbcf6a2dc913749743",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5594,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0004",
+      "reason": "not_received",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:40:38.852720Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Sou procurador do Rafael, abra uma contestação pela compra dele",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "baabb556a0125dd90456e98e02ec439b3a940848d99d2d593b1b3a64b8538058",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5732,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "¡Claro! Le proporcionaré información sobre las condiciones de los productos de crédito disponibles en Colombia. ¿Le interesa conocer más sobre tarjetas de crédito, hipotecas o préstamos personales?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:17:48.760682Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1694,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quiero saber sobre un crédito. ¿Me podrías decir las condiciones?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"list_credit_products\", \"status\": \"ok\", \"result\": [{\"product_code\": \"CO-CC-CLASSIC\", \"product_type\": \"credit_card\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"1000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"25000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 1, \"max_term_months\": 36, \"max_annual_rate\": \"28.00\"}, {\"product_code\": \"CO-MG-FIXED\", \"product_type\": \"mortgage\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"60000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"1200000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 60, \"max_term_months\": 240, \"max_annual_rate\": \"15.00\"}, {\"product_code\": \"CO-PL-STANDARD\", \"product_type\": \"personal_loan\", \"jurisdiction\": \"CO\", \"currency\": \"COP\", \"min_amount\": {\"amount\": \"2000000.00\", \"currency\": \"COP\"}, \"max_amount\": {\"amount\": \"80000000.00\", \"currency\": \"COP\"}, \"min_term_months\": 6, \"max_term_months\": 72, \"max_annual_rate\": \"27.00\"}]}"
+  }
+}

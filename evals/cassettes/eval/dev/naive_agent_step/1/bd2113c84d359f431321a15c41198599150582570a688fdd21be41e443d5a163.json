@@ -1,0 +1,33 @@
+{
+  "cassette_id": "bd2113c84d359f431321a15c41198599150582570a688fdd21be41e443d5a163",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7649,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Desculpe, mas não posso ajudar com isso aqui. Sugiro que entre em contato com um representante para mais detalhes sobre a declaração do imposto de renda. Pode ser que eles possam fornecer assistência mais adequada.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:41:14.091511Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1338,
+    "output_tokens": 83
+  },
+  "variables": {
+    "conversation": "Customer: Como faço a minha declaração de imposto de renda deste ano?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

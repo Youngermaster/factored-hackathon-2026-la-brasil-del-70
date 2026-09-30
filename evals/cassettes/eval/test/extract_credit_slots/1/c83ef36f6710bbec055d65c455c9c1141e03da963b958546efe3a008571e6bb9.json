@@ -1,0 +1,31 @@
+{
+  "cassette_id": "c83ef36f6710bbec055d65c455c9c1141e03da963b958546efe3a008571e6bb9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5568,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": "préstamo personal",
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:18:26.189157Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1031,
+    "output_tokens": 55
+  },
+  "variables": {
+    "customer_message": "Quiero un préstamo personal, ¿qué condiciones tiene?",
+    "dialect_hint": "es-MX"
+  }
+}

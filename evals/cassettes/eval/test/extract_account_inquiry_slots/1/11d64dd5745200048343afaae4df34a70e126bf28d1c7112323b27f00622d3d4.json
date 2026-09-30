@@ -1,0 +1,29 @@
+{
+  "cassette_id": "11d64dd5745200048343afaae4df34a70e126bf28d1c7112323b27f00622d3d4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1398,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:25.292073Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1123,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "Quiero ver mis saldos",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

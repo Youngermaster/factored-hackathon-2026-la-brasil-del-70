@@ -1,0 +1,33 @@
+{
+  "cassette_id": "f68c3948dff59a8158f90f0e701df4749ede83694e1b009a18c9e79e4c8f6157",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4855,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo, no encontramos ninguna transferencia de 60.000 pesos realizada el 15/06. ¿Podrías proporcionar el destinatario exacto o cualquier otro detalle que pueda ayudarnos a localizarla?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:42:39.040540Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1485,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes decir el status de mi transferencia de 60.000 pesos a PABLO DÍAZ?\nAssistant: Lo siento, pero no encontramos ninguna transferencia de 60.000 pesos a Pablo Díaz en tu historial. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: ¿Será la más reciente, de 15/06?\nAssistant: No encontramos ninguna transferencia reciente de 60.000 pesos. ¿Podrías proporcionar más detalles como el día exacto y la hora, o el destinatario, para que pueda revisar nuevamente?\nCustomer: ¿Podría ser la más reciente, del 15/06?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

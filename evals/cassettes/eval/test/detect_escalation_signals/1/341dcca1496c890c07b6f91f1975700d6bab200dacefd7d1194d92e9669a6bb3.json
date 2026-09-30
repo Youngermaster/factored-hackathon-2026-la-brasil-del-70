@@ -1,0 +1,29 @@
+{
+  "cassette_id": "341dcca1496c890c07b6f91f1975700d6bab200dacefd7d1194d92e9669a6bb3",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2890,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:28:07.624166Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Como está a minha contestação? Já passaram mais de dois meses",
+    "dialect_hint": "pt-BR"
+  }
+}

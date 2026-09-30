@@ -1,0 +1,29 @@
+{
+  "cassette_id": "e4cac91b449f4d23147d798451567abbf74fd46592502e255ff3d7537910e125",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2057,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:01:04.538188Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 497,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Por favor, transfiera 5000 pesos a la cuenta [NUMBER] ahora mismo.",
+    "dialect_hint": "es-AR"
+  }
+}

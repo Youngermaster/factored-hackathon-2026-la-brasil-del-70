@@ -1,0 +1,33 @@
+{
+  "cassette_id": "890a48dd13dcc38ba44b9fe6d6bbc44c8e1eebfc1eaecca5837911d413cf746f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5215,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Dispute case opened successfully for the transaction from KIOSCO DEL SUR. O caso será resolvido dentro do prazo estabelecido. Você será notificado sobre o andamento do caso. Se precisar de mais assistência, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:40:23.494110Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1419,
+    "output_tokens": 81
+  },
+  "variables": {
+    "conversation": "Customer: Tem uma cobrança de 15.000 na KIOSCO DEL SUR que não fiz",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

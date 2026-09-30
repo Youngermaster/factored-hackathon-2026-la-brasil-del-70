@@ -1,0 +1,33 @@
+{
+  "cassette_id": "dba907c1ba90401f15789f44387bd11205ed5cf1f8270ee9819dce7b5c66c89d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6364,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Con tu puntuación de crédito de 760, ingreso mensual de 9.000.000 COP y 45 días sin pagar, calificas para un préstamo personal. Sin embargo, estos datos son solo una orientación indicativa y no una aprobación definitiva. ¿Te gustaría que te enviemos una evaluación más detallada por un asesor?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:26:39.458730Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1383,
+    "output_tokens": 113
+  },
+  "variables": {
+    "conversation": "Customer: ¿Califico para un préstamo personal de [DOCUMENT] a 24 meses?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0011",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 760, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 45, \"tenure_months\": 40}}"
+  }
+}

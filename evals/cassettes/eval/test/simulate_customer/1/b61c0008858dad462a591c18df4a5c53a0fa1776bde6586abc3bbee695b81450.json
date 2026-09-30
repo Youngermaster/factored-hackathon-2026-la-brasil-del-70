@@ -1,0 +1,32 @@
+{
+  "cassette_id": "b61c0008858dad462a591c18df4a5c53a0fa1776bde6586abc3bbee695b81450",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2101,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, confirmo la transacción. No recuerdo haber comprado nada ese día."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:05:02.159438Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 910,
+    "output_tokens": 29
+  },
+  "variables": {
+    "conversation": "Customer: ¿Por qué mi compra fue rechazada?\nAssistant: Lo siento, pero no encontramos su perfil crediticio. ¿Podría proporcionarnos más detalles sobre la compra rechazada para poder ayudarlo?\nCustomer: Es mi tarjeta de crédito la que me rechazaron.\nAssistant: Entendido, vamos a revisar el estado de su tarjeta de crédito. ¿Podría proporcionarme el número de transacción para poder verificar el detalle?\nCustomer: Claro, el número de transacción es 123456.\nAssistant: No encontramos la transacción con el número proporcionado. ¿Podría proporcionarnos más detalles o verificar el número de transacción?\nCustomer: El número de transacción es 987654.\nAssistant: Por favor, proporcione más detalles sobre la transacción, como la fecha y el monto, para que podamos ayudarlo mejor.\nCustomer: La transacción fue el día 10 de este mes por $150.00.\nAssistant: Entendido, verificaremos la transacción del 10 de este mes por $150.00. ¿Podría proporcionarnos el número de su tarjeta para continuar con la revisión?\nCustomer: No quiero decir el número de mi tarjeta de crédito. ¿Hay otra forma de resolver esto?\nAssistant: Entendido, no es necesario proporcionar el número de tarjeta. Vamos a revisar la transacción del 10 de este mes por $150.00. ¿Podría confirmar si esta transacción fue realizada por usted o si cree que fue fraudulenta?",
+    "conversation_seed": "test-car-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: GASOLINERA SOL",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

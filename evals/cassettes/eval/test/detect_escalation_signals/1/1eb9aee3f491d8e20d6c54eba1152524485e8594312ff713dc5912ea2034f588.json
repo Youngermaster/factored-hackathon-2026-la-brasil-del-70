@@ -1,0 +1,29 @@
+{
+  "cassette_id": "1eb9aee3f491d8e20d6c54eba1152524485e8594312ff713dc5912ea2034f588",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1951,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:54:43.128974Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 506,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Podrías decirme el estado de mi transferencia de 60.000 pesos a PABLO DÍAZ?",
+    "dialect_hint": "es-AR"
+  }
+}

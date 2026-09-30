@@ -1,0 +1,32 @@
+{
+  "cassette_id": "607ae826a22089e5d89da23d68a8b3cc09ff52985b6712d0f4b56841ac84dcbf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1559,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Hola, necesito el resumen de mayo."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:44:14.276999Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 554,
+    "output_tokens": 20
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Get a May summary without saying which product at first.",
+    "hidden_facts": "product: credit card",
+    "instructions": "Ask for a summary of May. When asked which product, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

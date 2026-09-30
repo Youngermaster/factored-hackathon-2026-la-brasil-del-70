@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0028b1f6cbba092e855f7e2893549192b0b00d51a4ca0d037c5e3cb5bb7082e3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2234,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, por favor, únicamente el resumen del mes pasado."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:07:11.377500Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 703,
+    "output_tokens": 26
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me puedes enviar un resumen de mis movimientos en la tarjeta de crédito?\nAssistant: En la fecha 15 de junio de 2026, tienes un movimiento pendiente por 1,500.00 MXN con el comercio Juan Pérez. El movimiento del 11 de junio de 2026 por 1,500.00 MXN fue aprobado. Además, el 6 de junio de 2026, se reversó un pago de servicio de luz por 850.00 MXN. ¿Necesitas más detalles sobre alguno de estos movimientos?",
+    "conversation_seed": "dev-acc-ambiguou-001#1",
+    "dialect_hint": "es-MX",
+    "goal": "Get a card statement summary without giving the period at first.",
+    "hidden_facts": "period: last month (May)",
+    "instructions": "Ask for a summary of your credit card movements. When asked for the period, say last month.",
+    "known_facts": "(none)"
+  }
+}

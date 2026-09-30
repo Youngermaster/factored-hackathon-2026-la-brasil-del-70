@@ -1,0 +1,33 @@
+{
+  "cassette_id": "cf38c9c9795f1938f4fef9a8fb718188bcd3d332a17ae0ffd23acde0b8cc672e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4611,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, não encontrei essa cobrança no seu histórico. Vamos abrir um caso de disputa para investigar. Pode confirmar que gostaria de abrir um caso com essa cobrança?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:54.572718Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1361,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 7.300 do dia 14/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"get_payment_status\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

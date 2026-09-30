@@ -1,0 +1,30 @@
+{
+  "cassette_id": "7307928b2781115f174ad0032aa2728276cc8162a47428d621b10a333882e970",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3951,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:19:48.341176Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 785,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: ¿Me dan una tarjeta de crédito con límite de 30000?\nAssistant: Voy a pasar tu conversación a una persona del equipo, que te contactará a más tardar el 19 de junio de 2026. Le comparto lo que ya verificamos para que no tengas que repetirlo.\n\nEn México, una persona del equipo te contactará dentro de las 24 horas siguientes. Si la conversación muestra una situación de vulnerabilidad o urgencia, el plazo es de 4 horas."
+  }
+}

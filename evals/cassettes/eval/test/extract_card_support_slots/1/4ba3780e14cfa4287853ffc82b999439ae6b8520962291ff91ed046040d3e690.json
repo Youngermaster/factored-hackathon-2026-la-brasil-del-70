@@ -1,0 +1,28 @@
+{
+  "cassette_id": "4ba3780e14cfa4287853ffc82b999439ae6b8520962291ff91ed046040d3e690",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1580,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": null,
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:04:40.563911Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 24
+  },
+  "variables": {
+    "customer_message": "Por favor, ¿me puedes decir por qué mi tarjeta fue rechazada?",
+    "dialect_hint": "es-MX"
+  }
+}

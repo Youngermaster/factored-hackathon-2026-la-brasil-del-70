@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bc113b5bc1f6ca9b0d9cedbb33e041466c5cb39b65476a0b1522be9b8cbb9b04",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3207,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "transaction_id": "1250"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:54:59.069116Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1333,
+    "output_tokens": 53
+  },
+  "variables": {
+    "conversation": "Customer: Quiero que me devuelvan ya el dinero del cargo de 1250 en TIENDA AURORA",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

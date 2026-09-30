@@ -1,0 +1,32 @@
+{
+  "cassette_id": "1af25ed12ee25aa7fee77109f2887908dcf02fd46e39bb18c50e21a09f95bc86",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1564,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, tudo bem, só queria confirmar."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:12:17.235753Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 913,
+    "output_tokens": 21
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha cartão?\nAssistant: Olá! Sua carta está ativa e não há nenhuma restrição atual. Gostaria de bloquear ou trocar algum cartão?\nCustomer: Obrigado, mas eu queria saber como está o meu cartão de débito.\nAssistant: Olá! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora?\nCustomer: Não preciso verificar o saldo agora, mas obrigado pela informação.\nAssistant: Ótimo! Se precisar de mais informações sobre seu cartão ou tiver outras dúvidas, estou à disposição.\nCustomer: Preciso saber como está o meu cartão de débito mesmo.\nAssistant: Entendido! Vou verificar o status do seu cartão de débito agora. Como está o seu saldo atual?\nCustomer: Não preciso do saldo atual, mas obrigado. Quero saber se está tudo bem com o meu cartão de débito.\nAssistant: Entendido! Seu cartão de débito está ativo e válido até novembro de 2027. Gostaria de verificar seu saldo ou extrato bancário agora, ou tem alguma outra dúvida sobre ele?\nCustomer: Não preciso do saldo, mas quero confirmar que está tudo bem com o meu cartão de débito.\nAssistant: Entendido! Vou verificar o status do seu cartão de débito agora. Gostaria de confirmar que não há nenhuma restrição atual?",
+    "conversation_seed": "test-car-ambiguou-002#2",
+    "dialect_hint": "pt-BR",
+    "goal": "Ask about the card without saying which of two.",
+    "hidden_facts": "card: debit card",
+    "instructions": "Ask how your card is doing without saying which one. When asked, say the debit card.",
+    "known_facts": "(none)"
+  }
+}

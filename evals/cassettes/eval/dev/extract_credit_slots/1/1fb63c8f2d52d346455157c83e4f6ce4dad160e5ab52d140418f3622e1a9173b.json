@@ -1,0 +1,31 @@
+{
+  "cassette_id": "1fb63c8f2d52d346455157c83e4f6ce4dad160e5ab52d140418f3622e1a9173b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2762,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:56:06.933858Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1032,
+    "output_tokens": 49
+  },
+  "variables": {
+    "customer_message": "¿Qué tasa y plazo tiene el préstamo personal?",
+    "dialect_hint": "es-MX"
+  }
+}

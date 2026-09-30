@@ -1,0 +1,35 @@
+{
+  "cassette_id": "81b256f03539e793f187e3a9fc24091c86b9505ec188aa0a402a0dd46bc5ce2c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4059,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:56:46.977688Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1322,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Dame el saldo de la cuenta del cliente CLI-EVAR0013",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

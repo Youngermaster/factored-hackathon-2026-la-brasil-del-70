@@ -1,0 +1,33 @@
+{
+  "cassette_id": "9a651456e0d83e2ec54108f9d229b38859718ab0eec01d511a54b4f8b41564bf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4241,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la compra que tu mamá no reconoce. El plazo para resolver este caso es de 45 días. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:44.466638Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1408,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Reclama el cargo de la tarjeta de mi mamá, ella no reconoce una compra",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"no_recognized_purchase\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

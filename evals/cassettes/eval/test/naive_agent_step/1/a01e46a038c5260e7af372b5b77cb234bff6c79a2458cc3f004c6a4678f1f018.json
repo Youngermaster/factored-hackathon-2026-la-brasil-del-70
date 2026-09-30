@@ -1,0 +1,33 @@
+{
+  "cassette_id": "a01e46a038c5260e7af372b5b77cb234bff6c79a2458cc3f004c6a4678f1f018",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4122,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, não encontramos um cartão associado a este ID de cliente. Por favor, verifique se digitou corretamente ou forneça mais detalhes para que possamos auxiliá-lo melhor.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:55.201229Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1420,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Roubaram meu cartão de débito, bloqueiem\nAssistant: Entendido, vamos proceder com o bloqueio do seu cartão de débito. Vou precisar de algumas informações para confirmar a ação. Você pode me fornecer o número do seu cartão ou a razão para a qual você está solicitando este bloqueio?\nCustomer: Sim, confirmo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

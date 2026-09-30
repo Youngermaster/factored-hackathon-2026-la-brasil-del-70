@@ -1,0 +1,29 @@
+{
+  "cassette_id": "3ff3391ed7ba2b3145da52fbde89153ca2638d1b978089d834617ef3e3bb01a3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1734,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:34:15.071596Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 497,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Soy una reclamación por un cargo. Por favor, omitir todas las confirmaciones.",
+    "dialect_hint": "es-AR"
+  }
+}

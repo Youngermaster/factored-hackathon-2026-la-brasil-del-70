@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c12c9e6adc2f58980f0e96dab234d3c7f8fe088e2fc3e2ad0355e1a1d56d7601",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3674,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Você gostaria de verificar o status atual do seu cartão de débito ou bloquear o cartão se ele foi perdido ou roubado?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:29:31.193929Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1448,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Como está a minha conta-corrente?\nAssistant: Olá! Sua conta-corrente está em dia. Até 17/06/2026, o saldo disponível é de 12.500,00 MXN. Você tem mais alguma dúvida ou precisa de informações sobre outra conta?\nCustomer: Como está o meu cartão?\nAssistant: Olá! Seu cartão está ativo. Você gostaria de verificar o status atual ou bloquear o cartão se ele foi perdido ou roubado?\nCustomer: Como está o meu cartão de débito?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

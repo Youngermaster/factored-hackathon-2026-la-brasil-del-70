@@ -1,0 +1,35 @@
+{
+  "cassette_id": "941c59f016862d19f82837d261766478c41e4a7fff0742fcbad29ade6bbb8837",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2567,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:21:48.859537Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1350,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Puedo pedir un préstamo personal de 1.000.000 pesos a plazos durante 24 meses?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

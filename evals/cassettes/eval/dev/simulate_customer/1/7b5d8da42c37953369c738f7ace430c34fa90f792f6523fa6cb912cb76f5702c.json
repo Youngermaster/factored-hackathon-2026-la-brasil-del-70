@@ -1,0 +1,32 @@
+{
+  "cassette_id": "7b5d8da42c37953369c738f7ace430c34fa90f792f6523fa6cb912cb76f5702c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2357,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sim, quero bloquear."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:47:42.687376Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 790,
+    "output_tokens": 17
+  },
+  "variables": {
+    "conversation": "Customer: Quero bloquear uma carteira de crédito.\nAssistant: Voy a bloquear tu tarjeta de crédito **** 0186. El bloqueo es inmediato y la tarjeta dejará de funcionar. ¿Confirmas? Responde sí o no.\n\nPuedes bloquear de forma preventiva una tarjeta activa si la perdiste, te la robaron o ves movimientos que no reconoces. Antes de bloquearla te pediremos una verificación reforzada, válida durante 5 minutos, y tu confirmación expresa.\n\nEl bloqueo es inmediato: la tarjeta deja de funcionar para compras, retiros y cargos recurrentes, y los pagos automáticos asociados pueden fallar. El asistente no puede desbloquearla ni emitir una tarjeta nueva; esas solicitudes las atiende una persona del equipo. Solo te confirmaremos el bloqueo después de comprobar en los registros que la tarjeta quedó bloqueada.",
+    "conversation_seed": "dev-car-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Block a card without saying which of two at first.",
+    "hidden_facts": "card: credit card",
+    "instructions": "Say you want to block a card without saying which. When asked, say the credit card, and confirm the block.",
+    "known_facts": "(none)"
+  }
+}

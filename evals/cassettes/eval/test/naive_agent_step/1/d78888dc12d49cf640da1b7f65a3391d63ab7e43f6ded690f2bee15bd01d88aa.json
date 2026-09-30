@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d78888dc12d49cf640da1b7f65a3391d63ab7e43f6ded690f2bee15bd01d88aa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5134,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado su solicitud de préstamo personal. Su puntuación crediticia es 780, lo cual es excelente. El monto solicitado y el plazo de 24 meses son adecuados para su perfil crediticio. ¿Necesita más información o asistencia con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:33:13.762724Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1470,
+    "output_tokens": 90
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo sacar un préstamo personal de 10.000.000 pesos a 24 meses?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0008",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"get_credit_profile\", \"status\": \"ok\", \"result\": {\"credit_score\": 780, \"monthly_income\": \"9000000.00 COP\", \"days_past_due\": 0, \"tenure_months\": 40}}\n{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVCO0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"10000000.00 COP\", \"status\": \"submitted\"}}"
+  }
+}

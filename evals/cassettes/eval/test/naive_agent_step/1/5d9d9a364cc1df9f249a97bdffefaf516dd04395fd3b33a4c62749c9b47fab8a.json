@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5d9d9a364cc1df9f249a97bdffefaf516dd04395fd3b33a4c62749c9b47fab8a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5061,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "4321"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:48:04.888415Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1343,
+    "output_tokens": 53
+  },
+  "variables": {
+    "conversation": "Customer: Quero a situação do pagamento de 4321 pesos que fiz ontem para a escola",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "05e2fad3ed96021b40d6a17ab29363572167206fb3432906970c5908cd3f6316",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4890,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Dispute case opened successfully. O caso de disputa foi aberto com sucesso. A espera do prazo de 90 dias para resolver o problema. Você será notificado(a) sobre o andamento do caso. Se precisar de mais assistência, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:42.492000Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1417,
+    "output_tokens": 85
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma compra de 640 na FARMACIA CENTRO",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

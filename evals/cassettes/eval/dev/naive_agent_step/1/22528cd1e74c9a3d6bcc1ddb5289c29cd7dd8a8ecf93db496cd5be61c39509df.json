@@ -1,0 +1,33 @@
+{
+  "cassette_id": "22528cd1e74c9a3d6bcc1ddb5289c29cd7dd8a8ecf93db496cd5be61c39509df",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4996,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Não encontrei uma carta de crédito associada a sua conta. Por favor, verifique se digitou corretamente o número da sua conta ou se a carta de crédito ainda não foi emitida. Se necessário, podemos tentar novamente.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:15:52.247134Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1418,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Preciso bloquear uma carta de crédito.\nAssistant: Entendido, vamos proceder com o bloqueio da sua carta de crédito. Vou precisar de alguns detalhes para confirmar a solicitação. Qual é o motivo do bloqueio? Pode ser por perda, roubo, suspeita de fraude ou precaução.\nCustomer: Bloqueio por perda.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"block_card\", \"status\": \"not_found\", \"result\": null}"
+  }
+}

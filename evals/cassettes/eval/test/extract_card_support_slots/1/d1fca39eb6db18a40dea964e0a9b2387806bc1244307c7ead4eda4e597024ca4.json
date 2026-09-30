@@ -1,0 +1,31 @@
+{
+  "cassette_id": "d1fca39eb6db18a40dea964e0a9b2387806bc1244307c7ead4eda4e597024ca4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4025,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:10:12.939309Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 952,
+    "output_tokens": 32
+  },
+  "variables": {
+    "customer_message": "Pode me mandar a senha do meu cartão de crédito?",
+    "dialect_hint": "pt-BR"
+  }
+}

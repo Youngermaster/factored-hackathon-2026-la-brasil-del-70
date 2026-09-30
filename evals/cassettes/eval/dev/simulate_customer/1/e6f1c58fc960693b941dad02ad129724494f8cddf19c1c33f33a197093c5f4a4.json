@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e6f1c58fc960693b941dad02ad129724494f8cddf19c1c33f33a197093c5f4a4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2396,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sólo necesito saber el saldo de mi cuenta corriente, por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:08:57.072532Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 675,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "Customer: Hola, ¿me puedes decir mi saldo, por favor?\nAssistant: Su saldo actual es de 3.450.000 COP en la cuenta corriente y 5.200.000 COP en la cuenta de ahorros. Además, su tarjeta de crédito tiene un saldo de 1.200.000 COP con un límite de 8.000.000 COP. ¿Necesita información adicional sobre alguna de estas cuentas?",
+    "conversation_seed": "dev-acc-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Know the balance; the word saldo could also mean the remaining amount of a loan.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask what your saldo is, using the word saldo. If asked, say you mean the money in your accounts.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "cassette_id": "858ccc7c57ae17a2d5f6e5e42911d1619d513baa12a3c59ee4c1d346262c5539",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3336,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": null,
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": null
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:15:30.942212Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1023,
+    "output_tokens": 49
+  },
+  "variables": {
+    "customer_message": "Sí",
+    "dialect_hint": "es-AR"
+  }
+}

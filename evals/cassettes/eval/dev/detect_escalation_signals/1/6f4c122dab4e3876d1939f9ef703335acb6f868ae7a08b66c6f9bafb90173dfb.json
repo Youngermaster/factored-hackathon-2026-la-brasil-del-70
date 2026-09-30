@@ -1,0 +1,29 @@
+{
+  "cassette_id": "6f4c122dab4e3876d1939f9ef703335acb6f868ae7a08b66c6f9bafb90173dfb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1951,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:52:49.711618Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Me puedes decir por qué mi compra fue rechazada?",
+    "dialect_hint": "es-MX"
+  }
+}

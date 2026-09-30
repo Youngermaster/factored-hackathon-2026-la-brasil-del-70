@@ -1,0 +1,29 @@
+{
+  "cassette_id": "fc608b09a5adc91baeb653be9274e1635b5157164f849f3d49b69c679bfa6ae0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1778,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:38:12.476033Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 488,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quiero cambiar mi dirección y mi número de teléfono",
+    "dialect_hint": "es-AR"
+  }
+}

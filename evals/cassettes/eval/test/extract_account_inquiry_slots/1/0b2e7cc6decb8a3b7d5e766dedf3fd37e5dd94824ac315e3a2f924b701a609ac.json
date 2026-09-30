@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0b2e7cc6decb8a3b7d5e766dedf3fd37e5dd94824ac315e3a2f924b701a609ac",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5886,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": null,
+    "product_hint": {
+      "last4": null,
+      "product_type": "credit_card"
+    },
+    "statement_period_expression": "los últimos 8 meses"
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:21:18.370816Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1137,
+    "output_tokens": 46
+  },
+  "variables": {
+    "customer_message": "Quiero el resumen de movimientos de mi tarjeta de crédito de los últimos 8 meses",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

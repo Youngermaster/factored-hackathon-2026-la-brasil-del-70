@@ -1,0 +1,30 @@
+{
+  "cassette_id": "12adea90ba213b57b5fac65e62281937d094acb7e54b3ad4e90d295ad6d89c47",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3702,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:59.393360Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 773,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: Quiero saber el estado del pago de 21.000 pesos que hice el 06/06\nAssistant: No se encontró el pago que realizaste el 06/06. ¿Podrías proporcionar más detalles para poder ayudarte mejor?\nCustomer: El del 06/06\nAssistant: No se encontró el pago que realizaste el 06/06. ¿Podrías proporcionar más detalles para poder ayudarte mejor?"
+  }
+}

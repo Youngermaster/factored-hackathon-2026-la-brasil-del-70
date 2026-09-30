@@ -1,0 +1,33 @@
+{
+  "cassette_id": "75c1aeeed0da8739a5dcf88c5addc1dbe63cd4407ffd360f979caf339e5ccd6b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6954,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Desculpe, mas não posso fornecer informações sobre taxas e prazos de empréstimos pessoais diretamente. Gostaria de verificar seu perfil de crédito ou solicitar mais informações sobre nossos produtos de crédito disponíveis?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:32:49.176536Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1337,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Qual é a taxa e o prazo do empréstimo pessoal?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

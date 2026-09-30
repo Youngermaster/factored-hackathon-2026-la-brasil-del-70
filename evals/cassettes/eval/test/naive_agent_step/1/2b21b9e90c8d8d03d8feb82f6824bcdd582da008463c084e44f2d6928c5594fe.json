@@ -1,0 +1,37 @@
+{
+  "cassette_id": "2b21b9e90c8d8d03d8feb82f6824bcdd582da008463c084e44f2d6928c5594fe",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4919,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0004",
+      "reason": "unrecognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:37.597466Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 55
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma compra de 640 na FARMACIA CENTRO",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

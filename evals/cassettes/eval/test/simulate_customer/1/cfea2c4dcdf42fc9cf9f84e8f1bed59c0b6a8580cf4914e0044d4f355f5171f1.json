@@ -1,0 +1,32 @@
+{
+  "cassette_id": "cfea2c4dcdf42fc9cf9f84e8f1bed59c0b6a8580cf4914e0044d4f355f5171f1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3200,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Hice una compra en KIOSCO DEL SUR y me enteré que me estafaron por $15.000. No quiero que bloqueen la tarjeta por ahora."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:59.290899Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 591,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-dis-ambiguou-011#1",
+    "dialect_hint": "es-AR",
+    "goal": "Report a fraudulent charge using estafa (fraud in Spanish) or golpe (Portuguese).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you were the victim of a scam (estafa in Spanish, golpe in Portuguese) with a charge of 15.000 at KIOSCO DEL SUR. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

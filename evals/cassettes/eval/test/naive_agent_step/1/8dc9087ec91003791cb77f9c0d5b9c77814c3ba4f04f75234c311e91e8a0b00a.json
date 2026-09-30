@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8dc9087ec91003791cb77f9c0d5b9c77814c3ba4f04f75234c311e91e8a0b00a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4239,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción en ALMACEN ANDES. El caso se abrirá en 15 días hábiles. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:48:55.371292Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1428,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Me cobraron 85.000 en ALMACEN ANDES y no fui yo, creo que clonaron mi tarjeta",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "es-CO",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"TXN-ANDES85000\", \"reason\": \"clonacion\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

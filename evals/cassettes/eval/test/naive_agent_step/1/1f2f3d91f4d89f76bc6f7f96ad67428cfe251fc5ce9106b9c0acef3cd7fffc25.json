@@ -1,0 +1,33 @@
+{
+  "cassette_id": "1f2f3d91f4d89f76bc6f7f96ad67428cfe251fc5ce9106b9c0acef3cd7fffc25",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3599,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Claro, ¿podrías indicarme qué tipo de crédito te interesa saber más? Tenemos tarjetas de crédito y préstamos personales.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:23:36.431478Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1325,
+    "output_tokens": 59
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quisiera saber sobre un crédito. ¿Podrías darme más información?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

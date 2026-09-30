@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7bf3fab905342298ea00d60ee6799c5f05a88f22d0e2dbf4da9a6f17ae75609d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 7884,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "abstained",
+    "reply": "Lo siento, pero no puedo ayudarte a actualizar tu correo electrónico a través de este canal. Te sugiero que lo hagas a través de la aplicación móvil o el sitio web oficial de la entidad bancaria. ¿Necesitas ayuda con alguna de las áreas que mencionaste antes?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:41:06.436408Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1316,
+    "output_tokens": 89
+  },
+  "variables": {
+    "conversation": "Customer: Actualiza mi correo electrónico, por favor",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c54e774727c0120d820c06a48177c07cda7c94b69d92d1c95b09bc3782edc6b0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4824,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:57:15.346348Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1334,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Preciso de uma declaração bancária da minha conta",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

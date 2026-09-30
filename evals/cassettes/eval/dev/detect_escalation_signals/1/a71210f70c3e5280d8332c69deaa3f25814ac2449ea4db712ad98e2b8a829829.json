@@ -1,0 +1,29 @@
+{
+  "cassette_id": "a71210f70c3e5280d8332c69deaa3f25814ac2449ea4db712ad98e2b8a829829",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1964,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:54:59.163043Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 495,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Ganho 1.500.000 pesos por mês",
+    "dialect_hint": "es-AR"
+  }
+}

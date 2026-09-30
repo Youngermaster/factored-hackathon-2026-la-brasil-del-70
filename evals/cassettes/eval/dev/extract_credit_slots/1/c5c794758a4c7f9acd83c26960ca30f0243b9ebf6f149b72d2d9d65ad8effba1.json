@@ -1,0 +1,31 @@
+{
+  "cassette_id": "c5c794758a4c7f9acd83c26960ca30f0243b9ebf6f149b72d2d9d65ad8effba1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6184,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "ARS",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "1000000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:55:57.748147Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1047,
+    "output_tokens": 61
+  },
+  "variables": {
+    "customer_message": "¿Puedo sacar un préstamo personal de 1.000.000 pesos a 24 meses?",
+    "dialect_hint": "es-AR"
+  }
+}

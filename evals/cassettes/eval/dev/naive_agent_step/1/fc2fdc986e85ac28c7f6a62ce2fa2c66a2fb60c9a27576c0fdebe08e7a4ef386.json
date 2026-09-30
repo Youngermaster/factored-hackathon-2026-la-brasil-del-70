@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fc2fdc986e85ac28c7f6a62ce2fa2c66a2fb60c9a27576c0fdebe08e7a4ef386",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5571,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0004",
+      "transaction_id": "2026-06-14"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:39:49.956942Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1344,
+    "output_tokens": 58
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 7.300 do dia 14/06",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

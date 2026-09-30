@@ -1,0 +1,31 @@
+{
+  "cassette_id": "5bed63b5fd23554b43fa0cd343e9c618a169c7e9c38ae158ad01782fedce6dd8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4641,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": null
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:57.579266Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "¿Cuándo vence mi tarjeta de crédito?",
+    "dialect_hint": "es-MX"
+  }
+}

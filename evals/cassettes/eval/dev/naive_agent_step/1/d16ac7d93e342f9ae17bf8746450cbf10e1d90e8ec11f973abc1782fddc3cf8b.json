@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d16ac7d93e342f9ae17bf8746450cbf10e1d90e8ec11f973abc1782fddc3cf8b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5159,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entiendo sus preocupaciones. Podríamos revisar los últimos movimientos de su cuenta para confirmar la información. ¿Le gustaría que verifique los últimos 10 movimientos de su cuenta corriente?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:10:27.055228Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1430,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Quiero ver mis saldos\nAssistant: Sus saldos actuales son los siguientes: Cuenta corriente con saldo de 52,300.50 MXN, Cuenta de ahorros con saldo de 18,000.00 MXN, y Tarjeta de crédito con saldo de 12,500.00 MXN, todos como de 17 de junio de 2026. ¿Necesita información adicional?\nCustomer: No puede ser, ese saldo no es correcto, falta dinero",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

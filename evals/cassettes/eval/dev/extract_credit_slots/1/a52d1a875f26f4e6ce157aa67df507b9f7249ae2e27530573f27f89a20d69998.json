@@ -1,0 +1,31 @@
+{
+  "cassette_id": "a52d1a875f26f4e6ce157aa67df507b9f7249ae2e27530573f27f89a20d69998",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3286,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:54:20.412133Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1058,
+    "output_tokens": 58
+  },
+  "variables": {
+    "customer_message": "Posso pegar um empréstimo pessoal de 50000 em 24 meses?",
+    "dialect_hint": "pt-BR"
+  }
+}

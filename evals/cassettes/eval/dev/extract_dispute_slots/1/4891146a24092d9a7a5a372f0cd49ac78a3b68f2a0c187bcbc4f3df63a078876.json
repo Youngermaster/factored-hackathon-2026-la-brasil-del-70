@@ -1,0 +1,43 @@
+{
+  "cassette_id": "4891146a24092d9a7a5a372f0cd49ac78a3b68f2a0c187bcbc4f3df63a078876",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 13924,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "300",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "CAFE LUNA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:00:34.092745Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1456,
+    "output_tokens": 111
+  },
+  "variables": {
+    "customer_message": "No reconozco este cargo de 300 pesos en CAFE LUNA.",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "ded890c98a9061eed80ffb0ff0e783564da7d76bab5491e92e093034fc812d15",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1881,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quero o resumo do último mês, por favor."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:45:09.011702Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 661,
+    "output_tokens": 23
+  },
+  "variables": {
+    "conversation": "Customer: Preciso ver o resumo das minhas movimentações no cartão de crédito de último mês.\nAssistant: ¿De qué periodo quieres el resumen? Por ejemplo: el mes pasado, mayo o la semana pasada.\nCustomer: Quero o resumo do último mês, por favor.\nAssistant: ¿De qué periodo quieres el resumen? Por ejemplo: el mes pasado, mayo o la semana pasada.",
+    "conversation_seed": "dev-acc-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Get a card statement summary without giving the period at first.",
+    "hidden_facts": "period: last month (May)",
+    "instructions": "Ask for a summary of your credit card movements. When asked for the period, say last month.",
+    "known_facts": "(none)"
+  }
+}

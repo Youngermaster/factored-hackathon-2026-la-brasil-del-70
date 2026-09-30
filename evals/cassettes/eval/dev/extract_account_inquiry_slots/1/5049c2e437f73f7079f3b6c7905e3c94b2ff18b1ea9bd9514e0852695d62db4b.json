@@ -1,0 +1,34 @@
+{
+  "cassette_id": "5049c2e437f73f7079f3b6c7905e3c94b2ff18b1ea9bd9514e0852695d62db4b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 9426,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "payment": {
+      "amount": "1500",
+      "currency_hint": "MXN",
+      "date_expression": null,
+      "payee_text": "JUAN PEREZ"
+    },
+    "product_hint": null,
+    "statement_period_expression": null
+  },
+  "output_model": "AccountInquirySlotExtraction",
+  "prompt": "extract_account_inquiry_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T15:49:20.650137Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1156,
+    "output_tokens": 64
+  },
+  "variables": {
+    "customer_message": "Olá, gostaria de saber o status do meu pagamento de 1500 pesos para JUAN PEREZ.",
+    "dialect_hint": "pt-BR",
+    "reference_date": "2026-06-18"
+  }
+}

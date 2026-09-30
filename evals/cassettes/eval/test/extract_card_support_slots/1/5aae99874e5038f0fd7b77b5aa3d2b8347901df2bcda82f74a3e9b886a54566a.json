@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5aae99874e5038f0fd7b77b5aa3d2b8347901df2bcda82f74a3e9b886a54566a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5199,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "lost",
+      "stolen",
+      "unrecognized_activity",
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": "0000"
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:06:24.279170Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 951,
+    "output_tokens": 52
+  },
+  "variables": {
+    "customer_message": "Bloqueie o cartão final 0000",
+    "dialect_hint": "pt-BR"
+  }
+}

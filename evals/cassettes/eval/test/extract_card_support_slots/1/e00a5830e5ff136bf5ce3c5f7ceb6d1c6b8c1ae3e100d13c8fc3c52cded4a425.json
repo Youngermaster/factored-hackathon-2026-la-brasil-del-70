@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e00a5830e5ff136bf5ce3c5f7ceb6d1c6b8c1ae3e100d13c8fc3c52cded4a425",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5884,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "block_reason_candidates": [
+      "lost",
+      "stolen",
+      "unrecognized_activity",
+      "precaution"
+    ],
+    "card_hint": {
+      "card_type": "credit_card",
+      "last4": null
+    },
+    "requested_action": "block"
+  },
+  "output_model": "CardSupportSlotExtraction",
+  "prompt": "extract_card_support_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:07:11.968942Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 65
+  },
+  "variables": {
+    "customer_message": "Extravié mi tarjeta de crédito y quiero bloquearla",
+    "dialect_hint": "es-AR"
+  }
+}

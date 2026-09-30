@@ -1,0 +1,29 @@
+{
+  "cassette_id": "595f2e4b07ee3cb748a61f01db576b65a12ad91ec48b4cc10d7db55aa920bc15",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2996,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:03:45.089198Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Recomiéndame en qué invertir mis ahorros",
+    "dialect_hint": "es-CO"
+  }
+}

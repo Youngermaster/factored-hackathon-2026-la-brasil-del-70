@@ -1,0 +1,45 @@
+{
+  "cassette_id": "e0ab0da821f87c491a9e0c296c2a97c64fd4038b6c877ab531333c97d5debadc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6477,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized",
+      "wrong_amount",
+      "other"
+    ],
+    "transaction": {
+      "amount": "1250",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "MXN",
+      "date_expression": "2026-06-18",
+      "merchant_text": "TIENDA AURORA"
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:36:20.173751Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1462,
+    "output_tokens": 116
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar el cargo de 1250 en TIENDA AURORA, no lo hice",
+    "dialect_hint": "es-MX",
+    "reference_date": "2026-06-18"
+  }
+}

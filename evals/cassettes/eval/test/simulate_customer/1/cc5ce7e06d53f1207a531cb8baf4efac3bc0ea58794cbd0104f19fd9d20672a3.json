@@ -1,0 +1,32 @@
+{
+  "cassette_id": "cc5ce7e06d53f1207a531cb8baf4efac3bc0ea58794cbd0104f19fd9d20672a3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2289,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No reconozco una transacción de $1250 en TIENDA AURORA."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:43:17.493496Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 592,
+    "output_tokens": 31
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-dis-ambiguou-012#1",
+    "dialect_hint": "es-MX",
+    "goal": "Report an unknown charge without details, then give them.",
+    "hidden_facts": "amount: 1250; merchant: TIENDA AURORA",
+    "instructions": "Say there is a charge you do not recognize, without details. When asked, give the amount 1250 and the merchant TIENDA AURORA. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

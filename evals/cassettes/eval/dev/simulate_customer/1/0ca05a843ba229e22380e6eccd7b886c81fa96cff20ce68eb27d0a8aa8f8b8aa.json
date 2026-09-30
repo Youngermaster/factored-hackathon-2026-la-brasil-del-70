@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0ca05a843ba229e22380e6eccd7b886c81fa96cff20ce68eb27d0a8aa8f8b8aa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2769,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, la transacción fue por $50.000 ayer en ESTACION TERPEL SUR."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:43.243100Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 698,
+    "output_tokens": 35
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.\nAssistant: Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?\nCustomer: Sí, la transacción es del día de ayer por $50.000.\nAssistant: No encontramos esa transacción en tu historial. ¿Podrías proporcionar más detalles o verificar el número de transacción?",
+    "conversation_seed": "dev-car-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask why a purchase was declined without saying the card.",
+    "hidden_facts": "card: credit card; merchant: ESTACION TERPEL SUR",
+    "instructions": "Ask why a purchase was declined. When asked which card, say the credit card.",
+    "known_facts": "(none)"
+  }
+}

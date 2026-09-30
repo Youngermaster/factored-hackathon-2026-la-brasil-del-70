@@ -1,0 +1,32 @@
+{
+  "cassette_id": "056c55c26e08bc4122b64f790098db7f56049bbe08314c412c40db8a09822f00",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1933,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "¿Cuál es o sea, ¿mi saldo de ahorros en general?!"
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:41:39.425257Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 548,
+    "output_tokens": 28
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-acc-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Know the savings balance, mixing Spanish and Portuguese.",
+    "hidden_facts": "(none)",
+    "instructions": "Ask for your savings balance mixing Spanish and Portuguese words in one sentence.",
+    "known_facts": "(none)"
+  }
+}

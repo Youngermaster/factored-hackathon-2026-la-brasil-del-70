@@ -1,0 +1,32 @@
+{
+  "cassette_id": "891af92c14c22317be6d669f34f504ad8b3024a655892a8ec9819f513fc79288",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2668,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "No reconozco la compra de ALMACEN ANDES del 15/06."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:33.383421Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 572,
+    "output_tokens": 30
+  },
+  "variables": {
+    "conversation": "(empty)",
+    "conversation_seed": "test-dis-ambiguou-009#1",
+    "dialect_hint": "es-CO",
+    "goal": "Dispute a charge giving the date as day and month digits.",
+    "hidden_facts": "(none)",
+    "instructions": "Say you do not recognize the ALMACEN ANDES charge of 15/06, writing the date as digits. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

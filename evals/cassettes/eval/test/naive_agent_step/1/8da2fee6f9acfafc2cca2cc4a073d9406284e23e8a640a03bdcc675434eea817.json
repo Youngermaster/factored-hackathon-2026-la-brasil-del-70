@@ -1,0 +1,37 @@
+{
+  "cassette_id": "8da2fee6f9acfafc2cca2cc4a073d9406284e23e8a640a03bdcc675434eea817",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3590,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0002",
+      "product_id": "CRD-0001",
+      "reason": "lost"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "block_card"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:08:15.506158Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1379,
+    "output_tokens": 60
+  },
+  "variables": {
+    "conversation": "Customer: Extravié mi tarjeta de crédito y quiero bloquearla\nAssistant: Señor/a, hemos recibido su solicitud para bloquear su tarjeta de crédito. Antes de proceder, ¿puede confirmar su identidad proporcionando el último cuatro dígitos del número de su tarjeta?\nCustomer: Sí, confirmo",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

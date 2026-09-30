@@ -1,0 +1,33 @@
+{
+  "cassette_id": "3e0ffbca3795d7da363bec3136c924b9f221c1448d8ee90218e10d2057d35f53",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4992,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la compra de 1250 pesos del 15/06 en TIENDA AURORA. El caso será resuelto en un plazo máximo de 45 días. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:49:12.587024Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1419,
+    "output_tokens": 87
+  },
+  "variables": {
+    "conversation": "Customer: Quiero reclamar la compra de 1250 pesos del 15/06 en TIENDA AURORA, no fui yo",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVMX0004\", \"transaction_id\": \"[NUMBER]\", \"reason\": \"no_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

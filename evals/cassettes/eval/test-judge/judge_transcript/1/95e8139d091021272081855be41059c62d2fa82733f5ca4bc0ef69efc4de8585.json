@@ -1,0 +1,30 @@
+{
+  "cassette_id": "95e8139d091021272081855be41059c62d2fa82733f5ca4bc0ef69efc4de8585",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2350,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 3,
+    "language_correct": true,
+    "language_quality": 4,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:01.499923Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 731,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Bloquea la tarjeta que termina en 0000\nAssistant: Tienes varias tarjetas. ¿Sobre cuál me consultas?\n1) tarjeta de crédito **** 6155\n2) tarjeta de débito **** 7052"
+  }
+}

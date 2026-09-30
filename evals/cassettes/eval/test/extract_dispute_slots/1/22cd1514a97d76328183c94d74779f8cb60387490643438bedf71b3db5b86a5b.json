@@ -1,0 +1,43 @@
+{
+  "cassette_id": "22cd1514a97d76328183c94d74779f8cb60387490643438bedf71b3db5b86a5b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5745,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "intent_candidates": [
+      {
+        "confidence": 1.0,
+        "intent": "dispute_new"
+      }
+    ],
+    "reason_candidates": [
+      "unrecognized"
+    ],
+    "transaction": {
+      "amount": "37000",
+      "card_last4_hint": null,
+      "channel_hint": null,
+      "currency_hint": "COP",
+      "date_expression": "14/06",
+      "merchant_text": null
+    }
+  },
+  "output_model": "DisputeSlotExtraction",
+  "prompt": "extract_dispute_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:34:57.243462Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1461,
+    "output_tokens": 103
+  },
+  "variables": {
+    "customer_message": "Hay un cargo de 37.000 del 14/06 que no reconozco",
+    "dialect_hint": "es-CO",
+    "reference_date": "2026-06-18"
+  }
+}

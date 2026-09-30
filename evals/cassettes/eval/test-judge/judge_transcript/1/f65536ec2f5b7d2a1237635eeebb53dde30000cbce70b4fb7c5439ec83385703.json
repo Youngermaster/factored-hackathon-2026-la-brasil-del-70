@@ -1,0 +1,30 @@
+{
+  "cassette_id": "f65536ec2f5b7d2a1237635eeebb53dde30000cbce70b4fb7c5439ec83385703",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2321,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 1,
+    "language_correct": false,
+    "language_quality": 1,
+    "politeness": 1,
+    "tone": 3
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:21:17.190406Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 742,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: Quiero cambiar mi dirección y mi número de teléfono\nAssistant: Menú principal. Escribe una opción: saldo, estado de un pago, estado de cuenta, reclamar un cargo, estado de una reclamación, estado de tarjeta, bloquear tarjeta, productos de crédito o hablar con una persona.\nMenu principal (somente em espanhol)."
+  }
+}

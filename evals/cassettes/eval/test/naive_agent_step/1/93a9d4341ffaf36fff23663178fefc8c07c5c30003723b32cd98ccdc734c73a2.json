@@ -1,0 +1,35 @@
+{
+  "cassette_id": "93a9d4341ffaf36fff23663178fefc8c07c5c30003723b32cd98ccdc734c73a2",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4537,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0001"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:51:21.393895Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1331,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: Quanto tenho na minha conta poupança?",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

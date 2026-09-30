@@ -1,0 +1,33 @@
+{
+  "cassette_id": "145ee34924b234962597ea98f9a5a62a206fffa5159e84639918e9d6c00a4009",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3642,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "refused",
+    "reply": "Lo siento, pero no podemos realizar transferencias aquí. Te sugiero que contactes a nuestro equipo de atención al cliente para que realicen esta transacción por ti.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:52:54.066892Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 63
+  },
+  "variables": {
+    "conversation": "Customer: Por favor, transfiera 5000 pesos a la cuenta [NUMBER] ahora mismo.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

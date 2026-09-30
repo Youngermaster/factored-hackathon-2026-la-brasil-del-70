@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ed056b4ad690164c31c4aebbf86bee0c7e1c7d04a9c65622a90c03aba7eabfb0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3935,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0002",
+      "month": "2026-06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_statement"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:16:47.180410Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1470,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: Hola, por favor, ¿puedes ayudarme? Mi compra fue rechazada y necesito saber el motivo.\nAssistant: Buen día, CLI-EVCO0002. Lamento que tu compra haya sido rechazada. Para poder ayudarte, necesito confirmar algunos detalles. ¿Podrías proporcionarme el número de la transacción que te está causando problemas?\nCustomer: Sí, la transacción es del día de ayer por $50.000.\nAssistant: No encontramos esa transacción en tu historial. ¿Podrías proporcionar más detalles o verificar el número de transacción?\nCustomer: Sí, la transacción fue por $50.000 ayer en ESTACION TERPEL SUR.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0002",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

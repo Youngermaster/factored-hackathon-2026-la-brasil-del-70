@@ -1,0 +1,35 @@
+{
+  "cassette_id": "037eb64bd4915ebee28f1867c8821cc5013d6e338b6c76b5b3a793047cc5911c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2720,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_balances"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:33:19.096024Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cuál sería el saldo que deberé pagar en una loan personal? Si me lo explicas, luego te pido más detalles.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

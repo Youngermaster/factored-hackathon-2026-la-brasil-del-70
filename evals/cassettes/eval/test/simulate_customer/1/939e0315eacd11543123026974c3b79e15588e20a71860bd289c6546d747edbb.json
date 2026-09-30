@@ -1,0 +1,32 @@
+{
+  "cassette_id": "939e0315eacd11543123026974c3b79e15588e20a71860bd289c6546d747edbb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1912,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Sí, por favor envíenme el formulario para completarlo."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:18:19.832892Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 912,
+    "output_tokens": 25
+  },
+  "variables": {
+    "conversation": "Customer: Hola, quiero saber sobre un crédito. ¿Me podrías decir las condiciones?\nAssistant: ¡Claro! Le proporcionaré información sobre las condiciones de los productos de crédito disponibles en Colombia. ¿Le interesa conocer más sobre tarjetas de crédito, hipotecas o préstamos personales?\nCustomer: Prefiero un préstamo personal, ¿puedes decirme las condiciones?\nAssistant: Por supuesto, para el préstamo personal en Colombia, necesitamos considerar algunos factores. ¿Podría proporcionarme su ingreso mensual aproximado y si tiene algún pago pendiente?\nCustomer: Tengo un ingreso de $3.000.000 mensuales y no tengo pagos pendientes.\nAssistant: Con base en la información proporcionada y su perfil crediticio, para un préstamo personal en Colombia con un ingreso mensual de 3.000.000 COP y un puntaje de crédito de 780, podríamos considerar una tasa de interés del 12% anual. El plazo mínimo es de 12 meses y el máximo de 60 meses. ¿Le interesa solicitar un presupuesto personalizado basado en estos parámetros?\nCustomer: Sí, me interesa mucho. ¿Cómo puedo solicitar este préstamo personal?\nAssistant: Para solicitar un préstamo personal, necesitamos que complete un formulario de aplicación. ¿Le gustaría que le enviemos un formulario para que lo rellene y envíe de nuevo a través de este canal? También podemos ayudarlo a revisar la información y ver si cumple con los requisitos indicativos.",
+    "conversation_seed": "test-cre-ambiguou-003#1",
+    "dialect_hint": "es-CO",
+    "goal": "Ask about credit using the word crédito (a card, a loan, or a refund credit).",
+    "hidden_facts": "(none)",
+    "instructions": "Say you want a crédito without saying which kind. When asked, say a personal loan and that you want to know the conditions.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5058db9a01dd8eaa8fd272909332985263003fdc9cab1c4b397e4d401cde7675",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4166,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha enviado su solicitud de préstamo personal con éxito. El número de aplicación es app-naive-0001. Recibirá un correo electrónico con más información. ¿Necesita ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:24:39.865819Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1399,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: ¿Puedo solicitar un préstamo personal de 50.000 pesos por 24 meses?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVMX0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"50000\", \"status\": \"submitted\"}}"
+  }
+}

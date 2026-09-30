@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7fc26651ac50425d60c92ee6958f7b4590daad06275ef2e274d34adc625368f1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4307,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Se ha abierto un caso de disputa para la transacción no reconocida. El plazo para resolver este caso es de 30 días desde la fecha de creación. ¿Necesitas ayuda con algo más?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:45:26.097499Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1407,
+    "output_tokens": 73
+  },
+  "variables": {
+    "conversation": "Customer: Otra vez un cargo que no reconozco: 15.000 en KIOSCO DEL SUR",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0007",
+    "dialect_hint": "es-AR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0007\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

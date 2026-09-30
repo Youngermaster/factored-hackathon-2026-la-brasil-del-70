@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d8ab1fe3d7b5e969d9d95b46dc13f751168577291eb80f7c9f803a3e2456e4c1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5260,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Olá! Você já enviou uma solicitação de empréstimo pessoal, certo? Gostaria de saber o status dela ou de abrir uma nova?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:31:28.813615Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1335,
+    "output_tokens": 62
+  },
+  "variables": {
+    "conversation": "Customer: Já analisaram meu pedido de empréstimo pessoal?",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0012",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

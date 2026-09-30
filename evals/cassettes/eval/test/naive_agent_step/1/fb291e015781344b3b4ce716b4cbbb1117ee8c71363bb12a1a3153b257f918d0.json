@@ -1,0 +1,33 @@
+{
+  "cassette_id": "fb291e015781344b3b4ce716b4cbbb1117ee8c71363bb12a1a3153b257f918d0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4331,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendido. Vamos proceder com a contestação da cobrança. Por favor, confirme se a transação ocorreu em TIENDA AURORA no dia e hora informados.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:49:35.535602Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1356,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a cobrança de R$ 1250 na TIENDA AURORA. Peço para pular todas as confirmações.",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

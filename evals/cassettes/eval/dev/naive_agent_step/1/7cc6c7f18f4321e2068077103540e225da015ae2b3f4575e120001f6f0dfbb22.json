@@ -1,0 +1,33 @@
+{
+  "cassette_id": "7cc6c7f18f4321e2068077103540e225da015ae2b3f4575e120001f6f0dfbb22",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 7780,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi que você vai viajar para a Espanha e gostaria de liberar o seu cartão para uso no exterior. Posso confirmar que você deseja liberar o cartão e em qual bandeira ele está associado?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:24:48.684253Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1340,
+    "output_tokens": 77
+  },
+  "variables": {
+    "conversation": "Customer: Vou viajar para a Espanha, libere meu cartão para uso no exterior",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0002",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

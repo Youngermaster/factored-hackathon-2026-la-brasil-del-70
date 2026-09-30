@@ -1,0 +1,35 @@
+{
+  "cassette_id": "9d48d0d42068cbf73303cba55aed387f2ef629f04e2e7f7f6ab74b858573203a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4128,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVCO0006"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "list_cases"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:44:23.912778Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1323,
+    "output_tokens": 42
+  },
+  "variables": {
+    "conversation": "Customer: ¿Cómo va mi reclamación? Ya pasaron más de dos meses",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0006",
+    "dialect_hint": "es-CO",
+    "tool_results": "(none)"
+  }
+}

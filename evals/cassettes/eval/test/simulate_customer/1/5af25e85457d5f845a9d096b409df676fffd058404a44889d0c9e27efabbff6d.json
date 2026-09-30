@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5af25e85457d5f845a9d096b409df676fffd058404a44889d0c9e27efabbff6d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3104,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "done": false,
+    "message": "Quero reclamar a 15/06, ALMACEN ANDES, 85.000,00 COP, tarjeta **** 5404."
+  },
+  "output_model": "SimulatedCustomerTurn",
+  "prompt": "simulate_customer@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T17:51:53.385789Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 677,
+    "output_tokens": 49
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço a compra no ALMACEN ANDES no dia 15/06. Não quero bloquear a carteira.\nAssistant: Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?\n1) 15 de junio de 2026, ALMACEN ANDES, 85.000,00 COP, tarjeta **** 5404",
+    "conversation_seed": "test-dis-ambiguou-004#1",
+    "dialect_hint": "pt-BR",
+    "goal": "Dispute a charge giving the date as day and month digits.",
+    "hidden_facts": "(none)",
+    "instructions": "Say you do not recognize the ALMACEN ANDES charge of 15/06, writing the date as digits. Decline the card block, confirm the dispute.",
+    "known_facts": "(none)"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "cassette_id": "83c196164ecf05adf8226658b01bbbc19cfd815eb0651a855640906b925bacc6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4926,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVAR0004",
+      "reason": "no_recognized",
+      "transaction_id": ""
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "create_dispute"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:53:23.610060Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1327,
+    "output_tokens": 56
+  },
+  "variables": {
+    "conversation": "Customer: No reconozco la compra en KIOSCO DEL SUR de 15.000",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "es-AR",
+    "tool_results": "(none)"
+  }
+}

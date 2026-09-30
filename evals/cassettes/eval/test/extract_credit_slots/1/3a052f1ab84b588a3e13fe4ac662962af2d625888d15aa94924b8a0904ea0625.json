@@ -1,0 +1,31 @@
+{
+  "cassette_id": "3a052f1ab84b588a3e13fe4ac662962af2d625888d15aa94924b8a0904ea0625",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 5682,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": null,
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": null,
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:16:27.456285Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1041,
+    "output_tokens": 53
+  },
+  "variables": {
+    "customer_message": "Quiero saber si califico para un préstamo personal de [DOCUMENT] a 24 meses",
+    "dialect_hint": "es-AR"
+  }
+}

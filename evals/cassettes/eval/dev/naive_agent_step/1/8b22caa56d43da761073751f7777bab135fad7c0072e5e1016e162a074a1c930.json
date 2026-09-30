@@ -1,0 +1,33 @@
+{
+  "cassette_id": "8b22caa56d43da761073751f7777bab135fad7c0072e5e1016e162a074a1c930",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6130,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi. Vou verificar essa cobrança não reconhecida e abrir um caso de disputa para você. Preciso da data da transação para garantir que esteja dentro do prazo permitido.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:38:10.540884Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1341,
+    "output_tokens": 71
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço uma cobrança de 777 pesos na SAPATARIA LUZ",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

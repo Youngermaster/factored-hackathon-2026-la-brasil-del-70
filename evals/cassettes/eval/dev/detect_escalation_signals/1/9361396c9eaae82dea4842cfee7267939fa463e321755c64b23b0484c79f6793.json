@@ -1,0 +1,29 @@
+{
+  "cassette_id": "9361396c9eaae82dea4842cfee7267939fa463e321755c64b23b0484c79f6793",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2117,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:49:19.329523Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 491,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Estado del pago que hice el 06/06",
+    "dialect_hint": "es-MX"
+  }
+}

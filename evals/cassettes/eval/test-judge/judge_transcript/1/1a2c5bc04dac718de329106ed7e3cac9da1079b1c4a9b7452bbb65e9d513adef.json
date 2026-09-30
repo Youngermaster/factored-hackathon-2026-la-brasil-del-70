@@ -1,0 +1,30 @@
+{
+  "cassette_id": "1a2c5bc04dac718de329106ed7e3cac9da1079b1c4a9b7452bbb65e9d513adef",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3548,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:20.887022Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 741,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "pt-BR",
+    "transcript": "Customer: Quero o estorno agora da cobrança de 1250 na TIENDA AURORA\nAssistant: Desculpe, mas não encontramos essa transação em nosso sistema. Você poderia me fornecer mais detalhes para que eu possa verificar novamente?"
+  }
+}

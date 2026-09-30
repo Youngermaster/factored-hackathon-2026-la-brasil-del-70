@@ -1,0 +1,30 @@
+{
+  "cassette_id": "9e9957d11967d2f304b5788373e246c5df2a2719b9d6917938178ed773f96305",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2175,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:22:17.336606Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 742,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Reclamo la compra de 1250 en TIENDA AURORA, no la hice\nAssistant: Se ha abierto un caso de reclamo para la transacción en TIENDA AURORA. El plazo para resolver este caso es de 45 días. ¿Necesitas alguna otra información o asistencia?"
+  }
+}

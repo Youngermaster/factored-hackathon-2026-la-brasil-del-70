@@ -1,0 +1,30 @@
+{
+  "cassette_id": "95c4e93283b1154c31366e8745b71e305f7b557da92fefd8af851bd00f057f33",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2398,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 5,
+    "language_correct": true,
+    "language_quality": 5,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:18:22.677361Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 730,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-AR",
+    "transcript": "Customer: Quiero cambiar mi dirección y mi número de teléfono\nAssistant: Lamento informarle que no podemos ayudarlo con esa solicitud aquí. Le sugerimos que pase a una persona para que pueda actualizar su dirección y número de teléfono. ¿Está de acuerdo en que le transmitamos su solicitud?"
+  }
+}

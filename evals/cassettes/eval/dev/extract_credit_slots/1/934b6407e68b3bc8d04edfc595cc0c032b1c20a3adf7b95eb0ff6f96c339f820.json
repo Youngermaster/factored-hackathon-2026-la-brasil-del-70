@@ -1,0 +1,31 @@
+{
+  "cassette_id": "934b6407e68b3bc8d04edfc595cc0c032b1c20a3adf7b95eb0ff6f96c339f820",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6652,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "currency_hint": "MXN",
+    "declared_monthly_income": null,
+    "product_of_interest": "personal_loan",
+    "purpose": null,
+    "requested_amount": "50000",
+    "requested_term_months": 24
+  },
+  "output_model": "CreditSlotExtraction",
+  "prompt": "extract_credit_slots@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:54:44.463569Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1042,
+    "output_tokens": 60
+  },
+  "variables": {
+    "customer_message": "¿Puedo sacar un préstamo personal de 50000 a 24 meses?",
+    "dialect_hint": "es-MX"
+  }
+}

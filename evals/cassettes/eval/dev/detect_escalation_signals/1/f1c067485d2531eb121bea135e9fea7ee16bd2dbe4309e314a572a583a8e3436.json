@@ -1,0 +1,29 @@
+{
+  "cassette_id": "f1c067485d2531eb121bea135e9fea7ee16bd2dbe4309e314a572a583a8e3436",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1797,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:56:04.165692Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 489,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Qué tasa y plazo tiene el préstamo personal?",
+    "dialect_hint": "es-MX"
+  }
+}

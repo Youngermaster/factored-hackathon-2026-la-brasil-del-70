@@ -1,0 +1,29 @@
+{
+  "cassette_id": "883ffbb131cb51ef3a5cd857c779062acf482091152cadb0a910ac91a870af97",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1932,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": true,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:05:52.504624Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 492,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Me robaron la tarjeta de crédito y necesito una nueva",
+    "dialect_hint": "es-CO"
+  }
+}

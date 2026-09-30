@@ -1,0 +1,33 @@
+{
+  "cassette_id": "d1034529222fafde405eb7fa0c5a06424fd029cfbed981bec8b94196a8ca71f7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5455,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "O caso de disputa foi criado com sucesso. O prazo para resolver este caso é de 15 dias úteis. Você receberá atualizações sobre o status. Precisa de mais alguma coisa?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:42:30.710932Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1412,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço essa despesa. Vou relatar.",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVCO0004\", \"transaction_id\": \"\", \"reason\": \"unrecognized\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}

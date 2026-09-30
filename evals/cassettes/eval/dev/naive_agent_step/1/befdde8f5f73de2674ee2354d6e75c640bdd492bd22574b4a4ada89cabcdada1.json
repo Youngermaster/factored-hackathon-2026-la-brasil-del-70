@@ -1,0 +1,33 @@
+{
+  "cassette_id": "befdde8f5f73de2674ee2354d6e75c640bdd492bd22574b4a4ada89cabcdada1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 6838,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Perfeito! Sua solicitação de empréstimo pessoal foi enviada com sucesso. O número da sua aplicação é app-naive-0001. O seu perfil de crédito foi considerado, mas uma análise mais detalhada será realizada por um especialista. Você receberá um e-mail com mais informações sobre o andamento da sua solicitação. Se tiver mais perguntas, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T16:30:27.086929Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1486,
+    "output_tokens": 119
+  },
+  "variables": {
+    "conversation": "Customer: Posso pegar um empréstimo pessoal de [DOCUMENT] em 24 meses?\nAssistant: Com base no seu perfil de crédito, você tem a possibilidade de obter um empréstimo pessoal. No entanto, para uma análise mais precisa, precisamos considerar o valor desejado e o prazo de 24 meses. Gostaria de confirmar o valor do empréstimo que você deseja?\nCustomer: Sim, quero solicitar",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0008",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"submit_credit_application\", \"status\": \"ok\", \"result\": {\"application_id\": \"app-naive-0001\", \"customer_id\": \"CLI-EVAR0008\", \"product_code\": \"PERSONAL_LOAN\", \"amount\": \"[DOCUMENT]\", \"status\": \"submitted\"}}"
+  }
+}

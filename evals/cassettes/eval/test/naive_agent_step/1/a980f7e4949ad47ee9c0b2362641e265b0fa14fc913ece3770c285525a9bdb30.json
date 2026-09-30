@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a980f7e4949ad47ee9c0b2362641e265b0fa14fc913ece3770c285525a9bdb30",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3535,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0001",
+      "transaction_id": "06/06"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_payment_status"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:53:07.270773Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1406,
+    "output_tokens": 54
+  },
+  "variables": {
+    "conversation": "Customer: O que aconteceu com o meu pagamento de 850 do dia 06/06?\nAssistant: Olá! Verifiquei e não encontramos nenhum pagamento no valor de 850 realizada no dia 06/06. Você poderia me fornecer mais detalhes para que eu possa ajudar melhor?\nCustomer: O do dia 06/06",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0001",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

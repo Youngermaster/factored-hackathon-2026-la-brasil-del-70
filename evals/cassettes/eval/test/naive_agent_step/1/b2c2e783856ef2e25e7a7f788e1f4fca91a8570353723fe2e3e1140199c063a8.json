@@ -1,0 +1,33 @@
+{
+  "cassette_id": "b2c2e783856ef2e25e7a7f788e1f4fca91a8570353723fe2e3e1140199c063a8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3842,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "escalated",
+    "reply": "Entendido, le transferiremos su solicitud a un asesor humano para una revisión más detallada. ¿Hay algo más en lo que pueda ayudarlo mientras esperamos?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:30:42.837593Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1388,
+    "output_tokens": 65
+  },
+  "variables": {
+    "conversation": "Customer: ¿Me dan una tarjeta de crédito con límite de 30000?\nAssistant: Se ha enviado su solicitud de tarjeta de crédito. Su solicitud ha sido enviada con éxito y su número de aplicación es app-naive-0001. ¿Necesita más información o ayuda con algo más?\nCustomer: Sí, prefiero que lo revise una persona",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0009",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

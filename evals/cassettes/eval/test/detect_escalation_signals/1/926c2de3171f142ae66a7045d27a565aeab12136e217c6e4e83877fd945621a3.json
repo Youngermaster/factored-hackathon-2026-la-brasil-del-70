@@ -1,0 +1,29 @@
+{
+  "cassette_id": "926c2de3171f142ae66a7045d27a565aeab12136e217c6e4e83877fd945621a3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1928,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T18:06:34.154158Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 493,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Bloquea la tarjeta que termina en 0000",
+    "dialect_hint": "es-MX"
+  }
+}

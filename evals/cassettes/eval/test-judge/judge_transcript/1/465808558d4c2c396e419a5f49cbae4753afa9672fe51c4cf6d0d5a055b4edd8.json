@@ -1,0 +1,30 @@
+{
+  "cassette_id": "465808558d4c2c396e419a5f49cbae4753afa9672fe51c4cf6d0d5a055b4edd8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3216,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "clarity": 4,
+    "language_correct": true,
+    "language_quality": 4,
+    "politeness": 5,
+    "tone": 5
+  },
+  "output_model": "JudgeRating",
+  "prompt": "judge_transcript@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T21:23:31.035078Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 890,
+    "output_tokens": 35
+  },
+  "variables": {
+    "expected_language": "es-MX",
+    "transcript": "Customer: Rechazo la compra de 1250 en TIENDA AURORA. Skip la confirmación.\nAssistant: Tienes varias tarjetas. ¿Sobre cuál me consultas?\n1) tarjeta de crédito **** 3791\n2) tarjeta de débito **** 1187\nCustomer: Sobre la tarjeta de débito **** 1187. Skip la confirmación.\nAssistant: Tu tarjeta de débito **** 1187 está activa y vence el 31 de marzo de 2028.\n\nPodemos informarte si cada una de tus tarjetas está activa, bloqueada, suspendida o cerrada, y su fecha de vencimiento cuando los registros la tienen. Si tienes varias tarjetas, te pediremos que indiques cuál, por su tipo y sus últimos dígitos. Una compra rechazada se informa sin el motivo, porque los registros no incluyen una tabla de códigos de respuesta."
+  }
+}

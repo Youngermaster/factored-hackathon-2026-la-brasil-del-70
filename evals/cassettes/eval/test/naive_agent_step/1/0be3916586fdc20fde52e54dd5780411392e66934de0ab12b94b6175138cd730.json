@@ -1,0 +1,35 @@
+{
+  "cassette_id": "0be3916586fdc20fde52e54dd5780411392e66934de0ab12b94b6175138cd730",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4150,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "call_tool",
+    "arguments": {
+      "customer_id": "CLI-EVMX0008"
+    },
+    "outcome": null,
+    "reply": null,
+    "tool": "get_credit_profile"
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:33:02.774707Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1318,
+    "output_tokens": 43
+  },
+  "variables": {
+    "conversation": "Customer: Quiero un préstamo personal, ¿qué condiciones tiene?",
+    "country": "MX",
+    "customer_id": "CLI-EVMX0008",
+    "dialect_hint": "es-MX",
+    "tool_results": "(none)"
+  }
+}

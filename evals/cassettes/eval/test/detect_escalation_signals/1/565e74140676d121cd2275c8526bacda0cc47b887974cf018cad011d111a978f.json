@@ -1,0 +1,29 @@
+{
+  "cassette_id": "565e74140676d121cd2275c8526bacda0cc47b887974cf018cad011d111a978f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1781,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "distress": false,
+    "human_requested": false,
+    "legal_or_regulator_mention": false,
+    "third_party_admission": false
+  },
+  "output_model": "EscalationSignals",
+  "prompt": "detect_escalation_signals@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T20:24:01.836725Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 498,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Hay un cargo de 730 del 14/06 que no reconozco",
+    "dialect_hint": "es-MX"
+  }
+}

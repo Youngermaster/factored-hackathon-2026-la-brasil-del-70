@@ -1,0 +1,33 @@
+{
+  "cassette_id": "c31f0f05a686e0abf4457c3c521650ec7dc85d068d45cb33c08a4a549813404c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 5703,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "clarified",
+    "reply": "Entendi, você gostaria de abrir um caso de contestação para a compra de 85.000 COP no dia 15/06 na ALMACEN ANDES, correto?",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:46:45.944948Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1356,
+    "output_tokens": 70
+  },
+  "variables": {
+    "conversation": "Customer: Quero contestar a compra de 85.000 pesos do dia 15/06 na ALMACEN ANDES, não fui eu",
+    "country": "CO",
+    "customer_id": "CLI-EVCO0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "(none)"
+  }
+}

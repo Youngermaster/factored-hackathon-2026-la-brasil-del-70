@@ -1,0 +1,33 @@
+{
+  "cassette_id": "5bbd80feb3c6d6794018c619c46106ab476e3c832b428d41fbca820ca8cb4c1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 4255,
+  "model_id": "ollama/qwen2.5:7b-instruct",
+  "note": "",
+  "output": {
+    "action": "reply",
+    "arguments": {},
+    "outcome": "resolved",
+    "reply": "Disputa criada com sucesso. O seu caso será analisado e uma resposta será fornecida em até 30 dias úteis. Se precisar de mais assistência, estaremos à disposição.",
+    "tool": null
+  },
+  "output_model": "NaiveAgentStep",
+  "prompt": "naive_agent_step@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-09-29T19:47:14.596933Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 1424,
+    "output_tokens": 72
+  },
+  "variables": {
+    "conversation": "Customer: Não reconheço a cobrança de 15.000 na KIOSCO DEL SUR, quero contestar",
+    "country": "AR",
+    "customer_id": "CLI-EVAR0004",
+    "dialect_hint": "pt-BR",
+    "tool_results": "{\"tool\": \"create_dispute\", \"status\": \"ok\", \"result\": {\"case_id\": \"case-naive-0001\", \"customer_id\": \"CLI-EVAR0004\", \"transaction_id\": \"\", \"reason\": \"not_received\", \"status\": \"opened\", \"sla_due_at\": \"2026-07-18\"}}"
+  }
+}
