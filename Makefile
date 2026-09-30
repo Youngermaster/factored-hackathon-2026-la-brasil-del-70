@@ -259,13 +259,13 @@ images: ## Build the production images (web, api, job) as bank-agent-*:IMAGE_TAG
 
 scan-images: ## Trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs (syft) for the images of IMAGE_TAG
 	mkdir -p reports/sbom
-	for image in api job web; do \
+	status=0; for image in api job web; do \
 		docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v bank-agent-trivy-cache:/root/.cache \
 			$(TRIVY_IMAGE) image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress \
-			bank-agent-$$image:$(IMAGE_TAG); \
+			--skip-version-check bank-agent-$$image:$(IMAGE_TAG) || status=1; \
 		docker run --rm -v /var/run/docker.sock:/var/run/docker.sock $(SYFT_IMAGE) \
 			docker:bank-agent-$$image:$(IMAGE_TAG) -o cyclonedx-json > reports/sbom/bank-agent-$$image.cdx.json; \
-	done
+	done; exit $$status
 
 smoke: ## Smoke test a deployed stack: make smoke SMOKE_URL=https://demo.example.org (deploy/smoke_test.sh)
 	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }

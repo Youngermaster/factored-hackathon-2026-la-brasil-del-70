@@ -46,6 +46,8 @@ models/artifacts/
 reports/eval/
 # Load test CSVs (make load-test); the numbers that matter are written up in docs/operations/capacity.md.
 reports/load/
+# CycloneDX SBOMs of the production images (make scan-images; a CI artifact, not committed).
+reports/sbom/
 evals/cassettes/**/*.tmp
 
 # Python
