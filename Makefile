@@ -10,7 +10,7 @@ UV_RUN := uv run --frozen
 # The guard scripts are stdlib-only; this pins them to Python 3.12 without syncing the project environment.
 GUARD_PY := uv run --no-project --python 3.12 python
 WEB := pnpm --dir apps/web
-PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts
+PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts deploy
 PROFILES ?=
 PROFILE_FLAGS := $(foreach profile,$(PROFILES),--profile $(profile))
 # Data source for the pipeline: sample, s3, or local. Empty means BANK_DATA_SOURCE (default: sample).
@@ -243,7 +243,7 @@ security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, she
 		uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt -o "$$requirements" > /dev/null; \
 		$(UV_RUN) pip-audit -r "$$requirements" --require-hashes --disable-pip --progress-spinner off
 	$(WEB) audit --prod --audit-level high
-	$(UV_RUN) bandit -q -c pyproject.toml -r $(PYTHON_SOURCES) deploy
+	$(UV_RUN) bandit -q -c pyproject.toml -r $(PYTHON_SOURCES)
 	gitleaks git --redact --no-banner .
 	for dockerfile in services/api/Dockerfile apps/web/Dockerfile services/api/Dockerfile.dev apps/web/Dockerfile.dev; do \
 		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
