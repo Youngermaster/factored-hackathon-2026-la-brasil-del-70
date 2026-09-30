@@ -111,9 +111,11 @@ Before calling any change done:
 make check                                # every gate; needs Docker, never reads .env
 ```
 
+A verified, timed walkthrough of every local path (dev stack, browser, local model, evaluation, production stack, slides, gates) with its troubleshooting is [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
+
 The production stack (Caddy with TLS, two API workers, PostgreSQL with a non-superuser owner, the jobs) also runs locally in its local TLS mode: [deploy/README.md](deploy/README.md), "Run the production stack locally".
 
-Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM and `make llm-smoke` runs the fixture prompts. See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
+Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM, and `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke` runs the fixture prompts (a bare `make llm-smoke` reads the fake provider from `.env` and stops). See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
 
 ### Data sources
 
@@ -352,6 +354,7 @@ Rules:
 | A plain `uv sync` is exact: it removes every extra it was not told to install. `make setup` itself runs `uv sync --all-packages --extra eda-ui --frozen`, which removes the optional `ml` and `litellm` extras if they were installed | Run commands through `uv run --frozen ...` (it syncs inexactly). To add an extra without removing others: `uv sync --inexact --all-packages --extra <name> --frozen` |
 | Non-interactive shells (agent terminals, hooks, CI-like scripts) do not load nvm, so an older default Node (below 24.15) may run | `nvm use 24` first, or put the Node 24 `bin` directory first on `PATH` |
 | An env file reads everything after `NAME=` as the value, so `POLICY_DIR=   # default` sets `POLICY_DIR` to the comment text | Keep comments on the line above an empty value, as `.env.example` does. Diagnose with `make env-check`, never by reading `.env` |
+| A second checkout on the same machine (a clone or a worktree) shares the dev compose project `bank-agent`: its `make up` takes over the first checkout's PostgreSQL container and volume | In the second checkout's shells, `export COMPOSE_PROJECT_NAME=bank-agent-<name> POSTGRES_PORT=<free port>` before `make up`, `make db-upgrade`, `make seed`, and the API ([LOCAL-RUN.md](docs/submission/LOCAL-RUN.md)) |
 | The PostgreSQL volume keeps the passwords it was created with; a new `.env` from `make env` has different ones | Keep the passwords the volume was created with. Never run `docker compose down --volumes` without the human's approval: it erases the local database |
 | ADR numbers and Alembic revision numbers collide when branches land in parallel | Check the next free number on an up-to-date `main` and in open pull requests right before committing (section 7) |
 | `docs/PROGRESS.md`, `docs/BACKLOG.md`, `docs/README.md`, `docs/adr/README.md`, `.env.example`, and the `Makefile` are merge-conflict hotspots | Append rather than reorder; when resolving a conflict keep both sides, then run `make docs-check` |

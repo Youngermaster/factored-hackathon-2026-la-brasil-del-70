@@ -124,7 +124,7 @@ make eval-smoke           # the 12-scenario evaluation smoke suite, no model
 make submission-check     # the pre-submission gates plus the remaining human steps
 ```
 
-Optional paths: a local model through Ollama (`make api-local-llm`; [LLM gateway](docs/architecture/llm-gateway.md)), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target.
+Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
 
 ## Repository map
 
