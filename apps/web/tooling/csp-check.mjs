@@ -110,7 +110,11 @@ for (const theme of ['light', 'dark']) {
 
     const agent = await open(browser, { theme, viewport });
     await signInPatiently(agent.page, 'agent-demo-01');
-    await visit(agent.page, '/console/inbox', (page) => page.getByRole('table').waitFor());
+    // A freshly seeded stack has no handoffs yet (the smoke test's conversations do not escalate): the inbox then
+    // shows its empty state instead of a table.
+    await visit(agent.page, '/console/inbox', (page) =>
+      page.getByRole('table').or(page.getByText('No hay traspasos pendientes')).first().waitFor(),
+    );
     await visit(agent.page, '/console/credit-applications', (page) =>
       page.getByRole('table').waitFor(),
     );
