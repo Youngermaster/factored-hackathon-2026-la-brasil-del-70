@@ -83,3 +83,18 @@ def test_level_filter_drops_records_below_the_configured_level() -> None:
     structlog.get_logger("test").warning("kept")
 
     assert [record["event"] for record in _records(stream)] == ["kept"]
+
+
+def test_an_access_log_uvicorn_turned_off_stays_off() -> None:
+    access = logging.getLogger("uvicorn.access")
+    access.handlers.clear()
+    access.propagate = False  # what uvicorn --no-access-log leaves behind
+    stream = io.StringIO()
+    try:
+        configure_logging("INFO", stream=stream)
+        access.info('198.51.100.4:50000 - "GET /health/live HTTP/1.1" 200')
+        logging.getLogger("uvicorn.error").info("still logged")
+    finally:
+        access.propagate = True
+    assert "198.51.100.4" not in stream.getvalue()
+    assert "still logged" in stream.getvalue()

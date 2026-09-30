@@ -191,8 +191,12 @@ def configure_logging(level: LogLevel = "INFO", stream: IO[str] | None = None) -
         root.removeHandler(existing)
     root.addHandler(handler)
     root.setLevel(level)
-    # uvicorn installs its own handlers; route its records through the root handler instead.
+    # uvicorn installs its own handlers; route its records through the root handler instead. An access log that
+    # uvicorn turned off (``--no-access-log``, as the production image runs: no client addresses in the logs) stays
+    # off.
+    access = logging.getLogger("uvicorn.access")
+    access_disabled = not access.handlers and not access.propagate
     for name in ("uvicorn", "uvicorn.error", "uvicorn.access"):
         uvicorn_logger = logging.getLogger(name)
         uvicorn_logger.handlers.clear()
-        uvicorn_logger.propagate = True
+        uvicorn_logger.propagate = not (name == "uvicorn.access" and access_disabled)

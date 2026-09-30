@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 !.env.production.example
+# Production state on the server (deploy/prod.sh): database backups and deployed image tags
+deploy/backups/
+deploy/.state/
 *.pem
 *.key
 .claude/settings.local.json
