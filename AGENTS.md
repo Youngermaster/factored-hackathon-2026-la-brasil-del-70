@@ -302,7 +302,7 @@ Detail: [contracts/README.md](contracts/README.md) (versioning, deprecation, cha
 
 ### Add an ADR
 
-1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 and 0019 are reserved.
+1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 stays reserved and unused; the next free number is 0036.
 2. Write `docs/adr/NNNN-short-title.md` in MADR form: context, at least two real options, decision, consequences.
 3. Add the row to the table in `docs/adr/README.md` and the entry in `docs/README.md` in the same commit.
 4. Records are never rewritten; a later record supersedes an earlier one and both link to each other.

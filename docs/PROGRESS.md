@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 16, security hardening and deployment (on a worktree branch; the orchestrator merges it into `main`): the production stack verified locally with TLS and the local model; the host is not chosen yet |
-| Next phase | 17, documentation and final audit (`kit/prompts/17-docs-final-audit.md`); meanwhile the human chooses the host and deploys (phase 16 entry, "Human steps on the chosen host") |
+| Last completed phase | 17, documentation completion and final audit: all phases are done |
+| Next phase | None. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -66,8 +66,77 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 43. **Choose the host and deploy the public demo** following `deploy/README.md` (phase 16 entry, "Human steps on the chosen host"): the VM, the firewall, DNS, the server env file (filled on the server only), build, up, seed, smoke; then share the URL for verification. Keep it running until 2026-10-16 and take it down afterwards (`deploy/prod.sh destroy --yes`, then release the cloud resources).
 44. **Review the public demo-mode trade-off** (`docs/security/demo-mode.md`): anyone can sign in as a synthetic persona and perform its demo writes, bounded by synthetic data, shared rate limits, budget caps, retention, and the take-down date. Also review the retention periods (`docs/security/data-retention.md`: 7, 7, and 30 days) and the per-session eligibility assessment limit (5 per 60 minutes).
 45. **If a hosted model provider is chosen for the demo**: verify its price entry (pending action 7), check its data controls (training opt-out, retention, region; `docs/security/data-use.md`, "Providers"), use a project key with a spending limit, and set the three `LLM_*` lines in the server env file.
+46. **Submit (by 2026-10-05), in order** ([checklist](submission/SUBMISSION.md)): `make submission-check` on the commit to submit; choose the host and deploy (action 43; the model per action 45); smoke and CSP checks from a laptop; fill `deploy.url` in `slides/data/metrics.yml` and the README link; `cd slides && pnpm export:final`; record the video against the deployed URL after a fresh seed (`slides/VIDEO.md`, `docs/demo/script.md`); push `main` and make the repository public; send `docs/submission/email-draft.md` to `hackathon.admin@factored.ai`. Owner suggestion: Young (deploy, push, public), Miguel Correa (video narration, email).
 
 ## Phase log
+
+### Phase 17: documentation completion and final audit (2026-09-30)
+
+Plan: `docs/plans/phase-17.md` (not a plan-mode phase; the plan was committed first and every open question decided in it, under the human's delegated approval). The pull succeeded (`main` was up to date at `28b143b`). Human decisions given to the session: no license ("All rights reserved"); no known restriction on the organizer data-use terms, so the committed sample stays; the teammate branch `feat/privacy-safe-langfuse-api` stays unmerged; the host is still undecided, so `deploy.url` stays pending; the published results stay the local `qwen2.5:7b-instruct` run.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `48722c0` | The plan: scope as adapted by the orchestrator, eleven decisions |
+| `8159760` | The seeded dispute case opens at the seeding instant (from a `Clock`), the way the service opens a case, so its SLA is live and the status question answers with the deadline instead of escalating as overdue; regression test; the smoke test checks that answer |
+| `01fda33` | Every demo-guide message driven through the API on a fresh seed of the committed sample, in es and pt: three scenarios were played by personas the sample has no customer for (sign-in failed) and the dispute path relied on the overdue case. The guide now uses the twelve sample personas, dispute status is its normal path and a complaint to the regulator its escalation; the sign-in picker lists the four full-delivery personas apart with a note (es, pt, en); a `data_platform` test keeps the guide inside the sample persona file; `docs/demo/` rewritten to the verified inputs |
+| `52d55b4` | `docs/data/data-use.md`: the human's data-use confirmation and its reasoning; pending actions 1 and 2 and their BACKLOG rows closed; the sample README (and its generator) carry the same text |
+| `7b4c3d3` | The README for judges and `LIMITATIONS.md` |
+| `3e0e1bc` | `docs/workflows/README.md` and `docs/security/README.md` (the controls on one page) |
+| `25e0b6c` | The final architecture views: context, containers, the API's components, and the sequence of one turn |
+| `64724ec` | The documentation index (every document, ADRs in one section), the ADR index (0000 listed with its own status; neutral notes on 0000 and 0025 to 0028), the ports table and other stale statements, AGENTS.md, CONTRIBUTING.md (extension guides) |
+| `5ad194c` | `docs/submission/`: the brief traceability matrix, the checklist, the draft email (not sent), and `make submission-check` |
+| `dfd5c79` | The close slide, the narration, and `slides/VIDEO.md` matched to the final system |
+| `62f937c` | Every phase 17 BACKLOG row resolved or re-owned; three new rows |
+| This commit | This entry, the current state |
+
+#### Decisions
+
+- The seeded case opens at the seeding instant rather than comparing SLAs with the data's as-of date: the live system opens cases on the wall clock, so the seed now matches it; changing the status handler would have changed behavior for real cases (plan, decision 1).
+- The demo guide targets the committed-sample seed, which the quickstart and the deployed demo use; the four full-delivery personas stay in the picker, grouped and labeled, because a full seed does load them.
+- ADR 0000's status is left as its authors wrote it (Proposed) and listed with a neutral note; pending action 14 stays with the team. ADRs are not rewritten; the index notes where the build departs from them.
+- Kit items mapped to existing artifacts instead of duplicated: the slide outline is the Slidev deck, the video script is `slides/script.md` with `slides/VIDEO.md` and `docs/demo/script.md`, screenshots are a documented manual step, and the extension guides are AGENTS.md section 7 (linked from CONTRIBUTING.md). The ADR consistency table and two extra workflow pages went to BACKLOG.
+- No evaluation rerun: prompts, policies, prices, and the harness are unchanged since `6bc2e9d`; the engine changes of phases 15 and 16 are stated in the README ("Freshness").
+- Dependencies: none added.
+
+#### Verification
+
+| Check | Result |
+|---|---|
+| Demo guide through the API | 16 scenarios in es and 16 in pt on two fresh sample seeds (`LLM_PROVIDER=fake`, a throwaway compose project): every message routed as the guide describes; the demo script's scene 4 (dispute from the statement, then an injection refused by `PRV.no_cross_customer_access`, with `injection_detected` in the evaluator record) in one conversation |
+| Fresh clone | A clone with no env file and no credentials: `make pipeline` from the committed sample (45 s), `make eval-smoke` (P 8/12, B0 5/12, B1 0/12, unsafe 0/12), then with throwaway secrets in the process environment only: a separate compose PostgreSQL, `make db-upgrade` (revision 0013), `make seed` (12 personas, 59 customers), the API, and turns for balances, dispute status with its deadline, and a card block up to step-up (the default auth rate limit then answered 429, as configured) |
+| `make security` | pip-audit and `pnpm audit --prod --audit-level high`: no known vulnerabilities; bandit, gitleaks (371 commits, no leaks), hadolint, shellcheck (with the new script), production compose validation: clean |
+| Slides | `pnpm verify`: 59 metrics with kind and source, only `deploy.url` pending, narration 3:51; `pnpm check:fit`: every scene fits at every cue |
+| `make check` | Exit 0 at `5ad194c` (the submission package commit): lint, format, types, 7 import contracts, bandit, ESLint, Prettier, 2,828 unit and 1,492 integration Python tests, all 11 coverage gates (application 94.5%, adapters 97.4%, api 97.2%), 348 web tests, docs (82 Mermaid blocks), data sample, codegen, emoji, attribution, gitleaks. The later commits change only Markdown, the slides, and two comments in `.env.example`; `make docs-check`, the emoji guard, and the `.env.example` tests were rerun on them |
+
+#### Known limitations
+
+- The host is not chosen, so nothing is deployed and `deploy.url` is pending; the video is not recorded; the repository is not public; the email is not sent. These are the human steps in `docs/submission/SUBMISSION.md`.
+- The committed sample supports 12 of the 16 customer personas (BACKLOG).
+- The evaluation run predates the engine changes of phases 15 and 16 (README, "Freshness"); a rerun is BACKLOG 14c.
+- The native Portuguese review, the human labels, the judge agreement, and the policy and threshold reviews are still open (pending actions below); every document states them as limitations.
+
+#### Open human actions with owner suggestions
+
+Owners follow the roles in AGENTS.md section 10; they are suggestions for the team to confirm. Resolved: 1, 2, 32, 37, 42.
+
+| Actions | What | Suggested owner | Before submission? |
+|---|---|---|---|
+| 46 (with 43, 45, 5, 7) | The submission steps: choose the host and deploy (and the model: fake, hosted with verified prices and data controls, or Ollama), fill `deploy.url`, export the slides, record the video, push, make the repository public, send the email | Young (deploy, push, public); Miguel Correa (video narration, email) | Yes, by 2026-10-05 |
+| 39, 38, 44 | Review the product surfaces, the web copy, and the public demo-mode trade-off before the video | The whole team; a native Portuguese reader for the copy | Yes, before recording |
+| 16, 24, 17, 26, 34 | Policy clause wording in es and pt per workflow, the SLA rule wording, the synthetic eligibility thresholds and the score bands | Miguel Correa with a native Portuguese reviewer; David Fonseca for the thresholds | No (stated as limitations) |
+| 41, 40, 19, 27, 28, 30, 11 | Human review of the scenarios, the judge sample, the retrieval judgments, the router validation sample, the pt router seeds, the resolver silver matches, the automatable-share labels | David Fonseca and Julián Valencia, with two native raters per language where the protocol asks | No |
+| 10, 12 | The workflow prioritization and the cost assumptions | Miguel Correa and David Fonseca | No |
+| 0, 15, 18, 21, 23, 25, 31, 33, 35 | Walk-throughs and design reviews of earlier phases (domain model, security design, step-up on every write, phases 09a and 09b, the contract bump, the model promotions, the HTTP security design) | Young with the team; several can be closed as superseded by the finished build | No |
+| 8, 9, 13, 20, 22 | Dependency footprint decisions (litellm, the data platform, matplotlib, the `ml` extra, the language detector) | Young and Julián Valencia | No |
+| 14 | Whether ADR 0000 stays Proposed or is accepted | Miguel Correa (its author) | No |
+| 3, 4, 36 | Local tooling: pnpm permissions in `.claude/settings.json`, recording `/status`, checking old `.env` files | Each person on their own machine | No |
+| 6, 29 | Real cassettes and router paraphrases once a hosted provider exists | Young, after action 5 | No |
+
+#### Next phase
+
+None: all phases are done. The remaining work is the human submission steps (pending action 46) and the open reviews.
 
 ### Phase 16: security hardening and deployment (2026-09-30)
 
