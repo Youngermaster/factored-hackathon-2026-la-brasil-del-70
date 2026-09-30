@@ -10,7 +10,10 @@ import type { Schema } from '@/shared/api';
  * Every message was driven through the real API with LLM_PROVIDER=fake on the seed of the committed sample (the
  * default `make seed` and the deployed demo) before it was listed; the backend scenario tests cover the same
  * phrasings. Every persona here is one that seed loads (data_platform/seed/personas.sample.yaml; a data_platform
- * test checks it). Words in brackets are placeholders the visitor fills from the previous answer.
+ * test checks it). Words in brackets are placeholders the visitor fills from the previous answer. A session takes
+ * the viewer's interface language, which may be English, so every first message carries enough Spanish or
+ * Portuguese words for the language detector on its own (services/api/tests/unit/adapters/models/
+ * test_demo_guide_languages.py checks it).
  */
 export type PathKind = 'normal' | 'ambiguous' | 'escalation';
 
@@ -177,7 +180,7 @@ export const SCENARIOS: readonly Scenario[] = [
     path: 'normal',
     persona: 'cre-mx-complete',
     es: [
-      say('¿Qué préstamos personales tienen?'),
+      say('¿Qué préstamos personales tienen ustedes?'),
       say('¿Soy elegible para un préstamo personal de 50,000 pesos a 24 meses?'),
     ],
     pt: [
@@ -198,7 +201,11 @@ export const SCENARIOS: readonly Scenario[] = [
     workflow: 'credit',
     path: 'ambiguous',
     persona: 'cre-co-no-income',
-    es: [say('¿Soy elegible para un préstamo personal de 5 millones de pesos a 24 meses?')],
+    es: [
+      say(
+        'Quiero saber si soy elegible para un préstamo personal de 5 millones de pesos a 24 meses',
+      ),
+    ],
     pt: [say('Sou elegível para um empréstimo pessoal de 5 milhões de pesos em 24 meses?')],
   },
   {
@@ -215,7 +222,7 @@ export const SCENARIOS: readonly Scenario[] = [
     path: 'escalation',
     persona: 'cre-ar-borderline',
     es: [
-      say('¿Soy elegible para un préstamo personal de 500 mil pesos a 12 meses?'),
+      say('Quiero saber si soy elegible para un préstamo personal de 500 mil pesos a 12 meses'),
       { action: 'review_button' },
     ],
     pt: [
