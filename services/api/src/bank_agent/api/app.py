@@ -1,5 +1,7 @@
 """FastAPI application factory."""
 
+import asyncio
+import contextlib
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -55,9 +57,14 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        # The deployment-wide active-session gauge, counted in the shared session store.
+        publisher = asyncio.create_task(app.state.http_metrics.publish_active_sessions(provider.session_service))
         try:
             yield
         finally:
+            publisher.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await publisher
             await provider.aclose()
 
     security = config.security

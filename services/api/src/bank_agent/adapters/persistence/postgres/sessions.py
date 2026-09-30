@@ -4,6 +4,8 @@ Sessions are looked up before any customer is known, so this store is not bound 
 security admits it only with ``app.role = 'identity'``. Only token digests are stored.
 """
 
+from datetime import datetime
+
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncEngine
 
@@ -37,6 +39,12 @@ _SAVE = (
     "absolute_expires_at = :absolute_expires_at, step_up_expires_at = :step_up_expires_at, "
     "revoked_at = :revoked_at, language_preference = :language_preference, "
     "idle_timeout_seconds = :idle_timeout_seconds WHERE session_id = :session_id"
+)
+
+
+_COUNT_ACTIVE = (
+    "SELECT count(*) FROM app.sessions WHERE (revoked_at IS NULL OR revoked_at > :now) "
+    "AND absolute_expires_at > :now AND last_seen_at + idle_timeout_seconds * interval '1 second' > :now"
 )
 
 
@@ -102,6 +110,11 @@ class PostgresSessionStore:
                 "':' || token_digest, 'UTF8')), 'hex') WHERE session_id = :session_id",
                 {"session_id": old_session_id},
             )
+
+    async def count_active(self, now: datetime) -> int:
+        async with open_transaction(self._engine, DatabaseRole.IDENTITY) as connection:
+            count = await Tx(connection).scalar(_COUNT_ACTIVE, {"now": now})
+        return count if isinstance(count, int) else 0
 
     async def append_trust_event(self, lineage_id: LineageId, event: TrustEvent) -> TrustState:
         async with open_transaction(self._engine, DatabaseRole.IDENTITY) as connection:

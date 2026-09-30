@@ -71,8 +71,6 @@ async def current_session(request: Request) -> Session:
         session = await session_service(request).resolve(token)
     except SessionNotFoundError:
         raise NotAuthenticatedError("unknown session") from None
-    metrics: HttpMetrics = request.app.state.http_metrics
-    metrics.session_seen(session, services(request).clock.now())
     return session
 
 

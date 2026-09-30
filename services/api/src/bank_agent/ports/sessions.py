@@ -1,5 +1,6 @@
 """Session store port, including the trust state keyed by session lineage."""
 
+from datetime import datetime
 from typing import Protocol
 
 from bank_agent.domain.identifiers import LineageId, SessionId
@@ -40,6 +41,11 @@ class SessionStore(Protocol):
 
     async def rotate(self, old_session_id: SessionId, new_session: Session, new_token_digest: TokenDigest) -> None:
         """Replace a session with a new one in the same lineage, for example on a privilege change."""
+        ...
+
+    async def count_active(self, now: datetime) -> int:
+        """How many sessions are live at ``now``: not revoked, before their absolute expiry, and seen within their
+        idle timeout. Shared by every API process, so it is the deployment-wide count (an aggregate, no ids)."""
         ...
 
     async def append_trust_event(self, lineage_id: LineageId, event: TrustEvent) -> TrustState:
