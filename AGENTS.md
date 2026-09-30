@@ -59,8 +59,10 @@ As of this file's last update:
 |---|---|
 | Phases 00 to 13 | Done (data platform, policy, grounding, LLM gateway, engine and four workflows, learned models, API, web app with chat, glass box, agent inbox, evaluation view) |
 | Phase 14a | Done: the evaluation harness (`bank-eval`, 332 test and 122 dev scenarios) |
-| Phase 14b | In progress: live local evaluation runs on Ollama `qwen2.5:7b-instruct`; a hosted provider can replace it later through settings only |
-| Phases 15 to 17 | Remaining: observability, production deployment and hardening, license, data-use terms, final docs, video |
+| Phase 14b | Done: the frozen test run on the local Ollama `qwen2.5:7b-instruct`, published; the cassettes are committed |
+| Phase 15 | Done: OpenTelemetry traces and metrics, the degradation ladder, the chaos suite, alerts, the local load test |
+| Phase 16 | Done: security review and the single-host production stack (`deploy/`), verified locally with TLS and the local model; the host is not chosen yet |
+| Phase 17 | Remaining: license, data-use terms, final docs and audit, video; the human deploys to the chosen host |
 | Submission deadline | 2026-10-05 |
 
 Runtime defaults (from [.env.example](.env.example)): `LLM_PROVIDER=fake` (no model call; workflows use deterministic fallbacks), `WORKFLOW_ROUTER=keyword@1`, `WORKFLOW_RESOLVER=rules@1`, `WORKFLOW_RISK_ESTIMATOR=score_band@1`, `DEMO_MODE=true`. Learned components exist but are not the defaults.
@@ -108,6 +110,8 @@ Before calling any change done:
 make check                                # every gate; needs Docker, never reads .env
 ```
 
+The production stack (Caddy with TLS, two API workers, PostgreSQL with a non-superuser owner, the jobs) also runs locally in its local TLS mode: [deploy/README.md](deploy/README.md), "Run the production stack locally".
+
 Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM and `make llm-smoke` runs the fixture prompts. See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
 
 ### Data sources
@@ -131,7 +135,7 @@ S3 credentials come only from the organizer, through the team. They are never co
 | `evals/` | `bank-evals` ([README](evals/README.md)): scenario sets, systems under test (H, B0, B1, P), graders, statistics, reports, cassettes |
 | `policies/` | The synthetic policy pack ([README](policies/README.md)): clauses in es, pt, en, bindings, action matrix, credit catalog, eligibility messages, version lock |
 | `contracts/` | JSON Schemas generated from Pydantic models and the committed `contracts/openapi.json` ([README](contracts/README.md)) |
-| `deploy/` | PostgreSQL role bootstrap and observability configuration ([README](deploy/README.md)); production deployment arrives in phase 16 |
+| `deploy/` | The production stack for one VM (`compose.prod.yml`, `prod.sh`, Caddy, the smoke test, production PostgreSQL roles) with the deployment guide for Lightsail, EC2, and Azure, plus the development stack's role bootstrap and observability configuration ([README](deploy/README.md)) |
 | `docs/` | Architecture, ADRs, workflows, API, security, data, models, evaluation, design, plans, progress ([index](docs/README.md)) |
 | `scripts/` | Repository checks (`scripts/checks/`), git hooks (`scripts/hooks/`), contract and OpenAPI export, env generation, the LLM smoke script |
 | `slides/` | The pitch deck ([README](slides/README.md)): a standalone Slidev package, outside the uv workspace and outside `make check` |
@@ -174,7 +178,7 @@ A failing check means the code is in the wrong place or breaks a rule. Move or f
 | Prompts are versioned files; code references them by id and version; published versions are immutable; inputs are an allowlist | The prompt registry (load-time checks) and `services/api/tests/unit/adapters/test_prompt_registry.py` |
 | Models are ports selected by `name@version` or alias through settings; swapping one never changes workflow code | `bootstrap/models.py`, contract tests in `test_model_ports_contract.py` |
 | `Money` uses `Decimal` with an explicit currency, never floats; time comes from a `Clock` port, ids from an `IdGenerator` port | Domain tests and Hypothesis property tests |
-| Only `bootstrap/` reads the environment; production refuses default or empty secrets and `DEMO_MODE=true` | `bootstrap/settings.py` and its unit tests |
+| Only `bootstrap/` reads the environment; production refuses default or empty secrets, `DEMO_MODE=true` without `ALLOW_PUBLIC_DEMO_MODE=true`, the owner password in the API process, and the in-process rate limiter | `bootstrap/settings.py` and its unit tests |
 | Domain errors map to RFC 9457 problem details in one place; internals never leak | `api/domain_problems.py`, `api/problems.py`, and API tests |
 | mypy strict, ruff, bandit | `make typecheck`, `make lint` |
 
@@ -320,6 +324,9 @@ Detail: [evals/README.md](evals/README.md), [docs/evaluation/plan.md](docs/evalu
 | `make test-integration` | Python integration tests against real PostgreSQL (Docker) |
 | `make test-web` | Vitest with coverage |
 | `make docs-check` | markdownlint, Mermaid parsing, and the check-script tests; needs `apps/web/node_modules` |
+| `make security` | pip-audit, `pnpm audit --prod --audit-level high`, bandit, gitleaks, hadolint, shellcheck, production compose validation (Docker needed; network for the audits) |
+| `make images`, `make scan-images` | Build the production images; trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs |
+| `make smoke`, `make csp-check` | Smoke test and browser CSP check of a deployed stack (`SMOKE_URL=https://...`) |
 | `make eval-smoke` | 12-scenario smoke suite with a scripted client, no model |
 | `make format` | Applies ruff, ESLint, and Prettier fixes |
 
@@ -349,7 +356,10 @@ Rules:
 | pre-commit runs gitleaks, the emoji guard, the AI-attribution strip on the commit message, ruff, ESLint, Prettier, and a 500 KB file limit; CI runs gitleaks and the attribution guard over the full history | Fix what the hook reports. Never `git commit --no-verify`. An attribution trailer that reaches a shared branch cannot be removed without rewriting history |
 | Some agents add `Co-authored-by` or "Generated with" lines by default | Turn that off in the agent's settings before the first commit |
 | Demo writes persist: a charge can be disputed once per database; `make seed` restores blocked cards but not opened cases or intakes | Run `make seed` on a fresh compose volume before recording a demo or video; run `make db-upgrade` on an existing database after new migrations |
-| Rotating `SESSION_SECRET` changes the keys derived for identity lookups and one-time codes | Run `make seed` again after rotating it |
+| Rotating `SESSION_SECRET` changes the keys derived for identity lookups and one-time codes | Run `make seed` again after rotating it (on the VM: `deploy/prod.sh seed`) |
+| Production settings are validated per process: the API refuses the owner password, `DEMO_MODE` without `ALLOW_PUBLIC_DEMO_MODE`, and the in-process rate limiter; owner jobs need `load_settings(owner=True)` | A new production setting goes in the right branch of `production_problems` in `bootstrap/settings.py`, in `.env.example`, in `deploy/.env.production.example`, and in the service's `environment` in `deploy/compose.prod.yml` (`tests/unit/test_deploy_config.py` checks the template) |
+| The production stack in a worktree or next to the dev stack clashes on ports or project names | Run it with its own project name and ports (`PROJECT=... ENV_FILE=... deploy/prod.sh ...`, `HTTP_PORT=8080 HTTPS_PORT=8443`); it publishes no database port. Remove it with `docker compose ... -p <project> down --volumes` when done |
+| A strict CSP breaks a library that injects `<style>` elements or inlines assets | Keep the nonce path (`shared/lib/csp-nonce.ts`) and `assetsInlineLimit: 0`; run `make csp-check` against a deployed stack before loosening anything |
 | Generated files drift when edited by hand | Regenerate instead: `make openapi` (OpenAPI and web types), `make contracts` (JSON Schemas), `make policy-lock` and `make policy-catalog` (policy lock and catalog), `make data-codegen` (dbt sources and contracts), `bank-eval publish` (evaluation results) |
 | `kit/` exists only on the technical lead's machine | Never reference or depend on a `kit/` prompt; ask the human for the goal and acceptance criteria |
 

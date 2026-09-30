@@ -6,8 +6,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
-| Last completed phase | 15, reliability and observability (merged into `main` on 2026-09-29), after session 14b's frozen test run on the local model `qwen2.5:7b-instruct` |
-| Next phase | 16, security review and deployment (`kit/prompts/16-security-deployment.md`); the human provisions the VM and DNS |
+| Last completed phase | 16, security hardening and deployment (on a worktree branch; the orchestrator merges it into `main`): the production stack verified locally with TLS and the local model; the host is not chosen yet |
+| Next phase | 17, documentation and final audit (`kit/prompts/17-docs-final-audit.md`); meanwhile the human chooses the host and deploys (phase 16 entry, "Human steps on the chosen host") |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -61,9 +61,109 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 40. **Rate the judge sample of the 14b test run** (`reports/eval/test-local/judge_sample.jsonl`, copied into this checkout from the `eval-run` worktree; 100 transcripts, not committed because they hold transcripts) following [the rating protocol](evaluation/judge-rubric.md#human-rating-protocol): two native raters per language on `judge_sample.jsonl`, adjudication, then `bank-eval judge --ratings`. Raters: pending. Date: pending. Not a blocker; the agreement is reported as pending until then.
 41. **Review the scenario set**: a native Portuguese review of the pt phrasings in `evals/src/bank_evals/scenarios/family_data/*.yaml`, and a review of a sample of situations per workflow against the policy documents (labels, required and forbidden disclosures). Record the result as `review_status: approved` on the reviewed situations and regenerate (`make eval-scenarios`, `--relock` for the test split); the reports state the reviewed share per workflow. Reviewers: pending. Date: pending.
-42. **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, and the judge's recordings, which `bank-eval judge` writes to `evals/cassettes/runs/test-local-judge/` and this checkout holds in `evals/cassettes/eval/test-judge/` so the fixture cassette checks skip them): committed, they let anyone replay the published run without the model. Measured: dev 3.3 MB in 838 files; test 8.6 MB in 2,188 files; judge 0.4 MB in 100 files (about 12 MB in all). All are in this checkout, uncommitted.
+42. **Resolved (2026-09-30): the 14b evaluation cassettes are committed** (commit `a0872a3`, the human's decision). Original item: **Decide whether the 14b evaluation cassettes are committed** (`evals/cassettes/eval/<split>/`, and the judge's recordings, which `bank-eval judge` writes to `evals/cassettes/runs/test-local-judge/` and this checkout holds in `evals/cassettes/eval/test-judge/` so the fixture cassette checks skip them): committed, they let anyone replay the published run without the model. Measured: dev 3.3 MB in 838 files; test 8.6 MB in 2,188 files; judge 0.4 MB in 100 files (about 12 MB in all). All are in this checkout, uncommitted.
+
+43. **Choose the host and deploy the public demo** following `deploy/README.md` (phase 16 entry, "Human steps on the chosen host"): the VM, the firewall, DNS, the server env file (filled on the server only), build, up, seed, smoke; then share the URL for verification. Keep it running until 2026-10-16 and take it down afterwards (`deploy/prod.sh destroy --yes`, then release the cloud resources).
+44. **Review the public demo-mode trade-off** (`docs/security/demo-mode.md`): anyone can sign in as a synthetic persona and perform its demo writes, bounded by synthetic data, shared rate limits, budget caps, retention, and the take-down date. Also review the retention periods (`docs/security/data-retention.md`: 7, 7, and 30 days) and the per-session eligibility assessment limit (5 per 60 minutes).
+45. **If a hosted model provider is chosen for the demo**: verify its price entry (pending action 7), check its data controls (training opt-out, retention, region; `docs/security/data-use.md`, "Providers"), use a project key with a spending limit, and set the three `LLM_*` lines in the server env file.
 
 ## Phase log
+
+### Phase 16: security hardening and deployment (2026-09-30)
+
+Plan: `docs/plans/phase-16.md`. The prompt asks for plan mode; the human delegated the approval to the orchestrator, so the plan was committed first and every open question decided by the session under the orchestrator's pre-approval. The session ran in a git worktree based on the latest `main` (the pull was skipped as instructed). Human decisions given to the session: the hosting target is undecided, so the production stack is built and fully tested locally with a host-neutral guide (Lightsail recommended, EC2, Azure); the model is the local Ollama `qwen2.5:7b-instruct` through LiteLLM for the verification, with a hosted provider as a settings-only change and the budget guard on.
+
+#### What was done
+
+| Commit | Change |
+|---|---|
+| `57e8b08` | The plan: topology, hardening checklist, 20 decided questions |
+| `fac5446` | Production guards split per process: the API refuses the owner password, `DEMO_MODE` without `ALLOW_PUBLIC_DEMO_MODE`, and the in-process rate limiter; plain http model bases only for a private host behind `LLM_ALLOW_PRIVATE_HTTP_BASE`; owner jobs validate only their secrets; `RETENTION_*` settings |
+| `47d3d52` | Rate limits shared by every worker: the `RateLimitStore` port, the in-process sliding log, and a PostgreSQL sliding-window counter (migration `0012`, keys as HMAC digests, fail closed) |
+| `d1b6c84` | `bank-agent retention purge`: conversation text, ended sessions, challenges, trust events, closed intakes, rate windows, as the owner in the `retention` context (migration `0012`); records and audit events kept |
+| `23ea381` | `deploy/postgres/init-production`: a non-superuser owner; a suite that migrates, seeds, and runs the API, the limiter, the audit replay check, and the purge under it |
+| `e624af6` | Multi-stage images: `api` and `job` (`services/api/Dockerfile`), `web` (Caddy with the static SPA); non-root, read-only roots, digests, health checks, the price table and a stored retrieval index in the image |
+| `6e0ed05` | `deploy/compose.prod.yml`, `deploy/prod.sh`, `deploy/.env.production.example`, `deploy/smoke_test.sh`; the API's access log stays off |
+| `0f98855` | The browser check found two CSP violations; fixed at the source: assets never inlined, and a per-response nonce (Caddy templates) for the style element Radix dialogs inject |
+| `02f4049`, `25d2c40` | Backups keep ownership (a `--no-owner` restore broke the next migration); Grafana keeps its bundled datasources on a read-only root; the Jaeger UI on loopback |
+| `8ad7375` | `tests/unit/test_deploy_config.py`: the hardening of every service, image, the CSP, and the env template, guarded in the unit suite |
+| `a19213a` | Agents take credit intakes into review and close them (migration `0013`, audited, web confirmations in es, pt, en) |
+| `a892022`, `f9c9fbb`, `799cd24`, `49ff8e6` | `make security`, `images`, `scan-images`, `smoke`, `csp-check`; Caddy compiled with Go 1.26.8 (17 fixable HIGH findings in the official binary); the CI `deploy` job |
+| `c9cc000` | Active sessions counted deployment-wide from the session store |
+| `6d6b515` | A per-session limit on synthetic eligibility assessments (the threat model's probing abuse case) |
+| `1dd6e6a` to `f608e81`, `30e2dcd` | ADR 0019, the threat model, demo mode, data retention, data use, the deployment guide, the runbook and operations docs, READMEs, BACKLOG |
+| This commit | This entry, AGENTS.md |
+
+#### Decisions
+
+- [ADR 0019](adr/0019-single-host-compose-deployment.md): one VM with Docker Compose for the event, images built on the VM from the checked-out commit, never pushed; the migration path to managed services is written down.
+- The plan's decisions, among them: Caddy is the edge and serves the SPA; Caddy non-root binds 80 and 443 through a namespaced sysctl; the local TLS mode uses Caddy's own CA; the API never holds the owner password; the one plain-http model exception is a private host; shared limits in PostgreSQL rather than Redis; proxy headers trusted from Caddy's fixed address only; the degradation level stays per worker while active sessions become shared; the retention periods (7, 7, 30 days); the purge loops inside its container; the job image carries gold built from the committed sample; the API image includes the `litellm` extra; Jaeger on Badger for 7 days, Grafana behind its login on loopback; freshness alerts re-owned (no scheduled load to measure).
+- Found during the verification and decided: the smoke test's dispute flows start an intake and stop at the clarifying question (read only), because the seeded open case's SLA counts from the data snapshot and its status question now escalates as overdue (correct behavior; BACKLOG). Caddy is rebuilt from source rather than accepting its HIGH findings. The eligibility limit hands the case to a person with reason `other` and detail `eligibility_assessment_limit` (no contract change).
+- Dependencies: none added to the Python or web lockfiles. The images add Caddy 2.11.4 compiled from `deploy/caddy/module` (Apache-2.0) and use the existing `litellm` extra; container tools (hadolint, shellcheck, trivy, syft) run from pinned images only.
+
+#### Local production verification (on this machine; not a hosted deployment)
+
+Project `bank-agent-p16`, `CADDY_TLS=internal`, `SITE_ADDRESS=localhost`, host ports 8080 and 8443, no database port published, a scratch env file outside the repository (secrets generated by `prod.sh init-env`, never printed), `LLM_PROVIDER=litellm` with `ollama/qwen2.5:7b-instruct` through `http://host.docker.internal:11434` (`LLM_ALLOW_PRIVATE_HTTP_BASE=true`), demo mode with `ALLOW_PUBLIC_DEMO_MODE=true`.
+
+| Check | Result |
+|---|---|
+| Images | `api`, `job`, `web` built; hadolint clean; trivy: no fixable HIGH or CRITICAL finding in any of the three (after the Caddy rebuild); CycloneDX SBOMs written |
+| Stack | `prod.sh up`: migrate to `0013` as the non-superuser owner, then api (2 workers), web, purge healthy; `prod.sh seed`: 59 customers (16 personas plus coverage from the sample), under the production roles |
+| Smoke test | Passed, 61 checks: the certificate, health, SPA and API headers, the demo sign-in with `__Host-session` (`Secure`, `HttpOnly`, `SameSite=Strict`, host-only) and `__Host-csrf`, account inquiry (es), card support (pt), a dispute intake (es and pt), the credit catalog (pt), an out-of-scope abstention, a cross-customer 404; 23 model calls served by the local model through LiteLLM with the budget guard (`llm_budget` ok) |
+| Browser CSP check | `apps/web/tooling/csp-check.mjs` in Chromium: every surface, light and dark, desktop and mobile, a mobile sheet and a desktop dialog: no CSP violation, console error, or failed request over 45 page loads (the first run found the two violations fixed in `0f98855`) |
+| Headers | SPA: CSP (`script-src 'self'`, `style-src 'self' 'nonce-<per response>'`, `frame-ancestors 'none'`), HSTS, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Cache-Control: no-store` on the page; API: its strict API CSP, HSTS, `no-store` |
+| Backup and restore | `prod.sh backup`, a new conversation, `prod.sh restore`: the conversation is gone, the owner still owns all 24 tables, the migrate job passes, the smoke test passes again |
+| Retention | The purge service ran at start and reported counts only |
+| `obs` profile | Traces in Jaeger survive a Jaeger restart (Badger); Prometheus holds the API's series and all 10 alert rules; Grafana answers 401 without its login and serves the provisioned dashboard; the active-session gauge is reported by both workers |
+| `make security` | pip-audit and `pnpm audit --prod --audit-level high`: no known vulnerabilities; bandit, gitleaks (342 commits), hadolint, shellcheck, compose validation: clean |
+
+Not run: the `ollama` compose profile (configuration validated; running it downloads about 5 GB into the container), any cloud host, and a hosted provider.
+
+#### Load test on the production stack (local measurement, fake model)
+
+Two workers capped at 1.5 CPUs, TLS through Caddy, the shared limiter, every trace kept, rate limits raised for the run: 0 errors at 10, 25, and 50 customers; 27.4 turns per second at 50 customers with p95 250 ms overall (per workflow 290 to 340 ms); the ceiling is the API's CPU allowance, with Jaeger the second cost (470 MB at 50 customers, limit raised to 768 MB). Details: [capacity.md](operations/capacity.md).
+
+#### How to verify
+
+```bash
+make check                                           # needs Docker; never reads .env
+make security                                        # network for the audits
+make images IMAGE_TAG=local VITE_DEMO_MODE=true && make scan-images IMAGE_TAG=local
+uv run --frozen pytest services/api/tests/integration/test_production_roles.py services/api/tests/integration/api/test_retention_purge.py services/api/tests/integration/test_rate_limit_store.py -q
+# The production stack locally, TLS included: deploy/README.md, "Run the production stack locally"
+```
+
+Results recorded in this phase:
+
+| Check | Result |
+|---|---|
+| `make check` | See the final line of this entry |
+| New tests | Settings guards (every refusal case), the rate-limit store on memory and PostgreSQL and across two engines and two apps, the purge and its boundaries, the production-roles suite, the agent credit moves (contracts, RLS, HTTP), the shared session count, the assessment limit in es and pt, the deployment configuration, the CSP nonce |
+
+#### Known limitations
+
+- The host is not chosen; nothing was deployed to a cloud VM. The human steps are below.
+- Demo mode is on for the public demo by design ([demo mode](security/demo-mode.md)).
+- One VM, manual or cron backups on the VM itself, secrets in a mode-600 env file (ADR 0019).
+- The degradation level stays per worker (decision 10).
+- Grafana's Jaeger datasource cannot read Jaeger 2.21; traces are read in the Jaeger UI through the SSH tunnel (BACKLOG).
+- The seeded dispute case's status question escalates as overdue on the deployed demo (BACKLOG, 17).
+- The `ollama` profile was not run; its RAM guidance (16 GB) comes from the model size and the local measurement.
+- The new staff copy (credit review confirmations in es, pt, en) has had no native Portuguese review (add to pending action 38).
+
+#### Human steps on the chosen host
+
+1. Choose the host (Lightsail 4 GB recommended; 8 GB with the `obs` profile; 16 GB for the `ollama` profile) and create the VM with Ubuntu 24.04, a static IP, and the firewall: 22 from your address only, 80 and 443 (and UDP 443) from anywhere ([deploy/README.md](../deploy/README.md), "Choosing a host").
+2. Point a DNS `A` record for the demo host name at the static IP and wait until it resolves.
+3. On the VM: install Docker from Docker's repository, clone the repository, check out the commit to deploy (the guide has the commands).
+4. `deploy/prod.sh init-env`, then edit `deploy/.env.production` on the server: `SITE_ADDRESS`, `PUBLIC_ORIGIN`, `ACME_EMAIL`, `DEMO_MODE=true`, `ALLOW_PUBLIC_DEMO_MODE=true`, `VITE_DEMO_MODE=true`, and the model (fake, a hosted provider with its key, or the `ollama` profile). Never commit or share the file.
+5. `deploy/prod.sh check && deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed && deploy/prod.sh smoke`.
+6. Share the URL with the session that verifies it (`deploy/smoke_test.sh https://<host>` and `make csp-check SMOKE_URL=https://<host>` from a laptop), set up the uptime monitor, the daily backup, and the daily smoke test from the guide.
+7. After 2026-10-16: `deploy/prod.sh destroy --yes`, then release the DNS record, the static IP, the VM and its disks, and any provider key.
+
+#### Next phase
+
+Phase 17, documentation and final audit (`kit/prompts/17-docs-final-audit.md`): the license, the organizer data-use terms, the final docs and audit (including the remaining deployment work of ADR 0019), and the video; verify the deployed URL once the human shares it.
 
 ### Phase 15: reliability and observability (2026-09-29)
 
