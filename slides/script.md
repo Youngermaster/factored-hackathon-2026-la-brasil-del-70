@@ -44,7 +44,7 @@ Rules for editing: English, plain words, no em dashes, no number that is not in 
 
 <!-- live clip A, about 20 s; see VIDEO.md for what to record -->
 
-Here is the working system. The same dispute in the chat, and beside it the agent console: the state, the rule ids, the tool call and its verification, straight from the execution record.
+Here is the working system. A real dispute in the chat, and beside it the glass box: the state, the rule ids, the tool call and its verification, straight from the execution record, and an injection refused.
 
 ## architecture
 
@@ -104,7 +104,7 @@ The card block in Portuguese, with its step-up code, then a credit question answ
 
 [arrive] What we cannot claim yet: the data is synthetic, the Portuguese is ours, our labels await review, and the verifier only catches what its word lists know.
 
-[click 1] Retries, fallbacks, row-level security and tracing are in place. Monitoring and load tests are next.
+[click 1] Retries, fallbacks, row-level security, traces and alerts are in place. Next: a hosted model, managed secrets and a real identity provider.
 
 [click 2] We are La Brasil del 70.
 
