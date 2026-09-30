@@ -233,6 +233,10 @@ SYFT_IMAGE := anchore/syft:v1.40.0@sha256:11a68ff5cd49a1579e1f05b061a96edf0a5add
 IMAGE_TAG ?= $(shell git rev-parse --short=12 HEAD)
 VITE_DEMO_MODE ?= false
 SMOKE_URL ?=
+# Extra flags for a stack whose certificate the machine does not trust (the local TLS mode, deploy/README.md):
+# SMOKE_ARGS="--ca-file <root.crt> --min-cert-days 0" for smoke, CSP_ARGS=--ignore-https-errors for csp-check.
+SMOKE_ARGS ?=
+CSP_ARGS ?=
 # Dummy values that only let `docker compose config` interpolate the production file; never used to run anything.
 COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
 	POSTGRES_SUPERUSER_PASSWORD=compose-config-check POSTGRES_ADMIN_PASSWORD=compose-config-check \
@@ -268,13 +272,13 @@ scan-images: ## Trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs (syft
 			docker:bank-agent-$$image:$(IMAGE_TAG) -o cyclonedx-json > reports/sbom/bank-agent-$$image.cdx.json; \
 	done; exit $$status
 
-smoke: ## Smoke test a deployed stack: make smoke SMOKE_URL=https://demo.example.org (deploy/smoke_test.sh)
+smoke: ## Smoke test a deployed stack: make smoke SMOKE_URL=https://demo.example.org [SMOKE_ARGS=...] (deploy/smoke_test.sh)
 	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
-	deploy/smoke_test.sh $(SMOKE_URL)
+	deploy/smoke_test.sh $(SMOKE_URL) $(SMOKE_ARGS)
 
 submission-check: ## Pre-submission: check, security, eval-smoke, slides verify, docs-check, then the human steps left
 	scripts/submission_check.sh
 
-csp-check: ## Browser check of a deployed stack's CSP and cookies: make csp-check SMOKE_URL=https://demo.example.org
+csp-check: ## Browser check of a deployed stack's CSP and cookies: make csp-check SMOKE_URL=https://demo.example.org [CSP_ARGS=...]
 	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
-	$(WEB) exec node tooling/csp-check.mjs $(SMOKE_URL)
+	$(WEB) exec node tooling/csp-check.mjs $(SMOKE_URL) $(CSP_ARGS)

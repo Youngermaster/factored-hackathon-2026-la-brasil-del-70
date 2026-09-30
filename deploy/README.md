@@ -251,8 +251,9 @@ ENV_FILE=/tmp/p16.env deploy/prod.sh init-env           # any path outside the r
 export ENV_FILE=/tmp/p16.env PROJECT=bank-agent-local
 deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed
 docker cp bank-agent-local-web-1:/data/caddy/pki/authorities/local/root.crt /tmp/caddy-root.crt
-deploy/smoke_test.sh https://localhost:8443 --ca-file /tmp/caddy-root.crt --min-cert-days 0   # local certificates live 12 hours
-pnpm --dir apps/web exec node tooling/csp-check.mjs https://localhost:8443 --ignore-https-errors
+make smoke SMOKE_URL=https://localhost:8443 SMOKE_ARGS="--ca-file /tmp/caddy-root.crt --min-cert-days 0"   # local certificates live 12 hours
+pnpm --dir apps/web exec playwright install chromium   # once per machine: pnpm does not download the browser
+make csp-check SMOKE_URL=https://localhost:8443 CSP_ARGS=--ignore-https-errors   # 5 to 6 minutes: it waits out the auth rate limit
 docker compose -f deploy/compose.prod.yml --env-file /tmp/p16.env -p bank-agent-local --profile '*' down --volumes
 rm /tmp/p16.env
 ```
