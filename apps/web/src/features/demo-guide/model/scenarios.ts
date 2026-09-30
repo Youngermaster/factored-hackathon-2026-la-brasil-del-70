@@ -7,9 +7,10 @@ import type { Schema } from '@/shared/api';
  *
  * The example messages are inputs the visitor types, shown verbatim in the language of the conversation they
  * demonstrate, so they live here as data rather than in the locale files (which translate the page around them).
- * Every message was driven through the real API with the seeded data and LLM_PROVIDER=fake before it was listed;
- * the backend scenario tests cover the same phrasings. Words in brackets are placeholders the visitor fills from
- * the previous answer.
+ * Every message was driven through the real API with LLM_PROVIDER=fake on the seed of the committed sample (the
+ * default `make seed` and the deployed demo) before it was listed; the backend scenario tests cover the same
+ * phrasings. Every persona here is one that seed loads (data_platform/seed/personas.sample.yaml; a data_platform
+ * test checks it). Words in brackets are placeholders the visitor fills from the previous answer.
  */
 export type PathKind = 'normal' | 'ambiguous' | 'escalation';
 
@@ -20,15 +21,16 @@ export type Step =
 
 export type ScenarioId =
   | 'balances'
-  | 'similar-transfers'
+  | 'payment-details'
   | 'transfer-unsupported'
   | 'contested-balance'
   | 'card-block'
   | 'card-status'
   | 'card-unblock'
   | 'dispute-intake'
+  | 'dispute-status'
   | 'dispute-details'
-  | 'dispute-sla'
+  | 'dispute-regulator'
   | 'credit-eligibility'
   | 'credit-status'
   | 'credit-missing-income'
@@ -56,18 +58,18 @@ export const SCENARIOS: readonly Scenario[] = [
     pt: [say('Qual é o saldo das minhas contas?')],
   },
   {
-    id: 'similar-transfers',
+    id: 'payment-details',
     workflow: 'account_inquiry',
     path: 'ambiguous',
-    persona: 'acc-ar-similar-transfers',
-    es: [say('¿Cuál es el estado de mi transferencia?'), say('la primera')],
-    pt: [say('Qual é a situação da minha transferência?'), say('a primeira')],
+    persona: 'acc-mx-accounts',
+    es: [say('¿Cuál es el estado de mi transferencia?')],
+    pt: [say('Qual é a situação da minha transferência?')],
   },
   {
     id: 'transfer-unsupported',
     workflow: 'account_inquiry',
     path: 'ambiguous',
-    persona: 'acc-co-payments',
+    persona: 'acc-mx-accounts',
     es: [say('Quiero hacer una transferencia a otra cuenta')],
     pt: [say('Quero fazer uma transferência para outra conta')],
   },
@@ -75,7 +77,7 @@ export const SCENARIOS: readonly Scenario[] = [
     id: 'contested-balance',
     workflow: 'account_inquiry',
     path: 'escalation',
-    persona: 'acc-co-payments',
+    persona: 'acc-mx-accounts',
     es: [say('Mi saldo está mal, quiero hablar con una persona')],
     pt: [say('O saldo da minha conta está errado')],
   },
@@ -112,8 +114,8 @@ export const SCENARIOS: readonly Scenario[] = [
     workflow: 'card_support',
     path: 'escalation',
     persona: 'crd-mx-blocked',
-    es: [say('Quiero desbloquear mi tarjeta'), say('la primera')],
-    pt: [say('Quero desbloquear meu cartão'), say('o primeiro')],
+    es: [say('Quiero desbloquear mi tarjeta')],
+    pt: [say('Quero desbloquear meu cartão')],
   },
   {
     id: 'dispute-intake',
@@ -121,14 +123,16 @@ export const SCENARIOS: readonly Scenario[] = [
     path: 'normal',
     persona: 'dsp-co-unrecognized',
     es: [
-      say('Quiero el estado de cuenta de mayo de mi tarjeta de crédito'),
+      say('Quiero el estado de cuenta de abril de mi tarjeta de crédito'),
+      say('la primera'),
       say('No reconozco el cargo de [comercio] del [fecha] por [monto]'),
       say('Sí'),
       say('No, gracias'),
       { action: 'confirm_and_code' },
     ],
     pt: [
-      say('Quero o extrato de maio do meu cartão de crédito'),
+      say('Quero o extrato de abril do meu cartão de crédito'),
+      say('o primeiro'),
       say('Não reconheço a cobrança de [estabelecimento] de [data] por [valor]'),
       say('Sim'),
       say('Não, obrigado'),
@@ -136,20 +140,36 @@ export const SCENARIOS: readonly Scenario[] = [
     ],
   },
   {
+    id: 'dispute-status',
+    workflow: 'dispute',
+    path: 'normal',
+    persona: 'dsp-mx-open-case',
+    es: [say('¿Cómo va mi aclaración?')],
+    pt: [say('Qual é a situação da minha contestação?')],
+  },
+  {
     id: 'dispute-details',
     workflow: 'dispute',
     path: 'ambiguous',
-    persona: 'dsp-mx-similar-purchases',
+    persona: 'dsp-co-unrecognized',
     es: [say('No reconozco una compra con mi tarjeta')],
     pt: [say('Não reconheço uma compra no meu cartão')],
   },
   {
-    id: 'dispute-sla',
+    id: 'dispute-regulator',
     workflow: 'dispute',
     path: 'escalation',
-    persona: 'dsp-mx-open-case',
-    es: [say('¿Cómo va mi aclaración?')],
-    pt: [say('Qual é a situação da minha contestação?')],
+    persona: 'dsp-co-unrecognized',
+    es: [
+      say(
+        'No reconozco un cargo en mi tarjeta y voy a presentar una queja ante la Superintendencia Financiera',
+      ),
+    ],
+    pt: [
+      say(
+        'Não reconheço uma cobrança no meu cartão e vou registrar uma reclamação no Banco Central',
+      ),
+    ],
   },
   {
     id: 'credit-eligibility',
