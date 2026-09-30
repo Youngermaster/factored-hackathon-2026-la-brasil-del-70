@@ -47,10 +47,17 @@ http://127.0.0.1:8081 {
 		}
 	}
 
+	# The SPA. Scripts, styles, fonts, and images come from this origin only; no inline script is allowed at all. The one
+	# exception is the <style> element Radix dialogs inject to lock scrolling: it carries a nonce, fresh per response
+	# ({http.request.uuid}), which the templates handler also writes into index.html for the app to hand to the
+	# library (apps/web/src/shared/lib/csp-nonce.ts). index.html is never cached, so the page and its header agree.
 	handle {
 		root * /srv
+		templates {
+			mime text/html
+		}
 		header {
-			Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+			Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self' 'nonce-{http.request.uuid}'; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
 			Strict-Transport-Security "max-age=63072000; includeSubDomains"
 			X-Content-Type-Options "nosniff"
 			Referrer-Policy "no-referrer"
@@ -58,7 +65,7 @@ http://127.0.0.1:8081 {
 			X-Frame-Options "DENY"
 			Cross-Origin-Opener-Policy "same-origin"
 			Cross-Origin-Resource-Policy "same-origin"
-			Cache-Control "no-cache"
+			Cache-Control "no-store"
 			-Server
 		}
 		@assets path /assets/*
