@@ -77,7 +77,7 @@ make up PROFILES=api
 
 ## Dependencies and extras
 
-Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013).
+Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013). Opt-in Langfuse tracing uses the locked OpenTelemetry OTLP HTTP exporter; it adds no API dependency. See [observability](../../docs/operations/observability.md) for settings and startup.
 
 ## How to extend
 

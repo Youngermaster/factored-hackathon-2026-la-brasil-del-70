@@ -1165,7 +1165,7 @@ export interface components {
             rule_results: components["schemas"]["RuleResult"][];
             /**
              * Schema Version
-             * @default 1.4.0
+             * @default 1.5.0
              */
             schema_version: string;
             /** State */
@@ -1571,6 +1571,8 @@ export interface components {
             input_tokens: number;
             /** Latency Ms */
             latency_ms: number;
+            /** Model Call Id */
+            model_call_id?: string | null;
             /** Model Id */
             model_id: string;
             /** Output Tokens */

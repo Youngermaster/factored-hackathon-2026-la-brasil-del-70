@@ -107,10 +107,12 @@ class LiteLLMCompletion:
             "model": self._model,
             "messages": [{"role": message.role, "content": message.content} for message in request.messages],
             "max_tokens": request.max_output_tokens,
-            "temperature": request.temperature,
             "timeout": self._timeout_seconds,
             "num_retries": 0,
         }
+        # GPT-5 models reject explicit temperatures other than their provider default.
+        if not self._model.startswith("openai/gpt-5"):
+            arguments["temperature"] = request.temperature
         if self._api_key is not None:
             arguments["api_key"] = self._api_key.get_secret_value()
         if self._api_base is not None:
@@ -131,7 +133,13 @@ class LiteLLMCompletion:
         except Exception as error:  # every provider failure becomes a typed LLM error
             raise map_provider_error(error) from None
         # The configured id is reported, not the provider's echo, so prices and cassettes key on one name.
-        return RawCompletion(text=_text(response), usage=_usage(response), model_id=self._model)
+        returned_model = getattr(response, "model", None)
+        return RawCompletion(
+            text=_text(response),
+            usage=_usage(response),
+            model_id=self._model,
+            provider_model_id=returned_model if isinstance(returned_model, str) and returned_model else None,
+        )
 
 
 class LiteLLMClient(PromptedLLMClient):

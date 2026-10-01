@@ -13,6 +13,7 @@ class RecordedSpan:
     attributes: dict[str, AttributeValue] = field(default_factory=dict)
     error_codes: list[str] = field(default_factory=list)
     trace_id: str | None = "0" * 31 + "1"
+    span_id: str | None = "0" * 15 + "1"
 
     def set_attribute(self, key: str, value: AttributeValue) -> None:
         self.attributes[key] = value
