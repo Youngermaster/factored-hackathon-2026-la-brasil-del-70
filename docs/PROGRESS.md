@@ -73,7 +73,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ### Phase 17: documentation completion and final audit (2026-09-30)
 
-Plan: `docs/plans/phase-17.md` (not a plan-mode phase; the plan was committed first and every open question decided in it, under the human's delegated approval). The pull succeeded (`main` was up to date at `28b143b`). Human decisions given to the session: no license ("All rights reserved"); no known restriction on the organizer data-use terms, so the committed sample stays; the teammate branch `feat/privacy-safe-langfuse-api` stays unmerged; the host is still undecided, so `deploy.url` stays pending; the published results stay the local `qwen2.5:7b-instruct` run.
+Plan: `docs/plans/phase-17.md` (not a plan-mode phase; the plan was committed first and every open question decided in it, under the human's delegated approval). The pull succeeded (`main` was up to date at `28b143b`). Human decisions given to the session: no license ("All rights reserved"); no known restriction on the organizer data-use terms, so the committed sample stays; at the phase close the teammate branch `feat/privacy-safe-langfuse-api` remained unmerged, but it later landed as PR 20; the host is still undecided, so `deploy.url` stays pending; the published results stay the local `qwen2.5:7b-instruct` run.
 
 #### What was done
 
@@ -237,7 +237,7 @@ Phase 17, documentation and final audit (`kit/prompts/17-docs-final-audit.md`): 
 
 ### Phase 15: reliability and observability (2026-09-29)
 
-Plan: `docs/plans/phase-15.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The session ran in a git worktree while session 14b worked on `main`, so the pull was skipped as instructed; engine edits stay small (a turn span, a state span helper, the template-only check, one clarification line) and the orchestrator merges the branch. The session paused twice (a login expiry) and resumed from its commits. No Langfuse, as the human decided.
+Plan: `docs/plans/phase-15.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The session ran in a git worktree while session 14b worked on `main`, so the pull was skipped as instructed; engine edits stay small (a turn span, a state span helper, the template-only check, one clarification line) and the orchestrator merges the branch. The session paused twice (a login expiry) and resumed from its commits. Phase 15 used no Langfuse; PR 20 later added a separate opt-in metadata-only exporter.
 
 #### What was done
 
@@ -561,7 +561,7 @@ Phase 14, session 14b: the live runs on the local model (commands in [the evalua
 
 ### Phase 13: product surfaces (chat, glass box, agent inbox, evaluation view) (2026-09-29)
 
-Plan: `docs/plans/phase-13.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op ("Already up to date"); local `main` already held the merge of `origin/main` (pending action 37). ADR 0025's scope was not built, as the human decided: no mock human agent, no Langfuse, and no assistant name or avatar (the API has no assistant profile route). The backend changes ran in two separate worktrees and were cherry-picked onto `main`.
+Plan: `docs/plans/phase-13.md` (not a plan-mode phase; the human delegated approvals, and every open question is decided in the plan with its reasoning). The pull at the start was a fast-forward no-op ("Already up to date"); local `main` already held the merge of `origin/main` (pending action 37). At the end of phase 13, ADR 0025's scope had not been built: there was no mock human agent, Langfuse exporter, or assistant-profile route. PR 18 later added the assistant profile, and PR 20 later added opt-in metadata-only Langfuse export; the mock human agent remains unbuilt. The backend changes ran in two separate worktrees and were cherry-picked onto `main`.
 
 #### What was done
 

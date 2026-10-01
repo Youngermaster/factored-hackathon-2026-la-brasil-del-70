@@ -7,7 +7,7 @@ Phase 15 decisions, taken by the session under the human's delegated approval; t
 
 ## Context
 
-The brief asks for "a credible route to operation": tracing, execution records, monitoring, bounded retries, safe fallback, and tool-failure handling, shown with evidence. Phase 08 left a `Telemetry` port with a no-op adapter and GenAI attributes written through it; phase 01 left a compose `obs` profile (collector, Jaeger, Prometheus, Grafana) with nothing feeding it. Three questions had real alternatives: how telemetry leaves the process, where metrics come from, and how the service decides what to do when a dependency fails. The human ruled out Langfuse.
+The brief asks for "a credible route to operation": tracing, execution records, monitoring, bounded retries, safe fallback, and tool-failure handling, shown with evidence. Phase 08 left a `Telemetry` port with a no-op adapter and GenAI attributes written through it; phase 01 left a compose `obs` profile (collector, Jaeger, Prometheus, Grafana) with nothing feeding it. Three questions had real alternatives: how telemetry leaves the process, where metrics come from, and how the service decides what to do when a dependency fails. Phase 15 ruled out Langfuse as the built-in observability stack; PR 20 later added a separate, opt-in metadata-only exporter without changing the default OpenTelemetry design.
 
 ## Considered options
 

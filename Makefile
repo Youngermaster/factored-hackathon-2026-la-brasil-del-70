@@ -192,6 +192,7 @@ verify-seed: ## Read-only reconciliation of the selected gold rows against Postg
 	$(BANK_DATA) verify-seed $(SOURCE_FLAG) --customers $(SEED_CUSTOMERS)
 
 docs-check: ## Markdown lint and Mermaid validation
+	$(GUARD_PY) scripts/checks/check_adr_statuses.py
 	apps/web/node_modules/.bin/markdownlint-cli2
 	node scripts/checks/check_mermaid.mjs
 	node --test 'scripts/checks/tests/*.test.mjs'

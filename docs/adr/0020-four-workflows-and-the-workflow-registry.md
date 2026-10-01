@@ -45,3 +45,5 @@ The proposed Tuesday scope below was superseded and was not adopted. The accepte
 - **Assistant profile:** Let the user change the assistant's name and choose another persisted PNG from the mock image service; show both in the chat header.
 - **Chat limits:** Persist a unique ID per chat, allow multiple chats, and limit the fixed demo customer to five new chats per rolling 60-minute window. Keep finalized chats readable.
 - **Later:** Add full customer identity and multiple profiles, plus a real human service agent who can join and exchange messages in the existing chat. See [ADR 0026](0026-live-agent-joins-escalated-conversation.md). The four-workflow scope and safe escalation requirements above remain unchanged.
+
+Implementation note: PR 18 later added the customer-visible assistant name and predefined avatar preferences, and PR 20 added privacy-safe, metadata-only Langfuse generation export as an opt-in integration that is disabled by default. Those independently merged capabilities do not reinstate the superseded Tuesday release or its mock-human-agent design.

@@ -5,7 +5,7 @@
 
 ## Context
 
-Financial memory, tips, and planning remain optional future directions beyond the current internal MVP completion window. The narrower Tuesday release in [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) was superseded and its assistant-profile feature was not adopted. Current scope and status are recorded in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md) and [PROGRESS.md](../PROGRESS.md).
+Financial memory, tips, and planning remain optional future directions beyond the current internal MVP completion window. The narrower Tuesday release in [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) was superseded. Its assistant name and predefined avatar preferences later landed independently in PR 18, but they do not implement financial memory or reinstate the superseded release scope. Current scope and status are recorded in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md) and [PROGRESS.md](../PROGRESS.md).
 
 This direction builds on the four workflow scope in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md), but adds persistent personal context and proactive financial guidance. Those features need user choice, clear evidence and freshness, strict customer isolation, and careful boundaries around investment-related guidance. The current hackathon data is synthetic and is not a basis for real financial advice.
 
@@ -39,7 +39,7 @@ Choose option 2 as a future product direction. These capabilities are not part o
 - Persistent memory needs explicit data categories, provenance, freshness, customer controls, access isolation, and retention behavior before it can ship.
 - Retrieval keeps prompts focused and supports source-grounded answers, but retrieved records may be incomplete or stale; the assistant must say so and ask, abstain, or hand off when evidence is insufficient.
 - Personalized investment guidance remains gated on policy and suitability review. The hackathon prototype makes no live investment decisions or transactions.
-- Assistant name and PNG-image preferences from the superseded ADR 0025 plan were not adopted and are not part of the current product scope.
+- Assistant name and predefined PNG-avatar preferences are implemented as a secondary customer-facing capability. They carry no financial memory and do not change the four-workflow product scope.
 
 ## References
 
