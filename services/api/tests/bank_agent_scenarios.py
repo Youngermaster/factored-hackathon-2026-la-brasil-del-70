@@ -131,7 +131,7 @@ def scenario_data() -> ScenarioData:
     library = next(t for t in data.transactions if t.transaction_id == "TRX-FIXCO-0002")
     data.cases = [
         DisputeCase.open(
-            case_id=CaseId("case-fixco000001"),
+            case_id=CaseId("case-fixco000001-0001"),
             transaction=library,
             reason=DisputeReason.NOT_RECEIVED,
             opened_at=opened,

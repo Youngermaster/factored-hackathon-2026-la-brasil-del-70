@@ -13,7 +13,7 @@ Versioned prompt files for every language model call. Code references a prompt b
 | `extract_card_support_slots@1` | `CardSupportSlotExtraction` | Card hint, requested `CardAction`, block reason candidates |
 | `extract_credit_slots@1` | `CreditSlotExtraction` | Product of interest, amount, term, purpose, customer-declared monthly income; never an eligibility judgement |
 | `classify_intent_fallback@1` | `IntentClassification` | Only when the learned router is uncertain; every intent plus `out_of_scope`; intents, never workflow decisions |
-| `detect_escalation_signals@1` | `EscalationSignals` | Legal or regulator mention, distress, a request for a human, third-party admission |
+| `detect_escalation_signals@2` | `EscalationSignals` | Legal or regulator mention, distress, a request for a human, third-party admission; product incidents alone are not escalation signals |
 | `phrase_response@1` | plain text | The customer-facing reply in Spanish or natural Brazilian Portuguese, from given facts and clause texts only |
 | `summarize_for_handoff@1` | `HandoffSummaryDraft` | One paragraph for the agent, citing numbered verified facts; re-checked by the grounding verifier |
 | `paraphrase_router_seed@1` | `UtteranceParaphrases` | Offline only (`bank-ml router paraphrase --purpose train`): paraphrases of team-authored train seeds for router training |

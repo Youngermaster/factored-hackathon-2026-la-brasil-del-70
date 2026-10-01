@@ -63,11 +63,13 @@ KEYLESS_PROVIDERS: Final = frozenset({"ollama", "ollama_chat"})
 @dataclass(frozen=True, slots=True)
 class LlmOverrides:
     """Clients injected instead of the configured providers (tests and the evaluation harness), and the sleep
-    function the retry decorator uses (tests pass one that does not wait)."""
+    function the retry decorator uses (tests pass one that does not wait). Evaluation may also supply a redactor
+    whose allowlist is limited to its synthetic scenario variables."""
 
     primary: LLMClient | None = None
     fallback: LLMClient | None = None
     sleep: Sleep | None = None
+    redactor: Redactor | None = None
 
 
 def _model_id(client: LLMClient, configured: str, provider: str) -> str:
@@ -171,7 +173,7 @@ def build_llm_stack(
     """
     overrides = overrides or LlmOverrides()
     prices = PriceTable.from_yaml(settings.prices_file)
-    redactor = Redactor()
+    redactor = overrides.redactor or Redactor()
 
     def configured(model: str, key: SecretStr | None) -> LLMClient:
         return _provider(

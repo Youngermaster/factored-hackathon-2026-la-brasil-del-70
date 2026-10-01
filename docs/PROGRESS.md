@@ -71,6 +71,24 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Phase 14c follow-up: high-priority code corrections (2026-10-01)
+
+Implemented the five high-priority corrections identified by the 14b failure analysis without reading or changing
+the frozen test scenarios: `detect_escalation_signals@2`, masking of instruction-like record descriptors and record
+identifiers, segmented case-id parsing, the account and income grader false-positive fixes, and an evaluation-only
+redaction allowlist for synthetic simulated-customer inputs. The published 14b results and cassettes are unchanged.
+
+The case lookup and merchant masking regressions pass against both the memory and PostgreSQL adapters. Focused unit
+tests pass for the renderer in es and pt, identifier parsing, both graders, prompt loading, and evaluation redaction.
+The required live dev comparison of escalation prompt versions remains in BACKLOG because Ollama is not installed in
+this checkout; no claim is made that the unnecessary-transfer rate has changed until that run exists.
+
+Verification: 70 focused unit tests passed; the evaluation-redactor regression passed; the full dispute workflow file
+passed 16 of 18 before its new routing-independent case text was corrected, then the corrected segmented-id regression
+passed 2 of 2 and the malicious-merchant regression passed 2 of 2 on memory and PostgreSQL; Ruff and `git diff --check`
+passed. The two earlier failures were only the regression input omitting the word "reclamo", so the router correctly
+asked for clarification before the test was corrected to exercise status lookup rather than routing.
+
 ### Phase 17: documentation completion and final audit (2026-09-30)
 
 Plan: `docs/plans/phase-17.md` (not a plan-mode phase; the plan was committed first and every open question decided in it, under the human's delegated approval). The pull succeeded (`main` was up to date at `28b143b`). Human decisions given to the session: no license ("All rights reserved"); no known restriction on the organizer data-use terms, so the committed sample stays; at the phase close the teammate branch `feat/privacy-safe-langfuse-api` remained unmerged, but it later landed as PR 20; the host is still undecided, so `deploy.url` stays pending; the published results stay the local `qwen2.5:7b-instruct` run.
