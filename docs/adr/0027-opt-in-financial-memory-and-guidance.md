@@ -5,7 +5,7 @@
 
 ## Context
 
-After the account-inquiry and human-escalation increments in [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) and [ADR 0026](0026-live-agent-joins-escalated-conversation.md), the product may grow into a more personal banking companion with opt-in financial memory, tips, and planning. Assistant name and image customization are already in the Tuesday MVP under ADR 0025.
+Financial memory, tips, and planning remain optional future directions beyond the current internal MVP completion window. The narrower Tuesday release in [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) was superseded and its assistant-profile feature was not adopted. Current scope and status are recorded in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md) and [PROGRESS.md](../PROGRESS.md).
 
 This direction builds on the four workflow scope in [ADR 0020](0020-four-workflows-and-the-workflow-registry.md), but adds persistent personal context and proactive financial guidance. Those features need user choice, clear evidence and freshness, strict customer isolation, and careful boundaries around investment-related guidance. The current hackathon data is synthetic and is not a basis for real financial advice.
 
@@ -17,7 +17,7 @@ This direction builds on the four workflow scope in [ADR 0020](0020-four-workflo
 
 ## Decision
 
-Choose option 2 as a future product direction. These capabilities are not part of the Tuesday release and should be added incrementally after account inquiry and human escalation are working.
+Choose option 2 as a future product direction. These capabilities are not part of the revised internal MVP completion window and should be added only through later scope decisions.
 
 ### User-controlled financial memory
 
@@ -39,11 +39,11 @@ Choose option 2 as a future product direction. These capabilities are not part o
 - Persistent memory needs explicit data categories, provenance, freshness, customer controls, access isolation, and retention behavior before it can ship.
 - Retrieval keeps prompts focused and supports source-grounded answers, but retrieved records may be incomplete or stale; the assistant must say so and ask, abstain, or hand off when evidence is insufficient.
 - Personalized investment guidance remains gated on policy and suitability review. The hackathon prototype makes no live investment decisions or transactions.
-- Assistant name and PNG-image preferences are handled by the Tuesday MVP in ADR 0025; they do not require a generative image service.
+- Assistant name and PNG-image preferences from the superseded ADR 0025 plan were not adopted and are not part of the current product scope.
 
 ## References
 
 - [ADR 0020: Four workflows and the workflow registry](0020-four-workflows-and-the-workflow-registry.md)
-- [ADR 0025: Tuesday MVP includes account inquiry, mock escalation, and assistant profile](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0025: superseded historical Tuesday MVP plan](0025-tuesday-account-inquiry-mvp-and-observability.md)
 - [ADR 0026: Human escalation progresses from simulated replies to a human service agent joining the conversation](0026-live-agent-joins-escalated-conversation.md)
 - [Data card: intended use and data boundaries](../data/data-card.md)

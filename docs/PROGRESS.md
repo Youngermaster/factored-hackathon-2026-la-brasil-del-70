@@ -6,6 +6,7 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 
 | Field | Value |
 |---|---|
+| Internal MVP completion window end | Sunday, 2026-10-04 (revised; leaves one calendar day before the official October 5 challenge-window end; completion is pending) |
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
 | Next phase | None. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
 | Blocked | None |

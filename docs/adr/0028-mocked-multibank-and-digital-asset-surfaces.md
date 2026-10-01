@@ -7,7 +7,7 @@
 
 After the initial account-inquiry and escalation work, the app may expand beyond the organizer's single synthetic-bank dataset. Customers could bring in or export their financial information across institutions in Latin America. The product roadmap also includes a crypto tab for BTC, ETH, SOL (Solana), and XRP, and a separate “xStocks on Solana” tab.
 
-These are exploratory product directions, not part of the Tuesday release. The hackathon should be able to demonstrate the navigation and data flows without credentials, live bank connections, wallets, custody, exchange integrations, or trading services.
+These are exploratory product directions, not part of the internal MVP completion window ending Sunday, October 4, 2026. The Tuesday release in [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) was superseded. The hackathon should be able to demonstrate the navigation and data flows without credentials, live bank connections, wallets, custody, exchange integrations, or trading services.
 
 ## Considered options
 
@@ -17,7 +17,7 @@ These are exploratory product directions, not part of the Tuesday release. The h
 
 ## Decision
 
-Choose option 2 as a later, mock-only product increment. Neither surface is part of Tuesday's release.
+Choose option 2 as a deferred, mock-only product direction. Neither surface is part of the current internal MVP completion window.
 
 ### Mock Latin American bank connectors
 
@@ -43,6 +43,6 @@ Choose option 2 as a later, mock-only product increment. Neither surface is part
 
 ## References
 
-- [ADR 0025: Tuesday MVP includes account inquiry, mock escalation, and assistant profile](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0025: superseded historical Tuesday MVP plan](0025-tuesday-account-inquiry-mvp-and-observability.md)
 - [ADR 0027: Financial memory and guidance are opt-in and grounded](0027-opt-in-financial-memory-and-guidance.md)
 - [Data card: provenance and intended use](../data/data-card.md)

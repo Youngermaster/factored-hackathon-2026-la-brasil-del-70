@@ -1,6 +1,6 @@
 # Submission checklist
 
-The organizer requires four things, sent to `hackathon.admin@factored.ai` before submissions close on **2026-10-05** ([brief](../organizer/BRIEF.md#submission-requirements)): a public repository named `factored-hackathon-2026-[team name]`, a link to the deployed tool, a 4 to 6 slide presentation, and a short mandatory video that demonstrates the working solution and explains the core architectural decisions.
+The organizer's published challenge window ends **2026-10-05** ([brief](../organizer/BRIEF.md#submission-requirements)); no cutoff time or timezone is stated here. The team set a separate **internal MVP completion window ending Sunday, 2026-10-04**, leaving one calendar day of buffer. This is a target, not a completion claim. Submission requires a public repository named `factored-hackathon-2026-[team name]`, a link to the deployed tool, a 4 to 6 slide presentation, and a video pitch, sent to `hackathon.admin@factored.ai`.
 
 Everything automated is done and checked by `make submission-check`. The unchecked boxes below are human steps, in the order they depend on each other. No session deploys, pushes, publishes, or sends anything.
 

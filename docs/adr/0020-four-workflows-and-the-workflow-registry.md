@@ -38,6 +38,8 @@ The depth bar and the cut rule that manage the scoring risk:
 
 ## Follow-up decision (2026-09-27)
 
+The proposed Tuesday scope below was superseded and was not adopted. The accepted build retains all four workflows; see resolved action 32 in [PROGRESS.md](../PROGRESS.md) and [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md). The internal MVP completion window is now Sunday, October 4, 2026; this does not change the accepted scope.
+
 - **Demo access:** Verify one fixed demo credential and bind its session to one fixed demo customer and synthetic dataset.
 - **Tuesday scope:** Automate account inquiry only. Card support, disputes, and credit invoke the escalation tool; a mock human service agent joins the same chat and sends a randomized, clearly labeled demo response.
 - **Assistant profile:** Let the user change the assistant's name and choose another persisted PNG from the mock image service; show both in the chat header.
