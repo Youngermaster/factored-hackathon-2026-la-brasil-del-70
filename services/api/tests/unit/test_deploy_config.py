@@ -6,7 +6,9 @@ in `make security`; this suite fails first when an edit drops a control.
 
 import importlib.util
 import re
+import sys
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 import pytest
@@ -20,12 +22,51 @@ WRITABLE_ROOT = {"ollama"}
 """Services allowed a writable root filesystem, each with the reason in a compose comment."""
 OWNER_SERVICES = {"postgres", "migrate", "seed", "purge"}
 LOOPBACK_PORTS = {"grafana", "jaeger"}
+OWNER_JOB_SECRETS = {"POSTGRES_ADMIN_PASSWORD", "SESSION_SECRET"}
+EXPECTED_SECRETS: dict[str, set[str]] = {
+    "api": {"POSTGRES_APP_PASSWORD", "SESSION_SECRET", "CSRF_SECRET", "LLM_API_KEY_PRIMARY", "LLM_API_KEY_FALLBACK"},
+    "migrate": OWNER_JOB_SECRETS,
+    "seed": OWNER_JOB_SECRETS,
+    "purge": OWNER_JOB_SECRETS,
+    "postgres": {"POSTGRES_SUPERUSER_PASSWORD", "POSTGRES_ADMIN_PASSWORD", "POSTGRES_APP_PASSWORD"},
+    "grafana": {"GRAFANA_ADMIN_PASSWORD"},
+}
+"""The secret files each service mounts (ADR 0036); every other service mounts none."""
+SECRET_CONSUMER = {
+    "api": "app",
+    "migrate": "app",
+    "seed": "app",
+    "purge": "app",
+    "postgres": "postgres",
+    "grafana": "grafana",
+}
+"""The stager directory, and so the container user, whose files each service mounts."""
+SECRETS_HOST_DIR = "${SECRETS_HOST_DIR:-/run/bank-agent/secrets}"
+
+
+def _load_stager() -> ModuleType:
+    spec = importlib.util.spec_from_file_location("deploy_secrets_stage", DEPLOY / "secrets_stage.py")
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+STAGER = _load_stager()
+SECRET_VARIABLES = {secret.variable for secret in STAGER.SECRETS}
 
 
 def _env(service: str) -> dict[str, Any]:
     environment = SERVICES[service].get("environment", {})
     assert isinstance(environment, dict)
     return environment
+
+
+def _mounted(service: str) -> dict[str, str]:
+    """Secret target name to compose secret name, for one service."""
+    return {entry["target"]: entry["source"] for entry in SERVICES[service].get("secrets", [])}
 
 
 @pytest.mark.parametrize("name", sorted(SERVICES))
@@ -74,11 +115,85 @@ def test_the_api_trusts_proxy_headers_from_the_web_container_only() -> None:
 
 
 def test_the_owner_password_reaches_the_owner_jobs_and_postgres_only() -> None:
-    holders = {
-        name for name in SERVICES if any("POSTGRES_ADMIN_PASSWORD" in str(value) for value in _env(name).values())
-    }
+    holders = {name for name in SERVICES if "POSTGRES_ADMIN_PASSWORD" in _mounted(name)}
     assert holders == OWNER_SERVICES
-    assert "POSTGRES_ADMIN_PASSWORD" not in _env("api")
+    assert "POSTGRES_ADMIN_PASSWORD" not in _mounted("api")
+
+
+@pytest.mark.parametrize("name", sorted(SERVICES))
+def test_each_service_mounts_only_the_secrets_it_needs(name: str) -> None:
+    assert set(_mounted(name)) == EXPECTED_SECRETS.get(name, set())
+
+
+@pytest.mark.parametrize("name", sorted(SERVICES))
+def test_no_secret_travels_in_an_environment_variable(name: str) -> None:
+    environment = _env(name)
+    assert not SECRET_VARIABLES & set(environment), name
+    for value in environment.values():
+        assert not {variable for variable in SECRET_VARIABLES if "${" + variable in str(value)}, (name, value)
+
+
+def test_every_mounted_secret_is_a_file_the_stager_writes_for_that_container_user() -> None:
+    declared = set()
+    for name in SERVICES:
+        consumer = SECRET_CONSUMER.get(name)
+        for target, source in _mounted(name).items():
+            assert COMPOSE["secrets"][source]["file"] == f"{SECRETS_HOST_DIR}/{consumer}/{target}", source
+            declared.add((consumer, target))
+    staged = {(consumer, secret.variable) for secret in STAGER.SECRETS for consumer in secret.consumers}
+    assert declared == staged
+    assert SERVICES["postgres"]["user"] == "{}:{}".format(*STAGER.CONSUMERS["postgres"])
+    dockerfile = (ROOT / "services/api/Dockerfile").read_text(encoding="utf-8")
+    assert set(re.findall(r"^USER (\S+)$", dockerfile, flags=re.MULTILINE)) == {
+        "{}:{}".format(*STAGER.CONSUMERS["app"])
+    }
+
+
+def test_services_read_their_secrets_from_the_mounted_files() -> None:
+    for name in ("api", "migrate", "seed", "purge"):
+        assert _env(name)["SECRETS_DIR"] == "/run/secrets"
+    assert "POSTGRES_PASSWORD" not in _env("postgres")
+    # (service, variable naming a file, the mounted secret it must name)
+    file_variables = [
+        ("postgres", "POSTGRES_PASSWORD_FILE", "POSTGRES_SUPERUSER_PASSWORD"),
+        ("postgres", "POSTGRES_OWNER_PASSWORD_FILE", "POSTGRES_ADMIN_PASSWORD"),
+        ("postgres", "POSTGRES_APP_PASSWORD_FILE", "POSTGRES_APP_PASSWORD"),
+        ("grafana", "GF_SECURITY_ADMIN_PASSWORD__FILE", "GRAFANA_ADMIN_PASSWORD"),
+    ]
+    for service, variable, mounted in file_variables:
+        assert _env(service)[variable] == f"/run/secrets/{mounted}"
+        assert mounted in _mounted(service)
+    init = (DEPLOY / "postgres" / "init-production" / "10-roles.sh").read_text(encoding="utf-8")
+    assert 'cat "$POSTGRES_OWNER_PASSWORD_FILE"' in init
+    assert 'cat "$POSTGRES_APP_PASSWORD_FILE"' in init
+
+
+@pytest.mark.parametrize("script", ["keyvault-secrets.sh", "provision.sh"])
+def test_the_azure_scripts_use_the_stager_vault_names(script: str) -> None:
+    text = (DEPLOY / "azure" / script).read_text(encoding="utf-8")
+    for secret in STAGER.SECRETS:
+        assert secret.vault_name in text, (script, secret.vault_name)
+    if script == "keyvault-secrets.sh":
+        for secret in STAGER.SECRETS:
+            assert f"[{secret.variable}]={secret.vault_name}" in text
+
+
+def test_the_boot_unit_stages_from_key_vault_with_the_root_owned_copy_before_docker() -> None:
+    unit = (DEPLOY / "azure" / "bank-agent-secrets.service").read_text(encoding="utf-8")
+    assert "Before=docker.service" in unit
+    assert "After=network-online.target" in unit
+    (exec_start,) = re.findall(r"^ExecStart=(.+)$", unit, flags=re.MULTILINE)
+    assert exec_start.startswith("/usr/bin/python3 /usr/local/lib/bank-agent/secrets_stage.py stage --source keyvault")
+    assert exec_start.endswith(f"--dest {STAGER.DEFAULT_DEST}")
+    assert "RuntimeDirectory=bank-agent" in unit
+    assert "RuntimeDirectoryMode=0711" in unit
+
+
+def test_prod_sh_stages_the_secrets_before_every_start() -> None:
+    script = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
+    up = script.split("cmd_up() {", 1)[1].split("\n}", 1)[0]
+    assert up.index("cmd_stage_secrets") < up.index("cmd_check") < up.index("compose up")
+    assert "with SECRETS_SOURCE=keyvault these belong in Key Vault" in script
 
 
 @pytest.mark.parametrize("name", sorted(SERVICES))

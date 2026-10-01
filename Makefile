@@ -238,9 +238,8 @@ SMOKE_URL ?=
 SMOKE_ARGS ?=
 CSP_ARGS ?=
 # Dummy values that only let `docker compose config` interpolate the production file; never used to run anything.
-COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
-	POSTGRES_SUPERUSER_PASSWORD=compose-config-check POSTGRES_ADMIN_PASSWORD=compose-config-check \
-	POSTGRES_APP_PASSWORD=compose-config-check SESSION_SECRET=compose-config-check CSRF_SECRET=compose-config-check
+# Secrets are mounted files (ADR 0036), so only the two required site values are needed.
+COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org
 
 security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, production compose validation
 	requirements="$$(mktemp)"; trap 'rm -f "$$requirements"' EXIT; \
@@ -252,7 +251,8 @@ security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, she
 	for dockerfile in services/api/Dockerfile apps/web/Dockerfile services/api/Dockerfile.dev apps/web/Dockerfile.dev; do \
 		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
 	docker run --rm -v "$(CURDIR)/deploy:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) \
-		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh \
+		azure/keyvault-secrets.sh azure/provision.sh azure/install-vm.sh
 	docker run --rm -v "$(CURDIR)/scripts:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) submission_check.sh
 	$(COMPOSE_CHECK_ENV) docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example \
 		--profile '*' config --quiet

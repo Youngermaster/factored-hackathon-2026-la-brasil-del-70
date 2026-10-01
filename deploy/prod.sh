@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 # Operate the production stack on one host (deploy/README.md). Run from the repository checkout on the server.
 #
-#   deploy/prod.sh init-env         create deploy/.env.production from the template with fresh secrets (mode 600)
-#   deploy/prod.sh check            validate the env file (required values set, never printed) and the compose file
+#   deploy/prod.sh init-env         create deploy/.env.production from the template (mode 600); with
+#                                   SECRETS_SOURCE=keyvault in the environment its secret lines stay empty, else they
+#                                   get fresh random values
+#   deploy/prod.sh stage-secrets    stage the secrets as files for compose (sudo): from Key Vault or the env file
+#   deploy/prod.sh check            validate the env file, the staged secret files (never read), and the compose file
 #   deploy/prod.sh build            build the web, api, and job images, tagged with the current git commit
-#   deploy/prod.sh up               migrate, then start (OBS=1 adds the obs profile, OLLAMA=1 the ollama profile)
+#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama)
+#   deploy/prod.sh rotate           stage the secrets again and recreate the services, after a new Key Vault version
 #   deploy/prod.sh seed             load the demo personas and customers (run once after the first up)
 #   deploy/prod.sh update           git pull --ff-only, back up, build, migrate, start
 #   deploy/prod.sh backup           pg_dump into deploy/backups/ (mode 600)
@@ -17,7 +21,8 @@
 #   deploy/prod.sh destroy --yes    take the demo down for good: containers, volumes (database, certificates), images
 #
 # Environment: ENV_FILE (default deploy/.env.production), PROJECT (default bank-agent-prod), IMAGE_TAG (default the
-# tag of the last deploy, else the current commit). The script never prints a secret value.
+# tag of the last deploy, else the current commit), SECRETS_NO_CHOWN=1 (a Docker Desktop test host only: staged files
+# keep the caller as owner, no sudo). The script never prints a secret value.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -25,10 +30,12 @@ ENV_FILE="${ENV_FILE:-${ROOT}/deploy/.env.production}"
 PROJECT="${PROJECT:-bank-agent-prod}"
 STATE_DIR="${ROOT}/deploy/.state"
 BACKUP_DIR="${BACKUP_DIR:-${ROOT}/deploy/backups}"
-REQUIRED=(SITE_ADDRESS PUBLIC_ORIGIN POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD
-  SESSION_SECRET CSRF_SECRET)
-SECRETS=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET
-  GRAFANA_ADMIN_PASSWORD)
+STAGER="${ROOT}/deploy/secrets_stage.py"
+REQUIRED=(SITE_ADDRESS PUBLIC_ORIGIN)
+REQUIRED_SECRETS=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET)
+# The secrets init-env generates, and every secret variable (the model keys come from the provider, not from here).
+SECRETS=("${REQUIRED_SECRETS[@]}" GRAFANA_ADMIN_PASSWORD)
+SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK)
 
 say() { printf '%s\n' "$*" >&2; }
 fail() { say "error: $*"; exit 1; }
@@ -36,6 +43,33 @@ fail() { say "error: $*"; exit 1; }
 env_value() {
   # The value of $1 in the env file (last assignment wins), without printing it.
   sed -n "s/^$1=//p" "${ENV_FILE}" | tail -n 1
+}
+
+secrets_source() {
+  local source
+  source="$(env_value SECRETS_SOURCE)"
+  printf '%s' "${source:-env-file}"
+}
+
+secrets_dir() {
+  local dir
+  dir="$(env_value SECRETS_HOST_DIR)"
+  printf '%s' "${dir:-/run/bank-agent/secrets}"
+}
+
+as_root() {
+  if [[ "$(id -u)" == "0" ]]; then "$@"; else sudo "$@"; fi
+}
+
+stager() {
+  # The staging script, as root so each file can belong to its container's user, unless SECRETS_NO_CHOWN=1.
+  if [[ "${SECRETS_NO_CHOWN:-0}" == "1" ]]; then
+    python3 "${STAGER}" "$@" --no-chown
+  elif [[ "$1" == "check" ]]; then
+    python3 "${STAGER}" "$@"
+  else
+    as_root python3 "${STAGER}" "$@"
+  fi
 }
 
 current_tag() {
@@ -60,35 +94,72 @@ compose() {
 
 cmd_init_env() {
   [[ -e "${ENV_FILE}" ]] && fail "${ENV_FILE} exists; edit it instead"
+  local source="${SECRETS_SOURCE:-env-file}"
+  [[ "${source}" == "keyvault" || "${source}" == "env-file" ]] || fail "SECRETS_SOURCE must be keyvault or env-file"
   umask 077
   local line name
   while IFS= read -r line || [[ -n "${line}" ]]; do
     name="${line%%=*}"
-    if [[ "${line}" == *= && " ${SECRETS[*]} " == *" ${name} "* ]]; then
+    if [[ "${line}" == "SECRETS_SOURCE=" ]]; then
+      printf 'SECRETS_SOURCE=%s\n' "${source}"
+    elif [[ "${source}" == "env-file" && "${line}" == *= && " ${SECRETS[*]} " == *" ${name} "* ]]; then
       printf '%s=%s\n' "${name}" "$(openssl rand -hex 32)"
     else
       printf '%s\n' "${line}"
     fi
   done < "${ROOT}/deploy/.env.production.example" > "${ENV_FILE}"
   chmod 600 "${ENV_FILE}"
-  say "wrote ${ENV_FILE} (mode 600) with fresh secrets; now set SITE_ADDRESS, PUBLIC_ORIGIN, ACME_EMAIL, and the model"
+  if [[ "${source}" == "keyvault" ]]; then
+    say "wrote ${ENV_FILE} (mode 600) with no secrets; set KEY_VAULT_NAME, SITE_ADDRESS, PUBLIC_ORIGIN, ACME_EMAIL, and the model"
+  else
+    say "wrote ${ENV_FILE} (mode 600) with fresh secrets; now set SITE_ADDRESS, PUBLIC_ORIGIN, ACME_EMAIL, and the model"
+  fi
 }
 
-cmd_check() {
+check_env_file() {
   [[ -f "${ENV_FILE}" ]] || fail "no env file at ${ENV_FILE} (deploy/prod.sh init-env creates one)"
-  local mode missing=()
+  local mode name missing=() stray=()
   mode="$(stat -c '%a' "${ENV_FILE}" 2>/dev/null || stat -f '%Lp' "${ENV_FILE}")"
   [[ "${mode}" == "600" || "${mode}" == "400" ]] || fail "${ENV_FILE} must be mode 600 (chmod 600 it)"
   for name in "${REQUIRED[@]}"; do [[ -n "$(env_value "${name}")" ]] || missing+=("${name}"); done
-  if [[ "${OBS:-0}" == "1" ]]; then
-    local grafana
-    grafana="$(env_value GRAFANA_ADMIN_PASSWORD)"
-    (( ${#grafana} >= 16 )) || missing+=("GRAFANA_ADMIN_PASSWORD (16+ characters)")
-  fi
+  case "$(secrets_source)" in
+    keyvault)
+      [[ -n "$(env_value KEY_VAULT_NAME)" ]] || missing+=(KEY_VAULT_NAME)
+      for name in "${SECRET_VARIABLES[@]}"; do [[ -z "$(env_value "${name}")" ]] || stray+=("${name}"); done
+      (( ${#stray[@]} == 0 )) ||
+        fail "with SECRETS_SOURCE=keyvault these belong in Key Vault; empty them in ${ENV_FILE}: ${stray[*]}"
+      ;;
+    env-file)
+      for name in "${REQUIRED_SECRETS[@]}"; do [[ -n "$(env_value "${name}")" ]] || missing+=("${name}"); done
+      if [[ "${OBS:-0}" == "1" ]]; then
+        local grafana
+        grafana="$(env_value GRAFANA_ADMIN_PASSWORD)"
+        (( ${#grafana} >= 16 )) || missing+=("GRAFANA_ADMIN_PASSWORD (16+ characters)")
+      fi
+      ;;
+    *) fail "SECRETS_SOURCE must be keyvault or env-file" ;;
+  esac
   (( ${#missing[@]} == 0 )) || fail "set these in ${ENV_FILE}: ${missing[*]}"
   [[ "$(env_value PUBLIC_ORIGIN)" == https://* ]] || fail "PUBLIC_ORIGIN must start with https://"
+}
+
+cmd_stage_secrets() {
+  check_env_file
+  case "$(secrets_source)" in
+    keyvault) stager stage --source keyvault --vault "$(env_value KEY_VAULT_NAME)" --dest "$(secrets_dir)" ;;
+    env-file) stager stage --source env-file --env-file "${ENV_FILE}" --dest "$(secrets_dir)" ;;
+  esac
+}
+
+cmd_check() {
+  check_env_file
+  # Metadata only: the files are root-owned and readable by their container user alone.
+  stager check --dest "$(secrets_dir)" || fail "the staged secrets are incomplete; run deploy/prod.sh stage-secrets"
+  if [[ "${OBS:-0}" == "1" && ! -s "$(secrets_dir)/grafana/GRAFANA_ADMIN_PASSWORD" ]]; then
+    fail "the obs profile needs GRAFANA_ADMIN_PASSWORD (Key Vault secret grafana-admin-password, or the env file)"
+  fi
   compose config --quiet
-  say "env file and compose file are valid"
+  say "env file, staged secrets, and compose file are valid"
 }
 
 cmd_build() {
@@ -99,17 +170,24 @@ cmd_build() {
 }
 
 cmd_up() {
+  cmd_stage_secrets
   cmd_check
   local tag
   tag="$(current_tag)"
   docker image inspect "bank-agent-api:${tag}" > /dev/null 2>&1 || fail "no image bank-agent-api:${tag}; run build first"
-  compose up -d --wait --remove-orphans
+  compose up -d --wait --remove-orphans "$@"
   mkdir -p "${STATE_DIR}"
   if [[ -f "${STATE_DIR}/current" && "$(cat "${STATE_DIR}/current")" != "${tag}" ]]; then
     cp "${STATE_DIR}/current" "${STATE_DIR}/previous"
   fi
   printf '%s' "${tag}" > "${STATE_DIR}/current"
   say "running image tag ${tag}"
+}
+
+cmd_rotate() {
+  # Compose bind-mounts each file, and a running container keeps the version it started with: recreate them all.
+  say "staging the current Key Vault (or env file) versions and recreating every service"
+  cmd_up --force-recreate
 }
 
 cmd_seed() {
@@ -172,7 +250,11 @@ cmd_destroy() {
   [[ "${1:-}" == "--yes" ]] || fail "this deletes the database and the certificates for good; run: destroy --yes"
   compose --profile jobs --profile obs --profile ollama down --volumes --rmi all
   rm -rf "${STATE_DIR}"
-  say "the stack, its volumes, and its images are gone; the backups in ${BACKUP_DIR} and the env file remain"
+  local dir
+  dir="$(secrets_dir)"
+  # Only the stager's own consumer directories, never whatever SECRETS_HOST_DIR happens to point at.
+  as_root rm -rf -- "${dir}/app" "${dir}/postgres" "${dir}/grafana"
+  say "the stack, its volumes, its images, and the staged secrets are gone; the backups in ${BACKUP_DIR} and the env file remain"
 }
 
 main() {
@@ -180,9 +262,11 @@ main() {
   shift || true
   case "${command}" in
     init-env) cmd_init_env ;;
+    stage-secrets) cmd_stage_secrets ;;
     check) cmd_check ;;
     build) cmd_build ;;
     up) cmd_up ;;
+    rotate) cmd_rotate ;;
     seed) cmd_seed ;;
     update) cmd_update ;;
     backup) cmd_backup ;;
@@ -194,7 +278,7 @@ main() {
     logs) compose logs --tail 200 "$@" ;;
     down) cmd_down ;;
     destroy) cmd_destroy "$@" ;;
-    *) sed -n '2,21p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+    *) sed -n '2,25p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   esac
 }
 
