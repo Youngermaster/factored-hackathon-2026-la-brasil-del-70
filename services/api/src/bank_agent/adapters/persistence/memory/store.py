@@ -13,6 +13,7 @@ from bank_agent.domain.customer import Customer
 from bank_agent.domain.dispute import DisputeCase
 from bank_agent.domain.execution_record import ExecutionRecord
 from bank_agent.domain.handoff import Handoff, HandoffRecord
+from bank_agent.domain.human_service import HumanMessage
 from bank_agent.domain.product import Product
 from bank_agent.domain.transaction import Transaction
 
@@ -71,9 +72,11 @@ class InMemoryStore:
     complaints: dict[str, HistoricalComplaint] = field(default_factory=dict)
     cases: dict[str, DisputeCase] = field(default_factory=dict)
     conversations: dict[str, Conversation] = field(default_factory=dict)
+    conversation_creation_guards: dict[str, int] = field(default_factory=dict)
     turns: dict[str, Turn] = field(default_factory=dict)
     execution_records: dict[str, ExecutionRecord] = field(default_factory=dict)
     handoffs: dict[str, HandoffRecord] = field(default_factory=dict)
+    human_messages: dict[str, HumanMessage] = field(default_factory=dict)
     audit_events: dict[str, AuditEvent] = field(default_factory=dict)
     credit_profiles: dict[str, CreditProfile] = field(default_factory=dict)
     """Keyed by customer id: a customer has at most one credit profile."""

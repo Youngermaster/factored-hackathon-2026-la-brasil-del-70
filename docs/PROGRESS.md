@@ -8,7 +8,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 |---|---|
 | Internal MVP completion window end | Sunday, 2026-10-04 (revised; leaves one calendar day before the official October 5 challenge-window end; completion is pending) |
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
-| Next phase | None. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
+| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and verified on `feat/adr-0026-live-agent`. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
+| Latest product increment | ADR 0026: live human service on the existing conversation, verified locally; not pushed or deployed |
 | Blocked | None |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
@@ -70,6 +71,14 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 46. **Submit (by 2026-10-05), in order** ([checklist](submission/SUBMISSION.md)): `make submission-check` on the commit to submit; choose the host and deploy (action 43; the model per action 45); smoke and CSP checks from a laptop; fill `deploy.url` in `slides/data/metrics.yml` and the README link; `cd slides && pnpm export:final`; record the video against the deployed URL after a fresh seed (`slides/VIDEO.md`, `docs/demo/script.md`); push `main` and make the repository public; send `docs/submission/email-draft.md` to `hackathon.admin@factored.ai`. Owner suggestion: Young (deploy, push, public), Miguel Correa (video narration, email).
 
 ## Phase log
+
+### ADR 0026: live human service (2026-10-01, implemented and verified)
+
+The human authorized the next ADR increment in a new branch, with existing PRs treated as coordination constraints. The isolated branch starts at remote main `2bcdf79`; the original checkout and its uncommitted changes are untouched. PR reference review and its authenticated-GitHub limitations are recorded in [the implementation plan](plans/adr-0026-live-agent.md).
+
+Implemented customer and assigned-agent message persistence on the same conversation, queued/joined/closed lifecycle views, an agent reply surface, refresh and reconnect through cursor pages, atomic resolution/closure, and the five-successful-creations-per-customer rolling-hour quota across sessions and workers. Migration `0014` adds forced RLS and owner-only retention for the append-only human messages. Human text never runs banking tools or appears in audit arguments. Existing assistant turns, handoff document versions, model defaults, and frozen evaluation results are preserved.
+
+Focused memory/PostgreSQL contracts, HTTP exchanges, non-superuser production-role checks, migration downgrade/upgrade, and web integration/accessibility checks pass. The full gate also exposed a baseline smoke-fixture mismatch after PR 25: the fake evaluation client scripted escalation prompt version 1 only. It now scripts version 2 as well, preserving version 1 and the frozen scenarios and results. Full `make check` passed: 2,905 unit tests, 1,518 integration tests (3 expected optional embedding skips), all 11 Python coverage gates, 356 web tests, documentation/diagram checks, sample/codegen guards, attribution/emoji guards, and Gitleaks over 389 commits. The isolated worktree reused the installed Python environment and web dependencies; `UV_RUN=env GUARD_PY=python` selected those tools and `PYTHONPATH` pointed at this branch's source directories. Web lint, types, and formatting also passed after the final queued-state copy correction. The [human-service guide](workflows/human-service.md) contains the two-browser walkthrough. Existing databases need `make db-upgrade`.
 
 ### Phase 14c follow-up: high-priority code corrections (2026-10-01)
 

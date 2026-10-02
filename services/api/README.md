@@ -98,3 +98,7 @@ make check                                        # everything, with coverage ga
 - `tests/unit/` uses fakes and the httpx ASGI transport; pytest-socket blocks the network.
 - `tests/integration/` starts a throwaway `postgres:16.15-alpine3.24` container with the repository init script and credentials generated at runtime. It never reads `.env`.
 - Coverage gates: 90% for `domain`, `ports`, `policy`, and `application`; 80% for `adapters`, `api`, and `bootstrap`.
+
+## Live human service
+
+ADR 0026 adds persisted customer and assigned-agent messages on the existing conversation, and a rolling-hour customer creation quota. Existing databases need `make db-upgrade` (revision `0014`). The [human-service guide](../../docs/workflows/human-service.md) describes the endpoints, lifecycle, authorization, and local walkthrough.

@@ -206,7 +206,6 @@
     "notFoundTitle": "We could not find that conversation",
     "notFoundBody": "It may belong to another session or no longer exist. Start a new one and we will help all the same.",
     "human": "Talk to a person",
-    "withPerson": "Your case is already with a person on the team.",
     "showTrace": "Show in the record",
     "stepUpWaiting": "This action needs you to confirm your identity with a new code.",
     "stepUpAgain": "Confirm identity",
@@ -415,7 +414,7 @@
       "evidence": "Checked in"
     },
     "escalation": {
-      "title": "Your case went to a person on the team",
+      "title": "Human service request",
       "reference": "Case reference",
       "expected": "Expected answer by"
     },
@@ -1096,5 +1095,27 @@
     "transparency": "Beside the chat you see each turn's record: what the system understood, which rules and clauses it applied, and what it checked. Model reasoning is neither stored nor shown, by design.",
     "humanTitle": "You can always talk to a person",
     "human": "When you ask, when something needs human judgment, or when a rule requires it, your case goes to a person with what we already checked, so you do not have to repeat it."
+  },
+  "humanService": {
+    "title": "Human service",
+    "messages": "Messages with the agent",
+    "status": {
+      "queued": "Your request is queued. You can leave more details here; an agent will reply when they claim the case.",
+      "joined": "An agent claimed your case. Messages in this chat go to that person.",
+      "closed": "The agent closed the conversation. You can read its history or start another chat."
+    },
+    "author": {
+      "user": "You",
+      "agent": "Human agent",
+      "customer": "Customer"
+    },
+    "disconnected": "The chat connection was lost",
+    "reconnectBody": "We cannot update messages. A connection problem does not change the service status. Retry to recover the history.",
+    "sending": "Sending message",
+    "loading": "Loading messages",
+    "assignedElsewhere": "Only the agent who claimed this case can read and reply to its messages.",
+    "replyLabel": "Your reply to the customer",
+    "replySend": "Send to customer",
+    "creationLimit": "You created five chats in the past 60 minutes. Continue in existing chats or wait until a slot becomes available."
   }
 }

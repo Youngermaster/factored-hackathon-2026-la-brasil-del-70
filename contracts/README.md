@@ -102,3 +102,7 @@ Tests: golden `1.0.0` documents, frozen from the phase 02 builders, are validate
 ## OpenAPI
 
 `openapi.json` is the HTTP API contract, exported from the FastAPI app by `scripts/export_openapi.py` (`make openapi`, which also regenerates `apps/web/src/shared/api/generated/schema.d.ts` with openapi-typescript). It carries a stable `operationId` per route, the `x-roles`, `x-rate-limit`, and `x-csrf` extensions, the session cookie and CSRF header security schemes, and RFC 9457 problem responses. `services/api/tests/unit/api/test_openapi_contract.py` fails when it is stale, and `apps/web/tooling/api-types.test.ts` fails when the TypeScript types are. Versioning rules for the API are in [docs/api/README.md](../docs/api/README.md#versioning).
+
+### Human-service API addition (2026-10-01)
+
+Four additive HTTP operations expose customer and assigned-agent history and idempotent message sends for ADR 0026. `HumanServiceResponse`, `HumanMessage`, `HumanMessageResponse`, and `SendHumanMessageRequest` are generated in OpenAPI and the web API types. Conversation creation now returns 429 `conversation-creation-limited` with `Retry-After` after five successful customer-scoped creations in a rolling hour. New assistant turns on escalated or closed conversations return 409; accepted turn replays remain available. The existing versioned handoff, decision, and execution-record documents are unchanged.

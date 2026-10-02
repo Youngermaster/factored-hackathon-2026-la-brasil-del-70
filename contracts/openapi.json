@@ -2619,6 +2619,165 @@
         "title": "HealthDetailsResponse",
         "type": "object"
       },
+      "HumanMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "handoff_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Handoff Id",
+            "type": "string"
+          },
+          "message_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "title": "Message Id",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/HumanMessageRole"
+          },
+          "sent_at": {
+            "format": "date-time",
+            "title": "Sent At",
+            "type": "string"
+          },
+          "sequence": {
+            "exclusiveMinimum": 0.0,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "text": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string",
+            "x-pii": "free_text"
+          }
+        },
+        "required": [
+          "message_id",
+          "conversation_id",
+          "handoff_id",
+          "sequence",
+          "sent_at",
+          "role",
+          "text"
+        ],
+        "title": "HumanMessage",
+        "type": "object"
+      },
+      "HumanMessageResponse": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/HumanMessage"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "message",
+          "replayed"
+        ],
+        "title": "HumanMessageResponse",
+        "type": "object"
+      },
+      "HumanMessageRole": {
+        "enum": [
+          "user",
+          "agent"
+        ],
+        "title": "HumanMessageRole",
+        "type": "string"
+      },
+      "HumanServiceResponse": {
+        "properties": {
+          "closed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closed At"
+          },
+          "conversation_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Conversation Id",
+            "type": "string"
+          },
+          "handoff_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "title": "Handoff Id",
+            "type": "string"
+          },
+          "joined_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined At"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/HumanMessage"
+            },
+            "title": "Messages",
+            "type": "array"
+          },
+          "queued_at": {
+            "format": "date-time",
+            "title": "Queued At",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/HumanServiceStatus"
+          }
+        },
+        "required": [
+          "conversation_id",
+          "handoff_id",
+          "status",
+          "queued_at",
+          "joined_at",
+          "closed_at",
+          "messages"
+        ],
+        "title": "HumanServiceResponse",
+        "type": "object"
+      },
+      "HumanServiceStatus": {
+        "enum": [
+          "queued",
+          "joined",
+          "closed"
+        ],
+        "title": "HumanServiceStatus",
+        "type": "string"
+      },
       "Intent": {
         "description": "What the customer wants. Each intent is owned by exactly one workflow or is cross-workflow.\n\n``domain.workflow_catalog.WORKFLOW_CATALOG`` assigns the owners; ``CROSS_WORKFLOW_INTENTS`` lists the rest.",
         "enum": [
@@ -3631,6 +3790,29 @@
           "rule_version"
         ],
         "title": "RuleVersion",
+        "type": "object"
+      },
+      "SendHumanMessageRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "message_id": {
+            "format": "uuid",
+            "title": "Message Id",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string",
+            "x-pii": "free_text"
+          }
+        },
+        "required": [
+          "message_id",
+          "text"
+        ],
+        "title": "SendHumanMessageRequest",
         "type": "object"
       },
       "SendTurnRequest": {
@@ -5706,6 +5888,159 @@
         ]
       }
     },
+    "/v1/agent/handoffs/{handoff_id}/human-service": {
+      "get": {
+        "operationId": "agent_human_service",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handoff_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Handoff Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 2147483647,
+              "minimum": 0,
+              "title": "After",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanServiceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Agent History",
+        "tags": [
+          "human-service"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
+    "/v1/agent/handoffs/{handoff_id}/human-service/messages": {
+      "post": {
+        "operationId": "agent_send_human_message",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handoff_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Handoff Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendHumanMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanMessageResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Agent Send",
+        "tags": [
+          "human-service"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "agent"
+        ]
+      }
+    },
     "/v1/agent/handoffs/{handoff_id}/resolve": {
       "post": {
         "description": "Resolve a handoff this agent claimed, with an outcome code and a note.",
@@ -6467,6 +6802,159 @@
         "summary": "Change Assistant Name",
         "tags": [
           "assistant profile"
+        ],
+        "x-csrf": true,
+        "x-rate-limit": "write",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/human-service": {
+      "get": {
+        "operationId": "conversations_human_service",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 2147483647,
+              "minimum": 0,
+              "title": "After",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanServiceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Customer History",
+        "tags": [
+          "human-service"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "customer"
+        ]
+      }
+    },
+    "/v1/conversations/{conversation_id}/human-service/messages": {
+      "post": {
+        "operationId": "conversations_send_human_message",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversation_id",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+              "title": "Conversation Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendHumanMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanMessageResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Validation error as problem details"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "csrfHeader": [],
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Customer Send",
+        "tags": [
+          "human-service"
         ],
         "x-csrf": true,
         "x-rate-limit": "write",

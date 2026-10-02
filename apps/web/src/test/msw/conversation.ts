@@ -4,6 +4,7 @@ import type { Schema } from '@/shared/api';
 
 import { apiGet, apiPost, problem } from './api';
 import { server } from './server';
+import { humanServiceView, startHumanServiceServer } from './human-service';
 
 /**
  * Fixtures and a scripted fake of `/v1/conversations`, typed from the generated schema. Tests are team-made and
@@ -158,7 +159,16 @@ export function startConversationServer(options: ConversationServerOptions = {})
     }),
   );
 
+  const human = startHumanServiceServer('customer', (id) => {
+    const history = histories.get(id);
+    if (history === undefined) return null;
+    return humanServiceView({
+      conversation_id: id,
+      status: history.conversation.status === 'closed' ? 'closed' : 'queued',
+    });
+  });
   return {
+    human,
     /** Every message the client sent, in order. */
     sent,
     histories,

@@ -56,6 +56,10 @@ export const queryKeys = {
       ['api', 'handoffs', 'list', filters] as const,
     detail: (handoffId: string) => ['api', 'handoffs', handoffId] as const,
   },
+  humanService: {
+    all: ['api', 'human-service'] as const,
+    detail: (side: 'customer' | 'agent', id: string) => ['api', 'human-service', side, id] as const,
+  },
   creditApplications: {
     all: ['api', 'credit-applications'] as const,
     detail: (applicationId: string) => ['api', 'credit-applications', applicationId] as const,

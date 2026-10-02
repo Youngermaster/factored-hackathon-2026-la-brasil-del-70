@@ -1,6 +1,7 @@
 """Conversations and their turns, visible only to the owning customer."""
 
 from collections.abc import Sequence
+from datetime import datetime, timedelta
 
 from sqlalchemy.exc import IntegrityError
 
@@ -16,6 +17,7 @@ from bank_agent.domain.conversation import Conversation, Turn
 from bank_agent.domain.errors import (
     AccessContextError,
     ConcurrencyConflictError,
+    ConversationCreationLimitedError,
     ConversationNotFoundError,
     DuplicateEntityError,
 )
@@ -45,6 +47,31 @@ class PostgresConversationRepository:
             )
         except IntegrityError as error:
             raise DuplicateEntityError("a conversation with this id already exists") from error
+
+    async def add_with_quota(self, conversation: Conversation) -> None:
+        customer = customer_of(self._tx.context)
+        if conversation.customer_id != customer:
+            raise AccessContextError("a conversation can only be added for the context customer")
+        locked = await self._tx.scalar(
+            "SELECT pg_try_advisory_xact_lock(hashtextextended(:customer, 2600))", {"customer": customer}
+        )
+        if not locked:
+            raise ConcurrencyConflictError("another chat creation is in progress")
+        rows = await self._tx.rows(
+            "SELECT created_at FROM app.conversations WHERE customer_id = :customer "
+            "AND created_at > :cutoff AND created_at <= :now ORDER BY created_at LIMIT 5",
+            {
+                "customer": customer,
+                "cutoff": conversation.created_at - timedelta(hours=1),
+                "now": conversation.created_at,
+            },
+        )
+        if len(rows) >= 5:
+            oldest = rows[0]["created_at"]
+            if not isinstance(oldest, datetime):
+                raise RuntimeError("creation timestamp must be a datetime")
+            raise ConversationCreationLimitedError(oldest + timedelta(hours=1) - conversation.created_at)
+        await self.add(conversation)
 
     async def update(self, conversation: Conversation, *, expected_version: int) -> Conversation:
         current = await self.get(conversation.conversation_id)
