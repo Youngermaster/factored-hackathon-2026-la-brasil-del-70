@@ -37,6 +37,13 @@ models:
     source_url: https://openai.com/api/pricing/
     verified: false
     notes: Candidate fallback model from a second provider. Price taken from the provider's published list at launch; confirm it is still current.
+  - model_id: gemini/gemini-3.1-flash-lite
+    input_usd_per_million: "0.25"
+    output_usd_per_million: "1.50"
+    effective_date: 2026-10-02
+    source_url: https://ai.google.dev/gemini-api/docs/pricing
+    verified: false
+    notes: Primary model of the Azure demo (Google AI Studio key). Paid tier standard text input price ($0.50 for audio input, unused here). gemini-2.5-flash is closed to new Google AI Studio users. The free tier has no per-token charge but Google may use its content to improve products, so a key without billing does not meet docs/security/data-use.md.
   - model_id: ollama/qwen2.5:7b-instruct
     input_usd_per_million: "0"
     output_usd_per_million: "0"
