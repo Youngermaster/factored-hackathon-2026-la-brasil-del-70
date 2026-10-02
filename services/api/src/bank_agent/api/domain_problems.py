@@ -23,6 +23,7 @@ from bank_agent.domain.errors import (
     AuthorizationError,
     ConfigurationError,
     ConflictError,
+    ConversationCreationLimitedError,
     DatabaseUnavailableError,
     DependencyError,
     DomainError,
@@ -37,6 +38,7 @@ from bank_agent.domain.errors import (
 )
 
 DOMAIN_PROBLEMS: Final[tuple[tuple[type[DomainError], ProblemType], ...]] = (
+    (ConversationCreationLimitedError, ProblemType(429, "conversation-creation-limited", "Too many new conversations")),
     (NotFoundError, ProblemType(404, "resource-not-found", "Resource not found")),
     (AuthenticationError, ProblemType(401, "authentication-required", "Authentication required")),
     (SessionExpiredError, ProblemType(401, "session-expired", "Session expired")),
@@ -54,7 +56,9 @@ DOMAIN_PROBLEMS: Final[tuple[tuple[type[DomainError], ProblemType], ...]] = (
 def register_domain_problems(registry: ProblemRegistry) -> ProblemRegistry:
     """Register every domain error family on ``registry`` and return it."""
     for error_type, problem in DOMAIN_PROBLEMS:
-        registry.register(error_type, problem)
+        registry.register(
+            error_type, problem, headers=_retry_after if error_type is ConversationCreationLimitedError else None
+        )
     return registry
 
 
@@ -66,7 +70,7 @@ def domain_problem_registry() -> ProblemRegistry:
 def _retry_after(exception: Exception) -> dict[str, str]:
     if isinstance(exception, RateLimitedError):
         return {"Retry-After": str(exception.retry_after_seconds)}
-    if isinstance(exception, IdentityLockedError):
+    if isinstance(exception, IdentityLockedError | ConversationCreationLimitedError):
         return {"Retry-After": str(max(1, math.ceil(exception.retry_after.total_seconds())))}
     return {}
 

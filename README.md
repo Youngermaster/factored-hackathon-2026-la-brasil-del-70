@@ -14,6 +14,8 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
 | Limitations | [LIMITATIONS.md](LIMITATIONS.md) |
 
+Escalated customers can continue on the same conversation with an authenticated human service agent. The chat shows truthful waiting and joined states, persists both sides' messages across refreshes, and stays readable after the assigned agent closes it. The [live human-service guide](docs/workflows/human-service.md) includes a two-browser walkthrough; existing databases need `make db-upgrade`.
+
 ## The problem, from the data
 
 The organizer delivery (13 tables, 23,471,159 rows loaded under contracts; [quality report](docs/data/quality-report.md)) covers 686,296 contact-center interactions and 67,095 complaints from 2023-06-17 to 2026-06-17. Offline measurements of that historical data ([workflow evidence](docs/analysis/workflow-evidence.md)):

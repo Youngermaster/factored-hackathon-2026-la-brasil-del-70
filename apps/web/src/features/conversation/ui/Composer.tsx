@@ -13,12 +13,12 @@ import { MAX_MESSAGE_LENGTH, useConversation } from '../model/context';
  */
 export function Composer({ className }: { readonly className?: string }) {
   const { t } = useTranslation();
-  const { send, inFlight, composerRef, draft, setDraft } = useConversation();
+  const { send, inFlight, composerRef, draft, setDraft, closed } = useConversation();
   const id = useId();
   const hintId = `${id}-hint`;
   const counterId = `${id}-counter`;
   const atLimit = draft.length >= MAX_MESSAGE_LENGTH;
-  const canSend = !inFlight && draft.trim() !== '';
+  const canSend = !closed && !inFlight && draft.trim() !== '';
 
   const submit = (event?: SyntheticEvent) => {
     event?.preventDefault();
@@ -49,7 +49,7 @@ export function Composer({ className }: { readonly className?: string }) {
           compact
           rows={2}
           maxLength={MAX_MESSAGE_LENGTH}
-          readOnly={inFlight}
+          readOnly={inFlight || closed}
           aria-describedby={`${hintId} ${counterId}`}
           onChange={(event) => {
             setDraft(event.target.value);
@@ -63,7 +63,13 @@ export function Composer({ className }: { readonly className?: string }) {
         </Button>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-caption text-fg-muted">
-        <p id={hintId}>{inFlight ? t('chat.waiting') : t('chat.composerHint')}</p>
+        <p id={hintId}>
+          {closed
+            ? t('humanService.status.closed')
+            : inFlight
+              ? t('chat.waiting')
+              : t('chat.composerHint')}
+        </p>
         <p id={counterId} className={cx('font-mono tabular-nums', atLimit && 'text-risk-text')}>
           {t('chat.counter', { count: draft.length, max: MAX_MESSAGE_LENGTH })}
         </p>

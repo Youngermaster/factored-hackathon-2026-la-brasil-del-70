@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 
 import { useStepUp } from '@/features/auth';
+import { useHumanChannel, useSendHumanMessage } from '@/features/human-service';
 import { ApiError } from '@/shared/api';
 import { useLocale, type Language } from '@/shared/i18n';
 
@@ -59,7 +60,15 @@ export function Root({ children }: { readonly children: ReactNode }) {
   const [params, setParams] = useSearchParams();
   const conversationId = params.get(PARAM);
   const history = useConversationHistory(conversationId);
-  const { mutateAsync: createConversation } = useCreateConversation();
+  const creation = useCreateConversation();
+  const { mutateAsync: createConversation } = creation;
+  const humanMode =
+    history.data?.conversation.status !== undefined &&
+    history.data.conversation.status !== 'active';
+  const humanChannel = useHumanChannel('customer', humanMode ? conversationId : null);
+  const { mutateAsync: sendHumanMessage } = useSendHumanMessage('customer');
+  const humanModeRef = useRef(humanMode);
+  humanModeRef.current = humanMode;
   const { mutateAsync: sendTurn } = useSendTurn();
   const { requestStepUp } = useStepUp();
   const [state, dispatch] = useReducer(chatReducer, initialChatState);
@@ -114,6 +123,11 @@ export function Root({ children }: { readonly children: ReactNode }) {
       for (;;) {
         try {
           const id = await ensureConversation();
+          if (humanModeRef.current) {
+            await sendHumanMessage({ id, messageId: turnId, text });
+            dispatch({ type: 'settled', turnId });
+            return;
+          }
           const response = await sendTurn({ conversationId: id, turnId, text });
           dispatch({ type: 'settled', turnId });
           if (!response.message.step_up_required) {
@@ -135,7 +149,7 @@ export function Root({ children }: { readonly children: ReactNode }) {
         }
       }
     },
-    [ensureConversation, phrase, requestStepUp, sendTurn],
+    [ensureConversation, phrase, requestStepUp, sendTurn, sendHumanMessage],
   );
 
   const inFlight = state.pending.some((turn) => turn.status === 'sending');
@@ -184,9 +198,11 @@ export function Root({ children }: { readonly children: ReactNode }) {
   const startNew = useCallback(() => {
     idRef.current = null;
     dispatch({ type: 'reset' });
+    setDraft('');
     setParams({}, { replace: false });
     composerRef.current?.focus();
-  }, [setParams]);
+    void ensureConversation().catch(() => undefined);
+  }, [setParams, ensureConversation]);
 
   const { refetch } = history;
   const value = useMemo(
@@ -194,6 +210,16 @@ export function Root({ children }: { readonly children: ReactNode }) {
       conversationId,
       conversation: history.data?.conversation ?? null,
       turns,
+      humanMode,
+      humanView: humanChannel.view,
+      humanMessages: humanChannel.messages,
+      humanError: humanMode ? humanChannel.error : null,
+      humanReload: () => {
+        void humanChannel.refetch();
+      },
+      creationError: conversationId === null ? creation.error : null,
+      closed:
+        history.data?.conversation.status === 'closed' || humanChannel.view?.status === 'closed',
       pending: state.pending,
       notices: state.notices,
       loadStatus: loadStatusOf(conversationId, history),
@@ -216,6 +242,9 @@ export function Root({ children }: { readonly children: ReactNode }) {
     [
       conversationId,
       history,
+      humanMode,
+      humanChannel,
+      creation.error,
       refetch,
       turns,
       state,

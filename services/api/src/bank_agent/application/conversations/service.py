@@ -11,8 +11,14 @@ from dataclasses import dataclass
 from bank_agent.application.engine.engine import TurnRequest, WorkflowEngine
 from bank_agent.domain.access import Role
 from bank_agent.domain.audit import AuditEvent, AuditOutcome
-from bank_agent.domain.conversation import Conversation, Turn, TurnResult
-from bank_agent.domain.errors import AccessContextError, ConversationNotFoundError, TurnConflictError
+from bank_agent.domain.conversation import Conversation, ConversationStatus, Turn, TurnResult
+from bank_agent.domain.errors import (
+    AccessContextError,
+    ConversationClosedError,
+    ConversationNotFoundError,
+    HumanServiceRequiredError,
+    TurnConflictError,
+)
 from bank_agent.domain.execution_record import ExecutionRecord
 from bank_agent.domain.identifiers import AuditEventId, ConversationId, IdKind, SourceRef, SourceTable, TurnId
 from bank_agent.domain.session import Session
@@ -44,7 +50,7 @@ class ConversationService:
         async with self._uow_factory(session.access_context()) as uow:
             customer = await uow.customers.get_current()
             conversation = self._engine.new_conversation(session, customer, now)
-            await uow.conversations.add(conversation)
+            await uow.conversations.add_with_quota(conversation)
             await uow.audit.append(
                 AuditEvent(
                     event_id=AuditEventId(self._ids.new(IdKind.AUDIT_EVENT)),
@@ -63,6 +69,15 @@ class ConversationService:
     async def send(self, session: Session, conversation_id: ConversationId, turn_id: TurnId, text: str) -> TurnResult:
         """Process one customer message. A repeated turn id replays; one from another conversation conflicts."""
         _customer_only(session)
+        async with self._uow_factory(session.access_context()) as uow:
+            conversation = await uow.conversations.get(conversation_id)
+            if conversation is None:
+                raise ConversationNotFoundError()
+            if await uow.conversations.get_turn(turn_id) is None:
+                if conversation.status is ConversationStatus.CLOSED:
+                    raise ConversationClosedError()
+                if conversation.status is ConversationStatus.ESCALATED:
+                    raise HumanServiceRequiredError()
         result = await self._engine.process_turn(
             TurnRequest(turn_id=turn_id, text=text, session=session, conversation_id=conversation_id)
         )

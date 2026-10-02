@@ -22,7 +22,10 @@ _STALE_CONVERSATIONS: Final = """
         COALESCE(
             (SELECT max(t.received_at) FROM app.turns t WHERE t.conversation_id = c.conversation_id), c.created_at
         ),
-        COALESCE((SELECT max(m.sent_at) FROM app.messages m WHERE m.conversation_id = c.conversation_id), c.created_at)
+        COALESCE((SELECT max(m.sent_at) FROM app.messages m WHERE m.conversation_id = c.conversation_id), c.created_at),
+        COALESCE(
+            (SELECT max(m.sent_at) FROM app.human_messages m WHERE m.conversation_id = c.conversation_id), c.created_at
+        )
     ) < :cutoff
 """
 _ENDED_SESSIONS: Final = """
@@ -34,6 +37,7 @@ _ENDED_SESSIONS: Final = """
     ) < :cutoff
 """
 _DELETES: Final = (
+    ("messages", "DELETE FROM app.human_messages WHERE conversation_id = ANY(:conversations)"),
     ("messages", "DELETE FROM app.messages WHERE conversation_id = ANY(:conversations)"),
     ("turns", "DELETE FROM app.turns WHERE conversation_id = ANY(:conversations)"),
     ("conversations", "DELETE FROM app.conversations WHERE conversation_id = ANY(:conversations)"),
@@ -90,5 +94,5 @@ async def _delete(connection: AsyncConnection, cutoffs: RetentionCutoffs) -> dic
     counts: dict[str, int] = {}
     for table, statement in _DELETES:
         result = await connection.execute(text(statement), values)
-        counts[table] = int(result.rowcount or 0)
+        counts[table] = counts.get(table, 0) + int(result.rowcount or 0)
     return counts

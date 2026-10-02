@@ -19,6 +19,7 @@ export type ProblemSlug =
   | 'validation-error'
   | 'unprocessable-request'
   | 'rate-limited'
+  | 'conversation-creation-limited'
   | 'identity-locked'
   | 'service-unavailable'
   | 'dependency-unavailable'
@@ -40,6 +41,7 @@ const KNOWN_SLUGS: ReadonlySet<string> = new Set<ProblemSlug>([
   'validation-error',
   'unprocessable-request',
   'rate-limited',
+  'conversation-creation-limited',
   'identity-locked',
   'service-unavailable',
   'dependency-unavailable',

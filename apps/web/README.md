@@ -104,3 +104,7 @@ pnpm run test:coverage     # or: make test-web
 - Unit tests sit beside the code (`*.test.ts(x)`); integration tests per feature drive the app through MSW fakes typed from the schema (`src/test/msw/{auth,conversation,trace,agent}.ts`); `src/app/a11y.test.tsx` and `src/app/a11y-surfaces.test.tsx` run vitest-axe on every page in both themes. `tooling/eligibility-copy.test.ts` keeps the eligibility sentences identical to the policy pack. jsdom cannot judge color contrast, so `src/shared/ui/tokens.test.ts` checks it from the tokens.
 - Vitest runs on worker processes (`pool: 'forks'`), capped at half the cores (two in CI), with 20 s test and 30 s hook and teardown timeouts, so a busy machine during `make check` does not fail worker start-up.
 - Coverage gate: 70% line coverage for `src/features/**`.
+
+## Live human service
+
+Escalated chats show queued, joined, and closed states and send follow-ups through the human channel. Assigned agents reply in the handoff detail. Refresh and reconnect restore persisted cursor pages; transport errors are shown separately from assignment. See [the guide](../../docs/workflows/human-service.md) for the two-browser walkthrough.

@@ -210,3 +210,58 @@ async def _chat(instance: PostgresInstance, monkeypatch: pytest.MonkeyPatch) -> 
             return [(await client.say(conversation, "¿Cuál es el saldo de mis cuentas?")).status_code]
     finally:
         await harness.container.aclose()
+
+
+async def test_human_exchange_close_and_retention_under_the_non_superuser_owner(
+    production_postgres: PostgresInstance, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from uuid import uuid4
+
+    await _chat(production_postgres, monkeypatch)
+    harness = build_api(clock=FixedClock(NOW))
+    owner, application = owner_engine(production_postgres), app_engine(production_postgres)
+    message_id = str(uuid4())
+    try:
+        async with ApiClient(harness.app) as customer, ApiClient(harness.app) as agent:
+            await customer.login("persona-mx")
+            conversation = await customer.open_conversation()
+            response = await customer.say(conversation, "Quiero hablar con una persona")
+            handoff = response.json()["message"]["escalation"]["handoff_id"]
+            path = f"/v1/conversations/{conversation}/human-service"
+            assert (
+                await customer.post(path + "/messages", {"message_id": message_id, "text": "Fixture"})
+            ).status_code == 200
+            await agent.login("persona-agent")
+            assert (await agent.post(f"/v1/agent/handoffs/{handoff}/claim")).status_code == 200
+            async with application.begin() as connection:
+                await connection.execute(
+                    text(
+                        "SELECT set_config('app.role', 'agent', true), set_config('app.staff_id', 'other-agent', true)"
+                    )
+                )
+                assert (
+                    int((await connection.execute(text("SELECT count(*) FROM app.human_messages"))).scalar_one()) == 0
+                )
+                await connection.execute(text("SELECT set_config('app.staff_id', 'STF-AGENT-01', true)"))
+                assert (
+                    int((await connection.execute(text("SELECT count(*) FROM app.human_messages"))).scalar_one()) == 1
+                )
+                assert int((await connection.execute(text("SELECT count(*) FROM app.conversations"))).scalar_one()) == 0
+            assert (
+                await agent.post(
+                    f"/v1/agent/handoffs/{handoff}/resolve", {"outcome": "resolved_by_agent", "note": "Fixture"}
+                )
+            ).status_code == 200
+            assert (await customer.get(f"/v1/conversations/{conversation}")).json()["conversation"][
+                "status"
+            ] == "closed"
+            assert (await customer.get(path)).json()["status"] == "closed"
+        report = await PostgresRetentionPurge(owner).purge(POLICY, NOW + timedelta(days=30))
+        assert report.messages >= 1
+        async with owner.begin() as connection:
+            await connection.execute(text("SELECT set_config('app.role', 'retention', true)"))
+            assert int((await connection.execute(text("SELECT count(*) FROM app.human_messages"))).scalar_one()) == 0
+    finally:
+        await harness.container.aclose()
+        await owner.dispose()
+        await application.dispose()

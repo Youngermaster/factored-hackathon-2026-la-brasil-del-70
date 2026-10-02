@@ -206,7 +206,6 @@
     "notFoundTitle": "Não encontramos essa conversa",
     "notFoundBody": "Ela pode ser de outra sessão ou não existir mais. Comece uma nova e ajudamos do mesmo jeito.",
     "human": "Falar com uma pessoa",
-    "withPerson": "Seu caso já está com uma pessoa da equipe.",
     "showTrace": "Ver no registro",
     "stepUpWaiting": "Esta ação precisa que você confirme sua identidade com um código novo.",
     "stepUpAgain": "Confirmar identidade",
@@ -415,7 +414,7 @@
       "evidence": "Conferido em"
     },
     "escalation": {
-      "title": "Seu caso passou para uma pessoa da equipe",
+      "title": "Solicitação de atendimento humano",
       "reference": "Referência do caso",
       "expected": "Resposta prevista até"
     },
@@ -1096,5 +1095,27 @@
     "transparency": "Ao lado do chat você vê o registro de cada turno: o que o sistema entendeu, quais regras e cláusulas aplicou e o que conferiu. O raciocínio do modelo não é guardado nem mostrado, por projeto.",
     "humanTitle": "Você sempre pode falar com uma pessoa",
     "human": "Quando você pede, quando algo exige critério humano ou quando uma regra exige, o seu caso passa para uma pessoa com o que já verificamos, para você não precisar repetir."
+  },
+  "humanService": {
+    "title": "Atendimento humano",
+    "messages": "Mensagens com o atendente",
+    "status": {
+      "queued": "Sua solicitação está na fila. Você pode deixar mais detalhes aqui; um atendente responderá quando assumir o caso.",
+      "joined": "Um atendente assumiu seu caso. As mensagens deste chat chegam a essa pessoa.",
+      "closed": "O atendente encerrou a conversa. Você pode consultar o histórico ou iniciar outro chat."
+    },
+    "author": {
+      "user": "Você",
+      "agent": "Atendente humano",
+      "customer": "Cliente"
+    },
+    "disconnected": "A conexão com o chat foi perdida",
+    "reconnectBody": "Não conseguimos atualizar as mensagens. Um problema de conexão não altera o estado do atendimento. Tente novamente para recuperar o histórico.",
+    "sending": "Enviando mensagem",
+    "loading": "Carregando mensagens",
+    "assignedElsewhere": "Somente o atendente que assumiu este caso pode ler e responder às mensagens.",
+    "replyLabel": "Sua resposta ao cliente",
+    "replySend": "Enviar ao cliente",
+    "creationLimit": "Você já criou cinco chats nos últimos 60 minutos. Continue nos chats existentes ou aguarde uma vaga."
   }
 }

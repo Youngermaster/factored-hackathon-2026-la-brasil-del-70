@@ -206,7 +206,6 @@
     "notFoundTitle": "No encontramos esa conversación",
     "notFoundBody": "Puede que sea de otra sesión o que ya no exista. Empieza una nueva y te ayudamos igual.",
     "human": "Hablar con una persona",
-    "withPerson": "Tu caso ya está con una persona del equipo.",
     "showTrace": "Ver en el registro",
     "stepUpWaiting": "Esta acción necesita que confirmes tu identidad con un código nuevo.",
     "stepUpAgain": "Confirmar identidad",
@@ -415,7 +414,7 @@
       "evidence": "Comprobado en"
     },
     "escalation": {
-      "title": "Tu caso pasó a una persona del equipo",
+      "title": "Solicitud de atención humana",
       "reference": "Referencia del caso",
       "expected": "Respuesta esperada antes del"
     },
@@ -1096,5 +1095,27 @@
     "transparency": "Al lado del chat verás el registro de cada turno: qué entendió el sistema, qué reglas y cláusulas aplicó y qué verificó. El razonamiento del modelo no se guarda ni se muestra, por diseño.",
     "humanTitle": "Siempre puedes hablar con una persona",
     "human": "Cuando lo pides, cuando algo requiere criterio humano o cuando una regla lo exige, tu caso pasa a una persona con lo que ya verificamos, para que no tengas que repetirlo."
+  },
+  "humanService": {
+    "title": "Atención humana",
+    "messages": "Mensajes con el agente",
+    "status": {
+      "queued": "Tu solicitud está en espera. Puedes dejar más detalles aquí; un agente responderá cuando tome el caso.",
+      "joined": "Un agente tomó tu caso. Los mensajes de este chat llegan a esa persona.",
+      "closed": "El agente cerró la conversación. Puedes consultar el historial o iniciar otro chat."
+    },
+    "author": {
+      "user": "Tú",
+      "agent": "Agente humano",
+      "customer": "Cliente"
+    },
+    "disconnected": "Se perdió la conexión con el chat",
+    "reconnectBody": "No podemos actualizar los mensajes. El estado de atención no cambia por un problema de conexión. Reintenta para recuperar el historial.",
+    "sending": "Enviando mensaje",
+    "loading": "Cargando mensajes",
+    "assignedElsewhere": "Solo el agente que tomó este caso puede leer y responder los mensajes.",
+    "replyLabel": "Tu respuesta al cliente",
+    "replySend": "Enviar al cliente",
+    "creationLimit": "Ya creaste cinco chats en los últimos 60 minutos. Puedes continuar en los chats existentes o esperar a que se libere un cupo."
   }
 }

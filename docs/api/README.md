@@ -21,6 +21,8 @@ Roles: `anyone` needs no session; the others need a session of that role. CSRF: 
 | POST | `/v1/conversations` | customer | yes | write |
 | POST | `/v1/conversations/{conversation_id}/turns` | customer | yes | write |
 | GET | `/v1/conversations/{conversation_id}` | customer | no | read |
+| GET | `/v1/conversations/{conversation_id}/human-service` | customer | no | read |
+| POST | `/v1/conversations/{conversation_id}/human-service/messages` | customer | yes | write |
 | GET | `/v1/conversations/{conversation_id}/trace` | customer | no | read |
 | GET | `/v1/conversations/{conversation_id}/assistant-profile` | customer | no | read |
 | POST | `/v1/conversations/{conversation_id}/assistant-profile/name` | customer | yes | write |
@@ -28,6 +30,8 @@ Roles: `anyone` needs no session; the others need a session of that role. CSRF: 
 | GET | `/v1/agent/handoffs` | agent | no | read |
 | GET | `/v1/agent/handoffs/{handoff_id}` | agent | no | read |
 | POST | `/v1/agent/handoffs/{handoff_id}/claim` | agent | yes | write |
+| GET | `/v1/agent/handoffs/{handoff_id}/human-service` | agent | no | read |
+| POST | `/v1/agent/handoffs/{handoff_id}/human-service/messages` | agent | yes | write |
 | POST | `/v1/agent/handoffs/{handoff_id}/resolve` | agent | yes | write |
 | GET | `/v1/agent/credit-applications` | agent | no | read |
 | GET | `/v1/agent/credit-applications/{application_id}` | agent | no | read |
@@ -78,6 +82,8 @@ sequenceDiagram
 - **CSRF**: a signed double-submit token. Fetch it from `GET /v1/auth/csrf` (or take it from the login and step-up responses) and echo it in `X-CSRF-Token` on every POST. It is bound to the current session, so it changes on login, step-up, and logout. After a `401` or a `csrf-token-invalid` problem, fetch a new one.
 - **Roles**: `customer`, `agent`, and `evaluator`, enforced per route (a wrong role is `403 role-not-permitted`). Another customer's conversation is a `404` with the same body as a missing one, from the same single scoped query.
 - **Step-up and re-authentication**: a write asks for step-up in the turn response (`step_up_required: true`); after `POST /v1/auth/step-up/verify` the client sends the next message and the engine executes the pending write. An expired session is a `401 session-expired`; after a new login, the next message resumes the conversation at its last safe state and asks the question there again.
+- **Human service.** Customer and assigned-agent messages persist on the existing conversation. Queued messages do not run the assistant; claim establishes the joined state and resolution closes the thread. Human-channel GETs accept a sequence cursor, POSTs accept only a UUID and bounded text. See [the lifecycle and authorization](../workflows/human-service.md).
+- **Creation quota.** At most five successful new chats per authenticated customer in any rolling 60 minutes, shared across sessions and workers. Existing messages and rolled-back creations do not count; multiple active conversations are allowed.
 - **Limits**: 16 KiB bodies (`413`), field limits (`422`), and per-minute rate limits by class (defaults per IP and per session: auth 10 and 10, write 30 and 20, read 120 and 60; `429` with `Retry-After`). Health checks are not limited. With `RATE_LIMIT_BACKEND=postgres` (required in production) the counters live in PostgreSQL and every worker shares them (a sliding-window counter over one-minute windows, keys stored as HMAC digests); `memory` keeps an exact sliding log in each process (development and tests). The client address is the one Caddy sets in `X-Forwarded-For`, trusted from Caddy's address only.
 - **Headers** on every response: `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, a `Permissions-Policy` that disables device features, `X-Frame-Options: DENY`, `Cross-Origin-Opener-Policy` and `Cross-Origin-Resource-Policy: same-origin`, `Cache-Control: no-store` on `/v1`, and HSTS in production. The development docs page (`/docs`) gets a CSP that allows the Swagger UI assets; docs are disabled in production.
 - **CORS**: an allowlist (`CORS_ALLOWED_ORIGINS`), credentials only for listed origins, methods GET and POST. In production the SPA is same-origin behind Caddy, so CORS matters only in development.
@@ -100,7 +106,7 @@ Every error is RFC 9457 problem details (`application/problem+json`) with `type`
 | 409 | `conflict`, `invalid-state-transition` | A turn id from another conversation, an illegal handoff move, a concurrent update |
 | 413 | `payload-too-large` | The body is over the limit |
 | 422 | `validation-error`, `unprocessable-request` | Request validation, or a domain invariant |
-| 429 | `rate-limited`, `identity-locked` | A rate limit, or five failed codes (15-minute lockout); both send `Retry-After` |
+| 429 | `rate-limited`, `identity-locked`, `conversation-creation-limited` | A request rate limit, five failed codes (15-minute lockout), or five new chats per customer in a rolling hour; all send `Retry-After` |
 | 503 | `service-unavailable`, `dependency-unavailable` | Identity not configured (`SESSION_SECRET`), or a dependency failed; an unavailable or read-only database (degradation level L4) adds `Retry-After` (`DEGRADATION_DATABASE_RETRY_AFTER_SECONDS`, 30) and nothing was changed |
 | 500 | `internal-error` | Anything unexpected (logged with the request id) |
 

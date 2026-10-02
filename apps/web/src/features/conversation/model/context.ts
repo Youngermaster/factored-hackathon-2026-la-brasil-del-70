@@ -1,6 +1,7 @@
 import { createContext, use, type RefObject } from 'react';
 
 import type { Language } from '@/shared/i18n';
+import type { HumanMessage, HumanServiceView } from '@/features/human-service';
 
 import type { ConversationView, TurnView } from '../api/conversation';
 import type { LocalNotice, PendingTurn } from './pending';
@@ -12,6 +13,13 @@ export interface ConversationContextValue {
   readonly conversationId: string | null;
   readonly conversation: ConversationView | null;
   readonly turns: readonly TurnView[];
+  readonly humanMode: boolean;
+  readonly humanView: HumanServiceView | null;
+  readonly humanMessages: readonly HumanMessage[];
+  readonly humanError: unknown;
+  readonly humanReload: () => void;
+  readonly creationError: unknown;
+  readonly closed: boolean;
   readonly pending: readonly PendingTurn[];
   readonly notices: readonly LocalNotice[];
   readonly loadStatus: LoadStatus;

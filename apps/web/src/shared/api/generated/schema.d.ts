@@ -199,6 +199,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/agent/handoffs/{handoff_id}/human-service": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Agent History */
+        get: operations["agent_human_service"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/agent/handoffs/{handoff_id}/human-service/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Agent Send */
+        post: operations["agent_send_human_message"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/agent/handoffs/{handoff_id}/resolve": {
         parameters: {
             query?: never;
@@ -453,6 +487,40 @@ export interface paths {
          * @description Validate and save the assistant name for the signed-in customer's profile.
          */
         post: operations["assistant_profile_name_set"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/human-service": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Customer History */
+        get: operations["conversations_human_service"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/human-service/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Customer Send */
+        post: operations["conversations_send_human_message"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1484,6 +1552,60 @@ export interface components {
             /** Template Only */
             template_only: boolean;
         };
+        /** HumanMessage */
+        HumanMessage: {
+            /** Conversation Id */
+            conversation_id: string;
+            /** Handoff Id */
+            handoff_id: string;
+            /** Message Id */
+            message_id: string;
+            role: components["schemas"]["HumanMessageRole"];
+            /**
+             * Sent At
+             * Format: date-time
+             */
+            sent_at: string;
+            /** Sequence */
+            sequence: number;
+            /** Text */
+            text: string;
+        };
+        /** HumanMessageResponse */
+        HumanMessageResponse: {
+            message: components["schemas"]["HumanMessage"];
+            /** Replayed */
+            replayed: boolean;
+        };
+        /**
+         * HumanMessageRole
+         * @enum {string}
+         */
+        HumanMessageRole: "user" | "agent";
+        /** HumanServiceResponse */
+        HumanServiceResponse: {
+            /** Closed At */
+            closed_at: string | null;
+            /** Conversation Id */
+            conversation_id: string;
+            /** Handoff Id */
+            handoff_id: string;
+            /** Joined At */
+            joined_at: string | null;
+            /** Messages */
+            messages: components["schemas"]["HumanMessage"][];
+            /**
+             * Queued At
+             * Format: date-time
+             */
+            queued_at: string;
+            status: components["schemas"]["HumanServiceStatus"];
+        };
+        /**
+         * HumanServiceStatus
+         * @enum {string}
+         */
+        HumanServiceStatus: "queued" | "joined" | "closed";
         /**
          * Intent
          * @description What the customer wants. Each intent is owned by exactly one workflow or is cross-workflow.
@@ -1857,6 +1979,16 @@ export interface components {
             rule_id: string;
             /** Rule Version */
             rule_version: number;
+        };
+        /** SendHumanMessageRequest */
+        SendHumanMessageRequest: {
+            /**
+             * Message Id
+             * Format: uuid
+             */
+            message_id: string;
+            /** Text */
+            text: string;
         };
         /**
          * SendTurnRequest
@@ -2693,6 +2825,92 @@ export interface operations {
             };
         };
     };
+    agent_human_service: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: never;
+            path: {
+                handoff_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanServiceResponse"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    agent_send_human_message: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                handoff_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendHumanMessageRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanMessageResponse"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
     agent_resolve_handoff: {
         parameters: {
             query?: never;
@@ -3150,6 +3368,92 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AssistantProfileView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    conversations_human_service: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanServiceResponse"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    conversations_send_human_message: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendHumanMessageRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanMessageResponse"];
                 };
             };
             /** @description Validation error as problem details */

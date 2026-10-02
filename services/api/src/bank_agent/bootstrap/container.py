@@ -29,6 +29,7 @@ from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.system.ids import RandomIdGenerator
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.agent.inbox import AgentInbox
+from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
@@ -183,6 +184,7 @@ class Container:
         )
         self._assistant_preferences = AssistantPreferencesService(self._persistence.uow_factory, self._clock)
         self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
+        self._human_service = HumanService(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
         self._degradation.current()
 
@@ -261,6 +263,10 @@ class Container:
     @property
     def inbox(self) -> AgentInbox:
         return self._inbox
+
+    @property
+    def human_service(self) -> HumanService:
+        return self._human_service
 
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:

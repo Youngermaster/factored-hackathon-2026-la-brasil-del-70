@@ -26,6 +26,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes (listed below) |
+| [plans/adr-0026-live-agent.md](plans/adr-0026-live-agent.md) | Current-main and PR reference review, gaps, and implementation increments for live human service in the existing chat |
 | [plans/kickoff-notes.md](plans/kickoff-notes.md) | The team's kickoff notes: roles and the scope decision |
 | Phase plans | [00](plans/phase-00.md), [01](plans/phase-01.md), [02](plans/phase-02.md), [02b](plans/phase-02b.md), [03](plans/phase-03.md), [04](plans/phase-04.md), [05](plans/phase-05.md), [06](plans/phase-06.md), [07](plans/phase-07.md), [08](plans/phase-08.md), [09a](plans/phase-09a.md), [09b](plans/phase-09b.md), [10a](plans/phase-10a.md), [10b](plans/phase-10b.md), [11](plans/phase-11.md), [12](plans/phase-12.md), [13](plans/phase-13.md), [14a](plans/phase-14a.md), [14b](plans/phase-14b.md), [15](plans/phase-15.md), [16](plans/phase-16.md), [17](plans/phase-17.md), and [the local EDA](plans/eda-local.md) |
 
@@ -178,6 +179,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [workflows/card-support.md](workflows/card-support.md) | Card support state machine, state table, sequences, and matrix |
 | [workflows/account-inquiry.md](workflows/account-inquiry.md) | Account inquiry state machine (read only), state table, as-of dates, sequences, and matrix |
 | [workflows/credit-information.md](workflows/credit-information.md) | Credit state machine, the separation of conversation, risk estimate, and eligibility, the score-band baseline, sequences, and matrix |
+| [workflows/human-service.md](workflows/human-service.md) | Live customer and assigned-agent messages, lifecycle, isolation, quota, and verification |
 | [workflows/handoff.md](workflows/handoff.md) | The handoff schema walkthrough, worked examples, and what agents see |
 | [workflows/execution-records.md](workflows/execution-records.md) | Execution record fields, storage, and explaining a decision without chain-of-thought |
 | [../services/api/src/bank_agent/application/README.md](../services/api/src/bank_agent/application/README.md) | How to add a state, a workflow, or a tool |

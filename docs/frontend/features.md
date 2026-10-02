@@ -5,6 +5,7 @@ The product surfaces of phase 13, as self-contained features under `apps/web/src
 | Feature | Public API | Pages that compose it |
 |---|---|---|
 | `conversation` | `Conversation.Root`, `.Header`, `.Starters`, `.Messages`, `.HumanButton`, `.Composer`; `useConversation` | `CustomerChatPage` (`/`) |
+| `human-service` | `useHumanChannel`, `useSendHumanMessage`, `HumanTimeline` | Customer conversation and agent handoff detail |
 | `glass-box` | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace` | `CustomerChatPage`, `GlassBoxPage` (`/glass-box/:id`), `TraceLookupPage` (`/console/traces/:id`) |
 | `agent-inbox` | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail` | `AgentInboxPage`, `HandoffDetailPage`, `CreditApplicationsPage`, `CreditApplicationPage` |
 | `eval-report` | `EvaluationReport`, the interval helpers | `EvaluationPage` (`/console/evaluation`) |
@@ -110,3 +111,7 @@ sequenceDiagram
 | `['api','evaluation','trace',id]` | `useStaffTrace` | read only |
 
 A sign-in, sign-out, or lost session drops every cached record (phase 12 `replaceSession`), so nothing from one identity reaches the next.
+
+## Human service
+
+The customer composer switches from assistant turns to persisted human messages after escalation. The assigned agent replies in the handoff detail. Both use the public `human-service` feature, TanStack Query cursor pages and two-second polling; transport failure leaves the persisted lifecycle intact. Closed threads are readable and disable sending. All lifecycle, reconnect, and quota copy lives in es, pt, and en locales. See [the channel specification](../workflows/human-service.md).
