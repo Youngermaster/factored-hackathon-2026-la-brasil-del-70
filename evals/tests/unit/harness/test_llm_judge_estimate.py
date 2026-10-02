@@ -19,7 +19,7 @@ from bank_agent.testing.fake_llm import FakeLLM, ScriptedError, ScriptedResponse
 from bank_evals.judge import agreement, cohen_kappa, judge, stratified_sample
 from bank_evals.prompts.outputs import JudgeRating
 from bank_evals.runner.estimate import estimate_run
-from bank_evals.runner.llm import build_run_llm, model_label
+from bank_evals.runner.llm import EVALUATION_UNREDACTED_VARIABLE_KEYS, build_run_llm, model_label
 from bank_evals.runner.wiring import prompt_registry
 from bank_evals.scenarios.translate import propose_portuguese
 from bank_evals.systems.base import LlmCallView
@@ -90,6 +90,19 @@ def test_replay_and_inject_need_a_model_or_a_client() -> None:
         build_run_llm(LLMSettings(), prompt_registry(), "replay")
     with pytest.raises(ConfigurationError, match="inject"):
         build_run_llm(LLMSettings(), prompt_registry(), "inject")
+
+
+def test_evaluation_redactor_keeps_synthetic_simulator_figures() -> None:
+    redactor = Redactor(EVALUATION_UNREDACTED_VARIABLE_KEYS)
+    variables = {
+        "goal": "Pedir 15000000 pesos",
+        "instructions": "Di 15000000",
+        "known_facts": "amount: 15000000",
+        "customer_message": "Mi documento es 15000000",
+    }
+    redacted = redactor.redact_variables(variables)
+    assert redacted["known_facts"] == "amount: 15000000"
+    assert redacted["customer_message"] == "Mi documento es [DOCUMENT]"
 
 
 async def test_the_judge_rates_a_stratified_sample_and_agreement_waits_for_humans() -> None:

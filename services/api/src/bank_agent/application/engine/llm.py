@@ -20,7 +20,7 @@ EXTRACT_DISPUTE = PromptRef(prompt_id="extract_dispute_slots", version=1)
 EXTRACT_CARD = PromptRef(prompt_id="extract_card_support_slots", version=1)
 EXTRACT_ACCOUNT = PromptRef(prompt_id="extract_account_inquiry_slots", version=1)
 EXTRACT_CREDIT = PromptRef(prompt_id="extract_credit_slots", version=1)
-DETECT_SIGNALS = PromptRef(prompt_id="detect_escalation_signals", version=1)
+DETECT_SIGNALS = PromptRef(prompt_id="detect_escalation_signals", version=2)
 PHRASE_RESPONSE = PromptRef(prompt_id="phrase_response", version=1)
 SUMMARIZE_HANDOFF = PromptRef(prompt_id="summarize_for_handoff", version=1)
 MIN_SENSITIVE = 2

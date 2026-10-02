@@ -44,6 +44,11 @@ def test_finds_record_ids_named_in_the_text() -> None:
     assert not referenced_ids("no reconozco un cargo").any
 
 
+def test_finds_case_ids_with_multiple_hyphenated_segments() -> None:
+    found = referenced_ids("¿Cómo va mi caso case-evmx0006-0001?")
+    assert found.cases == ("case-evmx0006-0001",)
+
+
 @pytest.mark.parametrize(
     ("text", "field"),
     [
