@@ -50,10 +50,19 @@ def _env_file(path: Path, values: Mapping[str, str]) -> Path:
 class FakeAzure:
     """The metadata service and one vault, as HTTP answers; it records every request."""
 
-    def __init__(self, vault_values: Mapping[str, str], *, token_failures: int = 0, status: int = 200) -> None:
+    def __init__(
+        self,
+        vault_values: Mapping[str, str],
+        *,
+        token_failures: int = 0,
+        status: int = 200,
+        missing_status: int = 404,
+    ) -> None:
         self.vault_values = dict(vault_values)
         self.token_failures = token_failures
         self.status = status
+        self.missing_status = missing_status
+        """403 models per-secret grants: a secret that does not exist has no grant, so the identity is refused."""
         self.requests: list[tuple[str, dict[str, str]]] = []
 
     def __call__(self, url: str, headers: Mapping[str, str]) -> tuple[int, bytes]:
@@ -67,7 +76,7 @@ class FakeAzure:
             return self.status, b""
         name = url.split("/secrets/", 1)[1].split("?", 1)[0]
         if name not in self.vault_values:
-            return 404, b""
+            return self.missing_status, b""
         return 200, json.dumps({"value": self.vault_values[name]}).encode()
 
 
@@ -179,6 +188,37 @@ def test_a_forbidden_secret_is_reported_by_name_and_status_only(capsys: pytest.C
         "(grant the VM identity Key Vault Secrets User on it)"
     )
     assert "token-for-test" not in str(raised.value)
+
+
+def test_optional_secrets_without_a_per_secret_grant_are_staged_empty(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    values = _values()
+    azure = FakeAzure(_vault_values(values), missing_status=403)
+
+    stager.stage(
+        stager.collect(stager.KeyVaultSource("kv-bank-agent", get=azure, sleep=lambda _: None)), tmp_path, chown=False
+    )
+
+    assert (tmp_path / "app" / "LLM_API_KEY_PRIMARY").read_text(encoding="utf-8") == ""
+    assert (tmp_path / "grafana" / "GRAFANA_ADMIN_PASSWORD").read_text(encoding="utf-8") == ""
+    assert (tmp_path / "app" / "SESSION_SECRET").read_text(encoding="utf-8") == values["SESSION_SECRET"]
+    assert "llm-api-key-primary: not readable by this identity (HTTP 403); optional, staged empty" in (
+        capsys.readouterr().err
+    )
+
+
+def test_a_required_secret_without_a_grant_still_stops_the_run() -> None:
+    values = _values()
+    del values["CSRF_SECRET"]
+    azure = FakeAzure(_vault_values(values), missing_status=403)
+
+    with pytest.raises(stager.StageError) as raised:
+        stager.collect(stager.KeyVaultSource("kv-bank-agent", get=azure, sleep=lambda _: None))
+
+    assert str(raised.value) == (
+        "Key Vault answered HTTP 403 for secret csrf-secret (grant the VM identity Key Vault Secrets User on it)"
+    )
 
 
 def test_required_secrets_missing_from_the_vault_are_named_by_their_vault_names() -> None:

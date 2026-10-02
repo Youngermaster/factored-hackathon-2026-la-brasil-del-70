@@ -159,7 +159,7 @@ deploy/azure/keyvault-secrets.sh "${VAULT_NAME}" set LLM_API_KEY_PRIMARY   # hos
 deploy/azure/provision.sh                                     # again: grants the VM read access to the new secret
 ```
 
-`provision.sh` prints the site name, `<DNS_LABEL>.<LOCATION>.cloudapp.azure.com`: Azure serves that DNS name for the static IP, so no domain is needed. Leave a budget alert on the subscription (Cost Management, Budgets) at a value you are willing to spend.
+`provision.sh` prints the site name, `<DNS_LABEL>.<LOCATION>.cloudapp.azure.com`: Azure serves that DNS name for the static IP, so no domain is needed. SSH accepts only `SSH_SOURCE_CIDR`; when an internet provider assigns dynamic addresses and SSH starts timing out, point the rule at the current address: `az network nsg rule update --resource-group rg-bank-agent --nsg-name vm-bank-agent-nsg --name allow-ssh-admin --source-address-prefixes "$(curl -s -4 https://api.ipify.org)/32"`. Leave a budget alert on the subscription (Cost Management, Budgets) at a value you are willing to spend.
 
 **2. On the VM** (`ssh -i ~/.ssh/azure_bank_agent azureuser@<site name>`): follow "Prepare the VM" above. To clone the private repository, create a read-only deploy key on the VM (`ssh-keygen -t ed25519 -f ~/.ssh/github_deploy -N ""`), have a repository administrator add `~/.ssh/github_deploy.pub` under the repository's Settings, Deploy keys (read access only), and clone with `GIT_SSH_COMMAND="ssh -i ~/.ssh/github_deploy" git clone git@github.com:<org>/<repository>.git bank-agent`. Then:
 

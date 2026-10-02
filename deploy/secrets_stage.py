@@ -161,6 +161,11 @@ class KeyVaultSource:
         status, body = self._get(url, {"Authorization": self._bearer()})
         if status == 404:
             return None
+        if status == 403 and not secret.required:
+            # Access is granted per secret, so an optional secret that was never created (no grant can exist for it
+            # yet) answers 403, not 404: the identity may not even learn whether it exists. It is simply not in use.
+            say(f"{secret.vault_name}: not readable by this identity (HTTP 403); optional, staged empty")
+            return None
         if status != 200:
             hint = " (grant the VM identity Key Vault Secrets User on it)" if status == 403 else ""
             raise StageError(f"Key Vault answered HTTP {status} for secret {secret.vault_name}{hint}")

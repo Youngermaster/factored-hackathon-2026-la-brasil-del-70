@@ -122,6 +122,10 @@ check_env_file() {
   mode="$(stat -c '%a' "${ENV_FILE}" 2>/dev/null || stat -f '%Lp' "${ENV_FILE}")"
   [[ "${mode}" == "600" || "${mode}" == "400" ]] || fail "${ENV_FILE} must be mode 600 (chmod 600 it)"
   for name in "${REQUIRED[@]}"; do [[ -n "$(env_value "${name}")" ]] || missing+=("${name}"); done
+  # The Caddyfile's acme snippet is `tls {$ACME_EMAIL}`: an empty address leaves a bare `tls` that Caddy refuses.
+  if [[ "$(env_value CADDY_TLS)" != "internal" && -z "$(env_value ACME_EMAIL)" ]]; then
+    missing+=("ACME_EMAIL (the certificate authority contact; required unless CADDY_TLS=internal)")
+  fi
   case "$(secrets_source)" in
     keyvault)
       [[ -n "$(env_value KEY_VAULT_NAME)" ]] || missing+=(KEY_VAULT_NAME)

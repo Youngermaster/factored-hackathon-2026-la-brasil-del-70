@@ -12,7 +12,7 @@
 #   LOCATION          default westus2;      RESOURCE_GROUP  default rg-bank-agent
 #   VM_NAME           default vm-bank-agent; VM_SIZE        default Standard_B2als_v2 (2 vCPU, 4 GB)
 #   ADMIN_USER        default azureuser;     SSH_PUBLIC_KEY  default ~/.ssh/azure_bank_agent.pub
-#   DISK_GB           default 40
+#   DISK_GB           default 40;           VM_IMAGE      default Canonical:ubuntu-24_04-lts:server:latest
 #
 # Steps: resource group; Key Vault (RBAC, soft delete 7 days); Key Vault Secrets Officer for you on that vault only;
 # the generated secrets (deploy/azure/keyvault-secrets.sh init); the VM (Ubuntu 24.04, system-assigned identity, a
@@ -31,6 +31,8 @@ VM_SIZE="${VM_SIZE:-Standard_B2als_v2}"
 ADMIN_USER="${ADMIN_USER:-azureuser}"
 SSH_PUBLIC_KEY="${SSH_PUBLIC_KEY:-${HOME}/.ssh/azure_bank_agent.pub}"
 DISK_GB="${DISK_GB:-40}"
+# The full image URN, not the "Ubuntu2404" alias: the alias list is downloaded at run time and a network hiccup breaks it.
+VM_IMAGE="${VM_IMAGE:-Canonical:ubuntu-24_04-lts:server:latest}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_SECRETS=(postgres-superuser-password postgres-admin-password postgres-app-password session-secret csrf-secret
   llm-api-key-primary llm-api-key-fallback grafana-admin-password)
@@ -68,7 +70,7 @@ say "4/7 generated secrets"
 say "5/7 VM ${VM_NAME} (${VM_SIZE}, Ubuntu 24.04, system-assigned identity, static IP ${DNS_LABEL})"
 if ! az vm show --resource-group "${RESOURCE_GROUP}" --name "${VM_NAME}" --output none 2> /dev/null; then
   az vm create --resource-group "${RESOURCE_GROUP}" --name "${VM_NAME}" --location "${LOCATION}" \
-    --image Ubuntu2404 --size "${VM_SIZE}" --admin-username "${ADMIN_USER}" \
+    --image "${VM_IMAGE}" --size "${VM_SIZE}" --admin-username "${ADMIN_USER}" \
     --ssh-key-values "$(cat "${SSH_PUBLIC_KEY}")" --assign-identity \
     --public-ip-sku Standard --public-ip-address-allocation static --public-ip-address-dns-name "${DNS_LABEL}" \
     --nsg "${VM_NAME}-nsg" --nsg-rule NONE --storage-sku StandardSSD_LRS --os-disk-size-gb "${DISK_GB}" \
