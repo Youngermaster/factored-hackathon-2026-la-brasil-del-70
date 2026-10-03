@@ -4,7 +4,8 @@ Grafana is the live administrative observability surface. It is provisioned from
 Prometheus as its only metric source, and contains no customer identifiers, message text, document numbers, account
 amounts, credit profiles, or risk estimates. The service emits the bounded labels documented in the
 [signal catalog](observability.md#signal-catalog) through OpenTelemetry; the collector converts them to Prometheus
-series, and Grafana queries those series.
+series, and Grafana queries those series. [ADR 0036](../adr/0036-grafana-live-analytics-separate-from-offline-evaluation.md)
+records why live Grafana telemetry and offline evaluation evidence remain separate.
 
 Two read-only dashboards are provisioned in the **Bank agent** folder:
 
