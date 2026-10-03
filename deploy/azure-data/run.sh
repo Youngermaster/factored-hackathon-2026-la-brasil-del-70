@@ -9,6 +9,10 @@ source_kind=${2:-sample}
 case "$source_kind" in sample|local|s3) ;; *) exit 2 ;; esac
 [[ "$revision" =~ ^[0-9a-f]{40}$ ]] || exit 2
 root=${3:-/opt/la70-data}
+source_digest=${4:-}
+if [[ "$source_kind" == local ]]; then
+    [[ "$source_digest" =~ ^[0-9a-f]{64}$ ]] || exit 2
+fi
 release="$root/releases/$revision"
 cd "$release"
 exec 9>"$root/pipeline.lock"
@@ -65,6 +69,10 @@ step() {
     "$@" >"$run_dir/$name.log" 2>&1
     printf '%s succeeded\n' "$name"
 }
+if [[ "$source_kind" == local ]]; then
+    step source uv run --frozen python deploy/azure-data/source.py restore \
+        "$root/sources/$source_digest.tar.gz" "$root/source" "$source_digest"
+fi
 step ingest uv run --frozen bank-data ingest "${args[@]}"
 step build uv run --frozen bank-data build "${args[@]}"
 step validation uv run --frozen bank-data test "${args[@]}"

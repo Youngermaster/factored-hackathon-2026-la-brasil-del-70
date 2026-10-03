@@ -57,12 +57,25 @@ it never prints authentication material or customer replies.
 | Source | Preparation | Runtime command |
 |---|---|---|
 | `sample` | Included in the committed release, explicitly labeled as a bounded pseudonymized sample | `start sample` |
-| `local` | Put contracted source files under `/opt/la70-data/source`, retaining their table and partition layout | `start local` |
+| `local` | `bash deploy/azure-data/deploy.sh source data` publishes contracted local inputs privately and verifies the downloaded archive | `start local` |
 | `s3` | Provision a protected `/opt/la70-data/s3.env` on the VM with organizer settings | `start s3` |
 
 Never supply credentials through Run Command arguments, deployment parameters, shell output, or Git.
-The operator must arrange protected transfer of local source files or S3 settings separately. These are
-not packaged from the operator's `.env`. Full PostgreSQL loading remains the separate batch-loader project
+The operator must arrange protected provisioning of S3 settings separately. Local inputs are packaged
+only from contracted table snapshots and dated CSV/Parquet partitions: ancillary directories, PDFs,
+environment files, and generated warehouses are excluded. A source manifest records each path, byte
+count, and SHA-256 plus the dataset version, business snapshot date, and code revision. The archive
+is uploaded immutably under `sources/<sha256>.tar.gz` and downloaded for hash verification before its
+reference is saved. This transfer works while VM provisioning is blocked.
+
+`start local` downloads the selected archive with the VM managed identity. The locked pipeline verifies
+the archive and every member before installing its input directory, then executes ingestion, build,
+tests, and the normal PostgreSQL path. Extraction rejects unexpected members, links, duplicate paths,
+traversal, missing files, and byte/hash mismatches. An existing input directory must match the complete
+manifest and all file hashes; a different source is refused rather than silently replaced. This keeps
+source refresh ownership explicit alongside the existing no-reseed rule.
+
+No inputs are packaged from the operator's `.env`. Full PostgreSQL loading remains the separate batch-loader project
 in [the loading guide](../../docs/data/local-postgres-mvp.md); this deployment selects up to 200 customers.
 The committed sample contains fewer eligible customers than the full delivery.
 

@@ -60,11 +60,37 @@ PY
         printf '%s %s\n' "$revision" "$digest" > "$state/release"
         printf 'Uploaded committed revision %s with SHA-256 %s.\n' "$revision" "$digest"
         ;;
+    source)
+        source_dir=${2:?local source directory required}
+        revision=$(git rev-parse HEAD)
+        source_archive="$state/source-$(date -u +%Y%m%dT%H%M%S%N).tar.gz"
+        uv run --frozen python deploy/azure-data/source.py pack "$source_dir" "$source_archive" "$revision" \
+            > "$state/source-summary.json"
+        digest=$(sha256sum "$source_archive" | cut -d' ' -f1)
+        source_blob="sources/$digest.tar.gz"
+        if [[ "$(az storage blob exists --account-name "$storage" --container-name artifacts \
+            --name "$source_blob" --auth-mode login --only-show-errors --query exists -o tsv)" != true ]]; then
+            az storage blob upload --account-name "$storage" --container-name artifacts \
+                --name "$source_blob" --file "$source_archive" --auth-mode login \
+                --overwrite false --only-show-errors -o none
+        fi
+        az storage blob download --account-name "$storage" --container-name artifacts \
+            --name "$source_blob" --file "$state/source-download.tar.gz" --auth-mode login \
+            --overwrite true --only-show-errors -o none
+        [[ "$(sha256sum "$state/source-download.tar.gz" | cut -d' ' -f1)" == "$digest" ]] || exit 1
+        printf '%s\n' "$digest" > "$state/source-release"
+        printf 'Published and download-verified private source SHA-256 %s.\n' "$digest"
+        ;;
     start)
         read -r revision digest < "$state/release"
         [[ "$revision" =~ ^[0-9a-f]{40}$ && "$digest" =~ ^[0-9a-f]{64}$ ]] || exit 2
         source_kind=${2:-sample}
         case "$source_kind" in sample|local|s3) ;; *) exit 2 ;; esac
+        source_digest=''
+        if [[ "$source_kind" == local ]]; then
+            source_digest=$(cat "$state/source-release")
+            [[ "$source_digest" =~ ^[0-9a-f]{64}$ ]] || exit 2
+        fi
         # Python transfer code is supplied as code, never with an access token or SAS.
         {
             printf 'set -eu\numask 077\nmkdir -p /opt/la70-data\n'
@@ -75,8 +101,13 @@ PY
             printf 'mkdir -p /opt/la70-data/releases/%s\n' "$revision"
             printf 'tar -xzf /opt/la70-data/release.tar.gz -C /opt/la70-data/releases/%s\n' "$revision"
             printf 'cd /opt/la70-data/releases/%s\nbash deploy/azure-data/bootstrap.sh > /opt/la70-data/bootstrap.log 2>&1\n' "$revision"
+            if [[ "$source_kind" == local ]]; then
+                printf 'python3 /opt/la70-data/blob.py download %s sources/%s.tar.gz /opt/la70-data/sources/%s.tar.gz --sha256 %s\n' \
+                    "$storage" "$source_digest" "$source_digest" "$source_digest"
+            fi
             # No inbound port is needed. systemd gives the pipeline an independently inspectable handle.
-            printf 'systemd-run --unit=la70-data-pipeline --collect bash /opt/la70-data/releases/%s/deploy/azure-data/run.sh %s %s\n' "$revision" "$revision" "$source_kind"
+            printf 'systemd-run --unit=la70-data-pipeline --collect bash /opt/la70-data/releases/%s/deploy/azure-data/run.sh %s %s /opt/la70-data %s\n' \
+                "$revision" "$revision" "$source_kind" "$source_digest"
         } > "$state/start.sh"
         invoke "$state/start.sh"
         ;;
@@ -113,5 +144,5 @@ SH
         } > "$state/publish.sh"
         invoke "$state/publish.sh"
         ;;
-    *) printf 'Usage: %s validate|provision|provision-storage|release|start [sample|local|s3]|status|publish\n' "$0" >&2; exit 2 ;;
+    *) printf 'Usage: %s validate|provision|provision-storage|release|source <local-dir>|start [sample|local|s3]|status|publish\n' "$0" >&2; exit 2 ;;
 esac
