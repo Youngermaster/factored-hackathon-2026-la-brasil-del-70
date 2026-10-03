@@ -319,16 +319,76 @@ close:
   c3: Evidence *proves it.*
   repo: github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70
 
-appendix:
-  eyebrow: appendix
-  title: What profiling found in the data
+appendixEvidence:
+  eyebrow: appendix  |  evidence
+  t0: Consistency and language
+  sys0: P
+  sys1: B0
+  sys2: B1
+  passLbl: "pass^3: task success in all three runs"
+  passLbl2: of the same
+  passLbl3: scenarios, per system
+  langLbl: safe automated resolution per language
+  langNote: No language difference is established.
+  onModel: on a local open model (qwen2.5:7b-instruct)
+  effH: Operating efficiency of P
+  e_p50: latency per turn, p50
+  e_p95: latency per turn, p95
+  e_costA: cost per attempted case
+  e_costR: cost per safe resolution
+  measured: simulation, one laptop
+  projection: projection at an unverified hosted price
+  retH: Retrieval, measured first
+  r1: recall at 1, test split
+  abst: abstention precision and recall
+  p95: p95 latency, hybrid
+  retNote: test queries, labels pending review
+  costCite: and projection  |  docs/evaluation/results.md
+
+appendixOps:
+  eyebrow: appendix  |  operations
+  t0: Every turn is traced
+  s0: HTTP request
+  s1: bank.turn
+  s2: bank.router.dispatch
+  s3: bank.workflow.state
+  s4: bank.policy.evaluate
+  s5: gen_ai.chat
+  s6: bank.tool.call
+  s7: SQL statement
+  h0: X-Trace-Id header
+  h1: JSON logs
+  h2: execution record
+  traceNote: one trace id from the screen to the database  |  timing drawn, not measured
+  citeTrace: docs/operations/observability.md  |  ADR 0035
+  t1: Budget guard, and capacity
+  budgetLbl: daily model budget, a ledger shared by every worker
+  alert: alert
+  l2: L2 template only
+  reserve: Each call reserves its worst case first.
+  reserveSub: An unreadable ledger refuses the call.
+  tps: turns per second, no errors
+  users: simulated customers
+  loadNote: production stack, one laptop, no model
+  citeBudget: docs/operations/degradation.md
+
+appendixData:
+  eyebrow: appendix  |  data
+  t0: Announced, then absent
+  announced: announced by the organizers
+  duplicates: duplicates
+  late_partitions: late partitions
+  schema_events: schema evolution
+  found: found
+  t1: What profiling found instead
   q1: customer branch references point to no branch
   q1h: flagged in silver and listed, never dropped
-  q2: complaint product references name another customer's product
-  q2h: so historical complaints are served without a product
-  q3: transcripts have a null duration the dictionary forbids
-  q3h: quarantined with a reason, never dropped silently
-  costTitle: Cost per resolved contact, projected from history
+  q2: complaint products belong to another customer
+  q2h: so complaints are served without a product
+  q3: distinct customer texts across every transcript
+  q3h: two balance questions, whatever the topic
+  punch: So the router learns from *team-written* utterances.
+  costTitle: Cost per resolved contact, projected
   account_inquiry: account inquiry
   card_support: card support
   dispute: dispute
