@@ -1,6 +1,6 @@
 # Recording the video pitch
 
-The organizers require a short video that demonstrates the working solution and explains the core architectural decisions. The plan: a screen recording of this deck carries the argument, two short live clips of the app prove it works, and one narrator reads [script.md](script.md). Target length about 4:00 (the narration measures 3:51 at 150 words per minute in `pnpm check:content`; animation and demo pauses add the rest, so trim with the order below if the cut runs past 4:15).
+The organizers require a short video that demonstrates the working solution and explains the core architectural decisions. The plan: a screen recording of the six main slides carries the argument, two short live clips of the app prove it works, and one narrator reads [script.md](script.md). The three appendix slides are not recorded. Target length about 4:05 (the narration measures 3:40 at 150 words per minute in `pnpm check:content`; animation and demo pauses add the rest, so trim with the order below if the cut runs past 4:15).
 
 ## Shot list
 
@@ -8,16 +8,16 @@ Timestamps assume the narration is spoken over each animation, starting as the c
 
 | Time | Segment | Source | What to click, what happens |
 |---|---|---|---|
-| 0:00 to 0:35 | Slide 1, hook | deck | Arrive: the row counter. Click 1 contact share, click 2 first-contact resolution (dispute in red), click 3 transcripts collapse, click 4 the four workflows |
-| 0:35 to 1:22 | Slide 2, thesis | deck | Arrive: the customer message types in. Clicks 1 to 6: understand, decide, act and verify, injection bounces, escalate, thesis line. Let click 4 play fully before speaking |
-| 1:22 to 1:42 | Demo A, dispute | app | See "Demo segments" |
-| 1:42 to 2:16 | Slide 3, architecture | deck | Clicks 1 to 5: kernel, gateway, verifier, data platform, inward arrows |
-| 2:16 to 2:52 | Slide 4, workflows | deck | Clicks 1 to 5: one workflow per click, then the depth bar |
-| 2:52 to 3:07 | Demo B, card block and credit | app | See "Demo segments" |
-| 3:07 to 3:33 | Slide 5, evidence | deck | Clicks 1 to 4. The phase 14b numbers are in `data/metrics.yml`; the evidence tiles are simulation on a local model |
-| 3:33 to 3:55 | Slide 6, close | deck | Clicks 1 to 3: route to operation, team, thesis and links. Hold the last frame 3 seconds |
+| 0:00 to 0:26 | Slide 1, hook | deck | Arrive: the row counter, with the product name in the eyebrow. Click 1 contact share, click 2 first contact resolution (dispute in red), click 3 transcripts collapse, click 4 the four workflows |
+| 0:26 to 1:04 | Slide 2, thesis | deck | Arrive: the customer message types in. Clicks 1 to 6: understand, decide, act and verify, injection bounces, escalate, thesis line. Let click 4 play fully before speaking |
+| 1:04 to 1:22 | Demo A, dispute | app | See "Demo segments" |
+| 1:22 to 1:51 | Slide 3, architecture | deck | Clicks 1 to 5: kernel, gateway with the provider switch (local Ollama today, a hosted model by setting), verifier, data platform, inward arrows |
+| 1:51 to 2:19 | Slide 4, workflows | deck | Clicks 1 to 5: one workflow per click (credit shows the estimate bouncing off the wall in front of the model), then the depth bar |
+| 2:19 to 2:32 | Demo B, card block and credit | app | See "Demo segments" |
+| 2:32 to 3:22 | Slide 5, evidence | deck | Arrive: 304 cases stream into P, B0 and B1. Click 1 per workflow with intervals (card support flagged), click 2 the aggregate and the trade-offs, click 3 the unsafe grids and B1's 90 by kind, click 4 the two weak spots. Simulation on a local open model |
+| 3:22 to 4:06 | Slide 6, close | deck | Arrive: the degradation ladder. Click 1 defense in depth, click 2 limits and next steps, click 3 the team, click 4 the thesis, the repository and the URL. Hold the last frame 3 seconds |
 
-If the cut runs long, trim in this order: the transcript beat of slide 1 (click 3), the depth bar of slide 4 (click 5), demo B's credit half. Never cut the thesis, the injection beat, or the limits.
+If the cut runs long, trim in this order: the transcript beat of slide 1 (click 3), the depth bar of slide 4 (click 5), demo B's credit half, the defense lane of slide 6 (click 1, keep the frame and drop its sentence). Never cut the thesis, the injection beat, the unsafe grids, the weak spots, or the limits.
 
 ## Recording the deck
 
@@ -31,7 +31,7 @@ Presenter mode (`/#/presenter`) on a second screen shows the slide notes and the
 
 ## Demo segments
 
-The clips come from the web app: the customer chat with the glass box beside it (the execution record of each turn), and for the injection the evaluator's record. The inputs below were driven through the API on a fresh seed of the committed sample in phase 17 and routed as described; [docs/demo/script.md](../docs/demo/script.md) has every scene with its exact inputs. The thesis slide's "15 lucas" turn is an illustrative Argentine turn; the live clip uses a Colombian customer, because the committed sample holds no Argentine dispute persona.
+The clips come from the web app: the customer chat with the glass box beside it (the execution record of each turn), and for the injection the evaluator's record. The inputs below were driven through the API on a fresh seed of the committed sample in phase 17 and routed as described: clip A is scene 4 of [docs/demo/script.md](../docs/demo/script.md), clip B is its scene 3 followed by the `cre-mx-complete` credit message of the demo guide (`apps/web/src/features/demo-guide/model/scenarios.ts`), the borderline result the demo script names. The thesis slide's "15 lucas" turn is an illustrative Argentine turn; the live clip uses a Colombian customer, because the committed sample holds no Argentine dispute persona.
 
 | Clip | Length | Record | Must be visible |
 |---|---|---|---|
@@ -43,9 +43,9 @@ Record the clips against the deployed URL right after `deploy/prod.sh seed` on a
 ## Before the final recording
 
 - [ ] `pnpm check:content --strict` passes: every metric in `data/metrics.yml` is filled, including `deploy.url`.
-- [ ] The `evidence` section of `script.md` says the measured numbers with their denominators.
+- [ ] The `evidence` section of `script.md` says the measured numbers, and the evidence slide shows their denominators and intervals.
 - [ ] `pnpm check:fit` passes and `pnpm shots` looks right (`.shots/deck/`).
-- [ ] The team reviewed the limits on slide 6 against the final state of the repository.
+- [ ] The team reviewed the limits and the next steps on slide 6 against the final state of the repository, and confirmed the names and roles on the team frame (they match the README team table).
 - [ ] The PDF is exported with `pnpm export:final`.
 
 ## Audio
@@ -59,7 +59,7 @@ Record the clips against the deployed URL right after `deploy/prod.sh seed` on a
 ## Editing and export
 
 - Timeline 1920 x 1080 at the recording frame rate (60 or 30 fps). Cut on the seams between slides.
-- Put the demo clips at the timestamps above, full frame; a thin title in the deck's mono type ("live, es-AR") is enough labeling.
+- Put the demo clips at the timestamps above, full frame; a thin title in the deck's mono type ("live, es-CO" for clip A, "live, pt-BR" for clip B) is enough labeling.
 - Add captions from `script.md` (a subtitle file, or burned in). Many judges watch muted.
 - Export H.264, High profile, 1920 x 1080, 12 to 16 Mbit/s, AAC 48 kHz at 192 kbit/s, MP4. Check the file plays in a browser before sending it.
 - Name it `la-brasil-del-70-pitch.mp4`, and send it with the repository link, the deployment link and the PDF.

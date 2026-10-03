@@ -1,6 +1,6 @@
 # Pitch deck
 
-The presentation and the animated backbone of the video pitch for the Factored AI & Data Hackathon 2026. Six main slides plus one appendix, built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
+The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides plus three appendix slides, built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
 
 The scene kit, the `<Scene>` component, the seams and the check scripts are adapted from the team lead's earlier deck, VLA-introduction-slides (Apache-2.0, same author); the robot drawing helpers and the bilingual machinery were dropped.
 
@@ -19,8 +19,8 @@ pnpm dev                 # http://localhost:3131, presenter view at /#/presenter
 |---|---|
 | `pnpm dev` | Dev server on port 3131 with hot reload |
 | `pnpm verify` | Types plus `check:content`; run before every commit |
-| `pnpm check:content` | Strings, metrics, token parity, contrast, narration timing, em dashes; lists pending metrics |
-| `pnpm check:content --strict` | Same, and fails while any metric is still pending |
+| `pnpm check:content` | Strings, metrics, intervals, token parity, contrast, narration timing, em dashes, naming; lists pending metrics |
+| `pnpm check:content --strict` | Same, and fails while any metric is still pending or any placeholder remains |
 | `pnpm check:fit` | Renders every scene at every cue and flags text outside the safe area or touching other text (dev server running) |
 | `pnpm shots` | Screenshots of every slide at every click into `.shots/deck/` (dev server running) |
 | `node scripts/sheet.mjs <scene>` | Contact sheet of one scene at every cue and midpoint, into `.shots/scenes/` |
@@ -53,13 +53,17 @@ VIDEO.md                how to record and export the video
 
 | Slide | Scene | Clicks |
 |---|---|---|
-| 1 hook | `hook` | 4: the data field folds into the contact bar, first-contact resolution, transcripts, four workflow tiles |
+| 1 hook | `hook` | 4: the data field folds into the contact bar, first contact resolution, transcripts, four workflow tiles |
 | 2 thesis | `thesis` | 6: understand, decide, act and verify, injection, escalate, thesis line |
-| 3 architecture | `arch` | 5: clause to Decision, request through the decorator stack, draft sent or templated, rows to quarantine, inward packets |
+| 3 architecture | `arch` | 5: clause to Decision, a call through the gateway onto the provider the settings name (local Ollama today, a hosted model by setting), draft sent or templated, rows to quarantine, inward packets |
 | 4 workflows | `workflows` | 5: account inquiry, card support, dispute, credit separation, depth grid |
-| 5 evidence | `evidence` | 4: stress cases fly into the matrix, outcome tiles against B0, per workflow and language, efficiency and retrieval |
-| 6 close | `close` | 3: route to operation, team on yellow, thesis bands and links |
-| appendix | `appendix` | 1: profiling findings, projected cost per resolved contact |
+| 5 evidence | `evidence` | 4: arrive with 304 cases into P, B0 and B1; per workflow with intervals, the aggregate and the trade-offs, unsafe grids with B1's 90 by kind, P's weak spots |
+| 6 close | `close` | 4: arrive on the degradation ladder; defense in depth, limits and next steps, team on yellow, thesis bands and links |
+| appendix A | `appendixEvidence` | 1: pass^3 and the language slices, then efficiency and retrieval |
+| appendix B | `appendixOps` | 1: one turn as a trace, then the budget guard and the load test |
+| appendix C | `appendixData` | 2: announced problems measured at zero, what profiling found, projected cost per resolved contact |
+
+The six main slides carry the story (problem, thesis, architecture, workflows and credit, evidence, reliability with security and the close) for the organizers' 4 to 6 slide limit. The appendix slides carry an "appendix" eyebrow, are not narrated, and can be dropped from the PDF.
 
 ## Colour meaning
 
@@ -70,6 +74,8 @@ One accent per idea, never swapped between slides. The tokens are defined once i
 | blue | `#3772FF` | the language model and understanding: intents, extraction, retrieval |
 | yellow | `#FDC840` | deterministic code deciding and acting: rules, states, verified tools |
 | red | `#E12B37` | risk: refusal, escalation, a blocked injection, the worst-served workflow |
+
+On the evidence slides the three systems keep one colour each: P yellow (code decides), B0 light gray (`dim`, the baseline), B1 blue (the model alone); unsafe outcomes are red whichever system produced them.
 | paper | `#E6E6E4` | data, customers, documents, text |
 | ink | `#070707` | the ground |
 
@@ -90,17 +96,32 @@ Spoken words live in `script.md`, not in the locale file. After editing it, `pnp
 Every number comes from `data/metrics.yml`, never from a scene or the locale file.
 
 ```yaml
-eval.safe_resolution: {status: pending, kind: offline, source: "docs/evaluation/ (phase 14)"}
-# becomes, once the evaluation report exists:
-eval.safe_resolution: {value: 0.612, display: "61.2%", kind: offline, source: docs/evaluation/results.md}
+deploy.url: {status: pending, kind: offline, source: "deploy/README.md (phase 16)"}
+# becomes, once the human deploys:
+deploy.url: {value: "https://...", kind: offline, source: deploy/README.md}
+
+# a rate with its interval, and a count with its denominator:
+eval.sar.all.p: {value: 58.2, display: "177/304", lo: 53, hi: 64, kind: simulation, source: docs/evaluation/results.md}
+eval.unsafe.p: {value: 8, of: 304, display: "8 of 304", lo: 1.1, hi: 5.1, kind: simulation, source: docs/evaluation/results.md}
 ```
 
-- `kind` is one of `offline`, `provisional`, `projection`, `simulation`, `synthetic`. Scenes print it next to the source, because the brief requires offline measurements, simulations and projections to be labeled apart.
+- `kind` is one of `offline`, `provisional`, `projection`, `simulation`, `synthetic`. Scenes print it next to the source, because the brief requires offline measurements, simulations and projections to be labeled apart. The evidence slides print "simulation on a local open model (qwen2.5:7b-instruct)".
 - `source` must be an existing path relative to the repository root once the value is filled.
+- `lo` and `hi` are the 95% interval in percent (Wilson for rates, exact for unsafe outcomes), `of` the denominator of a count. The check fails when an interval does not contain its estimate or a fraction does not match its value.
 - A pending metric renders as a dashed "pending" box, so a missing number is visible, never invented.
-- After phase 14 lands, also update the `evidence` section of `script.md` with the numbers and their denominators.
+- If the evaluation is rerun (BACKLOG 14c: a hosted model, the 14c fixes), refresh the `eval.*` block from `docs/evaluation/results.md` and the `evidence` section of `script.md` with it.
 
-Today 1 metric is pending: `deploy.url`, filled once the human deploys ([docs/submission/SUBMISSION.md](../docs/submission/SUBMISSION.md)); the phase 14 evaluation metrics were filled in session 14b. `pnpm check:content` lists what is pending.
+Today 1 metric is pending: `deploy.url`, filled once the human deploys ([docs/submission/SUBMISSION.md](../docs/submission/SUBMISSION.md)). `pnpm check:content` lists what is pending.
+
+## Naming
+
+One name per thing, everywhere in the deck, the narration and the video guide:
+
+- the product is Bank Agent, the name in the app header (`app.name` in `apps/web/src/shared/i18n/locales/*.json`);
+- the team is La Brasil del 70, and each member's name and role on the close slide match the README team table (`pnpm check:content` fails when a name on the slide is missing from `script.md` or the README);
+- the systems are P (the proposed system), B0 (the menu and rules bot) and B1 (the naive LLM agent), and the metrics and workflow names are those of `docs/evaluation/results.md`; the degradation levels are L0 to L4 as in `docs/operations/degradation.md`.
+
+`scripts/check-content.ts` lists the known variant spellings it rejects, with the canonical form for each. A placeholder such as `[confirm ...]` in the locale file or the script is a warning while drafting and an error under `--strict`, so it cannot reach the submission PDF.
 
 ## Exporting the PDF
 
@@ -109,7 +130,7 @@ pnpm export:final        # fails while any metric is pending
 pnpm export              # draft PDF, pending boxes included
 ```
 
-The export has one page per click of every slide, which is what makes the build-ups readable on paper. Do not add `--per-slide`: it renders one page per slide and every scene would export at its arrival frame only. For the organizers' 4 to 6 slide limit, send the six main slides and drop the appendix pages, or keep the appendix as a clearly labeled extra.
+The export has one page per click of every slide (41 pages: 34 for the six main slides, 7 for the appendix), which is what makes the build-ups readable on paper. Do not add `--per-slide`: it renders one page per slide and every scene would export at its arrival frame only. For the organizers' 4 to 6 slide limit, send the six main slides and drop the appendix pages, or keep the appendix as a clearly labeled extra.
 
 Slidev does not reliably hot-reload frontmatter: after changing `clicks:` or `transition:` in `slides.md`, restart `pnpm dev`.
 
