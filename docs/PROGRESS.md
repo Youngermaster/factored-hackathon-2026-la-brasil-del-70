@@ -72,6 +72,16 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Administrative analytics dashboard (2026-10-03)
+
+Added an evaluator-only dashboard at `/console/dashboard` over the existing, versioned evaluation summary API.
+It provides run and system selection, six executive indicators, baseline differences, per-workflow performance,
+escalation and safety analysis, cross-system comparison, population slices, and explicit provenance. It does not
+introduce an `admin` role or claim production telemetry: the current source is the labeled offline and simulated
+evaluation workload. Spanish, Portuguese, and English copy, responsive light and dark layouts, empty/error/loading
+states, integration tests, accessibility coverage, and a field-by-field formula catalog are included. See
+[the dashboard documentation](frontend/admin-dashboard.md).
+
 ### ADR 0026: live human service (2026-10-01, implemented and verified)
 
 The human authorized the next ADR increment in a new branch, with existing PRs treated as coordination constraints. The isolated branch starts at remote main `2bcdf79`; the original checkout and its uncommitted changes are untouched. PR reference review and its authenticated-GitHub limitations are recorded in [the implementation plan](plans/adr-0026-live-agent.md).

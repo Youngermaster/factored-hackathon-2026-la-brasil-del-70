@@ -9,6 +9,7 @@ The product surfaces of phase 13, as self-contained features under `apps/web/src
 | `glass-box` | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace` | `CustomerChatPage`, `GlassBoxPage` (`/glass-box/:id`), `TraceLookupPage` (`/console/traces/:id`) |
 | `agent-inbox` | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail` | `AgentInboxPage`, `HandoffDetailPage`, `CreditApplicationsPage`, `CreditApplicationPage` |
 | `eval-report` | `EvaluationReport`, the interval helpers | `EvaluationPage` (`/console/evaluation`) |
+| `admin-dashboard` | `AdminDashboard` | `AdminDashboardPage` (`/console/dashboard`) |
 | `demo-guide` | `DemoGuide`, `SCENARIOS` | `DemoGuidePage` (`/demo`, demo mode only) |
 
 Linked selection between the chat and the glass box lives in `entities/turn-selection` (`TurnSelectionProvider`, `useTurnSelection`): the page provides it, both features read it, so neither feature depends on the other. Every page is a lazy route (`app/routes.tsx`), so the sign-in screen never downloads the console or the chat.
@@ -71,6 +72,9 @@ flowchart TD
     run --> tables["MetricTable per workflow, then the aggregate"]
     run --> breakdowns["Breakdowns: language, dialect, segment"]
     tables --> cells["RateCell: rate, n, Wilson 95% or zero-event bound, small-cell flag"]
+    dashboardPage["AdminDashboardPage"] --> dashboard["AdminDashboard<br/>run and system selectors"]
+    dashboard --> dashboardViews["KPIs, workflow bars, escalation quality,<br/>system comparison, population slices, provenance"]
+    dashboard -.->|reuses| reportData["useSummaries"]
     demoPage["DemoGuidePage"] --> guide["DemoGuide<br/>SCENARIOS (verified messages), CopyMessage"]
 ```
 
@@ -109,6 +113,9 @@ sequenceDiagram
 | `['api','credit-applications', ...]` | `useCreditApplications`, `useCreditApplication` | read only |
 | `['api','evaluation','summaries']` | `useSummaries` | read only |
 | `['api','evaluation','trace',id]` | `useStaffTrace` | read only |
+
+The administrative dashboard reuses `['api','evaluation','summaries']`; changing its run or system is local UI
+state and never starts another request. See [the field and formula catalog](admin-dashboard.md).
 
 A sign-in, sign-out, or lost session drops every cached record (phase 12 `replaceSession`), so nothing from one identity reaches the next.
 

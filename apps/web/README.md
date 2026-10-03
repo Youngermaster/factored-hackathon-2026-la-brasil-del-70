@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-The browser client for the banking agent: the customer chat, the transparency panel that shows rules, cited policies, tool calls, and verification per turn, the human agent inbox for structured handoffs, and a read-only evaluation view. Phase 01 provided the build, types, lint, boundaries, and tests; phase 12 added the design system, the app shell, the typed API layer, i18n, and sign-in; phase 13 added the conversation, glass box, agent inbox, evaluation view, demo guide, and About page ([`docs/frontend/features.md`](../../docs/frontend/features.md)).
+The browser client for the banking agent: the customer chat, the transparency panel that shows rules, cited policies, tool calls, and verification per turn, the human agent inbox for structured handoffs, the administrative analytics dashboard, and the detailed evaluation view. Phase 01 provided the build, types, lint, boundaries, and tests; phase 12 added the design system, the app shell, the typed API layer, i18n, and sign-in; phase 13 added the conversation, glass box, agent inbox, evaluation view, demo guide, and About page ([`docs/frontend/features.md`](../../docs/frontend/features.md)).
 
 Stack: Vite, React 19, TypeScript in strict mode (with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`), React Router 8, TanStack Query 5, Radix primitives (`radix-ui`), Tailwind CSS v4 with design tokens, Phosphor icons, i18next, react-hook-form with zod/mini, openapi-fetch over types from openapi-typescript, Vitest with jsdom, React Testing Library, MSW, and vitest-axe. Design rules: [`docs/design/DESIGN.md`](../../docs/design/DESIGN.md); components: [`docs/frontend/components.md`](../../docs/frontend/components.md); state: [`docs/frontend/state.md`](../../docs/frontend/state.md). Package manager: pnpm (version pinned by `packageManager`), Node 24.15 or later (`engines`, root `.nvmrc`).
 
@@ -54,7 +54,8 @@ Run from `apps/web` (or use the root Make targets):
 | `@/features/conversation`   | The `Conversation` compound (`Root`, `Header`, `Starters`, `Messages`, `HumanButton`, `Composer`) and `useConversation`                                      |
 | `@/features/glass-box`      | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace`                                                                               |
 | `@/features/agent-inbox`    | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail`                                                         |
-| `@/features/eval-report`    | `EvaluationReport` and the interval helpers (`proportion`, `wilson`, `zeroEventUpperBound`)                                                                  |
+| `@/features/eval-report`    | `EvaluationReport`, the published summary hook and types, run grouping, and interval helpers                                                                 |
+| `@/features/admin-dashboard` | The evaluator-only administrative analytics dashboard over versioned published runs                                                                          |
 | `@/features/demo-guide`     | `DemoGuide` and the verified `SCENARIOS`                                                                                                                     |
 | `@/entities/turn-selection` | `TurnSelectionProvider`, `useTurnSelection` (linked selection between the chat and the glass box)                                                            |
 

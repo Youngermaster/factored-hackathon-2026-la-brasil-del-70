@@ -132,7 +132,10 @@ describe.each(['light', 'dark'] as const)('product surfaces in the %s theme', (t
         HttpResponse.json({ conversation_id: 'conv-a', records: [staffTraceRecord()] }),
       ),
     );
-    const { router } = renderApp({ path: '/console/evaluation', theme });
+    const { router } = renderApp({ path: '/console/dashboard', theme });
+    await screen.findByText('Todavía no hay datos para el dashboard');
+    await expectAccessible();
+    await router.navigate('/console/evaluation');
     await screen.findByText('Todavía no hay resultados publicados');
     await expectAccessible();
     await router.navigate('/console/traces/conv-a');

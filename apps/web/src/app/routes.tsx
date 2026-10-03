@@ -107,6 +107,13 @@ export function createRoutes(services: AppServices): RouteObject[] {
               }),
             },
             {
+              path: 'dashboard',
+              lazy: async () => ({
+                Component: (await import('@/pages/dashboard/AdminDashboardPage'))
+                  .AdminDashboardPage,
+              }),
+            },
+            {
               path: 'evaluation',
               lazy: async () => ({
                 Component: (await import('@/pages/evaluation/EvaluationPage')).EvaluationPage,
