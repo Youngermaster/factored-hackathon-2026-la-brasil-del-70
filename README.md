@@ -167,7 +167,7 @@ La Brasil del 70:
 
 | Person | Role |
 |---|---|
-| Young | Technical lead: repository, core architecture, stack, agent integration |
+| Juan Young | Technical lead: repository, core architecture, stack, agent integration |
 | Miguel Correa | Project manager and AI engineer: project management, ADR and pull request drafting, alignment with the challenge criteria |
 | David Fonseca | Developer and analyst: dataset analysis |
 | Julián Valencia | Developer, analyst, and data engineer: relational dataset analysis, data extraction, schema requirements |

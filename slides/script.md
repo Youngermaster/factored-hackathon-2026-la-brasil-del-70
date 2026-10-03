@@ -108,7 +108,7 @@ The card block in Portuguese, with its step-up code; then a credit question answ
 
 [click 2] We cannot claim real data, a hosted model, reviewed labels or reviewed Portuguese yet. Next: the hosted rerun, the fixes measured on dev, a real identity provider, a compliance review.
 
-[click 3] We are La Brasil del 70: Young, Miguel Correa, David Fonseca and Julián Valencia.
+[click 3] We are La Brasil del 70: Juan Young, Miguel Correa, David Fonseca and Julián Valencia.
 
 [click 4] The model understands. Code decides. Evidence proves it.
 

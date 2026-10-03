@@ -21,7 +21,7 @@ Evaluation (simulated, offline, on the local model qwen2.5:7b-instruct; 304 held
 
 Where to start: README.md, then docs/submission/brief-traceability.md, which maps every requirement of the brief to code, tests, and evidence.
 
-Team: Young (technical lead), Miguel Correa, David Fonseca, Julián Valencia.
+Team: Juan Young (technical lead), Miguel Correa, David Fonseca, Julián Valencia.
 
 Thank you,
 <name>

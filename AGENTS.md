@@ -397,7 +397,7 @@ Rules:
 
 | Person | Role |
 |---|---|
-| Young | Technical lead: repository setup, core architecture, stack, agent integration, phase sessions |
+| Juan Young | Technical lead: repository setup, core architecture, stack, agent integration, phase sessions |
 | Miguel Correa | Project manager and AI engineer: project management, ADR and pull request drafting, alignment with the challenge criteria |
 | David Fonseca | Developer and analyst: dataset analysis at kickoff; further responsibilities to be agreed |
 | Julián Valencia | Developer, analyst, and data engineer: relational dataset analysis, data extraction, schema requirements |
