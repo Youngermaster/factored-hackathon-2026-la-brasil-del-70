@@ -6,13 +6,15 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 
 | Link | Where |
 |---|---|
-| Deployed demo | Pending: the host is being chosen; the URL goes here and in the submission email ([deploy guide](deploy/README.md)) |
-| Video pitch | Pending: recorded after the deployment ([shot list](slides/VIDEO.md)) |
+| Deployed demo | <https://bank-agent-yzaf9.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It calls the hosted model `gemini/gemini-3.1-flash-lite` ([deploy guide](deploy/README.md)) |
+| Video pitch | Pending: recorded against the deployed demo ([shot list](slides/VIDEO.md)) |
 | Slides | [slides/](slides/README.md) (Slidev; `pnpm export:final` builds the PDF) |
 | Demo guide for judges | `/demo` in the running app (demo mode), and [docs/demo/script.md](docs/demo/script.md) |
 | Evaluation results | [docs/evaluation/results.md](docs/evaluation/results.md) and [failures.md](docs/evaluation/failures.md) |
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
 | Limitations | [LIMITATIONS.md](LIMITATIONS.md) |
+
+**Deployment status (2026-10-03).** The demo runs commit `2d5763a` from the open pull request [Youngermaster/factored-hackathon-2026-la-brasil-del-70#27](https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70/pull/27), which stages the production secrets from Azure Key Vault. That branch starts from `main` as of 2026-09-30, so the deployed build does not include the live human service described below, `detect_escalation_signals@2`, or the phase 14c follow-up corrections listed under "Freshness" yet.
 
 Escalated customers can continue on the same conversation with an authenticated human service agent. The chat shows truthful waiting and joined states, persists both sides' messages across refreshes, and stays readable after the assigned agent closes it. The [live human-service guide](docs/workflows/human-service.md) includes a two-browser walkthrough; existing databases need `make db-upgrade`.
 
@@ -27,7 +29,7 @@ The organizer delivery (13 tables, 23,471,159 rows loaded under contracts; [qual
 | `dispute` | 19.1% | 43.6% | 435 s | 54.5% |
 | `credit` | 7.3% | 65.2% | 540 s | 39.1% |
 
-The contact reasons are coarse (six values), so three of the four mappings to workflows are assumptions, tested by pre-registered sensitivity scenarios ([scoring](docs/analysis/workflow-scores.md), [prioritization](docs/decisions/workflow-prioritization.md)). The 147,292 call transcripts hold 42 distinct customer texts, so routing learns from utterances the team wrote and labeled, not from transcripts. No complaint links to a transaction, which is why disputes confirm the transaction with the customer.
+The contact reasons are coarse (six values), so three of the four mappings to workflows are assumptions, tested by pre-registered sensitivity scenarios ([scoring](docs/analysis/workflow-scores.md), [prioritization](docs/decisions/workflow-prioritization.md)). The 147,292 served call transcripts with customer text hold 42 distinct customer texts, so routing learns from utterances the team wrote and labeled, not from transcripts. No complaint links to a transaction, which is why disputes confirm the transaction with the customer.
 
 **Scope decision.** The brief rewards depth over breadth. The team chose four workflows anyway and manages the risk by holding each to the same depth bar and evaluating each separately; the aggregate is never reported without the per-workflow numbers ([ADR 0020](docs/adr/0020-four-workflows-and-the-workflow-registry.md), [LIMITATIONS.md](LIMITATIONS.md)).
 
@@ -66,7 +68,7 @@ flowchart LR
     evals["Evaluation harness<br/>B0, B1, P on held-out scenarios"] -- "composition root" --> engine
 ```
 
-The backend is hexagonal (`domain` <- `ports` <- `policy` <- `application` <- `adapters` <- `api`, `bootstrap`), enforced by import-linter; the composition root is the only place that knows concrete adapters, so providers, models, and stores are settings. The [architecture overview](docs/architecture/overview.md) has the context, container, and component views and the sequence of one customer turn; the [workflow pages](docs/workflows/README.md) have each state machine.
+The backend is hexagonal (`domain` <- `ports` <- `policy` <- `application` <- `adapters` <- `api`, `bootstrap`), enforced by import-linter; the composition root is the only place that knows concrete adapters, so providers, models, and stores are settings. The learned router, resolver, and risk estimator load by setting; the defaults stay on the rule baselines (`keyword@1`, `rules@1`, `score_band@1`), because the learned components showed no clear gain over them on the dev comparison ([decision](docs/evaluation/results.md#decision-the-learned-router-resolver-and-risk-estimator-defaults-dev-evidence-only)). The [architecture overview](docs/architecture/overview.md) has the context, container, and component views and the sequence of one customer turn; the [workflow pages](docs/workflows/README.md) have each state machine.
 
 ## Evaluation headline
 
@@ -96,7 +98,13 @@ What the intervals support: P above B1 in every workflow; P above B0 in aggregat
 
 **Cost.** Measured: 0.00 USD per attempted case and per safe automated resolution, because the local model has a zero price (hardware and energy not counted). **Projected, not measured:** P's recorded tokens priced at the unverified `claude-sonnet-5` list price give 0.0052 USD per attempted case and 0.0076 USD per safe automated resolution in aggregate; per workflow (attempted / resolution) account inquiry 0.0044 / 0.0053, card support 0.0047 / 0.0065, dispute 0.0064 / 0.0118, credit 0.0053 / 0.0081 USD.
 
-**Freshness.** Since `6bc2e9d` the prompts, the policy pack, the price table, and the harness are unchanged; the engine gained telemetry, the degradation ladder, one clarification line (phase 15), the per-session eligibility assessment limit, and the agent credit moves (phase 16). The run was not repeated; `make eval-smoke` passes on the current code. A rerun with a hosted model is future work ([BACKLOG](docs/BACKLOG.md)).
+**Freshness.** Since `6bc2e9d` the policy pack and the price table are unchanged. Three other parts changed, and the run was not repeated:
+
+- **Prompts.** `detect_escalation_signals@2` is now the selected version. It separates stolen or cloned products and block requests from actual distress, the main cause of card support's unnecessary transfers. It has not been measured on dev or test yet.
+- **Engine.** Telemetry, the degradation ladder, and one clarification line (phase 15); the per-session eligibility assessment limit and the agent credit moves (phase 16); masking of instruction-like merchant text and record identifiers in replies and confirmations, and segmented case-id parsing (phase 14c follow-up); the live human service ([ADR 0026](docs/adr/0026-live-agent-joins-escalated-conversation.md)).
+- **Harness.** The account-data and income graders no longer raise the false positives described above, and the simulated customer's synthetic instructions are no longer redacted. The published counts stay as graded.
+
+`make eval-smoke` passes on the current code in CI. The deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured. A rerun on the current code, with the local or a hosted model, is future work ([BACKLOG](docs/BACKLOG.md)).
 
 ## Quickstart
 
@@ -154,8 +162,8 @@ Stated in full in [LIMITATIONS.md](LIMITATIONS.md). In short:
 
 - **Four workflows against a depth-over-breadth brief.** Each meets the same depth bar and is evaluated separately, but the per-workflow samples are small (76 cases each, 47 es and 29 pt), and in card support the system does not beat the menu baseline yet.
 - **Synthetic everything.** The organizer data is synthetic; the policy pack, the eligibility rules, and the credit catalog are the team's synthetic documents; the risk estimate is trained on one synthetic snapshot and is not a lending model.
-- **Evidence from a local 7B model.** Every model role in the evaluation ran on `qwen2.5:7b-instruct`; the scenarios and their labels are team-written and not yet reviewed by humans; the judge's agreement with human raters is pending; the Portuguese text has had no native review.
-- **Deployment work remaining.** One VM with Docker Compose for the event; managed secrets, high availability, a real identity provider and one-time-code channel, key management, and a compliance review are future work ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md)).
+- **Evidence from a local 7B model.** Every model role in the evaluation ran on `qwen2.5:7b-instruct`; the deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured; the scenarios and their labels are team-written and not yet reviewed by humans; the judge's agreement with human raters is pending; the Portuguese text has had no native review.
+- **Deployment work remaining.** One Azure VM with Docker Compose for the event ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md)); staging the secrets from Azure Key Vault is in review ([pull request 27](https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70/pull/27)). High availability, a real identity provider and one-time-code channel, key management, and a compliance review are future work.
 
 ## Data statement
 
