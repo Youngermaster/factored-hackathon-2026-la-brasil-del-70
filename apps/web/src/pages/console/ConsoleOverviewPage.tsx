@@ -8,10 +8,15 @@ interface Destination {
   readonly to: string;
   readonly icon: Icon;
   readonly title:
-    'layout.inbox' | 'layout.creditApplications' | 'layout.evaluation' | 'layout.traces';
+    | 'layout.inbox'
+    | 'layout.creditApplications'
+    | 'layout.dashboard'
+    | 'layout.evaluation'
+    | 'layout.traces';
   readonly body:
     | 'console.inboxBody'
     | 'console.applicationsBody'
+    | 'console.dashboardBody'
     | 'console.evaluationBody'
     | 'console.tracesBody';
 }
@@ -27,6 +32,12 @@ const AGENT: readonly Destination[] = [
 ];
 
 const EVALUATOR: readonly Destination[] = [
+  {
+    to: '/console/dashboard',
+    icon: ChartIcon,
+    title: 'layout.dashboard',
+    body: 'console.dashboardBody',
+  },
   {
     to: '/console/evaluation',
     icon: ChartIcon,

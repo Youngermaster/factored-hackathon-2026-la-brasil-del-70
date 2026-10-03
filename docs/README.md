@@ -53,6 +53,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [frontend/components.md](frontend/components.md) | The UI primitives and how to use them |
 | [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
 | [frontend/features.md](frontend/features.md) | The product features: composition diagrams, context boundaries, and TanStack Query data flow |
+| [frontend/admin-dashboard.md](frontend/admin-dashboard.md) | Administrative analytics: every field, formula, data source, access rule, and limitation |
 | [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 
 ## Architecture decision records
@@ -96,6 +97,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0033](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 | [adr/0034](adr/0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
 | [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
+| [adr/0036](adr/0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation |
 
 ## Exploratory data analysis
 
@@ -196,6 +198,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | Document | Purpose |
 |---|---|
 | [operations/observability.md](operations/observability.md) | Telemetry flow, the signal catalog, log retention, and how to read the trace of one conversation |
+| [operations/grafana-dashboard.md](operations/grafana-dashboard.md) | Grafana dashboards: every live field, PromQL formula, filter, access rule, and limitation |
 | [operations/degradation.md](operations/degradation.md) | The degradation ladder L0 to L4: triggers, behavior, flags, customer wording, and the chaos tests |
 | [operations/runbook.md](operations/runbook.md) | Each alert mapped to its symptom, diagnosis, and action |
 | [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |

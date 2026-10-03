@@ -41,6 +41,7 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 | [0033](0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
 | [0034](0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |
 | [0035](0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder | Accepted | 2026-09-29 |
+| [0036](0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation | Accepted | 2026-10-03 |
 
 ## Notes on status
 

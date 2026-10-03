@@ -1,6 +1,6 @@
 # Observability
 
-Every request and every turn can be followed from the customer's screen to the database statement and back: the response carries `X-Request-ID` and `X-Trace-Id`, the JSON log lines carry the request id, the trace id, and the span id, the turn's execution record stores the same trace id, and the trace in Jaeger holds one span per HTTP request, turn, state handler, router dispatch, policy evaluation, tool call, risk estimate, eligibility assessment, model call, and SQL statement. Metrics go to Prometheus and a provisioned Grafana dashboard; alert rules map to the [runbook](runbook.md).
+Every request and every turn can be followed from the customer's screen to the database statement and back: the response carries `X-Request-ID` and `X-Trace-Id`, the JSON log lines carry the request id, the trace id, and the span id, the turn's execution record stores the same trace id, and the trace in Jaeger holds one span per HTTP request, turn, state handler, router dispatch, policy evaluation, tool call, risk estimate, eligibility assessment, model call, and SQL statement. Metrics go to Prometheus and two provisioned [Grafana dashboards](grafana-dashboard.md); alert rules map to the [runbook](runbook.md).
 
 ## Telemetry flow
 
@@ -105,6 +105,10 @@ make up PROFILES=obs            # collector, Jaeger (16686), Prometheus (9090), 
 make api-obs                    # the API on :8000 exporting to the collector
 make load-test LOAD_USERS=10    # traffic from the four workflows (raise the rate limits first)
 ```
+
+Open the live executive analytics dashboard at `http://localhost:3000/d/bank-agent-executive` and the detailed
+reliability dashboard at `http://localhost:3000/d/bank-agent-overview`. The [Grafana field catalog](grafana-dashboard.md)
+documents every panel, formula, filter, source, access rule, and limitation.
 
 Verified in phase 15 on a local stack: traces with the full span tree and SQL spans in Jaeger, every catalog metric that the traffic exercised in Prometheus, the alert rules loaded (`/api/v1/rules`), and the dashboard provisioned and querying Prometheus through Grafana.
 
