@@ -280,12 +280,15 @@ def verify_seed(
     customers: Annotated[
         int, typer.Option("--customers", min=1, help="Reconcile this deterministic customer selection.")
     ] = 200,
+    check_values: Annotated[
+        bool, typer.Option("--check-values", help="Compare every mapped reference value, including money and dates.")
+    ] = False,
 ) -> None:
     """Read-only reconciliation of the selected gold rows and demo identities against PostgreSQL."""
     from bank_data.seed.command import verify
 
     try:
-        report = verify(_workspace(source, local_dir), customers=customers)
+        report = verify(_workspace(source, local_dir), customers=customers, check_values=check_values)
     except DataPlatformError as error:
         raise _fail(error) from None
     typer.echo(f"verified revision={report.revision} personas={report.personas}")

@@ -81,6 +81,7 @@ def verify(
     customers: int = DEFAULT_SEED_CUSTOMERS,
     personas_file: Path | None = None,
     settings: AppSettings | None = None,
+    check_values: bool = False,
 ) -> VerificationReport:
     """Recreate the deterministic selection and compare its rows to PostgreSQL without writing data."""
     gold_dir = workspace.dbt_target().gold_dir
@@ -105,7 +106,7 @@ def verify(
 
     async def _verify() -> VerificationReport:
         try:
-            return await verify_bundle(engine, selection, bundle)
+            return await verify_bundle(engine, selection, bundle, check_values=check_values)
         finally:
             await engine.dispose()
 

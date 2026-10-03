@@ -8,7 +8,7 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 |---|---|
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
 | Next phase | None. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
-| Blocked | None |
+| Blocked | Azure data VM: regional quota is 4 used of 4 vCPU; 6 required |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
 Pending human actions (the phase 09 prompt asks that phase 11 start after actions 21 and 25):
@@ -69,6 +69,16 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 46. **Submit (by 2026-10-05), in order** ([checklist](submission/SUBMISSION.md)): `make submission-check` on the commit to submit; choose the host and deploy (action 43; the model per action 45); smoke and CSP checks from a laptop; fill `deploy.url` in `slides/data/metrics.yml` and the README link; `cd slides && pnpm export:final`; record the video against the deployed URL after a fresh seed (`slides/VIDEO.md`, `docs/demo/script.md`); push `main` and make the repository public; send `docs/submission/email-draft.md` to `hackathon.admin@factored.ai`. Owner suggestion: Young (deploy, push, public), Miguel Correa (video narration, email).
 
 ## Phase log
+
+### Azure data pipeline (2026-10-03)
+
+Owner: Julian Valencia. Scope: `rg-la70-test`, `eastus2`, subscription `32847dfa-5fd4-4276-8bdf-243d72b35119`.
+
+- Added the versioned VM pipeline, private artifact storage, managed identity transfer, closed ingress, and production PostgreSQL roles. The runner stops before loading when contracts or dbt fail and refuses automatic reseeding of an active database.
+- Added strict reference-value reconciliation and corruption regressions. Prepared the sample locally and verified the actual production API composition for all four workflows in es and pt, plus cross-customer 404 and unchanged ingestion.
+- Azure storage `stla70238253ae46a02964` is provisioned with Shared Key and anonymous blob access disabled. Compute validation requires 6 regional vCPU; Azure still reports 4 used of 4. The automatic increase was rejected with `ResourceNotAvailableForOffer`; the human will request it through the portal.
+- Ten reconciliation tests and six orchestration/integrity tests passed. Local workflow verification passed after preparing the stored policy index, using independent clients, and using unambiguous language markers. The final `make check` rerun is pending.
+- No cloud pipeline execution is claimed. See [the execution record](data/azure-execution.md), [the plan](plans/azure-data-pipeline.md), and [ADR 0038](adr/0038-azure-vm-data-pipeline.md). Existing uncommitted card-support and local-loading work stays outside these commits.
 
 ### Phase 17: documentation completion and final audit (2026-09-30)
 
