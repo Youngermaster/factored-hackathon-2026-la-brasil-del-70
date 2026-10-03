@@ -25,6 +25,7 @@ finish() {
     result=$?
     trap - EXIT
     if [[ "$result" == 0 ]]; then status=succeeded; else status=failed; fi
+    printf '%s\n' "$status" > "$run_dir/status"
     if [[ -x "$root/venv/$revision/bin/python" ]]; then
         if ! "$root/venv/$revision/bin/python" deploy/azure-data/runtime.py evidence \
             "$run_dir" "$warehouse" "$revision" "$source_kind" "$status"; then
