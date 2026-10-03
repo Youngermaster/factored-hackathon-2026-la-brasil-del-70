@@ -194,7 +194,7 @@ pnpm install             # 5 s warm
 pnpm verify              # 4 s: types, then check:content; ends "ok content is consistent, 1 metric(s) pending"
 pnpm dev                 # http://localhost:3131 (presenter view at /#/presenter); leave it running
 pnpm check:fit           # second terminal, 2 s: "ok every scene fits the safe area at every cue, with no overlapping text"
-pnpm export              # draft PDF, 4 s warm: export/la-brasil-del-70-pitch.pdf (35 pages, gitignored)
+pnpm export              # draft PDF, 4 s warm: export/la-brasil-del-70-pitch.pdf (41 pages: 6 main slides and 3 appendix slides, one page per click; gitignored)
 ```
 
 The pending metric is `deploy.url`, filled after the deployment; until then `pnpm export:final` stops on purpose. The export prints a `Failed to patch FloatingVue` console error from Slidev's own client; it does not affect the PDF. `pnpm export` launches its own server, so it does not need `pnpm dev`.
@@ -248,7 +248,7 @@ Date: 2026-09-30. Started from `main` at `b1e1f7b` in a fresh clone, on the bran
 | 3 | Local model: `make llm-smoke` (with the three settings), `make api-local-llm`, all 32 guide conversations through the browser | Pass | llm-smoke 32 of 32 in 2 min 24 s; per turn p50 4.8 s, p95 7.7 s; one behavior difference (the card choice in Spanish), recorded in BACKLOG |
 | 4 | Evaluation: `make eval-smoke`; regenerate the published report without a model | Pass for `eval-smoke` and for `bank-eval publish` on the run directory (byte for byte); the committed cassettes alone cannot reproduce the published numbers | Replay: 214 misses, P 165/304 against 177/304, the same at `6bc2e9d`; documented in the methodology, a harness fix is in BACKLOG for a human decision |
 | 5 | Local production stack: `init-env`, `check`, `build`, `up`, `seed`, `make smoke`, `make csp-check`, two write flows in the browser through the model, then down with its volumes | Pass after fixes | `make smoke` and `make csp-check` could not take the local CA flags, and the CSP check timed out on a fresh seed's empty inbox; both fixed |
-| 6 | Slides: `pnpm install`, `pnpm verify`, `pnpm dev`, `pnpm check:fit`, draft `pnpm export` | Pass | 35-page PDF; 1 metric pending (`deploy.url`) by design |
+| 6 | Slides: `pnpm install`, `pnpm verify`, `pnpm dev`, `pnpm check:fit`, draft `pnpm export` | Pass | 35-page PDF at verification time (41 pages after the 2026-10-03 deck update); 1 metric pending (`deploy.url`) by design |
 | 7 | `make check` and `make submission-check` in the clone | Pass | At `dd03fba`: `make check` 8 min 12 s (2,870 unit, 1,489 integration with 3 skipped for the optional `ml` extra, 349 web tests, all 11 coverage gates); `make submission-check` 7 min 56 s, every gate `pass`, then the seven human steps |
 
 Commits on `e2e-verify`:
