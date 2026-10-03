@@ -257,43 +257,66 @@ evidence:
   cardSub: "card support, safe automated resolution:"
 
 close:
-  limitsTitle: What we cannot claim yet
-  l1: synthetic data
-  l1s: with generator artifacts
-  l2: our Portuguese
-  l2s: team-generated test text
-  l3: labels in review
-  l3s: humans have not checked them
-  l4: costs projected
-  l4s: from unverified assumptions
-  routeTitle: The route to operation
-  inPlace: in place
-  i1: bounded retries
-  i2: template fallback
-  i3: row-level security
-  i4: traces, alerts
-  i5: redaction
-  remaining: next
-  r1: hosted model
-  r2: cloud load test
-  r3: managed secrets
-  r4: real identity
-  r5: compliance
+  # arrive: the degradation ladder (docs/operations/degradation.md)
+  ladderTitle: When something fails, it steps down
+  lv0: normal
+  lv1: fallback model
+  lv2: template only
+  lv3: rule baselines
+  lv4: nothing done
+  why1: provider down
+  why2: budget spent
+  why3: model will not load
+  why4: database down
+  ladderPunch: "Writes *never fail open:* reported only after the read-back."
+  citeLadder: docs/operations/degradation.md  |  ADR 0035  |  services/api/tests/integration/chaos
+  # 1 defense in depth (docs/security/threat-model.md)
+  defenseTitle: Defense in depth, on one host
+  browser: browser
+  db: PostgreSQL
+  g0: Caddy TLS
+  g1: CSP
+  g2: cookies
+  g3: CSRF
+  g4: roles
+  g5: rate limits
+  g6: row-level security
+  g7: retention
+  host: "One host: Docker Compose behind Caddy, ready to deploy"
   deployed: deployed at
+  citeDefense: docs/security/threat-model.md  |  deploy/README.md  |  ADR 0019
+  # 2 limits and next steps (LIMITATIONS.md)
+  limitsTitle: What we cannot claim yet
+  l0: synthetic data
+  l0s: organizer data, our policy pack and eligibility rules
+  l1: a local open model
+  l1s: every model role ran on qwen2.5:7b-instruct
+  l2: labels not reviewed
+  l2s: scenarios and labels are team-written
+  l3: Portuguese not reviewed
+  l3s: no native reviewer yet
+  nextLbl: next
+  n0: rerun on a hosted model
+  n1: measure the 14c fixes on dev
+  n2: a real identity provider
+  n3: a compliance review
+  citeLimits: LIMITATIONS.md  |  docs/BACKLOG.md  |  docs/evaluation/failures.md
+  # 3 team: names and roles exactly as in the README team section
+  product: Bank Agent
   teamTitle: La Brasil del 70
-  m1: Miguel
-  m1r: project manager, developer
-  m2: Young
-  m2r: technical lead
+  m1: Young
+  m1r: technical lead
+  m2: Miguel Correa
+  m2r: project manager, AI engineer
   m3: David Fonseca
   m3r: developer, analyst
-  m4: Julian
-  m4r: developer, analyst
+  m4: Julián Valencia
+  m4r: developer, analyst, data engineer
+  # 4 the thesis
   c1: The model *understands.*
   c2: Code *decides.*
   c3: Evidence *proves it.*
   repo: github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70
-  cite: docs/data/data-card.md  |  docs/workflows/grounding.md  |  docs/architecture/llm-gateway.md
 
 appendix:
   eyebrow: appendix
