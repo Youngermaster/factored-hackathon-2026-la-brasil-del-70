@@ -197,6 +197,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | Document | Purpose |
 |---|---|
 | [operations/observability.md](operations/observability.md) | Telemetry flow, the signal catalog, log retention, and how to read the trace of one conversation |
+| [operations/grafana-dashboard.md](operations/grafana-dashboard.md) | Grafana dashboards: every live field, PromQL formula, filter, access rule, and limitation |
 | [operations/degradation.md](operations/degradation.md) | The degradation ladder L0 to L4: triggers, behavior, flags, customer wording, and the chaos tests |
 | [operations/runbook.md](operations/runbook.md) | Each alert mapped to its symptom, diagnosis, and action |
 | [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |

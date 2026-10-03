@@ -82,6 +82,14 @@ evaluation workload. Spanish, Portuguese, and English copy, responsive light and
 states, integration tests, accessibility coverage, and a field-by-field formula catalog are included. See
 [the dashboard documentation](frontend/admin-dashboard.md).
 
+Added a separate provisioned Grafana dashboard, `bank-agent-executive`, for live administrative analytics over the
+existing OpenTelemetry and Prometheus pipeline. It provides workflow and language filters, six summary indicators,
+demand and outcome trends, escalation and safety analysis, tool and model-gateway activity, and HTTP health. The
+existing 30-panel reliability dashboard remains available for deeper diagnosis. Live telemetry stays separate from
+the offline evaluation UI so resolved turns are not mislabeled as safe automated resolutions. Every Grafana field,
+formula, access rule, privacy boundary, and limitation is documented in
+[the Grafana dashboard guide](operations/grafana-dashboard.md).
+
 ### ADR 0026: live human service (2026-10-01, implemented and verified)
 
 The human authorized the next ADR increment in a new branch, with existing PRs treated as coordination constraints. The isolated branch starts at remote main `2bcdf79`; the original checkout and its uncommitted changes are untouched. PR reference review and its authenticated-GitHub limitations are recorded in [the implementation plan](plans/adr-0026-live-agent.md).

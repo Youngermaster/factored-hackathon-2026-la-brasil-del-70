@@ -178,7 +178,7 @@ The smoke test checks the certificate (valid for the host, at least 7 days left)
 | Health, degradation level, budget use | `curl -s https://demo.your-domain.org/health/details` |
 | Run the retention purge now | `deploy/prod.sh purge` |
 | Telemetry | set `OTEL_ENABLED=true`, then `OBS=1 deploy/prod.sh up` |
-| Grafana and the Jaeger UI | from your laptop: `ssh -L 3000:127.0.0.1:3000 -L 16686:127.0.0.1:16686 ubuntu@<static-ip>`, then `http://localhost:3000` (user `admin`, `GRAFANA_ADMIN_PASSWORD`) and `http://localhost:16686` |
+| Grafana and the Jaeger UI | from your laptop: `ssh -L 3000:127.0.0.1:3000 -L 16686:127.0.0.1:16686 ubuntu@<static-ip>`, then `http://localhost:3000/d/bank-agent-executive` for live administrative analytics, `http://localhost:3000/d/bank-agent-overview` for operations (user `admin`, `GRAFANA_ADMIN_PASSWORD`), and `http://localhost:16686` for traces |
 | Stop without losing data | `deploy/prod.sh down` |
 
 The alerts and what to do for each are in the [runbook](../docs/operations/runbook.md), which also covers the deployment operations below.

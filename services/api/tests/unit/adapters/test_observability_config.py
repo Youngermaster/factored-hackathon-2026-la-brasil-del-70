@@ -10,7 +10,7 @@ import yaml
 from bank_agent.adapters.telemetry.catalog import CATALOG, Kind
 
 OBSERVABILITY = Path(__file__).resolve().parents[5] / "deploy" / "observability"
-DASHBOARD = OBSERVABILITY / "grafana" / "provisioning" / "dashboards" / "bank-agent.json"
+DASHBOARDS = OBSERVABILITY / "grafana" / "provisioning" / "dashboards"
 EXTERNAL = ("http_server_",)
 """Metrics from the OpenTelemetry FastAPI instrumentation, not from the catalog."""
 
@@ -45,14 +45,18 @@ def alert_expressions() -> list[str]:
 
 
 def dashboard_expressions() -> list[str]:
-    dashboard = json.loads(DASHBOARD.read_text(encoding="utf-8"))
-    return [target["expr"] for panel in dashboard["panels"] for target in panel.get("targets", [])]
+    expressions: list[str] = []
+    for path in sorted(DASHBOARDS.glob("*.json")):
+        dashboard = json.loads(path.read_text(encoding="utf-8"))
+        expressions.extend(target["expr"] for panel in dashboard["panels"] for target in panel.get("targets", []))
+    return expressions
 
 
 LABELS = {
     "bank_workflow_from", "bank_llm_budget_cap", "bank_intervention", "bank_escalation_reason", "bank_tool_status",
     "bank_tool", "bank_outcome", "bank_detector", "bank_credit_product", "bank_eligibility_outcome", "bank_prompt_id",
-    "bank_rate_class", "bank_rate_key", "gen_ai_request_model", "gen_ai_response_model", "gen_ai_token_type",
+    "bank_rate_class", "bank_rate_key", "bank_language", "gen_ai_request_model", "gen_ai_response_model",
+    "gen_ai_token_type",
 }  # fmt: skip
 
 
