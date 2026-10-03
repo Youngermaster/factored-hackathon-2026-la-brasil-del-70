@@ -9,6 +9,10 @@
  *   5. script: every slide has a narration section; total spoken duration at
  *      150 words per minute sits inside the declared target
  *   6. writing: no em dashes in anything shown or spoken
+ *   7. naming: no known variant spelling of the product, team, systems,
+ *      workflows, metrics or levels; team names identical on the close slide,
+ *      in script.md and in the README; placeholders fail under --strict
+ *   8. intervals and fractions agree with the values they describe
  *
  *   pnpm check:content            report, fail on errors
  *   pnpm check:content --strict   also fail while any metric is pending
@@ -166,6 +170,67 @@ for (const f of prose.filter((p) => existsSync(join(ROOT, p)))) {
   })
 }
 if (!dashes) ok(`no em dashes in ${prose.length} prose files`)
+
+// ── 7. naming: one spelling for the product, team, systems, workflows, metrics
+console.log('\nnaming')
+const e3 = errors
+// Spellings that drifted from docs/evaluation, the app, or the README. The
+// right-hand side is the canonical form; README.md explains the rule.
+const BANNED: [RegExp, string][] = [
+  [/\bJulian\b/, 'Julián (with the accent, as in the README team section)'],
+  [/\bBank agent\b|\bBankAgent\b|\bbank-agent app\b/, 'Bank Agent (the name in the app header, apps/web locale app.name)'],
+  [/(?<!La )\bBrasil del 70\b/, 'La Brasil del 70'],
+  [/\bunneeded\b/i, 'unnecessary transfers'],
+  [/\b(missed|unnecessary) escalations?\b/i, 'missed or unnecessary transfers (docs/evaluation)'],
+  [/\b(keyword|rule) menu\b|\bmenu bot\b/i, 'the menu and rules bot (B0)'],
+  [/\bnaive agent\b/i, 'the naive LLM agent (B1)'],
+  [/\bsafe (automatic|resolution rate)\b|\bautomated safe resolution\b/i, 'safe automated resolution'],
+  [/\bfirst-contact resolution\b/i, 'first contact resolution'],
+  [/\baccounts and payments\b/i, 'account inquiry (the workflow name in docs/evaluation)'],
+  [/\blevel [0-4]\b/i, 'L0 to L4 (docs/operations/degradation.md)'],
+]
+const named = ['slides.md', 'locales/en.yml', 'script.md', 'VIDEO.md', 'README.md']
+for (const f of named.filter((p) => existsSync(join(ROOT, p)))) {
+  read(f).split('\n').forEach((line, i) => {
+    for (const [re, want] of BANNED) if (re.test(line)) fail(`${f}:${i + 1} "${line.match(re)?.[0]}": write ${want}`)
+  })
+}
+// the team: each name on the close slide appears verbatim in the narration and the repository README
+const team = strings.close ?? {}
+const readme = existsSync(join(REPO, 'README.md')) ? readFileSync(join(REPO, 'README.md'), 'utf8') : ''
+const members = Object.keys(team).filter((k) => /^m\d+$/.test(k)).map((k) => String(team[k]))
+for (const name of members) {
+  if (!script.includes(name)) fail(`team member "${name}" (close slide) is not named in script.md`)
+  if (!readme.includes(`| ${name} |`)) fail(`team member "${name}" (close slide) is not in the README team table`)
+}
+// placeholders: allowed while drafting, never in the submission build
+const PLACEHOLDER = /\[(confirm|placeholder)[^\]]*\]|\bTBD\b|\bTODO\b/i
+for (const f of ['locales/en.yml', 'script.md']) {
+  read(f).split('\n').forEach((line, i) => {
+    if (!PLACEHOLDER.test(line)) return
+    if (strict) fail(`${f}:${i + 1} still holds a placeholder: ${line.trim()}`)
+    else warn(`${f}:${i + 1} holds a placeholder (fails under --strict): ${line.trim()}`)
+  })
+}
+if (errors === e3) ok(`${BANNED.length} known variant spellings absent; ${members.length} team names match script.md and the README`)
+
+// ── 8. intervals and fractions agree with their values ───────────────────
+console.log('\nintervals and fractions')
+const e4 = errors
+type Rich = Entry & { lo?: number; hi?: number; of?: number }
+for (const [k, raw] of Object.entries(metrics)) {
+  const e = raw as Rich
+  if (typeof e.value !== 'number') continue
+  const frac = e.display?.match(/^(\d+)\/(\d+)$/)
+  if (frac && e.of !== undefined && (Number(frac[1]) !== e.value || Number(frac[2]) !== e.of)) fail(`${k}: display ${e.display} does not match ${e.value} of ${e.of}`)
+  if (frac && e.of === undefined && Math.abs((Number(frac[1]) / Number(frac[2])) * 100 - e.value) > 0.1) fail(`${k}: display ${e.display} does not match value ${e.value}`)
+  if (e.of !== undefined && e.value > e.of) fail(`${k}: value ${e.value} exceeds its denominator ${e.of}`)
+  if (e.lo !== undefined || e.hi !== undefined) {
+    const rate = e.of ? (e.value / e.of) * 100 : e.value
+    if (e.lo === undefined || e.hi === undefined || e.lo > rate + 0.5 || e.hi < rate - 0.5) fail(`${k}: interval ${e.lo} to ${e.hi} does not contain ${rate.toFixed(1)}`)
+  }
+}
+if (errors === e4) ok('every interval contains its estimate; every fraction matches its value')
 
 console.log('')
 if (errors) {
