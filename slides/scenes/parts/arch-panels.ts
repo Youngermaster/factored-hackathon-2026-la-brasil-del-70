@@ -45,10 +45,22 @@ export function panels({ t, L, M, K }: SceneEnv) {
         K.text(L(`d${i + 1}`), PX + i * 12 + 16, 424 + i * 42, { size: 22, weight: 600, fam: 'mono', color: C.bg })
       })
     }
-    packet(K, [{ x: PX + 420, y: 390 }, { x: PX + 420 - 7 * 12, y: 740 }], seg(t, 6.5, 7.3), C.bg, 9)
-    let x = PX
-    for (let i = 1; i <= 3; i++) x += inkChip(L(`prov${i}`), x, 750, seg(t, 7.0 + i * 0.1, 7.4 + i * 0.1)) + 14
-    note(L('p2c'), 850, 7.6)
+    // the call lands on the provider the settings name: local Ollama today, a hosted model by configuration
+    packet(K, [{ x: PX + 420, y: 390 }, { x: PX + 420 - 7 * 12, y: 744 }, { x: PX + 110, y: 790 }], seg(t, 6.5, 7.4), C.bg, 9)
+    K.fade(outCubic(seg(t, 6.9, 7.2)), () => {
+      K.fillRR(PX, 756, 220, 84, 10, C.blue)
+      K.text(L('prov1'), PX + 20, 792, { size: 26, weight: 700, color: C.bg })
+      K.text(L('prov1s'), PX + 20, 824, { size: 22, weight: 500, fam: 'mono', color: C.bg })
+    })
+    K.fade(outCubic(seg(t, 7.2, 7.5)), () => {
+      K.ctx.save()
+      K.ctx.setLineDash([8, 7])
+      K.strokeRR(PX + 240, 756, 220, 84, 10, C.bg, 2)
+      K.ctx.restore()
+      K.text(L('prov2'), PX + 260, 792, { size: 26, weight: 600, color: C.bg })
+      K.text(L('prov2s'), PX + 260, 824, { size: 22, weight: 500, fam: 'mono', color: C.inkDim })
+    })
+    note(L('p2c'), 900, 7.6)
   })
 
   // 3 grounding verifier: one draft passes, one is replaced by the template

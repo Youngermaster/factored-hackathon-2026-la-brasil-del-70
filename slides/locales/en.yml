@@ -12,7 +12,7 @@
 # and a value starting with * or & must be quoted.
 
 hook:
-  eyebrow: La Brasil del 70  |  Factored AI & Data Hackathon 2026
+  eyebrow: Bank Agent  |  La Brasil del 70  |  Factored AI & Data Hackathon 2026
   rows: rows of synthetic bank data, ingested under contracts
   rowsSub: tables  |  Mexico, Colombia, Argentina
   shareTitle: What customers contact the bank for
@@ -116,9 +116,10 @@ arch:
   d6: circuit breaker
   d7: bounded retry
   d8: timeout
-  prov1: fake
-  prov2: cassette
-  prov3: litellm
+  prov1: local Ollama
+  prov1s: today
+  prov2: hosted model
+  prov2s: by setting
   p2c: The provider is a setting.
   p3h: Grounding verifier
   draftOk: 30 days
