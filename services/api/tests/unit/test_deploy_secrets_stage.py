@@ -1,4 +1,4 @@
-"""deploy/secrets_stage.py stages Key Vault or env-file secrets as owner-only files, and never shows a value (ADR 0036).
+"""deploy/secrets_stage.py stages Key Vault or env-file secrets as owner-only files, and never shows a value (ADR 0037).
 
 The Key Vault source runs against a scripted HTTP function, so these tests make no network call.
 """
@@ -310,3 +310,92 @@ def test_no_value_ever_reaches_the_output(tmp_path: Path, capsys: pytest.Capture
     assert f"staged {expected_files} files from env-file" in output.err
     for value in values.values():
         assert value not in output.out + output.err
+
+
+def test_requests_never_follow_a_redirect(monkeypatch: pytest.MonkeyPatch) -> None:
+    """urllib replays the Authorization header on a redirect, so the bearer token could reach another host."""
+    handlers: list[object] = []
+
+    class Opener:
+        def open(self, request: object, timeout: float) -> object:
+            raise stager.urllib.error.HTTPError("https://kv.example", 302, "Found", {}, None)
+
+    def build_opener(*given: object) -> Opener:
+        handlers.extend(given)
+        return Opener()
+
+    monkeypatch.setattr(stager.urllib.request, "build_opener", build_opener)
+
+    status, body = stager.http_get("https://kv-bank-agent.vault.azure.net/secrets/csrf-secret", {})
+
+    assert (status, body) == (302, b"")
+    refusing = [handler for handler in handlers if isinstance(handler, stager._NoRedirect)]
+    assert len(refusing) == 1
+    assert refusing[0].redirect_request() is None
+
+
+def test_a_redirect_from_the_vault_stops_the_run_by_status() -> None:
+    azure = FakeAzure({}, status=302)
+
+    with pytest.raises(stager.StageError) as raised:
+        stager.collect(stager.KeyVaultSource("kv-bank-agent", get=azure, sleep=lambda _: None))
+
+    assert str(raised.value) == "Key Vault answered HTTP 302 for secret postgres-superuser-password"
+
+
+def test_a_network_error_reaching_the_vault_is_named_without_a_traceback() -> None:
+    def get(url: str, headers: Mapping[str, str]) -> tuple[int, bytes]:
+        if url == stager.MANAGED_IDENTITY_URL:
+            return 200, json.dumps({"access_token": "token-for-test"}).encode()
+        raise TimeoutError("timed out")
+
+    with pytest.raises(stager.StageError) as raised:
+        stager.collect(stager.KeyVaultSource("kv-bank-agent", get=get, sleep=lambda _: None))
+
+    assert str(raised.value) == ("Key Vault could not be reached for secret postgres-superuser-password (TimeoutError)")
+
+
+def test_a_symbolic_link_destination_is_refused(tmp_path: Path) -> None:
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir(mode=0o755)
+    link = tmp_path / "secrets"
+    link.symlink_to(elsewhere, target_is_directory=True)
+
+    with pytest.raises(stager.StageError, match="symbolic link"):
+        stager.stage(_values(), link, chown=False)
+
+    assert stat.S_IMODE(elsewhere.stat().st_mode) == 0o755
+    assert not list(elsewhere.iterdir())
+
+
+def test_a_symbolic_link_consumer_directory_is_refused(tmp_path: Path) -> None:
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir(mode=0o755)
+    dest = tmp_path / "secrets"
+    dest.mkdir()
+    (dest / "postgres").symlink_to(elsewhere, target_is_directory=True)
+    values = _values() | {secret.variable: "" for secret in OPTIONAL}
+
+    with pytest.raises(stager.StageError, match="symbolic link"):
+        stager.stage(values, dest, chown=False)
+
+    assert not list(elsewhere.iterdir())
+    assert stat.S_IMODE(elsewhere.stat().st_mode) == 0o755
+
+
+def test_a_relative_destination_is_refused(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    exit_code = stager.main(
+        [
+            "stage",
+            "--source",
+            "env-file",
+            "--env-file",
+            str(_env_file(tmp_path / "env", _values())),
+            "--dest",
+            "relative/secrets",
+            "--no-chown",
+        ]
+    )
+
+    assert exit_code == 1
+    assert "the destination must be an absolute path" in capsys.readouterr().err

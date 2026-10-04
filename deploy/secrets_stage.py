@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage the production stack's secrets as files that Compose mounts into each service (ADR 0036).
+"""Stage the production stack's secrets as files that Compose mounts into each service (ADR 0037).
 
 Standard library only, so it runs with the VM's own python3 before any image exists.
 
@@ -85,9 +85,19 @@ def say(message: str) -> None:
     print(f"secrets-stage: {message}", file=sys.stderr)
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Refuse every redirect: urllib would otherwise replay the ``Authorization`` header to whatever host it names."""
+
+    def redirect_request(self, *args: object, **kwargs: object) -> None:
+        return None
+
+
 def http_get(url: str, headers: Mapping[str, str]) -> tuple[int, bytes]:
-    """GET with a 10-second timeout; the metadata service is reached without any proxy, as Azure requires."""
-    handlers: list[urllib.request.BaseHandler] = []
+    """GET with a 10-second timeout and no redirects (a 3xx answer is a failure for the callers).
+
+    The metadata service is reached without any proxy, as Azure requires.
+    """
+    handlers: list[urllib.request.BaseHandler] = [_NoRedirect()]
     if url.startswith("http://169.254.169.254/"):
         handlers.append(urllib.request.ProxyHandler({}))
     opener = urllib.request.build_opener(*handlers)
@@ -158,7 +168,14 @@ class KeyVaultSource:
             f"https://{self._vault}.vault.azure.net/secrets/{quote(secret.vault_name)}"
             f"?api-version={KEY_VAULT_API_VERSION}"
         )
-        status, body = self._get(url, {"Authorization": self._bearer()})
+        try:
+            status, body = self._get(url, {"Authorization": self._bearer()})
+        except OSError as error:
+            # Name the secret and the error class only: the message of a network error never carries a value, but the
+            # traceback of an unhandled one would end the boot unit with a stack instead of a diagnosis.
+            raise StageError(
+                f"Key Vault could not be reached for secret {secret.vault_name} ({type(error).__name__})"
+            ) from error
         if status == 404:
             return None
         if status == 403 and not secret.required:
@@ -203,15 +220,26 @@ def _write(path: Path, value: str, owner: tuple[int, int] | None) -> None:
     temporary.replace(path)
 
 
+def _private_directory(path: Path, *, parents: bool = False) -> None:
+    """Create ``path`` (mode 0711) or reuse it, refusing a symbolic link: as root, ``chmod`` and the writes below would
+    follow one to any directory on the host."""
+    if path.is_symlink():
+        raise StageError(f"{path} is a symbolic link; the secrets are staged only into a real directory")
+    path.mkdir(parents=parents, exist_ok=True)
+    if not stat.S_ISDIR(path.lstat().st_mode):
+        raise StageError(f"{path} is not a directory")
+    path.chmod(DIRECTORY_MODE)
+
+
 def stage(values: Mapping[str, str], dest: Path, *, chown: bool) -> list[Path]:
-    dest.mkdir(parents=True, exist_ok=True)
-    dest.chmod(DIRECTORY_MODE)
+    if not dest.is_absolute():
+        raise StageError("the destination must be an absolute path")
+    _private_directory(dest, parents=True)
     written: list[Path] = []
     for secret in SECRETS:
         for consumer in secret.consumers:
             directory = dest / consumer
-            directory.mkdir(exist_ok=True)
-            directory.chmod(DIRECTORY_MODE)
+            _private_directory(directory)
             target = directory / secret.variable
             _write(target, values[secret.variable], CONSUMERS[consumer] if chown else None)
             written.append(target)
