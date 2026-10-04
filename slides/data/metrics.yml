@@ -130,7 +130,7 @@ data.schema_events: {value: 0, display: "0", kind: offline, source: docs/data/qu
 ops.load_tps: {value: 27.4, display: "27.4", kind: simulation, source: docs/operations/capacity.md, note: "turns per second on the production stack, one laptop, fake model, 2 workers at 1.5 CPUs"}
 ops.load_users: {value: 50, display: "50", kind: simulation, source: docs/operations/capacity.md, note: "simulated customers, 0 errors"}
 ops.load_p95: {value: 250, display: "250 ms", kind: simulation, source: docs/operations/capacity.md}
-deploy.url: {value: "https://bank-agent-yzaf9.westus2.cloudapp.azure.com", display: "bank-agent-yzaf9.westus2.cloudapp.azure.com", kind: offline, source: README.md, note: "one Azure VM, demo mode, hosted gemini-3.1-flash-lite; the deployed build is PR 27 (2d5763a), older than main"}
+deploy.url: {value: "https://la-brasil-del-70.westus2.cloudapp.azure.com", display: "la-brasil-del-70.westus2.cloudapp.azure.com", kind: offline, source: README.md, note: "one Azure VM, demo mode, the current main released by the deploy workflow; no hosted model configured yet"}
 
 # -- learned components against their baselines (phases 10 to 13, 14b) -------
 # Component metrics on each model's held-out test split; the end-to-end pair is

@@ -8,7 +8,7 @@ The timed shot list for the video pitch: what is on screen, the exact clicks and
 
 ## Which stack to record (decision for the team)
 
-The deployed demo (<https://bank-agent-yzaf9.westus2.cloudapp.azure.com>, one Azure VM, hosted `gemini/gemini-3.1-flash-lite`) runs pull request 27 (commit `2d5763a`, branched from `main` on 2026-09-30). It predates the guardrail fixes on `main` (`8114aeb`, `f094b51`, recorded in `fe695dc`): on the deployed build "¿Quién es mejor CR7 o Messi?" does not get the scope abstention, and the live human service and `detect_escalation_signals@2` are missing too.
+The deployed demo (<https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Azure VM) runs the current `main` through the deploy workflow, so the guardrail fixes and the live human service are on it; it has no hosted model configured yet (deterministic paths). Record on it after a fresh seed, or on a local stack with the same commit; add a hosted key to Key Vault first if the video should show model calls in the glass box.
 
 - **Recommended: record every live segment on one local stack running current `main`**, with the hosted model and the observability profile on. One stack gives the fixed guardrail replies, the Jaeger trace, and the Grafana panels for the same conversations. Commands in "Setup" below.
 - **Alternative: the team redeploys `main` first** (`deploy/prod.sh update`, then `deploy/prod.sh seed` on a fresh volume, as in [deploy/README.md](../../deploy/README.md)) and records the chat segments against the deployed URL. The backend segment still comes from a local stack or an SSH tunnel to the server's loopback Grafana and Jaeger (`OBS=1 deploy/prod.sh up`).
