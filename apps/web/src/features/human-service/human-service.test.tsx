@@ -178,7 +178,7 @@ describe('the persisted human exchange', () => {
       ),
     );
     const app = renderApp();
-    await screen.findByText(/cinco chats/i);
+    await screen.findByText(/límite de chats nuevos/i);
     expect(currentPath(app.router)).toBe('/');
   });
 

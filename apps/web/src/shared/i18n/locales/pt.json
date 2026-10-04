@@ -1152,6 +1152,6 @@
     "assignedElsewhere": "Somente o atendente que assumiu este caso pode ler e responder às mensagens.",
     "replyLabel": "Sua resposta ao cliente",
     "replySend": "Enviar ao cliente",
-    "creationLimit": "Você já criou cinco chats nos últimos 60 minutos. Continue nos chats existentes ou aguarde uma vaga."
+    "creationLimit": "Você atingiu o limite de novos chats por enquanto. Continue em um chat existente ou tente novamente mais tarde."
   }
 }

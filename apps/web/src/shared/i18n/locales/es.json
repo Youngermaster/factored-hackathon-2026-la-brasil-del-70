@@ -1152,6 +1152,6 @@
     "assignedElsewhere": "Solo el agente que tomó este caso puede leer y responder los mensajes.",
     "replyLabel": "Tu respuesta al cliente",
     "replySend": "Enviar al cliente",
-    "creationLimit": "Ya creaste cinco chats en los últimos 60 minutos. Puedes continuar en los chats existentes o esperar a que se libere un cupo."
+    "creationLimit": "Alcanzaste el límite de chats nuevos por ahora. Puedes continuar en un chat existente o intentarlo más tarde."
   }
 }
