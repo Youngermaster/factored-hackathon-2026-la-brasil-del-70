@@ -4,6 +4,7 @@ from types import TracebackType
 from typing import Self
 
 import structlog
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncTransaction
 
 from bank_agent.adapters.persistence.postgres.database import (
@@ -124,7 +125,16 @@ class PostgresUnitOfWork:
         if self._connection is not None and self._tx is not None:
             self._transaction = await self._connection.begin()
             await set_context(self._connection, role_of(self._context), self._context.customer_id)
+            await self._set_staff_context()
             self._tx.conflicted = False
+
+    async def _set_staff_context(self) -> None:
+        """Scope migration 0014's claim policies to the trusted session's staff member."""
+        if self._connection is not None:
+            await self._connection.execute(
+                text("SELECT set_config('app.staff_id', :staff, true)"),
+                {"staff": self._context.staff_id or ""},
+            )
 
     async def commit(self) -> None:
         tx = self._open()
@@ -151,6 +161,7 @@ class PostgresUnitOfWork:
             self._connection = await self._engine.connect()
             self._transaction = await self._connection.begin()
             await set_context(self._connection, role_of(self._context), self._context.customer_id)
+            await self._set_staff_context()
         except Exception as error:
             await self._close_quietly()
             if is_unavailable(error):

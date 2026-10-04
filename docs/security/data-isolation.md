@@ -30,7 +30,7 @@ flowchart LR
 
 ## Database contexts
 
-The unit of work runs `select set_config('app.role', $1, true), set_config('app.customer_id', $2, true), set_config('lock_timeout', '2s', true)` as its first statement. The `true` makes both settings local to the transaction, so a pooled connection never carries a previous request's context. Commit and rollback begin a new transaction with the same context.
+The unit of work runs `select set_config('app.role', $1, true), set_config('app.customer_id', $2, true), set_config('lock_timeout', '2s', true)` as its first statement. Before exposing repositories it also sets `app.staff_id` from the trusted staff session, or an empty string for a customer. The `true` makes these settings local to the transaction, so a pooled connection never carries a previous request's context. Commit and rollback begin a new transaction with the same role, customer, and staff context.
 
 | `app.role` | Set by | Customer |
 |---|---|---|
@@ -55,6 +55,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | `action_idempotency`, `conversations`, `turns` | `OWN` | none | none | none | none |
 | `execution_records` | `OWN` | none | read all | none | none |
 | `handoffs` | read and insert `OWN` | read all, update the lifecycle | read all | none | none |
+| `human_messages` (migration `0014`) | read `OWN`; insert own user messages for an open or claimed matching handoff | read messages of handoffs claimed by this staff member; insert agent messages while that claim is active | none | none | none |
 | `audit_events` | insert `OWN` | insert (no customer) | read all, insert (no customer) | insert (no customer) | none |
 | `identity_directory`, `staff_members`, `sessions`, `otp_challenges`, `trust_events` | none | none | none | all | directory and staff only |
 
@@ -65,6 +66,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 - **Composite foreign keys**: a transaction references `(product_id, customer_id)`, a dispute case `(transaction_id, customer_id)` and `(product_id, customer_id)`, a turn `(conversation_id, customer_id)`, so a record can never point at another customer's record.
 - **Append-only**: `execution_records`, `audit_events`, and `trust_events` have no UPDATE, DELETE, or TRUNCATE grant and a trigger that raises on update, delete, or truncate for every role, the owner included.
 - **Immutable handoff documents**: a trigger refuses any change to a handoff's document, customer, or digest; only the lifecycle columns change.
+- **Human service schema compatibility**: migration `0014` is copied unchanged from merged `main` (`8ac625afa4d8`). It grants the application only SELECT and INSERT on `human_messages`, forces RLS, and guards mutations with append-only triggers. Resolving a claimed handoff closes its linked conversation only in the assigned agent's context. The data deployment includes these existing schema rules without adding a human service API or changing the deployed application.
 - **Documents agree with their columns**: check constraints tie each JSONB document to its scalar columns (id, customer, status, version).
 - **Credit lifecycle**: `credit_applications.status` admits only `submitted`, `under_human_review`, `withdrawn`, and `closed`; there is no approved or declined status.
 - **Audit replay check**: `app.audit_event_digest(event_id)` (SECURITY DEFINER, EXECUTE granted to `bank_app` only) returns the stored digest of one event, never its document, so a context that may not read audit events can still tell an identical replay from a conflicting one. It reads through the owner's `owner_replay_check` policy, verified under the non-superuser production owner.
@@ -84,6 +86,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | `eval` is reachable only by `bank_evaluator`, which cannot read customers | `test_schema_guards.py` |
 | Every read tool is scoped by the session; another customer's product, payment, case, or application is not found | `services/api/tests/contracts/test_read_tools_contract.py` |
 | The application role owns nothing and has no privileges beyond data access | `services/api/tests/integration/test_database_roles.py` |
+| Staff context is cleared outside transactions and reapplied after commit and rollback; claimed resolution closes the matching conversation; human messages enforce RLS and restricted grants | `services/api/tests/integration/test_data_schema_compatibility.py` |
 | Under the production roles (a non-superuser owner): no service role has superuser powers, the owner owns every table, forced RLS binds the owner outside its seed context, the seed runs and repeats, the audit replay check reads digests, the API and the shared rate limits work, and the purge deletes only what it should | `services/api/tests/integration/test_production_roles.py` |
 | The purge's boundaries, and that the application role and the owner outside the retention context cannot delete append-only rows | `services/api/tests/integration/api/test_retention_purge.py` |
 | Agents move reviewable credit intakes to review or closed only | `services/api/tests/integration/test_row_level_security.py`, `services/api/tests/contracts/test_credit_application_contract.py`, `services/api/tests/integration/api/test_agent_credit_review.py` |

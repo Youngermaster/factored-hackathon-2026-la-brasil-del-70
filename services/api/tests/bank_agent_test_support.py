@@ -3,7 +3,7 @@
 import asyncio
 import itertools
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
 from bank_agent.api.config import SecurityConfig
@@ -148,6 +148,6 @@ class PostgresInstance:
     port: int
     database: str
     owner: str
-    owner_password: str
+    owner_password: str = field(repr=False)
     app_user: str
-    app_password: str
+    app_password: str = field(repr=False)

@@ -19,7 +19,7 @@ in `rg-la70-test`, `eastus2`. The architecture and commands are in
 | Artifact and stage safety | 17 tests passed, including archive corruption, unsafe paths and links, preserved existing state, and failure before ingestion/PostgreSQL | Verified locally |
 | Full local application path | Fresh sample preparation, strict PostgreSQL reconciliation, eight es/pt workflow checks, cross-customer 404, and zero loaded objects on unchanged ingestion passed in the integration suite | Verified locally |
 | Dedicated VM | `vm-bank-database` is running in westus2 with 2 vCPU, 8 GiB RAM, a verified 128 GiB disk, and denied inbound access | Verified in Azure |
-| VM pipeline execution | Source restoration, cloud transformations, PostgreSQL reconciliation, and a retained-state rerun are next | Pending |
+| VM pipeline execution | Run `20261004T175314Z-59a43e8fea4d` restored the complete source and is ingesting; PostgreSQL reconciliation and retained-state rerun remain pending | Running in Azure |
 | Full gold migration | Five private Parquet files, 5,192,103 rows, 241,693,714 bytes; each downloaded SHA-256 matches the validated local file | Verified in Azure Blob |
 | Full input migration | 7,671 contracted source objects archived privately; uploaded archive downloaded and SHA-256 verified; complete per-file restoration passed locally | Verified in Azure Blob |
 | Cloud code publication | Release `bb6069e6c01f106041ff239d331107a2993b6343` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
@@ -136,3 +136,13 @@ The unmerged pipeline ADR was renumbered to 0039 after fetching main, whose ADR 
 Azure continuous deployment. Main and current remote branches were checked; PR metadata was not
 available through the current unauthenticated client. [ADR 0040](../adr/0040-isolated-bank-database-vm.md)
 records the operator's new deployment scope and first full-source run.
+
+## Application schema compatibility
+
+The existing application runs merged main `8ac625afa4d8`, whose Alembic head is `0014`.
+The data deployment imports that merged migration unchanged and supplies transaction-local
+`app.staff_id` from the trusted session before exposing repositories, including after commit
+and rollback. This preserves claim-scoped RLS and the assigned-agent conversation closure
+trigger. The first cloud release has head `0013`; a subsequent committed release must upgrade
+it to `0014` and pass reconciliation before schema compatibility is reported as verified.
+The existing application VM and its database connection remain unchanged.
