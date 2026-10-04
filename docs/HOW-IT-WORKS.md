@@ -574,9 +574,38 @@ Full guide: [deploy/README.md](../deploy/README.md).
 3. Secrets: on Azure, `deploy/azure/provision.sh` creates the Key Vault, the VM with a managed identity, and the generated secrets, and `sudo deploy/azure/install-vm.sh <vault>` stages them at every boot; `SECRETS_SOURCE=keyvault deploy/prod.sh init-env` then writes an env file with no secret in it. Elsewhere, `deploy/prod.sh init-env` writes `deploy/.env.production` with fresh secrets (never printed). Either way `prod.sh` stages each secret as a mode 0400 file under `/run/bank-agent/secrets` and compose mounts it only into the services that need it ([ADR 0037](adr/0037-cloud-secret-management-with-azure-key-vault.md)). Set `SITE_ADDRESS`, `PUBLIC_ORIGIN`, `ACME_EMAIL`, the demo flags (`DEMO_MODE`, `ALLOW_PUBLIC_DEMO_MODE`, `VITE_DEMO_MODE`), and the model settings (section 7); `deploy/prod.sh check` names anything missing.
 4. `deploy/prod.sh build`, `deploy/prod.sh up`, `deploy/prod.sh seed`, `deploy/prod.sh smoke`.
 5. From a laptop: `make smoke SMOKE_URL=https://<host>` and `make csp-check SMOKE_URL=https://<host>`.
-6. Before a recording or a judging session, reset the demo data with `deploy/prod.sh seed` (it restores blocked cards; opened cases and intakes stay until a restore). Updates: `deploy/prod.sh update`; problems: `deploy/prod.sh rollback` and the runbook.
+6. Before a recording or a judging session, reset the demo data with `deploy/prod.sh seed` (it restores blocked cards; opened cases and intakes stay until a restore). Updates: continuous deployment on a merge to `main` (below), or `deploy/prod.sh update` by hand; problems: `deploy/prod.sh rollback` and the runbook.
 
 The same stack runs on a laptop with local TLS before any VM exists ("Run the production stack locally" in the deploy guide).
+
+### Continuous deployment
+
+Once the one-time setup is done ("Continuous deployment on Azure" in the [deploy guide](../deploy/README.md), [ADR 0038](adr/0038-continuous-deployment-to-azure-with-github-actions.md)), merging to `main` deploys by itself:
+
+```mermaid
+sequenceDiagram
+    participant Dev as Merge to main
+    participant CI as ci workflow
+    participant CD as deploy workflow
+    participant GHCR as GitHub Container Registry
+    participant Azure as Azure (OIDC, run-command)
+    participant VM as VM (prod.sh)
+    Dev->>CI: push
+    CI-->>CD: completed with success (workflow_run)
+    CD->>GHCR: build api, job, web once, push as commit-sha tags
+    Note over CD: environment production (required reviewers)
+    CD->>Azure: azure/login with a federated OIDC token, no secret
+    CD->>Azure: az vm run-command invoke (vm-deploy.sh)
+    Azure->>VM: as the checkout owner: git checkout sha, prod.sh release
+    VM->>GHCR: pull by digest with the job's read-only token
+    VM->>VM: back up, stage Key Vault secrets, migrate, swap
+    CD->>VM: smoke_test.sh and make csp-check on PUBLIC_URL
+    alt a check fails
+        CD->>Azure: run-command: prod.sh rollback (previous commit and images)
+    end
+```
+
+The deploy identity can only read the VM and run commands on it, and only a job in the `production` environment can obtain it; it never touches Key Vault, which stays with the VM's managed identity. A release that fails on the VM starts the previous one again; a failed smoke test or CSP check after the swap rolls back. By hand: Actions, `deploy`, "Run workflow" with `deploy` or `rollback`, or `deploy/azure/run-on-vm.sh rollback` from a laptop after `az login`. Logs: the workflow run and its summary, `/var/log/bank-agent-deploy/` on the VM, and the Azure activity log for each run-command.
 
 ## 11. Team runbook for the final days
 

@@ -1,6 +1,6 @@
 # Threat model
 
-STRIDE per component of the deployed system, the abuse cases the team designed against, every mitigation linked to the code and the test that proves it, and the residual risks. It covers the stack as deployed by phase 16 (`deploy/compose.prod.yml`, ADR 0019). Test paths are relative to `services/api/tests/` unless they start with a top-level directory. Last reviewed: phase 16 (2026-09-29).
+STRIDE per component of the deployed system, the abuse cases the team designed against, every mitigation linked to the code and the test that proves it, and the residual risks. It covers the stack as deployed by phase 16 (`deploy/compose.prod.yml`, ADR 0019). Test paths are relative to `services/api/tests/` unless they start with a top-level directory. Last reviewed: phase 16 (2026-09-29); the Key Vault secrets (ADR 0037) and continuous deployment (ADR 0038) rows on 2026-10-04.
 
 ```mermaid
 flowchart LR
@@ -19,7 +19,9 @@ flowchart LR
     end
     provider["Model provider<br/>(hosted https, or ollama on the VM)"]
     operator["Operator (SSH key, restricted source)"]
-    ci["GitHub: repository and CI"]
+    ci["GitHub: repository, CI, and the deploy workflow"]
+    ghcr["GHCR: images by commit SHA"]
+    azure["Azure control plane:<br/>OIDC sign-in, run-command"]
     browser -- "HTTPS 443" --> caddy
     attacker -- "HTTPS 443, HTTP 80 redirect" --> caddy
     caddy -- "X-Forwarded-For set by Caddy" --> api
@@ -30,10 +32,13 @@ flowchart LR
     jobs --> pg
     api -. "OTLP (optional)" .-> obs
     operator -- "SSH 22" --> vm
-    ci -- "the operator pulls a commit and builds on the VM" --> vm
+    ci -- "push images (build job)" --> ghcr
+    ci -- "OIDC token, environment production" --> azure
+    azure -- "run-command as root: check out, release, roll back" --> vm
+    ghcr -- "pull by digest, short-lived read token" --> vm
 ```
 
-**Trust boundaries.** (1) Internet to Caddy: everything from a browser is untrusted input; only Caddy listens publicly. (2) Caddy to the API: the API trusts `X-Forwarded-For` from Caddy's fixed address only. (3) API to the model provider: prompts leave the process redacted, replies come back as untrusted text. (4) Application role to PostgreSQL: row-level security holds even if a query is wrong. (5) The operator and CI to the VM: SSH keys, a pulled commit, and secrets read from Key Vault with the VM's managed identity (typed on the server off Azure). (6) The evaluation harness to the application: it drives the engine through its public ports on in-memory copies.
+**Trust boundaries.** (1) Internet to Caddy: everything from a browser is untrusted input; only Caddy listens publicly. (2) Caddy to the API: the API trusts `X-Forwarded-For` from Caddy's fixed address only. (3) API to the model provider: prompts leave the process redacted, replies come back as untrusted text. (4) Application role to PostgreSQL: row-level security holds even if a query is wrong. (5) The operator and CI to the VM: SSH keys for the operator; for continuous deployment (ADR 0038), GitHub signs in to Azure with an OIDC federated credential bound to the `production` environment and reaches the VM only through run-command, and the VM pulls the images CI built from GHCR by digest; secrets are read from Key Vault with the VM's managed identity (typed on the server off Azure). (6) The evaluation harness to the application: it drives the engine through its public ports on in-memory copies.
 
 ## Web app (SPA, in the browser)
 
@@ -132,6 +137,10 @@ flowchart LR
 | T: a tampered base image or action | Base images pinned by digest (API, job, web, Caddy build, every compose service); GitHub Actions pinned by commit SHA; `permissions: contents: read`; no job reads repository secrets | `unit/test_deploy_config.py::test_third_party_images_are_pinned_by_digest`, `::test_images_pin_their_bases_run_as_non_root_and_check_health`; `.github/workflows/ci.yml` |
 | I: a secret committed | gitleaks in pre-commit and over the full history in CI; `.env` files ignored and excluded from the Docker build context (allowlist `.dockerignore`) | `make security`; `.dockerignore` |
 | T: a weakened check | CLAUDE.md rule 8; checks run in CI on every push and pull request | `.github/workflows/ci.yml` |
+| S and E: a workflow obtains the Azure deploy identity | No client secret exists: Azure trusts a federated credential for `repo:<owner>/<repository>:environment:production` (and, unless `BRANCH_CREDENTIAL=0`, `ref:refs/heads/main`); the deploy and rollback jobs are the only ones in that environment, which has required reviewers and a main-only branch rule; every workflow starts from `permissions: {}` or `contents: read` and only those jobs request `id-token: write`; the identity's custom role allows run-command and reading the one VM, nothing else, and no Key Vault access | `deploy/azure/setup-github-oidc.sh`; `unit/test_deploy_github_oidc.py`; `.github/workflows/deploy.yml`; actionlint in `make security` and CI |
+| T: a tampered or substituted image | The images are built once by the workflow from the commit CI passed, pushed to GHCR under that SHA, and pulled on the VM by the digest the build recorded, so a moved tag cannot change what runs; the build job alone has `packages: write` | `unit/test_deploy_release.py::test_pull_takes_each_image_by_digest_and_tags_it_as_build_would`; `.github/workflows/deploy.yml` |
+| I: the registry token or a setting leaks through run-command | The token is the deploy job's own `GITHUB_TOKEN` with `packages: read`, revoked when the job ends; it travels inside the run-command script (never an argument), lands on the VM only in a mode 600 file for `docker login --password-stdin` in a throwaway Docker config, and is never printed; every other setting is validated before it is sent | `unit/test_deploy_run_command.py::test_run_on_vm_sends_the_settings_inside_a_private_script_never_as_arguments`, `::test_run_on_vm_refuses_malformed_settings_before_calling_azure`; `unit/test_deploy_release.py` |
+| R: who deployed what | Every run is a workflow run with its approval in the `production` environment; the Azure activity log records each run-command and its caller; the VM keeps one log per run in `/var/log/bank-agent-deploy/` | `deploy/README.md` ("Continuous deployment on Azure", Logs) |
 
 ## Deployment host and operations
 
@@ -143,7 +152,7 @@ flowchart LR
 | I: telemetry consoles exposed | Grafana requires its admin login and, like the Jaeger UI, listens on 127.0.0.1 only (reached through an SSH tunnel) | `unit/test_deploy_config.py::test_only_the_web_edge_publishes_public_ports`; the local check (anonymous Grafana requests answer 401) |
 | D: disk fills with logs or traces | Log rotation (5 x 10 MB), Jaeger TTL 7 days, Prometheus 15 days or 2 GB, the retention purge | `deploy/compose.prod.yml`; `unit/test_deploy_config.py` |
 | R and D: data lost with the VM | `deploy/prod.sh backup` before every update; restore tested on the local production stack (ownership kept, migrations pass after it) | `deploy/README.md` ("Backup and restore") |
-| E: a bad release | Images tagged with the commit; `prod.sh rollback` starts the previous tag; migrations move forward only, so a rollback across one restores the pre-update backup first | `deploy/prod.sh`; `deploy/README.md` ("Update and roll back") |
+| E: a bad release | Images tagged with the commit; only a commit that passed CI and is still the head of `main` is released; `release` backs up first, and a failed release starts the previous one again; a failed smoke test or CSP check after the swap rolls back automatically; `prod.sh rollback` starts the previous tag by hand; migrations move forward only, so a rollback across one restores the pre-update backup first | `deploy/prod.sh`; `deploy/azure/vm-deploy.sh`; `.github/workflows/deploy.yml`; `deploy/README.md` ("Update and roll back", "Continuous deployment on Azure") |
 
 ## Abuse cases
 
@@ -169,6 +178,8 @@ flowchart LR
 - **Demo mode is a weak second factor by design.** Anyone can sign in as a synthetic persona and perform its demo writes. Accepted for the event, bounded by synthetic data, limits, budgets, and the take-down date ([demo mode](demo-mode.md)).
 - **One VM, one database.** No high availability; a host failure means recreating the stack from the repository and the latest manual backup. Backups are not encrypted off-host unless the operator copies them somewhere safe (ADR 0019).
 - **The VM is one trust boundary for its secrets.** With Key Vault, nothing is on the VM disk, but anyone with root or Docker access on the VM can read the staged files or ask the managed identity for the same secrets; the design gives no per-container identity (ADR 0037). Off Azure, the env file sits on the VM disk (mode 600).
+- **Run-command is root on the VM.** Whoever obtains the deploy identity (a job in the `production` environment, or on `main` while the branch credential exists) can run anything on the VM, including reading the staged secrets. Required reviewers on the environment and branch protection on `main` are part of the control and are set by the human (ADR 0038).
+- **The automatic rollback swaps images, not data.** After a release that ran a migration the old code cannot use, the previous images start on the new schema until the operator restores the backup the release took.
 - **The degradation level is per worker.** Each worker trips its own circuit breaker after a few failed calls; the budget, the rate limits, and the active-session count are shared (`docs/operations/degradation.md`).
 - **The sliding-window counter is an approximation** across workers: a burst at a window boundary can admit slightly more than the limit over a rolling minute, never more than the limit inside one window.
 - **The rate limits key on the client address.** Many clients behind one address share a limit; an attacker with many addresses gets many limits. The model budget still caps spend.

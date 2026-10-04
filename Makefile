@@ -241,6 +241,7 @@ eda-ui: ## Open the local EDA viewer and sanitized laboratory
 # Container tools run from pinned images, so nothing beyond Docker is needed on the machine.
 HADOLINT_IMAGE := hadolint/hadolint:v2.14.0@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e
 SHELLCHECK_IMAGE := koalaman/shellcheck:v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d
+ACTIONLINT_IMAGE := rhysd/actionlint:1.7.7@sha256:887a259a5a534f3c4f36cb02dca341673c6089431057242cdc931e9f133147e9
 TRIVY_IMAGE := aquasec/trivy:0.70.0@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e
 SYFT_IMAGE := anchore/syft:v1.40.0@sha256:11a68ff5cd49a1579e1f05b061a96edf0a5add161ea5f38d62fc979704c46918
 IMAGE_TAG ?= $(shell git rev-parse --short=12 HEAD)
@@ -254,7 +255,7 @@ CSP_ARGS ?=
 # Secrets are mounted files (ADR 0037), so only the two required site values are needed.
 COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org
 
-security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, production compose validation
+security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, actionlint, production compose validation
 	requirements="$$(mktemp)"; trap 'rm -f "$$requirements"' EXIT; \
 		uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt -o "$$requirements" > /dev/null; \
 		$(UV_RUN) pip-audit -r "$$requirements" --require-hashes --disable-pip --progress-spinner off
@@ -265,8 +266,10 @@ security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, she
 		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
 	docker run --rm -v "$(CURDIR)/deploy:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) \
 		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh \
-		azure/keyvault-secrets.sh azure/provision.sh azure/install-vm.sh
+		azure/keyvault-secrets.sh azure/provision.sh azure/install-vm.sh azure/vm-deploy.sh azure/run-on-vm.sh \
+		azure/setup-github-oidc.sh
 	docker run --rm -v "$(CURDIR)/scripts:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) submission_check.sh
+	docker run --rm -v "$(CURDIR):/repo:ro" -w /repo $(ACTIONLINT_IMAGE)
 	$(COMPOSE_CHECK_ENV) docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example \
 		--profile '*' config --quiet
 
