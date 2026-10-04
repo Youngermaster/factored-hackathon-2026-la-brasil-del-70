@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "slidev --port 3131",
     "build": "slidev build --router-mode hash",
-    "export": "slidev export --format pdf --with-clicks --timeout 120000 --output export/la-brasil-del-70-pitch.pdf",
+    "export": "slidev export --format pdf --with-clicks --range 1-6 --timeout 120000 --output export/la-brasil-del-70-pitch.pdf",
+    "export:appendix": "slidev export --format pdf --with-clicks --range 7-9 --timeout 120000 --output export/la-brasil-del-70-appendix.pdf",
     "export:final": "pnpm check:content --strict && pnpm export",
     "check:content": "tsx scripts/check-content.ts",
     "check:types": "node scripts/check-types.mjs",
