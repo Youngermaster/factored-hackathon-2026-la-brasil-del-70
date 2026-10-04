@@ -44,20 +44,20 @@ Run from `apps/web` (or use the root Make targets):
 
 ## Public interfaces
 
-| Import                      | What it gives                                                                                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `@/shared/ui`               | The primitives (see the components doc), `ThemeProvider`, `useTheme`, `useToast`, the icons                                                                  |
-| `@/shared/i18n`             | `LocaleProvider`, `useLocale`, `useFormat` (money, dates, relative time, countdowns per locale), `LocaleSwitcher`                                            |
-| `@/shared/api`              | `createApiClient`, `useApi`, `unwrap`, `ApiError` and `NetworkError`, `hasProblem`, `errorMessageKey`, `createQueryClient`, `queryKeys`, `Schema<'Name'>`    |
-| `@/shared/config`           | `isDemoMode()` (`VITE_DEMO_MODE`)                                                                                                                            |
-| `@/features/auth`           | `LoginFlow`, `RequireSession`, `AuthProvider`, `useSession`, `useStepUp`, `SessionStatus`, `LogoutButton`, `SessionNotice`, the `StepUp` compound, `homeFor` |
-| `@/features/conversation`   | The `Conversation` compound (`Root`, `Header`, `Starters`, `Messages`, `HumanButton`, `Composer`) and `useConversation`                                      |
-| `@/features/glass-box`      | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace`                                                                               |
-| `@/features/agent-inbox`    | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail`                                                         |
-| `@/features/eval-report`    | `EvaluationReport`, the published summary hook and types, run grouping, and interval helpers                                                                 |
+| Import                       | What it gives                                                                                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@/shared/ui`                | The primitives (see the components doc), `ThemeProvider`, `useTheme`, `useToast`, the icons                                                                  |
+| `@/shared/i18n`              | `LocaleProvider`, `useLocale`, `useFormat` (money, dates, relative time, countdowns per locale), `LocaleSwitcher`                                            |
+| `@/shared/api`               | `createApiClient`, `useApi`, `unwrap`, `ApiError` and `NetworkError`, `hasProblem`, `errorMessageKey`, `createQueryClient`, `queryKeys`, `Schema<'Name'>`    |
+| `@/shared/config`            | `isDemoMode()` (`VITE_DEMO_MODE`)                                                                                                                            |
+| `@/features/auth`            | `LoginFlow`, `RequireSession`, `AuthProvider`, `useSession`, `useStepUp`, `SessionStatus`, `LogoutButton`, `SessionNotice`, the `StepUp` compound, `homeFor` |
+| `@/features/conversation`    | The `Conversation` compound (`Root`, `Header`, `Starters`, `Messages`, `HumanButton`, `Composer`) and `useConversation`                                      |
+| `@/features/glass-box`       | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace`                                                                               |
+| `@/features/agent-inbox`     | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail`                                                         |
+| `@/features/eval-report`     | `EvaluationReport`, the published summary hook and types, run grouping, and interval helpers                                                                 |
 | `@/features/admin-dashboard` | The evaluator-only administrative analytics dashboard over versioned published runs                                                                          |
-| `@/features/demo-guide`     | `DemoGuide` and the verified `SCENARIOS`                                                                                                                     |
-| `@/entities/turn-selection` | `TurnSelectionProvider`, `useTurnSelection` (linked selection between the chat and the glass box)                                                            |
+| `@/features/demo-guide`      | `DemoGuide` and the verified `SCENARIOS`                                                                                                                     |
+| `@/entities/turn-selection`  | `TurnSelectionProvider`, `useTurnSelection` (linked selection between the chat and the glass box)                                                            |
 
 The composition root is `src/app/`: `services.ts` creates the API client, the query client, and the session-loss channel once; `AppProviders.tsx` provides theme, locale, icons, tooltips, toasts, the query client, and the API client; `routes.tsx` is the route tree (`/login`; the public `/about`, and `/demo` in demo mode; the customer chat at `/` and `/glass-box/:id`; the console at `/console` with `inbox`, `credit-applications`, `evaluation`, and `traces`; a not-found page; and a route error boundary), where every page except sign-in is a lazy route; `layouts/` holds `CustomerLayout` (chat-first, mobile-first) and `ConsoleLayout` (desktop-first, with navigation). Features consume everything through hooks, never props.
 
