@@ -8,6 +8,7 @@ from bank_agent.adapters.persistence.postgres.seed import PostgresSeeder, SeedBu
 from bank_agent.adapters.persistence.postgres.sessions import PostgresSessionStore
 from bank_agent.adapters.persistence.postgres.unit_of_work import PostgresUnitOfWorkFactory
 from bank_agent.domain.access import AccessContext
+from bank_agent.domain.conversation import ConversationCreationQuota
 from bank_agent.ports.audit import AuditLog
 from bank_agent.ports.sessions import SessionStore
 from bank_agent.ports.unit_of_work import UnitOfWorkFactory
@@ -55,6 +56,9 @@ class PostgresBackend:
 
     def uow_factory(self) -> UnitOfWorkFactory:
         return self._factory
+
+    def uow_factory_with_quota(self, quota: ConversationCreationQuota) -> UnitOfWorkFactory:
+        return PostgresUnitOfWorkFactory(self._engine, creation_quota=quota)
 
     def session_store(self) -> SessionStore:
         return self._sessions

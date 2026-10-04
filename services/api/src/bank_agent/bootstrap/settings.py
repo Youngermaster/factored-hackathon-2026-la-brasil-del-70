@@ -27,6 +27,7 @@ from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 from bank_agent.adapters.retrieval.embedding import DEFAULT_EMBEDDING_MODEL
+from bank_agent.domain.conversation import MAX_CONVERSATION_CREATION_LIMIT, MAX_CONVERSATION_CREATION_WINDOW
 
 Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -422,6 +423,45 @@ class RetentionSettings(BaseSettings):
     credit_application_days: int = Field(default=30, ge=1, le=3650)
 
 
+DEFAULT_CONVERSATION_CREATION_LIMIT = 5
+"""New chats per customer per window outside the public demo (ADR 0026)."""
+PUBLIC_DEMO_CONVERSATION_CREATION_LIMIT = 200
+"""The default with ``DEMO_MODE`` and ``ALLOW_PUBLIC_DEMO_MODE``, where every visitor shares a dozen seeded personas."""
+
+
+class ConversationSettings(BaseSettings):
+    """The customer quota on new chats (ADR 0026, ``docs/workflows/human-service.md``).
+
+    A customer may create at most ``creation_limit`` new conversations in any rolling window of
+    ``creation_window_minutes``, across sessions and workers; messages in existing chats never count. Left unset,
+    the limit is 5, or 200 for the public demo (``DEMO_MODE`` and ``ALLOW_PUBLIC_DEMO_MODE`` both true), where every
+    visitor signs in as one of the same seeded personas (``docs/security/demo-mode.md`` records the trade-off). An
+    explicit value always wins.
+    """
+
+    model_config = _config("CONVERSATION_")
+
+    creation_limit: int | None = Field(default=None, ge=1, le=MAX_CONVERSATION_CREATION_LIMIT)
+    creation_window_minutes: int = Field(
+        default=60, ge=1, le=int(MAX_CONVERSATION_CREATION_WINDOW.total_seconds() // 60)
+    )
+
+    @field_validator("creation_limit", "creation_window_minutes", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
+
+    def creation_limit_for(self, runtime: RuntimeSettings) -> int:
+        """The explicit limit, else the public demo's default, else the standard default."""
+        if self.creation_limit is not None:
+            return self.creation_limit
+        if runtime.demo_mode and runtime.allow_public_demo_mode:
+            return PUBLIC_DEMO_CONVERSATION_CREATION_LIMIT
+        return DEFAULT_CONVERSATION_CREATION_LIMIT
+
+
 class AppSettings:
     """All settings for one process, validated together."""
 
@@ -439,6 +479,7 @@ class AppSettings:
         evaluation: EvaluationSettings | None = None,
         degradation: DegradationSettings | None = None,
         retention: RetentionSettings | None = None,
+        conversation: ConversationSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
@@ -452,6 +493,7 @@ class AppSettings:
         self.evaluation = evaluation if evaluation is not None else EvaluationSettings()
         self.degradation = degradation if degradation is not None else DegradationSettings()
         self.retention = retention if retention is not None else RetentionSettings()
+        self.conversation = conversation if conversation is not None else ConversationSettings()
 
     @property
     def is_production(self) -> bool:
@@ -672,6 +714,7 @@ def load_settings(
         evaluation=EvaluationSettings(_env_file=env_file),
         degradation=DegradationSettings(_env_file=env_file),
         retention=RetentionSettings(_env_file=env_file),
+        conversation=ConversationSettings(_env_file=env_file),
     )
     problems = production_problems(settings, owner=owner)
     problems.extend(secret_source_problems(settings, os.environ if environ is None else environ))

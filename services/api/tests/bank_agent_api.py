@@ -26,7 +26,7 @@ from bank_agent.api.config import SecurityConfig
 from bank_agent.asgi import api_config_from
 from bank_agent.bootstrap.container import Container
 from bank_agent.bootstrap.llm import LlmOverrides
-from bank_agent.bootstrap.persistence import PersistenceServices
+from bank_agent.bootstrap.persistence import PersistenceServices, conversation_creation_quota
 from bank_agent.bootstrap.settings import AppSettings, load_settings
 from bank_agent.ports.llm import LLMClient
 from bank_agent.testing.clock import FixedClock
@@ -68,7 +68,11 @@ def api_environment(monkeypatch: pytest.MonkeyPatch, *, demo_mode: bool = True, 
 
 
 def memory_persistence() -> PersistenceServices:
-    """The in-memory adapters seeded with the scenario customers and the fixture personas."""
+    """The in-memory adapters seeded with the scenario customers and the fixture personas.
+
+    The creation quota comes from the environment the test set (``CONVERSATION_CREATION_*``), as the container does
+    for PostgreSQL.
+    """
     data = scenario_data()
     store = InMemoryStore()
     store.seed(
@@ -83,7 +87,9 @@ def memory_persistence() -> PersistenceServices:
     personas[EVALUATOR_PERSONA] = Subject(staff_id=EVALUATOR_ID, staff_role="evaluator")
     documents = {keys().document_lookup(DOCUMENT_MX): (MX, keys().phone_lookup(MX, PHONE_MX))}
     return PersistenceServices(
-        uow_factory=InMemoryUnitOfWorkFactory(store),
+        uow_factory=InMemoryUnitOfWorkFactory(
+            store, creation_quota=conversation_creation_quota(load_settings(env_file=None))
+        ),
         session_store=InMemorySessionStore(),
         audit_log=standalone_audit_log(store),
         challenge_store=InMemoryChallengeStore(personas=personas, documents=documents),

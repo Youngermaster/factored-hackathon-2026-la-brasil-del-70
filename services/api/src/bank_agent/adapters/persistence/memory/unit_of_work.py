@@ -21,6 +21,7 @@ from bank_agent.adapters.persistence.memory.repositories import (
 )
 from bank_agent.adapters.persistence.memory.store import DirectView, InMemoryStore, TableView
 from bank_agent.domain.access import AccessContext
+from bank_agent.domain.conversation import DEFAULT_CONVERSATION_CREATION_QUOTA, ConversationCreationQuota
 from bank_agent.domain.errors import ConcurrencyConflictError
 
 
@@ -39,8 +40,14 @@ class InMemoryUnitOfWork:
     change to a key this one also wrote.
     """
 
-    def __init__(self, store: InMemoryStore, context: AccessContext) -> None:
+    def __init__(
+        self,
+        store: InMemoryStore,
+        context: AccessContext,
+        creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA,
+    ) -> None:
         self._context = context
+        self._creation_quota = creation_quota
         self._customers = TableView(store.customers)
         self._products = TableView(store.products)
         self._transactions = TableView(store.transactions)
@@ -102,7 +109,9 @@ class InMemoryUnitOfWork:
 
     @property
     def conversations(self) -> InMemoryConversationRepository:
-        return InMemoryConversationRepository(self._conversations, self._turns, self._creation_guards, self._context)
+        return InMemoryConversationRepository(
+            self._conversations, self._turns, self._creation_guards, self._context, self._creation_quota
+        )
 
     @property
     def assistant_profiles(self) -> InMemoryAssistantProfileRepository:
@@ -157,13 +166,23 @@ class InMemoryUnitOfWork:
 
 
 class InMemoryUnitOfWorkFactory:
-    """Implements ``UnitOfWorkFactory`` over one shared ``InMemoryStore``."""
+    """Implements ``UnitOfWorkFactory`` over one shared ``InMemoryStore``.
 
-    def __init__(self, store: InMemoryStore) -> None:
+    ``creation_quota`` bounds new chats per customer (``ConversationRepository.add_with_quota``).
+    """
+
+    def __init__(
+        self, store: InMemoryStore, *, creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA
+    ) -> None:
         self._store = store
+        self._creation_quota = creation_quota
+
+    @property
+    def creation_quota(self) -> ConversationCreationQuota:
+        return self._creation_quota
 
     def __call__(self, context: AccessContext) -> InMemoryUnitOfWork:
-        return InMemoryUnitOfWork(self._store, context)
+        return InMemoryUnitOfWork(self._store, context, self._creation_quota)
 
 
 def standalone_audit_log(store: InMemoryStore, context: AccessContext | None = None) -> InMemoryAuditLog:

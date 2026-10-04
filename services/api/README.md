@@ -101,4 +101,4 @@ make check                                        # everything, with coverage ga
 
 ## Live human service
 
-ADR 0026 adds persisted customer and assigned-agent messages on the existing conversation, and a rolling-hour customer creation quota. Existing databases need `make db-upgrade` (revision `0014`). The [human-service guide](../../docs/workflows/human-service.md) describes the endpoints, lifecycle, authorization, and local walkthrough.
+ADR 0026 adds persisted customer and assigned-agent messages on the existing conversation, and a rolling-window customer creation quota (`CONVERSATION_CREATION_LIMIT`, default five per hour, 200 on the public demo; `CONVERSATION_CREATION_WINDOW_MINUTES`, default 60). Existing databases need `make db-upgrade` (revision `0014`). The [human-service guide](../../docs/workflows/human-service.md) describes the endpoints, lifecycle, authorization, and local walkthrough.

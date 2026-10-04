@@ -6,6 +6,10 @@ the SPA and of the API, the demo sign-in and its cookies, one conversation per w
 seeded open case's status in es, and credit in pt), an out-of-scope request answered with an abstention, and a
 cross-customer probe answered with 404.
 Every conversation is read only, so the smoke test can run daily against the public demo without changing its data.
+Each persona opens as few conversations as the checks allow (the out-of-scope request continues the credit
+conversation), because every deploy runs this test against the same personas and new conversations count against the
+customer's new-chat quota (ADR 0026, ``CONVERSATION_CREATION_LIMIT``). A refusal from that quota is reported as such,
+since waiting a minute cannot clear it.
 It prints what it checks, never a code, a cookie value, or a token, and exits 1 on the first failure.
 """
 
@@ -26,6 +30,8 @@ from urllib.parse import urlsplit
 
 MIN_CERT_DAYS = 7
 MAX_RATE_LIMIT_WAIT = 75
+CREATION_LIMITED_TYPE = "/conversation-creation-limited"
+CREATION_LIMITED_CODE = "conversation_creation_limited"
 
 
 class SmokeCheckError(Exception):
@@ -39,6 +45,8 @@ class Flow:
     text: str
     workflow: str | None
     outcomes: frozenset[str]
+    continues: bool = False
+    """Send the turn in the persona's previous conversation instead of opening a new one."""
 
 
 FLOWS = (
@@ -55,8 +63,9 @@ FLOWS = (
     Flow("credit catalog (pt)", "cre-mx-complete", "Quais cartões de crédito vocês têm?", "credit",
          frozenset({"resolved", "clarified"})),
     Flow("out of scope (es)", "cre-mx-complete", "¿En qué acciones de la bolsa me recomiendas invertir mis ahorros?",
-         None, frozenset({"abstained"})),
+         None, frozenset({"abstained"}), continues=True),
 )  # fmt: skip
+"""The two dispute intakes each open a conversation: a continued one would answer the first intake's question."""
 SPA_HEADERS = {
     "content-security-policy": ("default-src 'none'", "script-src 'self'", "frame-ancestors 'none'"),
     "strict-transport-security": ("max-age=",),
@@ -70,6 +79,17 @@ API_HEADERS = {
     "x-content-type-options": ("nosniff",),
     "cache-control": ("no-store",),
 }
+
+
+def creation_limited(body: bytes) -> bool:
+    """Whether a 429 body is the new-chat quota's problem (by its type, or a ``code`` field if one is present)."""
+    try:
+        problem = json.loads(body or b"null")
+    except ValueError:
+        return False
+    if not isinstance(problem, dict):
+        return False
+    return str(problem.get("type", "")).endswith(CREATION_LIMITED_TYPE) or problem.get("code") == CREATION_LIMITED_CODE
 
 
 def check(condition: bool, message: str) -> None:
@@ -114,6 +134,7 @@ class Client:
             urllib.request.HTTPSHandler(context=context), urllib.request.HTTPCookieProcessor(self.jar)
         )
         self.csrf: str | None = None
+        self.persona: str | None = None
 
     def request(self, method: str, path: str, body: Any = None) -> Response:
         headers = {"Accept": "application/json", "User-Agent": "bank-agent-smoke/1"}
@@ -132,7 +153,15 @@ class Client:
                                     raw.headers.get_all("Set-Cookie") or [], raw.read())  # fmt: skip
             except urllib.error.HTTPError as error:
                 if error.code == 429:
-                    wait = min(int(error.headers.get("Retry-After", "5")), MAX_RATE_LIMIT_WAIT)
+                    retry_after = error.headers.get("Retry-After", "5")
+                    if creation_limited(error.read()):
+                        raise SmokeCheckError(
+                            f"{path} refused for {self.persona or 'the signed-in persona'}: the customer's new-chat "
+                            f"quota is used up ({CREATION_LIMITED_CODE}, Retry-After {retry_after} s). Earlier deploys "
+                            "or visitors opened too many conversations with this persona in the window; wait for it "
+                            "to pass or raise CONVERSATION_CREATION_LIMIT (deploy/README.md)"
+                        ) from None
+                    wait = min(int(retry_after), MAX_RATE_LIMIT_WAIT)
                     print(f"wait  rate limited on {path}, retrying in {wait} s")
                     time.sleep(wait)
                     continue
@@ -155,6 +184,7 @@ class Client:
         verified = self.request("POST", "/v1/auth/verify", challenge)
         check(verified.status == 200, f"demo sign-in completes for {persona}")
         self.csrf = str(verified.json()["csrf_token"])
+        self.persona = persona
         return verified
 
     def conversation(self) -> str:
@@ -198,11 +228,17 @@ def run(base: str, context: ssl.SSLContext, min_cert_days: int = MIN_CERT_DAYS) 
     cookie_flags(client.login(FLOWS[0].persona).cookies)
     signed_in = FLOWS[0].persona
     first_conversation = ""
+    opened: dict[str, str] = {}
     for flow in FLOWS:
         if flow.persona != signed_in:
             client.login(flow.persona)
             signed_in = flow.persona
-        conversation = client.conversation()
+        if flow.continues and flow.persona in opened:
+            conversation = opened[flow.persona]
+            print(f"note  {flow.name}: continues the {flow.persona} conversation")
+        else:
+            conversation = client.conversation()
+            opened[flow.persona] = conversation
         first_conversation = first_conversation or conversation
         reply = client.say(conversation, flow.text)
         check(reply.status == 200, f"{flow.name}: the turn answers 200")

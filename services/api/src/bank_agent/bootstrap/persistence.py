@@ -6,6 +6,7 @@ provider needs ``SESSION_SECRET`` (its code and lookup keys derive from it) and 
 """
 
 from dataclasses import dataclass
+from datetime import timedelta
 
 from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine
@@ -31,6 +32,7 @@ from bank_agent.application.tools.context import SessionContext, ToolPolicy, Too
 from bank_agent.application.tools.failure_injection import ToolFailureInjector
 from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings
 from bank_agent.domain.actions import ToolFailureMode, ToolName
+from bank_agent.domain.conversation import DEFAULT_CONVERSATION_CREATION_QUOTA, ConversationCreationQuota
 from bank_agent.domain.errors import ConfigurationError
 from bank_agent.ports.audit import AuditLog
 from bank_agent.ports.credit_catalog import CreditProductCatalog
@@ -56,18 +58,35 @@ class PersistenceServices:
     challenge_store: ChallengeStore
 
 
-def build_persistence(engine: AsyncEngine | None, listener: AvailabilityListener | None = None) -> PersistenceServices:
-    """PostgreSQL when ``engine`` is given (``listener`` hears whether each transaction reached the database)."""
+def conversation_creation_quota(settings: AppSettings) -> ConversationCreationQuota:
+    """The new-chat quota from ``CONVERSATION_CREATION_*``, with the public demo's higher default when it applies."""
+    conversation = settings.conversation
+    return ConversationCreationQuota(
+        limit=conversation.creation_limit_for(settings.runtime),
+        window=timedelta(minutes=conversation.creation_window_minutes),
+    )
+
+
+def build_persistence(
+    engine: AsyncEngine | None,
+    listener: AvailabilityListener | None = None,
+    *,
+    creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA,
+) -> PersistenceServices:
+    """PostgreSQL when ``engine`` is given (``listener`` hears whether each transaction reached the database).
+
+    ``creation_quota`` bounds new chats per customer in both backends.
+    """
     if engine is not None:
         return PersistenceServices(
-            uow_factory=PostgresUnitOfWorkFactory(engine, listener),
+            uow_factory=PostgresUnitOfWorkFactory(engine, listener, creation_quota=creation_quota),
             session_store=PostgresSessionStore(engine),
             audit_log=PostgresStandaloneAuditLog(engine),
             challenge_store=PostgresChallengeStore(engine),
         )
     store = InMemoryStore()
     return PersistenceServices(
-        uow_factory=InMemoryUnitOfWorkFactory(store),
+        uow_factory=InMemoryUnitOfWorkFactory(store, creation_quota=creation_quota),
         session_store=InMemorySessionStore(),
         audit_log=standalone_audit_log(store),
         challenge_store=InMemoryChallengeStore(),

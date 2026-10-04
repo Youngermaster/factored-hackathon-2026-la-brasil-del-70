@@ -2,6 +2,8 @@
 
 from uuid import uuid4
 
+import pytest
+
 from bank_agent_api import ApiBackend, ApiClient
 
 
@@ -106,3 +108,27 @@ async def test_chat_creation_quota_follows_customer_across_sessions_and_excludes
         harness.clock.advance(timedelta(hours=1))
         await second.login("persona-mx")
         assert (await second.post("/v1/conversations")).status_code == 201
+
+
+async def test_a_configured_creation_quota_answers_429_with_its_problem_type_and_window(
+    api_backend: ApiBackend, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from datetime import timedelta
+
+    monkeypatch.setenv("CONVERSATION_CREATION_LIMIT", "2")
+    monkeypatch.setenv("CONVERSATION_CREATION_WINDOW_MINUTES", "10")
+    harness = api_backend.build()
+    async with ApiClient(harness.app) as customer:
+        await customer.login("persona-ar")
+        assert len({await customer.open_conversation() for _ in range(2)}) == 2
+        blocked = await customer.post("/v1/conversations")
+        assert blocked.status_code == 429
+        assert blocked.headers["content-type"].startswith("application/problem+json")
+        assert blocked.headers["Retry-After"] == "600"
+        problem = blocked.json()
+        assert problem["type"].endswith("/conversation-creation-limited")
+        assert problem["status"] == 429
+        assert "five" not in str(problem).lower()
+        harness.clock.advance(timedelta(minutes=10))
+        await customer.login("persona-ar")
+        assert (await customer.post("/v1/conversations")).status_code == 201

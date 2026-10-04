@@ -1,14 +1,20 @@
 """In-memory repositories. Each is bound to an ``AccessContext`` and to table views of one unit of work."""
 
 from collections.abc import Sequence
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from bank_agent.adapters.persistence.memory.store import TableView
 from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.actions import ActionKind, ActionLedgerEntry
 from bank_agent.domain.audit import AuditEvent
 from bank_agent.domain.complaint import HistoricalComplaint
-from bank_agent.domain.conversation import Conversation, ConversationStatus, Turn
+from bank_agent.domain.conversation import (
+    DEFAULT_CONVERSATION_CREATION_QUOTA,
+    Conversation,
+    ConversationCreationQuota,
+    ConversationStatus,
+    Turn,
+)
 from bank_agent.domain.credit import (
     CUSTOMER_APPLICATION_TRANSITIONS,
     REVIEWABLE_APPLICATION_STATUSES,
@@ -238,11 +244,13 @@ class InMemoryConversationRepository:
         turns: TableView[str, Turn],
         creation_guards: TableView[str, int],
         context: AccessContext,
+        creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA,
     ) -> None:
         self._conversations = conversations
         self._turns = turns
         self._creation_guards = creation_guards
         self._context = context
+        self._quota = creation_quota
 
     async def get(self, conversation_id: ConversationId) -> Conversation | None:
         owner = _customer_of(self._context)
@@ -260,14 +268,17 @@ class InMemoryConversationRepository:
         customer = _customer_of(self._context)
         if conversation.customer_id != customer:
             raise AccessContextError("a conversation can only be added for the context customer")
-        cutoff = conversation.created_at - timedelta(hours=1)
+        window = self._quota.window
+        cutoff = conversation.created_at - window
         recent = sorted(
             c.created_at
             for c in self._conversations.values()
             if c.customer_id == customer and cutoff < c.created_at <= conversation.created_at
         )
-        if len(recent) >= 5:
-            raise ConversationCreationLimitedError(recent[0] + timedelta(hours=1) - conversation.created_at)
+        if len(recent) >= self._quota.limit:
+            # The oldest creation that must leave the window before one more fits.
+            blocking = recent[len(recent) - self._quota.limit]
+            raise ConversationCreationLimitedError(blocking + window - conversation.created_at)
         self._creation_guards.put(customer, (self._creation_guards.get(customer) or 0) + 1)
         await self.add(conversation)
 
