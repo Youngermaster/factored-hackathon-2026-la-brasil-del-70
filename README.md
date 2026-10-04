@@ -134,7 +134,7 @@ make eval-smoke           # the 12-scenario evaluation smoke suite, no model
 make submission-check     # the pre-submission gates plus the remaining human steps
 ```
 
-Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
+Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), a hosted model such as OpenAI (`make api-hosted-llm`, [HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
 
 ## Repository map
 
@@ -154,7 +154,7 @@ Optional paths: a local model through Ollama (`make api-local-llm`, and `make ll
 
 ## Documentation
 
-Start at the [documentation index](docs/README.md). For a judge with fifteen minutes: this page, the [brief traceability matrix](docs/submission/brief-traceability.md), the [architecture overview](docs/architecture/overview.md), one workflow page (for example [dispute intake](docs/workflows/dispute-intake.md)), the [evaluation results](docs/evaluation/results.md), and [LIMITATIONS.md](LIMITATIONS.md). Decisions are in the [ADR index](docs/adr/README.md); how to extend the system (an adapter, a model, a rule, a prompt, a workflow state, a UI feature, scenarios) is in [AGENTS.md](AGENTS.md) section 7 and [CONTRIBUTING.md](CONTRIBUTING.md); security is in [docs/security](docs/security/README.md) and [SECURITY.md](SECURITY.md).
+Start at the [documentation index](docs/README.md). To understand the whole system end to end in one sitting (the data path, one turn through the engine, the guardrails, the model, the evaluation, deployment, and how to run it with an OpenAI key), read [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md). For a judge with fifteen minutes: this page, the [brief traceability matrix](docs/submission/brief-traceability.md), the [architecture overview](docs/architecture/overview.md), one workflow page (for example [dispute intake](docs/workflows/dispute-intake.md)), the [evaluation results](docs/evaluation/results.md), and [LIMITATIONS.md](LIMITATIONS.md). Decisions are in the [ADR index](docs/adr/README.md); how to extend the system (an adapter, a model, a rule, a prompt, a workflow state, a UI feature, scenarios) is in [AGENTS.md](AGENTS.md) section 7 and [CONTRIBUTING.md](CONTRIBUTING.md); security is in [docs/security](docs/security/README.md) and [SECURITY.md](SECURITY.md).
 
 ## Limitations
 

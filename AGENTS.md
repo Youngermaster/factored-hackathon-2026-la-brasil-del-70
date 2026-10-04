@@ -38,6 +38,8 @@ An AI-first banking customer-service system for the Factored AI and Data Hackath
 
 Everything else gets a clarifying question, a clause-backed abstention, or a structured handoff to a human.
 
+The end-to-end explanation of the whole system, in the order of the pitch, is [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md).
+
 Design thesis: **the language model understands, deterministic code decides, and evidence proves it.** In practice:
 
 - Policy is data under `policies/`, evaluated by pure rule functions; every decision names its rule ids and clause versions.
@@ -129,6 +131,8 @@ A verified, timed walkthrough of every local path (dev stack, browser, local mod
 The production stack (Caddy with TLS, two API workers, PostgreSQL with a non-superuser owner, the jobs) also runs locally in its local TLS mode: [deploy/README.md](deploy/README.md), "Run the production stack locally".
 
 Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM, and `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke` runs the fixture prompts (a bare `make llm-smoke` reads the fake provider from `.env` and stops). See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
+
+Opt-in hosted model (never in `make check` or CI): with `LLM_PRIMARY_MODEL` (for example `openai/gpt-5-mini`) and `LLM_API_KEY_PRIMARY` in the shell or `.env`, `make api-hosted-llm` runs the API through LiteLLM after a preflight that prints each required variable as set or unset, never a value. The steps, the price table entry, and the smoke test are in [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7.
 
 ### Data sources
 
