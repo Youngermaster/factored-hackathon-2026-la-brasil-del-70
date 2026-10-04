@@ -50,4 +50,4 @@ What pull request 27 built, so this record matches the code:
 
 The `env-file` source (`SECRETS_SOURCE=env-file`, the default) remains for the local production-stack test and for a non-Azure host: the values sit in the mode 600 server env file and are staged as the same files, so containers see no difference. It is weaker than Key Vault (a copy on disk, no audit), and `deploy/README.md` documents it that way.
 
-Not covered: Langfuse is not enabled in the production stack, so its keys have no staged file (the settings would read one); the one-time-code provider is a mock with no secret.
+Not covered: Langfuse is not enabled in the production stack, so its keys have no staged file (the settings would read one); the one-time-code provider is a mock with no secret. Continuous deployment ([ADR 0038](0038-continuous-deployment-to-azure-with-github-actions.md)) adds no secret to the VM and no Key Vault access to its identity: it runs the same `prod.sh` commands, which stage the secrets with the VM identity.

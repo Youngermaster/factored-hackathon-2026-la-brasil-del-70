@@ -162,7 +162,7 @@ S3 credentials come only from the organizer, through the team. They are never co
 | `slides/` | The pitch deck ([README](slides/README.md)): a standalone Slidev package, outside the uv workspace and outside `make check` |
 | `skills/` | Tool-agnostic agent skills for this repository (section 11) |
 | `.claude/` | Claude Code settings and the design skills CLAUDE.md names (`design-taste-frontend`, `minimalist-ui`); other agents may read these files as plain Markdown |
-| `.github/` | CI workflow (`.github/workflows/ci.yml`) and the pull request template |
+| `.github/` | CI workflow (`.github/workflows/ci.yml`), the deploy workflow to the Azure VM (`.github/workflows/deploy.yml`, ADR 0038), and the pull request template |
 | `data/` | Gitignored: raw downloads, warehouses, model artifacts, labeling files, embeddings |
 | `kit/` | Gitignored and private to the technical lead: phase prompts and organizer PDFs. Teammates do not have it, so never depend on a `kit/` prompt; ask the human for the phase goal instead |
 
@@ -321,7 +321,7 @@ Detail: [contracts/README.md](contracts/README.md) (versioning, deprecation, cha
 
 ### Add an ADR
 
-1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 stays reserved and unused; the next free number is 0036.
+1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 stays reserved and unused. 0037 (Key Vault) and 0038 (continuous deployment) came with the Azure deployment, and pull request 23 also proposed a 0037, so it needs a new number; the next free number is 0039.
 2. Write `docs/adr/NNNN-short-title.md` in MADR form: context, at least two real options, decision, consequences.
 3. Add the row to the table in `docs/adr/README.md` and the entry in `docs/README.md` in the same commit.
 4. Records are never rewritten; a later record supersedes an earlier one and both link to each other.
@@ -345,7 +345,7 @@ Detail: [evals/README.md](evals/README.md), [docs/evaluation/plan.md](docs/evalu
 | `make test-integration` | Python integration tests against real PostgreSQL (Docker) |
 | `make test-web` | Vitest with coverage |
 | `make docs-check` | markdownlint, Mermaid parsing, and the check-script tests; needs `apps/web/node_modules` |
-| `make security` | pip-audit, `pnpm audit --prod --audit-level high`, bandit, gitleaks, hadolint, shellcheck, production compose validation (Docker needed; network for the audits) |
+| `make security` | pip-audit, `pnpm audit --prod --audit-level high`, bandit, gitleaks, hadolint, shellcheck, actionlint, production compose validation (Docker needed; network for the audits) |
 | `make images`, `make scan-images` | Build the production images; trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs |
 | `make smoke`, `make csp-check` | Smoke test and browser CSP check of a deployed stack (`SMOKE_URL=https://...`) |
 | `make eval-smoke` | 12-scenario smoke suite with a scripted client, no model |

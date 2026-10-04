@@ -2,6 +2,7 @@
 
 - Status: accepted
 - Date: 2026-09-29
+- Update (2026-10-04): [ADR 0038](0038-continuous-deployment-to-azure-with-github-actions.md) amends the image decision below for continuous deployment: the workflow builds the images, pushes them to GHCR, and the VM pulls them by digest. Building on the VM stays for local and manual use. [ADR 0037](0037-cloud-secret-management-with-azure-key-vault.md) replaces the env file as the secret store on Azure.
 
 Phase 16 decision, taken by the session under the orchestrator's pre-approval (the human delegated the plan-mode approval); the plan is `docs/plans/phase-16.md`. The hosting provider is undecided on purpose ("decide later"), so the decision is host-neutral.
 

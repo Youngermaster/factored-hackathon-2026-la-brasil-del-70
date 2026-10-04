@@ -7,9 +7,9 @@ Everything needed to run the system outside the Python and web packages: the dev
 | Path | Purpose |
 |---|---|
 | `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
-| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `up`, `rotate`, `seed`, `update`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
 | `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
-| `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker) |
+| `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker); continuous deployment: `setup-github-oidc.sh` (the one-time OIDC identity), `run-on-vm.sh` and `vm-deploy.sh` (release or roll back through run-command) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |
 | `smoke_test.sh`, `smoke_test.py` | The smoke test against a deployed URL (standard library Python) |
 | `caddy/Caddyfile` | TLS, the SPA headers and strict CSP, the reverse proxy |
@@ -175,6 +175,49 @@ deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed && deploy/prod.
 
 **Take it down.** After "Take the demo down" below: `az group delete --name rg-bank-agent`, then `az keyvault purge --name <vault>` (soft delete keeps a deleted vault for 7 days otherwise).
 
+## Continuous deployment on Azure
+
+After the one-time setup below, every push to `main` that passes the `ci` workflow is released to the Azure VM by `.github/workflows/deploy.yml` ([ADR 0038](../docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)): the images are built once on GitHub, pushed to GitHub Container Registry (GHCR) under the commit SHA, pulled by digest on the VM, and checked against the public URL; a failed check rolls back. GitHub signs in to Azure with OpenID Connect (no client secret exists), and the VM keeps reading its own secrets from Key Vault ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)).
+
+```mermaid
+flowchart TD
+    push["push to main"] --> ci["ci workflow"]
+    ci -- "success, commit still at the head of main,<br/>DEPLOY_ENABLED=true (or a manual run)" --> plan["plan"]
+    plan --> build["build: make images once,<br/>push to GHCR as :commit-sha, record digests"]
+    build --> gate{"environment production:<br/>required reviewers"}
+    gate --> login["azure/login with OIDC<br/>(federated credential, no secret)"]
+    login --> rc["az vm run-command invoke:<br/>run-on-vm.sh sends vm-deploy.sh"]
+    rc --> vm["on the VM, as the checkout owner:<br/>git checkout sha, prod.sh release<br/>(pull by digest, backup, stage Key Vault secrets,<br/>migrate, swap)"]
+    vm -- "release failed" --> restore["previous commit and tag start again;<br/>the run fails"]
+    vm -- "released" --> checks["smoke_test.sh and make csp-check<br/>against PUBLIC_URL"]
+    checks -- "pass" --> done["done: the summary lists each step"]
+    checks -- "fail" --> rollback["sign in again, run-on-vm.sh rollback<br/>(prod.sh rollback on the previous commit)"]
+```
+
+| Who | Can do | Cannot do |
+|---|---|---|
+| The `build` job | Push packages to this repository's GHCR namespace | Reach Azure |
+| The `deploy` and `rollback` jobs (environment `production`) | Sign in as the deploy identity: read the VM and run a command on it (root on the VM) | Read Key Vault, change any other resource |
+| The VM's managed identity (ADR 0037) | Read the application's secrets in Key Vault | Write them, reach GitHub |
+| The token handed to the VM | Pull the images until the deploy job ends | Push, outlive the job |
+
+**One-time setup** (the human, once; nothing runs before step 5 because the workflow stops at its plan job while the repository variables are missing):
+
+1. Finish "Azure VM with Key Vault" above by hand once: the VM, the boot unit, the env file, `deploy/prod.sh build`, `up`, `seed`, and `smoke`. Continuous deployment releases over this stack; it does not create it.
+2. On the VM, as the admin user, check that the operator account can do what the release does unattended: `sudo -n true && id -nG | grep -qw docker && echo ok`. For a private repository, let the checkout fetch with its read-only deploy key: `git -C ~/bank-agent config core.sshCommand "ssh -i ~/.ssh/github_deploy -o IdentitiesOnly=yes"`, then `git -C ~/bank-agent fetch origin main` must work.
+3. On your machine: `az login`, then `deploy/azure/setup-github-oidc.sh --dry-run` (prints every change, makes none), then `deploy/azure/setup-github-oidc.sh`. It is idempotent; run it again whenever in doubt. `ROLE_MODE=builtin` falls back to Virtual Machine Contributor on the resource group if your tenant forbids custom roles; `BRANCH_CREDENTIAL=0` leaves out the `main` branch credential, which the workflow does not need.
+4. Store what it prints: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID` as secrets of the `production` environment, and `AZURE_RESOURCE_GROUP`, `AZURE_VM_NAME`, `PUBLIC_URL`, `VM_CHECKOUT`, and `VITE_DEMO_MODE=true` as repository variables (it prints the `gh` commands too). In Settings, Environments, `production`: add yourself (and a teammate) as required reviewers, and under deployment branches allow `main` only.
+5. Run it once by hand: Actions, `deploy`, "Run workflow" on `main` with `deploy`, and approve the `production` deployment. The first push creates the three GHCR packages, linked to the repository and private like it.
+6. When that run is green, set the repository variable `DEPLOY_ENABLED=true`. From then on every green `ci` run on `main` deploys.
+
+**Trigger.** Automatic: a push to `main` whose `ci` run succeeds, while `DEPLOY_ENABLED=true`. By hand: Actions, `deploy`, "Run workflow" on `main`, action `deploy` (the head of `main`) or `rollback`. Runs never overlap; one that starts during another waits. Pause automatic deploys by setting `DEPLOY_ENABLED` to anything but `true`.
+
+**Roll back.** Automatic when the smoke test or the CSP check fails after a release; a release that fails on the VM restores the previous one itself. By hand, any of: the `deploy` workflow with action `rollback`; from your machine after `az login`, `AZURE_RESOURCE_GROUP=rg-bank-agent AZURE_VM_NAME=vm-bank-agent deploy/azure/run-on-vm.sh rollback`; or on the VM, `sudo DEPLOY_ACTION=rollback VM_CHECKOUT=/home/azureuser/bank-agent deploy/azure/vm-deploy.sh`. A rollback swaps images and the checked-out commit, not data: after a release that ran a migration the old code cannot use, restore the backup that release took ("Backup and restore") before or after rolling back.
+
+**Logs.** The workflow run: each step's log and a summary table (release, smoke, CSP). On the VM: `sudo ls -t /var/log/bank-agent-deploy/` (one file per run, the full output of the release), `deploy/prod.sh status`, `deploy/prod.sh logs api`. In Azure: `az monitor activity-log list --resource-group rg-bank-agent --offset 1d --query "[?contains(operationName.value, 'runCommand')].{time:eventTimestamp, caller:caller, status:status.value}" --output table` lists who ran a command on the VM.
+
+**Take it down.** With the demo ("Take the demo down"): `az ad app delete --id <AZURE_CLIENT_ID>` (the app, its service principal, and the federated credentials), `az role definition delete --name "Bank Agent deploy (run-command only)"`, delete the `production` environment and the variables in GitHub, and delete the three `bank-agent-*` packages under the repository's Packages.
+
 ## Choosing the model
 
 Switching the model is a settings-only change in `deploy/.env.production`, followed by `deploy/prod.sh up`. The budget guard stays on in every option (`LLM_DAILY_BUDGET_USD`, default 5; `LLM_CONVERSATION_BUDGET_USD`, default 0.50; `LLM_SESSION_TOKEN_LIMIT`, default 20000). Prices come from `services/api/config/llm_prices.yaml`, shipped in the image; unverified entries are charged at 1.5 times until someone verifies them (pending human action 7).
@@ -251,6 +294,8 @@ deploy/prod.sh update          # git pull --ff-only, backup, build the new commi
 deploy/prod.sh rollback        # start the previously deployed image tag again (kept in deploy/.state/)
 ```
 
+With continuous deployment the workflow does this instead ("Continuous deployment on Azure"): after `git checkout <commit>`, `IMAGE_REGISTRY=ghcr.io/<owner>/<repository> deploy/prod.sh release` pulls the images CI built instead of building them, then backs up, migrates, and starts like `update`.
+
 Migrations only move forward. When the update ran a new migration and the old code cannot work with it, restore the backup that `update` took first (next section), then roll back.
 
 ## Backup and restore
@@ -324,7 +369,7 @@ The project name keeps it apart from the development stack; it publishes 8080 an
 
 ## Supply chain
 
-- `make security`: pip-audit over every extra, `pnpm audit --prod --audit-level high`, bandit, gitleaks over the history, hadolint on every Dockerfile, shellcheck on the scripts here, and the production compose validation. Container tools run from images pinned by digest. No accepted findings exist today; an accepted one would be listed here with its reason and an expiry date.
+- `make security`: pip-audit over every extra, `pnpm audit --prod --audit-level high`, bandit, gitleaks over the history, hadolint on every Dockerfile, shellcheck on the scripts here, actionlint (with shellcheck) on every workflow, and the production compose validation. Container tools run from images pinned by digest. No accepted findings exist today; an accepted one would be listed here with its reason and an expiry date.
 - `make images` then `make scan-images IMAGE_TAG=<tag>`: trivy fails on any fixable HIGH or CRITICAL finding in the three images and writes CycloneDX SBOMs to `reports/sbom/` (CI publishes them as the `sbom` artifact).
 - Caddy is compiled from `caddy/module/` because the official 2.11.4 binary carries fixed-upstream vulnerabilities (Go 1.26.3 standard library, `golang.org/x/crypto`, `net`, `text`, and `grpc`: 17 HIGH findings). To update it, run `go get` for the new versions and `go mod tidy` in a `golang` container over that folder, rebuild the web image, and rescan.
 
