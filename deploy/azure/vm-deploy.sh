@@ -39,8 +39,9 @@ fail() {
 }
 
 as_owner() {
-  # runuser sets HOME, USER, and LOGNAME for the operator and keeps the rest of the environment.
-  runuser -u "${OWNER}" -- "$@"
+  # runuser sets HOME, USER, and LOGNAME for the operator and keeps the rest of the environment. Run from the checkout:
+  # run-command starts in a root-only directory, and docker compose fails to stat a working directory it cannot read.
+  (cd "${CHECKOUT}" && runuser -u "${OWNER}" -- "$@")
 }
 
 state() {
