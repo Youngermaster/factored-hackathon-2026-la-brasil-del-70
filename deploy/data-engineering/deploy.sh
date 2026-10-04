@@ -1,0 +1,204 @@
+#!/usr/bin/env bash
+# Provision and run only the authorized Azure data environment. Never copies a local env file.
+set +x
+set -euo pipefail
+umask 077
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.."
+
+subscription=32847dfa-5fd4-4276-8bdf-243d72b35119
+tenant=4a5e7334-7901-444c-964b-3e6100209fd1
+group=rg-bank-agent
+vm='vm-bank-database'
+storage_group=rg-la70-test
+state=data/data-engineering
+mkdir -p "$state"
+storage="stla70$(printf '%s' "$subscription/$storage_group" | sha256sum | cut -c1-16)"
+az_args=(--subscription "$subscription" --only-show-errors)
+[[ "$(az account show --query tenantId -o tsv)" == "$tenant" ]] || { printf 'Wrong tenant.\n' >&2; exit 2; }
+[[ "$(az account show "${az_args[@]}" --query user.name -o tsv)" == valenciajuliann@hotmail.com ]] || {
+    printf 'Wrong operator account.\n' >&2; exit 2;
+}
+[[ "$(az group show -n "$group" "${az_args[@]}" --query location -o tsv)" == westus2 ]] || exit 2
+[[ "$(az group show -n "$storage_group" "${az_args[@]}" --query location -o tsv)" == eastus2 ]] || exit 2
+
+invoke() {
+    az vm run-command invoke -g "$group" -n "$vm" --command-id RunShellScript \
+        --scripts "@$1" "${az_args[@]}" --query 'value[].message' -o tsv
+}
+
+case "${1:-}" in
+    validate|provision|validate-storage|provision-storage)
+        if [[ ! -f "$state/ssh.pub" ]]; then
+            ssh-keygen -q -t ed25519 -N '' -f "$state/bootstrap-key"
+            cp "$state/bootstrap-key.pub" "$state/ssh.pub"
+            # There is no SSH ingress; discard the unused private key immediately.
+            python3 - "$state" <<'PY'
+import sys
+from pathlib import Path
+root = Path(sys.argv[1])
+(root / 'bootstrap-key').unlink()
+(root / 'bootstrap-key.pub').unlink()
+PY
+        fi
+        deployment_group=$group
+        template=deploy/data-engineering/database.json
+        parameters=("sshPublicKey=$(cat "$state/ssh.pub")")
+        if [[ "$1" == *-storage ]]; then
+            deployment_group=$storage_group
+            template=deploy/data-engineering/storage.json
+            operator=$(az ad signed-in-user show --query id -o tsv)
+            parameters=("storageName=$storage" "operatorId=$operator")
+        fi
+        az deployment group validate -g "$deployment_group" -n data-engineering \
+            --template-file "$template" --parameters "${parameters[@]}" \
+            "${az_args[@]}" --query properties.provisioningState -o tsv
+        if [[ "$1" == provision* ]]; then
+            az deployment group create -g "$deployment_group" -n data-engineering \
+                --template-file "$template" --parameters "${parameters[@]}" \
+                "${az_args[@]}" --query properties.provisioningState -o tsv
+            if [[ "$1" == provision ]]; then
+                principal=$(az vm show -g "$group" -n "$vm" "${az_args[@]}" --query identity.principalId -o tsv)
+                [[ "$principal" =~ ^[0-9a-f-]{36}$ ]] || exit 2
+                az role assignment create --assignee-object-id "$principal" --assignee-principal-type ServicePrincipal \
+                    --role 'Storage Blob Data Contributor' \
+                    --scope "/subscriptions/$subscription/resourceGroups/$storage_group/providers/Microsoft.Storage/storageAccounts/$storage/blobServices/default/containers/artifacts" \
+                    "${az_args[@]}" -o none
+            fi
+        fi
+        ;;
+    datagrip)
+        client=${2:?authorized public client IPv4 required}
+        host=$(az network public-ip show -g "$group" -n vm-bank-database-ip "${az_args[@]}" \
+            --query ipAddress -o tsv)
+        python3 - "$host" "$client" <<'PY'
+import ipaddress
+import sys
+for value in sys.argv[1:]:
+    if not ipaddress.IPv4Address(value).is_global:
+        raise SystemExit('A public IPv4 is required.')
+PY
+        revision=$(git rev-parse HEAD)
+        {
+            printf 'set -eu\numask 077\n'
+            for file in datagrip.py datagrip-readonly.sql; do
+                printf "cat > /opt/la70-data/%s.next <<'DATA_ENGINEERING_FILE'\n" "$file"
+                git show "$revision:deploy/data-engineering/$file"
+                printf 'DATA_ENGINEERING_FILE\nmv /opt/la70-data/%s.next /opt/la70-data/%s\n' "$file" "$file"
+            done
+            printf 'python3 /opt/la70-data/datagrip.py configure %s %s\n' "$host" "$client"
+        } > "$state/datagrip-configure.sh"
+        invoke "$state/datagrip-configure.sh" > "$state/datagrip-configuration.log"
+        python3 - "$state/datagrip-configuration.log" "$host" "$client" <<'PY'
+import json
+import sys
+from pathlib import Path
+records = [json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines() if line.startswith('{"host":')]
+if len(records) != 1 or records[0].get('tls') is not True:
+    raise SystemExit('TLS configuration was not verified; ingress was not changed.')
+if records[0]['host'] != sys.argv[2] or records[0]['client_ipv4'] != sys.argv[3]:
+    raise SystemExit('Inspection source mismatch; ingress was not changed.')
+PY
+        az network nsg rule update -g "$group" --nsg-name vm-bank-database-nsg -n deny-all-inbound \
+            --priority 200 "${az_args[@]}" -o none
+        az network nsg rule create -g "$group" --nsg-name vm-bank-database-nsg -n allow-datagrip-ip \
+            --priority 110 --direction Inbound --access Allow --protocol Tcp \
+            --source-address-prefixes "$client/32" --source-port-ranges '*' \
+            --destination-address-prefixes '*' --destination-port-ranges 5432 "${az_args[@]}" -o none
+        printf 'Data engineering inspection ready: %s:5432 from %s/32.\n' "$host" "$client"
+        ;;
+    release)
+        revision=$(git rev-parse HEAD)
+        git archive --format=tar.gz --output="$state/$revision.tar.gz" "$revision"
+        digest=$(sha256sum "$state/$revision.tar.gz" | cut -d' ' -f1)
+        az storage blob upload --account-name "$storage" --container-name artifacts \
+            --name "releases/$digest.tar.gz" --file "$state/$revision.tar.gz" --auth-mode login \
+            --overwrite false --only-show-errors -o none
+        printf '%s %s\n' "$revision" "$digest" > "$state/release"
+        printf 'Uploaded committed revision %s with SHA-256 %s.\n' "$revision" "$digest"
+        ;;
+    source)
+        source_dir=${2:?local source directory required}
+        revision=$(git rev-parse HEAD)
+        source_archive="$state/source-$(date -u +%Y%m%dT%H%M%S%N).tar.gz"
+        uv run --frozen python deploy/data-engineering/source.py pack "$source_dir" "$source_archive" "$revision" \
+            > "$state/source-summary.json"
+        digest=$(sha256sum "$source_archive" | cut -d' ' -f1)
+        source_blob="sources/$digest.tar.gz"
+        if [[ "$(az storage blob exists --account-name "$storage" --container-name artifacts \
+            --name "$source_blob" --auth-mode login --only-show-errors --query exists -o tsv)" != true ]]; then
+            az storage blob upload --account-name "$storage" --container-name artifacts \
+                --name "$source_blob" --file "$source_archive" --auth-mode login \
+                --overwrite false --only-show-errors -o none
+        fi
+        az storage blob download --account-name "$storage" --container-name artifacts \
+            --name "$source_blob" --file "$state/source-download.tar.gz" --auth-mode login \
+            --overwrite true --only-show-errors -o none
+        [[ "$(sha256sum "$state/source-download.tar.gz" | cut -d' ' -f1)" == "$digest" ]] || exit 1
+        printf '%s\n' "$digest" > "$state/source-release"
+        printf 'Published and download-verified private source SHA-256 %s.\n' "$digest"
+        ;;
+    start)
+        read -r revision digest < "$state/release"
+        [[ "$revision" =~ ^[0-9a-f]{40}$ && "$digest" =~ ^[0-9a-f]{64}$ ]] || exit 2
+        source_kind=${2:-sample}
+        case "$source_kind" in sample|local|s3) ;; *) exit 2 ;; esac
+        source_digest=''
+        if [[ "$source_kind" == local ]]; then
+            source_digest=$(cat "$state/source-release")
+            [[ "$source_digest" =~ ^[0-9a-f]{64}$ ]] || exit 2
+        fi
+        # Python transfer code is supplied as code, never with an access token or SAS.
+        {
+            printf 'set -eu\numask 077\nmkdir -p /opt/la70-data\n'
+            printf "cat > /opt/la70-data/blob.py <<'LA70_BLOB_PY'\n"
+            git show "$revision:deploy/data-engineering/blob.py"
+            printf 'LA70_BLOB_PY\n'
+            printf 'python3 /opt/la70-data/blob.py download %s releases/%s.tar.gz /opt/la70-data/release.tar.gz --sha256 %s\n' "$storage" "$digest" "$digest"
+            printf 'mkdir -p /opt/la70-data/releases/%s\n' "$revision"
+            printf 'tar -xzf /opt/la70-data/release.tar.gz -C /opt/la70-data/releases/%s\n' "$revision"
+            printf 'cd /opt/la70-data/releases/%s\nbash deploy/data-engineering/bootstrap.sh > /opt/la70-data/bootstrap.log 2>&1\n' "$revision"
+            if [[ "$source_kind" == local ]]; then
+                printf 'python3 /opt/la70-data/blob.py download %s sources/%s.tar.gz /opt/la70-data/sources/%s.tar.gz --sha256 %s\n' \
+                    "$storage" "$source_digest" "$source_digest" "$source_digest"
+            fi
+            # No inbound port is needed. systemd gives the pipeline an independently inspectable handle.
+            printf 'systemd-run --unit=la70-data-pipeline --collect bash /opt/la70-data/releases/%s/deploy/data-engineering/run.sh %s %s /opt/la70-data %s\n' \
+                "$revision" "$revision" "$source_kind" "$source_digest"
+        } > "$state/start.sh"
+        invoke "$state/start.sh"
+        ;;
+    status)
+        cat > "$state/status.sh" <<'SH'
+set -eu
+root=/opt/la70-data
+if [ ! -f "$root/latest-run" ]; then
+    systemctl show la70-data-pipeline --property=ActiveState,SubState,Result
+    exit 0
+fi
+run=$(cat "$root/latest-run")
+cat "$root/runs/$run/status"
+if [ -f "$root/runs/$run/result.json" ]; then cat "$root/runs/$run/result.json"; fi
+systemctl show la70-data-pipeline --property=ActiveState,SubState,Result
+SH
+        invoke "$state/status.sh"
+        ;;
+    publish)
+        {
+            printf 'storage=%s\n' "$storage"
+            cat <<'SH'
+set -eu
+umask 077
+root=/opt/la70-data
+run=$(cat "$root/latest-run")
+test "$(cat "$root/runs/$run/status")" != running
+tar -czf "$root/runs/$run.tar.gz" -C "$root/runs" "$run"
+digest=$(sha256sum "$root/runs/$run.tar.gz" | cut -d" " -f1)
+python3 "$root/blob.py" upload "$storage" "runs/$digest.tar.gz" "$root/runs/$run.tar.gz"
+python3 "$root/blob.py" upload "$storage" "runs/$run/result.json" "$root/runs/$run/result.json"
+printf 'Published run %s artifact SHA-256 %s\n' "$run" "$digest"
+SH
+        } > "$state/publish.sh"
+        invoke "$state/publish.sh"
+        ;;
+    *) printf 'Usage: %s validate|provision|provision-storage|release|source <local-dir>|start [sample|local|s3]|status|publish|datagrip <client-ipv4>\n' "$0" >&2; exit 2 ;;
+esac

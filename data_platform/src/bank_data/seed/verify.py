@@ -11,6 +11,12 @@ from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 from bank_agent.adapters.persistence.postgres import migrate
 from bank_agent.adapters.persistence.postgres.database import DatabaseRole, open_transaction
+from bank_agent.adapters.persistence.postgres.mappers.accounts import (
+    customer_to_row,
+    product_to_row,
+    transaction_to_row,
+)
+from bank_agent.adapters.persistence.postgres.mappers.history import complaint_to_row, credit_profile_to_row
 from bank_agent.adapters.persistence.postgres.seed import SeedBundle
 from bank_data.errors import SeedVerificationError
 from bank_data.seed.selection import Selection
@@ -62,7 +68,9 @@ async def _ids(connection: AsyncConnection, table: str, key: str, customer_ids: 
     return {str(row[0]) for row in result}
 
 
-async def verify_bundle(owner_engine: AsyncEngine, selection: Selection, bundle: SeedBundle) -> VerificationReport:
+async def verify_bundle(
+    owner_engine: AsyncEngine, selection: Selection, bundle: SeedBundle, *, check_values: bool = False
+) -> VerificationReport:
     """Require schema head, exact selected reference rows, persona lookups and seeded demo records."""
     revision = await migrate.current_revision(owner_engine)
     head = migrate.head_revision()
@@ -77,6 +85,30 @@ async def verify_bundle(owner_engine: AsyncEngine, selection: Selection, bundle:
     async with open_transaction(owner_engine, DatabaseRole.SEED) as connection:
         for table, key in _SCOPED_TABLES:
             _assert_same(table, expected[table], await _ids(connection, table, key, selected))
+
+        if check_values:
+            rows = (
+                ("customers", "customer_id", [customer_to_row(item) for item in bundle.customers]),
+                ("products", "product_id", [product_to_row(item) for item in bundle.products]),
+                ("transactions", "transaction_id", [transaction_to_row(item) for item in bundle.transactions]),
+                ("historical_complaints", "complaint_id", [complaint_to_row(item) for item in bundle.complaints]),
+                ("credit_profiles", "customer_id", [credit_profile_to_row(item) for item in bundle.credit_profiles]),
+            )
+            for table, key, wanted_rows in rows:
+                if not wanted_rows:
+                    continue
+                columns = list(wanted_rows[0])
+                result = await connection.execute(
+                    text(
+                        f"SELECT {', '.join(columns)} FROM app.{table} "  # noqa: S608  # nosec B608 (fixed mappers)
+                        "WHERE customer_id = ANY(CAST(:ids AS text[]))"
+                    ),
+                    {"ids": selected},
+                )
+                actual_rows = {str(row[key]): dict(row) for row in result.mappings()}
+                mismatches = sum(actual_rows.get(str(row[key])) != row for row in wanted_rows)
+                if mismatches:
+                    raise SeedVerificationError(f"{table}: {mismatches} reference rows differ from gold values")
 
         identities = await connection.execute(
             text(

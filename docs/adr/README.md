@@ -44,6 +44,10 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 | [0036](0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation | Accepted | 2026-10-03 |
 | [0037](0037-cloud-secret-management-with-azure-key-vault.md) | Production secrets in Azure Key Vault with workload identity | Accepted | 2026-09-30 |
 | [0038](0038-continuous-deployment-to-azure-with-github-actions.md) | Continuous deployment to the Azure VM with GitHub Actions, GHCR, OIDC, and run-command | Proposed | 2026-10-04 |
+| [0039](0039-azure-vm-data-pipeline.md) | Execute the existing data pipeline on an Azure VM | Accepted | 2026-10-03 |
+| [0040](0040-isolated-bank-database-vm.md) | Isolate the data pipeline on vm-bank-database in westus2 | Accepted | 2026-10-04 |
+| [0041](0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment, validation, and DataGrip access | Accepted; Azure naming replacement superseded | 2026-10-04 |
+| [0042](0042-preserve-azure-resource-names.md) | Keep Azure resource names and organize data engineering | Accepted | 2026-10-04 |
 
 ## Notes on status
 

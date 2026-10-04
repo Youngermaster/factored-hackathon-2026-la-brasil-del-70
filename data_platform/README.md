@@ -91,7 +91,7 @@ The `bank-data` command. Every data command takes `--source sample|s3|local` (de
 | `bank-data report` | `make data-report` | The quality report (`docs/data/quality-report.md` for the S3 source) |
 | `bank-data lineage` | `make lineage` | `dbt docs generate` and the Mermaid lineage (`docs/data/lineage.md` for the S3 source) |
 | `bank-data seed [--customers N]` | `make seed` (`SEED_CUSTOMERS`, default 200) | Migrate the compose PostgreSQL, then load the personas and a deterministic subset from gold; idempotent. The bounded `sample` source uses `seed/personas.sample.yaml`; the full warehouse uses `seed/personas.yaml`. Needs `POSTGRES_ADMIN_PASSWORD` and `SESSION_SECRET` |
-| `bank-data verify-seed [--customers N]` | `make verify-seed` | Read-only comparison of the selected gold IDs, persona lookups, and demo records with PostgreSQL; exits nonzero on a mismatch |
+| `bank-data verify-seed [--customers N] [--check-values]` | `make verify-seed` | Read-only comparison of selected gold IDs, persona lookups, and demo records; `--check-values` also requires every mapped reference field to match PostgreSQL |
 | `bank-data analysis [--output-dir D] [--labeling-dir D]` | `make analysis` | Demand evidence, pre-registered scores, figures, and the labeling files (`docs/analysis/` and `data/labeling/` for the S3 source; next to the warehouse otherwise) |
 | `bank-data sample` | `make data-sample` | Regenerate `sample/` from the S3 warehouse, then run the guard |
 | `bank-data codegen [--check]` | `make data-codegen` | Regenerate (or check) the dbt files derived from the table specs |

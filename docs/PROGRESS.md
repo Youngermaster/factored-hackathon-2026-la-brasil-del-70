@@ -8,9 +8,10 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 |---|---|
 | Internal MVP completion window end | Sunday, 2026-10-04 (revised; leaves one calendar day before the official October 5 challenge-window end; completion is pending) |
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
-| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and verified on `feat/adr-0026-live-agent`. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
-| Latest product increment | ADR 0026: live human service on the existing conversation, verified locally; not pushed or deployed |
+| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and merged into `main`. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
+| Latest product increment | ADR 0026: live human service on the existing conversation, merged into `main`; public deployment is not verified here |
 | Blocked | None |
+| Azure data platform | Complete: dedicated vm-bank-database in westus2, full-source pipeline, schema 0014, strict PostgreSQL reconciliation, retained-state rerun and private evidence verified |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
 Pending human actions (the phase 09 prompt asks that phase 11 start after actions 21 and 25):
@@ -72,6 +73,138 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 47. **Set up continuous deployment to the Azure VM, once, after pull request 27 and the continuous deployment pull request (stacked on it) merge** (`deploy/README.md`, "Continuous deployment on Azure"; ADR 0038): check that the VM operator account has passwordless sudo and the `docker` group and that the checkout can `git fetch`; `az login`, then `deploy/azure/setup-github-oidc.sh --dry-run` and `deploy/azure/setup-github-oidc.sh`; store the printed Azure ids as `production` environment secrets and the resource group, VM name, public URL, checkout path, and `VITE_DEMO_MODE` as repository variables; add required reviewers and the main-only branch rule to the `production` environment; run the `deploy` workflow once by hand; then set `DEPLOY_ENABLED=true`. Decide whether to keep the `main` branch federated credential (`BRANCH_CREDENTIAL=0` leaves it out; the workflow does not use it).
 
 ## Phase log
+
+### Merge main into data engineering (2026-10-04)
+
+- Integrated `origin/main` at `bef6956` into `data-engineering`, preserving the data deployment,
+  DataGrip access, production connection guide, and deterministic card-selection fixes. Resolved
+  six conflicts in PostgreSQL unit-of-work documentation and the shared documentation/indexes.
+- Retained the main-branch human-service, guardrail, analytics, secret-management, and deployment
+  changes. Updated the connection guide for mounted service-specific secrets and aligned ADR 0041's
+  index status with its existing Azure-naming supersession. The already-fixed ambiguous-card issue
+  remains absent from the backlog; its Spanish and Portuguese integration tests passed.
+- Validation: lint and types, 3,144 unit tests, 1,625 integration tests, all 11 Python coverage gates,
+  documentation/ADR checks, sample bounds, code generation, and repository guards passed. Three
+  optional embedding-model tests were skipped because the optional dependency is not installed.
+- The first full check stopped on two web tests whose initial chat-render waits expired. Both passed
+  in the focused rerun (20 tests), and the complete web rerun passed all 358 tests with coverage;
+  assertions and timeouts were unchanged. The remaining full-check guards ran separately and passed.
+- Created backup branch `backup/data-engineering-before-main-20261004-ad38357` before the merge.
+  This integration changes repository files only; no Azure resource or deployed application was changed.
+
+### Production application database connection guide (2026-10-04)
+
+- Added [the production connection guide](data/production-database-connection.md): `bank_app` versus
+  owner/inspection roles, the supported internal Compose connection, host-loopback reuse of the engineering
+  database, and private routing/HBA/TLS and Compose prerequisites for an application on another VM.
+- Checked current settings and engine wiring: no database TLS/CA settings or explicit verified SSL context
+  are implemented; production Compose hardcodes `postgres`. The guide distinguishes required remote
+  integration work from the existing working connection and includes readiness, isolation, write/read-back,
+  shared-state, pool-capacity, and password-rotation verification.
+- Read-only Azure CLI confirmed the data VM private address `10.70.1.4`. No application, database, cloud
+  networking, secrets, or deployment configuration was changed. `make docs-check` passed, including
+  Markdown, Mermaid, and documentation check-script tests.
+
+### Preserve Azure names and document data engineering (2026-10-04)
+
+- The operator cancelled Azure naming replacement. Keep `vm-bank-database` in `rg-bank-agent`, westus2,
+  and `stla70238253ae46a02964` in `rg-la70-test`, eastus2. The original DataGrip endpoint, password,
+  certificate, data, application VM, and Nequi are preserved. Preparatory engineering resources remain
+  unused; no resource retirement is authorized by this change.
+- Repository organization remains `data-engineering`. Deployment/inspection commands and infrastructure
+  definitions now reference the original Azure identifiers. The abandoned replacement helper and its
+  feature-specific tests were removed; existing safety, security, source-integrity, and restore checks remain.
+- [ADR 0042](adr/0042-preserve-azure-resource-names.md) supersedes Azure renaming only.
+  [The full process guide](data/data-engineering-process.md) explains deployment, contracted sources,
+  bronze/silver/gold, quarantine, bounded PostgreSQL mapping, exact reconciliation, API checks,
+  private evidence and backups, safe reruns, DataGrip TLS, operation, and trade-offs.
+- The 36 focused deployment and inspection tests, Ruff, and documentation checks passed. The updated
+  complete repository gate passed: 2,906 unit, 1,537 integration, 349 web, all 11 coverage gates,
+  documentation/data/code-generation checks, and the history secret scan. Three optional embedding
+  tests were skipped because the extra is absent. Live TLS 1.3 verification passed at the original IP; read-only
+  checks confirmed schema `0014`, serving counts 200/559/6119, inspection login enabled with no
+  superuser/bypass privileges, and application RLS returning zero customers without context.
+
+### Data engineering names and end-to-end deployment (2026-10-04)
+
+- Renamed the local branch to `data-engineering`, the deployment package to `deploy/data-engineering`,
+  the operational state to ignored `data/data-engineering`, the engineering tests, and plan/execution
+  documents. Existing immutable releases keep an explicit Compose fallback; persisted PostgreSQL
+  volume and VM paths are retained to avoid starting an empty database.
+- The operator also requested Azure resource names. Target: `rg-data-engineering-test`,
+  `vm-data-engineering-database`, engineering network/disk/snapshot names, and private
+  `stdataeng213c0ee90850`, all in westus2. Storage and closed networking are deployed; the original
+  database backup, snapshot, and engineering disk clone exist. All 27 artifacts passed downloaded
+  SHA-256/source-ETag checks. A network-isolated backup restore verified schema, five reference-table
+  hashes/counts, application RLS, and inspection grants. Westus2 uses 4/4 regional and family vCPU, so replacement requires an explicit approved
+  cutover after preserving the original disk; deallocation alone does not release quota.
+- [ADR 0041](adr/0041-data-engineering-deployment-and-datagrip.md) explains the full identity/infrastructure,
+  immutable source/release transfer, contracts/quarantine, dbt, schema mapping, bounded load, retained
+  reruns, reconciliation, API tests, private evidence/backup, TLS, password setup, and DataGrip connection.
+- Added reproducible inspection configuration and password-free certificate/TLS checking, plus guarded
+  artifact migration with download SHA-256 and source ETag verification. The preparation preserves
+  the source VM and current DataGrip endpoint. The inspection password was set successfully by the operator.
+- Previous full repository checks passed: 2,902 unit, 1,537 integration, 349 web, three optional embedding
+  skips, all coverage gates, docs, and secret checks. The 47 focused naming/migration/inspection tests, strict typing,
+  documentation checks, and real isolated backup restore passed. The final repository-wide gate passed:
+  2,912 unit, 1,537 integration, 349 web, all 11 coverage gates, docs/data/code-generation checks,
+  and the history secret scan. Three optional embedding tests remain skipped. Azure also validated
+  the attached-disk replacement template. The explicitly approved Azure cutover remains pending.
+
+### DataGrip access to the dedicated data VM (2026-10-04)
+
+- The operator authorized username/password inspection and supplied client IPv4 `181.140.234.12`.
+  Configured only `vm-bank-database`: direct PostgreSQL TLS at `13.66.169.189:5432`, an NSG allow for
+  this client `/32` at priority 110, and denied remaining inbound traffic at priority 200. Nequi and
+  the application VM were preserved. [ADR 0041](adr/0041-data-engineering-deployment-and-datagrip.md) records this change.
+- PostgreSQL is healthy with TLS enabled, a valid IP certificate, zero HBA parsing errors, schema
+  `0014`, 200 customers, 559 products, and 6,119 transactions. A workstation handshake negotiated
+  TLS 1.3 and verified the certificate. The application role still sees zero customers without context.
+- `bank_datagrip` has SELECT-only grants and role-specific RLS policies for the five reference tables,
+  plus the schema revision. It has no write, ownership, schema-creation, superuser, or bypass privileges.
+  The operator completed the hidden interactive password command and received its success marker; no
+  password was requested in chat or generated for display. The helper installs an encrypted SCRAM
+  verifier and downloads the public CA certificate for DataGrip `verify-full`.
+- Authentication and isolation tests passed: 33 deployment/inspection tests, followed by 14 focused
+  tests including a real PostgreSQL login with the locally derived SCRAM verifier. The full repository
+  gate passed: 2,912 unit, 1,537 integration, 349 web, all coverage gates and remaining checks,
+  with three optional embedding skips. External TLS 1.3 certificate/IP verification passed again.
+
+### Dedicated Azure data VM (2026-10-04)
+
+Owner: Julian Valencia. Authorized compute scope: `vm-bank-database` and its dedicated network in
+`rg-bank-agent`, westus2. Private artifact storage remains in `rg-la70-test`, eastus2.
+
+- The operator confirmed the bank project and requested a separate data VM after Azure activity logs identified another creator for `vm-bank-agent`. Read-only inspection found the existing public application running there; its configuration and database were preserved.
+- ARM validation and provisioning succeeded for `vm-bank-database`, `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), Ubuntu 24.04, a verified 128 GiB Standard SSD, managed identity, and denied inbound traffic. Blob access is limited to the existing private artifact container. Nequi remains untouched.
+- Updated the deployment script to target only the dedicated VM, its network resources, and the artifact container. Nineteen safety/integrity/orchestration tests, strict typing, shell syntax, and ShellCheck passed. Full-source execution, retained-state rerun, cloud evidence publication, and the updated repository-wide check remain pending.
+- Cloud run `20261004T175314Z-59a43e8fea4d` succeeded: all 7,671 source objects, 23,471,159 loaded rows, 24,029 quarantined transcripts with missing duration, 271 dbt passes and two branch-reference warnings, and 13 passing freshness checks. All five gold hashes match the validated local files. Strict PostgreSQL reconciliation verified 200 customers, 559 products, and 6,119 transactions; eight es/pt workflow checks and cross-customer 404 passed. The private archive, backup, and inspection were downloaded and hash-verified.
+- Imported merged migration `0014` unchanged from main `8ac625afa4d8` and supplied trusted transaction-local staff context. Four real-PostgreSQL compatibility tests and the updated full `make check` passed: 2,889 unit, 1,536 integration, 349 web, all 11 coverage gates and security/docs/data checks. Three optional embedding tests remain skipped because the extra is absent. Retained-state run `20261004T191022Z-74c46aba0058` succeeded: all 7,671 objects unchanged, zero reloads, identical gold hashes and selected PostgreSQL values/counts, schema `0014`, forced RLS, eight es/pt flow checks and customer-isolation 404. Its archive, all 23 recorded artifacts including the backup, and inspection were downloaded and hash-verified. Completion manifest `64c1d9f2fc902bfc8a59d9af0258ae32a2093f1c1b164befd282e816d8de25bd` is published privately and download-verified. The public application database and Nequi remain unchanged; full PostgreSQL batch loading and restore rehearsal remain outside this scope.
+- Fetched main and checked current remote branches. Main now uses ADR 0038 for Azure continuous deployment, so the unmerged data record was renumbered to [0039](adr/0039-azure-vm-data-pipeline.md). [ADR 0040](adr/0040-isolated-bank-database-vm.md) records the new scope. PR metadata was unavailable through the current client.
+
+### Azure data pipeline (2026-10-03)
+
+Owner: Julian Valencia. Scope: `rg-la70-test`, `eastus2`, subscription `32847dfa-5fd4-4276-8bdf-243d72b35119`.
+
+- Added the versioned VM pipeline, private artifact storage, managed identity transfer, closed ingress, and production PostgreSQL roles. The runner stops before loading when contracts or dbt fail and refuses automatic reseeding of an active database.
+- Added strict reference-value reconciliation and corruption regressions. Prepared the sample locally and verified the actual production API composition for all four workflows in es and pt, plus cross-customer 404 and unchanged ingestion.
+- Azure storage `stla70238253ae46a02964` is provisioned with Shared Key and anonymous blob access disabled. Compute validation requires 6 regional vCPU; Azure reports 4 used of 4, all allocated to the existing Nequi AKS node pool. No resources in other groups were modified. The subscription offer is Free Trial, so upgrading the offer is required before requesting a quota increase; the earlier request returned `ResourceNotAvailableForOffer`. Tested placements in eastus and centralus returned `SkuNotAvailable`.
+- Published the five full gold Parquet tables to private Azure Blob: 5,192,103 rows and 241,693,714 bytes. Each file matched its local DuckDB gold table and its downloaded Azure SHA-256. Uploaded quality, lineage, dbt/freshness results, unchanged-source evidence, and a final manifest. Validation ran locally: 271 dbt passes with two branch-reference warnings, and 11 freshness passes with two warnings. Cloud PostgreSQL loading and cloud pipeline execution remain pending.
+- Ten reconciliation tests and six orchestration/integrity tests passed. Local workflow verification passed after preparing the stored policy index, using independent clients, and using unambiguous language markers. The final `make check` passed in the current working tree: 2,876 unit tests, 1,532 integration tests, 349 web tests, all 11 coverage gates, documentation and data checks, and the history secret scan. Three optional real-embedding tests were skipped because the ml extra is absent. Code release `0ccfa6d` was uploaded privately and its downloaded SHA-256 verified.
+- Added private contracted-source packaging and managed-identity restoration for `start local`, replacing manual CSV copying. Published the 7,671 contracted inputs (5,349,322,481 bytes) as a private archive and verified its downloaded SHA-256. Complete local restoration checked every file before installation. Seventeen integrity/orchestration tests, typing, Ruff, Bandit, shell syntax, and ShellCheck passed. The updated `make check` passed: 2,887 unit, 1,532 integration, 349 web, all 11 coverage gates and remaining checks; the same three optional embedding tests were skipped. Cloud compute execution remains pending.
+- No cloud pipeline execution is claimed. See [the execution record](data/data-engineering-execution.md), [the plan](plans/data-engineering-deployment.md), and [ADR 0039](adr/0039-azure-vm-data-pipeline.md). Existing uncommitted card-support and local-loading work stays outside these commits.
+
+### Card selection follow-up (2026-09-30)
+
+Branch: `fix/card-selection-evidence`. The human asked to start contributing to the card support flow.
+
+- Fixed the ambiguous-card BACKLOG item: `card_support/select.py` now accepts card type and ending hints only from deterministic extraction of the customer's message, preserving existing conversation hints. Model-only hints cannot narrow the customer's cards. The model still extracts the requested action and block reason.
+- Added `test_card_selection_evidence.py`: es and pt requests with invented type, ending, or both must show both masked options and perform no block; choosing the debit card then opens its confirmation. Explicit type and ending requests override a conflicting model guess.
+- Updated `docs/workflows/card-support.md` with the selection behavior and its limitation: phrasings the deterministic recognizers do not understand require clarification.
+- The human then asked to continue correcting the flow. Eight new es and pt cases first reproduced three failures in memory: CARD_STATUS confirmed the previous card despite an explicit request to block another, a cancelled request's hint was reused on a new request, and incompatible type/ending hints silently selected a card.
+- Fixed those failures: explicit block follow-ups return through SELECT_CARD; new explicit hints replace both previous hint fields; new requests start with empty CardData; unmatched or contradictory hints show the customer's cards for clarification. `test_card_block_follow_ups.py` checks the chosen debit card is actually blocked and the credit card stays active, cancellation followed by an ambiguous request, and contradictory hints on both backends.
+- Verification: 55 targeted workflow tests passed on memory and PostgreSQL, including the 20 new regression cases, unknown endings, normal blocks, step-up, denials, routing, and follow-ups. Ruff lint and format checks passed; mypy passed for the two Python files; markdownlint passed. Docker tests required access outside the sandbox.
+- The complete `make check` and a live-model evaluation have not been run for this branch. The published evaluation numbers are unchanged.
 
 ### Guardrail fixes before the video (2026-10-04)
 

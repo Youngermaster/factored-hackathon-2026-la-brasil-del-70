@@ -42,12 +42,16 @@ async def absorb(ctx: TurnContext, data: CardData) -> CardData:
     reason = extraction.block_reason(ctx.text)
     if reason is None and model is not None and model.block_reason_candidates:
         reason = model.block_reason_candidates[0]
-    hint = model.card_hint if model is not None else None
+    # Card selection needs evidence in the customer's text. A model hint alone may invent a type or ending
+    # and silently choose one of several cards; leave unsupported hints unset so SELECT_CARD asks instead.
+    hint_type = extraction.card_type(ctx.text)
+    hint_last4 = extraction.card_last4(ctx.text)
+    explicit_card = hint_type is not None or hint_last4 is not None
     return data.evolve(
         action=action if routed is not None or action is not None else data.action,
         block_reason=reason or data.block_reason,
-        hint_type=extraction.card_type(ctx.text) or (hint.card_type if hint else None) or data.hint_type,
-        hint_last4=extraction.card_last4(ctx.text) or (hint.last4 if hint else None) or data.hint_last4,
+        hint_type=hint_type if explicit_card else data.hint_type,
+        hint_last4=hint_last4 if explicit_card else data.hint_last4,
     )
 
 
@@ -55,7 +59,7 @@ ACTION_INTENTS = {action: intent for intent, action in INTENT_ACTIONS.items()}
 
 
 async def understand(ctx: TurnContext) -> Step:
-    data = await absorb(ctx, load(ctx).evolve(product_id=None, answered=False, confirm_shown=False))
+    data = await absorb(ctx, CardData())
     intent = ACTION_INTENTS.get(data.action) if data.action is not None else Intent.CARD_STATUS
     ctx.engine = ctx.engine.evolve(intent=intent)
     save(ctx, data)
@@ -78,9 +82,9 @@ def _options_reply(ctx: TurnContext, cards: list[CardStatusView], *, unanswered:
 def _plausible(data: CardData, cards: list[CardStatusView]) -> list[CardStatusView]:
     narrowed = cards
     if data.hint_last4 is not None:
-        narrowed = [card for card in narrowed if card.masked_number.last4 == data.hint_last4] or narrowed
+        narrowed = [card for card in narrowed if card.masked_number.last4 == data.hint_last4]
     if data.hint_type is not None:
-        narrowed = [card for card in narrowed if card.card_type is data.hint_type] or narrowed
+        narrowed = [card for card in narrowed if card.card_type is data.hint_type]
     if data.action is CardAction.BLOCK and len(narrowed) > 1:
         narrowed = [card for card in narrowed if card.status is ProductStatus.ACTIVE] or narrowed
     return narrowed
@@ -126,14 +130,16 @@ async def select_card(ctx: TurnContext) -> Step:
     # replaced by a guess from other hints (phase 14b: the model's card type hint picked a card for "terminada en
     # 9999" when the customer has no such card).
     unknown_ending = data.hint_last4 is not None and all(c.masked_number.last4 != data.hint_last4 for c in cards)
-    plausible = cards if unknown_ending else _plausible(data, cards)
-    if len(plausible) == 1 and not unknown_ending:
+    plausible = [] if unknown_ending else _plausible(data, cards)
+    if len(plausible) == 1:
         return await _chosen(ctx, data, plausible[0])
+    # Missing or contradictory hints do not identify a card. Offer all owned cards for an explicit choice.
+    plausible = plausible or cards
     stop = spend_clarification(ctx, open_questions=WHICH_CARD)
     if stop is not None:
         return stop
     options = tuple(ProductId(card.product_ref.key) for card in plausible)
-    save(ctx, data.evolve(option_ids=options, hint_last4=None))
+    save(ctx, data.evolve(option_ids=options, hint_type=None, hint_last4=None))
     return _options_reply(ctx, plausible)
 
 

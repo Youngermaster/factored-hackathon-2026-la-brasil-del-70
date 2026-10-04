@@ -108,7 +108,7 @@ async def test_seeding_twice_loads_the_same_rows(migrated_postgres: PostgresInst
         engine = owner_engine(migrated_postgres)
         try:
             counts.append(await load_seed(engine, bundle, app_role=migrated_postgres.app_user))
-            verified = await verify_bundle(engine, selection, bundle)
+            verified = await verify_bundle(engine, selection, bundle, check_values=True)
             assert verified.counts["customers"] == 2
             assert verified.counts["transactions"] == len(data.transactions)
             assert verified.personas == 2
@@ -148,6 +148,42 @@ async def test_verification_rejects_changed_identity_digest(
             )
         with pytest.raises(SeedVerificationError, match="keyed lookup differs"):
             await verify_bundle(engine, selection, bundle)
+    finally:
+        await engine.dispose()
+
+
+@pytest.mark.parametrize(
+    ("table", "mutation"),
+    [
+        ("products", "current_balance = current_balance + 1"),
+        ("products", "currency = CASE WHEN currency = 'MXN' THEN 'COP' ELSE 'MXN' END"),
+        ("transactions", "occurred_at = occurred_at + interval '1 day'"),
+        ("credit_profiles", "credit_score = 301"),
+    ],
+)
+async def test_value_reconciliation_rejects_corruption_without_exposing_values(
+    migrated_postgres: PostgresInstance, tmp_path: Path, table: str, mutation: str
+) -> None:
+    await reset_database(migrated_postgres)
+    (tmp_path / "personas.yaml").write_text(PERSONAS, encoding="utf-8")
+    selection, bundle = plan_seed(
+        _gold(tmp_path, contract_dataset()),
+        load_personas(tmp_path / "personas.yaml"),
+        KEYS,
+        target=2,
+        snapshot=date(2026, 6, 17),
+        dispute_sla_days=SLA_DAYS,
+        seeded_at=SEEDED_AT,
+    )
+    engine = owner_engine(migrated_postgres)
+    try:
+        await load_seed(engine, bundle, app_role=migrated_postgres.app_user)
+        async with open_transaction(engine, DatabaseRole.SEED) as connection:
+            await connection.execute(text(f"UPDATE app.{table} SET {mutation}"))  # noqa: S608
+        await verify_bundle(engine, selection, bundle)
+        with pytest.raises(SeedVerificationError, match="reference rows differ") as raised:
+            await verify_bundle(engine, selection, bundle, check_values=True)
+        assert not any(customer in str(raised.value) for customer in selection.customers)
     finally:
         await engine.dispose()
 

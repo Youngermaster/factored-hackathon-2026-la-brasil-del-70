@@ -140,6 +140,7 @@ class PostgresUnitOfWork:
             self._tx.conflicted = False
 
     async def _set_staff_context(self) -> None:
+        """Scope migration 0014's claim policies to the trusted session's staff member."""
         if self._connection is not None:
             await self._connection.execute(
                 text("SELECT set_config('app.staff_id', :staff, true)"),
