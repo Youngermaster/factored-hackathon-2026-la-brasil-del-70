@@ -62,6 +62,43 @@ creates a final stopped-disk snapshot and clone, then replaces the VM resource. 
 source storage, and networking remain available for recovery. After boot, verify PostgreSQL and configure
 DataGrip TLS for the new IP before retiring any source resources. The existing application VM is excluded.
 
+## Recover an interrupted replacement
+
+Inspect actual resources before taking another action; do not rerun `cutover` blindly. Its restore proof
+is tied to the preparation manifest, which changes after the final disk clone is protected.
+
+```bash
+az vm list --subscription 32847dfa-5fd4-4276-8bdf-243d72b35119 \
+  --query "[?name=='vm-bank-database' || name=='vm-data-engineering-database'].{Name:name,Group:resourceGroup,State:provisioningState}" \
+  -o table
+```
+
+If the source VM still exists and replacement stopped before its deletion, retain every disk and snapshot
+and restore availability with the exact source resource:
+
+```bash
+az vm start --subscription 32847dfa-5fd4-4276-8bdf-243d72b35119 \
+  --resource-group rg-bank-agent --name vm-bank-database
+```
+
+This applies only to the source data VM. Its existing endpoint, certificate, and password remain valid.
+Do not start it while an approved cutover is still running.
+
+If the source VM is gone, verify that the final snapshot and disk named in the migration manifest have
+`Succeeded` and that `data/data-engineering/os-disk-id` identifies the retained engineering disk. Resume
+only the destination deployment and its managed-identity grant:
+
+```bash
+bash deploy/data-engineering/deploy.sh provision
+```
+
+Provision uses the saved specialized disk; it does not replace its database with a fresh image. Keep the
+original source disk and protected snapshots. Before reopening access, verify the schema and five
+reference tables against the migration manifest, then run the DataGrip configuration and TLS checks
+below. Reapplying provision closes inbound traffic, so a successful previous inspection configuration
+must be reapplied. Retire source resources only after successful destination database, pipeline, and
+connection checks and the operator's explicit approval.
+
 ## Deploy and execute
 
 Prerequisites: authenticated Azure CLI, Git, Bash, Python 3, and `ssh-keygen` on the operator machine.
