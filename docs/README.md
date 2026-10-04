@@ -7,6 +7,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [../README.md](../README.md) | What the system is, the four workflows, the evaluation headline, the quickstart |
+| [HOW-IT-WORKS.md](HOW-IT-WORKS.md) | The whole system end to end in one sitting: data path, one turn, workflows, guardrails with examples, the model, an OpenAI key, ML, evaluation, operations, the team runbook, glossary |
 | [submission/brief-traceability.md](submission/brief-traceability.md) | Every requirement of the brief mapped to code, tests, docs, and evidence, per workflow |
 | [submission/README.md](submission/README.md) | The submission package: checklist, draft email, pre-submission check |
 | [submission/SUBMISSION.md](submission/SUBMISSION.md) | The submission checklist: what is done and the human steps in order |

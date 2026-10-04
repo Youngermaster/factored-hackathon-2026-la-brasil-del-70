@@ -24,7 +24,7 @@ BANK_DATA := $(UV_RUN) bank-data
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
 	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
-	api-local-llm env api-obs load-test submission-check
+	api-local-llm api-hosted-llm env api-obs load-test submission-check
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -88,6 +88,18 @@ llm-smoke: ## Opt-in: run the fixture prompts (es, pt, four workflows) against t
 api-local-llm: ## Opt-in: run the API on :8000 with the local Ollama model through LiteLLM (LOCAL_LLM_MODEL, LOCAL_LLM_BASE)
 	LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=$(LOCAL_LLM_MODEL) LLM_API_BASE=$(LOCAL_LLM_BASE) \
 		$(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
+
+# A hosted model (docs/HOW-IT-WORKS.md, section 7): LLM_PRIMARY_MODEL and LLM_API_KEY_PRIMARY come from the shell or
+# .env, never from this file. The preflight (make env-check with LLM_PROVIDER=litellm) prints the required variables
+# and the fallback model's, each as set or unset, never a value, and stops when a required one is unset. It exits
+# with PIPESTATUS because GNU make 3.81 (the macOS default) ignores .SHELLFLAGS, so pipefail is not always set.
+HOSTED_LLM_PREFLIGHT := /^Required:/ { shown = 1 } /^Optional:/ { shown = 0 } \
+	shown || /^check-env-keys:/ || /^  (LLM_FALLBACK_MODEL|LLM_API_KEY_FALLBACK):/
+
+api-hosted-llm: ## Opt-in: run the API on :8000 with a hosted model through LiteLLM (LLM_PRIMARY_MODEL, LLM_API_KEY_PRIMARY)
+	LLM_PROVIDER=litellm $(GUARD_PY) scripts/checks/check_env_keys.py | awk '$(HOSTED_LLM_PREFLIGHT)'; \
+		exit "$${PIPESTATUS[0]}"
+	LLM_PROVIDER=litellm $(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
 
 api-obs: ## Run the API on :8000 exporting traces and metrics to the obs profile (make up PROFILES=obs first)
 	OTEL_ENABLED=true OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
