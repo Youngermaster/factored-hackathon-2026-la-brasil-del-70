@@ -19,6 +19,7 @@ import { C, MX } from '../lib/scene/kit'
 import { inOutCubic, lerp, outCubic, presence, seg } from '../lib/scene/math'
 import { KIND_LABEL } from '../lib/metrics'
 import { packet } from '../lib/scene/fx'
+import { dims } from '../lib/scene/bank'
 import { COLX, SYS, rates, sysTab } from './parts/evidence-rates'
 import { GX, grid, unsafe, weak } from './parts/evidence-unsafe'
 
@@ -32,6 +33,7 @@ export default defineScene({
     const c = [0, CUES[0] + 0.05, CUES[1] + 0.05, CUES[2] + 0.05, CUES[3] + 0.05]
     TITLES.forEach((key, i) => K.title(L(key), t, i ? c[i] + 0.1 : 0.1, { tout: i < 4 ? c[i + 1] : undefined }))
     const m = M('eval.sar.all.p')
+    dims(K, L('dims'), outCubic(seg(t, 0.3, 0.8)))
     K.fade(outCubic(seg(t, 1.6, 2.0)), () => K.cite(`${KIND_LABEL[m.kind]} ${L('onModel')}  |  ${m.source}  |  ${L('run')}`))
 
     // ── arrive: the 304 cases stream into the three systems ───────────────

@@ -3,17 +3,19 @@
  *
  *   arrive  23.5M rows counted in: the data is real work
  *   1 share one bar splits into what customers contact the bank for
- *   2 fcr   the same segments morph into first-contact resolution: disputes fail
- *   3 tx    147,292 transcripts collapse into two balance templates (honesty)
+ *   2 fcr   the same segments morph into first contact resolution: disputes fail
+ *   3 data  the pipeline (raw to gold, bad rows quarantined) and three real
+ *           data problems, each with the decision it forced (scenes/parts/hook-data.ts)
  *   4 scope four workflows, Spanish and Portuguese
  *
  * One bold move: the stacked bar morphing into columns (segment to column).
  */
 import { defineScene } from '../lib/scene/types'
 import { C, H, MX, W } from '../lib/scene/kit'
-import { clamp, hash, inOutCubic, lerp, mix, outCubic, outExpo, presence, seg } from '../lib/scene/math'
-import { source } from '../lib/scene/bank'
+import { clamp, inOutCubic, lerp, mix, outCubic, outExpo, presence, seg } from '../lib/scene/math'
+import { dims, source } from '../lib/scene/bank'
 import { field } from '../lib/scene/fx'
+import { dataFindings } from './parts/hook-data'
 
 const WF = ['account_inquiry', 'card_support', 'dispute', 'credit'] as const
 const BX = MX
@@ -23,7 +25,8 @@ const BH = 110
 
 export default defineScene({
   cues: [3.0, 6.4, 9.8, 13.4, 16.6],
-  draw({ t, L, M, K, ctx }) {
+  draw(env) {
+    const { t, L, M, K } = env
     // ── arrive: the whole frame is data (light gray), counting in ─────────
     // At click 1 that field collapses into the contact bar: the rows become the chart.
     const fold = inOutCubic(seg(t, 3.05, 3.9))
@@ -36,6 +39,9 @@ export default defineScene({
       K.label(`${M('data.tables').text} ${L('rowsSub')}`, MX, 780, { color: C.inkMute, alpha: outCubic(seg(t, 1.8, 2.3)) })
       source(K, rows, outCubic(seg(t, 1.8, 2.3)), undefined, C.inkMute)
     })
+    // the evaluation dimensions: caption grey on the paper ground, then on ink once it folds
+    if (fold < 1) dims(K, L('dims'), outCubic(seg(t, 0.3, 0.8)) * (1 - fold), C.inkMute)
+    if (fold > 0) dims(K, L('dims'), fold, C.mute)
 
     // ── 1 share, then 2 the morph into first-contact resolution ──────────
     const shares = [...WF, 'other'].map((w) => M(`share.${w}`))
@@ -95,34 +101,9 @@ export default defineScene({
       })
     })
 
-    // ── 3 transcripts: 147,292 served, 42 texts, two balance questions ───
-    const aD = presence(t, 10.0, 13.45, 0.3, 0.3)
+    // ── 3 what the data really holds: the pipeline and three findings ────
     K.title(L('txTitle'), t, 10.1, { tout: 13.45 })
-    K.fade(aD, () => {
-      const stat = (v: string, lbl: string, y: number, t0: number) =>
-        K.fade(outCubic(seg(t, t0, t0 + 0.4)), () => {
-          K.text(v, MX, y + (1 - outExpo(seg(t, t0, t0 + 0.6))) * 30, { size: 96, weight: 700, fam: 'display' })
-          K.label(lbl, MX, y + 48, { color: C.dim, size: 26 })
-        })
-      stat(M('data.transcripts').text, L('txServed'), 420, 10.3)
-      stat(M('data.transcript_texts').text, L('txDistinct'), 600, 10.9)
-      stat('2', L('txTwo'), 780, 11.8)
-      // a wall of transcript lines that collapses into the two templates
-      const col = inOutCubic(seg(t, 11.8, 12.6))
-      for (let i = 0; i < 22; i++) {
-        const w = 420 + hash(i, 3) * 560
-        const y0 = 300 + i * 26
-        const y1 = i % 2 ? 690 : 560
-        const a = outCubic(seg(t, 10.3 + i * 0.025, 10.6 + i * 0.025)) * (1 - col) * 0.35
-        if (a > 0) K.fade(a, () => K.fillRR(760, lerp(y0, y1, col) - 5, w, 10, 5, C.paper))
-      }
-      K.fade(outCubic(seg(t, 12.3, 12.8)), () => {
-        K.text(L('txLine1'), 760, 570, { size: 30, weight: 500 })
-        K.text(L('txLine2'), 760, 700, { size: 30, weight: 500 })
-      })
-      K.punch(L('txPunch'), t, 12.6, { y: 950, size: 40, accent: C.blueText })
-      source(K, M('data.transcripts'), outCubic(seg(t, 10.4, 10.8)))
-    })
+    dataFindings(env, 10.0, 13.45)
 
     // ── 4 scope: four workflows, two languages ───────────────────────────
     const aE = outCubic(seg(t, 13.6, 13.9))
@@ -147,6 +128,5 @@ export default defineScene({
         K.chip('pt', x + 32 + w1 + 12, 764, { bg: C.bg, fg: C.paper, k: lk, size: 24, weight: 600 })
       })
     })
-    void ctx
   },
 })

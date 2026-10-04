@@ -11,9 +11,9 @@ Hello Factored team,
 We are submitting La Brasil del 70's project for the Factored AI & Data Hackathon 2026.
 
 Repository (public): https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70
-Deployed demo: <https://host>   (demo mode: pick a profile on the sign-in page; the one-time code is shown on screen, and /demo lists the messages to try)
-Slides (PDF): <link, or attached>
-Video pitch: <link>
+Deployed demo: https://bank-agent-yzaf9.westus2.cloudapp.azure.com   (demo mode: pick a profile on the sign-in page; the one-time code is shown on screen, and /demo lists the messages to try)
+Slides (PDF, the six main slides): <link, or attached>
+Video pitch (under 3:00): <link>
 
 What it is: an AI-first customer-service system for a synthetic Latin American bank. Customers chat in Spanish or Portuguese about four workflows on one engine: account and payment inquiries, card support with a protective card block, transaction-dispute intake and status, and credit-product information with an indicative result from a clearly labeled synthetic eligibility service. The language model understands; deterministic code, driven by a versioned policy pack, decides; every write is confirmed, stepped up, and read back before it is reported; and every turn leaves an execution record. There are no lending decisions and no money movement.
 

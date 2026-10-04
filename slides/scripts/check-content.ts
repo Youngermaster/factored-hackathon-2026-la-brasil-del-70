@@ -7,7 +7,10 @@
  *   3. tokens: styles/tokens.css and the kit's C object agree
  *   4. contrast: every allowed text pair meets its WCAG ratio
  *   5. script: every slide has a narration section; total spoken duration at
- *      150 words per minute sits inside the declared target
+ *      150 words per minute sits inside the declared target and under the
+ *      3:00 video limit; script.md and docs/demo/video-monologue.md say the
+ *      same words by the same speakers (scripts/narration.ts)
+ *  5b. the submission PDF: 4 to 6 main slides, and `pnpm export` splits the appendix off
  *   6. writing: no em dashes in anything shown or spoken
  *   7. naming: no known variant spelling of the product, team, systems,
  *      workflows, metrics or levels; team names identical on the close slide,
@@ -23,6 +26,7 @@ import { parse } from 'yaml'
 import { C } from '../lib/scene/kit'
 import { TEXT_PAIRS, ratio } from '../lib/scene/contrast'
 import { METRIC_KINDS } from '../lib/metric-kinds'
+import { countBySpeaker, firstDifference, monologueTable, monologueWords, scriptWords } from './narration'
 
 const ROOT = process.cwd()
 const REPO = resolve(ROOT, '..')
@@ -138,6 +142,10 @@ if (errors === e2) ok(`${TEXT_PAIRS.length} text pairs meet their ratio (4.5:1 b
 // ── 5. narration script ────────────────────────────────────────────────────
 console.log('\nnarration (script.md, 150 words per minute)')
 const WPM = 150
+const VIDEO_LIMIT_S = 180
+const MONOLOGUE = 'docs/demo/video-monologue.md'
+/** the video documents outside slides/, held to the same writing and naming rules */
+const DEMO_DOCS = ['../docs/demo/video-plan.md', '../docs/demo/video-monologue.md', '../docs/demo/practice-cases.md']
 const script = existsSync(join(ROOT, 'script.md')) ? read('script.md') : ''
 if (!script) fail('script.md is missing')
 const range = script.match(/<!--\s*total-target:\s*(\d+)-(\d+)\s*-->/)
@@ -159,10 +167,48 @@ console.log(`  ${'total'.padEnd(18)} ${fmt(total)} spoken`)
 if (!range) fail('script.md needs a "<!-- total-target: MIN-MAX -->" comment (seconds)')
 else if (total < Number(range[1]) || total > Number(range[2])) fail(`spoken total ${fmt(total)} is outside the target ${fmt(Number(range[1]))} to ${fmt(Number(range[2]))}`)
 else ok(`spoken total ${fmt(total)} is inside ${fmt(Number(range[1]))} to ${fmt(Number(range[2]))}`)
+// the organizers' hard limit: the whole video, demo footage included, is at most 3:00
+if (total > VIDEO_LIMIT_S) fail(`spoken total ${fmt(total)} exceeds the organizers' ${fmt(VIDEO_LIMIT_S)} video limit at ${WPM} words per minute`)
+else ok(`spoken total ${fmt(total)} fits the ${fmt(VIDEO_LIMIT_S)} video limit`)
+checkMonologue(script)
+
+/** script.md and the team monologue say the same words, by the same speakers, with true word counts. */
+function checkMonologue(text: string) {
+  const team = Object.keys(strings.close ?? {}).filter((k) => /^m\d+$/.test(k)).map((k) => String(strings.close[k]))
+  const path = join(REPO, MONOLOGUE)
+  if (!existsSync(path)) return fail(`${MONOLOGUE} is missing`)
+  const md = readFileSync(path, 'utf8')
+  const a = scriptWords(text, team)
+  const b = monologueWords(md, team)
+  const unassigned = a.filter((w) => !w.speaker).length
+  if (unassigned) fail(`script.md has ${unassigned} spoken word(s) before any [speaker] tag`)
+  const diff = firstDifference(a, b)
+  if (diff) fail(`script.md and ${MONOLOGUE} differ at ${diff}`)
+  else ok(`script.md and ${MONOLOGUE} say the same ${a.length} words`)
+  const counts = countBySpeaker(a)
+  const table = monologueTable(md, team)
+  for (const name of team) {
+    const n = counts.get(name) ?? 0
+    console.log(`  ${name.padEnd(18)} ${String(n).padStart(4)} words  ${(n / WPM * 60).toFixed(0).padStart(4)} s`)
+    if (table.get(name) !== n) fail(`${MONOLOGUE}: the word-count table says ${table.get(name) ?? 'nothing'} for ${name}, the script has ${n}`)
+  }
+}
+
+// ── 5b. the six main slides, and the PDF that holds only them ─────────────
+console.log('\nsubmission PDF')
+const mainSlides = aliases.filter((a) => !a.startsWith('appendix'))
+const firstAppendix = aliases.findIndex((a) => a.startsWith('appendix'))
+if (mainSlides.length < 4 || mainSlides.length > 6) fail(`${mainSlides.length} main slides; the organizers allow 4 to 6`)
+if (firstAppendix !== -1 && firstAppendix !== mainSlides.length) fail('appendix slides must come after every main slide')
+// Slidev ignores --range in hash router mode, so `pnpm export` renders the deck once and
+// scripts/split-pdf.mjs cuts it by routeAlias into the pitch PDF and the appendix PDF
+const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> }
+if (!/node scripts\/split-pdf\.mjs/.test(pkg.scripts.export ?? '')) fail('package.json "export" must end with node scripts/split-pdf.mjs, which keeps the appendix out of the submission PDF')
+else ok(`${mainSlides.length} main slides in the submission PDF, ${aliases.length - mainSlides.length} appendix slides in their own PDF (scripts/split-pdf.mjs)`)
 
 // ── 6. writing ─────────────────────────────────────────────────────────────
 console.log('\nwriting')
-const prose = ['slides.md', 'locales/en.yml', 'data/metrics.yml', 'script.md', 'VIDEO.md', 'README.md', 'lib/metric-kinds.ts']
+const prose = ['slides.md', 'locales/en.yml', 'data/metrics.yml', 'script.md', 'VIDEO.md', 'README.md', 'lib/metric-kinds.ts', ...DEMO_DOCS]
 let dashes = 0
 for (const f of prose.filter((p) => existsSync(join(ROOT, p)))) {
   read(f).split('\n').forEach((line, i) => {
@@ -189,7 +235,7 @@ const BANNED: [RegExp, string][] = [
   [/\baccounts and payments\b/i, 'account inquiry (the workflow name in docs/evaluation)'],
   [/\blevel [0-4]\b/i, 'L0 to L4 (docs/operations/degradation.md)'],
 ]
-const named = ['slides.md', 'locales/en.yml', 'script.md', 'VIDEO.md', 'README.md']
+const named = ['slides.md', 'locales/en.yml', 'script.md', 'VIDEO.md', 'README.md', ...DEMO_DOCS]
 for (const f of named.filter((p) => existsSync(join(ROOT, p)))) {
   read(f).split('\n').forEach((line, i) => {
     for (const [re, want] of BANNED) if (re.test(line)) fail(`${f}:${i + 1} "${line.match(re)?.[0]}": write ${want}`)

@@ -130,4 +130,17 @@ data.schema_events: {value: 0, display: "0", kind: offline, source: docs/data/qu
 ops.load_tps: {value: 27.4, display: "27.4", kind: simulation, source: docs/operations/capacity.md, note: "turns per second on the production stack, one laptop, fake model, 2 workers at 1.5 CPUs"}
 ops.load_users: {value: 50, display: "50", kind: simulation, source: docs/operations/capacity.md, note: "simulated customers, 0 errors"}
 ops.load_p95: {value: 250, display: "250 ms", kind: simulation, source: docs/operations/capacity.md}
-deploy.url: {status: pending, kind: offline, source: "deploy/README.md (phase 16)", note: "the public URL the organizers require"}
+deploy.url: {value: "https://bank-agent-yzaf9.westus2.cloudapp.azure.com", display: "bank-agent-yzaf9.westus2.cloudapp.azure.com", kind: offline, source: README.md, note: "one Azure VM, demo mode, hosted gemini-3.1-flash-lite; the deployed build is PR 27 (2d5763a), older than main"}
+
+# -- learned components against their baselines (phases 10 to 13, 14b) -------
+# Component metrics on each model's held-out test split; the end-to-end pair is
+# P on the dev split with the local model. Component values are fractions, so
+# they carry no lo/hi here: the intervals are in the model cards.
+ml.router.f1.keyword: {value: 0.385, display: "0.39", kind: provisional, source: docs/models/router.md, note: "macro-F1, test split, 601 team-authored items, labels pending review"}
+ml.router.f1.embeddings: {value: 0.742, display: "0.74", kind: provisional, source: docs/models/router.md, note: "multilingual-e5-small plus logistic regression"}
+ml.resolver.coverage.rules: {value: 0.793, display: "0.79", kind: offline, source: docs/models/resolver.md, note: "dispute queries auto-resolved, test split; wrong-transaction rate 0.003"}
+ml.resolver.coverage.lgbm: {value: 0.913, display: "0.91", kind: offline, source: docs/models/resolver.md, note: "LightGBM lambdarank; wrong-transaction rate 0.000"}
+ml.risk.auc.score_band: {value: 0.504, display: "0.50", kind: offline, source: docs/models/risk-estimator.md, note: "ROC AUC, test split, 15,322 customers"}
+ml.risk.auc.logreg: {value: 0.611, display: "0.61", kind: offline, source: docs/models/risk-estimator.md}
+ml.e2e.dev.baselines: {value: 66.1, display: "74/112", lo: 57, hi: 74, kind: simulation, source: docs/evaluation/results.md, note: "P on dev with keyword@1 and rules@1, safe automated resolution"}
+ml.e2e.dev.learned: {value: 67.0, display: "75/112", lo: 58, hi: 75, kind: simulation, source: docs/evaluation/results.md, note: "P on dev with the tfidf and lgbm champions"}

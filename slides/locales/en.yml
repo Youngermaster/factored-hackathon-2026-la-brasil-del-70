@@ -26,13 +26,24 @@ hook:
   fcrPunch: "*Disputes* carry the pain"
   fcrLowCsat: low satisfaction (CSAT 1 or 2)
   fcrHandle: average handle time
-  txTitle: And the transcripts?
-  txServed: transcripts
-  txDistinct: distinct customer texts
-  txTwo: balance questions, whatever the topic
-  txLine1: Quisiera saber cuál es mi saldo actual en mi cuenta de ahorros.
-  txLine2: Buenas tardes, necesito consultar el saldo de mi tarjeta de crédito.
-  txPunch: So routing learns from *team-written* utterances.
+  dims: Data Analytics  |  Data Engineering
+  # 3 what the data really holds (scenes/parts/hook-data.ts)
+  txTitle: What the data really holds
+  s_raw: raw
+  s_bronze: bronze
+  s_silver: silver
+  s_gold: gold
+  quarantine: quarantine
+  quarantinedLbl: rows quarantined, never dropped
+  pipelineLbl: "Pandera contracts, dbt tests, one command: make pipeline"
+  f1: distinct texts in
+  f1b: transcripts
+  f1d: router learns from our text
+  f2: customer branch references point nowhere
+  f2d: flagged in silver, kept
+  f3: complaint products are someone else's
+  f3d: disputes confirm the transaction
+  txCite: offline measurement  |  docs/data/quality-report.md  |  docs/data/data-card.md  |  docs/analysis/workflow-evidence.md
   scopeTitle: Four workflows, each built in depth
   scope_account_inquiry: balances, statements
   scope_card_support: status, protective block
@@ -41,6 +52,7 @@ hook:
   ofContacts: of contacts
 
 thesis:
+  dims: Technical Judgment  |  AI Engineering
   title: One customer turn
   who: customer, es-AR
   msg: No reconozco un cargo de 15 lucas en mi tarjeta.
@@ -88,65 +100,107 @@ thesis:
   footnote: illustrative turn  |  clause ids and parameters from policies/clauses (synthetic)
 
 arch:
-  title: A deterministic core, replaceable edges
-  core: domain and policy kernel
-  coreSub: rules and states
-  ports: ports
-  n_llm: LLM gateway
-  n_llmSub: structured outputs
-  n_ret: router and retrieval
-  n_retSub: BM25, dense, hybrid
-  n_ver: grounding verifier
-  n_verSub: checks every draft
-  n_db: PostgreSQL
-  n_dbSub: row-level security
-  n_data: data platform
-  n_dataSub: DuckDB, dbt, contracts
-  p1h: Policy kernel
-  p1file: DSP-AR-1.es.md
-  p1rule: DSP.within_window()
-  p1dec: Decision  DSP-AR-1@1
-  p1c: Rules are code. Clauses are data.
-  p2h: LLM gateway
-  d1: redaction
-  d2: budget guard
-  d3: tracing
-  d4: cost accounting
-  d5: fallback model
-  d6: circuit breaker
-  d7: bounded retry
-  d8: timeout
-  prov1: local Ollama
-  prov1s: today
-  prov2: hosted model
-  prov2s: by setting
-  p2c: The provider is a setting.
-  p3h: Grounding verifier
-  draftOk: 30 days
-  draftBad: 45 days
-  gate: verify
-  send: send
-  template: template
-  p3c: One unsupported number, and a template goes instead.
-  p4h: Data platform
-  s1: raw
-  s2: bronze
-  s3: silver
-  s4: gold
-  quarantine: quarantine
-  rowsIn: rows ingested
-  rowsQ: quarantined, never dropped
-  p5h: Imports flow inward
-  port1: LLMClient
-  port2: Retriever
-  port3: IntentRouter
-  port4: RiskEstimator
-  port5: EligibilityPolicy
-  port6: Repositories
-  p5c: Swap a model, keep the workflow.
-  cite: docs/architecture  |  ADR 0002, 0011, 0012, 0013  |  the 45-day draft is illustrative
+  dims: AI Engineering  |  Machine Learning  |  Technical Judgment
+  t0: The stack, around a deterministic core
+  t1: Deployed on one VM, behind Caddy
+  t2: One turn, model by model
+  t3: Learned beats baseline offline, not end to end
+  # arrive: the stack (README.md, docs/architecture/overview.md)
+  a_web: Web app
+  a_webS: React 19, TypeScript
+  a_ml: Learned models
+  a_mlS: scikit-learn, LightGBM
+  a_data: Data platform
+  a_dataS: DuckDB, dbt, Pandera
+  a_gw: LLM gateway
+  a_gwS: LiteLLM behind one port
+  a_prov: Model provider
+  a_provS: fake, Ollama or hosted
+  a_pg: PostgreSQL 16
+  a_pgS: row-level security
+  a_core: FastAPI
+  a_coreS: hexagonal core
+  a_ports: ports
+  a_seed: gold tables seed the database
+  cite0: docs/architecture/overview.md  |  imports flow inward, enforced by import-linter  |  ADR 0013
+  # 1 the deployment (README.md, deploy/README.md, ADR 0019)
+  b_vm: one Azure VM  |  Docker Compose
+  b_net: internet
+  b_netS: 443
+  b_caddy: Caddy
+  b_caddyS: TLS, CSP, the SPA
+  b_api: api
+  b_apiS: FastAPI, 2 workers
+  b_pg: postgres
+  b_pgS: internal network
+  b_jobs: migrate, seed, purge
+  b_prov: hosted model
+  b_provS: LiteLLM, https
+  b_obs: obs profile
+  b_col: collector
+  b_colS: OpenTelemetry
+  b_prom: Prometheus
+  b_promS: metrics
+  b_graf: Grafana
+  b_grafS: dashboards
+  b_jae: Jaeger
+  b_jaeS: traces
+  b_next: "next, documented:"
+  b_m1: managed PostgreSQL
+  b_m2: a container service
+  b_m3: Key Vault secrets (in review)
+  cite1: deploy/README.md  |  ADR 0019  |  the demo calls gemini-3.1-flash-lite; Key Vault staging is pull request 27
+  # 2 the AI and ML path of one turn (docs/models, docs/architecture/credit-separation.md)
+  c_msg: message
+  c_msgS: es or pt
+  c_llm: language model
+  c_llmS: fields only
+  c_rtr: intent router
+  c_rtrS: keyword@1 or e5
+  c_wf: workflow + policy
+  c_wfS: states, clauses
+  c_tools: verified tools
+  c_toolsS: allowlist, read-back
+  c_res: resolver
+  c_resS: rules@1 or LightGBM
+  c_risk: RiskEstimator
+  c_riskS: score_band@1 or logreg
+  c_elg: EligibilityPolicy
+  c_elgS: synthetic ELG rules
+  c_wall: the risk estimate
+  c_wallS: never reaches the model
+  c_draft: reply
+  c_draftS: template, or phrasing
+  c_ver: grounding verifier
+  c_verS: every number checked
+  c_out: customer
+  c_outS: sees verified text
+  c_gw: one LLM gateway
+  c_gwS: provider by setting
+  cite2: "blue: a model  |  yellow: deterministic code  |  docs/models  |  docs/architecture/credit-separation.md"
+  # 3 the decision (docs/evaluation/results.md)
+  d_base: served baseline
+  d_learned: learned, selectable by setting
+  d_rtr: intent router
+  d_rtrM: macro-F1, test split
+  d_rtrB: keyword@1
+  d_rtrL: e5 embeddings
+  d_res: transaction resolver
+  d_resM: disputes resolved without asking
+  d_resB: rules@1
+  d_resL: LightGBM ranker
+  d_risk: risk estimator
+  d_riskM: ROC AUC, test split
+  d_riskB: score_band@1
+  d_riskL: logreg
+  d_e2e: P end to end
+  d_e2eM: safe automated resolution, dev
+  d_verdict: The baselines stay the default.
+  d_verdictS: The intervals overlap; a learned model is one setting away.
+  cite3: "router: provisional, labels in review  |  resolver, risk: offline  |  end to end: simulation  |  docs/models"
 
 workflows:
+  dims: AI Engineering  |  Technical Judgment
   title: Four workflows, one depth bar
   account_inquiry: account inquiry
   card_support: card support
@@ -202,6 +256,7 @@ workflows:
   cite: docs/architecture/workflow-registry.md  |  docs/architecture/credit-separation.md
 
 evidence:
+  dims: Machine Learning  |  Data Analytics
   t0: Same held-out cases, three systems
   t1: Per workflow first
   t2: Then the aggregate
@@ -259,6 +314,7 @@ evidence:
 
 close:
   # arrive: the degradation ladder (docs/operations/degradation.md)
+  dims: Technical Judgment  |  AI Engineering
   ladderTitle: When something fails, it steps down
   lv0: normal
   lv1: fallback model
@@ -283,7 +339,7 @@ close:
   g5: rate limits
   g6: row-level security
   g7: retention
-  host: "One host: Docker Compose behind Caddy, ready to deploy"
+  host: "One Azure VM, Docker Compose behind Caddy; every turn traced down to its SQL"
   deployed: deployed at
   citeDefense: docs/security/threat-model.md  |  deploy/README.md  |  ADR 0019
   # 2 limits and next steps (LIMITATIONS.md)
