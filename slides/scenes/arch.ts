@@ -1,73 +1,76 @@
 /**
- * Slide 3, architecture, on the deck's one light-gray ground (a blueprint
- * beat between two dark slides). Colours keep their meaning: the core is
- * yellow, the model edges blue, data and stores ink.
+ * Slide 3, the architecture, on the deck's one light-gray ground (a blueprint
+ * beat between dark slides). Three diagrams and one decision, one per click:
  *
- *   arrive  the yellow core inside a ring of ports
- *   1 kernel    a clause file becomes a rule call becomes a Decision
- *   2 gateway   a request falls through the decorator stack to a provider
- *   3 verifier  a grounded draft is sent; an unsupported one becomes a template
- *   4 data      rows flow raw to gold; bad rows drop into quarantine
- *   5 direction packets flow inward along every edge
+ *   arrive  the stack: React, a FastAPI hexagonal core, PostgreSQL with RLS,
+ *           the LiteLLM gateway to a provider named by settings, the data
+ *           platform seeding PostgreSQL; a request travels it
+ *   1       the deployment: one Azure VM, Docker Compose behind Caddy, the obs
+ *           profile (collector, Prometheus, Grafana, Jaeger), the managed path
+ *   2       the AI and ML path of one turn: which parts are models, which are
+ *           code, and the risk estimate bouncing off the wall before the model
+ *   3       the decision: learned components beat their baselines offline but
+ *           not end to end, so the baselines stay the default
  *
- * The diagram on the left accumulates; the panel on the right swaps per click.
+ * Facts: README.md, deploy/README.md, ADR 0019, docs/models, docs/evaluation.
  */
 import { defineScene } from '../lib/scene/types'
 import { C, MX } from '../lib/scene/kit'
-import { hash, outCubic, presence, seg } from '../lib/scene/math'
-import { hex, node, type Tone } from '../lib/scene/bank'
+import { outCubic, presence, seg } from '../lib/scene/math'
+import { dims, hex } from '../lib/scene/bank'
 import { ground, packet } from '../lib/scene/fx'
-import { panels } from './parts/arch-panels'
+import { box, wire } from './parts/arch-kit'
+import { deployment } from './parts/arch-deploy'
+import { mlPath } from './parts/arch-ml'
+import { decision } from './parts/arch-decision'
 
-const HC = { x: 700, y: 610 }
-
-type N = { key: string; x: number; y: number; w: number; tone: Tone; ink?: boolean; t0: number; from: [number, number]; to: [number, number] }
-const NODES: readonly N[] = [
-  { key: 'n_llm', x: MX, y: 330, w: 300, tone: 'blue', t0: 5.4, from: [420, 400], to: [506, 486] },
-  { key: 'n_ret', x: MX, y: 800, w: 300, tone: 'blue', t0: 5.7, from: [420, 830], to: [506, 734] },
-  { key: 'n_ver', x: 860, y: 250, w: 300, tone: 'yellow', t0: 8.6, from: [900, 346], to: [842, 400] },
-  { key: 'n_db', x: 990, y: 562, w: 300, tone: 'paper', ink: true, t0: 11.7, from: [990, 610], to: [974, 610] },
-  { key: 'n_data', x: 860, y: 860, w: 340, tone: 'paper', ink: true, t0: 11.5, from: [900, 860], to: [842, 820] },
-]
+const CUES = [3.0, 6.6, 10.4, 14.2] as const
+const HC = { x: 960, y: 590 }
 
 export default defineScene({
-  cues: [2.4, 5.2, 8.4, 11.4, 14.2, 17.0],
+  cues: CUES,
   draw(env) {
     const { t, L, K } = env
+    const c = [0, CUES[0] + 0.05, CUES[1] + 0.05, CUES[2] + 0.05]
     ground(K, C.paper)
-    K.title(L('title'), t, 0.1, { color: C.bg })
-    K.fade(outCubic(seg(t, 1.5, 2.0)), () => K.cite(L('cite'), 1, C.inkMute))
+    dims(K, L('dims'), outCubic(seg(t, 0.3, 0.8)), C.inkMute)
+    ;(['t0', 't1', 't2', 't3'] as const).forEach((key, i) =>
+      K.title(L(key), t, i ? c[i] + 0.1 : 0.1, { color: C.bg, tout: i < 3 ? c[i + 1] : undefined }))
 
-    // ── the core and the ring of ports ────────────────────────────────────
-    hex(K, HC.x, HC.y, 270, { k: outCubic(seg(t, 0.3, 1.3)), stroke: C.bg, lw: 3 })
-    hex(K, HC.x, HC.y, 165, { k: outCubic(seg(t, 0.6, 1.6)), stroke: C.bg, fill: C.yellow, lw: 4 })
-    K.fade(outCubic(seg(t, 1.3, 1.8)), () => {
-      K.wrap(L('core'), 230, 28, 700).forEach((ln, i) => K.text(ln, HC.x, HC.y - 22 + i * 34, { size: 28, weight: 700, align: 'center', color: C.bg }))
-      K.text(L('coreSub'), HC.x, HC.y + 52, { size: 22, weight: 500, fam: 'mono', color: C.inkDim, align: 'center' })
-      K.label(L('ports'), HC.x, 412, { size: 22, align: 'center', color: C.inkMute })
+    // ── arrive: the stack ──────────────────────────────────────────────────
+    K.fade(presence(t, 0.1, c[1], 0.2, 0.25), () => {
+      const k = (i: number) => seg(t, 0.25 + i * 0.1, 0.85 + i * 0.1)
+      const web = box(K, 'ink', MX, 300, 380, 110, L('a_web'), L('a_webS'), k(0))
+      const ml = box(K, 'ink', MX, 540, 380, 110, L('a_ml'), L('a_mlS'), k(1))
+      const data = box(K, 'ink', MX, 800, 380, 110, L('a_data'), L('a_dataS'), k(2))
+      const gw = box(K, 'blue', 1420, 300, 380, 110, L('a_gw'), L('a_gwS'), k(3))
+      const prov = box(K, 'dashed', 1420, 540, 380, 110, L('a_prov'), L('a_provS'), k(4))
+      const pg = box(K, 'ink', 1420, 800, 380, 110, L('a_pg'), L('a_pgS'), k(5))
+      hex(K, HC.x, HC.y, 250, { k: outCubic(seg(t, 0.3, 1.2)), stroke: C.bg, lw: 2 })
+      hex(K, HC.x, HC.y, 165, { k: outCubic(seg(t, 0.5, 1.3)), stroke: C.bg, fill: C.yellow, lw: 3 })
+      K.fade(outCubic(seg(t, 1.0, 1.4)), () => {
+        K.text(L('a_core'), HC.x, HC.y - 6, { size: 30, weight: 700, color: C.bg, align: 'center' })
+        K.text(L('a_coreS'), HC.x, HC.y + 30, { size: 22, weight: 500, fam: 'mono', color: C.inkDim, align: 'center' })
+        K.label(L('a_ports'), HC.x, HC.y - 236, { size: 22, color: C.inkMute, align: 'center' })
+      })
+      // connectors: every edge plugs into a port of the core
+      const w = (i: number) => seg(t, 1.0 + i * 0.08, 1.4 + i * 0.08)
+      wire(K, [{ x: web.r, y: web.cy }, { x: 760, y: 470 }], w(0))
+      wire(K, [{ x: ml.r, y: ml.cy }, { x: 718, y: 590 }], w(1))
+      wire(K, [{ x: 1162, y: 470 }, { x: gw.x, y: gw.cy }], w(2))
+      wire(K, [{ x: gw.cx, y: gw.b }, { x: prov.cx, y: prov.y }], w(3))
+      wire(K, [{ x: 1162, y: 710 }, { x: pg.x, y: pg.cy - 20 }], w(4))
+      wire(K, [{ x: data.r, y: 878 }, { x: pg.x, y: 878 }], w(5))
+      K.fade(outCubic(seg(t, 1.5, 1.8)), () => K.label(L('a_seed'), 960, 906, { size: 22, color: C.inkMute, align: 'center' }))
+      // a request: browser to the core to its own rows; a model call; a seed row
+      packet(K, [{ x: web.r, y: web.cy }, { x: 760, y: 470 }, { x: HC.x, y: HC.y }, { x: 1162, y: 710 }, { x: pg.x, y: pg.cy - 20 }], seg(t, 1.6, 2.6), C.bg, 9)
+      packet(K, [{ x: 1162, y: 470 }, { x: gw.x, y: gw.cy }, { x: gw.cx, y: gw.cy }, { x: prov.cx, y: prov.y }], seg(t, 1.9, 2.8), C.blue, 9)
+      packet(K, [{ x: data.r, y: 878 }, { x: pg.x, y: 878 }], seg(t, 2.0, 2.9), C.bg, 8)
+      K.fade(outCubic(seg(t, 1.6, 2.0)), () => K.cite(L('cite0'), 1, C.inkMute))
     })
 
-    // ── edges: filled nodes, connectors, and at click 5 inward packets ───
-    NODES.forEach((n, i) => {
-      const k = seg(t, n.t0, n.t0 + 0.6)
-      if (n.ink) {
-        K.fade(outCubic(k), () => {
-          K.fillRR(n.x, n.y, n.w, 96, 10, C.bg)
-          K.text(L(n.key), n.x + 30, n.y + 42, { size: 28, weight: 600, color: C.paper })
-          K.text(L(`${n.key}Sub`), n.x + 30, n.y + 78, { size: 22, weight: 500, fam: 'mono', color: C.dim })
-        })
-      }
-      else node(K, n.x, n.y, n.w, 96, { label: L(n.key), sub: L(`${n.key}Sub`), tone: n.tone, k, size: 28, filled: true })
-      const lk = outCubic(seg(t, n.t0 + 0.2, n.t0 + 0.6))
-      if (lk > 0) K.line(n.from[0], n.from[1], n.from[0] + (n.to[0] - n.from[0]) * lk, n.from[1] + (n.to[1] - n.from[1]) * lk, C.bg, 3)
-      const ak = outCubic(seg(t, 14.4 + i * 0.12, 14.8 + i * 0.12))
-      if (ak > 0) K.arrow(n.from[0], n.from[1], n.to[0], n.to[1], { color: C.bg, k: ak, lw: 4, head: 18 })
-      const path = [{ x: n.from[0], y: n.from[1] }, { x: n.to[0], y: n.to[1] }]
-      const pc = n.tone === 'paper' ? C.bg : n.tone === 'blue' ? C.blue : C.yellow
-      for (let j = 0; j < 2; j++) packet(K, path, seg(t, 14.6 + i * 0.1 + j * 0.35 + hash(i, j) * 0.1, 15.3 + i * 0.1 + j * 0.35), pc, 8)
-    })
-
-    panels(env)
-    void presence
+    deployment(env, c[1], c[2])
+    mlPath(env, c[2], c[3])
+    decision(env, c[3])
   },
 })

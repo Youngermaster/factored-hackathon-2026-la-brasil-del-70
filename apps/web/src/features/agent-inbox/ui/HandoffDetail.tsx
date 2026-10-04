@@ -17,6 +17,7 @@ import { useHandoff, type HandoffView } from '../api/handoffs';
 import { HandoffContext } from '../model/handoff-context';
 import { useNow } from '../model/use-now';
 import { HandoffActions } from './HandoffActions';
+import { HumanConversation } from './HumanConversation';
 import { useInboxLabels } from './labels';
 import {
   ActionsTaken,
@@ -138,6 +139,7 @@ function DetailBody({ handoff }: { readonly handoff: HandoffView }) {
         <PolicyBasis />
         <OpenQuestions />
       </div>
+      <HumanConversation />
       <CreditReviewSection />
       <CardRequestSection />
     </div>

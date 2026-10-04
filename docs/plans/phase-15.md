@@ -54,4 +54,4 @@ Goal (brief, "a credible route to operation"): tracing, execution records linked
 
 ## Out of scope
 
-Cloud deployment and production retention (phase 16); shared rate limits (phase 16); Langfuse (the human decided against it).
+Cloud deployment and production retention (phase 16); shared rate limits (phase 16). Langfuse was excluded from this phase's built-in observability stack; PR 20 later added a separate opt-in metadata-only exporter.

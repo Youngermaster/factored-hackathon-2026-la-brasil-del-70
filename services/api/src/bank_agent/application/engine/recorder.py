@@ -104,6 +104,7 @@ class TurnRecorder:
                 cost_usd=generation.cost_usd or Decimal(0),
                 latency_ms=generation.latency_ms,
                 status=LlmCallStatus.REPAIRED if repaired else LlmCallStatus.OK,
+                model_call_id=generation.model_call_id,
             )
         )
 

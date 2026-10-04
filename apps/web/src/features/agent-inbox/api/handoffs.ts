@@ -40,6 +40,9 @@ function useSettle() {
   return (handoff: HandoffView) => {
     queryClient.setQueryData(queryKeys.handoffs.detail(handoff.handoff_id), handoff);
     void queryClient.invalidateQueries({ queryKey: [...queryKeys.handoffs.all, 'list'] });
+    void queryClient.invalidateQueries({
+      queryKey: queryKeys.humanService.detail('agent', handoff.handoff_id),
+    });
   };
 }
 

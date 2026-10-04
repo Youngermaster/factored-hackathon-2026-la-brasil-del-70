@@ -7,7 +7,9 @@ Everything needed to run the system outside the Python and web packages: the dev
 | Path | Purpose |
 |---|---|
 | `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
-| `prod.sh` | The operations script: `init-env`, `check`, `build`, `up`, `seed`, `update`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
+| `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker); continuous deployment: `setup-github-oidc.sh` (the one-time OIDC identity), `run-on-vm.sh` and `vm-deploy.sh` (release or roll back through run-command) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |
 | `smoke_test.sh`, `smoke_test.py` | The smoke test against a deployed URL (standard library Python) |
 | `caddy/Caddyfile` | TLS, the SPA headers and strict CSP, the reverse proxy |
@@ -101,12 +103,24 @@ git checkout <the commit or tag to deploy>
 
 Keep the cloud firewall as the only firewall: Docker publishes ports through its own iptables rules, which `ufw` does not govern. SSH stays key-only (the images above disable password logins by default; check `PasswordAuthentication no` in `/etc/ssh/sshd_config`).
 
+## Secrets
+
+No secret reaches a container through an environment variable. `deploy/prod.sh up` first stages each secret as a file under `/run/bank-agent/secrets` (a tmpfs: nothing on disk, cleared at reboot), owned by the user of the container that needs it, mode 0400; compose then mounts only those files at `/run/secrets`, and the settings read them through `SECRETS_DIR` ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). `docker inspect` and `docker compose config` show names, never values. The API never receives the owner or superuser password.
+
+| `SECRETS_SOURCE` | Where the values live | Use it on |
+|---|---|---|
+| `keyvault` | Azure Key Vault, read with the VM's managed identity (no credential stored); the env file holds no secret, and `prod.sh` refuses one there | An Azure VM: "Azure VM with Key Vault" below |
+| `env-file` (default) | The secret lines of `deploy/.env.production`, filled by `init-env` | Lightsail, EC2, or a local test |
+
+Staging needs root (`sudo`), so each file can belong to its container's user. On a Docker Desktop test host, where bind mounts ignore ownership, `SECRETS_NO_CHOWN=1` keeps the caller as owner.
+
 ## The server env file
 
 ```bash
 deploy/prod.sh init-env        # writes deploy/.env.production (mode 600) with fresh random secrets, never printed
 nano deploy/.env.production    # or vi; set the values below, then save
-deploy/prod.sh check           # names any missing value (never prints one) and validates the compose file
+deploy/prod.sh stage-secrets   # stages the secrets as files (sudo); `up` does this too
+deploy/prod.sh check           # names any missing value (never prints one), checks the staged files and the compose file
 ```
 
 Set at least:
@@ -119,7 +133,97 @@ Set at least:
 | `DEMO_MODE`, `ALLOW_PUBLIC_DEMO_MODE`, `VITE_DEMO_MODE` | `true` for the public judging demo ([demo mode](../docs/security/demo-mode.md)) |
 | The model settings | see "Choosing the model" |
 
-`init-env` already filled `POSTGRES_SUPERUSER_PASSWORD`, `POSTGRES_ADMIN_PASSWORD`, `POSTGRES_APP_PASSWORD`, `SESSION_SECRET`, `CSRF_SECRET`, and `GRAFANA_ADMIN_PASSWORD`. Never copy the file off the server, paste its values into chats or issues, or commit it (`.gitignore` covers it). If you prefer to write the file on your laptop, copy it with `scp` straight into `deploy/.env.production` and `chmod 600` it on the server.
+With `SECRETS_SOURCE=env-file`, `init-env` already filled `POSTGRES_SUPERUSER_PASSWORD`, `POSTGRES_ADMIN_PASSWORD`, `POSTGRES_APP_PASSWORD`, `SESSION_SECRET`, `CSRF_SECRET`, and `GRAFANA_ADMIN_PASSWORD`. Never copy the file off the server, paste its values into chats or issues, or commit it (`.gitignore` covers it). If you prefer to write the file on your laptop, copy it with `scp` straight into `deploy/.env.production` and `chmod 600` it on the server. On Azure, start with `SECRETS_SOURCE=keyvault deploy/prod.sh init-env` instead: the secret lines stay empty.
+
+## Azure VM with Key Vault
+
+The secrets live in Azure Key Vault, the VM reads them with its system-assigned managed identity (no password, key, or service principal anywhere), and the identity can read only the application's own secrets ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)).
+
+```mermaid
+sequenceDiagram
+    participant Admin as Administrator (az login)
+    participant KV as Azure Key Vault
+    participant VM as VM (managed identity)
+    participant Unit as bank-agent-secrets.service
+    participant Compose as docker compose
+    Admin->>KV: provision.sh: vault, generated secrets, per-secret read access for the VM
+    Admin->>KV: keyvault-secrets.sh set LLM_API_KEY_PRIMARY (typed, not shown)
+    Note over VM,Unit: at every boot, before Docker
+    Unit->>VM: token from the instance metadata service (no credential)
+    Unit->>KV: GET each secret with the token
+    Unit->>VM: /run/bank-agent/secrets/{app,postgres,grafana}/NAME, mode 0400, per container user
+    Compose->>VM: mounts each file into the services that need it, at /run/secrets
+```
+
+**1. From your machine** (Azure CLI signed in with `az login`; Git Bash, WSL, macOS, Linux, or Azure Cloud Shell). Choose a globally unique vault name and DNS label, and allow SSH from your own address only. On subscriptions with capacity limits, check which sizes your region allows first (a free account may allow only the `Bsv2` and `Basv2` families in a few regions).
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/azure_bank_agent -N ""      # once; the VM accepts this key only
+export VAULT_NAME=kv-bank-agent-<suffix> DNS_LABEL=bank-agent-<suffix>
+export SSH_SOURCE_CIDR="$(curl -s https://api.ipify.org)/32"
+deploy/azure/provision.sh                                     # LOCATION, VM_SIZE, ... are settings in its header
+deploy/azure/keyvault-secrets.sh "${VAULT_NAME}" set LLM_API_KEY_PRIMARY   # hosted model only; typed, never shown
+deploy/azure/provision.sh                                     # again: grants the VM read access to the new secret
+```
+
+`provision.sh` prints the site name, `<DNS_LABEL>.<LOCATION>.cloudapp.azure.com`: Azure serves that DNS name for the static IP, so no domain is needed. SSH accepts only `SSH_SOURCE_CIDR`; when an internet provider assigns dynamic addresses and SSH starts timing out, point the rule at the current address: `az network nsg rule update --resource-group rg-bank-agent --nsg-name vm-bank-agent-nsg --name allow-ssh-admin --source-address-prefixes "$(curl -s -4 https://api.ipify.org)/32"`. Leave a budget alert on the subscription (Cost Management, Budgets) at a value you are willing to spend.
+
+**2. On the VM** (`ssh -i ~/.ssh/azure_bank_agent azureuser@<site name>`): follow "Prepare the VM" above. To clone the private repository, create a read-only deploy key on the VM (`ssh-keygen -t ed25519 -f ~/.ssh/github_deploy -N ""`), have a repository administrator add `~/.ssh/github_deploy.pub` under the repository's Settings, Deploy keys (read access only), and clone with `GIT_SSH_COMMAND="ssh -i ~/.ssh/github_deploy" git clone git@github.com:<org>/<repository>.git bank-agent`. Then:
+
+```bash
+sudo bash deploy/azure/install-vm.sh "<vault name>"     # the boot unit; stages the secrets now and checks them
+SECRETS_SOURCE=keyvault deploy/prod.sh init-env          # an env file with no secret in it
+nano deploy/.env.production                              # KEY_VAULT_NAME, SITE_ADDRESS, PUBLIC_ORIGIN, ACME_EMAIL,
+                                                         # the demo flags, and LLM_PROVIDER / LLM_PRIMARY_MODEL
+deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed && deploy/prod.sh smoke
+```
+
+**Rotation.** Store a new version (`deploy/azure/keyvault-secrets.sh <vault> rotate SESSION_SECRET`, or `set` for a provider key), then `deploy/prod.sh rotate` on the VM: it stages the new versions and recreates every service, because a running container keeps the file version it started with. Database passwords change inside PostgreSQL first ("Rotate secrets" below), then in the vault.
+
+**Take it down.** After "Take the demo down" below: `az group delete --name rg-bank-agent`, then `az keyvault purge --name <vault>` (soft delete keeps a deleted vault for 7 days otherwise).
+
+## Continuous deployment on Azure
+
+After the one-time setup below, every push to `main` that passes the `ci` workflow is released to the Azure VM by `.github/workflows/deploy.yml` ([ADR 0038](../docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)): the images are built once on GitHub, pushed to GitHub Container Registry (GHCR) under the commit SHA, pulled by digest on the VM, and checked against the public URL; a failed check rolls back. GitHub signs in to Azure with OpenID Connect (no client secret exists), and the VM keeps reading its own secrets from Key Vault ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)).
+
+```mermaid
+flowchart TD
+    push["push to main"] --> ci["ci workflow"]
+    ci -- "success, commit still at the head of main,<br/>DEPLOY_ENABLED=true (or a manual run)" --> plan["plan"]
+    plan --> build["build: make images once,<br/>push to GHCR as :commit-sha, record digests"]
+    build --> gate{"environment production:<br/>required reviewers"}
+    gate --> login["azure/login with OIDC<br/>(federated credential, no secret)"]
+    login --> rc["az vm run-command invoke:<br/>run-on-vm.sh sends vm-deploy.sh"]
+    rc --> vm["on the VM, as the checkout owner:<br/>git checkout sha, prod.sh release<br/>(pull by digest, backup, stage Key Vault secrets,<br/>migrate, swap)"]
+    vm -- "release failed" --> restore["previous commit and tag start again;<br/>the run fails"]
+    vm -- "released" --> checks["smoke_test.sh and make csp-check<br/>against PUBLIC_URL"]
+    checks -- "pass" --> done["done: the summary lists each step"]
+    checks -- "fail" --> rollback["sign in again, run-on-vm.sh rollback<br/>(prod.sh rollback on the previous commit)"]
+```
+
+| Who | Can do | Cannot do |
+|---|---|---|
+| The `build` job | Push packages to this repository's GHCR namespace | Reach Azure |
+| The `deploy` and `rollback` jobs (environment `production`) | Sign in as the deploy identity: read the VM and run a command on it (root on the VM) | Read Key Vault, change any other resource |
+| The VM's managed identity (ADR 0037) | Read the application's secrets in Key Vault | Write them, reach GitHub |
+| The token handed to the VM | Pull the images until the deploy job ends | Push, outlive the job |
+
+**One-time setup** (the human, once; nothing runs before step 5 because the workflow stops at its plan job while the repository variables are missing):
+
+1. Finish "Azure VM with Key Vault" above by hand once: the VM, the boot unit, the env file, `deploy/prod.sh build`, `up`, `seed`, and `smoke`. Continuous deployment releases over this stack; it does not create it.
+2. On the VM, as the admin user, check that the operator account can do what the release does unattended: `sudo -n true && id -nG | grep -qw docker && echo ok`. For a private repository, let the checkout fetch with its read-only deploy key: `git -C ~/bank-agent config core.sshCommand "ssh -i ~/.ssh/github_deploy -o IdentitiesOnly=yes"`, then `git -C ~/bank-agent fetch origin main` must work.
+3. On your machine: `az login`, then `deploy/azure/setup-github-oidc.sh --dry-run` (prints every change, makes none), then `deploy/azure/setup-github-oidc.sh`. It is idempotent; run it again whenever in doubt. `ROLE_MODE=builtin` falls back to Virtual Machine Contributor on the resource group if your tenant forbids custom roles; `BRANCH_CREDENTIAL=0` leaves out the `main` branch credential, which the workflow does not need.
+4. Store what it prints: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID` as secrets of the `production` environment, and `AZURE_RESOURCE_GROUP`, `AZURE_VM_NAME`, `PUBLIC_URL`, `VM_CHECKOUT`, and `VITE_DEMO_MODE=true` as repository variables (it prints the `gh` commands too). In Settings, Environments, `production`: add yourself (and a teammate) as required reviewers, and under deployment branches allow `main` only.
+5. Run it once by hand: Actions, `deploy`, "Run workflow" on `main` with `deploy`, and approve the `production` deployment. The first push creates the three GHCR packages, linked to the repository and private like it.
+6. When that run is green, set the repository variable `DEPLOY_ENABLED=true`. From then on every green `ci` run on `main` deploys.
+
+**Trigger.** Automatic: a push to `main` whose `ci` run succeeds, while `DEPLOY_ENABLED=true`. By hand: Actions, `deploy`, "Run workflow" on `main`, action `deploy` (the head of `main`) or `rollback`. Runs never overlap; one that starts during another waits. Pause automatic deploys by setting `DEPLOY_ENABLED` to anything but `true`.
+
+**Roll back.** Automatic when the smoke test or the CSP check fails after a release; a release that fails on the VM restores the previous one itself. By hand, any of: the `deploy` workflow with action `rollback`; from your machine after `az login`, `AZURE_RESOURCE_GROUP=rg-bank-agent AZURE_VM_NAME=vm-bank-agent deploy/azure/run-on-vm.sh rollback`; or on the VM, `sudo DEPLOY_ACTION=rollback VM_CHECKOUT=/home/azureuser/bank-agent deploy/azure/vm-deploy.sh`. A rollback swaps images and the checked-out commit, not data: after a release that ran a migration the old code cannot use, restore the backup that release took ("Backup and restore") before or after rolling back.
+
+**Logs.** The workflow run: each step's log and a summary table (release, smoke, CSP). On the VM: `sudo ls -t /var/log/bank-agent-deploy/` (one file per run, the full output of the release), `deploy/prod.sh status`, `deploy/prod.sh logs api`. In Azure: `az monitor activity-log list --resource-group rg-bank-agent --offset 1d --query "[?contains(operationName.value, 'runCommand')].{time:eventTimestamp, caller:caller, status:status.value}" --output table` lists who ran a command on the VM.
+
+**Take it down.** With the demo ("Take the demo down"): `az ad app delete --id <AZURE_CLIENT_ID>` (the app, its service principal, and the federated credentials), `az role definition delete --name "Bank Agent deploy (run-command only)"`, delete the `production` environment and the variables in GitHub, and delete the three `bank-agent-*` packages under the repository's Packages.
 
 ## Choosing the model
 
@@ -176,6 +280,8 @@ curl -sI https://demo.your-domain.org | grep -iE 'strict-transport|content-secur
 
 The smoke test checks the certificate (valid for the host, at least 7 days left), `/health/live` and `/health/ready`, the SPA and API security headers, the demo sign-in with `__Host-session` (`Secure`, `HttpOnly`, `SameSite=Strict`, no `Domain`), one read-only conversation per workflow in both languages (account inquiry in es, card support in pt, a dispute intake in es and in pt, the seeded open case's status in es, answered with its deadline, the credit catalog in pt), an out-of-scope request answered with an abstention, and a cross-customer read answered with 404. It never prints a code, a cookie, or a token, and it changes no demo data, so it can run every day.
 
+**The new-chat quota and repeated runs.** Each new conversation counts against the customer's quota, `CONVERSATION_CREATION_LIMIT` new chats per rolling `CONVERSATION_CREATION_WINDOW_MINUTES` (ADR 0026), and every run signs in as the same personas. The smoke test therefore opens six conversations per run: one per persona, except two for the dispute persona, whose es and pt intakes each need a fresh one (the out-of-scope request continues the credit conversation). With the defaults outside the public demo (five per 60 minutes), the dispute persona allows two runs per hour; the public demo (`DEMO_MODE` and `ALLOW_PUBLIC_DEMO_MODE` true, `CONVERSATION_CREATION_LIMIT` empty) defaults to 200, shared with the judges signing in as the same personas. If the quota is used up anyway, the smoke test fails at once with `conversation_creation_limited`, the persona, and the `Retry-After`, rather than the generic "stayed rate limited": wait for the window to pass, or set `CONVERSATION_CREATION_LIMIT` in `deploy/.env.production` and run `deploy/prod.sh up` ([demo mode](../docs/security/demo-mode.md)).
+
 ## Operate
 
 | Task | Command |
@@ -185,7 +291,7 @@ The smoke test checks the certificate (valid for the host, at least 7 days left)
 | Health, degradation level, budget use | `curl -s https://demo.your-domain.org/health/details` |
 | Run the retention purge now | `deploy/prod.sh purge` |
 | Telemetry | set `OTEL_ENABLED=true`, then `OBS=1 deploy/prod.sh up` |
-| Grafana and the Jaeger UI | from your laptop: `ssh -L 3000:127.0.0.1:3000 -L 16686:127.0.0.1:16686 ubuntu@<static-ip>`, then `http://localhost:3000` (user `admin`, `GRAFANA_ADMIN_PASSWORD`) and `http://localhost:16686` |
+| Grafana and the Jaeger UI | from your laptop: `ssh -L 3000:127.0.0.1:3000 -L 16686:127.0.0.1:16686 ubuntu@<static-ip>`, then `http://localhost:3000/d/bank-agent-executive` for live administrative analytics, `http://localhost:3000/d/bank-agent-overview` for operations (user `admin`, `GRAFANA_ADMIN_PASSWORD`), and `http://localhost:16686` for traces |
 | Stop without losing data | `deploy/prod.sh down` |
 
 The alerts and what to do for each are in the [runbook](../docs/operations/runbook.md), which also covers the deployment operations below.
@@ -196,6 +302,8 @@ The alerts and what to do for each are in the [runbook](../docs/operations/runbo
 deploy/prod.sh update          # git pull --ff-only, backup, build the new commit, migrate, start
 deploy/prod.sh rollback        # start the previously deployed image tag again (kept in deploy/.state/)
 ```
+
+With continuous deployment the workflow does this instead ("Continuous deployment on Azure"): after `git checkout <commit>`, `IMAGE_REGISTRY=ghcr.io/<owner>/<repository> deploy/prod.sh release` pulls the images CI built instead of building them, then backs up, migrates, and starts like `update`.
 
 Migrations only move forward. When the update ran a new migration and the old code cannot work with it, restore the backup that `update` took first (next section), then roll back.
 
@@ -217,16 +325,16 @@ Copy important dumps off the VM (`scp ubuntu@<static-ip>:bank-agent/deploy/backu
 
 ## Rotate secrets
 
-Edit the value in `deploy/.env.production`, then:
+Store the new value where `SECRETS_SOURCE` points: edit `deploy/.env.production` (`env-file`), or store a new Key Vault version with `deploy/azure/keyvault-secrets.sh` (`keyvault`). Then run `deploy/prod.sh rotate`, which stages the new versions and recreates every service (a running container keeps the file it started with), and the step below:
 
 | Secret | After the edit |
 |---|---|
-| `CSRF_SECRET` | `deploy/prod.sh up`; browsers fetch a new token on their next request |
-| `SESSION_SECRET` | `deploy/prod.sh up`, then `deploy/prod.sh seed`: identity lookups and code keys derive from it, and every session ends |
-| `POSTGRES_APP_PASSWORD` or `POSTGRES_ADMIN_PASSWORD` | change it in the database first: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod exec postgres psql -U postgres -d bank_agent -c '\password bank_app'` (or `bank_owner`), type the new value, then `deploy/prod.sh up` |
+| `CSRF_SECRET` | nothing else; browsers fetch a new token on their next request |
+| `SESSION_SECRET` | `deploy/prod.sh seed`: identity lookups and code keys derive from it, and every session ends |
+| `POSTGRES_APP_PASSWORD` or `POSTGRES_ADMIN_PASSWORD` | change it in the database first: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod exec postgres psql -U postgres -d bank_agent -c '\password bank_app'` (or `bank_owner`), type the new value, then store it and `deploy/prod.sh rotate` |
 | `POSTGRES_SUPERUSER_PASSWORD` | `\password postgres` the same way; nothing else uses it |
 | `GRAFANA_ADMIN_PASSWORD` | change it in Grafana (profile, "Change password"); the variable only sets the first password |
-| `LLM_API_KEY_*` | revoke the old key at the provider, then `deploy/prod.sh up` |
+| `LLM_API_KEY_*` | revoke the old key at the provider |
 
 ## Keep it running until 2026-10-16
 
@@ -252,24 +360,25 @@ The whole stack runs on a laptop with Docker, TLS included, before any VM exists
 ENV_FILE=/tmp/p16.env deploy/prod.sh init-env           # any path outside the repository
 # In /tmp/p16.env set:
 #   SITE_ADDRESS=localhost  PUBLIC_ORIGIN=https://localhost:8443  CADDY_TLS=internal  HTTP_PORT=8080  HTTPS_PORT=8443
+#   SECRETS_HOST_DIR=/tmp/p16-secrets   (secrets staged from this file; Docker Desktop ignores file owners)
 #   DEMO_MODE=true  ALLOW_PUBLIC_DEMO_MODE=true  VITE_DEMO_MODE=true
 #   LLM_PROVIDER=litellm  LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct  LLM_API_BASE=http://host.docker.internal:11434
 #   LLM_ALLOW_PRIVATE_HTTP_BASE=true  LLM_TIMEOUT_SECONDS=60     (or LLM_PROVIDER=fake for no model)
-export ENV_FILE=/tmp/p16.env PROJECT=bank-agent-local
+export ENV_FILE=/tmp/p16.env PROJECT=bank-agent-local SECRETS_NO_CHOWN=1
 deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed
 docker cp bank-agent-local-web-1:/data/caddy/pki/authorities/local/root.crt /tmp/caddy-root.crt
 make smoke SMOKE_URL=https://localhost:8443 SMOKE_ARGS="--ca-file /tmp/caddy-root.crt --min-cert-days 0"   # local certificates live 12 hours
 pnpm --dir apps/web exec playwright install chromium   # once per machine: pnpm does not download the browser
 make csp-check SMOKE_URL=https://localhost:8443 CSP_ARGS=--ignore-https-errors   # 5 to 6 minutes: it waits out the auth rate limit
 docker compose -f deploy/compose.prod.yml --env-file /tmp/p16.env -p bank-agent-local --profile '*' down --volumes
-rm /tmp/p16.env
+rm -rf /tmp/p16.env /tmp/p16-secrets
 ```
 
 The project name keeps it apart from the development stack; it publishes 8080 and 8443 only (no database port), so it runs next to `make up`.
 
 ## Supply chain
 
-- `make security`: pip-audit over every extra, `pnpm audit --prod --audit-level high`, bandit, gitleaks over the history, hadolint on every Dockerfile, shellcheck on the scripts here, and the production compose validation. Container tools run from images pinned by digest. No accepted findings exist today; an accepted one would be listed here with its reason and an expiry date.
+- `make security`: pip-audit over every extra, `pnpm audit --prod --audit-level high`, bandit, gitleaks over the history, hadolint on every Dockerfile, shellcheck on the scripts here, actionlint (with shellcheck) on every workflow, and the production compose validation. Container tools run from images pinned by digest. No accepted findings exist today; an accepted one would be listed here with its reason and an expiry date.
 - `make images` then `make scan-images IMAGE_TAG=<tag>`: trivy fails on any fixable HIGH or CRITICAL finding in the three images and writes CycloneDX SBOMs to `reports/sbom/` (CI publishes them as the `sbom` artifact).
 - Caddy is compiled from `caddy/module/` because the official 2.11.4 binary carries fixed-upstream vulnerabilities (Go 1.26.3 standard library, `golang.org/x/crypto`, `net`, `text`, and `grpc`: 17 HIGH findings). To update it, run `go get` for the new versions and `go mod tidy` in a `golang` container over that folder, rebuild the web image, and rescan.
 
@@ -281,6 +390,7 @@ The project name keeps it apart from the development stack; it publishes 8080 an
 | The API restarts with `unsafe settings: ...` | The message names each variable (never its value); fix them in the env file |
 | The certificate is not issued | DNS does not point at the VM yet, or port 80 is closed in the cloud firewall; `deploy/prod.sh logs web` |
 | `429` answers during a demo | The shared rate limits (per address and per session); a room behind one NAT shares one address: raise `RATE_LIMIT_*` in the env file for the session and `deploy/prod.sh up` |
+| `429 conversation-creation-limited` when opening a chat | The customer's new-chat quota for the rolling window, shared by everyone signed in as that persona; set `CONVERSATION_CREATION_LIMIT` (the public demo defaults to 200 when it is empty) and `deploy/prod.sh up` |
 | Every reply starts with the limited-service notice | Degradation level L2: the provider is down or the daily budget is spent (`/health/details`, runbook `DegradedTemplateOnly`) |
 | `503 dependency-unavailable` | PostgreSQL is down or read-only; `deploy/prod.sh status`, runbook `DatabaseUnavailable` |
 

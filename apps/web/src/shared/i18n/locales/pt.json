@@ -120,6 +120,7 @@
   "layout": {
     "consoleNav": "Navegação do console",
     "overview": "Resumo",
+    "dashboard": "Dashboard",
     "inbox": "Caixa de entrada",
     "creditApplications": "Solicitações de crédito",
     "evaluation": "Avaliação",
@@ -148,6 +149,7 @@
     "heading": "Resumo",
     "agentBody": "Você atende transferências estruturadas: fatos verificados, ações realizadas, base de política e perguntas em aberto. Nunca a transcrição completa.",
     "evaluatorBody": "Você revisa registros de execução e resultados de avaliação offline, sempre com os números por fluxo ao lado do total.",
+    "dashboardBody": "Indicadores executivos, comparação de sistemas, desempenho por fluxo e cortes de qualidade.",
     "inboxBody": "Transferências com fatos verificados, ações, política e perguntas abertas. Assuma e resolva.",
     "applicationsBody": "Solicitações registradas para revisão humana, com a avaliação e a conversa de origem.",
     "evaluationBody": "Resultados publicados por fluxo e no total, com amostras e intervalos.",
@@ -206,7 +208,6 @@
     "notFoundTitle": "Não encontramos essa conversa",
     "notFoundBody": "Ela pode ser de outra sessão ou não existir mais. Comece uma nova e ajudamos do mesmo jeito.",
     "human": "Falar com uma pessoa",
-    "withPerson": "Seu caso já está com uma pessoa da equipe.",
     "showTrace": "Ver no registro",
     "stepUpWaiting": "Esta ação precisa que você confirme sua identidade com um código novo.",
     "stepUpAgain": "Confirmar identidade",
@@ -415,7 +416,7 @@
       "evidence": "Conferido em"
     },
     "escalation": {
-      "title": "Seu caso passou para uma pessoa da equipe",
+      "title": "Solicitação de atendimento humano",
       "reference": "Referência do caso",
       "expected": "Resposta prevista até"
     },
@@ -897,6 +898,40 @@
     "emptyTitle": "Busque uma conversa",
     "emptyBody": "Cole a referência de uma conversa para ver os registros, turno a turno."
   },
+  "dashboard": {
+    "heading": "Dashboard administrativo",
+    "intro": "Visão executiva de qualidade, segurança e eficiência sobre as execuções publicadas. Os resultados agregados sempre aparecem com o detalhe por fluxo.",
+    "restricted": "Acesso de avaliador",
+    "loading": "Carregando as análises",
+    "error": "Não conseguimos carregar as análises",
+    "emptyTitle": "Ainda não há dados para o dashboard",
+    "emptyBody": "Publique uma execução de avaliação para habilitar métricas e comparações.",
+    "runLabel": "Execução",
+    "systemLabel": "Sistema analisado",
+    "kpis": "Indicadores principais",
+    "cases": "{{count}} casos no total",
+    "vsBaseline": "{{delta}} frente a {{baseline}}",
+    "rate": "Taxa: {{value}}",
+    "p50": "p50: {{value}}",
+    "costAttempted": "Por caso tentado: {{value}}",
+    "workflowTitle": "Desempenho por fluxo",
+    "workflowIntro": "Resolução automática segura, com contenção, resultados inseguros e diferença frente ao baseline.",
+    "barLabel": "{{workflow}}: {{value}} de resolução automática segura",
+    "workflowDetail": "Contenção {{containment}} · Inseguros {{unsafe}} · Diferença {{delta}}",
+    "riskTitle": "Segurança e transferências",
+    "riskIntro": "Erros que exigem revisão prioritária. Cada taxa conserva seu denominador específico.",
+    "comparisonTitle": "Comparação global de sistemas",
+    "system": "Sistema",
+    "breakdownTitle": "Consistência entre populações",
+    "breakdownIntro": "Resolução automática segura para os cortes agregados publicados. Uma ausência significa que a execução não publicou esse corte.",
+    "dimensions": {
+      "language": "Idioma",
+      "dialect": "Dialeto",
+      "segment": "Segmento"
+    },
+    "provenanceTitle": "Procedência e alcance",
+    "provenanceBody": "Medição {{measurement}} sobre {{dataset}}, gerada em {{generated}} a partir do commit {{sha}}. Não representa tráfego nem resultados de produção."
+  },
   "eval": {
     "heading": "Resultados de avaliação",
     "intro": "Resumos publicados pelo arcabouço de avaliação sobre a mesma carga reservada: por fluxo primeiro, depois o total. Cada número traz sua amostra e seu intervalo de 95%.",
@@ -1096,5 +1131,27 @@
     "transparency": "Ao lado do chat você vê o registro de cada turno: o que o sistema entendeu, quais regras e cláusulas aplicou e o que conferiu. O raciocínio do modelo não é guardado nem mostrado, por projeto.",
     "humanTitle": "Você sempre pode falar com uma pessoa",
     "human": "Quando você pede, quando algo exige critério humano ou quando uma regra exige, o seu caso passa para uma pessoa com o que já verificamos, para você não precisar repetir."
+  },
+  "humanService": {
+    "title": "Atendimento humano",
+    "messages": "Mensagens com o atendente",
+    "status": {
+      "queued": "Sua solicitação está na fila. Você pode deixar mais detalhes aqui; um atendente responderá quando assumir o caso.",
+      "joined": "Um atendente assumiu seu caso. As mensagens deste chat chegam a essa pessoa.",
+      "closed": "O atendente encerrou a conversa. Você pode consultar o histórico ou iniciar outro chat."
+    },
+    "author": {
+      "user": "Você",
+      "agent": "Atendente humano",
+      "customer": "Cliente"
+    },
+    "disconnected": "A conexão com o chat foi perdida",
+    "reconnectBody": "Não conseguimos atualizar as mensagens. Um problema de conexão não altera o estado do atendimento. Tente novamente para recuperar o histórico.",
+    "sending": "Enviando mensagem",
+    "loading": "Carregando mensagens",
+    "assignedElsewhere": "Somente o atendente que assumiu este caso pode ler e responder às mensagens.",
+    "replyLabel": "Sua resposta ao cliente",
+    "replySend": "Enviar ao cliente",
+    "creationLimit": "Você atingiu o limite de novos chats por enquanto. Continue em um chat existente ou tente novamente mais tarde."
   }
 }

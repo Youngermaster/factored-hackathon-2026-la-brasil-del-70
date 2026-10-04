@@ -40,6 +40,23 @@ def test_totals_must_equal_the_sum_over_llm_calls() -> None:
         execution_record(llm_calls=calls, token_usage=TokenUsage(input_tokens=150, output_tokens=30))
 
 
+def test_model_call_id_is_recorded_only_under_the_new_contract_version() -> None:
+    call = _llm_call(100, 20, "0.0010").evolve(model_call_id="1234567890abcdef")
+    record = execution_record(
+        llm_calls=[call],
+        token_usage=TokenUsage(input_tokens=100, output_tokens=20),
+        cost_usd=Decimal("0.0010"),
+    )
+    assert record.llm_calls[0].model_call_id == "1234567890abcdef"
+    with pytest.raises(ValidationError, match=r"model_call_id was added in 1\.5\.0"):
+        execution_record(
+            schema_version="1.4.0",
+            llm_calls=[call],
+            token_usage=TokenUsage(input_tokens=100, output_tokens=20),
+            cost_usd=Decimal("0.0010"),
+        )
+
+
 def test_tool_calls_are_numbered_in_order() -> None:
     call = ToolCallRecord(sequence=2, tool=ToolName.GET_TRANSACTION, status=ToolCallStatus.OK, latency_ms=3)
     with pytest.raises(ValidationError):

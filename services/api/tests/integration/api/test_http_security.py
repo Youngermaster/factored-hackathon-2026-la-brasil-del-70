@@ -22,7 +22,7 @@ def _state_changing_paths(app: FastAPI) -> list[str]:
 async def test_every_state_changing_route_refuses_a_missing_or_mismatched_csrf_token(api_backend: ApiBackend) -> None:
     harness = api_backend.build()
     paths = _state_changing_paths(harness.app)
-    assert len(paths) == 13
+    assert len(paths) == 15
     async with ApiClient(harness.app) as client, ApiClient(harness.app) as other:
         await client.login("persona-mx")
         foreign = await other.refresh_csrf()
@@ -47,6 +47,10 @@ async def test_a_token_from_before_login_stops_working_after_login(api_backend: 
 @pytest.mark.parametrize(
     ("persona", "method", "path"),
     [
+        ("persona-mx", "GET", "/v1/agent/handoffs/ho-dummy/human-service"),
+        ("persona-mx", "POST", "/v1/agent/handoffs/ho-dummy/human-service/messages"),
+        ("persona-agent", "GET", "/v1/conversations/conv-dummy/human-service"),
+        ("persona-agent", "POST", "/v1/conversations/conv-dummy/human-service/messages"),
         ("persona-mx", "GET", "/v1/agent/handoffs"),
         ("persona-mx", "POST", "/v1/agent/handoffs/ho-dummy/claim"),
         ("persona-mx", "GET", "/v1/agent/credit-applications"),

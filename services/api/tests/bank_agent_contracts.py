@@ -22,6 +22,7 @@ from bank_agent.adapters.persistence.memory.store import InMemoryStore
 from bank_agent.adapters.persistence.memory.unit_of_work import InMemoryUnitOfWorkFactory, standalone_audit_log
 from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.complaint import HistoricalComplaint
+from bank_agent.domain.conversation import ConversationCreationQuota
 from bank_agent.domain.credit import CreditApplicationIntake, CreditProduct, CreditProfile
 from bank_agent.domain.customer import Customer
 from bank_agent.domain.dispute import DisputeCase
@@ -191,6 +192,10 @@ class ReadBackend(Protocol):
 class WriteBackend(ReadBackend, Protocol):
     def uow_factory(self) -> UnitOfWorkFactory: ...
 
+    def uow_factory_with_quota(self, quota: ConversationCreationQuota) -> UnitOfWorkFactory:
+        """A unit-of-work factory over the same store whose conversations use ``quota`` for new chats."""
+        ...
+
     def session_store(self) -> SessionStore: ...
 
     def audit_log(self, context: AccessContext | None) -> AuditLog: ...
@@ -225,6 +230,9 @@ class MemoryBackend:
 
     def uow_factory(self) -> UnitOfWorkFactory:
         return self._factory
+
+    def uow_factory_with_quota(self, quota: ConversationCreationQuota) -> UnitOfWorkFactory:
+        return InMemoryUnitOfWorkFactory(self.store, creation_quota=quota)
 
     def session_store(self) -> SessionStore:
         return self._sessions

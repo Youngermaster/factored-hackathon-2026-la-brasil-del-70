@@ -392,3 +392,22 @@ def all_error_types() -> list[type[DomainError]]:
         found.append(current)
         pending.extend(current.__subclasses__())
     return found
+
+
+class ConversationClosedError(StateTransitionError):
+    code = "conversation_closed"
+
+
+class HumanServiceRequiredError(StateTransitionError):
+    code = "human_service_required"
+
+
+class ConversationCreationLimitedError(DomainError):
+    """This customer already created the configured number of new chats in the rolling creation window."""
+
+    code = "conversation_creation_limited"
+    retryable = True
+
+    def __init__(self, retry_after: timedelta) -> None:
+        super().__init__()
+        self.retry_after = retry_after

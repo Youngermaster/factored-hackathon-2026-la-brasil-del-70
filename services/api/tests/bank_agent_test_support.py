@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from bank_agent.api.config import SecurityConfig
 from bank_agent.api.provider import ApiConfig, CreditProductNames, PolicyClauses
 from bank_agent.application.agent.inbox import AgentInbox
+from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.reliability.ladder import StaticDegradation
@@ -93,6 +94,10 @@ class FakeProvider:
     @property
     def inbox(self) -> AgentInbox:
         raise AssertionError("FakeProvider has no agent inbox")
+
+    @property
+    def human_service(self) -> HumanService:
+        raise AssertionError("FakeProvider has no human service")
 
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:

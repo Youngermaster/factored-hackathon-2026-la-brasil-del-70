@@ -1,6 +1,8 @@
 # 0025: Tuesday MVP includes account inquiry, mock escalation, and assistant profile
 
-- Status: accepted
+> **Status: Superseded.** The human chose to keep all four workflows in scope. The Tuesday, September 29 target was missed while work continued. The current internal MVP completion window ends Sunday, October 4, 2026; the official challenge-window end remains October 5. This record is preserved as the historical proposal and is not a completion claim. The assistant profile and an opt-in, metadata-only Langfuse exporter later landed independently in PRs 18 and 20; neither reinstates this release plan, and its mock human agent was not built.
+
+- Status: superseded
 - Date: 2026-09-27
 - Target: Tuesday, 2026-09-29
 

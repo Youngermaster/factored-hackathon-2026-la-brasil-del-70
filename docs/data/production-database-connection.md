@@ -26,9 +26,10 @@ Documenting a connection does not switch the deployed application to the enginee
 ## Supported production stack: API and database in the same Compose project
 
 `deploy/compose.prod.yml` configures the API and jobs to use the internal Docker service `postgres:5432`.
-PostgreSQL has no published host port. The database credentials are created and stored only on the server
-in the protected production environment file. Compose passes the application password to the API and
-the owner password to administrative jobs separately.
+PostgreSQL has no published host port. Secrets come from Azure Key Vault through the VM managed identity
+or, for the `env-file` source, from the protected production environment file. The deployment stages
+service-specific secret files under `/run/bank-agent/secrets` and mounts them at `/run/secrets`.
+The API receives only its application credentials; administrative jobs receive the owner credentials.
 
 The API's effective non-secret connection settings are:
 
@@ -40,9 +41,10 @@ POSTGRES_DB=bank_agent
 POSTGRES_APP_USER=bank_app
 RATE_LIMIT_BACKEND=postgres
 LLM_BUDGET_LEDGER=postgres
+SECRETS_DIR=/run/secrets
 ```
 
-Supply `POSTGRES_APP_PASSWORD` from the server's protected configuration, using the password assigned
+Supply `POSTGRES_APP_PASSWORD` through its mounted secret file, using the password assigned
 to this database's `bank_app` role. It must satisfy production secret validation, including the
 32-character minimum. Also supply `SESSION_SECRET`, `CSRF_SECRET`, the stored retrieval index, trusted
 browser origins, and the chosen model settings according to [the production deployment guide](../../deploy/README.md).
@@ -52,13 +54,17 @@ For a new production installation, run on its server:
 
 ```bash
 deploy/prod.sh init-env
+# Configure the site, origins, model, and secret source privately before staging.
+deploy/prod.sh stage-secrets
 deploy/prod.sh check
 deploy/prod.sh build
 deploy/prod.sh up
 ```
 
 After `init-env`, set the real site/origin and other required values privately in `deploy/.env.production`
-before `check`. The file must have mode 600. Do not print it, commit it, or copy its values into a chat.
+before staging and `check`. For Azure Key Vault, follow the deployment guide to provision the vault
+and initialize with `SECRETS_SOURCE=keyvault`; secret values stay out of the environment file.
+The file must have mode 600. Do not print it, commit it, or copy its values into a chat.
 `up` runs migrations before the API starts. Follow the deployment guide for the initial seed; an existing
 engineering database must not be reset by the production demo seed.
 

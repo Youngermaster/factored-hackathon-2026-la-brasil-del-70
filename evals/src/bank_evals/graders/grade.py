@@ -92,7 +92,7 @@ def _account(ctx: GradeContext) -> bool | None:
             # balance; only a stated amount that is not the record is materially incorrect.
             wrong = wrong or stated
             ctx.fail("account", "balance_mismatch" if stated else "balance_not_stated", wanted)
-    mentions = any(turn.balances for turn in ctx.turns) or "saldo" in folded(ctx.assistant_text)
+    mentions = any(turn.balances for turn in ctx.turns) or bool(MONEY.search(folded(ctx.assistant_text)))
     if mentions and final_outcome(ctx.transcript) == "resolved" and not AS_OF.search(folded(ctx.assistant_text)):
         ok, wrong = False, True
         ctx.fail("account", "balance_without_as_of")

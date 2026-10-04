@@ -1,0 +1,272 @@
+# Continuous deployment to the Azure VM (ADR 0038; deploy/README.md, "Continuous deployment on Azure").
+#
+# After the ci workflow passes on a push to main, or on a manual run from main: build the web, api, and job images once,
+# push them to GitHub Container Registry tagged with the commit SHA, and release them on the VM through
+# `az vm run-command invoke` (deploy/azure/run-on-vm.sh runs deploy/azure/vm-deploy.sh there, which checks out the
+# commit and runs deploy/prod.sh release: pull by digest, back up, migrate, swap). Then the smoke test and the browser
+# CSP check run against the public URL, and a failure rolls the VM back to the previous release.
+#
+# Azure access is OpenID Connect with federated credentials (deploy/azure/setup-github-oidc.sh): no client secret
+# exists. The VM keeps reading its own secrets from Key Vault with its managed identity (ADR 0037); this workflow never
+# sees one. Until the repository variable AZURE_VM_NAME is set, every run stops at the plan job with a notice.
+# Actions are pinned by commit SHA with the release tag in a comment, as in ci.yml.
+name: deploy
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "deploy: release the commit at the head of main. rollback: start the previous release again."
+        type: choice
+        options: [deploy, rollback]
+        default: deploy
+
+permissions: {}
+
+# One deploy at a time, never cancelled half-way: a run that starts while another is in progress waits.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    name: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    if: >-
+      (github.event_name == 'workflow_run'
+        && github.event.workflow_run.conclusion == 'success'
+        && github.event.workflow_run.event == 'push'
+        && github.event.workflow_run.head_branch == 'main'
+        && github.event.workflow_run.head_repository.full_name == github.repository)
+      || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    permissions:
+      contents: read
+    outputs:
+      go: ${{ steps.plan.outputs.go }}
+      action: ${{ steps.plan.outputs.action }}
+      sha: ${{ steps.plan.outputs.sha }}
+      registry: ${{ steps.plan.outputs.registry }}
+    steps:
+      - name: Decide what to do
+        id: plan
+        env:
+          EVENT: ${{ github.event_name }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          DISPATCH_ACTION: ${{ inputs.action }}
+          DEPLOY_ENABLED: ${{ vars.DEPLOY_ENABLED }}
+          VM_NAME: ${{ vars.AZURE_VM_NAME }}
+          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "${EVENT}" == "workflow_run" ]]; then
+            action=deploy
+            sha="${RUN_SHA}"
+          else
+            action="${DISPATCH_ACTION:-deploy}"
+            sha="${GITHUB_SHA}"
+          fi
+          [[ "${sha}" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::not a commit SHA: ${sha}"; exit 1; }
+          go=true
+          if [[ -z "${VM_NAME}" || -z "${PUBLIC_URL}" ]]; then
+            echo "::notice::continuous deployment is not set up (repository variables AZURE_VM_NAME and PUBLIC_URL); see deploy/README.md"
+            go=false
+          elif [[ "${EVENT}" == "workflow_run" && "${DEPLOY_ENABLED}" != "true" ]]; then
+            echo "::notice::automatic deploys are off (repository variable DEPLOY_ENABLED is not true); run this workflow by hand"
+            go=false
+          elif [[ "${EVENT}" == "workflow_run" ]]; then
+            # CI runs can finish out of order: release only the commit that is still the head of main.
+            head="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+            if [[ "${head}" != "${sha}" ]]; then
+              echo "::notice::main has moved on to ${head}; the run for that commit releases it"
+              go=false
+            fi
+          fi
+          {
+            echo "go=${go}"
+            echo "action=${action}"
+            echo "sha=${sha}"
+            echo "registry=ghcr.io/${GITHUB_REPOSITORY,,}"
+          } >> "${GITHUB_OUTPUT}"
+          echo "plan: go=${go} action=${action} sha=${sha}"
+
+  build:
+    name: build and push the images
+    needs: plan
+    if: needs.plan.outputs.go == 'true' && needs.plan.outputs.action == 'deploy'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      api: ${{ steps.push.outputs.api }}
+      job: ${{ steps.push.outputs.job }}
+      web: ${{ steps.push.outputs.web }}
+    env:
+      SHA: ${{ needs.plan.outputs.sha }}
+      REGISTRY: ${{ needs.plan.outputs.registry }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
+          persist-credentials: false
+      - name: Log in to GitHub Container Registry (the job token, on stdin)
+        env:
+          GHCR_TOKEN: ${{ github.token }}
+          GHCR_USER: ${{ github.actor }}
+        run: printf '%s' "${GHCR_TOKEN}" | docker login ghcr.io --username "${GHCR_USER}" --password-stdin
+      - name: Build the images once (the commands of make images)
+        env:
+          VITE_DEMO_MODE: ${{ vars.VITE_DEMO_MODE || 'false' }}
+          SOURCE: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          [[ "${VITE_DEMO_MODE}" == "true" || "${VITE_DEMO_MODE}" == "false" ]] ||
+            { echo "::error::VITE_DEMO_MODE must be true or false"; exit 1; }
+          labels=(--label "org.opencontainers.image.source=${SOURCE}" --label "org.opencontainers.image.revision=${SHA}")
+          docker build -f services/api/Dockerfile --target api "${labels[@]}" -t "${REGISTRY}/bank-agent-api:${SHA}" .
+          docker build -f services/api/Dockerfile --target job "${labels[@]}" -t "${REGISTRY}/bank-agent-job:${SHA}" .
+          docker build -f apps/web/Dockerfile --build-arg "VITE_DEMO_MODE=${VITE_DEMO_MODE}" "${labels[@]}" \
+            -t "${REGISTRY}/bank-agent-web:${SHA}" .
+      - name: Push, and record each digest for the VM to pull by
+        id: push
+        run: |
+          for name in api job web; do
+            docker push --quiet "${REGISTRY}/bank-agent-${name}:${SHA}"
+            reference="$(docker image inspect --format '{{index .RepoDigests 0}}' "${REGISTRY}/bank-agent-${name}:${SHA}")"
+            digest="${reference##*@}"
+            [[ "${digest}" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::no digest for ${name}"; exit 1; }
+            echo "${name}=${digest}" >> "${GITHUB_OUTPUT}"
+            echo "${REGISTRY}/bank-agent-${name}@${digest}"
+          done
+      - name: Log out
+        if: always()
+        run: docker logout ghcr.io
+
+  deploy:
+    name: release, verify, roll back on failure
+    needs: [plan, build]
+    if: needs.plan.outputs.go == 'true' && needs.plan.outputs.action == 'deploy'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    # Required reviewers and the main-only branch rule are set on this environment in the repository settings. The
+    # Azure federated credential trusts this environment's subject, so only jobs here can sign in.
+    environment:
+      name: production
+      url: ${{ vars.PUBLIC_URL }}
+    permissions:
+      contents: read
+      id-token: write
+      # The job token is handed to the VM to pull the images: read-only, and revoked when this job ends.
+      packages: read
+    env:
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_VM_NAME: ${{ vars.AZURE_VM_NAME }}
+      VM_CHECKOUT: ${{ vars.VM_CHECKOUT || '/home/azureuser/bank-agent' }}
+      PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
+          persist-credentials: false
+      - name: Sign in to Azure (OpenID Connect, no stored secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Release on the VM (check out, pull by digest, back up, migrate, swap)
+        id: release
+        env:
+          DEPLOY_SHA: ${{ needs.plan.outputs.sha }}
+          IMAGE_REGISTRY: ${{ needs.plan.outputs.registry }}
+          IMAGE_DIGEST_API: ${{ needs.build.outputs.api }}
+          IMAGE_DIGEST_JOB: ${{ needs.build.outputs.job }}
+          IMAGE_DIGEST_WEB: ${{ needs.build.outputs.web }}
+          REGISTRY_USER: ${{ github.actor }}
+          REGISTRY_TOKEN: ${{ github.token }}
+        run: deploy/azure/run-on-vm.sh deploy
+      - name: Smoke test against the public URL
+        id: smoke
+        run: deploy/smoke_test.sh "${PUBLIC_URL}"
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: apps/web/package.json
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - name: Install the browser check (web dependencies and Chromium)
+        run: |
+          pnpm --dir apps/web install --frozen-lockfile
+          pnpm --dir apps/web exec playwright install --with-deps chromium
+      - name: Browser CSP and cookie check against the public URL
+        id: csp
+        run: make csp-check SMOKE_URL="${PUBLIC_URL}"
+      - name: Sign in to Azure again for the rollback (a fresh token)
+        if: failure() && steps.release.outcome == 'success'
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Roll back to the previous release (the checks failed after the swap)
+        if: failure() && steps.release.outcome == 'success'
+        run: deploy/azure/run-on-vm.sh rollback
+      - name: Summary
+        if: always()
+        env:
+          SHA: ${{ needs.plan.outputs.sha }}
+          RELEASE: ${{ steps.release.outcome }}
+          SMOKE: ${{ steps.smoke.outcome }}
+          CSP: ${{ steps.csp.outcome }}
+        run: |
+          {
+            echo "### Deploy of ${SHA}"
+            echo ""
+            echo "| Step | Outcome |"
+            echo "|---|---|"
+            echo "| Release on the VM | ${RELEASE} |"
+            echo "| Smoke test | ${SMOKE} |"
+            echo "| CSP check | ${CSP} |"
+            echo ""
+            echo "A failed release restores the previous one on the VM; a failed check after a good release rolls back."
+            echo "The VM keeps a log of every run in /var/log/bank-agent-deploy/."
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+  rollback:
+    name: roll back by hand
+    needs: plan
+    if: needs.plan.outputs.go == 'true' && needs.plan.outputs.action == 'rollback'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: ${{ vars.PUBLIC_URL }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_VM_NAME: ${{ vars.AZURE_VM_NAME }}
+      VM_CHECKOUT: ${{ vars.VM_CHECKOUT || '/home/azureuser/bank-agent' }}
+      PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Sign in to Azure (OpenID Connect, no stored secret)
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Start the previous release on the VM
+        run: deploy/azure/run-on-vm.sh rollback
+      - name: Smoke test against the public URL
+        run: deploy/smoke_test.sh "${PUBLIC_URL}"

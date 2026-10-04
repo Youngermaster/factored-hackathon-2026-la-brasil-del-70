@@ -112,6 +112,6 @@ Paths are relative to the repository root. `tests/` means `services/api/tests/`;
 |---|---|---|
 | Public GitHub repository named `factored-hackathon-2026-[team name]` | `factored-hackathon-2026-la-brasil-del-70` | Human step: make it public |
 | A link to where the tool is deployed | [deploy/README.md](../../deploy/README.md); the URL goes into `slides/data/metrics.yml` (`deploy.url`) and the email | Human step: choose the host, deploy, smoke test |
-| A 4 to 6 slide presentation | [slides/](../../slides/README.md): six main slides plus an appendix | Human step: `pnpm export:final` after `deploy.url` is filled |
-| A short mandatory video demonstrating the solution and the core architectural decisions | [slides/VIDEO.md](../../slides/VIDEO.md), [slides/script.md](../../slides/script.md), [docs/demo/script.md](../demo/script.md) | Human step: record and export |
+| A 4 to 6 slide presentation | [slides/](../../slides/README.md): six main slides, each tagged with the evaluation dimensions it answers; the appendix exports to a separate PDF | Human step: `pnpm export:final` (no metric pending) |
+| A video pitch of 3:00 at most, demonstrating the solution and the core architectural decisions | [video plan](../demo/video-plan.md), [video monologue](../demo/video-monologue.md), [practice cases](../demo/practice-cases.md), [slides/VIDEO.md](../../slides/VIDEO.md); `pnpm check:content` fails past 3:00 of narration | Human step: record and export, final cut 3:00 or less |
 | Everything to `hackathon.admin@factored.ai` before 2026-10-05 | [email-draft.md](email-draft.md) | Human step: send |

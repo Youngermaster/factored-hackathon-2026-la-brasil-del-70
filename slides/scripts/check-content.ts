@@ -7,8 +7,15 @@
  *   3. tokens: styles/tokens.css and the kit's C object agree
  *   4. contrast: every allowed text pair meets its WCAG ratio
  *   5. script: every slide has a narration section; total spoken duration at
- *      150 words per minute sits inside the declared target
+ *      150 words per minute sits inside the declared target and under the
+ *      3:00 video limit; script.md and docs/demo/video-monologue.md say the
+ *      same words by the same speakers (scripts/narration.ts)
+ *  5b. the submission PDF: 4 to 6 main slides, and `pnpm export` splits the appendix off
  *   6. writing: no em dashes in anything shown or spoken
+ *   7. naming: no known variant spelling of the product, team, systems,
+ *      workflows, metrics or levels; team names identical on the close slide,
+ *      in script.md and in the README; placeholders fail under --strict
+ *   8. intervals and fractions agree with the values they describe
  *
  *   pnpm check:content            report, fail on errors
  *   pnpm check:content --strict   also fail while any metric is pending
@@ -19,6 +26,7 @@ import { parse } from 'yaml'
 import { C } from '../lib/scene/kit'
 import { TEXT_PAIRS, ratio } from '../lib/scene/contrast'
 import { METRIC_KINDS } from '../lib/metric-kinds'
+import { countBySpeaker, firstDifference, monologueTable, monologueWords, scriptWords } from './narration'
 
 const ROOT = process.cwd()
 const REPO = resolve(ROOT, '..')
@@ -134,6 +142,10 @@ if (errors === e2) ok(`${TEXT_PAIRS.length} text pairs meet their ratio (4.5:1 b
 // ── 5. narration script ────────────────────────────────────────────────────
 console.log('\nnarration (script.md, 150 words per minute)')
 const WPM = 150
+const VIDEO_LIMIT_S = 180
+const MONOLOGUE = 'docs/demo/video-monologue.md'
+/** the video documents outside slides/, held to the same writing and naming rules */
+const DEMO_DOCS = ['../docs/demo/video-plan.md', '../docs/demo/video-monologue.md', '../docs/demo/practice-cases.md']
 const script = existsSync(join(ROOT, 'script.md')) ? read('script.md') : ''
 if (!script) fail('script.md is missing')
 const range = script.match(/<!--\s*total-target:\s*(\d+)-(\d+)\s*-->/)
@@ -155,10 +167,48 @@ console.log(`  ${'total'.padEnd(18)} ${fmt(total)} spoken`)
 if (!range) fail('script.md needs a "<!-- total-target: MIN-MAX -->" comment (seconds)')
 else if (total < Number(range[1]) || total > Number(range[2])) fail(`spoken total ${fmt(total)} is outside the target ${fmt(Number(range[1]))} to ${fmt(Number(range[2]))}`)
 else ok(`spoken total ${fmt(total)} is inside ${fmt(Number(range[1]))} to ${fmt(Number(range[2]))}`)
+// the organizers' hard limit: the whole video, demo footage included, is at most 3:00
+if (total > VIDEO_LIMIT_S) fail(`spoken total ${fmt(total)} exceeds the organizers' ${fmt(VIDEO_LIMIT_S)} video limit at ${WPM} words per minute`)
+else ok(`spoken total ${fmt(total)} fits the ${fmt(VIDEO_LIMIT_S)} video limit`)
+checkMonologue(script)
+
+/** script.md and the team monologue say the same words, by the same speakers, with true word counts. */
+function checkMonologue(text: string) {
+  const team = Object.keys(strings.close ?? {}).filter((k) => /^m\d+$/.test(k)).map((k) => String(strings.close[k]))
+  const path = join(REPO, MONOLOGUE)
+  if (!existsSync(path)) return fail(`${MONOLOGUE} is missing`)
+  const md = readFileSync(path, 'utf8')
+  const a = scriptWords(text, team)
+  const b = monologueWords(md, team)
+  const unassigned = a.filter((w) => !w.speaker).length
+  if (unassigned) fail(`script.md has ${unassigned} spoken word(s) before any [speaker] tag`)
+  const diff = firstDifference(a, b)
+  if (diff) fail(`script.md and ${MONOLOGUE} differ at ${diff}`)
+  else ok(`script.md and ${MONOLOGUE} say the same ${a.length} words`)
+  const counts = countBySpeaker(a)
+  const table = monologueTable(md, team)
+  for (const name of team) {
+    const n = counts.get(name) ?? 0
+    console.log(`  ${name.padEnd(18)} ${String(n).padStart(4)} words  ${(n / WPM * 60).toFixed(0).padStart(4)} s`)
+    if (table.get(name) !== n) fail(`${MONOLOGUE}: the word-count table says ${table.get(name) ?? 'nothing'} for ${name}, the script has ${n}`)
+  }
+}
+
+// ── 5b. the six main slides, and the PDF that holds only them ─────────────
+console.log('\nsubmission PDF')
+const mainSlides = aliases.filter((a) => !a.startsWith('appendix'))
+const firstAppendix = aliases.findIndex((a) => a.startsWith('appendix'))
+if (mainSlides.length < 4 || mainSlides.length > 6) fail(`${mainSlides.length} main slides; the organizers allow 4 to 6`)
+if (firstAppendix !== -1 && firstAppendix !== mainSlides.length) fail('appendix slides must come after every main slide')
+// Slidev ignores --range in hash router mode, so `pnpm export` renders the deck once and
+// scripts/split-pdf.mjs cuts it by routeAlias into the pitch PDF and the appendix PDF
+const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> }
+if (!/node scripts\/split-pdf\.mjs/.test(pkg.scripts.export ?? '')) fail('package.json "export" must end with node scripts/split-pdf.mjs, which keeps the appendix out of the submission PDF')
+else ok(`${mainSlides.length} main slides in the submission PDF, ${aliases.length - mainSlides.length} appendix slides in their own PDF (scripts/split-pdf.mjs)`)
 
 // ── 6. writing ─────────────────────────────────────────────────────────────
 console.log('\nwriting')
-const prose = ['slides.md', 'locales/en.yml', 'data/metrics.yml', 'script.md', 'VIDEO.md', 'README.md', 'lib/metric-kinds.ts']
+const prose = ['slides.md', 'locales/en.yml', 'data/metrics.yml', 'script.md', 'VIDEO.md', 'README.md', 'lib/metric-kinds.ts', ...DEMO_DOCS]
 let dashes = 0
 for (const f of prose.filter((p) => existsSync(join(ROOT, p)))) {
   read(f).split('\n').forEach((line, i) => {
@@ -166,6 +216,67 @@ for (const f of prose.filter((p) => existsSync(join(ROOT, p)))) {
   })
 }
 if (!dashes) ok(`no em dashes in ${prose.length} prose files`)
+
+// ── 7. naming: one spelling for the product, team, systems, workflows, metrics
+console.log('\nnaming')
+const e3 = errors
+// Spellings that drifted from docs/evaluation, the app, or the README. The
+// right-hand side is the canonical form; README.md explains the rule.
+const BANNED: [RegExp, string][] = [
+  [/\bJulian\b/, 'Julián (with the accent, as in the README team section)'],
+  [/\bBank agent\b|\bBankAgent\b|\bbank-agent app\b/, 'Bank Agent (the name in the app header, apps/web locale app.name)'],
+  [/(?<!La )\bBrasil del 70\b/, 'La Brasil del 70'],
+  [/\bunneeded\b/i, 'unnecessary transfers'],
+  [/\b(missed|unnecessary) escalations?\b/i, 'missed or unnecessary transfers (docs/evaluation)'],
+  [/\b(keyword|rule) menu\b|\bmenu bot\b/i, 'the menu and rules bot (B0)'],
+  [/\bnaive agent\b/i, 'the naive LLM agent (B1)'],
+  [/\bsafe (automatic|resolution rate)\b|\bautomated safe resolution\b/i, 'safe automated resolution'],
+  [/\bfirst-contact resolution\b/i, 'first contact resolution'],
+  [/\baccounts and payments\b/i, 'account inquiry (the workflow name in docs/evaluation)'],
+  [/\blevel [0-4]\b/i, 'L0 to L4 (docs/operations/degradation.md)'],
+]
+const named = ['slides.md', 'locales/en.yml', 'script.md', 'VIDEO.md', 'README.md', ...DEMO_DOCS]
+for (const f of named.filter((p) => existsSync(join(ROOT, p)))) {
+  read(f).split('\n').forEach((line, i) => {
+    for (const [re, want] of BANNED) if (re.test(line)) fail(`${f}:${i + 1} "${line.match(re)?.[0]}": write ${want}`)
+  })
+}
+// the team: each name on the close slide appears verbatim in the narration and the repository README
+const team = strings.close ?? {}
+const readme = existsSync(join(REPO, 'README.md')) ? readFileSync(join(REPO, 'README.md'), 'utf8') : ''
+const members = Object.keys(team).filter((k) => /^m\d+$/.test(k)).map((k) => String(team[k]))
+for (const name of members) {
+  if (!script.includes(name)) fail(`team member "${name}" (close slide) is not named in script.md`)
+  if (!readme.includes(`| ${name} |`)) fail(`team member "${name}" (close slide) is not in the README team table`)
+}
+// placeholders: allowed while drafting, never in the submission build
+const PLACEHOLDER = /\[(confirm|placeholder)[^\]]*\]|\bTBD\b|\bTODO\b/i
+for (const f of ['locales/en.yml', 'script.md']) {
+  read(f).split('\n').forEach((line, i) => {
+    if (!PLACEHOLDER.test(line)) return
+    if (strict) fail(`${f}:${i + 1} still holds a placeholder: ${line.trim()}`)
+    else warn(`${f}:${i + 1} holds a placeholder (fails under --strict): ${line.trim()}`)
+  })
+}
+if (errors === e3) ok(`${BANNED.length} known variant spellings absent; ${members.length} team names match script.md and the README`)
+
+// ── 8. intervals and fractions agree with their values ───────────────────
+console.log('\nintervals and fractions')
+const e4 = errors
+type Rich = Entry & { lo?: number; hi?: number; of?: number }
+for (const [k, raw] of Object.entries(metrics)) {
+  const e = raw as Rich
+  if (typeof e.value !== 'number') continue
+  const frac = e.display?.match(/^(\d+)\/(\d+)$/)
+  if (frac && e.of !== undefined && (Number(frac[1]) !== e.value || Number(frac[2]) !== e.of)) fail(`${k}: display ${e.display} does not match ${e.value} of ${e.of}`)
+  if (frac && e.of === undefined && Math.abs((Number(frac[1]) / Number(frac[2])) * 100 - e.value) > 0.1) fail(`${k}: display ${e.display} does not match value ${e.value}`)
+  if (e.of !== undefined && e.value > e.of) fail(`${k}: value ${e.value} exceeds its denominator ${e.of}`)
+  if (e.lo !== undefined || e.hi !== undefined) {
+    const rate = e.of ? (e.value / e.of) * 100 : e.value
+    if (e.lo === undefined || e.hi === undefined || e.lo > rate + 0.5 || e.hi < rate - 0.5) fail(`${k}: interval ${e.lo} to ${e.hi} does not contain ${rate.toFixed(1)}`)
+  }
+}
+if (errors === e4) ok('every interval contains its estimate; every fraction matches its value')
 
 console.log('')
 if (errors) {

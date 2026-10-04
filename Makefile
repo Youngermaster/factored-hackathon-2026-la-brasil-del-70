@@ -24,7 +24,7 @@ BANK_DATA := $(UV_RUN) bank-data
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
 	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
-	api-local-llm env api-obs load-test submission-check
+	api-local-llm api-hosted-llm env api-obs load-test submission-check
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -88,6 +88,18 @@ llm-smoke: ## Opt-in: run the fixture prompts (es, pt, four workflows) against t
 api-local-llm: ## Opt-in: run the API on :8000 with the local Ollama model through LiteLLM (LOCAL_LLM_MODEL, LOCAL_LLM_BASE)
 	LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=$(LOCAL_LLM_MODEL) LLM_API_BASE=$(LOCAL_LLM_BASE) \
 		$(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
+
+# A hosted model (docs/HOW-IT-WORKS.md, section 7): LLM_PRIMARY_MODEL and LLM_API_KEY_PRIMARY come from the shell or
+# .env, never from this file. The preflight (make env-check with LLM_PROVIDER=litellm) prints the required variables
+# and the fallback model's, each as set or unset, never a value, and stops when a required one is unset. It exits
+# with PIPESTATUS because GNU make 3.81 (the macOS default) ignores .SHELLFLAGS, so pipefail is not always set.
+HOSTED_LLM_PREFLIGHT := /^Required:/ { shown = 1 } /^Optional:/ { shown = 0 } \
+	shown || /^check-env-keys:/ || /^  (LLM_FALLBACK_MODEL|LLM_API_KEY_FALLBACK):/
+
+api-hosted-llm: ## Opt-in: run the API on :8000 with a hosted model through LiteLLM (LLM_PRIMARY_MODEL, LLM_API_KEY_PRIMARY)
+	LLM_PROVIDER=litellm $(GUARD_PY) scripts/checks/check_env_keys.py | awk '$(HOSTED_LLM_PREFLIGHT)'; \
+		exit "$${PIPESTATUS[0]}"
+	LLM_PROVIDER=litellm $(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
 
 api-obs: ## Run the API on :8000 exporting traces and metrics to the obs profile (make up PROFILES=obs first)
 	OTEL_ENABLED=true OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
@@ -192,6 +204,7 @@ verify-seed: ## Read-only reconciliation of the selected gold rows against Postg
 	$(BANK_DATA) verify-seed $(SOURCE_FLAG) --customers $(SEED_CUSTOMERS)
 
 docs-check: ## Markdown lint and Mermaid validation
+	$(GUARD_PY) scripts/checks/check_adr_statuses.py
 	apps/web/node_modules/.bin/markdownlint-cli2
 	node scripts/checks/check_mermaid.mjs
 	node --test 'scripts/checks/tests/*.test.mjs'
@@ -228,6 +241,7 @@ eda-ui: ## Open the local EDA viewer and sanitized laboratory
 # Container tools run from pinned images, so nothing beyond Docker is needed on the machine.
 HADOLINT_IMAGE := hadolint/hadolint:v2.14.0@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e
 SHELLCHECK_IMAGE := koalaman/shellcheck:v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d
+ACTIONLINT_IMAGE := rhysd/actionlint:1.7.7@sha256:887a259a5a534f3c4f36cb02dca341673c6089431057242cdc931e9f133147e9
 TRIVY_IMAGE := aquasec/trivy:0.70.0@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e
 SYFT_IMAGE := anchore/syft:v1.40.0@sha256:11a68ff5cd49a1579e1f05b061a96edf0a5add161ea5f38d62fc979704c46918
 IMAGE_TAG ?= $(shell git rev-parse --short=12 HEAD)
@@ -238,11 +252,10 @@ SMOKE_URL ?=
 SMOKE_ARGS ?=
 CSP_ARGS ?=
 # Dummy values that only let `docker compose config` interpolate the production file; never used to run anything.
-COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
-	POSTGRES_SUPERUSER_PASSWORD=compose-config-check POSTGRES_ADMIN_PASSWORD=compose-config-check \
-	POSTGRES_APP_PASSWORD=compose-config-check SESSION_SECRET=compose-config-check CSRF_SECRET=compose-config-check
+# Secrets are mounted files (ADR 0037), so only the two required site values are needed.
+COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org
 
-security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, production compose validation
+security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, actionlint, production compose validation
 	requirements="$$(mktemp)"; trap 'rm -f "$$requirements"' EXIT; \
 		uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt -o "$$requirements" > /dev/null; \
 		$(UV_RUN) pip-audit -r "$$requirements" --require-hashes --disable-pip --progress-spinner off
@@ -252,8 +265,11 @@ security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, she
 	for dockerfile in services/api/Dockerfile apps/web/Dockerfile services/api/Dockerfile.dev apps/web/Dockerfile.dev; do \
 		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
 	docker run --rm -v "$(CURDIR)/deploy:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) \
-		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh \
+		azure/keyvault-secrets.sh azure/provision.sh azure/install-vm.sh azure/vm-deploy.sh azure/run-on-vm.sh \
+		azure/setup-github-oidc.sh
 	docker run --rm -v "$(CURDIR)/scripts:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) submission_check.sh
+	docker run --rm -v "$(CURDIR):/repo:ro" -w /repo $(ACTIONLINT_IMAGE)
 	$(COMPOSE_CHECK_ENV) docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example \
 		--profile '*' config --quiet
 

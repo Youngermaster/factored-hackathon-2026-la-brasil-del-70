@@ -4,6 +4,7 @@ from types import TracebackType
 from typing import Protocol, Self
 
 from bank_agent.adapters.persistence.memory.assistant_profiles import InMemoryAssistantProfileRepository
+from bank_agent.adapters.persistence.memory.human_service import InMemoryHumanServiceRepository
 from bank_agent.adapters.persistence.memory.repositories import (
     InMemoryActionLedger,
     InMemoryAuditLog,
@@ -20,6 +21,7 @@ from bank_agent.adapters.persistence.memory.repositories import (
 )
 from bank_agent.adapters.persistence.memory.store import DirectView, InMemoryStore, TableView
 from bank_agent.domain.access import AccessContext
+from bank_agent.domain.conversation import DEFAULT_CONVERSATION_CREATION_QUOTA, ConversationCreationQuota
 from bank_agent.domain.errors import ConcurrencyConflictError
 
 
@@ -38,17 +40,25 @@ class InMemoryUnitOfWork:
     change to a key this one also wrote.
     """
 
-    def __init__(self, store: InMemoryStore, context: AccessContext) -> None:
+    def __init__(
+        self,
+        store: InMemoryStore,
+        context: AccessContext,
+        creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA,
+    ) -> None:
         self._context = context
+        self._creation_quota = creation_quota
         self._customers = TableView(store.customers)
         self._products = TableView(store.products)
         self._transactions = TableView(store.transactions)
         self._complaints = TableView(store.complaints)
         self._cases = TableView(store.cases)
         self._conversations = TableView(store.conversations)
+        self._creation_guards = TableView(store.conversation_creation_guards)
         self._turns = TableView(store.turns)
         self._records = TableView(store.execution_records)
         self._handoffs = TableView(store.handoffs)
+        self._human_messages = TableView(store.human_messages)
         self._audit_events = TableView(store.audit_events)
         self._credit_profiles = TableView(store.credit_profiles)
         self._credit_applications = TableView(store.credit_applications)
@@ -61,9 +71,11 @@ class InMemoryUnitOfWork:
             self._complaints,
             self._cases,
             self._conversations,
+            self._creation_guards,
             self._turns,
             self._records,
             self._handoffs,
+            self._human_messages,
             self._audit_events,
             self._credit_profiles,
             self._credit_applications,
@@ -97,7 +109,9 @@ class InMemoryUnitOfWork:
 
     @property
     def conversations(self) -> InMemoryConversationRepository:
-        return InMemoryConversationRepository(self._conversations, self._turns, self._context)
+        return InMemoryConversationRepository(
+            self._conversations, self._turns, self._creation_guards, self._context, self._creation_quota
+        )
 
     @property
     def assistant_profiles(self) -> InMemoryAssistantProfileRepository:
@@ -109,7 +123,11 @@ class InMemoryUnitOfWork:
 
     @property
     def handoffs(self) -> InMemoryHandoffRepository:
-        return InMemoryHandoffRepository(self._handoffs, self._context)
+        return InMemoryHandoffRepository(self._handoffs, self._conversations, self._context)
+
+    @property
+    def human_service(self) -> InMemoryHumanServiceRepository:
+        return InMemoryHumanServiceRepository(self._human_messages, self._handoffs, self._context)
 
     @property
     def audit(self) -> InMemoryAuditLog:
@@ -148,13 +166,23 @@ class InMemoryUnitOfWork:
 
 
 class InMemoryUnitOfWorkFactory:
-    """Implements ``UnitOfWorkFactory`` over one shared ``InMemoryStore``."""
+    """Implements ``UnitOfWorkFactory`` over one shared ``InMemoryStore``.
 
-    def __init__(self, store: InMemoryStore) -> None:
+    ``creation_quota`` bounds new chats per customer (``ConversationRepository.add_with_quota``).
+    """
+
+    def __init__(
+        self, store: InMemoryStore, *, creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA
+    ) -> None:
         self._store = store
+        self._creation_quota = creation_quota
+
+    @property
+    def creation_quota(self) -> ConversationCreationQuota:
+        return self._creation_quota
 
     def __call__(self, context: AccessContext) -> InMemoryUnitOfWork:
-        return InMemoryUnitOfWork(self._store, context)
+        return InMemoryUnitOfWork(self._store, context, self._creation_quota)
 
 
 def standalone_audit_log(store: InMemoryStore, context: AccessContext | None = None) -> InMemoryAuditLog:

@@ -77,7 +77,7 @@ make up PROFILES=api
 
 ## Dependencies and extras
 
-Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013).
+Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013). Opt-in Langfuse tracing uses the locked OpenTelemetry OTLP HTTP exporter; it adds no API dependency. See [observability](../../docs/operations/observability.md) for settings and startup.
 
 ## How to extend
 
@@ -98,3 +98,7 @@ make check                                        # everything, with coverage ga
 - `tests/unit/` uses fakes and the httpx ASGI transport; pytest-socket blocks the network.
 - `tests/integration/` starts a throwaway `postgres:16.15-alpine3.24` container with the repository init script and credentials generated at runtime. It never reads `.env`.
 - Coverage gates: 90% for `domain`, `ports`, `policy`, and `application`; 80% for `adapters`, `api`, and `bootstrap`.
+
+## Live human service
+
+ADR 0026 adds persisted customer and assigned-agent messages on the existing conversation, and a rolling-window customer creation quota (`CONVERSATION_CREATION_LIMIT`, default five per hour, 200 on the public demo; `CONVERSATION_CREATION_WINDOW_MINUTES`, default 60). Existing databases need `make db-upgrade` (revision `0014`). The [human-service guide](../../docs/workflows/human-service.md) describes the endpoints, lifecycle, authorization, and local walkthrough.

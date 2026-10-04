@@ -53,7 +53,7 @@ async def test_19b_pt_br_balance_with_the_model_extraction_scripted(backend: Bac
     assert "conta poupança **** 4444: saldo 18.000,00 MXN" in reply.response.text
     record = await harness.record(session, reply.turn_id)
     assert [str(call.prompt) for call in record.llm_calls] == [
-        "detect_escalation_signals@1", "extract_account_inquiry_slots@1",
+        "detect_escalation_signals@2", "extract_account_inquiry_slots@1",
     ]  # fmt: skip
 
 

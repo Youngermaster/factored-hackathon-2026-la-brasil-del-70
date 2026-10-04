@@ -38,7 +38,7 @@ see [the DataGrip setup](../../deploy/data-engineering/README.md#datagrip-inspec
 
 ## Database contexts
 
-The unit of work runs `select set_config('app.role', $1, true), set_config('app.customer_id', $2, true), set_config('lock_timeout', '2s', true)` as its first statement. Before exposing repositories it also sets `app.staff_id` from the trusted staff session, or an empty string for a customer. The `true` makes these settings local to the transaction, so a pooled connection never carries a previous request's context. Commit and rollback begin a new transaction with the same role, customer, and staff context.
+The unit of work runs `select set_config('app.role', $1, true), set_config('app.customer_id', $2, true), set_config('lock_timeout', '2s', true)` as its first statement. Before exposing repositories it also sets `app.staff_id` from the trusted staff access context; customer and evaluator contexts clear it. The `true` makes these settings local to the transaction, so a pooled connection never carries a previous request's context. Commit and rollback begin a new transaction with the same role, customer, and staff context.
 
 | `app.role` | Set by | Customer |
 |---|---|---|
@@ -61,6 +61,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | `dispute_cases` | `OWN` | read, only when a handoff's `case_ref` names the case | none | none | all |
 | `credit_applications` | `OWN` | read when the status is `submitted` or `under_human_review` (a review item of its own, ADR 0021; migration `0010`), or when a handoff's `credit_review.application_ref` names it; update a reviewable intake to `under_human_review` or `closed` only, and read an intake it closed after a review (migration `0013`, because PostgreSQL checks the new row of an update against the read policies) | none | none | all |
 | `action_idempotency`, `conversations`, `turns` | `OWN` | none | none | none | none |
+| `human_messages` | read own; insert user messages on an open or claimed own handoff | read only exchanges assigned to this staff identity, including after closure; insert agent messages only while claimed | none | none | none |
 | `execution_records` | `OWN` | none | read all | none | none |
 | `handoffs` | read and insert `OWN` | read all, update the lifecycle | read all | none | none |
 | `human_messages` (migration `0014`) | read `OWN`; insert own user messages for an open or claimed matching handoff | read messages of handoffs claimed by this staff member; insert agent messages while that claim is active | none | none | none |
@@ -68,6 +69,8 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | `identity_directory`, `staff_members`, `sessions`, `otp_challenges`, `trust_events` | none | none | none | all | directory and staff only |
 
 `bank_evaluator` has its own policies (`TO bank_evaluator USING (true)`) on `execution_records`, `audit_events`, and `handoffs`, and no grant on any other `app` table.
+
+Agents have no application-role policy granting reads of `conversations` or `turns`. Migration `0014` gives only the owner executing the fixed-search-path `close_human_conversation` trigger scoped SELECT/UPDATE policies to finalize a conversation when its assigned agent resolves a handoff. The trigger verifies the caller and assignment; public EXECUTE is revoked. Human messages share the conversation's retention and append-only protections.
 
 ## Other database guards
 
@@ -78,7 +81,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 - **Documents agree with their columns**: check constraints tie each JSONB document to its scalar columns (id, customer, status, version).
 - **Credit lifecycle**: `credit_applications.status` admits only `submitted`, `under_human_review`, `withdrawn`, and `closed`; there is no approved or declined status.
 - **Audit replay check**: `app.audit_event_digest(event_id)` (SECURITY DEFINER, EXECUTE granted to `bank_app` only) returns the stored digest of one event, never its document, so a context that may not read audit events can still tell an identical replay from a conflicting one. It reads through the owner's `owner_replay_check` policy, verified under the non-superuser production owner.
-- **Retention context**: migration 0012 gives the owner read and delete policies in the `retention` context on `messages`, `turns`, `conversations`, `sessions`, `otp_challenges`, `trust_events`, and `credit_applications` only, and lets the append-only triggers of `messages` and `trust_events` accept a delete in that context. Execution records, audit events, handoffs, and cases have no retention policy, so the purge cannot see them ([data retention](data-retention.md)).
+- **Retention context**: migration 0012 gives the owner read and delete policies in the `retention` context on `messages`, `human_messages` (0014), `turns`, `conversations`, `sessions`, `otp_challenges`, `trust_events`, and `credit_applications` only, and lets the append-only triggers of `messages`, `human_messages`, and `trust_events` accept a delete in that context. Execution records, audit events, handoffs, and cases have no retention policy, so the purge cannot see them ([data retention](data-retention.md)).
 
 ## Tests that prove it
 
@@ -93,6 +96,7 @@ The unit of work runs `select set_config('app.role', $1, true), set_config('app.
 | The credit status constraint rejects anything outside the review lifecycle | `test_schema_guards.py` |
 | `eval` is reachable only by `bank_evaluator`, which cannot read customers | `test_schema_guards.py` |
 | Every read tool is scoped by the session; another customer's product, payment, case, or application is not found | `services/api/tests/contracts/test_read_tools_contract.py` |
+| A request for another customer's or another person's data, by wording or by a document number, is refused with `PRV-ALL-2` before any tool, the reply never repeats the identifier, and the customer's own document does not trigger it (es and pt, memory and PostgreSQL) | `services/api/tests/integration/workflows/test_guardrails_before_video.py`, `test_third_party_requests.py`, `services/api/tests/unit/application/engine/test_signals_other_customer.py` |
 | The application role owns nothing and has no privileges beyond data access | `services/api/tests/integration/test_database_roles.py` |
 | Staff context is cleared outside transactions and reapplied after commit and rollback; claimed resolution closes the matching conversation; human messages enforce RLS and restricted grants | `services/api/tests/integration/test_data_schema_compatibility.py` |
 | Under the production roles (a non-superuser owner): no service role has superuser powers, the owner owns every table, forced RLS binds the owner outside its seed context, the seed runs and repeats, the audit replay check reads digests, the API and the shared rate limits work, and the purge deletes only what it should | `services/api/tests/integration/test_production_roles.py` |

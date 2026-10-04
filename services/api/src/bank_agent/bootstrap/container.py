@@ -29,6 +29,7 @@ from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.system.ids import RandomIdGenerator
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.agent.inbox import AgentInbox
+from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
@@ -42,6 +43,7 @@ from bank_agent.bootstrap.persistence import (
     build_persistence,
     build_rate_limit_store,
     build_session_service,
+    conversation_creation_quota,
 )
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
 from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
@@ -125,7 +127,11 @@ class Container:
         self._ids: IdGenerator = ids if ids is not None else RandomIdGenerator()
         self._database_health = DatabaseHealth(self._telemetry) if self._engine is not None else None
         self._persistence = (
-            persistence if persistence is not None else build_persistence(self._engine, self._database_health)
+            persistence
+            if persistence is not None
+            else build_persistence(
+                self._engine, self._database_health, creation_quota=conversation_creation_quota(settings)
+            )
         )
         self._session_service = build_session_service(settings, self._persistence, clock=self._clock, ids=self._ids)
         self._rate_limit_store = build_rate_limit_store(settings, self._engine, self._clock)
@@ -183,6 +189,7 @@ class Container:
         )
         self._assistant_preferences = AssistantPreferencesService(self._persistence.uow_factory, self._clock)
         self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
+        self._human_service = HumanService(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
         self._degradation.current()
 
@@ -261,6 +268,10 @@ class Container:
     @property
     def inbox(self) -> AgentInbox:
         return self._inbox
+
+    @property
+    def human_service(self) -> HumanService:
+        return self._human_service
 
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:

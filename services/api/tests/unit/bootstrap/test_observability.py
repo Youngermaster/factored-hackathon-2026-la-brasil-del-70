@@ -9,10 +9,12 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
+from pydantic import SecretStr
 
+from bank_agent.adapters.telemetry.langfuse import LangfuseGenerationExporter
 from bank_agent.bootstrap.logging import configure_logging
 from bank_agent.bootstrap.observability import build_observability
-from bank_agent.bootstrap.settings import ObservabilitySettings
+from bank_agent.bootstrap.settings import LangfuseSettings, ObservabilitySettings
 
 
 def _processors(observability: object) -> list[object]:
@@ -45,6 +47,38 @@ def test_enabled_exports_traces_and_metrics_over_otlp_http() -> None:
         assert isinstance(reader, PeriodicExportingMetricReader)
         assert isinstance(reader._exporter, OTLPMetricExporter)
         assert reader._exporter._endpoint == "http://collector.invalid:4318/v1/metrics"
+    finally:
+        observability.shutdown()
+
+
+def test_langfuse_disabled_creates_no_exporter_even_with_keys() -> None:
+    langfuse = LangfuseSettings(
+        enabled=False, public_key=SecretStr("public-test"), secret_key=SecretStr("private-test")
+    )
+    observability = build_observability(ObservabilitySettings(enabled=False), langfuse=langfuse)
+    try:
+        assert _processors(observability) == []
+        assert not observability.meter_provider._metric_readers
+    finally:
+        observability.shutdown()
+
+
+def test_langfuse_enabled_uses_the_existing_trace_provider() -> None:
+    langfuse = LangfuseSettings(
+        enabled=True,
+        base_url="http://langfuse.invalid:3000/",
+        public_key=SecretStr("public-test"),
+        secret_key=SecretStr("private-test"),
+    )
+    observability = build_observability(ObservabilitySettings(enabled=False), langfuse=langfuse)
+    try:
+        (processor,) = _processors(observability)
+        assert isinstance(processor, BatchSpanProcessor)
+        exporter = processor._batch_processor._exporter
+        assert isinstance(exporter, LangfuseGenerationExporter)
+        assert isinstance(exporter._inner, OTLPSpanExporter)
+        assert exporter._inner._endpoint == "http://langfuse.invalid:3000/api/public/otel/v1/traces"
+        assert not observability.meter_provider._metric_readers
     finally:
         observability.shutdown()
 

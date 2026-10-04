@@ -38,7 +38,11 @@ _INJECTION: dict[str, re.Pattern[str]] = {
         r"\b(customer_id|customer id|id de cliente|otro cliente|outro cliente|another customer)\b"
     ),
 }
-_IDS = re.compile(r"\b(?:TRX|TXN|PRD|CLI|CUS)-[A-Z0-9][A-Z0-9-]{3,29}\b|\b(?:case|app)-[0-9a-z]{6,59}\b", re.IGNORECASE)
+_IDS = re.compile(
+    r"\b(?:TRX|TXN|PRD|CLI|CUS)-[A-Z0-9][A-Z0-9-]{3,29}\b"
+    r"|\b(?:case|app)-[0-9a-z][0-9a-z-]{4,58}[0-9a-z]\b",
+    re.IGNORECASE,
+)
 
 
 def detect_injection(text: str) -> tuple[str, ...]:

@@ -5,7 +5,7 @@
 
 ## Context
 
-ADR 0020 assigns human escalation paths to workflows that the prototype cannot safely resolve. ADR 0006 defines the structured, auditable handoff record. In these decisions, the **AI assistant** is the model-driven customer chat, a **human service agent** is a person handling an escalated request, and a **mock human service agent** is a software simulation that joins the conversation and sends a randomized demo response. For the Tuesday account-inquiry release, [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) chooses an escalation-tool flow where the mock human service agent joins the same chat for card-support, dispute, and credit requests.
+ADR 0020 assigns human escalation paths to workflows that the prototype cannot safely resolve. ADR 0006 defines the structured, auditable handoff record. In these decisions, the **AI assistant** is the model-driven customer chat, a **human service agent** is a person handling an escalated request, and a **mock human service agent** is a software simulation that joins the conversation and sends a randomized demo response. The superseded [ADR 0025](0025-tuesday-account-inquiry-mvp-and-observability.md) proposed a mock-agent flow for a Tuesday release; that scope was not adopted. Current project status and scope are recorded in [PROGRESS.md](../PROGRESS.md) and ADR 0020.
 
 A mock human service agent joining the conversation demonstrates the intended handoff experience, but it is not human review and does not let a real person help the customer. The product's follow-up human escalation capability must let an authenticated human service agent join the customer's existing AI-assistant conversation and continue the exchange there.
 
@@ -17,7 +17,7 @@ A mock human service agent joining the conversation demonstrates the intended ha
 
 ## Decision
 
-Use option 3 for the live human-service-chat increment after the mocked-human-escalation release. Keep the handoff record from ADR 0006 as the structured escalation context, then allow an authorized human service agent to claim the handoff and join that same AI-assistant conversation.
+Use option 3 as the design for a future live human-service-chat capability. The mocked-human-escalation release described in ADR 0025 was not adopted. Keep the handoff record from ADR 0006 as the structured escalation context, then allow an authorized human service agent to claim the handoff and join that same AI-assistant conversation.
 
 - The human service-agent inbox lists pending handoffs and exposes only the request, workflow, verified facts, actions taken, evidence, and unresolved questions permitted to that service agent. It never exposes model chain-of-thought.
 - Every chat has a unique, persisted conversation ID. The handoff references that ID, and customer and human service-agent messages, execution records, and lifecycle events remain attached to it. Escalation moves the existing chat into the human service-agent workflow; it never forks the customer into a separate conversation.
@@ -26,9 +26,9 @@ Use option 3 for the live human-service-chat increment after the mocked-human-es
 - When the request is resolved, close the human service-agent connection and finalize that conversation. Keep the finalized thread readable, and let the customer start another chat subject to the rate limit.
 - A successful escalation means an authorized human service agent has joined or, when none is available, the customer receives a truthful queued state and next step. A created handoff or simulated reply alone is not counted as a completed human connection.
 - Messages and lifecycle events are associated with the handoff and conversation and are available for audit under the existing access controls. Any model-generated summary is clearly separate from verbatim customer and human service-agent messages.
-- Verify the customer-to-real-human-service-agent and service-agent-to-customer paths end to end, including identity/authorization, message persistence, reconnect behavior, and no-agent availability. Keep the mock human service agent explicitly labeled until this verification passes.
+- Before this future capability is claimed, verify the customer-to-real-human-service-agent and service-agent-to-customer paths end to end, including identity/authorization, message persistence, reconnect behavior, and no-agent availability. ADR 0025's simulated agent was not adopted; any separately approved future simulation must be labeled and must not count as a real-human handoff.
 
-This decision preserves ADR 0020's four-workflow product scope. The initial release invokes the escalation tool for card-support, dispute, and credit intents, then simulates a mock human service agent joining and replying in that same chat. Later increments can automate supported, low-risk intents while keeping the human service-agent path for user requests, ambiguity, missing evidence, policy-required review, and failures.
+This decision preserves ADR 0020's four-workflow product scope. The human inbox and workflow handoffs are part of the current product surfaces; the simulated agent and same-chat mock replies from ADR 0025 were not adopted. A future real human conversation still requires the end-to-end verification listed above. Keep the human service-agent path for user requests, ambiguity, missing evidence, policy-required review, and failures.
 
 ## Consequences
 
@@ -40,4 +40,4 @@ This decision preserves ADR 0020's four-workflow product scope. The initial rele
 
 - [ADR 0020: Four workflows and the workflow registry](0020-four-workflows-and-the-workflow-registry.md)
 - [ADR 0006: Handoff and execution record contracts](0006-handoff-and-execution-record-contracts.md)
-- [ADR 0025: Tuesday MVP includes account inquiry, mock escalation, and assistant profile](0025-tuesday-account-inquiry-mvp-and-observability.md)
+- [ADR 0025: superseded historical Tuesday MVP plan](0025-tuesday-account-inquiry-mvp-and-observability.md)

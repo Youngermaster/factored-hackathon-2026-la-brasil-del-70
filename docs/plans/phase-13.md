@@ -2,7 +2,7 @@
 
 Not a plan-mode phase. The human delegated approvals, so every open question below is decided by the session by the most defensible option, with the reasoning next to it. The pull at the start was a fast-forward no-op ("Already up to date"); local `main` already holds the merge of `origin/main` (pending action 37).
 
-Scope (orchestrator brief): the four workflows end to end in the web app, with Spanish and Portuguese customer copy and English and Spanish console copy (the locale files keep one key set, so the console also has Portuguese text): the customer chat, the glass box, the agent inbox with credit review items, the evaluation view, the About page, and a demo guide for judges and the pitch video. ADR 0025's scope (assistant preferences, a mock human agent, Langfuse) is not built: the human decided the build does not follow it, and the API has no assistant profile route, so the chat header shows no assistant name or avatar.
+Scope (orchestrator brief): the four workflows end to end in the web app, with Spanish and Portuguese customer copy and English and Spanish console copy (the locale files keep one key set, so the console also has Portuguese text): the customer chat, the glass box, the agent inbox with credit review items, the evaluation view, the About page, and a demo guide for judges and the pitch video. At this phase, ADR 0025's scope (assistant preferences, a mock human agent, Langfuse) was not built. PR 18 later added assistant preferences and PR 20 later added opt-in metadata-only Langfuse export; the mock human agent remains unbuilt, and the superseded Tuesday scope was not reinstated.
 
 ## Design read
 

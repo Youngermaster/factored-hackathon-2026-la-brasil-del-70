@@ -6,7 +6,7 @@ What the deployed system keeps, for how long, what deletes it, and what a regula
 
 | Data | Where | Kept | Deleted by |
 |---|---|---|---|
-| Conversation text: messages, turns (customer text and replies), and the conversation row | `app.messages`, `app.turns`, `app.conversations` | 7 days after the conversation's last activity (`RETENTION_CONVERSATION_DAYS`) | The retention purge |
+| Conversation text: messages, turns (customer text and replies), and the conversation row | `app.messages`, `app.human_messages`, `app.turns`, `app.conversations` | 7 days after the conversation's last activity (`RETENTION_CONVERSATION_DAYS`) | The retention purge |
 | Sessions (token digests, never tokens) | `app.sessions` | 7 days after the session ended: revoked, past its absolute expiry, or idle (`RETENTION_SESSION_DAYS`) | The retention purge |
 | One-time-code challenges (code hashes, never codes) | `app.otp_challenges` | 7 days after expiry, or with their session | The retention purge |
 | Trust events (risk evidence per session lineage) | `app.trust_events` | 7 days after they occurred | The retention purge |
@@ -38,6 +38,7 @@ flowchart LR
 ```
 
 - Migration `0012` gives the `retention` context read and delete policies bound to the owner (`TO CURRENT_USER` at migration time) on exactly the purged tables; the append-only triggers of `messages` and `trust_events` accept a delete only in that context. The application role still has no DELETE grant on any table, so the API cannot purge anything.
+- Migration `0014` adds human messages to that owner-only retention context. Last activity includes the latest human-message timestamp; the purge deletes human messages before their conversation and reports them in the existing `messages` count. Handoffs and audit events remain intact.
 - The compose `purge` service repeats the purge every `PURGE_EVERY_HOURS` (24); a failed run is logged (`retention_purge_failed`) and retried at the next interval. `deploy/prod.sh purge` runs it once; `--dry-run` counts and rolls back.
 - The output is counts per table, never content.
 - Tests: `services/api/tests/integration/api/test_retention_purge.py` (what is deleted and kept, the boundary to the second, closed and open intakes, the dry run, triggers and grants, the CLI) and `services/api/tests/integration/test_production_roles.py` (the purge under the non-superuser production owner).

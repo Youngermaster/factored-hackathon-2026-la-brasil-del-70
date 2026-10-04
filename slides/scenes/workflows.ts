@@ -15,7 +15,7 @@
 import { defineScene } from '../lib/scene/types'
 import { C, MX } from '../lib/scene/kit'
 import { clamp, inOutCubic, lerp, outCubic, presence, seg } from '../lib/scene/math'
-import { tab, type Tone } from '../lib/scene/bank'
+import { dims, tab, type Tone } from '../lib/scene/bank'
 import { packet } from '../lib/scene/fx'
 import { credit, depthGrid } from './parts/workflows-extra'
 
@@ -30,6 +30,7 @@ export default defineScene({
     const { t, L, M, K } = env
     K.title(L('title'), t, 0.1, { tout: CUES[4] + 0.05 })
     K.fade(outCubic(seg(t, 1.2, 1.7)), () => K.cite(L('cite')))
+    dims(K, L('dims'), outCubic(seg(t, 0.3, 0.8)))
     const active = t < CUES[0] + 0.1 ? -1 : Math.min(3, CUES.findIndex((c) => t < c + 0.1) - 1)
     const g = inOutCubic(seg(t, CUES[4] + 0.1, CUES[4] + 0.9))
 

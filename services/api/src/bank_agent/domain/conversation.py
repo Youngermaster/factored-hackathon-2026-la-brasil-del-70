@@ -7,7 +7,7 @@ escalation notice, a step-up request, system notices, and the account, card, and
 rendered as plain text.
 """
 
-from datetime import date
+from datetime import date, timedelta
 from enum import StrEnum
 from typing import Annotated, Self
 
@@ -80,6 +80,30 @@ class Conversation(DomainModel):
         if self.updated_at < self.created_at:
             raise ValueError("updated_at cannot precede created_at")
         return self
+
+
+MAX_CONVERSATION_CREATION_LIMIT = 10_000
+MAX_CONVERSATION_CREATION_WINDOW = timedelta(days=1)
+
+
+class ConversationCreationQuota(DomainModel):
+    """How many new chats one customer may create in a rolling window (ADR 0026).
+
+    The default is five per 60 minutes. Deployments configure both values through settings; the bounds keep a typo
+    from disabling the quota or from making the window longer than a day.
+    """
+
+    limit: Annotated[int, Field(ge=1, le=MAX_CONVERSATION_CREATION_LIMIT)] = 5
+    window: timedelta = timedelta(hours=1)
+
+    @model_validator(mode="after")
+    def _validate_window(self) -> Self:
+        if not timedelta(0) < self.window <= MAX_CONVERSATION_CREATION_WINDOW:
+            raise ValueError("the creation window must be positive and at most one day")
+        return self
+
+
+DEFAULT_CONVERSATION_CREATION_QUOTA = ConversationCreationQuota()
 
 
 class Citation(DomainModel):

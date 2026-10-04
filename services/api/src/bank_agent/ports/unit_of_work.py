@@ -15,6 +15,7 @@ from bank_agent.ports.repositories.credit_profiles import CreditProfileReader
 from bank_agent.ports.repositories.customers import CustomerRepository
 from bank_agent.ports.repositories.execution_records import ExecutionRecordRepository
 from bank_agent.ports.repositories.handoffs import HandoffRepository
+from bank_agent.ports.repositories.human_service import HumanServiceRepository
 from bank_agent.ports.repositories.products import ProductRepository
 from bank_agent.ports.repositories.transactions import TransactionRepository
 
@@ -60,6 +61,9 @@ class UnitOfWork(Protocol):
 
     @property
     def handoffs(self) -> HandoffRepository: ...
+
+    @property
+    def human_service(self) -> HumanServiceRepository: ...
 
     @property
     def audit(self) -> AuditLog: ...

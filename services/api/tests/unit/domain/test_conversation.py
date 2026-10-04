@@ -12,6 +12,7 @@ from bank_agent.domain.conversation import (
     Clarification,
     ClarificationOption,
     ConfirmationCard,
+    ConversationCreationQuota,
     Turn,
     TurnResult,
 )
@@ -86,3 +87,14 @@ def test_clarification_offers_at_most_three_options() -> None:
     option = ClarificationOption(option_id="opt-1", occurred_on=a_date(), amount=Money.of("1", Currency.MXN))
     with pytest.raises(ValidationError):
         Clarification(options=(option,) * 4)
+
+
+def test_the_creation_quota_defaults_to_five_per_hour_and_refuses_unsafe_values() -> None:
+    assert ConversationCreationQuota() == ConversationCreationQuota(limit=5, window=timedelta(hours=1))
+    assert ConversationCreationQuota(limit=10_000, window=timedelta(days=1)).limit == 10_000
+    for limit in (0, -1, 10_001):
+        with pytest.raises(ValidationError):
+            ConversationCreationQuota(limit=limit)
+    for window in (timedelta(0), timedelta(seconds=-1), timedelta(days=1, seconds=1)):
+        with pytest.raises(ValidationError):
+            ConversationCreationQuota(window=window)

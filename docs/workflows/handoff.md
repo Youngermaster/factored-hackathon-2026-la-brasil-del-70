@@ -141,3 +141,7 @@ The agent inbox (phase 13) shows the handoff as stored: the summary, the facts w
 
 - The summary is deterministic and terse; the optional model summary (off by default) must cite only supplied fact ids and pass the grounding verifier, and is not yet evaluated.
 - Handoff SLAs are synthetic clause parameters.
+
+## Continuing with a person
+
+The assigned agent can now exchange persisted messages with the customer on the handoff's original conversation. Claim, queued delivery, reconnect, close, and the customer creation quota are documented in [human-service.md](human-service.md). The channel does not expose the earlier assistant transcript; this structured handoff remains its context.

@@ -1,7 +1,12 @@
-"""Typed settings, organized per concern and read only from the environment.
+"""Typed settings, organized per concern and read from the environment and, optionally, from secret files.
 
 Environment variable names match the root ``.env.example`` exactly. Only this package reads the
 environment. Secrets are ``SecretStr`` so they never appear in reprs, logs, or validation messages.
+
+``SECRETS_DIR`` names a directory of mounted secret files, one file per variable named like the variable (for example
+``/run/secrets/SESSION_SECRET``), as the production stack mounts them from Azure Key Vault (ADR 0037). Development and
+tests leave it empty and keep using the environment and ``.env``. An environment variable still wins over a file, so in
+production with ``SECRETS_DIR`` set, a secret variable in the environment is refused.
 
 ``load_settings`` enforces the production rules: ``DEMO_MODE`` must be false unless the public demo is allowed
 explicitly, and every secret the process needs must be set, long enough, and not a known default. The API process and
@@ -10,6 +15,8 @@ password. Violations raise ``SettingsError``, whose message names the offending 
 """
 
 import ipaddress
+import os
+from collections.abc import Mapping
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -20,6 +27,7 @@ from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 from bank_agent.adapters.retrieval.embedding import DEFAULT_EMBEDDING_MODEL
+from bank_agent.domain.conversation import MAX_CONVERSATION_CREATION_LIMIT, MAX_CONVERSATION_CREATION_WINDOW
 
 Environment = Literal["development", "test", "production"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -107,6 +115,15 @@ class RuntimeSettings(BaseSettings):
     allow_public_demo_mode: bool = False
     """Production accepts ``DEMO_MODE=true`` only with this set (the public demo, docs/security/demo-mode.md)."""
     log_level: LogLevel = "INFO"
+    secrets_dir: Path | None = None
+    """A directory of mounted secret files named like their variables (``/run/secrets`` in the production stack)."""
+
+    @field_validator("secrets_dir", mode="before")
+    @classmethod
+    def _empty_means_none(cls, value: object) -> object:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
 
 
 class DatabaseSettings(BaseSettings):
@@ -351,6 +368,17 @@ class ObservabilitySettings(BaseSettings):
     metric_export_interval: int = Field(default=15000, ge=1000, le=300_000)
 
 
+class LangfuseSettings(BaseSettings):
+    """Optional metadata-only export of LLM generation spans to Langfuse."""
+
+    model_config = _config("LANGFUSE_")
+
+    enabled: bool = False
+    base_url: str = "http://localhost:3000"
+    public_key: SecretStr | None = None
+    secret_key: SecretStr | None = None
+
+
 class DegradationSettings(BaseSettings):
     """One feature flag per fallback of the degradation ladder (``docs/operations/degradation.md``).
 
@@ -395,6 +423,45 @@ class RetentionSettings(BaseSettings):
     credit_application_days: int = Field(default=30, ge=1, le=3650)
 
 
+DEFAULT_CONVERSATION_CREATION_LIMIT = 5
+"""New chats per customer per window outside the public demo (ADR 0026)."""
+PUBLIC_DEMO_CONVERSATION_CREATION_LIMIT = 200
+"""The default with ``DEMO_MODE`` and ``ALLOW_PUBLIC_DEMO_MODE``, where every visitor shares a dozen seeded personas."""
+
+
+class ConversationSettings(BaseSettings):
+    """The customer quota on new chats (ADR 0026, ``docs/workflows/human-service.md``).
+
+    A customer may create at most ``creation_limit`` new conversations in any rolling window of
+    ``creation_window_minutes``, across sessions and workers; messages in existing chats never count. Left unset,
+    the limit is 5, or 200 for the public demo (``DEMO_MODE`` and ``ALLOW_PUBLIC_DEMO_MODE`` both true), where every
+    visitor signs in as one of the same seeded personas (``docs/security/demo-mode.md`` records the trade-off). An
+    explicit value always wins.
+    """
+
+    model_config = _config("CONVERSATION_")
+
+    creation_limit: int | None = Field(default=None, ge=1, le=MAX_CONVERSATION_CREATION_LIMIT)
+    creation_window_minutes: int = Field(
+        default=60, ge=1, le=int(MAX_CONVERSATION_CREATION_WINDOW.total_seconds() // 60)
+    )
+
+    @field_validator("creation_limit", "creation_window_minutes", mode="before")
+    @classmethod
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
+        if isinstance(value, str) and not value.strip():
+            return cls.model_fields[str(info.field_name)].default
+        return value
+
+    def creation_limit_for(self, runtime: RuntimeSettings) -> int:
+        """The explicit limit, else the public demo's default, else the standard default."""
+        if self.creation_limit is not None:
+            return self.creation_limit
+        if runtime.demo_mode and runtime.allow_public_demo_mode:
+            return PUBLIC_DEMO_CONVERSATION_CREATION_LIMIT
+        return DEFAULT_CONVERSATION_CREATION_LIMIT
+
+
 class AppSettings:
     """All settings for one process, validated together."""
 
@@ -405,24 +472,28 @@ class AppSettings:
         security: SecuritySettings,
         llm: LLMSettings,
         observability: ObservabilitySettings,
+        langfuse: LangfuseSettings | None = None,
         policy: PolicySettings | None = None,
         retrieval: RetrievalSettings | None = None,
         workflow: WorkflowSettings | None = None,
         evaluation: EvaluationSettings | None = None,
         degradation: DegradationSettings | None = None,
         retention: RetentionSettings | None = None,
+        conversation: ConversationSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
         self.security = security
         self.llm = llm
         self.observability = observability
+        self.langfuse = langfuse if langfuse is not None else LangfuseSettings(_env_file=None)
         self.policy = policy if policy is not None else PolicySettings()
         self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
         self.workflow = workflow if workflow is not None else WorkflowSettings()
         self.evaluation = evaluation if evaluation is not None else EvaluationSettings()
         self.degradation = degradation if degradation is not None else DegradationSettings()
         self.retention = retention if retention is not None else RetentionSettings()
+        self.conversation = conversation if conversation is not None else ConversationSettings()
 
     @property
     def is_production(self) -> bool:
@@ -542,6 +613,8 @@ def production_problems(settings: AppSettings, *, owner: bool = False) -> list[s
         if settings.security.rate_limit_backend != "postgres":
             problems.append("RATE_LIMIT_BACKEND must be postgres in production, so every worker shares the limits")
         problems.extend(_origin_problems(settings.security.cors_allowed_origins))
+        if settings.langfuse.enabled and not settings.langfuse.base_url.startswith("https://"):
+            problems.append("LANGFUSE_BASE_URL must use https in production")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:
@@ -549,26 +622,104 @@ def production_problems(settings: AppSettings, *, owner: bool = False) -> list[s
     return problems
 
 
-def load_settings(env_file: Path | None = _ENV_FILE, *, owner: bool = False) -> AppSettings:
-    """Load and validate settings from the environment and, when present, the env file.
+def langfuse_problems(settings: AppSettings) -> list[str]:
+    """Check opt-in export configuration without including secret values in diagnostics."""
+    if not settings.langfuse.enabled:
+        return []
+    problems: list[str] = []
+    if settings.llm.provider != "litellm":
+        problems.append("LANGFUSE_ENABLED requires LLM_PROVIDER=litellm")
+    if settings.llm.trace_content:
+        problems.append("LLM_TRACE_CONTENT must be false when LANGFUSE_ENABLED=true")
+    if settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(
+        settings.langfuse.base_url.rstrip("/")
+    ):
+        problems.append("OTEL_EXPORTER_OTLP_ENDPOINT must not point to Langfuse when LANGFUSE_ENABLED=true")
+    if not _is_set(settings.langfuse.public_key):
+        problems.append("LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true")
+    if not _is_set(settings.langfuse.secret_key):
+        problems.append("LANGFUSE_SECRET_KEY must be set when LANGFUSE_ENABLED=true")
+    try:
+        target = urlsplit(settings.langfuse.base_url)
+        valid_target = (
+            target.scheme in {"http", "https"}
+            and bool(target.hostname)
+            and target.username is None
+            and target.password is None
+            and not target.query
+            and not target.fragment
+        )
+    except ValueError:
+        valid_target = False
+    if not valid_target:
+        problems.append("LANGFUSE_BASE_URL must be an HTTP URL without credentials, query, or fragment")
+    return problems
+
+
+SECRET_VARIABLES: tuple[str, ...] = (
+    "POSTGRES_ADMIN_PASSWORD",
+    "POSTGRES_APP_PASSWORD",
+    "SESSION_SECRET",
+    "CSRF_SECRET",
+    "LLM_API_KEY_PRIMARY",
+    "LLM_API_KEY_FALLBACK",
+    "LANGFUSE_PUBLIC_KEY",
+    "LANGFUSE_SECRET_KEY",
+)
+"""Every variable that holds a secret; with ``SECRETS_DIR`` each one is a file of that name.
+
+The production stack stages the first six (``deploy/secrets_stage.py``); it does not enable Langfuse, so its keys have
+no staged file, but a file of that name is read and the environment is refused for them all the same.
+"""
+
+
+def secret_source_problems(settings: AppSettings, environ: Mapping[str, str]) -> list[str]:
+    """In production with ``SECRETS_DIR``, secrets come only from its files, never from the environment.
+
+    An environment variable outranks a secret file, so a leftover variable would silently replace the Key Vault value
+    and would show in ``docker inspect`` and in the rendered compose configuration (ADR 0037).
+    """
+    if not settings.is_production or settings.runtime.secrets_dir is None:
+        return []
+    return [
+        f"{name} must come from SECRETS_DIR, not from the environment, in production"
+        for name in SECRET_VARIABLES
+        if environ.get(name, "").strip()
+    ]
+
+
+def load_settings(
+    env_file: Path | None = _ENV_FILE, *, owner: bool = False, environ: Mapping[str, str] | None = None
+) -> AppSettings:
+    """Load and validate settings from the environment, the env file when present, and ``SECRETS_DIR`` when set.
 
     Pass ``env_file=None`` to read the process environment only, as tests do. ``owner=True`` validates the settings
-    of an owner job (migrations, the seed, the retention purge) instead of the API's.
+    of an owner job (migrations, the seed, the retention purge) instead of the API's. ``environ`` is the environment
+    checked by the secret source rule; it defaults to the process environment.
     """
+    runtime = RuntimeSettings(_env_file=env_file)
+    secrets_dir = runtime.secrets_dir
+    if secrets_dir is not None and not secrets_dir.is_dir():
+        raise SettingsError(["SECRETS_DIR must name an existing directory of secret files"])
     settings = AppSettings(
-        runtime=RuntimeSettings(_env_file=env_file),
-        database=DatabaseSettings(_env_file=env_file),
-        security=SecuritySettings(_env_file=env_file),
-        llm=LLMSettings(_env_file=env_file),
+        runtime=runtime,
+        database=DatabaseSettings(_env_file=env_file, _secrets_dir=secrets_dir),
+        security=SecuritySettings(_env_file=env_file, _secrets_dir=secrets_dir),
+        llm=LLMSettings(_env_file=env_file, _secrets_dir=secrets_dir),
         observability=ObservabilitySettings(_env_file=env_file),
+        langfuse=LangfuseSettings(_env_file=env_file, _secrets_dir=secrets_dir),
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
         evaluation=EvaluationSettings(_env_file=env_file),
         degradation=DegradationSettings(_env_file=env_file),
         retention=RetentionSettings(_env_file=env_file),
+        conversation=ConversationSettings(_env_file=env_file),
     )
     problems = production_problems(settings, owner=owner)
+    problems.extend(secret_source_problems(settings, os.environ if environ is None else environ))
+    if not owner:
+        problems.extend(langfuse_problems(settings))
     if problems:
         raise SettingsError(problems)
     return settings

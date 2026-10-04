@@ -13,7 +13,8 @@ Version 1.2.0 adds ``retrieval`` (the retriever, its decision, threshold, top sc
 informational answer) and the ``list_my_cards`` tool name.
 
 Version 1.3.0 adds the ``list_my_credit_applications`` tool name; no field changes. Version 1.4.0 is the shared release
-of the scenario additions (phase 14); no field changes here.
+of the scenario additions (phase 14); no field changes here. Version 1.5.0 adds a model call id to each recorded
+generation, matching the Langfuse observation id.
 """
 
 from decimal import Decimal
@@ -24,7 +25,15 @@ from pydantic import Field, NonNegativeInt, PositiveInt, StringConstraints, mode
 
 from bank_agent.domain.access import AuthLevel, Channel
 from bank_agent.domain.actions import ToolName, Verification
-from bank_agent.domain.base import AddedIn, Code, DomainModel, Internal, UtcDatetime, check_added_fields
+from bank_agent.domain.base import (
+    AddedIn,
+    Code,
+    DomainModel,
+    Internal,
+    UtcDatetime,
+    check_added_fields,
+    parse_schema_version,
+)
 from bank_agent.domain.decision import ClauseRef, Decision
 from bank_agent.domain.eligibility import EligibilityAssessmentRecord, RiskEstimateRecord
 from bank_agent.domain.handoff import SchemaVersion
@@ -98,6 +107,7 @@ class LlmCallRecord(DomainModel):
     latency_ms: NonNegativeInt
     status: LlmCallStatus
     error_code: Code | None = None
+    model_call_id: Annotated[str | None, StringConstraints(pattern=r"^[0-9a-f]{16}$"), AddedIn("1.5.0")] = None
 
 
 class LatencyBreakdown(DomainModel):
@@ -143,7 +153,7 @@ class RetrievalRecord(DomainModel):
 
 
 class ExecutionRecord(DomainModel):
-    schema_version: SchemaVersion = "1.4.0"
+    schema_version: SchemaVersion = "1.5.0"
     turn_id: TurnId
     conversation_id: ConversationId
     customer_ref: CustomerId | None = None
@@ -183,6 +193,10 @@ class ExecutionRecord(DomainModel):
     @model_validator(mode="after")
     def _validate(self) -> Self:
         check_added_fields(self, self.schema_version)
+        if parse_schema_version(self.schema_version) < (1, 5, 0) and any(
+            call.model_call_id is not None for call in self.llm_calls
+        ):
+            raise ValueError("model_call_id was added in 1.5.0 and cannot appear in an older execution record")
         if self.workflow_before is not None and self.workflow_before == self.workflow:
             raise ValueError("workflow_before is set only when the turn moved to another workflow")
         estimate_ids = [estimate.estimate_id for estimate in self.risk_estimates]

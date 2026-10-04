@@ -18,6 +18,7 @@ EXPECTED_PROMPTS = {
     "extract_credit_slots@1",
     "classify_intent_fallback@1",
     "detect_escalation_signals@1",
+    "detect_escalation_signals@2",
     "phrase_response@1",
     "summarize_for_handoff@1",
     "paraphrase_router_seed@1",

@@ -11,6 +11,10 @@ class NoopSpan:
     def trace_id(self) -> str | None:
         return None
 
+    @property
+    def span_id(self) -> str | None:
+        return None
+
     def set_attribute(self, key: str, value: AttributeValue) -> None:
         """Discard the attribute."""
 

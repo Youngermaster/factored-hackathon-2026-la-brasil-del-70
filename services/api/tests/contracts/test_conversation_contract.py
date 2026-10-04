@@ -1,13 +1,17 @@
+from datetime import timedelta
+
 import pytest
 
+from bank_agent.domain.conversation import ConversationCreationQuota
 from bank_agent.domain.errors import (
     AccessContextError,
     ConcurrencyConflictError,
+    ConversationCreationLimitedError,
     ConversationNotFoundError,
     DuplicateEntityError,
 )
 from bank_agent.domain.identifiers import ConversationId, TurnId
-from bank_agent_builders import conversation, turn
+from bank_agent_builders import T0, conversation, turn
 from bank_agent_contracts import AGENT, CONTEXT_A, CONTEXT_B, WriteBackend
 
 CONVERSATION = ConversationId("conv-000001")
@@ -84,3 +88,103 @@ class TestConversationRepositoryContract:
         async with write_backend.uow_factory()(AGENT) as uow:
             with pytest.raises(AccessContextError):
                 await uow.conversations.get(CONVERSATION)
+
+
+class TestConversationCreationQuotaContract:
+    async def test_five_chats_are_allowed_across_sessions_and_the_sixth_waits_one_hour(
+        self, write_backend: WriteBackend
+    ) -> None:
+        factory = write_backend.uow_factory()
+        for index in range(5):
+            async with factory(CONTEXT_A) as uow:
+                await uow.conversations.add_with_quota(conversation(f"conv-limit-{index}", created_at=T0))
+                await uow.commit()
+        async with factory(CONTEXT_A) as uow:
+            with pytest.raises(ConversationCreationLimitedError) as refused:
+                await uow.conversations.add_with_quota(conversation("conv-limit-refused", created_at=T0))
+            assert refused.value.retry_after == timedelta(hours=1)
+        async with factory(CONTEXT_B) as uow:
+            await uow.conversations.add_with_quota(
+                conversation("conv-limit-b", customer_id="CUS-B-0002", created_at=T0)
+            )
+            await uow.commit()
+        async with factory(CONTEXT_A) as uow:
+            await uow.conversations.add_with_quota(
+                conversation("conv-limit-boundary", created_at=T0 + timedelta(hours=1))
+            )
+            await uow.commit()
+
+    async def test_a_configured_limit_and_window_replace_the_defaults(self, write_backend: WriteBackend) -> None:
+        factory = write_backend.uow_factory_with_quota(ConversationCreationQuota(limit=2, window=timedelta(minutes=10)))
+        for index, minutes in enumerate((0, 3)):
+            async with factory(CONTEXT_A) as uow:
+                created_at = T0 + timedelta(minutes=minutes)
+                await uow.conversations.add_with_quota(conversation(f"conv-config-{index}", created_at=created_at))
+                await uow.commit()
+        async with factory(CONTEXT_A) as uow:
+            with pytest.raises(ConversationCreationLimitedError) as refused:
+                await uow.conversations.add_with_quota(
+                    conversation("conv-config-refused", created_at=T0 + timedelta(minutes=4))
+                )
+            assert refused.value.retry_after == timedelta(minutes=6)
+        async with factory(CONTEXT_A) as uow:
+            # At exactly ten minutes the first creation leaves the configured window.
+            await uow.conversations.add_with_quota(
+                conversation("conv-config-boundary", created_at=T0 + timedelta(minutes=10))
+            )
+            await uow.commit()
+
+    async def test_a_higher_configured_limit_admits_more_than_five_chats(self, write_backend: WriteBackend) -> None:
+        factory = write_backend.uow_factory_with_quota(ConversationCreationQuota(limit=8))
+        for index in range(8):
+            async with factory(CONTEXT_A) as uow:
+                await uow.conversations.add_with_quota(conversation(f"conv-high-{index}", created_at=T0))
+                await uow.commit()
+        async with factory(CONTEXT_A) as uow:
+            with pytest.raises(ConversationCreationLimitedError) as refused:
+                await uow.conversations.add_with_quota(conversation("conv-high-refused", created_at=T0))
+            assert refused.value.retry_after == timedelta(hours=1)
+
+    async def test_a_lowered_limit_waits_for_the_creation_that_frees_a_slot(self, write_backend: WriteBackend) -> None:
+        for minutes in range(3):
+            async with write_backend.uow_factory()(CONTEXT_A) as uow:
+                created_at = T0 + timedelta(minutes=minutes)
+                await uow.conversations.add_with_quota(conversation(f"conv-lowered-{minutes}", created_at=created_at))
+                await uow.commit()
+        lowered = write_backend.uow_factory_with_quota(ConversationCreationQuota(limit=2))
+        async with lowered(CONTEXT_A) as uow:
+            with pytest.raises(ConversationCreationLimitedError) as refused:
+                await uow.conversations.add_with_quota(
+                    conversation("conv-lowered-refused", created_at=T0 + timedelta(minutes=3))
+                )
+            # Two of the three creations must leave the window; the second leaves at T0 + 61 minutes.
+            assert refused.value.retry_after == timedelta(minutes=58)
+
+    async def test_failed_creates_do_not_count(self, write_backend: WriteBackend) -> None:
+        for index in range(7):
+            async with write_backend.uow_factory()(CONTEXT_A) as uow:
+                await uow.conversations.add_with_quota(conversation(f"conv-rollback-{index}"))
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.conversations.add_with_quota(conversation("conv-limit-real"))
+            await uow.commit()
+
+    async def test_competing_creations_cannot_both_commit_the_last_available_slot(
+        self, write_backend: WriteBackend
+    ) -> None:
+        factory = write_backend.uow_factory()
+        for index in range(4):
+            async with factory(CONTEXT_A) as uow:
+                await uow.conversations.add_with_quota(conversation(f"conv-race-{index}"))
+                await uow.commit()
+        async with factory(CONTEXT_A) as first, factory(CONTEXT_A) as second:
+            await first.conversations.add_with_quota(conversation("conv-race-first"))
+            try:
+                await second.conversations.add_with_quota(conversation("conv-race-second"))
+            except ConcurrencyConflictError:
+                pass  # PostgreSQL refuses the concurrent attempt before insertion.
+            else:
+                await first.commit()
+                with pytest.raises(ConcurrencyConflictError):
+                    await second.commit()
+                return
+            await first.commit()

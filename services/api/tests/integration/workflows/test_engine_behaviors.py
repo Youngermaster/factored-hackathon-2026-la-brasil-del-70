@@ -119,7 +119,7 @@ async def test_a_declined_confirmation_records_nothing(memory_only: Backend) -> 
     await harness.say("no", session, first.conversation_id)
     reply = await harness.say("no, mejor no", session, first.conversation_id)
     assert (reply.state, reply.outcome) == ("RESOLVED", Outcome.RESOLVED)
-    assert [case.case_id for case in await cases(harness, session)] == ["case-fixco000001"]
+    assert [case.case_id for case in await cases(harness, session)] == ["case-fixco000001-0001"]
 
 
 async def test_injection_in_customer_text_raises_the_risk_tier_and_asks_for_step_up(memory_only: Backend) -> None:
