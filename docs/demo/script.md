@@ -1,6 +1,8 @@
-# Demo script outline for the pitch video
+# Demo script: the full walkthrough
 
-An outline, not a final script: scenes, what each proves, and the exact inputs. Every message below is from the demo guide (`/demo` in demo mode, `apps/web/src/features/demo-guide/model/scenarios.ts`) or was checked the same way: in phase 17 each was driven through the real API with `LLM_PROVIDER=fake` on a fresh database seeded from the committed sample, once in Spanish and once in Portuguese, and routed as listed here. The narration states limits plainly: synthetic data, an indicative credit result, no lending decisions. The narrated deck and the shot list with timestamps are in [slides/script.md](../../slides/script.md) and [slides/VIDEO.md](../../slides/VIDEO.md); the live clips there come from scenes 3 to 6 below.
+The long walkthrough of the working system, for judges, rehearsal, and live questions: ten scenes, what each proves, and the exact inputs. The 3:00 video uses only part of it; its timed shot list is the [video plan](video-plan.md), its spoken words the [video monologue](video-monologue.md), and the three cases to rehearse are in [practice-cases.md](practice-cases.md).
+
+The scenes below are an outline, not the video cut. Every message below is from the demo guide (`/demo` in demo mode, `apps/web/src/features/demo-guide/model/scenarios.ts`) or was checked the same way: in phase 17 each was driven through the real API with `LLM_PROVIDER=fake` on a fresh database seeded from the committed sample, once in Spanish and once in Portuguese, and routed as listed here. The narration states limits plainly: synthetic data, an indicative credit result, no lending decisions. The guardrail replies on current `main` (an off-topic abstention with `SCOPE-ALL-1`, a third-party refusal with `PRV-ALL-2`) are in [practice-cases.md](practice-cases.md).
 
 ## Before recording
 
@@ -9,7 +11,7 @@ An outline, not a final script: scenes, what each proves, and the exact inputs. 
 3. Use a 1440 px wide window (the glass box beside the chat) and one phone-width take for the chat.
 4. Sign in only with the persona picker's first group: the four personas in the "only with the full data" group do not exist on a sample seed ([personas](personas.md)).
 
-## Scenes (about 3 minutes)
+## Scenes (about 6 minutes)
 
 | # | Scene | Persona | Inputs | What it proves |
 |---|---|---|---|---|
