@@ -78,10 +78,12 @@ release() {
   before_commit="$(as_owner git -C "${CHECKOUT}" rev-parse HEAD)"
   before_tag="$(state current)"
   if [[ -n "${REGISTRY_TOKEN:-}" ]]; then
+    # Write the token while root still owns the file, then hand it over: with fs.protected_regular=2 (the Ubuntu
+    # default) root may not write a file another user owns in a sticky world-writable directory such as /tmp.
     TOKEN_FILE="$(mktemp)"
-    chown "${OWNER}" "${TOKEN_FILE}"
     chmod 600 "${TOKEN_FILE}"
     printf '%s' "${REGISTRY_TOKEN}" > "${TOKEN_FILE}"
+    chown "${OWNER}" "${TOKEN_FILE}"
   fi
   unset REGISTRY_TOKEN
   say "releasing ${DEPLOY_SHA} (running before: ${before_tag:-nothing})"

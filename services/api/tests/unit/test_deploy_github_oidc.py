@@ -20,11 +20,26 @@ exit 1
 """
 
 
-def _dry_run(tmp_path: Path, **settings: str) -> subprocess.CompletedProcess[str]:
+FAKE_GH_FAILING = """#!/usr/bin/env bash
+# Like gh when the call fails: the error body on stdout and a non-zero exit.
+printf '{"message":"Not Found","status":"404"}'
+exit 1
+"""
+
+
+def _fake_gh_answering(prefix: str) -> str:
+    return f"""#!/usr/bin/env bash
+printf '%s' '{prefix}'
+"""
+
+
+def _dry_run(tmp_path: Path, gh_script: str = FAKE_GH_FAILING, **settings: str) -> subprocess.CompletedProcess[str]:
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     (bin_dir / "az").write_text(FAKE_AZ, encoding="utf-8")
     (bin_dir / "az").chmod(0o755)
+    (bin_dir / "gh").write_text(gh_script, encoding="utf-8")
+    (bin_dir / "gh").chmod(0o755)
     env = {key: value for key, value in os.environ.items() if key not in {"GITHUB_REPOSITORY", "ROLE_MODE"}}
     env |= {"PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}", "FAKE_LOG": str(tmp_path / "az.log")}
     env |= {"GITHUB_REPOSITORY": REPOSITORY} | settings
@@ -82,3 +97,20 @@ def test_the_custom_role_allows_run_command_and_reading_the_vm_only() -> None:
     assert "Key Vault" not in re.sub(r"^#.*$", "", text, flags=re.MULTILINE)
     assert "client secret" not in re.sub(r"^#.*$", "", text, flags=re.MULTILINE).lower()
     assert "credential reset" not in text
+
+
+def test_the_subject_uses_the_prefix_github_reports_when_it_has_immutable_ids(tmp_path: Path) -> None:
+    prefix = "repo:Example-Owner@123/example-repository@456"
+    result = _dry_run(tmp_path, gh_script=_fake_gh_answering(prefix), BRANCH_CREDENTIAL="0")
+
+    assert result.returncode == 0, result.stderr
+    assert f"{prefix}:environment:production" in result.stderr + result.stdout
+    assert "repo:Example-Owner/example-repository:environment" not in result.stderr + result.stdout
+
+
+def test_a_failed_github_call_falls_back_to_the_name_based_subject(tmp_path: Path) -> None:
+    result = _dry_run(tmp_path, BRANCH_CREDENTIAL="0")
+
+    assert result.returncode == 0, result.stderr
+    assert "repo:Example-Owner/example-repository:environment:production" in result.stderr + result.stdout
+    assert "Not Found" not in result.stderr + result.stdout
