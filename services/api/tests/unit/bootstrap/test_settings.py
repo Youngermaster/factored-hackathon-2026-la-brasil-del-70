@@ -4,7 +4,13 @@ from pathlib import Path
 
 import pytest
 
-from bank_agent.bootstrap.settings import MIN_SECRET_LENGTH, SettingsError, load_settings
+from bank_agent.bootstrap.settings import (
+    DEFAULT_CONVERSATION_CREATION_LIMIT,
+    MIN_SECRET_LENGTH,
+    PUBLIC_DEMO_CONVERSATION_CREATION_LIMIT,
+    SettingsError,
+    load_settings,
+)
 
 SECRET_VARIABLES = ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_APP_PASSWORD")
 """The secrets the API process needs in production (the owner password never reaches it)."""
@@ -588,3 +594,65 @@ def test_langfuse_keys_come_from_the_secrets_dir_and_never_from_the_environment(
         "LANGFUSE_SECRET_KEY must come from SECRETS_DIR, not from the environment, in production"
     ]
     assert leftover not in str(raised.value)
+
+
+def test_the_conversation_creation_quota_defaults_to_five_per_hour(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("DEMO_MODE", "true")
+    settings = load_settings(env_file=None)
+    assert settings.conversation.creation_limit is None
+    assert settings.conversation.creation_window_minutes == 60
+    assert settings.conversation.creation_limit_for(settings.runtime) == DEFAULT_CONVERSATION_CREATION_LIMIT == 5
+
+
+def test_the_public_demo_raises_the_default_conversation_creation_limit(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("DEMO_MODE", "true")
+    monkeypatch.setenv("ALLOW_PUBLIC_DEMO_MODE", "true")
+    settings = load_settings(env_file=None)
+    assert settings.conversation.creation_limit_for(settings.runtime) == PUBLIC_DEMO_CONVERSATION_CREATION_LIMIT == 200
+    assert settings.conversation.creation_window_minutes == 60
+    monkeypatch.setenv("CONVERSATION_CREATION_LIMIT", "12")
+    explicit = load_settings(env_file=None)
+    assert explicit.conversation.creation_limit_for(explicit.runtime) == 12
+
+
+def test_the_public_demo_flag_without_demo_mode_keeps_the_standard_limit(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ALLOW_PUBLIC_DEMO_MODE", "true")
+    settings = load_settings(env_file=None)
+    assert settings.conversation.creation_limit_for(settings.runtime) == DEFAULT_CONVERSATION_CREATION_LIMIT
+
+
+def test_explicit_conversation_creation_settings_are_read_and_blank_means_default(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("CONVERSATION_CREATION_LIMIT", "40")
+    monkeypatch.setenv("CONVERSATION_CREATION_WINDOW_MINUTES", "15")
+    settings = load_settings(env_file=None)
+    assert settings.conversation.creation_limit_for(settings.runtime) == 40
+    assert settings.conversation.creation_window_minutes == 15
+    monkeypatch.setenv("CONVERSATION_CREATION_LIMIT", " ")
+    monkeypatch.setenv("CONVERSATION_CREATION_WINDOW_MINUTES", "")
+    blank = load_settings(env_file=None)
+    assert blank.conversation.creation_limit is None
+    assert blank.conversation.creation_window_minutes == 60
+
+
+@pytest.mark.parametrize(
+    ("variable", "value"),
+    [
+        ("CONVERSATION_CREATION_LIMIT", "0"),
+        ("CONVERSATION_CREATION_LIMIT", "-3"),
+        ("CONVERSATION_CREATION_LIMIT", "10001"),
+        ("CONVERSATION_CREATION_LIMIT", "five"),
+        ("CONVERSATION_CREATION_WINDOW_MINUTES", "0"),
+        ("CONVERSATION_CREATION_WINDOW_MINUTES", "1441"),
+        ("CONVERSATION_CREATION_WINDOW_MINUTES", "1.5"),
+    ],
+)
+def test_conversation_creation_settings_refuse_values_outside_their_bounds(
+    monkeypatch: pytest.MonkeyPatch, variable: str, value: str
+) -> None:
+    monkeypatch.setenv(variable, value)
+    with pytest.raises(ValueError, match=variable.removeprefix("CONVERSATION_").lower()):
+        load_settings(env_file=None)

@@ -37,6 +37,7 @@ from bank_agent.adapters.persistence.postgres.repositories.records import (
 )
 from bank_agent.adapters.persistence.postgres.transaction import Tx
 from bank_agent.domain.access import AccessContext, Role
+from bank_agent.domain.conversation import DEFAULT_CONVERSATION_CREATION_QUOTA, ConversationCreationQuota
 from bank_agent.domain.errors import ConcurrencyConflictError
 
 _log = structlog.get_logger(__name__)
@@ -50,11 +51,16 @@ class PostgresUnitOfWork:
     """
 
     def __init__(
-        self, engine: AsyncEngine, context: AccessContext, listener: AvailabilityListener | None = None
+        self,
+        engine: AsyncEngine,
+        context: AccessContext,
+        listener: AvailabilityListener | None = None,
+        creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA,
     ) -> None:
         self._engine = engine
         self._context = context
         self._listener = listener
+        self._creation_quota = creation_quota
         self._connection: AsyncConnection | None = None
         self._transaction: AsyncTransaction | None = None
         self._tx: Tx | None = None
@@ -90,7 +96,7 @@ class PostgresUnitOfWork:
 
     @property
     def conversations(self) -> PostgresConversationRepository:
-        return PostgresConversationRepository(self._open())
+        return PostgresConversationRepository(self._open(), self._creation_quota)
 
     @property
     def assistant_profiles(self) -> PostgresAssistantProfileRepository:
@@ -214,14 +220,28 @@ class PostgresUnitOfWork:
 
 
 class PostgresUnitOfWorkFactory:
-    """Implements ``UnitOfWorkFactory`` over one application-role engine."""
+    """Implements ``UnitOfWorkFactory`` over one application-role engine.
 
-    def __init__(self, engine: AsyncEngine, listener: AvailabilityListener | None = None) -> None:
+    ``creation_quota`` bounds new chats per customer (``ConversationRepository.add_with_quota``).
+    """
+
+    def __init__(
+        self,
+        engine: AsyncEngine,
+        listener: AvailabilityListener | None = None,
+        *,
+        creation_quota: ConversationCreationQuota = DEFAULT_CONVERSATION_CREATION_QUOTA,
+    ) -> None:
         self._engine = engine
         self._listener = listener
+        self._creation_quota = creation_quota
+
+    @property
+    def creation_quota(self) -> ConversationCreationQuota:
+        return self._creation_quota
 
     def __call__(self, context: AccessContext) -> PostgresUnitOfWork:
-        return PostgresUnitOfWork(self._engine, context, self._listener)
+        return PostgresUnitOfWork(self._engine, context, self._listener, self._creation_quota)
 
 
 __all__ = ["DatabaseRole", "PostgresUnitOfWork", "PostgresUnitOfWorkFactory"]

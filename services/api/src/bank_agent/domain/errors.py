@@ -403,7 +403,7 @@ class HumanServiceRequiredError(StateTransitionError):
 
 
 class ConversationCreationLimitedError(DomainError):
-    """Five new chats were already created by this customer in the rolling hour."""
+    """This customer already created the configured number of new chats in the rolling creation window."""
 
     code = "conversation_creation_limited"
     retryable = True

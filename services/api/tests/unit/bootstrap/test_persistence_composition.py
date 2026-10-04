@@ -1,4 +1,5 @@
 import secrets
+from datetime import timedelta
 
 import pytest
 
@@ -8,12 +9,21 @@ from bank_agent.adapters.persistence.postgres.sessions import PostgresSessionSto
 from bank_agent.adapters.persistence.postgres.unit_of_work import PostgresUnitOfWorkFactory
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.bootstrap.container import Container
-from bank_agent.bootstrap.persistence import build_rate_limit_store, owner_database_url, tools_with_failures
+from bank_agent.bootstrap.persistence import (
+    build_persistence,
+    build_rate_limit_store,
+    conversation_creation_quota,
+    owner_database_url,
+    tools_with_failures,
+)
 from bank_agent.bootstrap.settings import load_settings
 from bank_agent.domain.actions import ToolFailureMode, ToolName
-from bank_agent.domain.errors import ConfigurationError
+from bank_agent.domain.conversation import DEFAULT_CONVERSATION_CREATION_QUOTA, ConversationCreationQuota
+from bank_agent.domain.errors import ConfigurationError, ConversationCreationLimitedError
 from bank_agent.domain.identifiers import CreditProductCode, PersonaId
 from bank_agent.domain.identity import PersonaIdentification
+from bank_agent_builders import conversation
+from bank_agent_contracts import CONTEXT_A
 from bank_agent_tools import session_context
 
 
@@ -77,3 +87,39 @@ async def test_the_shared_backend_builds_the_postgres_store(monkeypatch: pytest.
     assert isinstance(container.rate_limit_store, PostgresRateLimitStore)
     assert "SESSION_SECRET" not in repr(container.rate_limit_store)
     await container.aclose()
+
+
+async def test_the_configured_creation_quota_reaches_the_memory_adapter(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CONVERSATION_CREATION_LIMIT", "1")
+    monkeypatch.setenv("CONVERSATION_CREATION_WINDOW_MINUTES", "30")
+    container = Container(load_settings(env_file=None))
+    factory = container.persistence.uow_factory
+    assert isinstance(factory, InMemoryUnitOfWorkFactory)
+    assert factory.creation_quota == ConversationCreationQuota(limit=1, window=timedelta(minutes=30))
+    async with factory(CONTEXT_A) as uow:
+        await uow.conversations.add_with_quota(conversation("conv-quota-1"))
+        await uow.commit()
+    async with factory(CONTEXT_A) as uow:
+        with pytest.raises(ConversationCreationLimitedError) as refused:
+            await uow.conversations.add_with_quota(conversation("conv-quota-2"))
+    assert refused.value.retry_after == timedelta(minutes=30)
+
+
+async def test_the_configured_creation_quota_reaches_the_postgres_adapter(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("POSTGRES_APP_PASSWORD", secrets.token_urlsafe(32))
+    monkeypatch.setenv("DEMO_MODE", "true")
+    monkeypatch.setenv("ALLOW_PUBLIC_DEMO_MODE", "true")
+    settings = load_settings(env_file=None)
+    container = Container(settings)
+    factory = container.persistence.uow_factory
+    assert isinstance(factory, PostgresUnitOfWorkFactory)
+    assert factory.creation_quota == conversation_creation_quota(settings)
+    assert factory.creation_quota == ConversationCreationQuota(limit=200, window=timedelta(hours=1))
+    await container.aclose()
+
+
+def test_injected_or_default_persistence_keeps_the_standard_quota() -> None:
+    factory = build_persistence(None).uow_factory
+    assert isinstance(factory, InMemoryUnitOfWorkFactory)
+    assert factory.creation_quota == DEFAULT_CONVERSATION_CREATION_QUOTA
+    assert ConversationCreationQuota(limit=5, window=timedelta(hours=1)) == DEFAULT_CONVERSATION_CREATION_QUOTA

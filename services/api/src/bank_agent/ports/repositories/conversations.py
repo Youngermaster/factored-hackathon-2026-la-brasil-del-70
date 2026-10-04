@@ -30,9 +30,10 @@ class ConversationRepository(Protocol):
         ...
 
     async def add_with_quota(self, conversation: Conversation) -> None:
-        """Atomically add a newly requested chat, at most five per customer in a rolling 60-minute window.
+        """Atomically add a newly requested chat, at most the quota's limit per customer in its rolling window.
 
-        Count successful creations strictly after ``created_at - 60 minutes`` across every session and worker.
+        The quota is a ``ConversationCreationQuota`` the adapter is configured with (five per 60 minutes by default).
+        Count successful creations strictly after ``created_at - window`` across every session and worker.
         Failed or rolled-back creates and messages in existing threads do not count. A full window raises
         ``ConversationCreationLimitedError`` with the time until the oldest counted creation leaves the window.
         Concurrent attempts may raise ``ConcurrencyConflictError``; no excess chat may be committed.
