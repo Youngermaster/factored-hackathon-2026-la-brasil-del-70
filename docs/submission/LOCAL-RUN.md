@@ -191,13 +191,13 @@ docker image rm bank-agent-api:<tag> bank-agent-job:<tag> bank-agent-web:<tag>  
 ```bash
 cd slides
 pnpm install             # 5 s warm
-pnpm verify              # 4 s: types, then check:content; ends "ok content is consistent, 1 metric(s) pending"
+pnpm verify              # 4 s: types, then check:content; ends "ok content is consistent"
 pnpm dev                 # http://localhost:3131 (presenter view at /#/presenter); leave it running
 pnpm check:fit           # second terminal, 2 s: "ok every scene fits the safe area at every cue, with no overlapping text"
-pnpm export              # draft PDF, 4 s warm: export/la-brasil-del-70-pitch.pdf (41 pages: 6 main slides and 3 appendix slides, one page per click; gitignored)
+pnpm export              # export/la-brasil-del-70-pitch.pdf (the 6 main slides, 32 pages, one per click) and export/la-brasil-del-70-appendix.pdf (7 pages); gitignored
 ```
 
-The pending metric is `deploy.url`, filled after the deployment; until then `pnpm export:final` stops on purpose. The export prints a `Failed to patch FloatingVue` console error from Slidev's own client; it does not affect the PDF. `pnpm export` launches its own server, so it does not need `pnpm dev`.
+No metric is pending since `deploy.url` was filled from the README on 2026-10-04, so `pnpm export:final` runs; it stops on purpose whenever a metric is pending again. The export prints a `Failed to patch FloatingVue` console error from Slidev's own client; it does not affect the PDF. `pnpm export` launches its own server, so it does not need `pnpm dev`.
 
 ## 8. The gates
 
@@ -235,7 +235,7 @@ Every row is a friction point met during the verification run. Rows marked "fixe
 | The production stack is reachable from other machines | Caddy publishes 8080 and 8443 on every interface; take the stack down when you are done |
 | `pnpm dev` in `slides/` and another Slidev deck | This deck uses port 3131, so it does not clash with a deck on Slidev's default 3030 |
 | `pnpm export` prints `Failed to patch FloatingVue` | Noise from Slidev's client; the PDF is complete |
-| `pnpm export:final` stops on a pending metric | By design until `deploy.url` is filled in `slides/data/metrics.yml` after the deployment |
+| `pnpm export:final` stops on a pending metric | By design: fill the metric in `slides/data/metrics.yml` (the check lists it) |
 
 ## Verification log
 

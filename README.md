@@ -7,8 +7,8 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 | Link | Where |
 |---|---|
 | Deployed demo | <https://bank-agent-yzaf9.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It calls the hosted model `gemini/gemini-3.1-flash-lite` ([deploy guide](deploy/README.md)) |
-| Video pitch | Pending: recorded against the deployed demo ([shot list](slides/VIDEO.md)) |
-| Slides | [slides/](slides/README.md) (Slidev; `pnpm export:final` builds the PDF) |
+| Video pitch | Pending, 3:00 at most: the [timed shot list](docs/demo/video-plan.md), the [narration by speaker](docs/demo/video-monologue.md), and the [practice cases](docs/demo/practice-cases.md) |
+| Slides | [slides/](slides/README.md) (Slidev; `pnpm export:final` builds the six-slide PDF) |
 | Demo guide for judges | `/demo` in the running app (demo mode), and [docs/demo/script.md](docs/demo/script.md) |
 | Evaluation results | [docs/evaluation/results.md](docs/evaluation/results.md) and [failures.md](docs/evaluation/failures.md) |
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
