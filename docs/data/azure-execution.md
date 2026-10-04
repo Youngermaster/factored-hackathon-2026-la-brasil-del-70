@@ -19,11 +19,11 @@ in `rg-la70-test`, `eastus2`. The architecture and commands are in
 | Artifact and stage safety | 17 tests passed, including archive corruption, unsafe paths and links, preserved existing state, and failure before ingestion/PostgreSQL | Verified locally |
 | Full local application path | Fresh sample preparation, strict PostgreSQL reconciliation, eight es/pt workflow checks, cross-customer 404, and zero loaded objects on unchanged ingestion passed in the integration suite | Verified locally |
 | Dedicated VM | `vm-bank-database` is running in westus2 with 2 vCPU, 8 GiB RAM, a verified 128 GiB disk, and denied inbound access | Verified in Azure |
-| VM pipeline execution | Run `20261004T175314Z-59a43e8fea4d` restored the complete source and is ingesting; PostgreSQL reconciliation and retained-state rerun remain pending | Running in Azure |
+| VM pipeline execution | Run `20261004T175314Z-59a43e8fea4d` completed the full pipeline, strict PostgreSQL reconciliation, eight es/pt flow checks, customer-isolation 404, and backup | First cloud run succeeded; retained-state rerun pending |
 | Full gold migration | Five private Parquet files, 5,192,103 rows, 241,693,714 bytes; each downloaded SHA-256 matches the validated local file | Verified in Azure Blob |
 | Full input migration | 7,671 contracted source objects archived privately; uploaded archive downloaded and SHA-256 verified; complete per-file restoration passed locally | Verified in Azure Blob |
 | Cloud code publication | Release `bb6069e6c01f106041ff239d331107a2993b6343` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
-| Repository-wide checks | `make check` passed: 2,887 unit, 1,532 integration, 349 web, 11 coverage gates, docs/data/code-generation checks, and the history secret scan; ShellCheck also passed | Verified locally |
+| Repository-wide checks | Updated `make check` passed: 2,889 unit, 1,536 integration, 349 web, 11 coverage gates, docs/data/code-generation checks, and the history secret scan; ShellCheck also passed | Verified locally |
 
 Three optional real-embedding tests were skipped because the ml extra is absent. The full suite ran in the
 current working tree; existing uncommitted card-support changes remain outside the published release.
@@ -93,9 +93,9 @@ Freshness has 11 passes and two warnings, for transactions and daily exchange ra
 loading timestamps predate this transfer. The warnings were retained, not suppressed. This static
 snapshot does not imply current balances or repaired branch relationships.
 
-The published manifest explicitly records `cloud_pipeline_executed=false` and
-`postgres_loaded_in_azure=false`. VM execution, application PostgreSQL loading, and a verified cloud
-rerun remain completion requirements. The uploaded gold snapshot can be retrieved independently
+The earlier published gold-transfer manifest records `cloud_pipeline_executed=false` and
+`postgres_loaded_in_azure=false`, accurately describing that earlier transfer. The cloud run evidence
+below now proves execution and PostgreSQL loading; a verified cloud rerun remains a completion requirement. The uploaded gold snapshot can be retrieved independently
 of VM provisioning.
 
 ## Full contracted source in private Azure Blob
@@ -109,7 +109,7 @@ business snapshot date, and packaging revision.
 - Compressed bytes: 1,332,722,002.
 - Download-verified SHA-256: `43475e3fa4c060ffe93c2245e4e88f8bd8f1f96493a62dfd2cccbd4ee4cd7efd`.
 - Complete local restoration verified every source member's byte count and SHA-256 before installing
-  the input directory. No Azure VM restoration or pipeline execution is claimed.
+  the input directory. The later cloud restoration and execution are recorded below.
 
 `start local` now retrieves this archive with managed identity and restores it under the pipeline lock
 before ingestion. A changed or damaged existing source is refused. Once compute is available, the
@@ -120,8 +120,9 @@ automatic replacement of its database or source state. The bounded PostgreSQL lo
 The updated `make check` completed with 2,887 unit tests, 1,532 integration tests, 349 web tests,
 all 11 coverage gates, documentation/data/code-generation checks, and the history secret scan.
 The same three optional embedding tests were skipped because the ml extra is absent. ShellCheck,
-source-specific strict typing, and the 17 integrity/orchestration tests also passed. These checks
-prove local behavior and migration integrity; compute execution remains blocked by the regional quota.
+source-specific strict typing, and the 17 integrity/orchestration tests also passed. These earlier checks
+proved local behavior and migration integrity while compute was blocked by the eastus2 quota. The
+later dedicated westus2 execution and updated schema-compatible checks are recorded below.
 
 ## Dedicated data VM
 
@@ -146,3 +147,38 @@ and rollback. This preserves claim-scoped RLS and the assigned-agent conversatio
 trigger. The first cloud release has head `0013`; a subsequent committed release must upgrade
 it to `0014` and pass reconciliation before schema compatibility is reported as verified.
 The existing application VM and its database connection remain unchanged.
+
+## First complete Azure execution
+
+- Run: `20261004T175314Z-59a43e8fea4d`; committed revision `59a43e8fea4de2132296a5c66259d682a73ed234`.
+- Code archive SHA-256: `c89a28f1f511efaa3342f83f423aad9a9b7adc16a910428de96ea0622d5fe761`.
+- Final status: `succeeded`; systemd unit became inactive after all recorded stages completed.
+- Ingestion processed all 7,671 source objects: 23,471,159 rows loaded, 24,029 rows quarantined,
+  zero failed objects. Quarantined rows are `call_transcripts` missing required `duration_seconds`;
+  raw rows reconcile exactly to loaded plus quarantined rows.
+- Gold counts are 150,000 customers, 400,000 products, 4,425,008 transactions, 67,095 complaints,
+  and 150,000 credit profiles. All five complete file hashes match the validated local gold above.
+- dbt build: 313 passes and two warnings out of 315 nodes; explicit tests: 271 passes and two
+  warnings out of 273, zero errors or skips. Bronze freshness: all 13 sources pass. The two
+  branch-reference warnings remain visible: 149,995 customers and 831 agents.
+- Source quality also records cross-customer affected products in 44,570 complaints and 1,094,226
+  digital events. Serving complaints deliberately null those foreign product references; they are
+  never served as the complaining customer's product. No source values were fabricated.
+- PostgreSQL head at this first run: `0013`. Strict reconciliation verified 200 customers,
+  559 products, 6,119 transactions, 84 historical complaints, 200 credit profiles, 200 directory
+  entries, two staff, one demo dispute, and one demo credit application. Owner and application
+  roles are neither superusers nor RLS bypass roles. PostgreSQL binds only to `127.0.0.1:5432`.
+- All four production ASGI workflow checks in Spanish and Portuguese passed; account and credit
+  resolved, card support and dispute clarified. Cross-customer access returned 404. These checks
+  use the configured fake provider and do not claim a live-model evaluation.
+- Private run artifact: `artifacts/runs/5326b3db9dd1897ba72e349d369af761e051e6511fcaaf7d08c811044c67316e.tar.gz`.
+  The entire archive was downloaded and hash-verified, then every recorded artifact hash was
+  checked, including the custom-format PostgreSQL backup. No restore rehearsal is claimed.
+- Private inspection: `artifacts/runs/20261004T175314Z-59a43e8fea4d/inspection-e00fc0a628604dfbe5d410e75e32289af877536ff70eb4bbbe3dcb535cdb6e35.json`;
+  its downloaded hash matches. It preserves explicit dbt test summaries because dbt docs generation
+  replaces the working `run_results.json` with catalog-generation results.
+
+The schema-compatible release is `74c46aba0058d0ab4a1f1ee80bfdfa73ce417dcf`, download-verified
+code SHA-256 `74cdb6d82c873c8c39802ed666e78d7bd2af0c96d6e8e0261e8884a7a45d3d0c`.
+The second run must forward-migrate the retained database to `0014`, reload no unchanged source
+objects, preserve gold and reference counts/values, and repeat the application checks.
