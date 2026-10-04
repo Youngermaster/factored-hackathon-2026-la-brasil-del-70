@@ -84,7 +84,9 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
   bronze/silver/gold, quarantine, bounded PostgreSQL mapping, exact reconciliation, API checks,
   private evidence and backups, safe reruns, DataGrip TLS, operation, and trade-offs.
 - The 36 focused deployment and inspection tests, Ruff, and documentation checks passed. The updated
-  complete repository gate is running. Live TLS 1.3 verification passed at the original IP; read-only
+  complete repository gate passed: 2,906 unit, 1,537 integration, 349 web, all 11 coverage gates,
+  documentation/data/code-generation checks, and the history secret scan. Three optional embedding
+  tests were skipped because the extra is absent. Live TLS 1.3 verification passed at the original IP; read-only
   checks confirmed schema `0014`, serving counts 200/559/6119, inspection login enabled with no
   superuser/bypass privileges, and application RLS returning zero customers without context.
 

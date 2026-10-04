@@ -31,6 +31,16 @@ operator-configured password and current public CA certificate. Original storage
 reference the original resources. [The process guide](data-engineering-process.md) is the current
 end-to-end operating document. Neither the application VM nor Nequi was changed.
 
+## Verification after keeping Azure names
+
+The final changed-state `make check` passed: 2,906 unit tests, 1,537 integration tests, 349 web tests,
+all 11 coverage gates, documentation/data/code-generation checks, and the history secret scan.
+Three optional real-embedding tests were skipped because the ml extra is absent. The 36 focused
+deployment/inspection tests, strict helper typing, and shell syntax checks also passed. The current
+operating guide is [the complete engineering process](data-engineering-process.md). Azure resource
+replacement and retirement are cancelled; existing resource identifiers and the database connection
+remain in use.
+
 ## Current DataGrip verification
 
 After restoring repository references to the original Azure names, the engineering helper downloaded
