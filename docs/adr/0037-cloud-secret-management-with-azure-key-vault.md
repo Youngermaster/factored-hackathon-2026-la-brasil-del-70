@@ -1,7 +1,8 @@
-# 0036: Production secrets in Azure Key Vault with workload identity
+# 0037: Production secrets in Azure Key Vault with workload identity
 
 - Status: proposed
 - Date: 2026-09-30
+- Update (2026-10-04): renumbered from 0036, which `main` had already assigned to the Grafana live analytics record. Azure has since been selected for the event deployment (one VM, [ADR 0019](0019-single-host-compose-deployment.md)); the implementation that stages the production secrets from Key Vault is pull request 27 (`feat/azure-key-vault-secrets`). This record stays proposed until that pull request is merged.
 
 ## Context
 

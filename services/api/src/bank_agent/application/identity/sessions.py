@@ -117,6 +117,10 @@ class SessionService:
             raise SessionNotFoundError()
         return session
 
+    async def count_active(self) -> int:
+        """Live sessions across every API process now (an aggregate for the active-session gauge)."""
+        return await self._store.count_active(self._clock.now())
+
     async def resolve(self, token: str) -> Session:
         """Return the live session for ``token`` and record the activity (sliding the idle expiry).
 

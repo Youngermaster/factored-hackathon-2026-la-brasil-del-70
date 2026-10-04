@@ -60,6 +60,6 @@ Every chaos test asserts a safe outcome, the wording in both languages where the
 
 ## Limitations
 
-- The monitor is per process; each API worker decides its own level from its own breakers (the budget ledger is shared). Phase 16 can publish the level through the shared store if workers must agree.
+- The monitor is per process; each API worker decides its own level from its own breakers, while the budget ledger, the rate limits, and the active-session count are shared. Phase 16 decided not to publish the level through the database: a breaker reflects the calls of its own worker, a provider outage trips every worker's breaker within a few calls, and a shared level would add a query to every turn for no safety gain (`docs/plans/phase-16.md`, decision 10). Dashboards take the maximum over workers.
 - Recovery from L3 needs a restart: artifacts load at startup only.
 - L1 needs `LLM_FALLBACK_MODEL`; no fallback provider is configured today (the provider choice is pending action 5).

@@ -1,35 +1,55 @@
-"""HTTP-layer metrics: rate-limit rejections and the sessions this process is serving.
+"""HTTP-layer metrics: rate-limit rejections and the live sessions of the whole deployment.
 
 HTTP latency histograms come from the OpenTelemetry FastAPI instrumentation (``http.server.request.duration``); this
-module adds what only the HTTP layer knows. Active sessions are the sessions that made a request within their idle
-timeout, counted per process (the dashboard sums the processes); the gauge holds opaque session ids only in memory
-and never exports them.
+module adds what only the HTTP layer knows. Active sessions are counted in the shared session store every
+``ACTIVE_SESSIONS_INTERVAL_SECONDS`` by each API process, so every process reports the same deployment-wide number
+(the dashboard takes the maximum, not the sum); the gauge carries a count only, never an id.
 """
 
-from datetime import datetime
+import asyncio
+from typing import Final
+
+import structlog
 
 from bank_agent.api.config import RateClass
-from bank_agent.domain.session import Session
+from bank_agent.application.identity.sessions import SessionService
 from bank_agent.ports.telemetry import Telemetry
+
+ACTIVE_SESSIONS_INTERVAL_SECONDS: Final = 30.0
+_log = structlog.get_logger(__name__)
 
 
 class HttpMetrics:
     def __init__(self, telemetry: Telemetry) -> None:
         self._rate_limited = telemetry.counter("bank.http.rate_limited")
         self._active = telemetry.gauge("bank.sessions.active")
-        self._expiry: dict[str, datetime] = {}
+        self._active_count: int | None = None
 
     def rate_limited(self, rate_class: RateClass, key: str) -> None:
         """Count one refusal; ``key`` is ``ip`` or ``session``, never the address or the token."""
         self._rate_limited.add(1, {"bank.rate_class": rate_class.value, "bank.rate_key": key})
 
-    def session_seen(self, session: Session, now: datetime) -> None:
-        """Remember that ``session`` was active at ``now`` until its idle timeout, and publish the count."""
-        self._expiry[session.session_id] = now + session.idle_timeout
-        for session_id in [key for key, expires in self._expiry.items() if expires <= now]:
-            del self._expiry[session_id]
-        self._active.set(len(self._expiry))
+    async def refresh_active_sessions(self, sessions: SessionService | None) -> int | None:
+        """Count the live sessions in the shared store and publish the gauge; ``None`` when it could not count."""
+        if sessions is None:
+            return None
+        try:
+            count = await sessions.count_active()
+        except Exception as error:  # a database outage must not stop the loop; readiness reports it
+            _log.warning("active_sessions_unavailable", error_type=type(error).__name__)
+            return None
+        self._active_count = count
+        self._active.set(count)
+        return count
+
+    async def publish_active_sessions(
+        self, sessions: SessionService | None, interval_seconds: float = ACTIVE_SESSIONS_INTERVAL_SECONDS
+    ) -> None:
+        """Refresh the gauge forever, every ``interval_seconds`` (a background task of the application lifespan)."""
+        while True:
+            await self.refresh_active_sessions(sessions)
+            await asyncio.sleep(interval_seconds)
 
     @property
-    def active_sessions(self) -> int:
-        return len(self._expiry)
+    def active_sessions(self) -> int | None:
+        return self._active_count

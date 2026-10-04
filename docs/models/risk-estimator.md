@@ -129,7 +129,7 @@ No population group crosses a threshold (calibration gap difference above 0.02 w
 - **First-time applicants.** Customers with no credit product are outside the training population and always get an `unknown` band, and therefore review, with a learned estimator.
 - **Not product-specific.** The estimate does not depend on the requested product, term, or amount.
 - **Group coverage is lenient.** The interval criterion passes easily; the stricter inside share is reported next to it.
-- **Default stays the baseline.** The API serves `score_band@1` until phase 14 runs the scenario and evaluation sets with `WORKFLOW_RISK_ESTIMATOR=logreg@champion` (BACKLOG).
+- **Default stays the baseline.** The API serves `score_band@1`. Session 14b ran the credit dev scenarios with `WORKFLOW_RISK_ESTIMATOR=logreg@champion`: the same 20 of 28 safe resolutions as the baseline, but two human-required cases answered "indicatively eligible" instead of a review, so the baseline stays ([results](../evaluation/results.md#decision-the-learned-router-resolver-and-risk-estimator-defaults-dev-evidence-only)).
 
 ## Ethical considerations
 

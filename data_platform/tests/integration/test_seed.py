@@ -1,6 +1,6 @@
 """``bank-data seed`` against the migrated test PostgreSQL, from fixture gold files (the contract dataset)."""
 
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import asyncpg
@@ -21,6 +21,7 @@ from bank_data.seed.verify import verify_bundle
 
 KEYS = IdentityKeys(b"seed-fixture-secret-" + b"s" * 32)
 SLA_DAYS = {Country.MX: 45, Country.CO: 15, Country.AR: 30}
+SEEDED_AT = datetime(2026, 10, 1, 12, 0, tzinfo=UTC)
 PHONES = {"CUS-A-0001": ("MX1234567", "+52 55 1111 2345"), "CUS-B-0002": ("CO7654321", "+57 300 222 6789")}
 PERSONAS = """
 version: 1
@@ -88,12 +89,19 @@ async def test_seeding_twice_loads_the_same_rows(migrated_postgres: PostgresInst
     personas = load_personas(tmp_path / "personas.yaml")
     data = contract_dataset()
     selection, bundle = plan_seed(
-        _gold(tmp_path, data), personas, KEYS, target=2, snapshot=date(2026, 6, 17), dispute_sla_days=SLA_DAYS
+        _gold(tmp_path, data),
+        personas,
+        KEYS,
+        target=2,
+        snapshot=date(2026, 6, 17),
+        dispute_sla_days=SLA_DAYS,
+        seeded_at=SEEDED_AT,
     )
     assert selection.personas == {"cre-mx-complete": "CUS-A-0001", "cre-co-no-income": "CUS-B-0002"}
     assert all(entry.document_lookup != PHONES[entry.customer_id][0] for entry in bundle.identities)
     (case,) = bundle.cases
     assert (case.sla_due_at - case.opened_at).days == SLA_DAYS[Country.MX]
+    assert case.opened_at == SEEDED_AT  # opened like the service opens a case, so its SLA is live
 
     counts = []
     for _ in range(2):
@@ -128,6 +136,7 @@ async def test_verification_rejects_changed_identity_digest(
         target=2,
         snapshot=date(2026, 6, 17),
         dispute_sla_days=SLA_DAYS,
+        seeded_at=SEEDED_AT,
     )
     engine = owner_engine(migrated_postgres)
     try:
@@ -155,7 +164,32 @@ def test_an_unmatched_persona_stops_the_seed(tmp_path: Path) -> None:
             target=2,
             snapshot=date(2026, 6, 17),
             dispute_sla_days=SLA_DAYS,
+            seeded_at=SEEDED_AT,
         )
+
+
+def test_the_seeded_case_counts_its_sla_from_the_seeding_instant(tmp_path: Path) -> None:
+    """Regression: the case used to open the day after the purchase, so on a demo seeded months after the data
+    snapshot its SLA had already passed and the status question escalated as overdue."""
+    (tmp_path / "personas.yaml").write_text(PERSONAS, encoding="utf-8")
+    gold = _gold(tmp_path, contract_dataset())
+    personas = load_personas(tmp_path / "personas.yaml")
+
+    def seeded_case(at: datetime) -> tuple[datetime, datetime]:
+        _, bundle = plan_seed(
+            gold, personas, KEYS, target=2, snapshot=date(2026, 6, 17), dispute_sla_days=SLA_DAYS, seeded_at=at
+        )
+        (case,) = bundle.cases
+        return case.opened_at, case.sla_due_at
+
+    opened, due = seeded_case(SEEDED_AT)
+    assert (opened, due) == (SEEDED_AT, SEEDED_AT + timedelta(days=SLA_DAYS[Country.MX]))
+    assert due > SEEDED_AT + timedelta(days=30)  # still inside its SLA a month after the seed
+
+    early, _ = seeded_case(datetime(2020, 1, 1, tzinfo=UTC))  # a clock before the data never predates the purchase
+    assert early > datetime(2020, 1, 2, tzinfo=UTC)
+    with pytest.raises(ValueError, match="timezone-aware"):
+        seeded_case(datetime(2026, 10, 1, 12, 0))  # noqa: DTZ001
 
 
 def test_the_seed_takes_the_dispute_sla_from_the_policy_pack() -> None:

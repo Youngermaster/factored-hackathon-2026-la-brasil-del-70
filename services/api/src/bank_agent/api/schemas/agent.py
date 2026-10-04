@@ -10,7 +10,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import StringConstraints
+from pydantic import Field, StringConstraints
 
 from bank_agent.api.provider import PolicyClauses
 from bank_agent.api.schemas.base import RequestModel, ResponseModel
@@ -135,11 +135,18 @@ class CreditApplicationView(ResponseModel):
     declared_monthly_income: Money | None
     assessment_ref: AssessmentId | None
     status: ApplicationStatus
+    version: int = Field(description="Send it back as `expected_version` to move the intake (review, close).")
     created_at: datetime
     updated_at: datetime
     status_history: tuple[ApplicationStatusChange, ...]
     origin_conversation_id: ConversationId | None
     synthetic_policy: bool
+
+
+class CreditApplicationMoveRequest(RequestModel):
+    """Take an intake into human review, or close it; the version it was read at guards against a concurrent move."""
+
+    expected_version: Annotated[int, Field(ge=0, le=1_000_000)]
 
 
 class CreditApplicationListResponse(ResponseModel):

@@ -15,7 +15,7 @@
 import { defineScene } from '../lib/scene/types'
 import { C, MX, W } from '../lib/scene/kit'
 import { outCubic, outExpo, presence, seg } from '../lib/scene/math'
-import { bubble, check, cross, tab, tag } from '../lib/scene/bank'
+import { bubble, check, cross, dims, tab, tag } from '../lib/scene/bank'
 import { clipWipe, field, packet, ring } from '../lib/scene/fx'
 
 const X = [MX, 560, 1000, 1440] as const
@@ -29,6 +29,7 @@ export default defineScene({
   draw({ t, L, M, K }) {
     const fin = outCubic(seg(t, 17.7, 18.3))
     const dimAll = 1 - fin
+    dims(K, L('dims'), outCubic(seg(t, 0.3, 0.8)))
     // each phase owns a filled header in its colour, ink text on top (AA: ink on blue 4.8,
     // on yellow 13.0, on red 4.4 at 30 px bold, which is large text)
     const heading = (i: number, key: string, fill: string, t0: number) => {

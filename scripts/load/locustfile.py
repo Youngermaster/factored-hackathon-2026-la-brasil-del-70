@@ -11,10 +11,14 @@ Run it against a local API (fake model, raised rate limits), for example:
     uv run --with locust==2.46.6 locust -f scripts/load/locustfile.py --headless \\
         --host http://127.0.0.1:8015 -u 20 -r 5 -t 60s --csv reports/load/local
 
+Against the production stack behind Caddy's local TLS mode, set ``LOAD_CA_BUNDLE`` to Caddy's root certificate and
+raise the rate limits in the server env file first (every simulated customer comes from one address).
+
 Synthetic traffic only: the texts are team-written fixtures, and the personas are seeded demo personas that the
 committed sample provides (``make seed`` with the default source); ``acc-co-payments`` has no customer in the sample.
 """
 
+import os
 import random
 import uuid
 from typing import Any, Final
@@ -46,6 +50,8 @@ SCRIPTS: Final[dict[str, list[tuple[str, str, list[str]]]]] = {
     ],
 }
 PORTUGUESE_SHARE: Final = 0.4
+CA_BUNDLE: Final = os.environ.get("LOAD_CA_BUNDLE", "")
+"""A CA certificate to trust, for a stack behind Caddy's local TLS mode (the production stack tested locally)."""
 
 
 class _Customer(HttpUser):
@@ -56,6 +62,8 @@ class _Customer(HttpUser):
     wait_time = between(1, 3)
 
     def on_start(self) -> None:
+        if CA_BUNDLE:
+            self.client.verify = CA_BUNDLE
         scripts = SCRIPTS[self.workflow]
         wanted = "pt" if random.random() < PORTUGUESE_SHARE else "es"  # noqa: S311  # nosec B311
         self.script = random.choice([s for s in scripts if s[1] == wanted] or scripts)  # noqa: S311  # nosec B311

@@ -81,7 +81,7 @@ def test_new_handoffs_are_version_1_1_and_fit_the_schema() -> None:
 
 
 def test_the_model_default_is_1_3_and_the_phase_02_builder_stays_1_0() -> None:
-    assert Handoff.model_fields["schema_version"].default == "1.4.0"
+    assert Handoff.model_fields["schema_version"].default == "1.5.0"
     assert handoff().schema_version == "1.0.0"
     assert_fits_schema("handoff", handoff().model_dump(mode="json"))
 
@@ -133,7 +133,7 @@ def credit_record(**overrides: Any) -> ExecutionRecord:
 
 def test_records_carry_estimates_and_assessments_separately() -> None:
     record = credit_record()
-    assert record.schema_version == "1.4.0"
+    assert record.schema_version == "1.5.0"
     assert ExecutionRecord.model_validate_json(record.model_dump_json()) == record
     assert_fits_schema("execution_record", record.model_dump(mode="json"))
     assert "risk_estimates" in internal_fields(ExecutionRecord)

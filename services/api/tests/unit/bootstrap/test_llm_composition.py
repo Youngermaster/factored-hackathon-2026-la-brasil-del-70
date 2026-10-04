@@ -224,9 +224,10 @@ def test_defaults_point_at_the_repository_files(monkeypatch: pytest.MonkeyPatch)
 def test_production_refuses_content_capture_and_recording(
     monkeypatch: pytest.MonkeyPatch, variable: str, value: str, problem: str
 ) -> None:
-    for name in ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_ADMIN_PASSWORD", "POSTGRES_APP_PASSWORD"):
+    for name in ("SESSION_SECRET", "CSRF_SECRET", "POSTGRES_APP_PASSWORD"):
         monkeypatch.setenv(name, _key())
     monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "postgres")
     monkeypatch.setenv("RETRIEVAL_INDEX_SOURCE", "stored")
     monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "https://bank.example")
     monkeypatch.setenv("LLM_PROVIDER", "cassette")

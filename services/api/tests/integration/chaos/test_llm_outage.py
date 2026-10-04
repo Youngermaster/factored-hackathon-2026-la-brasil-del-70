@@ -143,6 +143,6 @@ async def test_the_spent_daily_budget_switches_to_template_only_until_the_next_d
 
 def test_the_model_prompts_are_the_ones_a_balance_turn_calls() -> None:
     assert {str(prompt) for prompt in MODEL_PROMPTS} == {
-        str(PromptRef(prompt_id="detect_escalation_signals", version=1)),
+        str(PromptRef(prompt_id="detect_escalation_signals", version=2)),
         str(PromptRef(prompt_id="extract_account_inquiry_slots", version=1)),
     }

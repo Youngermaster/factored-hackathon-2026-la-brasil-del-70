@@ -6,8 +6,9 @@ import { cx } from '@/shared/lib/cx';
 import { PERSONAS, type Persona } from '../model/personas';
 
 /**
- * Demo personas as a list of buttons, customers first, then bank staff. Each shows what it demonstrates and its
- * country; choosing one opens a challenge right away.
+ * Demo personas as a list of buttons: customers, then bank staff, then the customers that only a seed from the full
+ * organizer delivery loads (with a note saying so). Each shows what it demonstrates and its country; choosing one
+ * opens a challenge right away.
  */
 export function PersonaPicker({
   onSelect,
@@ -23,12 +24,20 @@ export function PersonaPicker({
     {
       key: 'customers',
       label: t('auth.personaCustomers'),
-      personas: PERSONAS.filter((p) => p.role === 'customer'),
+      note: null,
+      personas: PERSONAS.filter((p) => p.role === 'customer' && p.fullDeliveryOnly !== true),
     },
     {
       key: 'staff',
       label: t('auth.personaStaff'),
+      note: null,
       personas: PERSONAS.filter((p) => p.role !== 'customer'),
+    },
+    {
+      key: 'full',
+      label: t('auth.personaFullDelivery'),
+      note: t('auth.personaFullDeliveryNote'),
+      personas: PERSONAS.filter((p) => p.fullDeliveryOnly === true),
     },
   ];
 
@@ -47,6 +56,7 @@ export function PersonaPicker({
           >
             {group.label}
           </h3>
+          {group.note !== null && <p className="text-caption text-fg-muted">{group.note}</p>}
           <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {group.personas.map((persona) => {
               const description = t(`personas.${persona.id}`);

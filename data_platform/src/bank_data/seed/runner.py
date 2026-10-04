@@ -7,7 +7,7 @@ read by ``bank_agent.bootstrap``; nothing here reads or prints a secret.
 import asyncio
 from collections.abc import Mapping
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from sqlalchemy.ext.asyncio import AsyncEngine
@@ -36,13 +36,21 @@ def plan_seed(
     target: int,
     snapshot: date,
     dispute_sla_days: Mapping[Country, int],
+    seeded_at: datetime,
 ) -> tuple[Selection, SeedBundle]:
-    """Select customers and build the bundle, without touching PostgreSQL."""
+    """Select customers and build the bundle, without touching PostgreSQL. ``seeded_at`` is when the seeded
+    dispute case opens (the seeding instant for ``bank-data seed``)."""
     connection = open_gold(gold_dir)
     try:
         selection = select_customers(connection, personas, target=target, snapshot=snapshot)
         bundle = build_bundle(
-            connection, personas, selection, keys, snapshot=snapshot, dispute_sla_days=dispute_sla_days
+            connection,
+            personas,
+            selection,
+            keys,
+            snapshot=snapshot,
+            dispute_sla_days=dispute_sla_days,
+            seeded_at=seeded_at,
         )
         return selection, bundle
     finally:
@@ -65,9 +73,16 @@ def run_seed(
     snapshot: date,
     app_role: str,
     dispute_sla_days: Mapping[Country, int],
+    seeded_at: datetime,
 ) -> SeedReport:
     selection, bundle = plan_seed(
-        gold_dir, personas, keys, target=target, snapshot=snapshot, dispute_sla_days=dispute_sla_days
+        gold_dir,
+        personas,
+        keys,
+        target=target,
+        snapshot=snapshot,
+        dispute_sla_days=dispute_sla_days,
+        seeded_at=seeded_at,
     )
 
     async def _load() -> dict[str, int]:

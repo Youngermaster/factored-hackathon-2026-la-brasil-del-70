@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from datetime import date
 
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
+from bank_agent.application.engine.security import detect_injection, referenced_ids
 from bank_agent.application.engine.templates import TEMPLATES
 from bank_agent.application.grounding.draft import (
     FactKind,
@@ -33,6 +34,7 @@ from bank_agent.policy.explain import explain, format_money
 from bank_agent.policy.pack import PolicyPack
 
 RECORD_PLACEHOLDER = "[dato]"
+MASKED_RECORD_TEXT = "[...]"
 MAX_TEXT = 4000
 MAX_RECORD_TEXT = 80
 MAX_EXCERPT = 1000
@@ -53,7 +55,10 @@ def format_date(value: date, language: Language) -> str:
 
 
 def clean_record_text(text: str) -> str:
-    return _CONTROL.sub(" ", text).strip()[:MAX_RECORD_TEXT]
+    cleaned = _CONTROL.sub(" ", text).strip()[:MAX_RECORD_TEXT]
+    if detect_injection(cleaned) or referenced_ids(cleaned).any:
+        return MASKED_RECORD_TEXT
+    return cleaned
 
 
 @dataclass

@@ -18,6 +18,7 @@ import {
 } from '@/shared/ui';
 
 import { useCreditApplication, useCreditApplications } from '../api/handoffs';
+import { CreditReviewActions } from './CreditReviewActions';
 import { useInboxLabels } from './labels';
 
 function Loading() {
@@ -31,7 +32,7 @@ function Loading() {
 }
 
 /**
- * Credit intakes recorded for human review, read only. Each is a review item of its own (ADR 0021), never a
+ * Credit intakes recorded for human review. Each is a review item of its own (ADR 0021), never a
  * lending decision, and the policy behind it is synthetic.
  */
 export function CreditApplicationList() {
@@ -140,6 +141,9 @@ export function CreditApplicationDetail({ applicationId }: { readonly applicatio
         </h1>
         {view.synthetic_policy && <Badge>{t('applications.synthetic')}</Badge>}
         <Badge>{labels.code('application', view.status)}</Badge>
+        <div className="ms-auto">
+          <CreditReviewActions application={view} />
+        </div>
       </div>
       <p className="max-w-prose text-small text-fg-secondary">{t('applications.notADecision')}</p>
       <Card.Root aria-labelledby="application-request">

@@ -3,15 +3,18 @@
 Environment variable names match the root ``.env.example`` exactly. Only this package reads the
 environment. Secrets are ``SecretStr`` so they never appear in reprs, logs, or validation messages.
 
-``load_settings`` enforces the production rules: ``DEMO_MODE`` must be false, and every secret must be
-set, long enough, and not a known default. Violations raise ``SettingsError``, whose message names the
-offending variables and never their values.
+``load_settings`` enforces the production rules: ``DEMO_MODE`` must be false unless the public demo is allowed
+explicitly, and every secret the process needs must be set, long enough, and not a known default. The API process and
+the owner jobs (migrations, the seed, the retention purge) have separate rules, so the API never holds the owner
+password. Violations raise ``SettingsError``, whose message names the offending variables and never their values.
 """
 
+import ipaddress
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
 from typing import Annotated, Literal
+from urllib.parse import urlsplit
 
 from pydantic import Field, SecretStr, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
@@ -23,6 +26,7 @@ LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 LLMProvider = Literal["fake", "cassette", "litellm"]
 LLMCassetteMode = Literal["replay", "record"]
 BudgetLedgerName = Literal["auto", "memory", "postgres"]
+RateLimitBackend = Literal["memory", "postgres"]
 
 MIN_SECRET_LENGTH = 32
 # A refused prefix, not a secret.
@@ -100,6 +104,8 @@ class RuntimeSettings(BaseSettings):
 
     app_env: Environment = "development"
     demo_mode: bool = False
+    allow_public_demo_mode: bool = False
+    """Production accepts ``DEMO_MODE=true`` only with this set (the public demo, docs/security/demo-mode.md)."""
     log_level: LogLevel = "INFO"
 
 
@@ -126,7 +132,9 @@ class SecuritySettings(BaseSettings):
     """Session, CSRF, CORS, request size, and rate limit settings.
 
     Rate limits are requests per minute per rate class (``auth``, ``write``, ``read``), counted per client IP
-    (``RATE_LIMIT_*_PER_MINUTE``) and per session (``RATE_LIMIT_SESSION_*_PER_MINUTE``).
+    (``RATE_LIMIT_*_PER_MINUTE``) and per session (``RATE_LIMIT_SESSION_*_PER_MINUTE``). ``rate_limit_backend``
+    chooses where the counters live: ``memory`` (one process, exact) or ``postgres`` (shared by every worker; required
+    in production).
     """
 
     model_config = _config()
@@ -141,6 +149,7 @@ class SecuritySettings(BaseSettings):
     rate_limit_session_auth_per_minute: int = Field(default=10, ge=1, le=100_000)
     rate_limit_session_write_per_minute: int = Field(default=20, ge=1, le=100_000)
     rate_limit_session_read_per_minute: int = Field(default=60, ge=1, le=100_000)
+    rate_limit_backend: RateLimitBackend = "memory"
 
     @field_validator("cors_allowed_origins", mode="before")
     @classmethod
@@ -167,6 +176,9 @@ class LLMSettings(BaseSettings):
     api_key_fallback: SecretStr | None = None
     api_base: str = ""
     """Optional provider base URL passed to LiteLLM, for example ``http://localhost:11434`` for a local Ollama."""
+    allow_private_http_base: bool = False
+    """Production accepts a plain http ``api_base`` only with this set and a private host (a self-hosted model on the
+    host's private network, such as the ``ollama`` compose profile); hosted providers always need https and a key."""
     daily_budget_usd: Decimal = Field(default=Decimal(5), ge=0)
     session_token_limit: int = Field(default=20000, gt=0)
     conversation_budget_usd: Decimal = Field(default=Decimal("0.50"), ge=0)
@@ -283,6 +295,8 @@ class WorkflowSettings(BaseSettings):
     model_registry_dir: Path = DEFAULT_MODEL_REGISTRY_DIR
     language_detector: Literal["lexical@1"] = "lexical@1"
     risk_estimator: Annotated[str, Field(pattern=RISK_ESTIMATOR_SELECTION)] = "score_band@1"
+    max_eligibility_assessments: int = Field(default=5, ge=1, le=100)
+    eligibility_assessment_window_minutes: int = Field(default=60, ge=1, le=1440)
 
     @field_validator("router", "resolver", "risk_estimator", "model_registry_dir", mode="before")
     @classmethod
@@ -337,6 +351,17 @@ class ObservabilitySettings(BaseSettings):
     metric_export_interval: int = Field(default=15000, ge=1000, le=300_000)
 
 
+class LangfuseSettings(BaseSettings):
+    """Optional metadata-only export of LLM generation spans to Langfuse."""
+
+    model_config = _config("LANGFUSE_")
+
+    enabled: bool = False
+    base_url: str = "http://localhost:3000"
+    public_key: SecretStr | None = None
+    secret_key: SecretStr | None = None
+
+
 class DegradationSettings(BaseSettings):
     """One feature flag per fallback of the degradation ladder (``docs/operations/degradation.md``).
 
@@ -363,6 +388,24 @@ class DegradationSettings(BaseSettings):
     database_retry_after_seconds: int = Field(default=30, ge=1, le=3600)
 
 
+class RetentionSettings(BaseSettings):
+    """Retention periods applied by ``bank-agent retention purge`` (``docs/security/data-retention.md``).
+
+    - ``conversation_days``: conversation text (messages, turns, and their conversation) after the last activity.
+    - ``session_days``: sessions, one-time-code challenges, and trust events after they end.
+    - ``credit_application_days``: withdrawn or closed credit application intakes after their last status change;
+      open intakes are kept until a person closes them.
+
+    Execution records (no free text) and audit events are never purged by the job.
+    """
+
+    model_config = _config("RETENTION_")
+
+    conversation_days: int = Field(default=7, ge=1, le=3650)
+    session_days: int = Field(default=7, ge=1, le=3650)
+    credit_application_days: int = Field(default=30, ge=1, le=3650)
+
+
 class AppSettings:
     """All settings for one process, validated together."""
 
@@ -373,22 +416,26 @@ class AppSettings:
         security: SecuritySettings,
         llm: LLMSettings,
         observability: ObservabilitySettings,
+        langfuse: LangfuseSettings | None = None,
         policy: PolicySettings | None = None,
         retrieval: RetrievalSettings | None = None,
         workflow: WorkflowSettings | None = None,
         evaluation: EvaluationSettings | None = None,
         degradation: DegradationSettings | None = None,
+        retention: RetentionSettings | None = None,
     ) -> None:
         self.runtime = runtime
         self.database = database
         self.security = security
         self.llm = llm
         self.observability = observability
+        self.langfuse = langfuse if langfuse is not None else LangfuseSettings(_env_file=None)
         self.policy = policy if policy is not None else PolicySettings()
         self.retrieval = retrieval if retrieval is not None else RetrievalSettings()
         self.workflow = workflow if workflow is not None else WorkflowSettings()
         self.evaluation = evaluation if evaluation is not None else EvaluationSettings()
         self.degradation = degradation if degradation is not None else DegradationSettings()
+        self.retention = retention if retention is not None else RetentionSettings()
 
     @property
     def is_production(self) -> bool:
@@ -430,30 +477,86 @@ def _origin_problems(origins: list[str]) -> list[str]:
     return []
 
 
-def production_problems(settings: AppSettings) -> list[str]:
-    """Return every production rule the settings violate; empty outside production."""
+_PRIVATE_NETWORKS = tuple(
+    ipaddress.ip_network(network)
+    for network in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "127.0.0.0/8", "::1/128", "fc00::/7")
+)
+"""RFC 1918 and unique local addresses plus loopback; documentation and other special ranges do not count."""
+
+
+def _private_http_base(url: str) -> bool:
+    """A plain http base whose host never leaves the machine's private network (a compose service or a private IP)."""
+    parts = urlsplit(url)
+    host = (parts.hostname or "").lower()
+    if parts.scheme != "http" or not host:
+        return False
+    if host == "host.docker.internal" or "." not in host:
+        return True
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        return False
+    return any(address in network for network in _PRIVATE_NETWORKS)
+
+
+def _llm_problems(llm: LLMSettings) -> tuple[list[str], list[tuple[str, SecretStr | None]]]:
+    """Model gateway rules: hosted providers need https and a key; a private-network model is the one exception."""
+    problems: list[str] = []
+    secrets: list[tuple[str, SecretStr | None]] = []
+    private = llm.allow_private_http_base and _private_http_base(llm.api_base)
+    if llm.provider == "litellm" and not private:
+        secrets.append(("LLM_API_KEY_PRIMARY", llm.api_key_primary))
+    if llm.api_base and not llm.api_base.startswith("https://") and not private:
+        problems.append(
+            "LLM_API_BASE must use https in production (plain http only with LLM_ALLOW_PRIVATE_HTTP_BASE=true "
+            "and a private host)"
+            if llm.allow_private_http_base
+            else "LLM_API_BASE must use https in production"
+        )
+    if llm.trace_content:
+        problems.append("LLM_TRACE_CONTENT must be false in production")
+    if llm.provider == "cassette" and llm.cassette_mode == "record":
+        problems.append("LLM_CASSETTE_MODE=record is not allowed in production")
+    return problems, secrets
+
+
+def production_problems(settings: AppSettings, *, owner: bool = False) -> list[str]:
+    """Return every production rule the settings violate; empty outside production.
+
+    ``owner=False`` checks the API process: it needs the application role, the session and CSRF secrets, and the
+    HTTP rules, and must not receive the owner password. ``owner=True`` checks an owner job (migrations, the seed, the
+    retention purge): it needs the owner password and ``SESSION_SECRET`` (the seed derives identity keys from it).
+    """
     if not settings.is_production:
         return []
     problems: list[str] = []
-    if settings.runtime.demo_mode:
-        problems.append("DEMO_MODE must be false in production")
-    secrets: list[tuple[str, SecretStr | None]] = [
-        ("SESSION_SECRET", settings.security.session_secret),
-        ("CSRF_SECRET", settings.security.csrf_secret),
-        ("POSTGRES_ADMIN_PASSWORD", settings.database.admin_password),
-        ("POSTGRES_APP_PASSWORD", settings.database.app_password),
-    ]
-    if settings.llm.provider == "litellm":
-        secrets.append(("LLM_API_KEY_PRIMARY", settings.llm.api_key_primary))
-    if settings.llm.trace_content:
-        problems.append("LLM_TRACE_CONTENT must be false in production")
-    if settings.llm.provider == "cassette" and settings.llm.cassette_mode == "record":
-        problems.append("LLM_CASSETTE_MODE=record is not allowed in production")
-    if settings.retrieval.index_source != "stored":
-        problems.append("RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)")
-    problems.extend(_origin_problems(settings.security.cors_allowed_origins))
-    if settings.llm.api_base and not settings.llm.api_base.startswith("https://"):
-        problems.append("LLM_API_BASE must use https in production")
+    if owner:
+        secrets: list[tuple[str, SecretStr | None]] = [
+            ("SESSION_SECRET", settings.security.session_secret),
+            ("POSTGRES_ADMIN_PASSWORD", settings.database.admin_password),
+        ]
+    else:
+        if settings.runtime.demo_mode and not settings.runtime.allow_public_demo_mode:
+            problems.append("DEMO_MODE must be false in production unless ALLOW_PUBLIC_DEMO_MODE=true")
+        secrets = [
+            ("SESSION_SECRET", settings.security.session_secret),
+            ("CSRF_SECRET", settings.security.csrf_secret),
+            ("POSTGRES_APP_PASSWORD", settings.database.app_password),
+        ]
+        if _is_set(settings.database.admin_password):
+            problems.append("POSTGRES_ADMIN_PASSWORD must not be given to the API process in production")
+        llm_problems, llm_secrets = _llm_problems(settings.llm)
+        problems.extend(llm_problems)
+        secrets.extend(llm_secrets)
+        if settings.retrieval.index_source != "stored":
+            problems.append(
+                "RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)"
+            )
+        if settings.security.rate_limit_backend != "postgres":
+            problems.append("RATE_LIMIT_BACKEND must be postgres in production, so every worker shares the limits")
+        problems.extend(_origin_problems(settings.security.cors_allowed_origins))
+        if settings.langfuse.enabled and not settings.langfuse.base_url.startswith("https://"):
+            problems.append("LANGFUSE_BASE_URL must use https in production")
     for variable, secret in secrets:
         problem = _secret_problem(variable, secret)
         if problem is not None:
@@ -461,10 +564,45 @@ def production_problems(settings: AppSettings) -> list[str]:
     return problems
 
 
-def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
+def langfuse_problems(settings: AppSettings) -> list[str]:
+    """Check opt-in export configuration without including secret values in diagnostics."""
+    if not settings.langfuse.enabled:
+        return []
+    problems: list[str] = []
+    if settings.llm.provider != "litellm":
+        problems.append("LANGFUSE_ENABLED requires LLM_PROVIDER=litellm")
+    if settings.llm.trace_content:
+        problems.append("LLM_TRACE_CONTENT must be false when LANGFUSE_ENABLED=true")
+    if settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(
+        settings.langfuse.base_url.rstrip("/")
+    ):
+        problems.append("OTEL_EXPORTER_OTLP_ENDPOINT must not point to Langfuse when LANGFUSE_ENABLED=true")
+    if not _is_set(settings.langfuse.public_key):
+        problems.append("LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true")
+    if not _is_set(settings.langfuse.secret_key):
+        problems.append("LANGFUSE_SECRET_KEY must be set when LANGFUSE_ENABLED=true")
+    try:
+        target = urlsplit(settings.langfuse.base_url)
+        valid_target = (
+            target.scheme in {"http", "https"}
+            and bool(target.hostname)
+            and target.username is None
+            and target.password is None
+            and not target.query
+            and not target.fragment
+        )
+    except ValueError:
+        valid_target = False
+    if not valid_target:
+        problems.append("LANGFUSE_BASE_URL must be an HTTP URL without credentials, query, or fragment")
+    return problems
+
+
+def load_settings(env_file: Path | None = _ENV_FILE, *, owner: bool = False) -> AppSettings:
     """Load and validate settings from the environment and, when present, the env file.
 
-    Pass ``env_file=None`` to read the process environment only, as tests do.
+    Pass ``env_file=None`` to read the process environment only, as tests do. ``owner=True`` validates the settings
+    of an owner job (migrations, the seed, the retention purge) instead of the API's.
     """
     settings = AppSettings(
         runtime=RuntimeSettings(_env_file=env_file),
@@ -472,13 +610,17 @@ def load_settings(env_file: Path | None = _ENV_FILE) -> AppSettings:
         security=SecuritySettings(_env_file=env_file),
         llm=LLMSettings(_env_file=env_file),
         observability=ObservabilitySettings(_env_file=env_file),
+        langfuse=LangfuseSettings(_env_file=env_file),
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
         evaluation=EvaluationSettings(_env_file=env_file),
         degradation=DegradationSettings(_env_file=env_file),
+        retention=RetentionSettings(_env_file=env_file),
     )
-    problems = production_problems(settings)
+    problems = production_problems(settings, owner=owner)
+    if not owner:
+        problems.extend(langfuse_problems(settings))
     if problems:
         raise SettingsError(problems)
     return settings

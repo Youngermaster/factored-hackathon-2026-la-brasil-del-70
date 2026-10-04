@@ -51,7 +51,7 @@ jobs:
       - name: Import boundaries
         run: uv run --frozen lint-imports
       - name: bandit
-        run: uv run --frozen bandit -q -c pyproject.toml -r services/api/src data_platform/src ml/src evals/src scripts
+        run: uv run --frozen bandit -q -c pyproject.toml -r services/api/src data_platform/src ml/src evals/src scripts deploy
       - name: Unit tests
         run: COVERAGE_FILE=.coverage.unit uv run --frozen pytest -m unit --cov --cov-report=
       - name: Integration tests (PostgreSQL through testcontainers)
@@ -166,6 +166,57 @@ jobs:
         run: |
           POSTGRES_ADMIN_PASSWORD="$(openssl rand -hex 16)" POSTGRES_APP_PASSWORD="$(openssl rand -hex 16)" \
             docker compose --profile '*' config --quiet
+
+  deploy:
+    name: deploy
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Dockerfile lint (hadolint, pinned image)
+        run: |
+          for dockerfile in services/api/Dockerfile apps/web/Dockerfile services/api/Dockerfile.dev apps/web/Dockerfile.dev; do
+            docker run --rm -i "hadolint/hadolint:v2.14.0@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e" hadolint - < "${dockerfile}"
+          done
+      - name: Deployment scripts (shellcheck, pinned image)
+        run: |
+          docker run --rm -v "${PWD}/deploy:/mnt:ro" -w /mnt \
+            "koalaman/shellcheck:v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d" \
+            prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+      - name: Production compose file is valid
+        run: |
+          SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
+          POSTGRES_SUPERUSER_PASSWORD="$(openssl rand -hex 16)" POSTGRES_ADMIN_PASSWORD="$(openssl rand -hex 16)" \
+          POSTGRES_APP_PASSWORD="$(openssl rand -hex 16)" SESSION_SECRET="$(openssl rand -hex 32)" \
+          CSRF_SECRET="$(openssl rand -hex 32)" \
+            docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example --profile '*' config --quiet
+      - name: Build the production images (web, api, job)
+        run: make images IMAGE_TAG=ci VITE_DEMO_MODE=true
+      - name: Container smoke test (the API image answers /health/live, and refuses production without secrets)
+        run: |
+          docker run -d --name api-smoke --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges \
+            -e APP_ENV=development -p 127.0.0.1:18000:8000 bank-agent-api:ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:18000/health/live; then break; fi
+            sleep 2
+          done
+          curl -fsS http://127.0.0.1:18000/health/live
+          docker rm -f api-smoke
+          if docker run --rm --read-only --tmpfs /tmp bank-agent-api:ci; then
+            echo "the API image started in production mode without secrets"; exit 1
+          fi
+      - name: Image scan (trivy, fixable HIGH and CRITICAL fail) and CycloneDX SBOMs (syft)
+        run: make scan-images IMAGE_TAG=ci
+      - name: Publish the SBOMs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sbom
+          path: reports/sbom/
+          if-no-files-found: ignore
 
   audit:
     name: audit

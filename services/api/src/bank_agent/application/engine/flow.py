@@ -20,11 +20,13 @@ from bank_agent.application.engine.shared import (
     greeting,
     human_requested,
     informational,
+    off_topic,
     out_of_scope,
     step_up,
 )
 from bank_agent.application.engine.templates.labels import PENDING, TOPICS
 from bank_agent.application.understanding.answers import YesNo, parse_choice, parse_yes_no
+from bank_agent.application.understanding.scope import Scope, classify_scope
 from bank_agent.application.understanding.text import fold
 from bank_agent.domain.access import AuthLevel
 from bank_agent.domain.base import UntrustedText
@@ -111,11 +113,11 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
     if kind is RouteKind.HUMAN:
         return human_requested(ctx)
     if kind is RouteKind.GREETING:
-        return greeting(ctx)
+        return outside_banking(ctx) or greeting(ctx)
     if kind is RouteKind.CLARIFY_WORKFLOW:
         # A request an enabled workflow recognizes as its own unsupported request (a transfer) is abstained with that
         # workflow's clauses instead of asking which workflow it belongs to (phase 14b, found on the dev split).
-        return in_domain_unsupported(ctx, registry) or clarify_workflow(ctx, route.options)
+        return in_domain_unsupported(ctx, registry) or outside_banking(ctx) or clarify_workflow(ctx, route.options)
     if kind is RouteKind.CONFIRM_SWITCH and route.target is not None:
         return confirm_switch(ctx, route.target)
     if kind in (RouteKind.START, RouteKind.SWITCH) and route.target is not None:
@@ -143,6 +145,20 @@ def in_domain_unsupported(ctx: TurnContext, registry: WorkflowRegistry) -> Step 
                 return Step(ctx.state, kept.reply, kept.outcome)
             enter(ctx, registry, workflow, switch=current is not None)
         return abstain_unsupported(ctx, request)
+    return None
+
+
+def outside_banking(ctx: TurnContext) -> Step | None:
+    """A message the router could not place that is not about banking at all (``scope:lexicon@1``): an unrelated
+    topic gets the ``SCOPE-ALL-1`` abstention, a bank-side request the assistant never handles (personal data, tax
+    advice) the generic out-of-scope answer. Greetings and plausible banking requests return ``None`` and keep the
+    welcome or the clarifying question. Found before the pitch video ("¿Quién es mejor CR7 o Messi?" was asked
+    "saldos o tarjetas")."""
+    scope = classify_scope(ctx.text)
+    if scope is Scope.OFF_TOPIC:
+        return off_topic(ctx)
+    if scope is Scope.SERVICE:
+        return out_of_scope(ctx)
     return None
 
 

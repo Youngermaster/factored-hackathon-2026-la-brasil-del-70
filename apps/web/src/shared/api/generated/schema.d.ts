@@ -102,6 +102,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/agent/credit-applications/{application_id}/close": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Close Credit Application
+         * @description Close an intake under human review. Audited; there is no approved or declined status.
+         */
+        post: operations["agent_close_credit_application"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/agent/credit-applications/{application_id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Review Credit Application
+         * @description Take a submitted intake into human review. Audited; never a lending decision.
+         */
+        post: operations["agent_review_credit_application"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/agent/handoffs": {
         parameters: {
             query?: never;
@@ -153,6 +193,40 @@ export interface paths {
          * @description Claim an open handoff for the signed-in agent.
          */
         post: operations["agent_claim_handoff"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/agent/handoffs/{handoff_id}/human-service": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Agent History */
+        get: operations["agent_human_service"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/agent/handoffs/{handoff_id}/human-service/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Agent Send */
+        post: operations["agent_send_human_message"];
         delete?: never;
         options?: never;
         head?: never;
@@ -413,6 +487,40 @@ export interface paths {
          * @description Validate and save the assistant name for the signed-in customer's profile.
          */
         post: operations["assistant_profile_name_set"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/human-service": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Customer History */
+        get: operations["conversations_human_service"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/conversations/{conversation_id}/human-service/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Customer Send */
+        post: operations["conversations_send_human_message"];
         delete?: never;
         options?: never;
         head?: never;
@@ -824,6 +932,14 @@ export interface components {
             applications: components["schemas"]["CreditApplicationView"][];
         };
         /**
+         * CreditApplicationMoveRequest
+         * @description Take an intake into human review, or close it; the version it was read at guards against a concurrent move.
+         */
+        CreditApplicationMoveRequest: {
+            /** Expected Version */
+            expected_version: number;
+        };
+        /**
          * CreditApplicationView
          * @description An intake recorded for human review. It is never a lending decision; the policy behind it is synthetic.
          */
@@ -859,6 +975,11 @@ export interface components {
              * Format: date-time
              */
             updated_at: string;
+            /**
+             * Version
+             * @description Send it back as `expected_version` to move the intake (review, close).
+             */
+            version: number;
         };
         /**
          * CreditIntakeConfirmation
@@ -1112,7 +1233,7 @@ export interface components {
             rule_results: components["schemas"]["RuleResult"][];
             /**
              * Schema Version
-             * @default 1.4.0
+             * @default 1.5.0
              */
             schema_version: string;
             /** State */
@@ -1431,6 +1552,60 @@ export interface components {
             /** Template Only */
             template_only: boolean;
         };
+        /** HumanMessage */
+        HumanMessage: {
+            /** Conversation Id */
+            conversation_id: string;
+            /** Handoff Id */
+            handoff_id: string;
+            /** Message Id */
+            message_id: string;
+            role: components["schemas"]["HumanMessageRole"];
+            /**
+             * Sent At
+             * Format: date-time
+             */
+            sent_at: string;
+            /** Sequence */
+            sequence: number;
+            /** Text */
+            text: string;
+        };
+        /** HumanMessageResponse */
+        HumanMessageResponse: {
+            message: components["schemas"]["HumanMessage"];
+            /** Replayed */
+            replayed: boolean;
+        };
+        /**
+         * HumanMessageRole
+         * @enum {string}
+         */
+        HumanMessageRole: "user" | "agent";
+        /** HumanServiceResponse */
+        HumanServiceResponse: {
+            /** Closed At */
+            closed_at: string | null;
+            /** Conversation Id */
+            conversation_id: string;
+            /** Handoff Id */
+            handoff_id: string;
+            /** Joined At */
+            joined_at: string | null;
+            /** Messages */
+            messages: components["schemas"]["HumanMessage"][];
+            /**
+             * Queued At
+             * Format: date-time
+             */
+            queued_at: string;
+            status: components["schemas"]["HumanServiceStatus"];
+        };
+        /**
+         * HumanServiceStatus
+         * @enum {string}
+         */
+        HumanServiceStatus: "queued" | "joined" | "closed";
         /**
          * Intent
          * @description What the customer wants. Each intent is owned by exactly one workflow or is cross-workflow.
@@ -1518,6 +1693,8 @@ export interface components {
             input_tokens: number;
             /** Latency Ms */
             latency_ms: number;
+            /** Model Call Id */
+            model_call_id?: string | null;
             /** Model Id */
             model_id: string;
             /** Output Tokens */
@@ -1802,6 +1979,16 @@ export interface components {
             rule_id: string;
             /** Rule Version */
             rule_version: number;
+        };
+        /** SendHumanMessageRequest */
+        SendHumanMessageRequest: {
+            /**
+             * Message Id
+             * Format: uuid
+             */
+            message_id: string;
+            /** Text */
+            text: string;
         };
         /**
          * SendTurnRequest
@@ -2424,6 +2611,94 @@ export interface operations {
             };
         };
     };
+    agent_close_credit_application: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                application_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreditApplicationMoveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreditApplicationView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    agent_review_credit_application: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                application_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreditApplicationMoveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreditApplicationView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
     agent_list_handoffs: {
         parameters: {
             query?: {
@@ -2528,6 +2803,92 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HandoffView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    agent_human_service: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: never;
+            path: {
+                handoff_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanServiceResponse"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    agent_send_human_message: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                handoff_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendHumanMessageRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanMessageResponse"];
                 };
             };
             /** @description Validation error as problem details */
@@ -3007,6 +3368,92 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AssistantProfileView"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    conversations_human_service: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanServiceResponse"];
+                };
+            };
+            /** @description Validation error as problem details */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    conversations_send_human_message: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendHumanMessageRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HumanMessageResponse"];
                 };
             };
             /** @description Validation error as problem details */

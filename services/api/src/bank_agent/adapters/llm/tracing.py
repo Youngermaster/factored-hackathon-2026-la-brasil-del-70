@@ -11,6 +11,7 @@ also carries the canonical JSON of the variables, which the outer redaction deco
 and the output.
 """
 
+import hashlib
 import json
 import time
 from collections.abc import Callable
@@ -51,7 +52,7 @@ class TracingDecorator(LlmDecorator):
         self._tokens = telemetry.histogram(USAGE_METRIC)
 
     def _request_attributes(self, request: LlmRequest) -> dict[str, AttributeValue]:
-        return {
+        attributes: dict[str, AttributeValue] = {
             "gen_ai.operation.name": "chat",
             "gen_ai.provider.name": self.provider_name,
             "gen_ai.request.model": self.request_model,
@@ -62,6 +63,17 @@ class TracingDecorator(LlmDecorator):
             "bank.prompt.version": request.prompt.version,
             "bank.language": request.language.value,
         }
+        if request.call_context.turn_id is not None:
+            attributes["bank.correlation_id"] = request.call_context.turn_id
+        if request.call_context.conversation_id is not None:
+            attributes["bank.conversation_id"] = request.call_context.conversation_id
+        if request.output_model is not None:
+            schema = request.output_model.model_json_schema()
+            digest = hashlib.sha256(json.dumps(schema, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            attributes["bank.schema.id"] = request.output_model.__name__
+            attributes["bank.schema.version"] = digest[:12]
+            attributes["bank.schema.hash"] = digest
+        return attributes
 
     async def around(self, request: LlmRequest, proceed: Proceed) -> Generation:
         attributes = self._request_attributes(request)
@@ -77,12 +89,17 @@ class TracingDecorator(LlmDecorator):
             try:
                 result = await proceed(request)
             except LlmError as error:
+                span.set_attribute("bank.llm.status", "error")
+                span.set_attribute("bank.llm.latency_ms", max(0, round((self._monotonic() - started) * 1000)))
                 span.set_attribute("error.type", error.code)
                 span.record_error_code(error.code)
                 self._duration.record(self._monotonic() - started, {**metric_attributes, "error.type": error.code})
                 raise
             self._duration.record(self._monotonic() - started, metric_attributes)
+            span.set_attribute("bank.llm.status", "success")
             span.set_attribute("gen_ai.response.model", result.model_id)
+            if result.provider_model_id is not None:
+                span.set_attribute("bank.provider.returned_model_id", result.provider_model_id)
             span.set_attribute("gen_ai.usage.input_tokens", result.usage.input_tokens)
             span.set_attribute("gen_ai.usage.output_tokens", result.usage.output_tokens)
             span.set_attribute("bank.llm.latency_ms", result.latency_ms)
@@ -99,4 +116,4 @@ class TracingDecorator(LlmDecorator):
                 span.set_attribute("bank.llm.output", output)
             self._tokens.record(result.usage.input_tokens, {**metric_attributes, "gen_ai.token.type": "input"})
             self._tokens.record(result.usage.output_tokens, {**metric_attributes, "gen_ai.token.type": "output"})
-            return result
+            return result.evolve(model_call_id=span.span_id) if span.span_id is not None else result

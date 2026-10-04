@@ -16,6 +16,7 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `repositories/credit_profiles.py` | `CreditProfileReader` | async | The bound customer's credit profile (customer role only) |
 | `repositories/credit_applications.py` | `CreditApplicationRepository` | async | Credit application intakes for human review, idempotent, with optimistic versions |
 | `repositories/conversations.py` | `ConversationRepository` | async | Conversations and turns |
+| `repositories/human_service.py` | `HumanServiceRepository` | async | Persisted human messages scoped to the customer or assigned agent, with idempotency and lifecycle serialization |
 | `repositories/execution_records.py` | `ExecutionRecordRepository` | async | Append-only execution records |
 | `repositories/handoffs.py` | `HandoffRepository`, `HandoffQuery` | async | Handoffs and the agent inbox lifecycle |
 | `audit.py` | `AuditLog`, `AuditQuery` | async | Append-only audit events, inside or outside a unit of work |
@@ -33,6 +34,7 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `telemetry.py` | `Telemetry`, `Span`, `Counter`, `Histogram`, `Gauge` | sync | Spans, metrics, and the current trace id without importing OpenTelemetry |
 | `reliability.py` | `DegradationSource` | sync | The current degradation level (L0 to L4) for the engine and the health endpoint |
 | `budget.py` | `BudgetLedger` | async | Model spend per lineage, conversation, and day, shared by processes; atomic reservations |
+| `rate_limits.py` | `RateLimitStore` | async | Request counters per opaque key over a fixed window, in one process or shared by every worker (phase 16) |
 | `health.py` | `ReadinessCheck` | async | One dependency checked by `/health/ready` |
 | `evaluation.py` | `EvaluationSummaryReader` | async | Published evaluation summaries, newest first |
 

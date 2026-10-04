@@ -8,3 +8,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+interface Window {
+  /** The CSP nonce react-style-singleton (through get-nonce) puts on injected style elements (shared/lib/csp-nonce). */
+  __webpack_nonce__?: string;
+}

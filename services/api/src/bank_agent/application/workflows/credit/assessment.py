@@ -35,6 +35,7 @@ from bank_agent.domain.money import Money
 from bank_agent.ports.eligibility import CreditApplicationFacts, EligibilityRequest
 
 PROFILE, ESTIMATE = "credit_profile", "risk_estimate"
+ASSESSMENT_LIMIT = "eligibility_assessment_limit"
 
 
 def application_facts(data: CreditData, product: CreditProduct) -> CreditApplicationFacts | None:
@@ -141,7 +142,19 @@ def turn_estimate(ctx: TurnContext) -> RiskEstimate | None:
     return value if isinstance(value, RiskEstimate) else None
 
 
+def assessment_limit_reached(ctx: TurnContext) -> Step | None:
+    """Past the per-session assessment limit, a person reviews the request instead of another synthetic assessment:
+    repeated assessments with small changes would otherwise map the synthetic rules. Never a refusal of credit."""
+    if ctx.recent_assessments < ctx.settings.max_eligibility_assessments:
+        return None
+    ctx.recorder.intervention(ASSESSMENT_LIMIT)
+    return escalate(ctx, EscalationReasonCode.OTHER, ASSESSMENT_LIMIT)
+
+
 async def estimate_step(ctx: TurnContext) -> Step:
+    limited = assessment_limit_reached(ctx)
+    if limited is not None:
+        return limited
     data = load(ctx)
     product = await product_of(ctx, data.product_type) if data.product_type is not None else None
     application = application_facts(data, product) if product is not None else None
@@ -152,6 +165,9 @@ async def estimate_step(ctx: TurnContext) -> Step:
 
 
 async def assess_step(ctx: TurnContext) -> Step:
+    limited = assessment_limit_reached(ctx)
+    if limited is not None:
+        return limited
     data = load(ctx)
     product = await product_of(ctx, data.product_type) if data.product_type is not None else None
     application = application_facts(data, product) if product is not None else None

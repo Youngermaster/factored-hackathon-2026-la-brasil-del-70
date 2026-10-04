@@ -71,6 +71,17 @@ class TestSessionStoreContract:
         with pytest.raises(DuplicateEntityError):
             await store.rotate(SessionId("ses-000001"), session(), DIGEST_2)
 
+    async def test_counts_only_live_sessions(self, write_backend: WriteBackend) -> None:
+        store = write_backend.session_store()
+        await store.create(session("ses-live-0001"), "c" * 64)
+        await store.create(session("ses-idle-0001", created_at=T0 - timedelta(minutes=20)), "d" * 64)
+        await store.create(session("ses-gone-0001").revoked(T0 + timedelta(minutes=1)), "e" * 64)
+        await store.create(session("ses-late-0001").touched(T0 + timedelta(minutes=10)), "f" * 64)
+        assert await store.count_active(T0) == 3
+        assert await store.count_active(T0 + timedelta(minutes=5)) == 2
+        assert await store.count_active(T0 + timedelta(minutes=20)) == 1
+        assert await store.count_active(T0 + timedelta(hours=2)) == 0
+
     async def test_trust_state_is_append_only_per_lineage(self, write_backend: WriteBackend) -> None:
         store = write_backend.session_store()
         lineage = LineageId("lin-ses-000001")

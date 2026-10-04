@@ -49,7 +49,7 @@ async def test_1_a_normal_es_mx_dispute_is_created_verified_and_reported(backend
     first_record = await harness.record(session, first.turn_id)
     assert [call.status for call in first_record.llm_calls] == [LlmCallStatus.OK, LlmCallStatus.OK]
     assert {str(prompt) for prompt in first_record.prompts} == {
-        "detect_escalation_signals@1",
+        "detect_escalation_signals@2",
         "extract_dispute_slots@1",
     }
     assert {str(model) for model in first_record.models} >= {"router:keyword@1", "resolver:rules@1"}
@@ -121,7 +121,15 @@ async def test_4_es_co_status_inquiry_answers_with_the_sla(backend: Backend) -> 
     session = harness.session(CO)
     reply = await harness.say("¿Cómo va mi reclamo?", session)
     assert (reply.state, reply.outcome) == ("RESOLVED", Outcome.RESOLVED)
-    assert "case-fixco000001" in reply.response.text
+    assert "case-fixco000001-0001" in reply.response.text
+
+
+async def test_4c_a_hyphenated_owned_case_id_is_found_before_the_sla_check(backend: Backend) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store)
+    session = harness.session(CO)
+    reply = await harness.say("¿Cómo va mi reclamo case-fixco000001-0001?", session)
+    assert (reply.state, reply.outcome) == ("RESOLVED", Outcome.RESOLVED)
+    assert "case-fixco000001-0001" in reply.response.text
     assert "abierto" in reply.response.text
     assert [str(c.clause) for c in reply.response.citations][:1] == ["DSP-CO-2@2"]
 

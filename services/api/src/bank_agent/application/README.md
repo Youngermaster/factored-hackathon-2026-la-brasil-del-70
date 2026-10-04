@@ -7,7 +7,7 @@ The application layer orchestrates: the workflow engine, the four workflows (acc
 Phase 09 (session 09a) added the workflow engine and the first two workflows:
 
 - `engine/`: the generic engine ([workflow router](../../../../../docs/workflows/workflow-router.md), ADRs 0014 and 0024). `definition.py` (states, transitions, handlers, allowlists, binding states), `registry.py` (startup validation against the catalog, bindings, matrix, and tools), `router.py` (dispatch and switch rules), `engine.py` (`WorkflowEngine.process_turn`: replay, session gate, language, untrusted-content checks, routing, handlers, rendering, one unit of work), `gate.py`, `flow.py`, `tools.py` (`GuardedToolset`), `decide.py` (kernel calls), `shared.py` (escalate, abstain, refuse, out of scope, informational, step-up), `handoff.py` and `summary.py`, `recorder.py` and `records.py` (execution records), `render.py`, `phrase.py`, and `templates/` (es, pt, en).
-- `understanding/`: deterministic amounts and slang, relative dates, yes and no, option and language choices, and fallback slot extraction.
+- `understanding/`: deterministic amounts and slang, relative dates, yes and no, option and language choices, fallback slot extraction, and whether an unplaced message is about banking at all (`scope.py`, `scope:lexicon@1`).
 - `workflows/`: `dispute/`, `card_support/`, `shared/writes.py` (confirmed idempotent writes and read-backs), and `baseline/` (B0 definitions, menu router, fixed strings).
 
 Session 09b added the last two workflows as definitions, with the engine changed only where a capability was missing:

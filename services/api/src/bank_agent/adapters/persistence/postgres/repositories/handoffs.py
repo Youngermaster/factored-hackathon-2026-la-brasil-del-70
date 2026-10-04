@@ -9,7 +9,12 @@ from bank_agent.adapters.persistence.postgres.mappers.records import handoff_fro
 from bank_agent.adapters.persistence.postgres.repositories.access import customer_of, staff_of
 from bank_agent.adapters.persistence.postgres.transaction import Tx
 from bank_agent.domain.access import Role
-from bank_agent.domain.errors import AccessContextError, DuplicateEntityError, HandoffNotFoundError
+from bank_agent.domain.errors import (
+    AccessContextError,
+    ConcurrencyConflictError,
+    DuplicateEntityError,
+    HandoffNotFoundError,
+)
 from bank_agent.domain.handoff import Handoff, HandoffOutcomeCode, HandoffRecord
 from bank_agent.domain.identifiers import HandoffId
 from bank_agent.ports.repositories.handoffs import HandoffQuery
@@ -85,6 +90,11 @@ class PostgresHandoffRepository:
         return [handoff_from_row(row) for row in rows]
 
     async def _existing(self, handoff_id: HandoffId) -> HandoffRecord:
+        locked = await self._tx.scalar(
+            "SELECT pg_try_advisory_xact_lock(hashtextextended(:id, 26))", {"id": handoff_id}
+        )
+        if not locked:
+            raise ConcurrencyConflictError("the human conversation changed")
         row = await self._tx.one_or_none(
             "SELECT document, lifecycle FROM app.handoffs WHERE handoff_id = :id FOR NO KEY UPDATE", {"id": handoff_id}
         )

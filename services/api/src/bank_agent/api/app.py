@@ -1,5 +1,7 @@
 """FastAPI application factory."""
 
+import asyncio
+import contextlib
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -8,6 +10,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse, Response
 from starlette.types import Scope
 
+from bank_agent.adapters.ratelimit.memory import InMemoryRateLimitStore
 from bank_agent.api.cookies import clear_lost_session_cookie
 from bank_agent.api.csrf import CSRF_HEADER, CsrfTokens
 from bank_agent.api.domain_problems import api_problem_registry
@@ -23,8 +26,8 @@ from bank_agent.api.middleware import (
 from bank_agent.api.openapi import install_openapi
 from bank_agent.api.problems import PAYLOAD_TOO_LARGE_PROBLEM, PROBLEM_CONTENT_TYPE, ProblemRegistry
 from bank_agent.api.provider import ApiConfig, ServiceProvider
-from bank_agent.api.ratelimit import SlidingWindowLimiter
-from bank_agent.api.routers import agent, auth, conversations, evaluation, health, preferences
+from bank_agent.api.ratelimit import RateLimiter
+from bank_agent.api.routers import agent, auth, conversations, evaluation, health, human_service, preferences
 
 
 async def _payload_too_large(scope: Scope) -> Response:
@@ -54,9 +57,14 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        # The deployment-wide active-session gauge, counted in the shared session store.
+        publisher = asyncio.create_task(app.state.http_metrics.publish_active_sessions(provider.session_service))
         try:
             yield
         finally:
+            publisher.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await publisher
             await provider.aclose()
 
     security = config.security
@@ -71,7 +79,8 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     app.state.provider = provider
     app.state.api_config = config
     app.state.csrf = CsrfTokens(security.csrf_secret)
-    app.state.rate_limiter = SlidingWindowLimiter(config.monotonic)
+    store = config.rate_limit_store if config.rate_limit_store is not None else InMemoryRateLimitStore(config.monotonic)
+    app.state.rate_limiter = RateLimiter(store)
     app.state.http_metrics = HttpMetrics(provider.telemetry)
     registry = problems or api_problem_registry(config.database_retry_after_seconds)
     registry.install(app, response_hooks=(clear_lost_session_cookie,))
@@ -93,6 +102,7 @@ def create_app(provider: ServiceProvider, config: ApiConfig, problems: ProblemRe
     app.include_router(conversations.router)
     app.include_router(preferences.router)
     app.include_router(agent.router)
+    app.include_router(human_service.router)
     app.include_router(evaluation.router)
     install_openapi(app)
     return app

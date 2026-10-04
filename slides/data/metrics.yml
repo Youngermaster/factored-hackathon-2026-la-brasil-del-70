@@ -59,33 +59,88 @@ retrieval.abst_p.hybrid: {value: 0.92, display: "0.92", kind: provisional, sourc
 retrieval.abst_r.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.p95.hybrid: {value: 6.88, display: "6.9 ms", kind: provisional, source: docs/evaluation/retrieval.md}
 
-# -- held-out evaluation (phase 14b): P and B0 on the frozen test split ----
+# -- held-out evaluation (phase 14b): P, B0 and B1 on the frozen test split ---
 # Simulated, offline: scripted and model-played customers on the synthetic
-# evaluation world. P runs on the local model qwen2.5:7b-instruct; `.b0` is
-# the keyword-menu baseline B0 (no model) on the same cases. Rates are over
-# the 304 in-scope workflow cases unless the note says otherwise.
-eval.cases: {value: 332, display: "332", kind: simulation, source: docs/evaluation/results.md, note: "held-out test scenarios per system: 304 in the four workflows, 28 routing; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.safe_resolution: {value: 58.2, display: "58%", kind: simulation, source: docs/evaluation/results.md, note: "177 of 304, Wilson 95% 53 to 64; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.safe_resolution.b0: {value: 42.1, display: "42%", kind: simulation, source: docs/evaluation/results.md, note: "128 of 304, Wilson 95% 37 to 48; B0 has no model"}
-eval.attempted: {value: 84.5, display: "85%", kind: simulation, source: docs/evaluation/results.md, note: "257 of 304 cases where automation was attempted; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.containment: {value: 72.4, display: "72%", kind: simulation, source: docs/evaluation/results.md, note: "220 of 304, never reported alone; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.containment.b0: {value: 68.4, display: "68%", kind: simulation, source: docs/evaluation/results.md, note: "208 of 304; B0 has no model"}
-eval.missed_escalations: {value: 7, display: "7 of 64", kind: simulation, source: docs/evaluation/results.md, note: "over the cases that required a transfer; B0 10 of 64; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.unneeded_escalations: {value: 27, display: "27 of 240", kind: simulation, source: docs/evaluation/results.md, note: "over the cases that did not require a transfer; B0 42 of 240; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.unsafe: {value: 8, display: "8 of 304", kind: simulation, source: docs/evaluation/results.md, note: "as graded; 3 are grader false positives on review (results.md); local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.unsafe.b0: {value: 4, display: "4 of 304", kind: simulation, source: docs/evaluation/results.md, note: "as graded; B0 has no model"}
-eval.latency_p50: {value: 2.3, display: "2.3 s", kind: simulation, source: docs/evaluation/results.md, note: "per turn, in process, one laptop; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.latency_p95: {value: 10.4, display: "10.4 s", kind: simulation, source: docs/evaluation/results.md, note: "per turn, in process, one laptop; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+# evaluation world, run test-local at commit 6bc2e9d. P (the proposed system)
+# and B1 (the naive LLM agent) run on the local model qwen2.5:7b-instruct
+# (Ollama); B0 (the menu and rules bot) has no model. Rates are over the 304
+# in-scope workflow cases (76 per workflow) unless the note says otherwise.
+# Optional fields: `lo` and `hi` are the 95% interval in percent (Wilson for
+# rates, exact for unsafe outcomes); `of` is the denominator of a count.
+eval.cases: {value: 304, display: "304", kind: simulation, source: docs/evaluation/results.md, note: "held-out workflow cases per system (76 per workflow, 188 es and 116 pt), plus 28 routing scenarios"}
+
+eval.sar.account_inquiry.p: {value: 71.1, display: "54/76", lo: 60, hi: 80, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.account_inquiry.b0: {value: 55.3, display: "42/76", lo: 44, hi: 66, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.account_inquiry.b1: {value: 23.7, display: "18/76", lo: 16, hi: 34, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.card_support.p: {value: 52.6, display: "40/76", lo: 42, hi: 63, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.card_support.b0: {value: 56.6, display: "43/76", lo: 45, hi: 67, kind: simulation, source: docs/evaluation/results.md, note: "B0 ahead of P on the point estimate; not established"}
+eval.sar.card_support.b1: {value: 15.8, display: "12/76", lo: 9, hi: 26, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.dispute.p: {value: 44.7, display: "34/76", lo: 34, hi: 56, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.dispute.b0: {value: 35.5, display: "27/76", lo: 26, hi: 47, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.dispute.b1: {value: 2.6, display: "2/76", lo: 1, hi: 9, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.credit.p: {value: 64.5, display: "49/76", lo: 53, hi: 74, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.credit.b0: {value: 21.1, display: "16/76", lo: 13, hi: 31, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.credit.b1: {value: 9.2, display: "7/76", lo: 5, hi: 18, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.all.p: {value: 58.2, display: "177/304", lo: 53, hi: 64, kind: simulation, source: docs/evaluation/results.md, note: "aggregate of the four workflows, never read alone"}
+eval.sar.all.b0: {value: 42.1, display: "128/304", lo: 37, hi: 48, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.all.b1: {value: 12.8, display: "39/304", lo: 10, hi: 17, kind: simulation, source: docs/evaluation/results.md}
+
+eval.unsafe.p: {value: 8, of: 304, display: "8 of 304", lo: 1.1, hi: 5.1, kind: simulation, source: docs/evaluation/results.md, note: "as graded; on review 3 real, 2 simulator deviations, 3 grader false positives"}
+eval.unsafe.b0: {value: 4, of: 304, display: "4 of 304", lo: 0.4, hi: 3.3, kind: simulation, source: docs/evaluation/results.md}
+eval.unsafe.b1: {value: 90, of: 304, display: "90 of 304", lo: 24.5, hi: 35.1, kind: simulation, source: docs/evaluation/results.md}
+eval.unsafe_real.p: {value: 3, of: 8, display: "3 of 8", kind: simulation, source: docs/evaluation/results.md, note: "an instruction-like merchant descriptor echoed in the dispute confirmation summary; no other customer's record was read"}
+eval.b1.writes_unconfirmed: {value: 39, display: "39", kind: simulation, source: docs/evaluation/results.md, note: "events in B1's 90 unsafe cases; a case can carry several"}
+eval.b1.scores_disclosed: {value: 32, display: "32", kind: simulation, source: docs/evaluation/results.md}
+eval.b1.approval_wording: {value: 32, display: "32", kind: simulation, source: docs/evaluation/results.md}
+eval.b1.incomes_disclosed: {value: 23, display: "23", kind: simulation, source: docs/evaluation/results.md}
+eval.b1.wrong_figures: {value: 15, display: "15", kind: simulation, source: docs/evaluation/results.md}
+eval.b1.credit_cases: {value: 54, of: 90, display: "54 of 90", kind: simulation, source: docs/evaluation/results.md}
+
+eval.missed.p: {value: 7, of: 64, display: "7/64", kind: simulation, source: docs/evaluation/results.md, note: "missed transfers, over the cases that required one"}
+eval.missed.b0: {value: 10, of: 64, display: "10/64", kind: simulation, source: docs/evaluation/results.md}
+eval.missed.b1: {value: 54, of: 64, display: "54/64", kind: simulation, source: docs/evaluation/results.md}
+eval.unnecessary.p: {value: 27, of: 240, display: "27/240", kind: simulation, source: docs/evaluation/results.md, note: "unnecessary transfers, over the cases that did not require one"}
+eval.unnecessary.b0: {value: 42, of: 240, display: "42/240", kind: simulation, source: docs/evaluation/results.md}
+eval.unnecessary.b1: {value: 3, of: 240, display: "3/240", kind: simulation, source: docs/evaluation/results.md}
+eval.card_unnecessary.p: {value: 11, of: 59, display: "11 of 59", kind: simulation, source: docs/evaluation/results.md, note: "card support cases transferred that did not need a person"}
+eval.latency_p50.p: {value: 2.3, display: "2.3 s", kind: simulation, source: docs/evaluation/results.md, note: "per turn, in process, one laptop"}
+eval.latency_p50.b0: {value: 0.005, display: "5 ms", kind: simulation, source: docs/evaluation/results.md}
+eval.latency_p50.b1: {value: 7.7, display: "7.7 s", kind: simulation, source: docs/evaluation/results.md}
+eval.latency_p95.p: {value: 10.4, display: "10.4 s", kind: simulation, source: docs/evaluation/results.md, note: "per turn, in process, one laptop"}
+
+eval.repeat_scenarios: {value: 48, display: "48", kind: simulation, source: docs/evaluation/results.md, note: "the subset run three times per system"}
+eval.pass3.p: {value: 77, display: "77%", kind: simulation, source: docs/evaluation/results.md, note: "pass^3: task success in all 3 runs of the 48-scenario subset"}
+eval.pass3.b0: {value: 46, display: "46%", kind: simulation, source: docs/evaluation/results.md}
+eval.pass3.b1: {value: 17, display: "17%", kind: simulation, source: docs/evaluation/results.md}
+eval.lang.es.p: {value: 60.6, display: "114/188", lo: 54, hi: 67, kind: simulation, source: docs/evaluation/results.md}
+eval.lang.pt.p: {value: 54.3, display: "63/116", lo: 45, hi: 63, kind: simulation, source: docs/evaluation/results.md}
+eval.lang.es.b0: {value: 43.1, display: "81/188", lo: 36, hi: 50, kind: simulation, source: docs/evaluation/results.md}
+eval.lang.pt.b0: {value: 40.5, display: "47/116", lo: 32, hi: 50, kind: simulation, source: docs/evaluation/results.md}
+eval.lang.es.b1: {value: 14.4, display: "27/188", lo: 10, hi: 20, kind: simulation, source: docs/evaluation/results.md}
+eval.lang.pt.b1: {value: 10.3, display: "12/116", lo: 6, hi: 17, kind: simulation, source: docs/evaluation/results.md}
 eval.cost_attempted: {value: 0.0052, display: "0.0052 USD", kind: projection, source: docs/evaluation/results.md, note: "P tokens measured on the local model (0 USD) priced at the unverified claude-sonnet-5 list price; tokenizer differs"}
-eval.cost_resolved: {value: 0.0076, display: "0.0076 USD", kind: projection, source: docs/evaluation/results.md, note: "per safe automated resolution (177); same projection basis as eval.cost_attempted"}
-eval.sar.account_inquiry.es: {value: 68.1, display: "68%", kind: simulation, source: docs/evaluation/results.md, note: "32 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.account_inquiry.pt: {value: 75.9, display: "76%", kind: simulation, source: docs/evaluation/results.md, note: "22 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.card_support.es: {value: 59.6, display: "60%", kind: simulation, source: docs/evaluation/results.md, note: "28 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.card_support.pt: {value: 41.4, display: "41%", kind: simulation, source: docs/evaluation/results.md, note: "12 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.dispute.es: {value: 48.9, display: "49%", kind: simulation, source: docs/evaluation/results.md, note: "23 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.dispute.pt: {value: 37.9, display: "38%", kind: simulation, source: docs/evaluation/results.md, note: "11 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.credit.es: {value: 66.0, display: "66%", kind: simulation, source: docs/evaluation/results.md, note: "31 of 47; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
-eval.sar.credit.pt: {value: 62.1, display: "62%", kind: simulation, source: docs/evaluation/results.md, note: "18 of 29, small cell; local model qwen2.5:7b-instruct (Ollama), test split, run test-local at 6bc2e9d"}
+eval.cost_resolved: {value: 0.0076, display: "0.0076 USD", kind: projection, source: docs/evaluation/results.md, note: "per safe automated resolution (177); same projection basis"}
+
+# -- data story (phase 03): the announced problems that were absent ---------
+data.duplicates: {value: 0, display: "0", kind: offline, source: docs/data/quality-report.md, note: "exact and primary-key duplicates in every table"}
+data.late_partitions: {value: 0, display: "0", kind: offline, source: docs/data/data-card.md, note: "one delivery, no late partition"}
+data.schema_events: {value: 0, display: "0", kind: offline, source: docs/data/quality-report.md, note: "no schema-evolution event"}
 
 # -- operation (phases 15 to 17) ----------------------------------------------
-deploy.url: {status: pending, kind: offline, source: "deploy/README.md (phase 16)", note: "the public URL the organizers require"}
+ops.load_tps: {value: 27.4, display: "27.4", kind: simulation, source: docs/operations/capacity.md, note: "turns per second on the production stack, one laptop, fake model, 2 workers at 1.5 CPUs"}
+ops.load_users: {value: 50, display: "50", kind: simulation, source: docs/operations/capacity.md, note: "simulated customers, 0 errors"}
+ops.load_p95: {value: 250, display: "250 ms", kind: simulation, source: docs/operations/capacity.md}
+deploy.url: {value: "https://bank-agent-yzaf9.westus2.cloudapp.azure.com", display: "bank-agent-yzaf9.westus2.cloudapp.azure.com", kind: offline, source: README.md, note: "one Azure VM, demo mode, hosted gemini-3.1-flash-lite; the deployed build is PR 27 (2d5763a), older than main"}
+
+# -- learned components against their baselines (phases 10 to 13, 14b) -------
+# Component metrics on each model's held-out test split; the end-to-end pair is
+# P on the dev split with the local model. Component values are fractions, so
+# they carry no lo/hi here: the intervals are in the model cards.
+ml.router.f1.keyword: {value: 0.385, display: "0.39", kind: provisional, source: docs/models/router.md, note: "macro-F1, test split, 601 team-authored items, labels pending review"}
+ml.router.f1.embeddings: {value: 0.742, display: "0.74", kind: provisional, source: docs/models/router.md, note: "multilingual-e5-small plus logistic regression"}
+ml.resolver.coverage.rules: {value: 0.793, display: "0.79", kind: offline, source: docs/models/resolver.md, note: "dispute queries auto-resolved, test split; wrong-transaction rate 0.003"}
+ml.resolver.coverage.lgbm: {value: 0.913, display: "0.91", kind: offline, source: docs/models/resolver.md, note: "LightGBM lambdarank; wrong-transaction rate 0.000"}
+ml.risk.auc.score_band: {value: 0.504, display: "0.50", kind: offline, source: docs/models/risk-estimator.md, note: "ROC AUC, test split, 15,322 customers"}
+ml.risk.auc.logreg: {value: 0.611, display: "0.61", kind: offline, source: docs/models/risk-estimator.md}
+ml.e2e.dev.baselines: {value: 66.1, display: "74/112", lo: 57, hi: 74, kind: simulation, source: docs/evaluation/results.md, note: "P on dev with keyword@1 and rules@1, safe automated resolution"}
+ml.e2e.dev.learned: {value: 67.0, display: "75/112", lo: 58, hi: 75, kind: simulation, source: docs/evaluation/results.md, note: "P on dev with the tfidf and lgbm champions"}

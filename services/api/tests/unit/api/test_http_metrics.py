@@ -1,44 +1,68 @@
-"""HTTP metrics: rate-limit rejections by class and key kind, and the active sessions of this process."""
+"""HTTP metrics: rate-limit rejections by class and key kind, and the deployment-wide active sessions."""
 
-from datetime import timedelta
+import asyncio
+import contextlib
 
 import httpx
 import pytest
 
+from bank_agent.adapters.ratelimit.memory import InMemoryRateLimitStore
 from bank_agent.api.app import create_app
 from bank_agent.api.config import RateClass, RateLimit, SecurityConfig
 from bank_agent.api.errors import RateLimitedError
 from bank_agent.api.metrics import HttpMetrics
-from bank_agent.api.ratelimit import SlidingWindowLimiter
+from bank_agent.api.ratelimit import RateLimiter
 from bank_agent.testing.telemetry import RecordingTelemetry
-from bank_agent_builders import T0, session
 from bank_agent_test_support import FakeProvider, api_config
 
 TOKEN_A, TOKEN_B = "fixture-session-a", "fixture-session-b"  # nosec B105 (fixture tokens)
 
 
-def test_active_sessions_expire_after_their_idle_timeout() -> None:
+class _Sessions:
+    def __init__(self, counts: list[int | Exception]) -> None:
+        self._counts = counts
+
+    async def count_active(self) -> int:
+        value = self._counts.pop(0)
+        if isinstance(value, Exception):
+            raise value
+        return value
+
+
+async def test_the_active_session_gauge_is_the_shared_count_and_survives_an_outage() -> None:
     telemetry = RecordingTelemetry()
     metrics = HttpMetrics(telemetry)
-    first = session(session_id="ses-first")
-    second = session(session_id="ses-second")
-    metrics.session_seen(first, T0)
-    metrics.session_seen(second, T0 + timedelta(minutes=10))
-    assert metrics.active_sessions == 2
-    metrics.session_seen(second, T0 + first.idle_timeout + timedelta(seconds=1))
-    assert metrics.active_sessions == 1
+    sessions = _Sessions([3, ConnectionError("database down"), 1])
+    assert await metrics.refresh_active_sessions(None) is None
+    assert await metrics.refresh_active_sessions(sessions) == 3  # type: ignore[arg-type]
+    assert await metrics.refresh_active_sessions(sessions) is None  # type: ignore[arg-type]
+    assert metrics.active_sessions == 3
+    assert await metrics.refresh_active_sessions(sessions) == 1  # type: ignore[arg-type]
     assert telemetry.gauges["bank.sessions.active"].last() == 1
 
 
-def test_the_limiter_names_which_limit_refused() -> None:
-    limiter = SlidingWindowLimiter(lambda: 0.0)
+async def test_the_publisher_refreshes_until_it_is_cancelled() -> None:
+    metrics = HttpMetrics(RecordingTelemetry())
+    task = asyncio.create_task(metrics.publish_active_sessions(_Sessions([2, 2, 2]), interval_seconds=0.001))  # type: ignore[arg-type]
+    for _ in range(50):
+        await asyncio.sleep(0.001)
+        if metrics.active_sessions == 2:
+            break
+    task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await task
+    assert metrics.active_sessions == 2
+
+
+async def test_the_limiter_names_which_limit_refused() -> None:
+    limiter = RateLimiter(InMemoryRateLimitStore(lambda: 0.0))
     limit = RateLimit(per_ip=1, per_session=1)
-    limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_A)
+    await limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_A)
     with pytest.raises(RateLimitedError) as by_ip:
-        limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_B)
+        await limiter.check(RateClass.READ, limit, client_ip="198.51.100.1", session_token=TOKEN_B)
     assert by_ip.value.key == "ip"
     with pytest.raises(RateLimitedError) as by_session:
-        limiter.check(RateClass.READ, limit, client_ip="198.51.100.2", session_token=TOKEN_A)
+        await limiter.check(RateClass.READ, limit, client_ip="198.51.100.2", session_token=TOKEN_A)
     assert by_session.value.key == "session"
 
 

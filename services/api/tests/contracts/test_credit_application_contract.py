@@ -175,6 +175,60 @@ class TestCreditApplicationRepositoryContract:
             assert [item.application_id for item in listed] == [EXISTING]
             assert await uow.credit_applications.list_for_review(frozenset({ApplicationStatus.SUBMITTED})) == []
 
+    async def test_an_agent_takes_an_intake_into_review_then_closes_it(self, write_backend: WriteBackend) -> None:
+        async with write_backend.uow_factory()(AGENT) as uow:
+            reviewing = await uow.credit_applications.transition(
+                EXISTING, ApplicationStatus.UNDER_HUMAN_REVIEW, expected_version=0, at=T0, reason_code="review_started"
+            )
+            await uow.commit()
+        assert (reviewing.status, reviewing.version) == (ApplicationStatus.UNDER_HUMAN_REVIEW, 1)
+        async with write_backend.uow_factory()(AGENT) as uow:
+            with pytest.raises(ConcurrencyConflictError):
+                await uow.credit_applications.transition(
+                    EXISTING, ApplicationStatus.CLOSED, expected_version=0, at=T0, reason_code="stale"
+                )
+            closed = await uow.credit_applications.transition(
+                EXISTING, ApplicationStatus.CLOSED, expected_version=1, at=T0, reason_code="review_closed"
+            )
+            await uow.commit()
+        assert (closed.status, closed.version) == (ApplicationStatus.CLOSED, 2)
+        assert [change.to_status for change in closed.status_history][-2:] == [
+            ApplicationStatus.UNDER_HUMAN_REVIEW,
+            ApplicationStatus.CLOSED,
+        ]
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            assert await uow.credit_applications.get(EXISTING) == closed
+        async with write_backend.uow_factory()(AGENT) as uow:
+            assert await uow.credit_applications.get(EXISTING) is None  # closed and no handoff: out of the review list
+
+    async def test_an_agent_cannot_skip_review_or_withdraw_for_the_customer(self, write_backend: WriteBackend) -> None:
+        async with write_backend.uow_factory()(AGENT) as uow:
+            with pytest.raises(InvalidApplicationTransitionError):
+                await uow.credit_applications.transition(
+                    EXISTING, ApplicationStatus.CLOSED, expected_version=0, at=T0, reason_code="skip_review"
+                )
+            with pytest.raises(AccessContextError):
+                await uow.credit_applications.transition(
+                    EXISTING, ApplicationStatus.WITHDRAWN, expected_version=0, at=T0, reason_code="not_theirs"
+                )
+            with pytest.raises(CreditApplicationNotFoundError):
+                await uow.credit_applications.transition(
+                    ApplicationId("app-unknown-9"), ApplicationStatus.UNDER_HUMAN_REVIEW, expected_version=0, at=T0,
+                    reason_code="unknown",
+                )  # fmt: skip
+
+    async def test_an_agent_cannot_move_a_withdrawn_intake(self, write_backend: WriteBackend) -> None:
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.credit_applications.transition(
+                EXISTING, ApplicationStatus.WITHDRAWN, expected_version=0, at=T0, reason_code="customer_request"
+            )
+            await uow.commit()
+        async with write_backend.uow_factory()(AGENT) as uow:
+            with pytest.raises(CreditApplicationNotFoundError):
+                await uow.credit_applications.transition(
+                    EXISTING, ApplicationStatus.UNDER_HUMAN_REVIEW, expected_version=1, at=T0, reason_code="late"
+                )
+
     async def test_evaluators_are_refused(self, write_backend: WriteBackend) -> None:
         async with write_backend.uow_factory()(EVALUATOR) as uow:
             with pytest.raises(AccessContextError):

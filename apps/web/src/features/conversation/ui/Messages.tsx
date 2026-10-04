@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { errorMessageKey, errorRequestId } from '@/shared/api';
+import { HumanTimeline } from '@/features/human-service';
+
+import { errorMessageKey, errorRequestId, hasProblem } from '@/shared/api';
 import {
   Button,
   EmptyState,
@@ -25,7 +27,7 @@ export function Messages({ className = '' }: { readonly className?: string }) {
   const conversation = useConversation();
   const { turns, pending, notices, inFlight, latestTurnId, loadStatus, composerRef } = conversation;
   const endRef = useRef<HTMLLIElement>(null);
-  const count = turns.length + pending.length;
+  const count = turns.length + pending.length + conversation.humanMessages.length;
 
   useEffect(() => {
     if (count === 0) {
@@ -42,6 +44,23 @@ export function Messages({ className = '' }: { readonly className?: string }) {
     }
   }, [count, inFlight, composerRef]);
 
+  if (conversation.creationError) {
+    return (
+      <ErrorState
+        title={t('chat.loadError')}
+        description={
+          hasProblem(conversation.creationError, 'conversation-creation-limited')
+            ? t('humanService.creationLimit')
+            : t(errorMessageKey(conversation.creationError))
+        }
+        action={
+          <Button variant="secondary" onClick={conversation.startNew}>
+            {t('common.retry')}
+          </Button>
+        }
+      />
+    );
+  }
   if (loadStatus === 'loading') {
     return (
       <SkeletonGroup label={t('chat.loading')} className={className}>
@@ -103,7 +122,9 @@ export function Messages({ className = '' }: { readonly className?: string }) {
                 <AssistantMessage
                   turnId={turn.turn_id}
                   message={turn.message}
-                  interactive={turn.turn_id === latestTurnId && !inFlight}
+                  interactive={
+                    turn.turn_id === latestTurnId && !inFlight && !conversation.humanMode
+                  }
                 />
               </li>
             )}
@@ -120,6 +141,24 @@ export function Messages({ className = '' }: { readonly className?: string }) {
               ))}
           </Fragment>
         ))}
+        {conversation.humanView !== null && (
+          <li>
+            <HumanTimeline view={conversation.humanView} messages={conversation.humanMessages} />
+          </li>
+        )}
+        {conversation.humanError !== null && (
+          <li>
+            <ErrorState
+              title={t('humanService.disconnected')}
+              description={t('humanService.reconnectBody')}
+              action={
+                <Button variant="secondary" onClick={conversation.humanReload}>
+                  {t('common.retry')}
+                </Button>
+              }
+            />
+          </li>
+        )}
         {pending.map((turn) => (
           <li key={turn.turnId}>
             <CustomerMessage text={turn.text} pending={turn} />
@@ -128,7 +167,7 @@ export function Messages({ className = '' }: { readonly className?: string }) {
         {inFlight && (
           <li role="status" className="flex items-center gap-2 text-small text-fg-muted">
             <span aria-hidden="true" className="size-2 rounded-full bg-fg-muted animate-skeleton" />
-            {t('chat.responding')}
+            {conversation.humanMode ? t('humanService.sending') : t('chat.responding')}
           </li>
         )}
         <li ref={endRef} aria-hidden="true" className="h-px" />

@@ -122,7 +122,8 @@ def build_api(
     settings = load_settings(env_file=None)
     clock = clock or FixedClock(NOW)
     container = Container(settings, clock=clock, persistence=persistence, **container_overrides)
-    return ApiHarness(create_app(container, api_config_from(settings)), container, clock, settings)
+    config = replace(api_config_from(settings), rate_limit_store=container.rate_limit_store)
+    return ApiHarness(create_app(container, config), container, clock, settings)
 
 
 class ApiClient:

@@ -47,6 +47,8 @@
     "personaHeading": "Elige un perfil",
     "personaCustomers": "Clientes",
     "personaStaff": "Equipo del banco",
+    "personaFullDelivery": "Solo con los datos completos",
+    "personaFullDeliveryNote": "Estos perfiles existen cuando la base se carga con la entrega completa del organizador; la muestra incluida en el repositorio, que usa esta demostración, no los tiene.",
     "documentNumber": "Número de documento",
     "documentNumberHint": "Letras, números y guiones, de 4 a 20 caracteres.",
     "documentNumberInvalid": "Revisa el número: usa de 4 a 20 letras, números o guiones.",
@@ -118,6 +120,7 @@
   "layout": {
     "consoleNav": "Navegación de la consola",
     "overview": "Resumen",
+    "dashboard": "Dashboard",
     "inbox": "Bandeja",
     "creditApplications": "Solicitudes de crédito",
     "evaluation": "Evaluación",
@@ -146,6 +149,7 @@
     "heading": "Resumen",
     "agentBody": "Atiendes traspasos estructurados: hechos verificados, acciones realizadas, base de política y preguntas abiertas. Nunca la transcripción completa.",
     "evaluatorBody": "Revisas registros de ejecución y resultados de evaluación offline, siempre con las cifras por flujo junto al total.",
+    "dashboardBody": "Indicadores ejecutivos, comparación de sistemas, desempeño por flujo y cortes de calidad.",
     "inboxBody": "Traspasos con hechos verificados, acciones, política y preguntas abiertas. Toma y resuelve.",
     "applicationsBody": "Solicitudes registradas para revisión humana, con su evaluación y su conversación de origen.",
     "evaluationBody": "Resultados publicados por flujo y en total, con muestras e intervalos.",
@@ -204,7 +208,6 @@
     "notFoundTitle": "No encontramos esa conversación",
     "notFoundBody": "Puede que sea de otra sesión o que ya no exista. Empieza una nueva y te ayudamos igual.",
     "human": "Hablar con una persona",
-    "withPerson": "Tu caso ya está con una persona del equipo.",
     "showTrace": "Ver en el registro",
     "stepUpWaiting": "Esta acción necesita que confirmes tu identidad con un código nuevo.",
     "stepUpAgain": "Confirmar identidad",
@@ -413,7 +416,7 @@
       "evidence": "Comprobado en"
     },
     "escalation": {
-      "title": "Tu caso pasó a una persona del equipo",
+      "title": "Solicitud de atención humana",
       "reference": "Referencia del caso",
       "expected": "Respuesta esperada antes del"
     },
@@ -871,7 +874,20 @@
     "assessment": "Evaluación",
     "conversation": "Conversación de origen",
     "customer": "Cliente",
-    "history": "Historial de estados"
+    "history": "Historial de estados",
+    "actions": {
+      "review": "Tomar para revisión",
+      "reviewTitle": "¿Tomar esta solicitud para revisión humana?",
+      "reviewBody": "La solicitud pasa a revisión humana y el cambio queda registrado con tu nombre. No es una decisión de crédito.",
+      "reviewConfirm": "Tomar para revisión",
+      "reviewDone": "La solicitud está en revisión humana",
+      "close": "Cerrar la revisión",
+      "closeTitle": "¿Cerrar esta revisión?",
+      "closeBody": "Cerrar deja registrado que la revisión humana terminó. No se registra ninguna decisión de crédito, y el cambio queda registrado con tu nombre.",
+      "closeConfirm": "Cerrar la revisión",
+      "closeDone": "La revisión está cerrada",
+      "conflict": "La solicitud cambió desde que la abriste. Vuelve a cargarla e inténtalo de nuevo."
+    }
   },
   "traces": {
     "heading": "Registros de ejecución",
@@ -881,6 +897,40 @@
     "submit": "Buscar",
     "emptyTitle": "Busca una conversación",
     "emptyBody": "Pega la referencia de una conversación para ver sus registros, turno por turno."
+  },
+  "dashboard": {
+    "heading": "Dashboard administrativo",
+    "intro": "Vista ejecutiva de calidad, seguridad y eficiencia sobre las corridas publicadas. Los resultados agregados siempre se acompañan con el detalle por flujo.",
+    "restricted": "Acceso de evaluador",
+    "loading": "Cargando las analíticas",
+    "error": "No pudimos cargar las analíticas",
+    "emptyTitle": "Todavía no hay datos para el dashboard",
+    "emptyBody": "Publica una corrida de evaluación para habilitar métricas y comparaciones.",
+    "runLabel": "Corrida",
+    "systemLabel": "Sistema analizado",
+    "kpis": "Indicadores principales",
+    "cases": "{{count}} casos en el total",
+    "vsBaseline": "{{delta}} frente a {{baseline}}",
+    "rate": "Tasa: {{value}}",
+    "p50": "p50: {{value}}",
+    "costAttempted": "Por caso intentado: {{value}}",
+    "workflowTitle": "Desempeño por flujo",
+    "workflowIntro": "Resolución automática segura, con contención, resultados inseguros y diferencia frente al baseline.",
+    "barLabel": "{{workflow}}: {{value}} de resolución automática segura",
+    "workflowDetail": "Contención {{containment}} · Inseguros {{unsafe}} · Diferencia {{delta}}",
+    "riskTitle": "Seguridad y escalamiento",
+    "riskIntro": "Errores que requieren revisión prioritaria. Cada tasa conserva su denominador específico.",
+    "comparisonTitle": "Comparación global de sistemas",
+    "system": "Sistema",
+    "breakdownTitle": "Consistencia entre poblaciones",
+    "breakdownIntro": "Resolución automática segura para los cortes agregados publicados. Una ausencia significa que la corrida no publicó ese corte.",
+    "dimensions": {
+      "language": "Idioma",
+      "dialect": "Dialecto",
+      "segment": "Segmento"
+    },
+    "provenanceTitle": "Procedencia y alcance",
+    "provenanceBody": "Medición {{measurement}} sobre {{dataset}}, generada el {{generated}} desde el commit {{sha}}. No representa tráfico ni resultados de producción."
   },
   "eval": {
     "heading": "Resultados de evaluación",
@@ -969,9 +1019,9 @@
         "title": "Saldos",
         "note": "Cada saldo muestra la fecha y hora de corte de los datos."
       },
-      "similar-transfers": {
-        "title": "Transferencias parecidas",
-        "note": "Hay varias parecidas: el asistente pregunta cuál antes de responder."
+      "payment-details": {
+        "title": "Pago sin datos",
+        "note": "La pregunta no basta para ubicar el pago: el asistente pide el monto, la fecha o el destinatario."
       },
       "transfer-unsupported": {
         "title": "Transferir dinero",
@@ -991,19 +1041,23 @@
       },
       "card-unblock": {
         "title": "Desbloqueo",
-        "note": "No hay herramienta para desbloquear: pasa a una persona con la tarjeta elegida."
+        "note": "No hay herramienta para desbloquear: pasa a una persona con la tarjeta como dato verificado."
       },
       "dispute-intake": {
         "title": "Aclaración de un cargo",
         "note": "Mira el estado de cuenta, reclama un cargo por comercio, fecha y monto, y confirma. Rechaza el bloqueo ofrecido o acéptalo."
       },
+      "dispute-status": {
+        "title": "Estado de un caso",
+        "note": "Busca el caso abierto del cliente y responde con su estado y la fecha comprometida de respuesta."
+      },
       "dispute-details": {
         "title": "Cargo sin datos",
         "note": "La solicitud no basta para ubicar la compra: el asistente pide fecha, monto y comercio."
       },
-      "dispute-sla": {
-        "title": "Caso con plazo vencido",
-        "note": "El caso abierto superó su plazo de resolución: pasa a una persona."
+      "dispute-regulator": {
+        "title": "Queja ante el regulador",
+        "note": "Mencionar una queja ante el regulador pasa la conversación a una persona, con la cláusula que lo exige."
       },
       "credit-eligibility": {
         "title": "Catálogo y elegibilidad",
@@ -1023,7 +1077,7 @@
       },
       "credit-review": {
         "title": "Revisión humana",
-        "note": "El resultado no cumple por ahora; el botón de revisión pasa el caso con su sección de crédito."
+        "note": "Un resultado que necesita a una persona o más información; el botón de revisión pasa el caso con su sección de crédito."
       }
     },
     "console": {
@@ -1077,5 +1131,27 @@
     "transparency": "Al lado del chat verás el registro de cada turno: qué entendió el sistema, qué reglas y cláusulas aplicó y qué verificó. El razonamiento del modelo no se guarda ni se muestra, por diseño.",
     "humanTitle": "Siempre puedes hablar con una persona",
     "human": "Cuando lo pides, cuando algo requiere criterio humano o cuando una regla lo exige, tu caso pasa a una persona con lo que ya verificamos, para que no tengas que repetirlo."
+  },
+  "humanService": {
+    "title": "Atención humana",
+    "messages": "Mensajes con el agente",
+    "status": {
+      "queued": "Tu solicitud está en espera. Puedes dejar más detalles aquí; un agente responderá cuando tome el caso.",
+      "joined": "Un agente tomó tu caso. Los mensajes de este chat llegan a esa persona.",
+      "closed": "El agente cerró la conversación. Puedes consultar el historial o iniciar otro chat."
+    },
+    "author": {
+      "user": "Tú",
+      "agent": "Agente humano",
+      "customer": "Cliente"
+    },
+    "disconnected": "Se perdió la conexión con el chat",
+    "reconnectBody": "No podemos actualizar los mensajes. El estado de atención no cambia por un problema de conexión. Reintenta para recuperar el historial.",
+    "sending": "Enviando mensaje",
+    "loading": "Cargando mensajes",
+    "assignedElsewhere": "Solo el agente que tomó este caso puede leer y responder los mensajes.",
+    "replyLabel": "Tu respuesta al cliente",
+    "replySend": "Enviar al cliente",
+    "creationLimit": "Ya creaste cinco chats en los últimos 60 minutos. Puedes continuar en los chats existentes o esperar a que se libere un cupo."
   }
 }

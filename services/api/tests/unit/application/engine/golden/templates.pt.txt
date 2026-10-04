@@ -138,20 +138,32 @@ No momento estou funcionando em modo limitado: respondo com mensagens padrão e,
 [common.nothing_recorded]
 Certo, não registrei nada. Posso ajudar com mais alguma coisa?
 
+[common.off_topic]
+Desculpe, esse assunto está fora do que posso atender. Só ajudo com os seus produtos deste banco: cartões e contestações. Posso ajudar com algum desses assuntos?
+
 [common.out_of_scope]
 Isso eu não consigo fazer aqui. Posso ajudar com cartões e contestações. Se preferir, transfiro você para uma pessoa da equipe.
 
 [common.refused]
 Não encontrei esse registro entre os seus produtos. Só posso ajudar com os seus próprios produtos e transações.
 
+[common.refused_review_notice]
+Por segurança, devido a este pedido, se precisar de mais alguma coisa nesta conversa, uma pessoa da equipe vai atender você.
+
+[common.refused_step_up_notice]
+Por segurança, devido a este pedido, se quiser seguir com os seus próprios produtos vou pedir uma verificação reforçada da sua identidade.
+
 [common.refused_third_party]
-Não posso atender pedidos sobre os produtos de outra pessoa.
+Não posso atender pedidos sobre os produtos ou os dados de outra pessoa ou de outro cliente. Só posso ajudar com os seus próprios produtos.
 
 [common.resume]
 Obrigado por verificar a sua identidade. Vamos retomar de onde paramos.
 
 [common.step_up_required]
 Para fazer isso, preciso de uma verificação reforçada da sua identidade. Conclua e me escreva para continuar.
+
+[common.step_up_required_risk]
+Por segurança, devido ao que foi pedido nesta conversa, preciso de uma verificação reforçada da sua identidade antes de continuar. Conclua e me escreva para seguir.
 
 [common.switch_confirm]
 Ainda temos pendente a sua contestação. Quer deixar isso e passar para os seus cartões? Responda sim ou não.

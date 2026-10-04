@@ -79,7 +79,7 @@ BACKENDS: dict[str, Callable[[pytest.FixtureRequest], AsyncIterator[Backend]]] =
 SCHEMA = Path(__file__).resolve().parents[3] / "contracts" / "schemas" / "handoff.v1.json"
 NO_SIGNALS = {"legal_or_regulator_mention": False, "distress": False, "human_requested": False,
               "third_party_admission": False}  # fmt: skip
-SIGNALS = PromptRef(prompt_id="detect_escalation_signals", version=1)
+SIGNALS = PromptRef(prompt_id="detect_escalation_signals", version=2)
 DISPUTE_SLOTS = PromptRef(prompt_id="extract_dispute_slots", version=1)
 CARD_SLOTS = PromptRef(prompt_id="extract_card_support_slots", version=1)
 ACCOUNT_SLOTS = PromptRef(prompt_id="extract_account_inquiry_slots", version=1)

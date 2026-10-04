@@ -1,0 +1,76 @@
+# Caddy for the production stack (deploy/compose.prod.yml): TLS, the static SPA, and the reverse proxy to the API.
+#
+# Environment:
+#   SITE_ADDRESS  the public host name (for example demo.example.org), or localhost for the local TLS mode
+#   CADDY_TLS     acme (automatic certificates from a public CA, the default) or internal (Caddy's own local CA)
+#   ACME_EMAIL    the contact address for the certificate authority (acme mode)
+#
+# Caddy is the edge: it trusts no proxy in front of it, so client-sent X-Forwarded-* headers are ignored and it sets
+# X-Forwarded-For to the real client address. The API trusts that header only from this container's fixed address
+# (FORWARDED_ALLOW_IPS). API responses keep the API's own headers (its strict API CSP, HSTS in production); the
+# static files get the SPA headers below.
+{
+	admin off
+	skip_install_trust
+	servers {
+		protocols h1 h2 h3
+	}
+	log {
+		output stdout
+		format json
+		level ERROR
+	}
+}
+
+(tls-acme) {
+	tls {$ACME_EMAIL}
+}
+
+(tls-internal) {
+	tls internal
+}
+
+# Health endpoint for the container healthcheck, reachable only inside the container.
+http://127.0.0.1:8081 {
+	bind 127.0.0.1
+	respond /healthz "ok" 200
+}
+
+{$SITE_ADDRESS} {
+	import tls-{$CADDY_TLS:acme}
+	encode zstd gzip
+
+	@api path /v1/* /health/*
+	handle @api {
+		reverse_proxy api:8000 {
+			header_down -Server
+		}
+	}
+
+	# The SPA. Scripts, styles, fonts, and images come from this origin only; no inline script is allowed at all. The one
+	# exception is the <style> element Radix dialogs inject to lock scrolling: it carries a nonce, fresh per response
+	# ({http.request.uuid}), which the templates handler also writes into index.html for the app to hand to the
+	# library (apps/web/src/shared/lib/csp-nonce.ts). index.html is never cached, so the page and its header agree.
+	handle {
+		root * /srv
+		templates {
+			mime text/html
+		}
+		header {
+			Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self' 'nonce-{http.request.uuid}'; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+			Strict-Transport-Security "max-age=63072000; includeSubDomains"
+			X-Content-Type-Options "nosniff"
+			Referrer-Policy "no-referrer"
+			Permissions-Policy "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), usb=()"
+			X-Frame-Options "DENY"
+			Cross-Origin-Opener-Policy "same-origin"
+			Cross-Origin-Resource-Policy "same-origin"
+			Cache-Control "no-store"
+			-Server
+		}
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		try_files {path} /index.html
+		file_server
+	}
+}

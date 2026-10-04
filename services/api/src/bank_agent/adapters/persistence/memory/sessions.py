@@ -1,5 +1,7 @@
 """In-memory session store with trust state per lineage."""
 
+from datetime import datetime
+
 from bank_agent.domain.errors import DuplicateEntityError, InvariantViolationError, SessionNotFoundError
 from bank_agent.domain.identifiers import LineageId, SessionId
 from bank_agent.domain.session import Session, TokenDigest
@@ -54,6 +56,9 @@ class InMemorySessionStore:
             del self._digests[digest]
         self._sessions[new_session.session_id] = new_session
         self._digests[new_token_digest] = new_session.session_id
+
+    async def count_active(self, now: datetime) -> int:
+        return sum(1 for session in self._sessions.values() if not session.is_expired(now))
 
     async def append_trust_event(self, lineage_id: LineageId, event: TrustEvent) -> TrustState:
         state = self._trust.get(lineage_id) or TrustState.empty(lineage_id)

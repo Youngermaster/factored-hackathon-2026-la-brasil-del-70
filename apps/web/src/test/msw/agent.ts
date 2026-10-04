@@ -4,6 +4,7 @@ import type { Schema } from '@/shared/api';
 
 import { apiGet, apiPost, problem } from './api';
 import { server } from './server';
+import { humanServiceView, startHumanServiceServer } from './human-service';
 
 /** Agent console fixtures and a stateful fake of `/v1/agent`, typed from the generated schema. Synthetic. */
 type Handoff = Schema<'HandoffView'>;
@@ -63,6 +64,7 @@ export function creditApplicationView(overrides: Partial<Application> = {}): App
     assessment_ref: 'eligibility_assessments:asm-fixture-1',
     origin_conversation_id: 'conv-fixture-2',
     status: 'submitted',
+    version: 0,
     status_history: [],
     synthetic_policy: true,
     created_at: '2026-09-28T10:00:00Z',
@@ -81,8 +83,45 @@ export function startAgentServer(
   const handoffs = new Map(
     (initial.handoffs ?? [handoffView()]).map((item) => [item.handoff_id, item]),
   );
-  const applications = initial.applications ?? [creditApplicationView()];
+  const applications = new Map(
+    (initial.applications ?? [creditApplicationView()]).map((item) => [item.application_id, item]),
+  );
   const listed: URL[] = [];
+  const move = (next: 'under_human_review' | 'closed', from: string) =>
+    apiPost(
+      `/v1/agent/credit-applications/:id/${next === 'closed' ? 'close' : 'review'}`,
+      async ({ params, request }) => {
+        const item = applications.get(String(params['id']));
+        const body = (await request.json()) as Schema<'CreditApplicationMoveRequest'>;
+        if (item === undefined) {
+          return problem(404, 'resource-not-found');
+        }
+        if (item.version !== body.expected_version) {
+          return problem(409, 'conflict');
+        }
+        if (item.status !== from) {
+          return problem(409, 'invalid-state-transition');
+        }
+        const at = new Date().toISOString();
+        const moved: Application = {
+          ...item,
+          status: next,
+          version: item.version + 1,
+          updated_at: at,
+          status_history: [
+            ...item.status_history,
+            {
+              from_status: item.status,
+              to_status: next,
+              at,
+              reason_code: `credit_review_${next === 'closed' ? 'closed' : 'started'}`,
+            },
+          ],
+        };
+        applications.set(item.application_id, moved);
+        return HttpResponse.json(moved);
+      },
+    );
 
   server.use(
     apiGet('/v1/agent/handoffs', ({ request }) => {
@@ -141,14 +180,27 @@ export function startAgentServer(
       handoffs.set(item.handoff_id, resolved);
       return HttpResponse.json(resolved);
     }),
-    apiGet('/v1/agent/credit-applications', () => HttpResponse.json({ applications })),
+    apiGet('/v1/agent/credit-applications', () =>
+      HttpResponse.json({ applications: [...applications.values()] }),
+    ),
     apiGet('/v1/agent/credit-applications/:id', ({ params }) => {
-      const item = applications.find(
-        (application) => application.application_id === String(params['id']),
-      );
+      const item = applications.get(String(params['id']));
       return item === undefined ? problem(404, 'resource-not-found') : HttpResponse.json(item);
     }),
+    move('under_human_review', 'submitted'),
+    move('closed', 'under_human_review'),
   );
 
-  return { handoffs, listed };
+  const human = startHumanServiceServer('agent', (id) => {
+    const handoff = handoffs.get(id);
+    if (handoff?.claimed_by !== 'agent-demo-01') return null;
+    return humanServiceView({
+      handoff_id: id,
+      conversation_id: handoff.conversation_ref,
+      status: handoff.status === 'resolved' ? 'closed' : 'joined',
+      joined_at: handoff.claimed_at,
+      closed_at: handoff.resolution?.resolved_at ?? null,
+    });
+  });
+  return { handoffs, applications, listed, human };
 }

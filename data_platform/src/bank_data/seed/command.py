@@ -6,10 +6,12 @@ from pathlib import Path
 from bank_agent.adapters.identity.codes import IdentityKeys
 from bank_agent.adapters.persistence.postgres.database import create_engine
 from bank_agent.adapters.policy.filesystem import FilesystemPolicyRepository
+from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.application.tools.context import ToolPolicy
 from bank_agent.bootstrap.persistence import owner_database_url
 from bank_agent.bootstrap.settings import AppSettings, load_settings
 from bank_agent.domain.locale import Country
+from bank_agent.ports.determinism import Clock
 from bank_data.errors import ConfigurationError
 from bank_data.seed.config import DEFAULT_PERSONAS_FILE, DEFAULT_SAMPLE_PERSONAS_FILE, load_personas
 from bank_data.seed.runner import SeedReport, plan_seed, run_seed
@@ -48,11 +50,13 @@ def seed(
     customers: int = DEFAULT_SEED_CUSTOMERS,
     personas_file: Path | None = None,
     settings: AppSettings | None = None,
+    clock: Clock | None = None,
 ) -> SeedReport:
+    """Seed PostgreSQL; the seeded dispute case opens at ``clock.now()`` (the system clock by default)."""
     gold_dir = workspace.dbt_target().gold_dir
     if not (gold_dir / "customers_serving.parquet").is_file():
         raise ConfigurationError(f"no gold tables for the {workspace.source_kind} source; run make pipeline first")
-    service = settings or load_settings()
+    service = settings or load_settings(owner=True)
     secret, app_role = _checked(service)
     try:
         keys = IdentityKeys(secret)
@@ -67,6 +71,7 @@ def seed(
         snapshot=workspace.config.dataset.snapshot_date,
         app_role=app_role,
         dispute_sla_days=dispute_sla_days(service),
+        seeded_at=(clock or SystemClock()).now(),
     )
 
 
@@ -81,7 +86,7 @@ def verify(
     gold_dir = workspace.dbt_target().gold_dir
     if not (gold_dir / "customers_serving.parquet").is_file():
         raise ConfigurationError(f"no gold tables for the {workspace.source_kind} source; run make pipeline first")
-    service = settings or load_settings()
+    service = settings or load_settings(owner=True)
     secret, _ = _checked(service)
     try:
         keys = IdentityKeys(secret)
@@ -94,6 +99,7 @@ def verify(
         target=customers,
         snapshot=workspace.config.dataset.snapshot_date,
         dispute_sla_days=dispute_sla_days(service),
+        seeded_at=SystemClock().now(),  # verification compares the seeded case ids only, never their instants
     )
     engine = create_engine(owner_database_url(service.database), pooled=False)
 

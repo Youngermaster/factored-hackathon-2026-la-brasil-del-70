@@ -35,6 +35,11 @@ def day(value: str) -> tuple[DateRange, ...]:
         ("em 7 de junho de 2026", day("2026-06-07")),
         ("el 20 de diciembre", day("2025-12-20")),
         ("el 15/06", day("2026-06-15")),
+        # The medium dates the web app shows in statements (es-MX and es-AR, pt-BR): abbreviated months, with a year.
+        ("el cargo del 23 abr 2026", day("2026-04-23")),
+        ("a cobrança de 23 de abr. de 2026", day("2026-04-23")),
+        ("el 2 dic 2025", day("2025-12-02")),
+        ("em 9 de set. de 2025", day("2025-09-09")),
         ("la semana pasada", (DateRange(start=date(2026, 6, 8), end=date(2026, 6, 14)),)),
         ("semana passada", (DateRange(start=date(2026, 6, 8), end=date(2026, 6, 14)),)),
         ("el mes pasado", (DateRange(start=date(2026, 5, 1), end=date(2026, 5, 31)),)),

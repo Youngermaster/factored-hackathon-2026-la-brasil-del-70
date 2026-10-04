@@ -38,6 +38,8 @@ An AI-first banking customer-service system for the Factored AI and Data Hackath
 
 Everything else gets a clarifying question, a clause-backed abstention, or a structured handoff to a human.
 
+The end-to-end explanation of the whole system, in the order of the pitch, is [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md).
+
 Design thesis: **the language model understands, deterministic code decides, and evidence proves it.** In practice:
 
 - Policy is data under `policies/`, evaluated by pure rule functions; every decision names its rule ids and clause versions.
@@ -47,7 +49,19 @@ Design thesis: **the language model understands, deterministic code decides, and
 - Handoffs carry the request, verified facts, actions taken, evidence, and open questions, never a raw transcript.
 - Credit keeps conversation, risk estimate, and eligibility behind separate ports (`RiskEstimator`, `EligibilityPolicy`). The model never sees the risk estimate or the credit profile and never states or implies approval.
 
-**Scope is settled.** All four workflows are automated as built. [ADR 0025](docs/adr/0025-tuesday-account-inquiry-mvp-and-observability.md) proposed a narrower "Tuesday MVP" (only `account_inquiry` automated, the other workflows sent to a mock human agent, plus an assistant profile and Langfuse traces). The human decided the build does not follow that scope (pending action 32 in [PROGRESS.md](docs/PROGRESS.md)). Do not reopen the decision, and do not build ADR 0025's mock agent, assistant profile, or Langfuse integration unless the human asks.
+**Scope is settled.** The build has four workflows. [ADR 0025](docs/adr/0025-tuesday-account-inquiry-mvp-and-observability.md) records a superseded historical plan for a narrower Tuesday release; the human decided the build does not follow that plan (resolved action 32 in [PROGRESS.md](docs/PROGRESS.md)). Preserve the accepted four-workflow scope in [ADR 0020](docs/adr/0020-four-workflows-and-the-workflow-registry.md). Two capabilities from the historical bundle later landed independently: the customer-visible assistant name and predefined avatar preferences (PR 18), and privacy-safe, metadata-only Langfuse generation export (PR 20), which is opt-in and disabled by default. They are secondary capabilities, not reasons to narrow or expand the four-workflow scope. The mock human agent from ADR 0025 was not built; do not add it or reopen the scope decision unless the human asks.
+
+## Hackathon alignment
+
+Read [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md) before planning work that changes product scope, architecture, evaluation, or submission readiness. It maps official challenge requirements to implementation, evidence, and known gaps; [docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md) tracks submission steps.
+
+- Keep work within the existing four-workflow scope, with `account_inquiry` as the prioritized reference path. Prioritize a working, verifiable end-to-end demonstration over adding breadth or trying to maximize every evaluation dimension.
+- The revised **internal MVP completion window ends Sunday, October 4, 2026**, leaving one calendar day before the official challenge-window end, **October 5, 2026**. No cutoff time or timezone is specified. The previous Tuesday target was missed while work continued; its date is preserved in ADR 0025. This target is a planning window, not a completion claim.
+- Spanish and Portuguese customer interactions remain required. Where relevant, state whether AI interprets language or deterministic logic makes the policy, permission, and outcome decision.
+- Preserve privacy, safety boundaries, evidence-backed verification, and appropriate human escalation. Never report a write as successful before its read-back verifies it.
+- Support claims with tests, commands actually run, or concrete artifacts. Distinguish implemented, verified, planned, blocked, and deferred work; a test file alone does not prove a passing test run.
+- Update documentation when behavior, scope, status, or evidence materially changes. Do not add features, frameworks, infrastructure, or refactors only to chase every evaluation dimension.
+- These alignment instructions do not override the safety, security, approval, data-use, or git-safety rules elsewhere in this guide or in `CLAUDE.md`.
 
 ## 3. Current state
 
@@ -59,9 +73,13 @@ As of this file's last update:
 |---|---|
 | Phases 00 to 13 | Done (data platform, policy, grounding, LLM gateway, engine and four workflows, learned models, API, web app with chat, glass box, agent inbox, evaluation view) |
 | Phase 14a | Done: the evaluation harness (`bank-eval`, 332 test and 122 dev scenarios) |
-| Phase 14b | In progress: live local evaluation runs on Ollama `qwen2.5:7b-instruct`; a hosted provider can replace it later through settings only |
-| Phases 15 to 17 | Remaining: observability, production deployment and hardening, license, data-use terms, final docs, video |
-| Submission deadline | 2026-10-05 |
+| Phase 14b | Done: the frozen test run on the local Ollama `qwen2.5:7b-instruct`, published; the cassettes are committed |
+| Phase 15 | Done: OpenTelemetry traces and metrics, the degradation ladder, the chaos suite, alerts, the local load test |
+| Phase 16 | Done: security review and the single-host production stack (`deploy/`), verified locally with TLS and the local model |
+| Phase 17 | Done: the final documentation and audit (README, LIMITATIONS, architecture views, the brief traceability matrix, the submission package in `docs/submission/`), the data-use record, no license ("All rights reserved"), the demo-guide fixes |
+| Remaining (human) | Choose the host and deploy, fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email ([docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md)) |
+| Internal MVP completion window end | Sunday, 2026-10-04; completion is pending |
+| Official challenge-window end | 2026-10-05; no cutoff time or timezone published |
 
 Runtime defaults (from [.env.example](.env.example)): `LLM_PROVIDER=fake` (no model call; workflows use deterministic fallbacks), `WORKFLOW_ROUTER=keyword@1`, `WORKFLOW_RESOLVER=rules@1`, `WORKFLOW_RISK_ESTIMATOR=score_band@1`, `DEMO_MODE=true`. Learned components exist but are not the defaults.
 
@@ -108,7 +126,13 @@ Before calling any change done:
 make check                                # every gate; needs Docker, never reads .env
 ```
 
-Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM and `make llm-smoke` runs the fixture prompts. See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
+A verified, timed walkthrough of every local path (dev stack, browser, local model, evaluation, production stack, slides, gates) with its troubleshooting is [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
+
+The production stack (Caddy with TLS, two API workers, PostgreSQL with a non-superuser owner, the jobs) also runs locally in its local TLS mode: [deploy/README.md](deploy/README.md), "Run the production stack locally".
+
+Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM, and `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke` runs the fixture prompts (a bare `make llm-smoke` reads the fake provider from `.env` and stops). See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
+
+Opt-in hosted model (never in `make check` or CI): with `LLM_PRIMARY_MODEL` (for example `openai/gpt-5-mini`) and `LLM_API_KEY_PRIMARY` in the shell or `.env`, `make api-hosted-llm` runs the API through LiteLLM after a preflight that prints each required variable as set or unset, never a value. The steps, the price table entry, and the smoke test are in [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7.
 
 ### Data sources
 
@@ -131,8 +155,9 @@ S3 credentials come only from the organizer, through the team. They are never co
 | `evals/` | `bank-evals` ([README](evals/README.md)): scenario sets, systems under test (H, B0, B1, P), graders, statistics, reports, cassettes |
 | `policies/` | The synthetic policy pack ([README](policies/README.md)): clauses in es, pt, en, bindings, action matrix, credit catalog, eligibility messages, version lock |
 | `contracts/` | JSON Schemas generated from Pydantic models and the committed `contracts/openapi.json` ([README](contracts/README.md)) |
-| `deploy/` | PostgreSQL role bootstrap and observability configuration ([README](deploy/README.md)); production deployment arrives in phase 16 |
-| `docs/` | Architecture, ADRs, workflows, API, security, data, models, evaluation, design, plans, progress ([index](docs/README.md)) |
+| `deploy/` | The production stack for one VM (`compose.prod.yml`, `prod.sh`, Caddy, the smoke test, production PostgreSQL roles) with the deployment guide for Lightsail, EC2, and Azure, plus the development stack's role bootstrap and observability configuration ([README](deploy/README.md)) |
+| `docs/` | Architecture, ADRs, workflows, API, security, data, models, evaluation, design, demo, submission, plans, progress ([index](docs/README.md)) |
+| `README.md`, `LIMITATIONS.md` | The judge-facing summary and the honest limits; keep their numbers identical to `docs/evaluation/results.md` |
 | `scripts/` | Repository checks (`scripts/checks/`), git hooks (`scripts/hooks/`), contract and OpenAPI export, env generation, the LLM smoke script |
 | `slides/` | The pitch deck ([README](slides/README.md)): a standalone Slidev package, outside the uv workspace and outside `make check` |
 | `skills/` | Tool-agnostic agent skills for this repository (section 11) |
@@ -174,7 +199,7 @@ A failing check means the code is in the wrong place or breaks a rule. Move or f
 | Prompts are versioned files; code references them by id and version; published versions are immutable; inputs are an allowlist | The prompt registry (load-time checks) and `services/api/tests/unit/adapters/test_prompt_registry.py` |
 | Models are ports selected by `name@version` or alias through settings; swapping one never changes workflow code | `bootstrap/models.py`, contract tests in `test_model_ports_contract.py` |
 | `Money` uses `Decimal` with an explicit currency, never floats; time comes from a `Clock` port, ids from an `IdGenerator` port | Domain tests and Hypothesis property tests |
-| Only `bootstrap/` reads the environment; production refuses default or empty secrets and `DEMO_MODE=true` | `bootstrap/settings.py` and its unit tests |
+| Only `bootstrap/` reads the environment; production refuses default or empty secrets, `DEMO_MODE=true` without `ALLOW_PUBLIC_DEMO_MODE=true`, the owner password in the API process, and the in-process rate limiter | `bootstrap/settings.py` and its unit tests |
 | Domain errors map to RFC 9457 problem details in one place; internals never leak | `api/domain_problems.py`, `api/problems.py`, and API tests |
 | mypy strict, ruff, bandit | `make typecheck`, `make lint` |
 
@@ -296,7 +321,7 @@ Detail: [contracts/README.md](contracts/README.md) (versioning, deprecation, cha
 
 ### Add an ADR
 
-1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 and 0019 are reserved.
+1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 stays reserved and unused; the next free number is 0036.
 2. Write `docs/adr/NNNN-short-title.md` in MADR form: context, at least two real options, decision, consequences.
 3. Add the row to the table in `docs/adr/README.md` and the entry in `docs/README.md` in the same commit.
 4. Records are never rewritten; a later record supersedes an earlier one and both link to each other.
@@ -320,7 +345,11 @@ Detail: [evals/README.md](evals/README.md), [docs/evaluation/plan.md](docs/evalu
 | `make test-integration` | Python integration tests against real PostgreSQL (Docker) |
 | `make test-web` | Vitest with coverage |
 | `make docs-check` | markdownlint, Mermaid parsing, and the check-script tests; needs `apps/web/node_modules` |
+| `make security` | pip-audit, `pnpm audit --prod --audit-level high`, bandit, gitleaks, hadolint, shellcheck, production compose validation (Docker needed; network for the audits) |
+| `make images`, `make scan-images` | Build the production images; trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs |
+| `make smoke`, `make csp-check` | Smoke test and browser CSP check of a deployed stack (`SMOKE_URL=https://...`) |
 | `make eval-smoke` | 12-scenario smoke suite with a scripted client, no model |
+| `make submission-check` | The pre-submission gates (`make check`, `make security`, `make eval-smoke`, the slides verify, `make docs-check`), then the remaining human steps |
 | `make format` | Applies ruff, ESLint, and Prettier fixes |
 
 Narrow runs while iterating: `uv run --frozen pytest services/api/tests/unit/<area> -q`, `pnpm --dir apps/web exec vitest run <path>`.
@@ -342,6 +371,7 @@ Rules:
 | A plain `uv sync` is exact: it removes every extra it was not told to install. `make setup` itself runs `uv sync --all-packages --extra eda-ui --frozen`, which removes the optional `ml` and `litellm` extras if they were installed | Run commands through `uv run --frozen ...` (it syncs inexactly). To add an extra without removing others: `uv sync --inexact --all-packages --extra <name> --frozen` |
 | Non-interactive shells (agent terminals, hooks, CI-like scripts) do not load nvm, so an older default Node (below 24.15) may run | `nvm use 24` first, or put the Node 24 `bin` directory first on `PATH` |
 | An env file reads everything after `NAME=` as the value, so `POLICY_DIR=   # default` sets `POLICY_DIR` to the comment text | Keep comments on the line above an empty value, as `.env.example` does. Diagnose with `make env-check`, never by reading `.env` |
+| A second checkout on the same machine (a clone or a worktree) shares the dev compose project `bank-agent`: its `make up` takes over the first checkout's PostgreSQL container and volume | In the second checkout's shells, `export COMPOSE_PROJECT_NAME=bank-agent-<name> POSTGRES_PORT=<free port>` before `make up`, `make db-upgrade`, `make seed`, and the API ([LOCAL-RUN.md](docs/submission/LOCAL-RUN.md)) |
 | The PostgreSQL volume keeps the passwords it was created with; a new `.env` from `make env` has different ones | Keep the passwords the volume was created with. Never run `docker compose down --volumes` without the human's approval: it erases the local database |
 | ADR numbers and Alembic revision numbers collide when branches land in parallel | Check the next free number on an up-to-date `main` and in open pull requests right before committing (section 7) |
 | `docs/PROGRESS.md`, `docs/BACKLOG.md`, `docs/README.md`, `docs/adr/README.md`, `.env.example`, and the `Makefile` are merge-conflict hotspots | Append rather than reorder; when resolving a conflict keep both sides, then run `make docs-check` |
@@ -349,7 +379,11 @@ Rules:
 | pre-commit runs gitleaks, the emoji guard, the AI-attribution strip on the commit message, ruff, ESLint, Prettier, and a 500 KB file limit; CI runs gitleaks and the attribution guard over the full history | Fix what the hook reports. Never `git commit --no-verify`. An attribution trailer that reaches a shared branch cannot be removed without rewriting history |
 | Some agents add `Co-authored-by` or "Generated with" lines by default | Turn that off in the agent's settings before the first commit |
 | Demo writes persist: a charge can be disputed once per database; `make seed` restores blocked cards but not opened cases or intakes | Run `make seed` on a fresh compose volume before recording a demo or video; run `make db-upgrade` on an existing database after new migrations |
-| Rotating `SESSION_SECRET` changes the keys derived for identity lookups and one-time codes | Run `make seed` again after rotating it |
+| The committed sample has no customer for four of the sixteen customer personas (`acc-co-payments`, `acc-ar-similar-transfers`, `dsp-ar-repeat-complainer`, `dsp-mx-similar-purchases`); signing in as one fails on a sample seed | Keep the demo guide on the twelve sample personas (`data_platform/tests/unit/test_demo_guide_personas.py` checks it); drive any new guide message through the API on a fresh sample seed before listing it ([docs/demo/personas.md](docs/demo/personas.md)) |
+| Rotating `SESSION_SECRET` changes the keys derived for identity lookups and one-time codes | Run `make seed` again after rotating it (on the VM: `deploy/prod.sh seed`) |
+| Production settings are validated per process: the API refuses the owner password, `DEMO_MODE` without `ALLOW_PUBLIC_DEMO_MODE`, and the in-process rate limiter; owner jobs need `load_settings(owner=True)` | A new production setting goes in the right branch of `production_problems` in `bootstrap/settings.py`, in `.env.example`, in `deploy/.env.production.example`, and in the service's `environment` in `deploy/compose.prod.yml` (`tests/unit/test_deploy_config.py` checks the template) |
+| The production stack in a worktree or next to the dev stack clashes on ports or project names | Run it with its own project name and ports (`PROJECT=... ENV_FILE=... deploy/prod.sh ...`, `HTTP_PORT=8080 HTTPS_PORT=8443`); it publishes no database port. Remove it with `docker compose ... -p <project> down --volumes` when done |
+| A strict CSP breaks a library that injects `<style>` elements or inlines assets | Keep the nonce path (`shared/lib/csp-nonce.ts`) and `assetsInlineLimit: 0`; run `make csp-check` against a deployed stack before loosening anything |
 | Generated files drift when edited by hand | Regenerate instead: `make openapi` (OpenAPI and web types), `make contracts` (JSON Schemas), `make policy-lock` and `make policy-catalog` (policy lock and catalog), `make data-codegen` (dbt sources and contracts), `bank-eval publish` (evaluation results) |
 | `kit/` exists only on the technical lead's machine | Never reference or depend on a `kit/` prompt; ask the human for the goal and acceptance criteria |
 
@@ -367,7 +401,7 @@ Rules:
 
 | Person | Role |
 |---|---|
-| Young | Technical lead: repository setup, core architecture, stack, agent integration, phase sessions |
+| Juan Young | Technical lead: repository setup, core architecture, stack, agent integration, phase sessions |
 | Miguel Correa | Project manager and AI engineer: project management, ADR and pull request drafting, alignment with the challenge criteria |
 | David Fonseca | Developer and analyst: dataset analysis at kickoff; further responsibilities to be agreed |
 | Julián Valencia | Developer, analyst, and data engineer: relational dataset analysis, data extraction, schema requirements |
@@ -385,8 +419,11 @@ For GitHub pull requests, issues, reviews, comments, or other GitHub operations,
 | [github-collaboration](skills/github-collaboration/SKILL.md) | Pull requests, issues, reviews, and comments through the `gh` CLI, with authentication checks and no stored tokens |
 | [download-organizer-data](skills/download-organizer-data/SKILL.md) | Downloading the organizer S3 dataset with credentials the contributor supplies for that run only, never stored or echoed |
 | [setup-postgres-data](skills/setup-postgres-data/SKILL.md) | Setting up the local PostgreSQL, applying migrations, and seeding from an existing warehouse or the committed sample |
+| [UX-Backend-start](skills/UX-Backend-start/SKILL.md) | Starting the whole product (PostgreSQL, API, web UX) from any machine state and opening it in the browser; it runs the skills above when their conditions apply, and uses a toolbox container where Windows Smart App Control blocks Python's native files |
 
-The design skills under `.claude/skills/` (`design-taste-frontend`, `minimalist-ui`, `full-output-enforcement`) are written for Claude Code, but CLAUDE.md section 6 asks all UI work to follow the first two; other agents can read their `SKILL.md` files directly.
+To start the app, read `UX-Backend-start` first. On Windows, once setup is done, a person can double-click `skills/UX-start.bat`: it starts Docker if needed, starts the containers, checks the database and health endpoints, and opens `http://localhost:5173` (`stop`, `status`, `--no-browser`, or a server URL as an argument).
+
+The design skills under `.claude/skills/` (`design-taste-frontend`, `minimalist-ui`, `full-output-enforcement`) are written for Claude Code, but CLAUDE.md section 6 asks all UI work to follow the first two; other agents can read their `SKILL.md` files directly. `.claude/skills/ux-backend-start/` is only a pointer that registers `UX-Backend-start` as the `/ux-backend-start` command in Claude Code; change the instructions in `skills/UX-Backend-start/SKILL.md`, never in the pointer.
 
 ## 12. Keeping this file current
 

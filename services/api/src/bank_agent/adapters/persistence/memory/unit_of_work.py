@@ -4,6 +4,7 @@ from types import TracebackType
 from typing import Protocol, Self
 
 from bank_agent.adapters.persistence.memory.assistant_profiles import InMemoryAssistantProfileRepository
+from bank_agent.adapters.persistence.memory.human_service import InMemoryHumanServiceRepository
 from bank_agent.adapters.persistence.memory.repositories import (
     InMemoryActionLedger,
     InMemoryAuditLog,
@@ -46,9 +47,11 @@ class InMemoryUnitOfWork:
         self._complaints = TableView(store.complaints)
         self._cases = TableView(store.cases)
         self._conversations = TableView(store.conversations)
+        self._creation_guards = TableView(store.conversation_creation_guards)
         self._turns = TableView(store.turns)
         self._records = TableView(store.execution_records)
         self._handoffs = TableView(store.handoffs)
+        self._human_messages = TableView(store.human_messages)
         self._audit_events = TableView(store.audit_events)
         self._credit_profiles = TableView(store.credit_profiles)
         self._credit_applications = TableView(store.credit_applications)
@@ -61,9 +64,11 @@ class InMemoryUnitOfWork:
             self._complaints,
             self._cases,
             self._conversations,
+            self._creation_guards,
             self._turns,
             self._records,
             self._handoffs,
+            self._human_messages,
             self._audit_events,
             self._credit_profiles,
             self._credit_applications,
@@ -97,7 +102,7 @@ class InMemoryUnitOfWork:
 
     @property
     def conversations(self) -> InMemoryConversationRepository:
-        return InMemoryConversationRepository(self._conversations, self._turns, self._context)
+        return InMemoryConversationRepository(self._conversations, self._turns, self._creation_guards, self._context)
 
     @property
     def assistant_profiles(self) -> InMemoryAssistantProfileRepository:
@@ -109,7 +114,11 @@ class InMemoryUnitOfWork:
 
     @property
     def handoffs(self) -> InMemoryHandoffRepository:
-        return InMemoryHandoffRepository(self._handoffs, self._context)
+        return InMemoryHandoffRepository(self._handoffs, self._conversations, self._context)
+
+    @property
+    def human_service(self) -> InMemoryHumanServiceRepository:
+        return InMemoryHumanServiceRepository(self._human_messages, self._handoffs, self._context)
 
     @property
     def audit(self) -> InMemoryAuditLog:

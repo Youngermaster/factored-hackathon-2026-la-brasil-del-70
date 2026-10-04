@@ -10,7 +10,7 @@ UV_RUN := uv run --frozen
 # The guard scripts are stdlib-only; this pins them to Python 3.12 without syncing the project environment.
 GUARD_PY := uv run --no-project --python 3.12 python
 WEB := pnpm --dir apps/web
-PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts
+PYTHON_SOURCES := services/api/src data_platform/src ml/src evals/src scripts deploy
 PROFILES ?=
 PROFILE_FLAGS := $(foreach profile,$(PROFILES),--profile $(profile))
 # Data source for the pipeline: sample, s3, or local. Empty means BANK_DATA_SOURCE (default: sample).
@@ -24,7 +24,7 @@ BANK_DATA := $(UV_RUN) bank-data
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
 	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
-	api-local-llm env api-obs load-test
+	api-local-llm api-hosted-llm env api-obs load-test submission-check
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -88,6 +88,18 @@ llm-smoke: ## Opt-in: run the fixture prompts (es, pt, four workflows) against t
 api-local-llm: ## Opt-in: run the API on :8000 with the local Ollama model through LiteLLM (LOCAL_LLM_MODEL, LOCAL_LLM_BASE)
 	LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=$(LOCAL_LLM_MODEL) LLM_API_BASE=$(LOCAL_LLM_BASE) \
 		$(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
+
+# A hosted model (docs/HOW-IT-WORKS.md, section 7): LLM_PRIMARY_MODEL and LLM_API_KEY_PRIMARY come from the shell or
+# .env, never from this file. The preflight (make env-check with LLM_PROVIDER=litellm) prints the required variables
+# and the fallback model's, each as set or unset, never a value, and stops when a required one is unset. It exits
+# with PIPESTATUS because GNU make 3.81 (the macOS default) ignores .SHELLFLAGS, so pipefail is not always set.
+HOSTED_LLM_PREFLIGHT := /^Required:/ { shown = 1 } /^Optional:/ { shown = 0 } \
+	shown || /^check-env-keys:/ || /^  (LLM_FALLBACK_MODEL|LLM_API_KEY_FALLBACK):/
+
+api-hosted-llm: ## Opt-in: run the API on :8000 with a hosted model through LiteLLM (LLM_PRIMARY_MODEL, LLM_API_KEY_PRIMARY)
+	LLM_PROVIDER=litellm $(GUARD_PY) scripts/checks/check_env_keys.py | awk '$(HOSTED_LLM_PREFLIGHT)'; \
+		exit "$${PIPESTATUS[0]}"
+	LLM_PROVIDER=litellm $(LLM_EXTRA_RUN) uvicorn bank_agent.asgi:create_app --factory --host 127.0.0.1 --port 8000
 
 api-obs: ## Run the API on :8000 exporting traces and metrics to the obs profile (make up PROFILES=obs first)
 	OTEL_ENABLED=true OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
@@ -192,6 +204,7 @@ verify-seed: ## Read-only reconciliation of the selected gold rows against Postg
 	$(BANK_DATA) verify-seed $(SOURCE_FLAG) --customers $(SEED_CUSTOMERS)
 
 docs-check: ## Markdown lint and Mermaid validation
+	$(GUARD_PY) scripts/checks/check_adr_statuses.py
 	apps/web/node_modules/.bin/markdownlint-cli2
 	node scripts/checks/check_mermaid.mjs
 	node --test 'scripts/checks/tests/*.test.mjs'
@@ -222,3 +235,63 @@ eda: ## Run or resume all EDA phases against local CSVs
 
 eda-ui: ## Open the local EDA viewer and sanitized laboratory
 	uv run --frozen --extra eda-ui streamlit run data_platform/src/bank_data/eda/ui.py --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false --theme.base light --theme.primaryColor '#346538' --theme.backgroundColor '#F7F6F3' --theme.secondaryBackgroundColor '#FFFFFF' --theme.textColor '#2F3437' --theme.font 'Helvetica Neue, sans-serif'
+
+# --- Security and production images (phase 16; deploy/README.md) -----------------------------------------------
+.PHONY: security scan-images images smoke csp-check
+# Container tools run from pinned images, so nothing beyond Docker is needed on the machine.
+HADOLINT_IMAGE := hadolint/hadolint:v2.14.0@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e
+SHELLCHECK_IMAGE := koalaman/shellcheck:v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d
+TRIVY_IMAGE := aquasec/trivy:0.70.0@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e
+SYFT_IMAGE := anchore/syft:v1.40.0@sha256:11a68ff5cd49a1579e1f05b061a96edf0a5add161ea5f38d62fc979704c46918
+IMAGE_TAG ?= $(shell git rev-parse --short=12 HEAD)
+VITE_DEMO_MODE ?= false
+SMOKE_URL ?=
+# Extra flags for a stack whose certificate the machine does not trust (the local TLS mode, deploy/README.md):
+# SMOKE_ARGS="--ca-file <root.crt> --min-cert-days 0" for smoke, CSP_ARGS=--ignore-https-errors for csp-check.
+SMOKE_ARGS ?=
+CSP_ARGS ?=
+# Dummy values that only let `docker compose config` interpolate the production file; never used to run anything.
+COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
+	POSTGRES_SUPERUSER_PASSWORD=compose-config-check POSTGRES_ADMIN_PASSWORD=compose-config-check \
+	POSTGRES_APP_PASSWORD=compose-config-check SESSION_SECRET=compose-config-check CSRF_SECRET=compose-config-check
+
+security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, production compose validation
+	requirements="$$(mktemp)"; trap 'rm -f "$$requirements"' EXIT; \
+		uv export --frozen --all-packages --all-extras --no-emit-workspace --format requirements-txt -o "$$requirements" > /dev/null; \
+		$(UV_RUN) pip-audit -r "$$requirements" --require-hashes --disable-pip --progress-spinner off
+	$(WEB) audit --prod --audit-level high
+	$(UV_RUN) bandit -q -c pyproject.toml -r $(PYTHON_SOURCES)
+	gitleaks git --redact --no-banner .
+	for dockerfile in services/api/Dockerfile apps/web/Dockerfile services/api/Dockerfile.dev apps/web/Dockerfile.dev; do \
+		docker run --rm -i $(HADOLINT_IMAGE) hadolint - < "$$dockerfile"; done
+	docker run --rm -v "$(CURDIR)/deploy:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) \
+		prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+	docker run --rm -v "$(CURDIR)/scripts:/mnt:ro" -w /mnt $(SHELLCHECK_IMAGE) submission_check.sh
+	$(COMPOSE_CHECK_ENV) docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example \
+		--profile '*' config --quiet
+
+images: ## Build the production images (web, api, job) as bank-agent-*:IMAGE_TAG (default: the current commit)
+	docker build -f services/api/Dockerfile --target api -t bank-agent-api:$(IMAGE_TAG) .
+	docker build -f services/api/Dockerfile --target job -t bank-agent-job:$(IMAGE_TAG) .
+	docker build -f apps/web/Dockerfile --build-arg VITE_DEMO_MODE=$(VITE_DEMO_MODE) -t bank-agent-web:$(IMAGE_TAG) .
+
+scan-images: ## Trivy (fixable HIGH and CRITICAL fail) and CycloneDX SBOMs (syft) for the images of IMAGE_TAG
+	mkdir -p reports/sbom
+	status=0; for image in api job web; do \
+		docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v bank-agent-trivy-cache:/root/.cache \
+			$(TRIVY_IMAGE) image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress \
+			--skip-version-check bank-agent-$$image:$(IMAGE_TAG) || status=1; \
+		docker run --rm -v /var/run/docker.sock:/var/run/docker.sock $(SYFT_IMAGE) \
+			docker:bank-agent-$$image:$(IMAGE_TAG) -o cyclonedx-json > reports/sbom/bank-agent-$$image.cdx.json; \
+	done; exit $$status
+
+smoke: ## Smoke test a deployed stack: make smoke SMOKE_URL=https://demo.example.org [SMOKE_ARGS=...] (deploy/smoke_test.sh)
+	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
+	deploy/smoke_test.sh $(SMOKE_URL) $(SMOKE_ARGS)
+
+submission-check: ## Pre-submission: check, security, eval-smoke, slides verify, docs-check, then the human steps left
+	scripts/submission_check.sh
+
+csp-check: ## Browser check of a deployed stack's CSP and cookies: make csp-check SMOKE_URL=https://demo.example.org [CSP_ARGS=...]
+	@test -n "$(SMOKE_URL)" || { echo "SMOKE_URL=https://<host> is required"; exit 1; }
+	$(WEB) exec node tooling/csp-check.mjs $(SMOKE_URL) $(CSP_ARGS)

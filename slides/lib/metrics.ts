@@ -30,6 +30,11 @@ export interface MetricEntry {
   kind: MetricKind
   source: string
   note?: string
+  /** 95% interval in percent, for rates and unsafe outcomes */
+  lo?: number
+  hi?: number
+  /** the denominator of a count ("8 of 304" has of: 304) */
+  of?: number
 }
 
 export interface Metric {
@@ -41,6 +46,10 @@ export interface Metric {
   pending: boolean
   kind: MetricKind
   source: string
+  /** interval bounds in percent and the denominator; NaN when absent */
+  lo: number
+  hi: number
+  of: number
 }
 
 export const metrics: Record<string, MetricEntry> = (parse(raw) ?? {}) as Record<string, MetricEntry>
@@ -59,5 +68,8 @@ export function metric(key: string): Metric {
     pending,
     kind: e?.kind ?? 'offline',
     source: e?.source ?? `[missing metric ${key}]`,
+    lo: typeof e?.lo === 'number' ? e.lo : Number.NaN,
+    hi: typeof e?.hi === 'number' ? e.hi : Number.NaN,
+    of: typeof e?.of === 'number' ? e.of : Number.NaN,
   }
 }

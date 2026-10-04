@@ -2,10 +2,11 @@ from datetime import timedelta
 
 import pytest
 
+from bank_agent.domain.eligibility import EligibilityAssessmentRecord
 from bank_agent.domain.errors import AccessContextError, AppendOnlyViolationError
 from bank_agent.domain.execution_record import ExecutionRecord
 from bank_agent.domain.identifiers import ConversationId, TurnId
-from bank_agent_builders import T0, execution_record
+from bank_agent_builders import T0, eligibility_assessment, execution_record
 from bank_agent_contracts import AGENT, CONTEXT_A, CONTEXT_B, EVALUATOR, WriteBackend
 
 TURN_1 = "9b2f0d1e-0000-4000-8000-000000000001"
@@ -32,7 +33,24 @@ class TestExecutionRecordRepositoryContract:
                 await uow.execution_records.append(execution_record(TURN_1, state_after="CLARIFY"))
         assert not hasattr(ExecutionRecord, "reasoning")
         repository_methods = {name for name in dir(type(uow.execution_records)) if not name.startswith("_")}
-        assert repository_methods == {"append", "get", "list_for_conversation"}
+        assert repository_methods == {"append", "get", "list_for_conversation", "count_eligibility_assessments"}
+
+    async def test_counts_a_customers_own_assessments_since_an_instant(self, write_backend: WriteBackend) -> None:
+        assessed = [EligibilityAssessmentRecord.from_assessment(eligibility_assessment())]
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            await uow.execution_records.append(execution_record(TURN_1, eligibility_assessments=assessed))
+            await uow.execution_records.append(
+                execution_record(TURN_2, recorded_at=T0 + timedelta(minutes=30), eligibility_assessments=assessed)
+            )
+            await uow.commit()
+        async with write_backend.uow_factory()(CONTEXT_A) as uow:
+            assert await uow.execution_records.count_eligibility_assessments(T0) == 2
+            assert await uow.execution_records.count_eligibility_assessments(T0 + timedelta(minutes=1)) == 1
+        async with write_backend.uow_factory()(CONTEXT_B) as uow:
+            assert await uow.execution_records.count_eligibility_assessments(T0) == 0
+        async with write_backend.uow_factory()(AGENT) as uow:
+            with pytest.raises(AccessContextError):
+                await uow.execution_records.count_eligibility_assessments(T0)
 
     async def test_customers_see_only_their_own_records(self, write_backend: WriteBackend) -> None:
         async with write_backend.uow_factory()(CONTEXT_A) as uow:

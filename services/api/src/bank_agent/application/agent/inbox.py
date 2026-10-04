@@ -1,7 +1,8 @@
 """The agent inbox: handoffs with their lifecycle, and the reviewable credit application intakes.
 
-Every call runs under the agent's session, so the repositories and row-level security scope it. Claims and
-resolutions are audited in the same unit of work as the lifecycle change. Agents see handoffs, which carry the
+Every call runs under the agent's session, so the repositories and row-level security scope it. Claims,
+resolutions, and credit review moves (into human review, then closed; never an approval) are audited in the same unit of
+work as the change. Agents see handoffs, which carry the
 verified facts and never a transcript; they never read a customer's conversation.
 """
 
@@ -28,7 +29,9 @@ class AgentInbox:
     def __init__(self, uow_factory: UnitOfWorkFactory, clock: Clock, ids: IdGenerator) -> None:
         self._uow_factory, self._clock, self._ids = uow_factory, clock, ids
 
-    async def _audit(self, uow: UnitOfWork, session: Session, action: str, handoff_id: HandoffId) -> None:
+    async def _audit(
+        self, uow: UnitOfWork, session: Session, action: str, target: str, table: SourceTable = SourceTable.HANDOFFS
+    ) -> None:
         await uow.audit.append(
             AuditEvent(
                 event_id=AuditEventId(self._ids.new(IdKind.AUDIT_EVENT)),
@@ -36,7 +39,7 @@ class AgentInbox:
                 actor_role=session.role,
                 actor_ref=session.staff_id,
                 action=action,
-                target=SourceRef.of(SourceTable.HANDOFFS, handoff_id),
+                target=SourceRef.of(table, target),
                 outcome=AuditOutcome.SUCCESS,
                 arguments={"session_id": session.session_id},
             )
@@ -87,3 +90,36 @@ class AgentInbox:
         if application is None:
             raise CreditApplicationNotFoundError()
         return application
+
+    async def review_credit_application(
+        self, session: Session, application_id: ApplicationId, expected_version: int
+    ) -> CreditApplicationIntake:
+        """Take a submitted intake into human review (``under_human_review``)."""
+        return await self._move(
+            session, application_id, expected_version, ApplicationStatus.UNDER_HUMAN_REVIEW, "credit_review_started"
+        )
+
+    async def close_credit_application(
+        self, session: Session, application_id: ApplicationId, expected_version: int
+    ) -> CreditApplicationIntake:
+        """Close an intake under human review (``closed``): the review is over, with no lending decision recorded."""
+        return await self._move(
+            session, application_id, expected_version, ApplicationStatus.CLOSED, "credit_review_closed"
+        )
+
+    async def _move(
+        self,
+        session: Session,
+        application_id: ApplicationId,
+        expected_version: int,
+        status: ApplicationStatus,
+        action: str,
+    ) -> CreditApplicationIntake:
+        _agent_only(session)
+        async with self._uow_factory(session.access_context()) as uow:
+            moved = await uow.credit_applications.transition(
+                application_id, status, expected_version=expected_version, at=self._clock.now(), reason_code=action
+            )
+            await self._audit(uow, session, action, application_id, SourceTable.CREDIT_APPLICATIONS)
+            await uow.commit()
+        return moved

@@ -84,6 +84,8 @@ select = [
 "**/tests/**" = ["S101", "PLR2004", "S603", "S607"]
 "conftest.py" = ["S101"]
 "scripts/**" = ["T201", "S603", "S607"]
+# The deployment smoke test is a command-line script like those under scripts/.
+"deploy/**" = ["T201", "S603", "S607"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["bank_agent", "bank_data", "bank_ml", "bank_evals"]
@@ -117,6 +119,7 @@ files = [
   "evals/src",
   "evals/tests",
   "scripts",
+  "deploy",
 ]
 # The root conftest.py shares its module name with services/api/tests/conftest.py, so `make typecheck`
 # checks it in a second, separate mypy run.

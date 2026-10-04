@@ -53,7 +53,11 @@ Three contracts apply:
 Because `api` and `bootstrap` cannot import each other, the wiring lives in two package-root modules outside every layer:
 
 - `bank_agent.asgi:create_app` is the uvicorn factory. It loads settings, configures logging, builds the container, and passes it to `bank_agent.api.app.create_app`.
-- `bank_agent.cli:app` is the `bank-agent` typer command.
+- `bank_agent.cli:app` is the `bank-agent` typer command: `db upgrade`, `retention purge` (the owner's retention job; `--dry-run`, `--every-hours`), `policy lock`, `policy catalog`, `index build`.
+
+Settings are validated per process: `load_settings()` checks the API's production rules (it refuses the owner password, requires the shared rate limiter, and allows demo mode only with `ALLOW_PUBLIC_DEMO_MODE=true`), and `load_settings(owner=True)` checks an owner job's (the owner password and `SESSION_SECRET` only).
+
+The production images are `services/api/Dockerfile`: target `api` (the package with the `litellm` extra, the policy pack, the price table, the published evaluation summaries, and a stored retrieval index, running as a non-root user on a read-only root) and target `job` (plus `bank-data` and gold tables built from the committed sample, for migrations, the seed, and the purge). The deployment is `deploy/` ([guide](../../deploy/README.md)).
 
 The API layer declares what it needs as the `ServiceProvider` Protocol in `api/provider.py`. The composition root, `bootstrap/container.py`, satisfies it structurally. It is the only module that constructs concrete adapters.
 
@@ -73,7 +77,7 @@ make up PROFILES=api
 
 ## Dependencies and extras
 
-Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013).
+Runtime dependencies are declared in `pyproject.toml` and pinned in the root `uv.lock`. The optional `ml` extra (phase 07) holds sentence-transformers 6.1.0 and torch 2.14.0 for the dense retriever, about 806 MB installed with their dependencies, torch from the PyTorch CPU index on Linux; it is never installed in the API runtime image or by `make setup` (`uv sync --all-packages --extra ml`). The optional `litellm` extra holds the provider client (ADR 0013). Opt-in Langfuse tracing uses the locked OpenTelemetry OTLP HTTP exporter; it adds no API dependency. See [observability](../../docs/operations/observability.md) for settings and startup.
 
 ## How to extend
 
@@ -94,3 +98,7 @@ make check                                        # everything, with coverage ga
 - `tests/unit/` uses fakes and the httpx ASGI transport; pytest-socket blocks the network.
 - `tests/integration/` starts a throwaway `postgres:16.15-alpine3.24` container with the repository init script and credentials generated at runtime. It never reads `.env`.
 - Coverage gates: 90% for `domain`, `ports`, `policy`, and `application`; 80% for `adapters`, `api`, and `bootstrap`.
+
+## Live human service
+
+ADR 0026 adds persisted customer and assigned-agent messages on the existing conversation, and a rolling-hour customer creation quota. Existing databases need `make db-upgrade` (revision `0014`). The [human-service guide](../../docs/workflows/human-service.md) describes the endpoints, lifecycle, authorization, and local walkthrough.

@@ -1,17 +1,18 @@
 """In-memory repositories. Each is bound to an ``AccessContext`` and to table views of one unit of work."""
 
 from collections.abc import Sequence
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from bank_agent.adapters.persistence.memory.store import TableView
 from bank_agent.domain.access import AccessContext, Role
 from bank_agent.domain.actions import ActionKind, ActionLedgerEntry
 from bank_agent.domain.audit import AuditEvent
 from bank_agent.domain.complaint import HistoricalComplaint
-from bank_agent.domain.conversation import Conversation, Turn
+from bank_agent.domain.conversation import Conversation, ConversationStatus, Turn
 from bank_agent.domain.credit import (
     CUSTOMER_APPLICATION_TRANSITIONS,
     REVIEWABLE_APPLICATION_STATUSES,
+    REVIEWER_APPLICATION_TRANSITIONS,
     ApplicationStatus,
     CreditApplicationIntake,
     CreditProfile,
@@ -23,6 +24,7 @@ from bank_agent.domain.errors import (
     AppendOnlyViolationError,
     CaseNotFoundError,
     ConcurrencyConflictError,
+    ConversationCreationLimitedError,
     ConversationNotFoundError,
     CreditApplicationNotFoundError,
     CustomerNotFoundError,
@@ -231,10 +233,15 @@ class InMemoryCaseRepository:
 
 class InMemoryConversationRepository:
     def __init__(
-        self, conversations: TableView[str, Conversation], turns: TableView[str, Turn], context: AccessContext
+        self,
+        conversations: TableView[str, Conversation],
+        turns: TableView[str, Turn],
+        creation_guards: TableView[str, int],
+        context: AccessContext,
     ) -> None:
         self._conversations = conversations
         self._turns = turns
+        self._creation_guards = creation_guards
         self._context = context
 
     async def get(self, conversation_id: ConversationId) -> Conversation | None:
@@ -248,6 +255,21 @@ class InMemoryConversationRepository:
         if self._conversations.get(conversation.conversation_id) is not None:
             raise DuplicateEntityError("a conversation with this id already exists")
         self._conversations.put(conversation.conversation_id, conversation)
+
+    async def add_with_quota(self, conversation: Conversation) -> None:
+        customer = _customer_of(self._context)
+        if conversation.customer_id != customer:
+            raise AccessContextError("a conversation can only be added for the context customer")
+        cutoff = conversation.created_at - timedelta(hours=1)
+        recent = sorted(
+            c.created_at
+            for c in self._conversations.values()
+            if c.customer_id == customer and cutoff < c.created_at <= conversation.created_at
+        )
+        if len(recent) >= 5:
+            raise ConversationCreationLimitedError(recent[0] + timedelta(hours=1) - conversation.created_at)
+        self._creation_guards.put(customer, (self._creation_guards.get(customer) or 0) + 1)
+        await self.add(conversation)
 
     async def update(self, conversation: Conversation, *, expected_version: int) -> Conversation:
         current = await self.get(conversation.conversation_id)
@@ -315,10 +337,24 @@ class InMemoryExecutionRecordRepository:
         found = [r for r in self._records.values() if r.conversation_id == conversation_id and self._visible(r, reader)]
         return sorted(found, key=lambda record: (record.recorded_at, record.turn_id))
 
+    async def count_eligibility_assessments(self, since: datetime) -> int:
+        owner = _customer_of(self._context)
+        return sum(
+            len(record.eligibility_assessments)
+            for record in self._records.values()
+            if record.customer_ref == owner and record.recorded_at >= since
+        )
+
 
 class InMemoryHandoffRepository:
-    def __init__(self, handoffs: TableView[str, HandoffRecord], context: AccessContext) -> None:
+    def __init__(
+        self,
+        handoffs: TableView[str, HandoffRecord],
+        conversations: TableView[str, Conversation],
+        context: AccessContext,
+    ) -> None:
         self._handoffs = handoffs
+        self._conversations = conversations
         self._context = context
 
     async def add(self, handoff: Handoff) -> HandoffRecord:
@@ -376,6 +412,12 @@ class InMemoryHandoffRepository:
         staff_id = _staff_of(self._context, Role.AGENT)
         resolved = self._existing(handoff_id).resolve(staff_id, outcome, note, at)
         self._handoffs.put(handoff_id, resolved)
+        conversation = self._conversations.get(resolved.handoff.conversation_ref)
+        if conversation is not None and conversation.customer_id == resolved.handoff.customer_ref:
+            self._conversations.put(
+                conversation.conversation_id,
+                conversation.evolve(status=ConversationStatus.CLOSED, updated_at=at, version=conversation.version + 1),
+            )
         return resolved
 
 
@@ -498,11 +540,15 @@ class InMemoryCreditApplicationRepository:
         at: datetime,
         reason_code: str,
     ) -> CreditApplicationIntake:
-        owner = _customer_of(self._context)
-        if status not in CUSTOMER_APPLICATION_TRANSITIONS:
-            raise AccessContextError("a customer can only withdraw an application")
-        current = self._applications.get(application_id)
-        if current is None or current.customer_id != owner:
+        if self._context.role is Role.AGENT:
+            if status not in REVIEWER_APPLICATION_TRANSITIONS:
+                raise AccessContextError("an agent can only take an application into review or close it")
+        else:
+            _customer_of(self._context)
+            if status not in CUSTOMER_APPLICATION_TRANSITIONS:
+                raise AccessContextError("a customer can only withdraw an application")
+        current = await self.get(application_id)
+        if current is None:
             raise CreditApplicationNotFoundError()
         if current.version != expected_version:
             raise ConcurrencyConflictError("the application changed since it was read")

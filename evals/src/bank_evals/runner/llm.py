@@ -23,7 +23,7 @@ from pydantic import BaseModel
 
 from bank_agent.adapters.llm.cassette import CassetteLLM, CassetteMissingError, CassetteMode
 from bank_agent.adapters.llm.litellm_client import LiteLLMClient
-from bank_agent.adapters.llm.redaction import Redactor
+from bank_agent.adapters.llm.redaction import UNREDACTED_VARIABLE_KEYS, Redactor
 from bank_agent.adapters.llm.unconfigured import UnconfiguredLLMClient
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
@@ -36,6 +36,10 @@ from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
 
 LlmMode = Literal["off", "replay", "record", "inject"]
+EVALUATION_UNREDACTED_VARIABLE_KEYS = UNREDACTED_VARIABLE_KEYS | frozenset(
+    {"goal", "instructions", "known_facts", "hidden_facts", "conversation", "conversation_seed"}
+)
+"""Synthetic simulator inputs that must preserve scenario figures; they never contain organizer or live data."""
 
 
 @dataclass
@@ -135,6 +139,7 @@ def build_run_llm(
 ) -> RunLlm:
     """The decorated gateway for a run in ``mode``, with the run's own cassette directory."""
     misses = CassetteMisses()
+    evaluation_redactor = Redactor(EVALUATION_UNREDACTED_VARIABLE_KEYS)
     directory = cassette_dir or settings.cassette_dir
     primary: Any
     if mode == "inject":
@@ -158,7 +163,7 @@ def build_run_llm(
         cassettes = CassetteLLM(
             directory,
             model_id=settings.primary_model,
-            redactor=Redactor(),
+            redactor=evaluation_redactor,
             clock=SystemClock(),
             mode=CassetteMode.RECORD if mode == "record" else CassetteMode.REPLAY,
             inner=inner,
@@ -169,6 +174,6 @@ def build_run_llm(
         registry=registry,
         clock=SystemClock(),
         telemetry=NoopTelemetry(),
-        overrides=LlmOverrides(primary=primary),
+        overrides=LlmOverrides(primary=primary, redactor=evaluation_redactor),
     )
     return RunLlm(client, mode, label or model_label(settings, mode), misses)

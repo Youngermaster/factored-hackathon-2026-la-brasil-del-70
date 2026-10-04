@@ -55,6 +55,7 @@ def smoke_llm() -> FakeLLM:
     for prompt_id in REFUSED:
         fake.script(PromptRef(prompt_id=prompt_id, version=1), ScriptedError(LlmProviderRejectedError))
     fake.script(PromptRef(prompt_id="detect_escalation_signals", version=1), ScriptedResponse(output=NO_SIGNALS))
+    fake.script(PromptRef(prompt_id="detect_escalation_signals", version=2), ScriptedResponse(output=NO_SIGNALS))
     fake.script(PromptRef(prompt_id="naive_agent_step", version=1), ScriptedResponse(output=B1_STEP))
     fake.script(PromptRef(prompt_id="judge_transcript", version=1), ScriptedResponse(output=RATING))
     return fake
