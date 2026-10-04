@@ -5,7 +5,7 @@ Scope: dedicated compute `vm-bank-database` in `rg-bank-agent`, `westus2`; priva
 in `rg-la70-test`, `eastus2`. The architecture and commands are in
 [the deployment guide](../../deploy/data-engineering/README.md).
 
-## Engineering naming migration
+## Cancelled Azure naming replacement
 
 Preparation completed on 2026-10-04 in `rg-data-engineering-test`, westus2. Private storage
 `stdataeng213c0ee90850`, the closed engineering network, reserved IP `4.154.75.23`, snapshot
@@ -23,12 +23,22 @@ coverage gates, documentation/data/code-generation checks, and the history secre
 embedding tests were skipped. The 47 focused inspection/migration tests and attached-disk ARM template
 validation also passed.
 
-The replacement VM has not been created. Westus2 regional and B-series quota is 4/4; replacing the VM
-resource requires explicit approval. The existing `vm-bank-database` remains available at
-`13.66.169.189:5432`, with the operator-configured password and current public CA certificate.
-The reserved new IP is not yet a database endpoint. Neither the application VM nor Nequi was changed.
-See [ADR 0041](../adr/0041-data-engineering-deployment-and-datagrip.md) for the guarded cutover and
-post-boot database/TLS verification. Earlier evidence below records the original pipeline deployment.
+The operator cancelled Azure naming replacement on 2026-10-04. The prepared resources remain unused;
+they were not deleted. `vm-bank-database` remains the active data VM at `13.66.169.189:5432`, with the
+operator-configured password and current public CA certificate. Original storage remains
+`stla70238253ae46a02964` in `rg-la70-test`. The reserved new IP is not a database endpoint.
+[ADR 0042](../adr/0042-preserve-azure-resource-names.md) records this decision. Repository helpers now
+reference the original resources. [The process guide](data-engineering-process.md) is the current
+end-to-end operating document. Neither the application VM nor Nequi was changed.
+
+## Current DataGrip verification
+
+After restoring repository references to the original Azure names, the engineering helper downloaded
+the public certificate and verified the external PostgreSQL TLS 1.3 handshake at `13.66.169.189:5432`.
+Read-only administrative verification confirmed schema `0014`, 200 customers, 559 products, and 6,119
+transactions. `bank_datagrip` can log in, has neither superuser nor RLS-bypass privileges, and reads
+200 customers. The application role without customer context reads zero customers. No password was
+requested or changed. The existing endpoint and CA certificate remain the DataGrip connection settings.
 
 ## Verified evidence
 

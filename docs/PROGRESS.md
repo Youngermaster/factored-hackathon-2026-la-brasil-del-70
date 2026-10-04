@@ -70,6 +70,24 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Preserve Azure names and document data engineering (2026-10-04)
+
+- The operator cancelled Azure naming replacement. Keep `vm-bank-database` in `rg-bank-agent`, westus2,
+  and `stla70238253ae46a02964` in `rg-la70-test`, eastus2. The original DataGrip endpoint, password,
+  certificate, data, application VM, and Nequi are preserved. Preparatory engineering resources remain
+  unused; no resource retirement is authorized by this change.
+- Repository organization remains `data-engineering`. Deployment/inspection commands and infrastructure
+  definitions now reference the original Azure identifiers. The abandoned replacement helper and its
+  feature-specific tests were removed; existing safety, security, source-integrity, and restore checks remain.
+- [ADR 0042](adr/0042-preserve-azure-resource-names.md) supersedes Azure renaming only.
+  [The full process guide](data/data-engineering-process.md) explains deployment, contracted sources,
+  bronze/silver/gold, quarantine, bounded PostgreSQL mapping, exact reconciliation, API checks,
+  private evidence and backups, safe reruns, DataGrip TLS, operation, and trade-offs.
+- The 36 focused deployment and inspection tests, Ruff, and documentation checks passed. The updated
+  complete repository gate is running. Live TLS 1.3 verification passed at the original IP; read-only
+  checks confirmed schema `0014`, serving counts 200/559/6119, inspection login enabled with no
+  superuser/bypass privileges, and application RLS returning zero customers without context.
+
 ### Data engineering names and end-to-end deployment (2026-10-04)
 
 - Renamed the local branch to `data-engineering`, the deployment package to `deploy/data-engineering`,

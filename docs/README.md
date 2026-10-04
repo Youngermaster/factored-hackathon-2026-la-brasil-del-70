@@ -96,6 +96,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
 | [adr/0039-azure-vm-data-pipeline.md](adr/0039-azure-vm-data-pipeline.md) | Azure data deployment decision and trade-offs |
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
+| [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 
 ## Exploratory data analysis
@@ -121,6 +122,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [data/local-postgres-mvp.md](data/local-postgres-mvp.md) | Build gold from the local delivery, seed and verify the 200-customer MVP slice, and the plan for the full load |
 | [workflows/data-pipeline.md](workflows/data-pipeline.md) | Source to serving flowchart and the incremental run with a late arrival |
 | [../data_platform/sample/README.md](../data_platform/sample/README.md) | The committed organizer sample: provenance, counts, treatments, and example rows per table |
+| [data/data-engineering-process.md](data/data-engineering-process.md) | Complete engineering process from Azure deployment through quality, loading, tests, and DataGrip |
 | [data/data-engineering-execution.md](data/data-engineering-execution.md) | Verified Azure deployment and execution status |
 
 ## Analysis and decisions

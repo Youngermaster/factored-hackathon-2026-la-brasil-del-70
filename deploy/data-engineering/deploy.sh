@@ -7,19 +7,19 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.."
 
 subscription=32847dfa-5fd4-4276-8bdf-243d72b35119
 tenant=4a5e7334-7901-444c-964b-3e6100209fd1
-group=rg-data-engineering-test
-vm='vm-data-engineering-database'
-storage_group=$group
+group=rg-bank-agent
+vm='vm-bank-database'
+storage_group=rg-la70-test
 state=data/data-engineering
 mkdir -p "$state"
-storage="stdataeng$(printf '%s' "$subscription/$storage_group" | sha256sum | cut -c1-12)"
+storage="stla70$(printf '%s' "$subscription/$storage_group" | sha256sum | cut -c1-16)"
 az_args=(--subscription "$subscription" --only-show-errors)
 [[ "$(az account show --query tenantId -o tsv)" == "$tenant" ]] || { printf 'Wrong tenant.\n' >&2; exit 2; }
 [[ "$(az account show "${az_args[@]}" --query user.name -o tsv)" == valenciajuliann@hotmail.com ]] || {
     printf 'Wrong operator account.\n' >&2; exit 2;
 }
 [[ "$(az group show -n "$group" "${az_args[@]}" --query location -o tsv)" == westus2 ]] || exit 2
-[[ "$(az group show -n "$storage_group" "${az_args[@]}" --query location -o tsv)" == westus2 ]] || exit 2
+[[ "$(az group show -n "$storage_group" "${az_args[@]}" --query location -o tsv)" == eastus2 ]] || exit 2
 
 invoke() {
     az vm run-command invoke -g "$group" -n "$vm" --command-id RunShellScript \
@@ -43,9 +43,6 @@ PY
         deployment_group=$group
         template=deploy/data-engineering/database.json
         parameters=("sshPublicKey=$(cat "$state/ssh.pub")")
-        if [[ -f "$state/os-disk-id" ]]; then
-            parameters+=("osDiskId=$(cat "$state/os-disk-id")")
-        fi
         if [[ "$1" == *-storage ]]; then
             deployment_group=$storage_group
             template=deploy/data-engineering/storage.json
@@ -71,7 +68,7 @@ PY
         ;;
     datagrip)
         client=${2:?authorized public client IPv4 required}
-        host=$(az network public-ip show -g "$group" -n pip-data-engineering-database "${az_args[@]}" \
+        host=$(az network public-ip show -g "$group" -n vm-bank-database-ip "${az_args[@]}" \
             --query ipAddress -o tsv)
         python3 - "$host" "$client" <<'PY'
 import ipaddress
@@ -101,9 +98,9 @@ if len(records) != 1 or records[0].get('tls') is not True:
 if records[0]['host'] != sys.argv[2] or records[0]['client_ipv4'] != sys.argv[3]:
     raise SystemExit('Inspection source mismatch; ingress was not changed.')
 PY
-        az network nsg rule update -g "$group" --nsg-name nsg-data-engineering-database -n deny-all-inbound \
+        az network nsg rule update -g "$group" --nsg-name vm-bank-database-nsg -n deny-all-inbound \
             --priority 200 "${az_args[@]}" -o none
-        az network nsg rule create -g "$group" --nsg-name nsg-data-engineering-database -n allow-datagrip-ip \
+        az network nsg rule create -g "$group" --nsg-name vm-bank-database-nsg -n allow-datagrip-ip \
             --priority 110 --direction Inbound --access Allow --protocol Tcp \
             --source-address-prefixes "$client/32" --source-port-ranges '*' \
             --destination-address-prefixes '*' --destination-port-ranges 5432 "${az_args[@]}" -o none

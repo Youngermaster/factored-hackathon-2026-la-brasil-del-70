@@ -16,88 +16,13 @@ flowchart LR
     vm --> artifacts["Private versioned artifacts and reports"]
 ```
 
-Compute belongs to `rg-data-engineering-test` in `westus2`: `vm-data-engineering-database`, its engineering-named network,
-and private storage `stdataeng213c0ee90850`. The naming migration prepares protected copies of the existing
-`vm-bank-database` and eastus2 storage before a separately approved VM replacement.
+Compute remains `vm-bank-database` in `rg-bank-agent`, `westus2`. Private artifact storage remains
+`stla70238253ae46a02964` in `rg-la70-test`, `eastus2`. Azure names are operational identifiers; repository
+organization uses `data-engineering`. The operator cancelled the Azure naming replacement.
 Both use subscription `32847dfa-5fd4-4276-8bdf-243d72b35119` and tenant
-`4a5e7334-7901-444c-964b-3e6100209fd1`. The scripts refuse a different tenant, operator, or group
-location. The existing `vm-bank-agent` application VM and Nequi resources are excluded from the template.
-
-## Prepare a naming migration
-
-```bash
-uv run --frozen python deploy/data-engineering/migration.py prepare
-```
-
-Preparation creates private storage and closed networking, a private database backup, a checkpointed
-snapshot, an engineering-named disk clone, and SHA-256-verified copies of all source artifacts. The source
-VM remains available. The ignored migration manifest identifies exact source/destination resources.
-Westus2 currently uses all four vCPU, including the source VM: replacement requires an explicitly approved
-cutover. The original OS disk is retained with `deleteOption=Detach`. Do not delete it or snapshots until
-recovery and reference values have been verified. See the ADR for the cutover sequence and boundaries.
-
-## Rehearse recovery and approve replacement
-
-Download the backup named by the private migration manifest into ignored operational storage, then
-verify it before approving replacement:
-
-```bash
-uv run --frozen python deploy/data-engineering/restore_check.py \
-  data/data-engineering/migration-database.dump data/data-engineering/migration.json \
-  --output data/data-engineering/restore-verification.json
-```
-
-This checks the backup SHA-256, restores into an isolated disposable PostgreSQL container with no network
-or published ports, and verifies schema, all five reference-table hashes/counts, application isolation,
-and inspection grants. The proof is bound to the exact migration manifest.
-
-Only after the operator explicitly approves the interruption and source VM deletion:
-
-```bash
-uv run --frozen python deploy/data-engineering/migration.py cutover --confirm-replace-source
-```
-
-The cutover verifies unchanged source references and disk retention, stops only the source data VM,
-creates a final stopped-disk snapshot and clone, then replaces the VM resource. Original disk, snapshots,
-source storage, and networking remain available for recovery. After boot, verify PostgreSQL and configure
-DataGrip TLS for the new IP before retiring any source resources. The existing application VM is excluded.
-
-## Recover an interrupted replacement
-
-Inspect actual resources before taking another action; do not rerun `cutover` blindly. Its restore proof
-is tied to the preparation manifest, which changes after the final disk clone is protected.
-
-```bash
-az vm list --subscription 32847dfa-5fd4-4276-8bdf-243d72b35119 \
-  --query "[?name=='vm-bank-database' || name=='vm-data-engineering-database'].{Name:name,Group:resourceGroup,State:provisioningState}" \
-  -o table
-```
-
-If the source VM still exists and replacement stopped before its deletion, retain every disk and snapshot
-and restore availability with the exact source resource:
-
-```bash
-az vm start --subscription 32847dfa-5fd4-4276-8bdf-243d72b35119 \
-  --resource-group rg-bank-agent --name vm-bank-database
-```
-
-This applies only to the source data VM. Its existing endpoint, certificate, and password remain valid.
-Do not start it while an approved cutover is still running.
-
-If the source VM is gone, verify that the final snapshot and disk named in the migration manifest have
-`Succeeded` and that `data/data-engineering/os-disk-id` identifies the retained engineering disk. Resume
-only the destination deployment and its managed-identity grant:
-
-```bash
-bash deploy/data-engineering/deploy.sh provision
-```
-
-Provision uses the saved specialized disk; it does not replace its database with a fresh image. Keep the
-original source disk and protected snapshots. Before reopening access, verify the schema and five
-reference tables against the migration manifest, then run the DataGrip configuration and TLS checks
-below. Reapplying provision closes inbound traffic, so a successful previous inspection configuration
-must be reapplied. Retire source resources only after successful destination database, pipeline, and
-connection checks and the operator's explicit approval.
+`4a5e7334-7901-444c-964b-3e6100209fd1`. Scripts verify the operator, tenant, and group locations.
+See [the complete process](../../docs/data/data-engineering-process.md) and
+[ADR 0042](../../docs/adr/0042-preserve-azure-resource-names.md).
 
 ## Deploy and execute
 
@@ -115,24 +40,21 @@ bash deploy/data-engineering/deploy.sh publish
 ```
 
 `provision` uses `database.json` to create only the dedicated compute resources and grants its
-managed identity contributor access to the engineering private `artifacts` container. If
-`data/data-engineering/os-disk-id` exists, provision attaches that protected specialized disk instead of
-creating an empty database disk. `provision-storage`
-uses `storage.json` in the engineering resource group. That template contains only storage, its private
+managed identity contributor access to the existing private `artifacts` container. `provision-storage`
+uses `storage.json` in `rg-la70-test`. That template contains only storage, its private
 container, and the operator's storage role; it cannot create VM or network resources.
 
 Repository naming uses `data-engineering`: this directory, local operational files in
-`data/data-engineering`, deployment records, and the local branch. Azure resource names follow the engineering convention. The
+`data/data-engineering`, deployment records, and the local branch. Azure resource names remain unchanged. The
 VM root `/opt/la70-data`, systemd unit `la70-data-pipeline`, and Docker project/volume remain stable to
 preserve the deployed database. Immutable older releases remain readable through an explicit Compose
-path fallback. See [ADR 0041](../../docs/adr/0041-data-engineering-deployment-and-datagrip.md) for the
+path fallback. See [the process guide](../../docs/data/data-engineering-process.md) for the
 complete deployment, validation, and connection process.
 
 The dedicated VM size is `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), with a 128 GiB Standard SSD. Availability and
 subscription quota must pass Azure preflight; this is not a claim of capacity reservation. The sample run
 uses no hosted model. The B-series CPU is burstable; long batches can slow when credits are exhausted.
-VM, disk, public IP, storage, and transactions have separate Azure charges. Artifact migration temporarily duplicates storage and transfers bytes between regions. The replacement
-account and VM share westus2; original backups are retained until recovery is verified.
+VM, disk, public IP, storage, and transactions have separate Azure charges. Storage-to-VM transfers cross regions; the existing names, regions, and data are retained.
 
 The Standard public IP supplies explicit outbound connectivity. By default, the network security group denies all
 inbound traffic, including SSH, API, and PostgreSQL. Administration uses VM Run Command. The required SSH
@@ -153,9 +75,7 @@ uv run --frozen python deploy/data-engineering/datagrip.py check
 the public certificate and verifies the external PostgreSQL TLS handshake, certificate chain, and server
 IP without asking for or changing a password. An existing inspection password survives reconfiguration.
 
-The operator authorized direct TLS inspection of the data engineering database. During preparation,
-the source endpoint remains on `vm-bank-database`; after replacement, obtain the new IP and certificate
-with `datagrip.py check`. PostgreSQL is available at
+The operator authorized direct TLS inspection of the existing dedicated data VM. PostgreSQL is available at
 `13.66.169.189:5432` only from `181.140.234.12/32`. The dedicated NSG allows this source at priority 110
 and denies other inbound traffic at priority 200. Reapplying `provision` restores the closed template;
 reapply the explicit inspection rule only after verifying TLS and the authorized source.
@@ -184,7 +104,7 @@ Create a PostgreSQL data source in DataGrip:
 
 | Setting | Value |
 |---|---|
-| Host after cutover | `4.154.75.23` |
+| Host | `13.66.169.189` |
 | Port | `5432` |
 | Database | `bank_agent` |
 | User | `bank_datagrip` |
@@ -285,7 +205,7 @@ The sample lacks four full-delivery personas; the selected sample persona file s
 PostgreSQL uses the existing non-superuser owner, unprivileged application role, and forced RLS.
 Backups require restore rehearsal before this environment is considered a durable production service.
 
-To stop VM compute charges while preserving disks, use `az vm deallocate` for `vm-data-engineering-database` in `rg-data-engineering-test`.
+To stop VM compute charges while preserving disks, use `az vm deallocate` for `vm-bank-database` in `rg-bank-agent`.
 Disks and the public IP continue to incur charges. Resource deletion is a separate explicit operator action.
 
 ## Verification

@@ -1,114 +1,51 @@
-# ADR 0041: data engineering deployment, validation, and DataGrip access
+# Data engineering process: Azure deployment through DataGrip
 
-- Status: Accepted; Azure naming replacement superseded
-- Date: 2026-10-04
-- Decision makers: Julian Valencia
-- Superseded by: [ADR 0042](0042-preserve-azure-resource-names.md), Azure naming replacement only
-- Supersedes: [ADR 0040](0040-isolated-bank-database-vm.md), resource naming, artifact placement, and PostgreSQL inspection ingress
+Updated: 2026-10-04. Owner: Julian Valencia.
 
-## Context
+## Scope and resource references
 
-The operator requested a complete data engineering environment in Azure, a dedicated `vm-bank-database`,
-username/password inspection through DataGrip, consistent repository names, and a record explaining the
-process from deployment through testing and connection. Quality takes precedence over loading more rows.
-The application VM and Nequi must be preserved. Passwords and tokens must never appear in chat or logs.
+This is the current operating guide. Repository code, tests, local operational state, and documentation
+use `data-engineering`. Azure resource names remain unchanged by the operator's decision in
+[ADR 0042](../adr/0042-preserve-azure-resource-names.md). There is no VM replacement or quota-increase step.
 
-The source compute is `vm-bank-database` in `rg-bank-agent`, `westus2`: two vCPU, 8 GiB RAM, and a
-128 GiB SSD. Source artifact storage is `stla70238253ae46a02964` in `rg-la70-test`, `eastus2`. The operator
-also authorized engineering names for Azure resources; the target is isolated in `rg-data-engineering-test`. Eastus2's regional CPU quota is
-already allocated; this is a regional allocation limit, not a four-vCPU limit on database operation.
-The region and isolation trade-offs are recorded in [ADR 0040](0040-isolated-bank-database-vm.md).
-
-The serving schema is defined by application Alembic migrations and the existing seed mapping, rather
-than copying source CSV columns directly into PostgreSQL. The current schema revision is `0014`.
-The source is a static organizer snapshot with business date `2026-06-17`.
-
-## Considered options
-
-1. **Run the existing validated Python/dbt pipeline on the dedicated VM.** Reuses Pandera contracts,
-   transformations, reconciliation, and application tests. Fits existing quota and isolates workloads.
-   Requires VM maintenance, disk management, certificate renewal, and backup restore rehearsal.
-2. **Introduce Data Factory and managed PostgreSQL.** Adds managed scheduling and database operations,
-   but requires adapting the current Python/DuckDB jobs, new networking and roles, and additional costs.
-   It does not remove the need for source contracts, reconciliation, or application-schema compatibility.
-3. **Use the existing application VM.** Reuses resources, but couples transformations and inspection
-   to another operator's application, CPU, database, and deployment lifecycle.
-
-For inspection, an SSH tunnel would preserve loopback-only PostgreSQL but requires a separate SSH
-identity and ingress. A VPN would preserve private routing but adds client setup and gateway cost.
-Direct TLS with one authorized client IPv4 matches the requested database username/password workflow.
-
-## Decision
-
-Keep the dedicated VM pipeline and explicit TLS inspection from `181.140.234.12/32` only.
-Migrate active engineering resources to the naming convention below while preserving database contents
-and the operator's inspection password.
-Use `data-engineering` for the deployment directory, tests, local operational state, deployment records,
-and local branch. Use the same convention for owned Azure resources; keep the internal persisted database-storage
-identifiers stable.
-The VM root `/opt/la70-data`, systemd unit `la70-data-pipeline`, Docker project `la70-data`, and its
-PostgreSQL volume remain unchanged. Renaming these without migrating persisted state could start an
-empty database. Older immutable releases remain readable through a Compose-path fallback.
-
-### Azure names and controlled migration
-
-| Resource | Target name |
+| Purpose | Existing resource or location |
 |---|---|
-| Resource group | `rg-data-engineering-test` |
-| VM | `vm-data-engineering-database` |
-| OS disk | `disk-data-engineering-database-os` |
-| Snapshot | `snap-data-engineering-database-20261004` |
-| NSG | `nsg-data-engineering-database` |
-| VNet | `vnet-data-engineering` |
-| NIC | `nic-data-engineering-database` |
-| Public IP resource | `pip-data-engineering-database` |
-| Private storage account | `stdataeng213c0ee90850` |
+| Subscription | `32847dfa-5fd4-4276-8bdf-243d72b35119` |
+| Tenant | `4a5e7334-7901-444c-964b-3e6100209fd1` |
+| Dedicated data VM | `vm-bank-database`, `rg-bank-agent`, westus2 |
+| VM capacity | `Standard_B2as_v2`, 2 vCPU, 8 GiB RAM, 128 GiB Standard SSD |
+| VM network | `vm-bank-database-vnet`, `vm-bank-database-nic`, `vm-bank-database-nsg` |
+| Public IP resource | `vm-bank-database-ip`, currently `13.66.169.189` |
+| Private Blob storage | `stla70238253ae46a02964`, `rg-la70-test`, eastus2, container `artifacts` |
+| Database and schema | `bank_agent`, `app`, verified Alembic revision `0014` |
+| Deployment package | `deploy/data-engineering` |
+| Ignored operator state | `data/data-engineering` |
+| Persistent VM state | `/opt/la70-data`, Docker project `la70-data` |
 
-Compute and replacement storage are in westus2, reducing future cross-region transfer. Existing bank
-application and Nequi resources are excluded. Azure resource names cannot be changed in place; a new
-resource group, storage account, network, disk, and VM are required. Westus2 has all four regional and
-B-series vCPU allocated. Deallocation still counts toward quota, so the source VM resource must be
-replaced before the new two-vCPU VM can start. See [Azure vCPU quotas](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas).
+The existing application VM `vm-bank-agent` has its own database and deployment; this task does not
+rewire it to the engineering database. Nequi and other workloads remain outside the deployment scope.
 
-```bash
-uv run --frozen python deploy/data-engineering/migration.py prepare
-```
+## Input, transformations, and serving contract
 
-Preparation creates private destination storage and closed networking without creating a VM. It makes
-a private database backup, records reference-table counts and hashes, checkpoints PostgreSQL, retains
-the source OS disk with `deleteOption=Detach`, and creates a snapshot and an engineering-named disk clone.
-It downloads every source artifact, uploads without overwriting existing destination objects, downloads
-the destination again, and compares SHA-256 and the source ETag. Copies and transfer files are ignored;
-no credential is printed. The source VM and current DataGrip endpoint remain available during preparation.
+The source is the organizer's static synthetic bank snapshot, with business date `2026-06-17`.
+Execution time is distinct from data freshness. The full delivery stays outside Git; only the documented,
+bounded, pseudonymized sample under `data_platform/sample` is committed.
 
-VM replacement is a distinct, explicitly approved cutover because it deletes the old VM resource and
-interrupts its connection. Final protection requires a stopped-source snapshot, a succeeded disk clone,
-and a verified database backup before deleting the source VM. Attach the specialized disk to the new
-VM, assign its managed identity access only to the new private artifact container, and verify schema,
-all reference-table values, inspection login privileges, and application RLS before retiring old resources.
-Keep the original disk and snapshots until recovery has been verified. The public IP and certificate can
-change; obtain the new certificate with `datagrip.py check` and update DataGrip. The password remains intact.
+| Layer | Responsibility | Validation before proceeding |
+|---|---|---|
+| Input | Hash-verified CSV/Parquet snapshots and dated partitions | Source manifest, allowed paths, member bytes and SHA-256 |
+| Ingestion and bronze | Parse sources through the declared contracts | Pandera validation, rejected-row quarantine, source manifest |
+| Silver | Typed, deduplicated, flagged dbt models | Model tests, relationships, explicit orphan flags |
+| Gold | Serving Parquet, analytical marts, and ML inputs | dbt tests, snapshot freshness, quality and lineage |
+| PostgreSQL | Application-shaped reference tables through the existing seed mapping | Alembic schema head and exact mapped-row reconciliation |
+| Application | Real API composition over the engineering database | Four workflows in Spanish/Portuguese and cross-customer 404 |
 
-The preparation manifest records each artifact hash and the exact source/destination resource IDs.
-Prepared snapshots and a copied backup alone do not prove that VM replacement or restore succeeded;
-the execution evidence must record the subsequent boot, PostgreSQL, and connection checks.
+Contracts and dbt models live in `data_platform`; the schema and domain mapping are maintained with the
+application. Source CSV names do not define PostgreSQL columns. Currency amounts and dates preserve
+the application types. Runtime cases, sessions, execution records, and audit data are separate from
+reference data and are not overwritten by the loader.
 
-Recovery rehearsal and approved replacement use separate commands:
-
-```bash
-uv run --frozen python deploy/data-engineering/restore_check.py \
-  data/data-engineering/migration-database.dump data/data-engineering/migration.json \
-  --output data/data-engineering/restore-verification.json
-# Run only after explicit approval of the source VM deletion and connection interruption.
-uv run --frozen python deploy/data-engineering/migration.py cutover --confirm-replace-source
-```
-
-The restore checks the backup SHA-256 before starting a network-isolated disposable PostgreSQL container.
-It proves schema, all five reference-table hashes/counts, application isolation, and inspection grants.
-The cutover requires a successful proof bound to the exact manifest and rechecks current source values.
-It never deletes the original OS disk or either protected snapshot.
-
-### Process and boundaries
+## Process and stage boundaries
 
 ```mermaid
 flowchart TD
@@ -136,19 +73,35 @@ The operator logs in interactively to tenant `4a5e7334-7901-444c-964b-3e6100209f
 `32847dfa-5fd4-4276-8bdf-243d72b35119`. The deployment script verifies that tenant, the operator account,
 and both resource-group locations. It targets only the dedicated VM, its network, and artifact storage.
 
+In a normal terminal, log in interactively and select the subscription before running the scripts:
+
+```bash
+az login --tenant 4a5e7334-7901-444c-964b-3e6100209fd1
+az account set --subscription 32847dfa-5fd4-4276-8bdf-243d72b35119
+az account show --query '{subscription:name,tenant:tenantId,user:user.name}' -o table
+```
+
+Use `--use-device-code` for interactive login when no browser is available. Never copy tokens into logs.
+The VM and storage are already deployed. Infrastructure validation/provisioning commands below describe
+bootstrap, not a required step for each batch. Reapplying provision closes inspection ingress, so restore
+DataGrip configuration afterwards only when TLS setup succeeds.
+
 ```bash
 bash deploy/data-engineering/deploy.sh validate
 bash deploy/data-engineering/deploy.sh provision
 bash deploy/data-engineering/deploy.sh release
 ```
 
-`database.json` declares only `vm-data-engineering-database` and its dedicated network, with denied ingress by default.
+`database.json` declares only `vm-bank-database` and its dedicated network, with denied ingress by default.
 `storage.json` contains only storage, its private container, and the operator's storage role; it cannot
 create compute. The VM identity receives Blob contributor rights at the existing artifact-container scope.
 Storage disables Shared Key and anonymous access. No subscription offer or other workload is changed.
 
 `release` archives Git HEAD, hashes the archive, and uploads it immutably. Uncommitted files and local
 credentials are excluded. Local deployment state lives in ignored `data/data-engineering`.
+Run `release` before the first `start` using the renamed package; it publishes the committed engineering
+paths to the original storage and records the matching revision/hash. The existing running release and
+persisted data remain intact until a deliberate new batch is started.
 
 ### 2. Source transfer and transformation
 
@@ -247,7 +200,7 @@ Create a PostgreSQL data source with these settings:
 
 | Setting | Value |
 |---|---|
-| Host after cutover | `4.154.75.23` |
+| Host | `13.66.169.189` |
 | Port | `5432` |
 | Database | `bank_agent` |
 | User | `bank_datagrip` |
@@ -256,8 +209,7 @@ Create a PostgreSQL data source with these settings:
 | CA file | `data/data-engineering/datagrip/server.crt` |
 | Schemas | `app` |
 
-The source endpoint `13.66.169.189` remains active until the approved cutover; the table shows the
-prepared destination IP. Client certificate and client key are unnecessary: authentication uses the database password. Click
+Client certificate and client key are unnecessary: authentication uses the database password. Click
 **Test Connection**, select `app` for introspection, and open a query console. See the
 [DataGrip SSL guide](https://www.jetbrains.com/help/datagrip/configuring-ssh-and-ssl.html).
 
@@ -268,13 +220,40 @@ SELECT count(*) FROM app.transactions;  -- 6119
 SELECT version_num FROM app.alembic_version; -- 0014
 ```
 
-## Consequences
+## Operation, recovery, and trade-offs
 
-- Existing validated transformations, schema mapping, tests, and evidence remain the source of truth.
-  Repository naming becomes consistent while persisted Azure identifiers remain stable.
-- The authorized operator can query the bounded serving slice directly. Application customer isolation
-  remains enforced and tested; the existing application VM keeps its own database and deployment.
-- B-series CPU can slow sustained batches after credits are depleted. Cross-region Blob transfer, VM,
-  disk, storage, and public-IP costs remain. Managed orchestration and a managed database are deferred.
-- OS maintenance, certificate renewal, client-IP changes, inspection-rule closure, and backup restore
-  rehearsal remain operational responsibilities. A backup alone does not prove restore readiness.
+A pipeline succeeds only when every stage and reconciliation pass and `result.json` says `succeeded`.
+A submitted Azure Run Command alone proves neither successful execution nor correct data. Inspect
+`deploy.sh status`, run-specific results, logs, hashes, and published evidence together.
+
+The nonblocking pipeline lock prevents concurrent writers. Failed input or transformation checks stop
+before PostgreSQL loading. Existing serving rows are retained on rerun; changed source or mapped values
+cause a failure requiring an explicit refresh decision. Do not use an automatic reseed to hide a mismatch.
+Keep the warehouses, PostgreSQL volume, and persistent VM paths when releasing new code.
+
+Private custom-format PostgreSQL backups accompany runs. An isolated restore rehearsal passed for the
+current database: schema, all five reference-table counts/hashes, application RLS, and inspection grants.
+The rehearsal container exposed no ports. A backup file alone is not proof of recovery; a future backup
+must pass its own SHA-256 and restore checks. The existing `restore_check.py` accepts a private manifest
+whose `backup` object declares the expected schema, hash, and reference counts/hashes; it restores into
+a disposable PostgreSQL container and removes it afterwards. Never restore a rehearsal over the live database.
+
+Renew the 90-day TLS certificate before expiry and download the replacement CA through authenticated
+Azure administration. If the client's public IPv4 changes, update both the NSG and HBA configuration
+through the inspection helper. Keep passwords, source credentials, tokens, environment files, full
+organizer data, and private backups out of Git, prompts, and shared logs.
+
+| Choice | Benefit | Cost or limit |
+|---|---|---|
+| Keep Azure names | Preserves working infrastructure, IP, password, and deployment | Repo must explicitly map logical engineering names to existing resource names |
+| Existing Python/dbt jobs on a VM | Reuses tested contracts, models, schema mapping, and evidence | OS, storage, scheduling, backups, and TLS maintenance remain team responsibilities |
+| Burstable 2-vCPU VM | Fits the already deployed capacity | Long batches may slow after CPU credits are depleted |
+| Existing cross-region storage | Preserves the verified artifacts and access configuration | eastus2-to-westus2 transfer has latency and cost |
+| Bounded serving slice | Predictable application validation and customer isolation | 200 customers is not a complete PostgreSQL load of the organizer delivery |
+| Direct TLS from one IPv4 | DataGrip username/password access with verified server identity | Requires IP updates and certificate renewal; SSH/VPN are future alternatives |
+| Static snapshot | Reproducible input, reruns, and comparison | No real-time bank freshness or CDC |
+
+Managed orchestration, managed PostgreSQL, incremental refresh ownership, and the full checkpointed
+PostgreSQL batch loader are separate future work. Current evidence does not claim those capabilities.
+See [the execution record](data-engineering-execution.md) for measured runs and
+[the deployment README](../../deploy/data-engineering/README.md) for operational commands.

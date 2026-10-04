@@ -84,21 +84,18 @@ def test_database_template_closes_ingress_and_requires_managed_identity() -> Non
     assert all(rule["properties"]["access"] == "Deny" for rule in nsg["properties"]["securityRules"])
     vm = next(item for item in resources if item["type"] == "Microsoft.Compute/virtualMachines")
     assert vm["identity"]["type"] == "SystemAssigned"
-    assert (
-        template["variables"]["imageOsProfile"]["osProfile"]["linuxConfiguration"]["disablePasswordAuthentication"]
-        is True
-    )
+    assert vm["properties"]["osProfile"]["linuxConfiguration"]["disablePasswordAuthentication"] is True
 
 
 def test_database_infrastructure_excludes_existing_application_resources() -> None:
     template = json.loads((ROOT / "deploy" / "data-engineering" / "database.json").read_text())
     resources = template["resources"]
     assert {item["name"] for item in resources} == {
-        "vm-data-engineering-database",
-        "nsg-data-engineering-database",
-        "vnet-data-engineering",
-        "pip-data-engineering-database",
-        "nic-data-engineering-database",
+        "vm-bank-database",
+        "vm-bank-database-nsg",
+        "vm-bank-database-vnet",
+        "vm-bank-database-ip",
+        "vm-bank-database-nic",
     }
     assert all(item["location"] == "[resourceGroup().location]" for item in resources)
     assert "vm-bank-agent" not in json.dumps(template)
