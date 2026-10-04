@@ -10,7 +10,7 @@
  *      150 words per minute sits inside the declared target and under the
  *      3:00 video limit; script.md and docs/demo/video-monologue.md say the
  *      same words by the same speakers (scripts/narration.ts)
- *  5b. the submission PDF: 4 to 6 main slides, and export --range covers only them
+ *  5b. the submission PDF: 4 to 6 main slides, and `pnpm export` splits the appendix off
  *   6. writing: no em dashes in anything shown or spoken
  *   7. naming: no known variant spelling of the product, team, systems,
  *      workflows, metrics or levels; team names identical on the close slide,
@@ -200,11 +200,11 @@ const mainSlides = aliases.filter((a) => !a.startsWith('appendix'))
 const firstAppendix = aliases.findIndex((a) => a.startsWith('appendix'))
 if (mainSlides.length < 4 || mainSlides.length > 6) fail(`${mainSlides.length} main slides; the organizers allow 4 to 6`)
 if (firstAppendix !== -1 && firstAppendix !== mainSlides.length) fail('appendix slides must come after every main slide')
+// Slidev ignores --range in hash router mode, so `pnpm export` renders the deck once and
+// scripts/split-pdf.mjs cuts it by routeAlias into the pitch PDF and the appendix PDF
 const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> }
-const rangeOf = (s?: string) => s?.match(/--range\s+(\S+)/)?.[1]
-if (rangeOf(pkg.scripts.export) !== `1-${mainSlides.length}`) fail(`package.json "export" must use --range 1-${mainSlides.length} (the main slides only)`)
-else if (firstAppendix !== -1 && rangeOf(pkg.scripts['export:appendix']) !== `${firstAppendix + 1}-${aliases.length}`) fail(`package.json "export:appendix" must use --range ${firstAppendix + 1}-${aliases.length}`)
-else ok(`${mainSlides.length} main slides in the submission PDF (export --range 1-${mainSlides.length}); the appendix exports apart`)
+if (!/node scripts\/split-pdf\.mjs/.test(pkg.scripts.export ?? '')) fail('package.json "export" must end with node scripts/split-pdf.mjs, which keeps the appendix out of the submission PDF')
+else ok(`${mainSlides.length} main slides in the submission PDF, ${aliases.length - mainSlides.length} appendix slides in their own PDF (scripts/split-pdf.mjs)`)
 
 // ── 6. writing ─────────────────────────────────────────────────────────────
 console.log('\nwriting')

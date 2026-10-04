@@ -25,8 +25,7 @@ pnpm dev                 # http://localhost:3131, presenter view at /#/presenter
 | `pnpm shots` | Screenshots of every slide at every click into `.shots/deck/` (dev server running) |
 | `node scripts/sheet.mjs <scene>` | Contact sheet of one scene at every cue and midpoint, into `.shots/scenes/` |
 | `pnpm build` | Static site into `dist/` |
-| `pnpm export` | The six main slides as a PDF, one page per click, into `export/la-brasil-del-70-pitch.pdf` |
-| `pnpm export:appendix` | The three appendix slides as their own PDF, `export/la-brasil-del-70-appendix.pdf` |
+| `pnpm export` | Two PDFs, one page per click: the six main slides in `export/la-brasil-del-70-pitch.pdf` (the submission) and the appendix in `export/la-brasil-del-70-appendix.pdf` |
 | `pnpm export:final` | `check:content --strict`, then `pnpm export`: the submission build |
 
 The workbench is at `http://localhost:3131/#/lab`: pick a scene, scrub its playhead, jump between cues. Add `?scene_t=3.2` to a deck URL to freeze every scene at that time, or `?scene_snap` to show each click's finished frame.
@@ -127,12 +126,11 @@ One name per thing, everywhere in the deck, the narration and the video guide:
 ## Exporting the PDF
 
 ```bash
-pnpm export:final        # the submission PDF: six main slides, fails while any metric is pending
-pnpm export              # the same six slides as a draft, pending boxes included
-pnpm export:appendix     # the three appendix slides, a separate PDF
+pnpm export:final        # check:content --strict, then pnpm export; fails while any metric is pending
+pnpm export              # the same PDFs as a draft, pending boxes included
 ```
 
-`pnpm export` uses `--range 1-6`, so the submission PDF holds only the six main slides (32 pages, one per click, which keeps the build-ups readable on paper); `export:appendix` uses `--range 7-9` (7 pages). `pnpm check:content` fails if a range stops matching the deck. Do not add `--per-slide`: every scene would export at its arrival frame only.
+`pnpm export` renders the whole deck once, then `scripts/split-pdf.mjs` cuts it by `routeAlias`: the main slides go to `la-brasil-del-70-pitch.pdf` (32 pages, one per click, which keeps the build-ups readable on paper), the slides whose alias starts with `appendix` to `la-brasil-del-70-appendix.pdf` (7 pages). The split is needed because Slidev 52 ignores `--range` in hash router mode, and it fails when the page count does not match the `clicks:` budgets in `slides.md`. Do not add `--per-slide`: every scene would export at its arrival frame only.
 
 Slidev does not reliably hot-reload frontmatter: after changing `clicks:` or `transition:` in `slides.md`, restart `pnpm dev`.
 
