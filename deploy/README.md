@@ -273,6 +273,8 @@ curl -sI https://demo.your-domain.org | grep -iE 'strict-transport|content-secur
 
 The smoke test checks the certificate (valid for the host, at least 7 days left), `/health/live` and `/health/ready`, the SPA and API security headers, the demo sign-in with `__Host-session` (`Secure`, `HttpOnly`, `SameSite=Strict`, no `Domain`), one read-only conversation per workflow in both languages (account inquiry in es, card support in pt, a dispute intake in es and in pt, the seeded open case's status in es, answered with its deadline, the credit catalog in pt), an out-of-scope request answered with an abstention, and a cross-customer read answered with 404. It never prints a code, a cookie, or a token, and it changes no demo data, so it can run every day.
 
+**The new-chat quota and repeated runs.** Each new conversation counts against the customer's quota, `CONVERSATION_CREATION_LIMIT` new chats per rolling `CONVERSATION_CREATION_WINDOW_MINUTES` (ADR 0026), and every run signs in as the same personas. The smoke test therefore opens six conversations per run: one per persona, except two for the dispute persona, whose es and pt intakes each need a fresh one (the out-of-scope request continues the credit conversation). With the defaults outside the public demo (five per 60 minutes), the dispute persona allows two runs per hour; the public demo (`DEMO_MODE` and `ALLOW_PUBLIC_DEMO_MODE` true, `CONVERSATION_CREATION_LIMIT` empty) defaults to 200, shared with the judges signing in as the same personas. If the quota is used up anyway, the smoke test fails at once with `conversation_creation_limited`, the persona, and the `Retry-After`, rather than the generic "stayed rate limited": wait for the window to pass, or set `CONVERSATION_CREATION_LIMIT` in `deploy/.env.production` and run `deploy/prod.sh up` ([demo mode](../docs/security/demo-mode.md)).
+
 ## Operate
 
 | Task | Command |
@@ -381,6 +383,7 @@ The project name keeps it apart from the development stack; it publishes 8080 an
 | The API restarts with `unsafe settings: ...` | The message names each variable (never its value); fix them in the env file |
 | The certificate is not issued | DNS does not point at the VM yet, or port 80 is closed in the cloud firewall; `deploy/prod.sh logs web` |
 | `429` answers during a demo | The shared rate limits (per address and per session); a room behind one NAT shares one address: raise `RATE_LIMIT_*` in the env file for the session and `deploy/prod.sh up` |
+| `429 conversation-creation-limited` when opening a chat | The customer's new-chat quota for the rolling window, shared by everyone signed in as that persona; set `CONVERSATION_CREATION_LIMIT` (the public demo defaults to 200 when it is empty) and `deploy/prod.sh up` |
 | Every reply starts with the limited-service notice | Degradation level L2: the provider is down or the daily budget is spent (`/health/details`, runbook `DegradedTemplateOnly`) |
 | `503 dependency-unavailable` | PostgreSQL is down or read-only; `deploy/prod.sh status`, runbook `DatabaseUnavailable` |
 

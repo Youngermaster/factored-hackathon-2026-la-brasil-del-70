@@ -32,7 +32,14 @@ Migration `0014_human_service_messages.py` creates `app.human_messages`, with fo
 
 ## Creating another chat
 
-The server permits at most five successful new conversations per authenticated customer in the preceding rolling 60 minutes. Counting is customer-scoped across sessions and API workers, serialized transactionally, and excludes rolled-back creations. At exactly 60 minutes an old creation leaves the window. A refused creation returns 429 `conversation-creation-limited` with `Retry-After`. Existing messages consume no creation slots, and multiple active chats are allowed.
+The server permits at most `CONVERSATION_CREATION_LIMIT` successful new conversations per authenticated customer in the preceding rolling `CONVERSATION_CREATION_WINDOW_MINUTES`. Counting is customer-scoped across sessions and API workers, serialized transactionally, and excludes rolled-back creations. At exactly the window's length an old creation leaves the window. A refused creation returns 429 `conversation-creation-limited` with `Retry-After`, the time until enough counted creations leave the window. Existing messages consume no creation slots, and multiple active chats are allowed. The web app tells the customer they reached the limit of new chats for now, without naming a number, so the copy holds for any configuration.
+
+| Setting | Default | Bounds |
+| --- | --- | --- |
+| `CONVERSATION_CREATION_LIMIT` | Empty: 5, or 200 when `DEMO_MODE` and `ALLOW_PUBLIC_DEMO_MODE` are both true; an explicit value always wins | 1 to 10,000 |
+| `CONVERSATION_CREATION_WINDOW_MINUTES` | 60 | 1 to 1,440 |
+
+The settings live in `ConversationSettings` (`bootstrap/settings.py`); the composition root turns them into a `ConversationCreationQuota` and passes it to the memory and PostgreSQL units of work, and the shared contract suite runs a configured limit and window on both. The public demo's higher default exists because every visitor shares the seeded personas; [demo mode](../security/demo-mode.md) records the trade-off.
 
 ## Verification and local walkthrough
 
@@ -40,6 +47,6 @@ The server permits at most five successful new conversations per authenticated c
 2. In the customer chat, request a person. Confirm the queued state and leave a follow-up. The URL retains its conversation ID.
 3. In the agent inbox, claim that handoff, read its structured context, and send a reply. Both browsers show the exchange on the original conversation.
 4. Refresh both browsers. Temporarily disconnect the customer browser, then reconnect; the saved exchange returns. Resolve from the assigned agent and check that the customer history stays readable and the composer closes.
-5. Start another chat; the sixth creation within an hour is refused, including from another session for the same customer.
+5. Start another chat; with the default settings the sixth creation within an hour is refused, including from another session for the same customer.
 
 Automated evidence: shared repository contracts cover both memory and PostgreSQL, including isolation, idempotency, rollback, creation boundaries, and lifecycle races. HTTP integration tests exercise both directions with customer and agent logins, queued availability, refresh reads, closure, CSRF, rejected forged authors, and creation quotas across sessions. Web integration tests cover queued sends, refresh, reconnect, cursor pagination, claim and reply, the quota message, and accessibility in both themes. Production-role tests exercise forced RLS, closure, and retention with a non-superuser owner. Historical evaluation results describe the frozen assistant run and are not measurements of this new capability.
