@@ -119,3 +119,12 @@ def test_vm_deploy_runs_git_and_prod_sh_as_the_operator_and_reports_a_result_lin
     assert "set -x" not in script
     assert 'printf \'%s\' "${REGISTRY_TOKEN}" > "${TOKEN_FILE}"' in script
     assert stat.S_IMODE((DEPLOY / "azure" / "vm-deploy.sh").stat().st_mode) & 0o111
+
+
+def test_the_registry_token_is_written_before_the_file_changes_owner() -> None:
+    """Root cannot write a file another user owns in /tmp when fs.protected_regular=2 (the Ubuntu default)."""
+    script = (Path(__file__).resolve().parents[4] / "deploy" / "azure" / "vm-deploy.sh").read_text(encoding="utf-8")
+    write = script.index('printf \'%s\' "${REGISTRY_TOKEN}" > "${TOKEN_FILE}"')
+    chown = script.index('chown "${OWNER}" "${TOKEN_FILE}"')
+
+    assert write < chown

@@ -8,6 +8,8 @@
 #   deploy/azure/setup-github-oidc.sh               # create or reuse, then print the GitHub settings
 #
 # Settings (environment):
+#   SUBJECT_PREFIX      the token subject prefix; default asked from GitHub (actions/oidc/customization/sub), which
+#                       includes immutable ids ("repo:owner@<id>/name@<id>") on repositories that use them
 #   GITHUB_REPOSITORY   owner/name exactly as GitHub spells it (the federated subject is case-sensitive); default
 #                       from `gh repo view`, else the origin remote
 #   RESOURCE_GROUP      default rg-bank-agent;  VM_NAME  default vm-bank-agent (as in provision.sh)
@@ -76,8 +78,25 @@ repository() {
   printf '%s' "${url}" | sed -E 's#^(git@github\.com:|https://github\.com/)##'
 }
 
+subject_prefix() {
+  # GitHub can put immutable owner and repository ids in the token subject ("repo:owner@<id>/name@<id>"), and new
+  # repositories do so by default. The federated subject must match exactly, so ask GitHub for the prefix it uses.
+  local prefix=""
+  if [[ -n "${SUBJECT_PREFIX:-}" ]]; then printf '%s' "${SUBJECT_PREFIX}"; return; fi
+  # gh prints the error body on stdout when the call fails, so keep its output only when it succeeds.
+  if command -v gh > /dev/null 2>&1 &&
+    prefix="$(gh api "repos/${REPOSITORY}/actions/oidc/customization/sub" --jq '.sub_claim_prefix // empty' 2> /dev/null)"; then
+    :
+  else
+    prefix=""
+  fi
+  printf '%s' "${prefix:-repo:${REPOSITORY}}"
+}
+
 REPOSITORY="$(repository)"
 [[ "${REPOSITORY}" =~ ^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$ ]] || fail "set GITHUB_REPOSITORY=owner/name"
+SUB_PREFIX="$(subject_prefix)"
+[[ "${SUB_PREFIX}" =~ ^repo:[A-Za-z0-9@._/-]+$ ]] || fail "unexpected subject prefix; set SUBJECT_PREFIX=repo:owner/name"
 APP_NAME="${APP_NAME:-github-deploy-${REPOSITORY#*/}}"
 [[ "${ROLE_MODE}" == "custom" || "${ROLE_MODE}" == "builtin" ]] || fail "ROLE_MODE must be custom or builtin"
 [[ "${ENVIRONMENT}" =~ ^[A-Za-z0-9._-]+$ ]] || fail "ENVIRONMENT must be a plain environment name"
@@ -155,9 +174,9 @@ federate() {
     say "    ${name}: subject updated to ${subject}"
   fi
 }
-federate "github-${ENVIRONMENT}-environment" "repo:${REPOSITORY}:environment:${ENVIRONMENT}"
+federate "github-${ENVIRONMENT}-environment" "${SUB_PREFIX}:environment:${ENVIRONMENT}"
 if [[ "${BRANCH_CREDENTIAL}" == "1" ]]; then
-  federate "github-main-branch" "repo:${REPOSITORY}:ref:refs/heads/main"
+  federate "github-main-branch" "${SUB_PREFIX}:ref:refs/heads/main"
 else
   say "    github-main-branch: skipped (BRANCH_CREDENTIAL=0)"
 fi
