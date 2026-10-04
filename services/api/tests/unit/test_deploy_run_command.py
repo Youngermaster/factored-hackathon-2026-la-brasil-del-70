@@ -128,3 +128,13 @@ def test_the_registry_token_is_written_before_the_file_changes_owner() -> None:
     chown = script.index('chown "${OWNER}" "${TOKEN_FILE}"')
 
     assert write < chown
+
+
+def test_commands_run_as_the_owner_start_in_the_checkout() -> None:
+    """run-command starts in a root-only directory; compose cannot stat a working directory the owner cannot read."""
+    script = (Path(__file__).resolve().parents[4] / "deploy" / "azure" / "vm-deploy.sh").read_text(encoding="utf-8")
+    start = script.index("as_owner() {")
+    body = script[start : script.index("\n}\n", start)]
+
+    assert 'cd "${CHECKOUT}"' in body
+    assert body.index('cd "${CHECKOUT}"') < body.index("runuser -u")
