@@ -16,13 +16,13 @@ in `rg-la70-test`, `eastus2`. The architecture and commands are in
 | Alternative-region preflights | Tested VM placements in eastus and centralus returned `SkuNotAvailable`; no resources were created there | Tested placements unavailable |
 | Private artifact storage | `stla70238253ae46a02964` is `Succeeded` in `eastus2`; `artifacts` has no public access, Shared Key is disabled, minimum TLS is 1.2 | Verified in Azure |
 | Reference-value reconciliation | 10 PostgreSQL/unit tests passed, including money, currency, timestamp, and credit-score corruption | Verified locally |
-| Artifact and stage safety | 17 tests passed, including archive corruption, unsafe paths and links, preserved existing state, and failure before ingestion/PostgreSQL | Verified locally |
+| Artifact and stage safety | 19 tests passed, including archive corruption, unsafe paths and links, preserved existing state, and failure before ingestion/PostgreSQL | Verified locally |
 | Full local application path | Fresh sample preparation, strict PostgreSQL reconciliation, eight es/pt workflow checks, cross-customer 404, and zero loaded objects on unchanged ingestion passed in the integration suite | Verified locally |
 | Dedicated VM | `vm-bank-database` is running in westus2 with 2 vCPU, 8 GiB RAM, a verified 128 GiB disk, and denied inbound access | Verified in Azure |
-| VM pipeline execution | Run `20261004T175314Z-59a43e8fea4d` completed the full pipeline, strict PostgreSQL reconciliation, eight es/pt flow checks, customer-isolation 404, and backup | First cloud run succeeded; retained-state rerun pending |
+| VM pipeline execution | Both full-source runs succeeded; retained-state rerun loaded zero objects, reconciled identical reference values, reached schema `0014`, and repeated eight es/pt checks plus customer-isolation 404 | Complete in Azure |
 | Full gold migration | Five private Parquet files, 5,192,103 rows, 241,693,714 bytes; each downloaded SHA-256 matches the validated local file | Verified in Azure Blob |
-| Full input migration | 7,671 contracted source objects archived privately; uploaded archive downloaded and SHA-256 verified; complete per-file restoration passed locally | Verified in Azure Blob |
-| Cloud code publication | Release `bb6069e6c01f106041ff239d331107a2993b6343` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
+| Full input migration | 7,671 source objects archived privately, download hash verified, restored in Azure, then reused unchanged | Verified in Azure |
+| Cloud code publication | Schema-compatible release `74c46aba0058d0ab4a1f1ee80bfdfa73ce417dcf` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
 | Repository-wide checks | Updated `make check` passed: 2,889 unit, 1,536 integration, 349 web, 11 coverage gates, docs/data/code-generation checks, and the history secret scan; ShellCheck also passed | Verified locally |
 
 Three optional real-embedding tests were skipped because the ml extra is absent. The full suite ran in the
@@ -31,15 +31,17 @@ The resource group itself is `Succeeded` in `eastus2` with the requested project
 The original eastus2 preflight returned `QuotaExceeded`. The operator subsequently authorized a
 separate data VM in westus2; provisioning succeeded without changing the existing application or Nequi.
 
-## Completion criteria
+## Completion status
 
-Upload the committed release, execute the full local source on the dedicated data VM, inspect the actual
-systemd unit and result file, publish artifacts, and repeat the run. Record the resource inventory, revision,
-run identifiers, hashes, row counts, eight workflow checks, customer-isolation result, unchanged ingestion,
-and retained database state here. Report all failures explicitly. Passing local tests is not evidence of a
-successful Azure run. The goal stays unfinished until the cloud run and required repository checks pass.
+Complete for the authorized data scope: dedicated compute, full-source migration and transformation,
+quality/lineage, bounded serving PostgreSQL, strict value reconciliation, schema `0014`, eight es/pt
+application smoke checks, customer isolation, retained-state rerun, private evidence, and backups.
+Both systemd executions and their actual result files were inspected. All downloaded archives and
+recorded artifact hashes passed verification. Repository-wide checks passed; the final documentation
+update passed its own gate. The existing public application's database remains separate. The full
+PostgreSQL batch loader and a backup restore rehearsal remain outside this completed scope.
 
-## Published code release
+## Initial published code release
 
 - Revision: `bb6069e6c01f106041ff239d331107a2993b6343`.
 - SHA-256: `3f0d545f1bff19e033c8e8102390ea56c88e047ea8597ae5c55352455b7f6b16`.
@@ -56,8 +58,8 @@ to other resource groups; scaling or reusing that cluster requires a new explici
 
 The subscription currently uses the Free Trial offer. A quota increase requires upgrading that offer
 first, as documented in [Azure subscription limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits).
-Retrying the same portal quota request alone does not resolve this offer restriction. No billing
-change was made. Read-only SKU discovery and ARM validation also tested D2s_v6 and B2ms in eastus, and
+Retrying the same portal quota request alone does not resolve this offer restriction. No subscription-offer
+upgrade was made. Read-only SKU discovery and ARM validation also tested D2s_v6 and B2ms in eastus, and
 D2s_v3 plus D2s_v6 (including zone 2) in centralus. All tested placements returned `SkuNotAvailable`.
 This does not establish that every region or VM size is unavailable.
 
@@ -95,7 +97,7 @@ snapshot does not imply current balances or repaired branch relationships.
 
 The earlier published gold-transfer manifest records `cloud_pipeline_executed=false` and
 `postgres_loaded_in_azure=false`, accurately describing that earlier transfer. The cloud run evidence
-below now proves execution and PostgreSQL loading; a verified cloud rerun remains a completion requirement. The uploaded gold snapshot can be retrieved independently
+below proves execution, PostgreSQL loading, and a verified retained-state rerun. The uploaded gold snapshot can be retrieved independently
 of VM provisioning.
 
 ## Full contracted source in private Azure Blob
@@ -131,7 +133,7 @@ creator for `vm-bank-agent` and read-only inspection found the public applicatio
 there. The separate VM and its network resources are `Succeeded` in `rg-bank-agent`, westus2.
 The disk is 128 GiB Standard SSD; the dedicated NSG denies all inbound traffic at priority 100.
 The VM managed identity received Blob contributor access limited to the existing private container.
-No public application configuration, Nequi resource, or existing database was changed.
+The public application configuration and database, and all Nequi resources, were preserved.
 
 The unmerged pipeline ADR was renumbered to 0039 after fetching main, whose ADR 0038 now describes
 Azure continuous deployment. Main and current remote branches were checked; PR metadata was not
@@ -140,12 +142,13 @@ records the operator's new deployment scope and first full-source run.
 
 ## Application schema compatibility
 
-The existing application runs merged main `8ac625afa4d8`, whose Alembic head is `0014`.
+The existing application was observed on merged main `8ac625afa4d8`, whose Alembic head is `0014`.
 The data deployment imports that merged migration unchanged and supplies transaction-local
 `app.staff_id` from the trusted session before exposing repositories, including after commit
 and rollback. This preserves claim-scoped RLS and the assigned-agent conversation closure
-trigger. The first cloud release has head `0013`; a subsequent committed release must upgrade
-it to `0014` and pass reconciliation before schema compatibility is reported as verified.
+trigger. The first run reached head `0013`; the retained-state run upgraded it to `0014` and
+passed strict reference reconciliation. A database query verified that the new table exists with
+RLS both enabled and forced. Four real-PostgreSQL compatibility tests also passed.
 The existing application VM and its database connection remain unchanged.
 
 ## First complete Azure execution
@@ -180,5 +183,32 @@ The existing application VM and its database connection remain unchanged.
 
 The schema-compatible release is `74c46aba0058d0ab4a1f1ee80bfdfa73ce417dcf`, download-verified
 code SHA-256 `74cdb6d82c873c8c39802ed666e78d7bd2af0c96d6e8e0261e8884a7a45d3d0c`.
-The second run must forward-migrate the retained database to `0014`, reload no unchanged source
-objects, preserve gold and reference counts/values, and repeat the application checks.
+The retained-state run met all of those requirements, as recorded below.
+
+## Verified retained-state rerun and closure
+
+- Run: `20261004T191022Z-74c46aba0058`; revision `74c46aba0058d0ab4a1f1ee80bfdfa73ce417dcf`.
+- Final status: `succeeded`, with the systemd unit inactive after completion.
+- Source: 7,671 unchanged objects, zero new, changed, loaded, or failed objects and zero newly
+  quarantined rows. The previous 24,029 quarantine rows remain in the warehouse and quality report.
+- All five gold counts and file hashes match the first cloud run and validated local gold.
+- PostgreSQL was retained; automatic reseeding was refused. Migration advanced `0013` to `0014`;
+  strict reconciliation passed with exactly the same selected reference counts and values.
+- The human messages table exists with RLS enabled and forced; owner and application remain
+  non-superuser, non-bypass roles. Port 5432 remains bound to loopback.
+- dbt tests again report 271 passes, two warnings, zero errors or skips; all 13 freshness checks
+  pass. All eight es/pt flow checks and customer-isolation 404 pass with the fake provider.
+- Private archive: `artifacts/runs/eb3d935aa6ab76676edb8ff61d4bc5cfe06f96da9bfe44c8412966c88a081c36.tar.gz`.
+  Download SHA-256 and all 23 recorded artifact hashes passed, including the PostgreSQL backup.
+- Private inspection: `artifacts/runs/20261004T191022Z-74c46aba0058/inspection-8bdd61fe4f2326d2dbd0312079cf2c30b9a02807949c1f010d17955db96525d4.json`;
+  its downloaded hash matches.
+- Final manifest: `artifacts/runs/completion/64c1d9f2fc902bfc8a59d9af0258ae32a2093f1c1b164befd282e816d8de25bd.json`;
+  uploaded and downloaded SHA-256 match. It records both runs, private resource scope, source/code/run
+  hashes, quality results, PostgreSQL counts, application checks, local gates, and explicit limits.
+
+The final VM check reports `VM running` and `Succeeded` in westus2. No repository push, public
+application reconfiguration, Nequi change, or quota increase was performed. The existing application
+was not redirected to this private database. A final optional read-only container recheck was refused
+because another Run Command was active on the existing VM; it was left alone. Schema alignment here
+is tied to the previously inspected application revision, not to any concurrent deployment by another
+operator.
