@@ -106,6 +106,7 @@ def test_the_repository_price_table_loads_and_every_hosted_entry_awaits_human_ve
     ids = {entry.model_id for entry in table.entries}
     assert {"anthropic/claude-sonnet-5", "anthropic/claude-haiku-4-5-20251001"} <= ids
     assert any(entry.model_id.startswith("openai/") for entry in table.entries)
+    assert "gemini/gemini-3.1-flash-lite" in ids  # the Azure demo's primary model, still unverified
     for entry in table.entries:
         assert entry.source_url.startswith("https://")
         if entry.model_id.startswith("ollama/"):

@@ -1,9 +1,10 @@
 # Language model prices, read by the cost accounting decorator and the budget guard.
 #
 # Prices are US dollars per million tokens, written as quoted strings so they parse as exact decimals.
-# No price exists anywhere in code. The hosted provider has not been chosen (human decision pending), so every
-# hosted entry below is a candidate with verified: false. The local Ollama entry costs nothing and is verified. Before relying on an entry, a person opens source_url, checks both
-# prices for the exact model id, updates effective_date, and sets verified: true in the same commit.
+# No price exists anywhere in code. Every hosted entry below has verified: false, including the Azure demo's primary
+# model (gemini/gemini-3.1-flash-lite); the local Ollama entry costs nothing and is verified. Before relying on an
+# entry, a person opens source_url, checks both prices for the exact model id, updates effective_date, and sets
+# verified: true in the same commit.
 #
 # Unverified entries are charged at their price times unverified_price_multiplier, and a model missing from
 # this table is charged at the highest input and output prices below times the multiplier, so the budget guard
