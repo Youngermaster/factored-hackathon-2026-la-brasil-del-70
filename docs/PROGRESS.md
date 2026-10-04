@@ -70,6 +70,19 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Production application database connection guide (2026-10-04)
+
+- Added [the production connection guide](data/production-database-connection.md): `bank_app` versus
+  owner/inspection roles, the supported internal Compose connection, host-loopback reuse of the engineering
+  database, and private routing/HBA/TLS and Compose prerequisites for an application on another VM.
+- Checked current settings and engine wiring: no database TLS/CA settings or explicit verified SSL context
+  are implemented; production Compose hardcodes `postgres`. The guide distinguishes required remote
+  integration work from the existing working connection and includes readiness, isolation, write/read-back,
+  shared-state, pool-capacity, and password-rotation verification.
+- Read-only Azure CLI confirmed the data VM private address `10.70.1.4`. No application, database, cloud
+  networking, secrets, or deployment configuration was changed. `make docs-check` passed, including
+  Markdown, Mermaid, and documentation check-script tests.
+
 ### Preserve Azure names and document data engineering (2026-10-04)
 
 - The operator cancelled Azure naming replacement. Keep `vm-bank-database` in `rg-bank-agent`, westus2,

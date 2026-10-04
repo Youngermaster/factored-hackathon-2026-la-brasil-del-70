@@ -122,6 +122,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [data/local-postgres-mvp.md](data/local-postgres-mvp.md) | Build gold from the local delivery, seed and verify the 200-customer MVP slice, and the plan for the full load |
 | [workflows/data-pipeline.md](workflows/data-pipeline.md) | Source to serving flowchart and the incremental run with a late arrival |
 | [../data_platform/sample/README.md](../data_platform/sample/README.md) | The committed organizer sample: provenance, counts, treatments, and example rows per table |
+| [data/production-database-connection.md](data/production-database-connection.md) | Production API database settings, roles, deployment topologies, private routing/TLS prerequisites, and verification |
 | [data/data-engineering-process.md](data/data-engineering-process.md) | Complete engineering process from Azure deployment through quality, loading, tests, and DataGrip |
 | [data/data-engineering-execution.md](data/data-engineering-execution.md) | Verified Azure deployment and execution status |
 

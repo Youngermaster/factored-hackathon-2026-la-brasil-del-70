@@ -18,6 +18,13 @@ Everything needed to run the system outside the Python and web packages: the dev
 
 The images are defined next to their code: `services/api/Dockerfile` (targets `api` and `job`) and `apps/web/Dockerfile` (Caddy with the static build).
 
+## Application database connection
+
+The API uses `bank_app` over the internal `postgres:5432` service; administrative jobs use `bank_owner`.
+[The production connection guide](../docs/data/production-database-connection.md) covers these settings,
+reusing the engineering database, and the required private routing, TLS, and Compose changes for another VM.
+Changing `POSTGRES_HOST` in the production env file alone does not override the current Compose definitions.
+
 ## The production stack
 
 ```mermaid

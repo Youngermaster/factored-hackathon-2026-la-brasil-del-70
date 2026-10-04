@@ -220,6 +220,14 @@ SELECT count(*) FROM app.transactions;  -- 6119
 SELECT version_num FROM app.alembic_version; -- 0014
 ```
 
+## Production application integration
+
+The API connects as `bank_app`; DataGrip uses the separate read-only `bank_datagrip` role.
+[The production connection guide](production-database-connection.md) documents the supported internal
+Compose connection, loopback access to the engineering database, the private-network/TLS work required
+for another VM, separate owner jobs, and readiness/isolation/write verification. The engineering
+connection is not automatically substituted into the existing application's deployment.
+
 ## Operation, recovery, and trade-offs
 
 A pipeline succeeds only when every stage and reconciliation pass and `result.json` says `succeeded`.
