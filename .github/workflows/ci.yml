@@ -185,13 +185,12 @@ jobs:
         run: |
           docker run --rm -v "${PWD}/deploy:/mnt:ro" -w /mnt \
             "koalaman/shellcheck:v0.11.0@sha256:61862eba1fcf09a484ebcc6feea46f1782532571a34ed51fedf90dd25f925a8d" \
-            prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh
+            prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh \
+            azure/keyvault-secrets.sh azure/provision.sh azure/install-vm.sh
       - name: Production compose file is valid
+        # Secrets are mounted files (ADR 0037): the compose file needs only the two required site values.
         run: |
           SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
-          POSTGRES_SUPERUSER_PASSWORD="$(openssl rand -hex 16)" POSTGRES_ADMIN_PASSWORD="$(openssl rand -hex 16)" \
-          POSTGRES_APP_PASSWORD="$(openssl rand -hex 16)" SESSION_SECRET="$(openssl rand -hex 32)" \
-          CSRF_SECRET="$(openssl rand -hex 32)" \
             docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example --profile '*' config --quiet
       - name: Build the production images (web, api, job)
         run: make images IMAGE_TAG=ci VITE_DEMO_MODE=true

@@ -1,7 +1,12 @@
-"""Typed settings, organized per concern and read only from the environment.
+"""Typed settings, organized per concern and read from the environment and, optionally, from secret files.
 
 Environment variable names match the root ``.env.example`` exactly. Only this package reads the
 environment. Secrets are ``SecretStr`` so they never appear in reprs, logs, or validation messages.
+
+``SECRETS_DIR`` names a directory of mounted secret files, one file per variable named like the variable (for example
+``/run/secrets/SESSION_SECRET``), as the production stack mounts them from Azure Key Vault (ADR 0037). Development and
+tests leave it empty and keep using the environment and ``.env``. An environment variable still wins over a file, so in
+production with ``SECRETS_DIR`` set, a secret variable in the environment is refused.
 
 ``load_settings`` enforces the production rules: ``DEMO_MODE`` must be false unless the public demo is allowed
 explicitly, and every secret the process needs must be set, long enough, and not a known default. The API process and
@@ -10,6 +15,8 @@ password. Violations raise ``SettingsError``, whose message names the offending 
 """
 
 import ipaddress
+import os
+from collections.abc import Mapping
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -107,6 +114,15 @@ class RuntimeSettings(BaseSettings):
     allow_public_demo_mode: bool = False
     """Production accepts ``DEMO_MODE=true`` only with this set (the public demo, docs/security/demo-mode.md)."""
     log_level: LogLevel = "INFO"
+    secrets_dir: Path | None = None
+    """A directory of mounted secret files named like their variables (``/run/secrets`` in the production stack)."""
+
+    @field_validator("secrets_dir", mode="before")
+    @classmethod
+    def _empty_means_none(cls, value: object) -> object:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
 
 
 class DatabaseSettings(BaseSettings):
@@ -598,19 +614,58 @@ def langfuse_problems(settings: AppSettings) -> list[str]:
     return problems
 
 
-def load_settings(env_file: Path | None = _ENV_FILE, *, owner: bool = False) -> AppSettings:
-    """Load and validate settings from the environment and, when present, the env file.
+SECRET_VARIABLES: tuple[str, ...] = (
+    "POSTGRES_ADMIN_PASSWORD",
+    "POSTGRES_APP_PASSWORD",
+    "SESSION_SECRET",
+    "CSRF_SECRET",
+    "LLM_API_KEY_PRIMARY",
+    "LLM_API_KEY_FALLBACK",
+    "LANGFUSE_PUBLIC_KEY",
+    "LANGFUSE_SECRET_KEY",
+)
+"""Every variable that holds a secret; with ``SECRETS_DIR`` each one is a file of that name.
+
+The production stack stages the first six (``deploy/secrets_stage.py``); it does not enable Langfuse, so its keys have
+no staged file, but a file of that name is read and the environment is refused for them all the same.
+"""
+
+
+def secret_source_problems(settings: AppSettings, environ: Mapping[str, str]) -> list[str]:
+    """In production with ``SECRETS_DIR``, secrets come only from its files, never from the environment.
+
+    An environment variable outranks a secret file, so a leftover variable would silently replace the Key Vault value
+    and would show in ``docker inspect`` and in the rendered compose configuration (ADR 0037).
+    """
+    if not settings.is_production or settings.runtime.secrets_dir is None:
+        return []
+    return [
+        f"{name} must come from SECRETS_DIR, not from the environment, in production"
+        for name in SECRET_VARIABLES
+        if environ.get(name, "").strip()
+    ]
+
+
+def load_settings(
+    env_file: Path | None = _ENV_FILE, *, owner: bool = False, environ: Mapping[str, str] | None = None
+) -> AppSettings:
+    """Load and validate settings from the environment, the env file when present, and ``SECRETS_DIR`` when set.
 
     Pass ``env_file=None`` to read the process environment only, as tests do. ``owner=True`` validates the settings
-    of an owner job (migrations, the seed, the retention purge) instead of the API's.
+    of an owner job (migrations, the seed, the retention purge) instead of the API's. ``environ`` is the environment
+    checked by the secret source rule; it defaults to the process environment.
     """
+    runtime = RuntimeSettings(_env_file=env_file)
+    secrets_dir = runtime.secrets_dir
+    if secrets_dir is not None and not secrets_dir.is_dir():
+        raise SettingsError(["SECRETS_DIR must name an existing directory of secret files"])
     settings = AppSettings(
-        runtime=RuntimeSettings(_env_file=env_file),
-        database=DatabaseSettings(_env_file=env_file),
-        security=SecuritySettings(_env_file=env_file),
-        llm=LLMSettings(_env_file=env_file),
+        runtime=runtime,
+        database=DatabaseSettings(_env_file=env_file, _secrets_dir=secrets_dir),
+        security=SecuritySettings(_env_file=env_file, _secrets_dir=secrets_dir),
+        llm=LLMSettings(_env_file=env_file, _secrets_dir=secrets_dir),
         observability=ObservabilitySettings(_env_file=env_file),
-        langfuse=LangfuseSettings(_env_file=env_file),
+        langfuse=LangfuseSettings(_env_file=env_file, _secrets_dir=secrets_dir),
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
@@ -619,6 +674,7 @@ def load_settings(env_file: Path | None = _ENV_FILE, *, owner: bool = False) -> 
         retention=RetentionSettings(_env_file=env_file),
     )
     problems = production_problems(settings, owner=owner)
+    problems.extend(secret_source_problems(settings, os.environ if environ is None else environ))
     if not owner:
         problems.extend(langfuse_problems(settings))
     if problems:

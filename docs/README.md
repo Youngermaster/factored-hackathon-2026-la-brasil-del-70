@@ -99,6 +99,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0034](adr/0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
 | [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
 | [adr/0036](adr/0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation |
+| [adr/0037](adr/0037-cloud-secret-management-with-azure-key-vault.md) | Production secrets in Azure Key Vault with workload identity |
 
 ## Exploratory data analysis
 

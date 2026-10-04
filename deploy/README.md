@@ -7,7 +7,9 @@ Everything needed to run the system outside the Python and web packages: the dev
 | Path | Purpose |
 |---|---|
 | `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
-| `prod.sh` | The operations script: `init-env`, `check`, `build`, `up`, `seed`, `update`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `up`, `rotate`, `seed`, `update`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
+| `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |
 | `smoke_test.sh`, `smoke_test.py` | The smoke test against a deployed URL (standard library Python) |
 | `caddy/Caddyfile` | TLS, the SPA headers and strict CSP, the reverse proxy |
@@ -94,12 +96,24 @@ git checkout <the commit or tag to deploy>
 
 Keep the cloud firewall as the only firewall: Docker publishes ports through its own iptables rules, which `ufw` does not govern. SSH stays key-only (the images above disable password logins by default; check `PasswordAuthentication no` in `/etc/ssh/sshd_config`).
 
+## Secrets
+
+No secret reaches a container through an environment variable. `deploy/prod.sh up` first stages each secret as a file under `/run/bank-agent/secrets` (a tmpfs: nothing on disk, cleared at reboot), owned by the user of the container that needs it, mode 0400; compose then mounts only those files at `/run/secrets`, and the settings read them through `SECRETS_DIR` ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). `docker inspect` and `docker compose config` show names, never values. The API never receives the owner or superuser password.
+
+| `SECRETS_SOURCE` | Where the values live | Use it on |
+|---|---|---|
+| `keyvault` | Azure Key Vault, read with the VM's managed identity (no credential stored); the env file holds no secret, and `prod.sh` refuses one there | An Azure VM: "Azure VM with Key Vault" below |
+| `env-file` (default) | The secret lines of `deploy/.env.production`, filled by `init-env` | Lightsail, EC2, or a local test |
+
+Staging needs root (`sudo`), so each file can belong to its container's user. On a Docker Desktop test host, where bind mounts ignore ownership, `SECRETS_NO_CHOWN=1` keeps the caller as owner.
+
 ## The server env file
 
 ```bash
 deploy/prod.sh init-env        # writes deploy/.env.production (mode 600) with fresh random secrets, never printed
 nano deploy/.env.production    # or vi; set the values below, then save
-deploy/prod.sh check           # names any missing value (never prints one) and validates the compose file
+deploy/prod.sh stage-secrets   # stages the secrets as files (sudo); `up` does this too
+deploy/prod.sh check           # names any missing value (never prints one), checks the staged files and the compose file
 ```
 
 Set at least:
@@ -112,7 +126,54 @@ Set at least:
 | `DEMO_MODE`, `ALLOW_PUBLIC_DEMO_MODE`, `VITE_DEMO_MODE` | `true` for the public judging demo ([demo mode](../docs/security/demo-mode.md)) |
 | The model settings | see "Choosing the model" |
 
-`init-env` already filled `POSTGRES_SUPERUSER_PASSWORD`, `POSTGRES_ADMIN_PASSWORD`, `POSTGRES_APP_PASSWORD`, `SESSION_SECRET`, `CSRF_SECRET`, and `GRAFANA_ADMIN_PASSWORD`. Never copy the file off the server, paste its values into chats or issues, or commit it (`.gitignore` covers it). If you prefer to write the file on your laptop, copy it with `scp` straight into `deploy/.env.production` and `chmod 600` it on the server.
+With `SECRETS_SOURCE=env-file`, `init-env` already filled `POSTGRES_SUPERUSER_PASSWORD`, `POSTGRES_ADMIN_PASSWORD`, `POSTGRES_APP_PASSWORD`, `SESSION_SECRET`, `CSRF_SECRET`, and `GRAFANA_ADMIN_PASSWORD`. Never copy the file off the server, paste its values into chats or issues, or commit it (`.gitignore` covers it). If you prefer to write the file on your laptop, copy it with `scp` straight into `deploy/.env.production` and `chmod 600` it on the server. On Azure, start with `SECRETS_SOURCE=keyvault deploy/prod.sh init-env` instead: the secret lines stay empty.
+
+## Azure VM with Key Vault
+
+The secrets live in Azure Key Vault, the VM reads them with its system-assigned managed identity (no password, key, or service principal anywhere), and the identity can read only the application's own secrets ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)).
+
+```mermaid
+sequenceDiagram
+    participant Admin as Administrator (az login)
+    participant KV as Azure Key Vault
+    participant VM as VM (managed identity)
+    participant Unit as bank-agent-secrets.service
+    participant Compose as docker compose
+    Admin->>KV: provision.sh: vault, generated secrets, per-secret read access for the VM
+    Admin->>KV: keyvault-secrets.sh set LLM_API_KEY_PRIMARY (typed, not shown)
+    Note over VM,Unit: at every boot, before Docker
+    Unit->>VM: token from the instance metadata service (no credential)
+    Unit->>KV: GET each secret with the token
+    Unit->>VM: /run/bank-agent/secrets/{app,postgres,grafana}/NAME, mode 0400, per container user
+    Compose->>VM: mounts each file into the services that need it, at /run/secrets
+```
+
+**1. From your machine** (Azure CLI signed in with `az login`; Git Bash, WSL, macOS, Linux, or Azure Cloud Shell). Choose a globally unique vault name and DNS label, and allow SSH from your own address only. On subscriptions with capacity limits, check which sizes your region allows first (a free account may allow only the `Bsv2` and `Basv2` families in a few regions).
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/azure_bank_agent -N ""      # once; the VM accepts this key only
+export VAULT_NAME=kv-bank-agent-<suffix> DNS_LABEL=bank-agent-<suffix>
+export SSH_SOURCE_CIDR="$(curl -s https://api.ipify.org)/32"
+deploy/azure/provision.sh                                     # LOCATION, VM_SIZE, ... are settings in its header
+deploy/azure/keyvault-secrets.sh "${VAULT_NAME}" set LLM_API_KEY_PRIMARY   # hosted model only; typed, never shown
+deploy/azure/provision.sh                                     # again: grants the VM read access to the new secret
+```
+
+`provision.sh` prints the site name, `<DNS_LABEL>.<LOCATION>.cloudapp.azure.com`: Azure serves that DNS name for the static IP, so no domain is needed. SSH accepts only `SSH_SOURCE_CIDR`; when an internet provider assigns dynamic addresses and SSH starts timing out, point the rule at the current address: `az network nsg rule update --resource-group rg-bank-agent --nsg-name vm-bank-agent-nsg --name allow-ssh-admin --source-address-prefixes "$(curl -s -4 https://api.ipify.org)/32"`. Leave a budget alert on the subscription (Cost Management, Budgets) at a value you are willing to spend.
+
+**2. On the VM** (`ssh -i ~/.ssh/azure_bank_agent azureuser@<site name>`): follow "Prepare the VM" above. To clone the private repository, create a read-only deploy key on the VM (`ssh-keygen -t ed25519 -f ~/.ssh/github_deploy -N ""`), have a repository administrator add `~/.ssh/github_deploy.pub` under the repository's Settings, Deploy keys (read access only), and clone with `GIT_SSH_COMMAND="ssh -i ~/.ssh/github_deploy" git clone git@github.com:<org>/<repository>.git bank-agent`. Then:
+
+```bash
+sudo bash deploy/azure/install-vm.sh "<vault name>"     # the boot unit; stages the secrets now and checks them
+SECRETS_SOURCE=keyvault deploy/prod.sh init-env          # an env file with no secret in it
+nano deploy/.env.production                              # KEY_VAULT_NAME, SITE_ADDRESS, PUBLIC_ORIGIN, ACME_EMAIL,
+                                                         # the demo flags, and LLM_PROVIDER / LLM_PRIMARY_MODEL
+deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed && deploy/prod.sh smoke
+```
+
+**Rotation.** Store a new version (`deploy/azure/keyvault-secrets.sh <vault> rotate SESSION_SECRET`, or `set` for a provider key), then `deploy/prod.sh rotate` on the VM: it stages the new versions and recreates every service, because a running container keeps the file version it started with. Database passwords change inside PostgreSQL first ("Rotate secrets" below), then in the vault.
+
+**Take it down.** After "Take the demo down" below: `az group delete --name rg-bank-agent`, then `az keyvault purge --name <vault>` (soft delete keeps a deleted vault for 7 days otherwise).
 
 ## Choosing the model
 
@@ -210,16 +271,16 @@ Copy important dumps off the VM (`scp ubuntu@<static-ip>:bank-agent/deploy/backu
 
 ## Rotate secrets
 
-Edit the value in `deploy/.env.production`, then:
+Store the new value where `SECRETS_SOURCE` points: edit `deploy/.env.production` (`env-file`), or store a new Key Vault version with `deploy/azure/keyvault-secrets.sh` (`keyvault`). Then run `deploy/prod.sh rotate`, which stages the new versions and recreates every service (a running container keeps the file it started with), and the step below:
 
 | Secret | After the edit |
 |---|---|
-| `CSRF_SECRET` | `deploy/prod.sh up`; browsers fetch a new token on their next request |
-| `SESSION_SECRET` | `deploy/prod.sh up`, then `deploy/prod.sh seed`: identity lookups and code keys derive from it, and every session ends |
-| `POSTGRES_APP_PASSWORD` or `POSTGRES_ADMIN_PASSWORD` | change it in the database first: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod exec postgres psql -U postgres -d bank_agent -c '\password bank_app'` (or `bank_owner`), type the new value, then `deploy/prod.sh up` |
+| `CSRF_SECRET` | nothing else; browsers fetch a new token on their next request |
+| `SESSION_SECRET` | `deploy/prod.sh seed`: identity lookups and code keys derive from it, and every session ends |
+| `POSTGRES_APP_PASSWORD` or `POSTGRES_ADMIN_PASSWORD` | change it in the database first: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod exec postgres psql -U postgres -d bank_agent -c '\password bank_app'` (or `bank_owner`), type the new value, then store it and `deploy/prod.sh rotate` |
 | `POSTGRES_SUPERUSER_PASSWORD` | `\password postgres` the same way; nothing else uses it |
 | `GRAFANA_ADMIN_PASSWORD` | change it in Grafana (profile, "Change password"); the variable only sets the first password |
-| `LLM_API_KEY_*` | revoke the old key at the provider, then `deploy/prod.sh up` |
+| `LLM_API_KEY_*` | revoke the old key at the provider |
 
 ## Keep it running until 2026-10-16
 
@@ -245,17 +306,18 @@ The whole stack runs on a laptop with Docker, TLS included, before any VM exists
 ENV_FILE=/tmp/p16.env deploy/prod.sh init-env           # any path outside the repository
 # In /tmp/p16.env set:
 #   SITE_ADDRESS=localhost  PUBLIC_ORIGIN=https://localhost:8443  CADDY_TLS=internal  HTTP_PORT=8080  HTTPS_PORT=8443
+#   SECRETS_HOST_DIR=/tmp/p16-secrets   (secrets staged from this file; Docker Desktop ignores file owners)
 #   DEMO_MODE=true  ALLOW_PUBLIC_DEMO_MODE=true  VITE_DEMO_MODE=true
 #   LLM_PROVIDER=litellm  LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct  LLM_API_BASE=http://host.docker.internal:11434
 #   LLM_ALLOW_PRIVATE_HTTP_BASE=true  LLM_TIMEOUT_SECONDS=60     (or LLM_PROVIDER=fake for no model)
-export ENV_FILE=/tmp/p16.env PROJECT=bank-agent-local
+export ENV_FILE=/tmp/p16.env PROJECT=bank-agent-local SECRETS_NO_CHOWN=1
 deploy/prod.sh build && deploy/prod.sh up && deploy/prod.sh seed
 docker cp bank-agent-local-web-1:/data/caddy/pki/authorities/local/root.crt /tmp/caddy-root.crt
 make smoke SMOKE_URL=https://localhost:8443 SMOKE_ARGS="--ca-file /tmp/caddy-root.crt --min-cert-days 0"   # local certificates live 12 hours
 pnpm --dir apps/web exec playwright install chromium   # once per machine: pnpm does not download the browser
 make csp-check SMOKE_URL=https://localhost:8443 CSP_ARGS=--ignore-https-errors   # 5 to 6 minutes: it waits out the auth rate limit
 docker compose -f deploy/compose.prod.yml --env-file /tmp/p16.env -p bank-agent-local --profile '*' down --volumes
-rm /tmp/p16.env
+rm -rf /tmp/p16.env /tmp/p16-secrets
 ```
 
 The project name keeps it apart from the development stack; it publishes 8080 and 8443 only (no database port), so it runs next to `make up`.

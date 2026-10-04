@@ -13,7 +13,18 @@
 #   creates it when it is missing).
 #
 # Values are read with psql's \getenv, so no password appears in a process argument list, and nothing is echoed.
+# Each password comes from <NAME>_FILE when it is set (a mounted secret file: deploy/compose.prod.yml mounts them from
+# the staged Key Vault values, ADR 0037), else from <NAME> itself (the integration tests).
 set -eu
+
+if [ -n "${POSTGRES_OWNER_PASSWORD_FILE:-}" ]; then
+  POSTGRES_OWNER_PASSWORD="$(cat "$POSTGRES_OWNER_PASSWORD_FILE")"
+  export POSTGRES_OWNER_PASSWORD
+fi
+if [ -n "${POSTGRES_APP_PASSWORD_FILE:-}" ]; then
+  POSTGRES_APP_PASSWORD="$(cat "$POSTGRES_APP_PASSWORD_FILE")"
+  export POSTGRES_APP_PASSWORD
+fi
 
 : "${POSTGRES_USER:?POSTGRES_USER must be set}"
 : "${POSTGRES_DB:?POSTGRES_DB must be set}"

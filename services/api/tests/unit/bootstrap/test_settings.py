@@ -422,6 +422,107 @@ def test_a_hosted_https_provider_is_a_settings_only_change(
     assert load_settings(env_file=None).llm.primary_model == "openai/gpt-5-mini"
 
 
+def _secret_files(directory: Path, names: tuple[str, ...]) -> dict[str, str]:
+    """Write one mounted-style secret file per name (with the trailing newline an editor would add)."""
+    directory.mkdir(parents=True, exist_ok=True)
+    values = {name: _strong_secret() for name in names}
+    for name, value in values.items():
+        (directory / name).write_text(value + "\n", encoding="utf-8")
+    return values
+
+
+@pytest.fixture
+def production_with_secret_files(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> dict[str, str]:
+    """The API's production environment with every secret in SECRETS_DIR and none in the environment."""
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("RETRIEVAL_INDEX_SOURCE", "stored")
+    monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "https://bank.example")
+    monkeypatch.setenv("RATE_LIMIT_BACKEND", "postgres")
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path / "secrets"))
+    return _secret_files(tmp_path / "secrets", SECRET_VARIABLES)
+
+
+def test_production_reads_every_secret_from_the_secrets_dir(production_with_secret_files: dict[str, str]) -> None:
+    settings = load_settings(env_file=None)
+
+    assert settings.security.session_secret is not None
+    assert settings.security.session_secret.get_secret_value() == production_with_secret_files["SESSION_SECRET"]
+    assert settings.security.csrf_secret is not None
+    assert settings.security.csrf_secret.get_secret_value() == production_with_secret_files["CSRF_SECRET"]
+    assert settings.database.app_password is not None
+    assert settings.database.app_password.get_secret_value() == production_with_secret_files["POSTGRES_APP_PASSWORD"]
+
+
+def test_a_missing_secret_file_is_reported_like_a_missing_variable(
+    production_with_secret_files: dict[str, str], tmp_path: Path
+) -> None:
+    (tmp_path / "secrets" / "CSRF_SECRET").unlink()
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["CSRF_SECRET must be set in production"]
+
+
+def test_a_secrets_dir_that_does_not_exist_is_refused(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path / "missing"))
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["SECRETS_DIR must name an existing directory of secret files"]
+
+
+@pytest.mark.parametrize("variable", ["SESSION_SECRET", "CSRF_SECRET", "POSTGRES_APP_PASSWORD"])
+def test_production_with_a_secrets_dir_refuses_the_same_secret_in_the_environment(
+    production_with_secret_files: dict[str, str], monkeypatch: pytest.MonkeyPatch, variable: str
+) -> None:
+    leftover = _strong_secret()
+    monkeypatch.setenv(variable, leftover)
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == [f"{variable} must come from SECRETS_DIR, not from the environment, in production"]
+    assert leftover not in str(raised.value)
+
+
+def test_development_lets_an_environment_variable_override_a_secret_file(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _secret_files(tmp_path / "secrets", ("SESSION_SECRET",))
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path / "secrets"))
+    monkeypatch.setenv("SESSION_SECRET", "dev-only-local-override-for-a-test")
+
+    settings = load_settings(env_file=None)
+
+    assert settings.security.session_secret is not None
+    assert settings.security.session_secret.get_secret_value() == "dev-only-local-override-for-a-test"
+
+
+def test_owner_jobs_read_the_owner_password_from_the_secrets_dir(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path / "secrets"))
+    values = _secret_files(tmp_path / "secrets", ("POSTGRES_ADMIN_PASSWORD", "SESSION_SECRET"))
+
+    settings = load_settings(env_file=None, owner=True)
+
+    assert settings.database.admin_password is not None
+    assert settings.database.admin_password.get_secret_value() == values["POSTGRES_ADMIN_PASSWORD"]
+    assert settings.database.app_password is None
+
+
+def test_the_secret_source_rule_reads_an_injected_environment(production_with_secret_files: dict[str, str]) -> None:
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None, environ={"LLM_API_KEY_PRIMARY": _strong_secret()})
+
+    assert raised.value.problems == [
+        "LLM_API_KEY_PRIMARY must come from SECRETS_DIR, not from the environment, in production"
+    ]
+
+
 def test_retention_defaults_and_bounds(monkeypatch: pytest.MonkeyPatch) -> None:
     settings = load_settings(env_file=None)
     assert (settings.retention.conversation_days, settings.retention.session_days) == (7, 7)
@@ -430,3 +531,60 @@ def test_retention_defaults_and_bounds(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("RETENTION_CONVERSATION_DAYS", "0")
     with pytest.raises(ValueError, match="conversation_days"):
         load_settings(env_file=None)
+
+
+@pytest.mark.parametrize(
+    ("value", "problem"),
+    [
+        ("dev-only-not-a-secret-session-secret-from-env-example", "must not be a development-only value"),
+        ("changeme", "must not be a known default value"),
+        ("short", "must be at least"),
+        ("", "must be set"),
+    ],
+)
+def test_production_refuses_a_weak_secret_in_a_secret_file_like_in_the_environment(
+    production_with_secret_files: dict[str, str], tmp_path: Path, value: str, problem: str
+) -> None:
+    """The file source changes where a value comes from, never the rules it must pass."""
+    (tmp_path / "secrets" / "SESSION_SECRET").write_text(value + "\n", encoding="utf-8")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert len(raised.value.problems) == 1
+    assert raised.value.problems[0].startswith(f"SESSION_SECRET {problem}")
+    if value:
+        assert value not in str(raised.value)
+
+
+def test_an_empty_model_key_file_counts_as_no_key(
+    production_with_secret_files: dict[str, str], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The stager writes optional secrets as empty files; a hosted model must still refuse to start without a key."""
+    (tmp_path / "secrets" / "LLM_API_KEY_PRIMARY").write_text("", encoding="utf-8")
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_PRIMARY_MODEL", "gemini/gemini-3.1-flash-lite")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LLM_API_KEY_PRIMARY must be set in production"]
+
+
+def test_langfuse_keys_come_from_the_secrets_dir_and_never_from_the_environment(
+    production_with_secret_files: dict[str, str], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    values = _secret_files(tmp_path / "secrets", ("LANGFUSE_PUBLIC_KEY", "LANGFUSE_SECRET_KEY"))
+
+    settings = load_settings(env_file=None)
+    assert settings.langfuse.secret_key is not None
+    assert settings.langfuse.secret_key.get_secret_value() == values["LANGFUSE_SECRET_KEY"]
+
+    leftover = _strong_secret()
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", leftover)
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+    assert raised.value.problems == [
+        "LANGFUSE_SECRET_KEY must come from SECRETS_DIR, not from the environment, in production"
+    ]
+    assert leftover not in str(raised.value)

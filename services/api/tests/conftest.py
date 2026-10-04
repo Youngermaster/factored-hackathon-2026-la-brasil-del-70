@@ -22,6 +22,7 @@ _SETTINGS_PREFIXES = (
     "RETRIEVAL_",
     "WORKFLOW_",
     "DEGRADATION_",
+    "SECRETS_DIR",
 )
 
 
