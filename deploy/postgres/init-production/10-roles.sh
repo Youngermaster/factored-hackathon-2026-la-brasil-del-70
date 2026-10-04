@@ -14,7 +14,7 @@
 #
 # Values are read with psql's \getenv, so no password appears in a process argument list, and nothing is echoed.
 # Each password comes from <NAME>_FILE when it is set (a mounted secret file: deploy/compose.prod.yml mounts them from
-# the staged Key Vault values, ADR 0036), else from <NAME> itself (the integration tests).
+# the staged Key Vault values, ADR 0037), else from <NAME> itself (the integration tests).
 set -eu
 
 if [ -n "${POSTGRES_OWNER_PASSWORD_FILE:-}" ]; then

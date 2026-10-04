@@ -251,7 +251,7 @@ SMOKE_URL ?=
 SMOKE_ARGS ?=
 CSP_ARGS ?=
 # Dummy values that only let `docker compose config` interpolate the production file; never used to run anything.
-# Secrets are mounted files (ADR 0036), so only the two required site values are needed.
+# Secrets are mounted files (ADR 0037), so only the two required site values are needed.
 COMPOSE_CHECK_ENV := SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org
 
 security: ## pip-audit, pnpm audit (prod, high), bandit, gitleaks, hadolint, shellcheck, production compose validation

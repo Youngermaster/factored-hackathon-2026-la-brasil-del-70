@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install the Key Vault secret staging on the Azure VM (ADR 0036; deploy/README.md, "Azure VM with Key Vault").
+# Install the Key Vault secret staging on the Azure VM (ADR 0037; deploy/README.md, "Azure VM with Key Vault").
 # Run from the checkout on the VM:
 #
 #   sudo deploy/azure/install-vm.sh <vault name>

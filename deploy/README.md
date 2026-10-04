@@ -8,7 +8,7 @@ Everything needed to run the system outside the Python and web packages: the dev
 |---|---|
 | `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
 | `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `up`, `rotate`, `seed`, `update`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
-| `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0036](../docs/adr/0036-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
+| `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
 | `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |
 | `smoke_test.sh`, `smoke_test.py` | The smoke test against a deployed URL (standard library Python) |
@@ -98,7 +98,7 @@ Keep the cloud firewall as the only firewall: Docker publishes ports through its
 
 ## Secrets
 
-No secret reaches a container through an environment variable. `deploy/prod.sh up` first stages each secret as a file under `/run/bank-agent/secrets` (a tmpfs: nothing on disk, cleared at reboot), owned by the user of the container that needs it, mode 0400; compose then mounts only those files at `/run/secrets`, and the settings read them through `SECRETS_DIR` ([ADR 0036](../docs/adr/0036-cloud-secret-management-with-azure-key-vault.md)). `docker inspect` and `docker compose config` show names, never values. The API never receives the owner or superuser password.
+No secret reaches a container through an environment variable. `deploy/prod.sh up` first stages each secret as a file under `/run/bank-agent/secrets` (a tmpfs: nothing on disk, cleared at reboot), owned by the user of the container that needs it, mode 0400; compose then mounts only those files at `/run/secrets`, and the settings read them through `SECRETS_DIR` ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). `docker inspect` and `docker compose config` show names, never values. The API never receives the owner or superuser password.
 
 | `SECRETS_SOURCE` | Where the values live | Use it on |
 |---|---|---|
@@ -130,7 +130,7 @@ With `SECRETS_SOURCE=env-file`, `init-env` already filled `POSTGRES_SUPERUSER_PA
 
 ## Azure VM with Key Vault
 
-The secrets live in Azure Key Vault, the VM reads them with its system-assigned managed identity (no password, key, or service principal anywhere), and the identity can read only the application's own secrets ([ADR 0036](../docs/adr/0036-cloud-secret-management-with-azure-key-vault.md)).
+The secrets live in Azure Key Vault, the VM reads them with its system-assigned managed identity (no password, key, or service principal anywhere), and the identity can read only the application's own secrets ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)).
 
 ```mermaid
 sequenceDiagram

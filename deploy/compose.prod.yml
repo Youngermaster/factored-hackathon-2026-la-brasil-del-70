@@ -13,7 +13,7 @@
 # Every service: no-new-privileges, every Linux capability dropped, CPU and memory limits, rotated logs, and a
 # read-only root filesystem except where a note says why not.
 #
-# Secrets (ADR 0036) are files, never environment variables: deploy/secrets_stage.py stages them from Azure Key Vault
+# Secrets (ADR 0037) are files, never environment variables: deploy/secrets_stage.py stages them from Azure Key Vault
 # (or, on other hosts, from the env file) under SECRETS_HOST_DIR, a tmpfs, owned by each container's user with mode
 # 0400. Each service mounts only the files it needs at /run/secrets, and the settings read them through SECRETS_DIR.
 # `docker compose config` and `docker inspect` therefore never show a secret value.

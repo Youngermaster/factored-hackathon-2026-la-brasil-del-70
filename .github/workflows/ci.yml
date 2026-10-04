@@ -188,7 +188,7 @@ jobs:
             prod.sh smoke_test.sh postgres/init/10-roles.sh postgres/init-production/10-roles.sh \
             azure/keyvault-secrets.sh azure/provision.sh azure/install-vm.sh
       - name: Production compose file is valid
-        # Secrets are mounted files (ADR 0036): the compose file needs only the two required site values.
+        # Secrets are mounted files (ADR 0037): the compose file needs only the two required site values.
         run: |
           SITE_ADDRESS=demo.example.org PUBLIC_ORIGIN=https://demo.example.org \
             docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production.example --profile '*' config --quiet
