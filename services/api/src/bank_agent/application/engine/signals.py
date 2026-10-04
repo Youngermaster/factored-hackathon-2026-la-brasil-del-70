@@ -1,7 +1,10 @@
 """Escalation and privacy signals: a deterministic keyword detector in es and pt (distress includes financial
 distress and over-indebtedness, which feed ``ESC.distress_signal``), merged with the optional
 ``detect_escalation_signals`` prompt. A signal counts when either source reports it; a gateway failure leaves the
-deterministic result, so a missing model never hides a signal the keywords see."""
+deterministic result, so a missing model never hides a signal the keywords see.
+
+The third-party signal (``PRV.no_third_party_disclosure``) covers a relative or a representative, and another
+customer or another person named by wording or by a document number (``names_another_customer``)."""
 
 import re
 from dataclasses import dataclass
@@ -51,6 +54,43 @@ _THIRD_PARTY = re.compile(
     rf"|\b(?:compra|cargo|cobro|cobranca)s? {_OWNER}\b"
     rf"|\b{_PRODUCT} (?:{_QUALIFIER} ){{0,3}}(?:{_OWNER}|dele|dela|deles|delas)\b"
 )
+# Another customer or another person named as the owner ("la tarjeta del cliente CC 1234567890", "o saldo de outro
+# cliente", "da pessoa com CPF"): added before the pitch video, when such requests got the workflow question. Tools
+# never take a customer id, so nothing leaked; the request is now refused with PRV-ALL-2 before any tool runs.
+# "servicio al cliente" and "número de cliente" (the customer's own number) have no article and do not match.
+_OTHER_CUSTOMER = re.compile(
+    r"\b(?:otr[oa]s?|outr[oa]s?) (?:client[ea]s?|usuari[oa]s?|cuentahabientes?|correntistas?|titular(?:es)?)\b"
+    r"|\b(?:del|de la|de un|de una|do|da|de um|de uma) (?:client[ea]|cuentahabiente|correntista)\b"
+    r"|\b(?:de|da|del) (?:la |una |esa |esta |uma |essa |otra |outra )?(?:persona|pessoa|senora|senhora|senor"
+    r"|senhor) (?:con|com|que tiene|que tem|cuy[oa]|cuja|cujo)\b"
+    rf"|\b{_PRODUCT} (?:{_QUALIFIER} ){{0,3}}(?:de|da|do|del) (?:otra|outra) (?:persona|pessoa)\b"
+    r"|\b(?:another|other) (?:customer|client)s?\b|\b(?:another|other) person'?s\b|\bsomeone else'?s\b"
+    r"|\b(?:of|for) (?:the |a )?(?:customer|client) (?:with|number|id)\b"
+)
+# A document number introduced by its kind ("CC 1234567890", "cédula 12.345.678", "CPF 123.456.789-00", "DNI:
+# 30123456") or written in a document format (CPF, CURP). The customer's own document ("mi cédula es ...", "meu
+# CPF") is not a signal: identity comes from the session either way, and the reply never repeats the number.
+_DOCUMENT = re.compile(
+    r"(?<![a-z0-9])(?:c\.\s?c\.?|cc|cedula(?: de ciudadania| de identidad)?|dni|cpf|rg|curp|rfc|cuit|cuil|nit|ine"
+    r"|pasaporte|passaporte|documento(?: de identidad| nacional)?|identidade|identificacion)(?![a-z])"
+    r"(?:\s*(?:n[o.]?|numero|nro\.?|#|:|es|e|nº|n°))*\s*(?P<number>\d[\d.\- ]{4,18}\d)(?!\d)"
+    r"|(?<![a-z0-9])[a-z]{4}\d{6}[hmx][a-z]{5}[a-z0-9]\d(?![a-z0-9])"
+    r"|(?<!\d)\d{3}\.\d{3}\.\d{3}-\d{2}(?!\d)"
+)
+_OWN_DOCUMENT = re.compile(r"\b(?:mi|mis|meu|meus|minha|minhas|my|el mio|o meu)\s*$")
+OWN_DOCUMENT_WINDOW = 24
+"""Characters before a document mention searched for a possessive ("mi número de cédula", "o meu CPF")."""
+
+
+def names_another_customer(folded: str) -> bool:
+    """True when ``folded`` text asks about another customer or another person by wording or a document number."""
+    if _OTHER_CUSTOMER.search(folded):
+        return True
+    for match in _DOCUMENT.finditer(folded):
+        before = folded[max(0, match.start() - OWN_DOCUMENT_WINDOW) : match.start()]
+        if not _OWN_DOCUMENT.search(before.replace("numero de ", "")):
+            return True
+    return False
 
 
 @dataclass(frozen=True)
@@ -98,5 +138,5 @@ def detect_signals(text: str, *, person_offered: bool = False) -> DetectedSignal
         legal_or_regulator_mention=bool(_LEGAL.search(folded)),
         distress=bool(_DISTRESS.search(folded)),
         human_requested=bool(_HUMAN.search(folded)) or (person_offered and accepts_offer(text)),
-        third_party_admission=bool(_THIRD_PARTY.search(folded)),
+        third_party_admission=bool(_THIRD_PARTY.search(folded)) or names_another_customer(folded),
     )
