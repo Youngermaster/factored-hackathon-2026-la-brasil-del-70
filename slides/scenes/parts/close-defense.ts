@@ -4,7 +4,7 @@
  * legitimate request passes them all; each attack (red) stops at the layer
  * built for it; retention purges old conversation text inside the database.
  * Controls follow docs/security/threat-model.md; the host is one VM with
- * Docker Compose behind Caddy (ADR 0019), and its URL stays pending.
+ * Docker Compose behind Caddy (ADR 0019), deployed on one Azure VM.
  */
 import type { SceneEnv } from '../../lib/scene/types'
 import { C, MX } from '../../lib/scene/kit'
@@ -54,7 +54,7 @@ export function defense({ t, L, M, K }: SceneEnv, c1: number, tout: number) {
     }
     K.fade(outCubic(seg(t, c1 + 2.9, c1 + 3.2)), () =>
       K.text(L('g7'), DBX + 30, LANE + 128, { size: 24, weight: 500, fam: 'mono', color: C.yellow, align: 'center' }))
-    // the host, and the deployed URL, which stays pending until the human deploys
+    // the host, and the deployed URL (data/metrics.yml deploy.url)
     K.fade(outCubic(seg(t, c1 + 2.4, c1 + 2.8)), () => {
       K.text(L('host'), MX, 860, { size: 30, weight: 600 })
       K.label(L('deployed'), MX, 930, { size: 24 })

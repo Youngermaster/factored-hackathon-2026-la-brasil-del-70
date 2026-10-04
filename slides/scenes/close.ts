@@ -7,12 +7,12 @@
  *   2       what we cannot claim yet (red), and the real next steps as a route
  *   3       the team on a full-bleed yellow field
  *   4       the yellow field folds into the middle band of the thesis; the
- *           product name, the repository and the deployed URL (pending)
+ *           product name, the repository and the deployed URL
  */
 import { defineScene } from '../lib/scene/types'
 import { C, H, MX, W } from '../lib/scene/kit'
 import { clamp, inOutCubic, lerp, outCubic, outExpo, presence, seg } from '../lib/scene/math'
-import { metricValue } from '../lib/scene/bank'
+import { dims, metricValue } from '../lib/scene/bank'
 import { field, packet } from '../lib/scene/fx'
 import { ladder } from './parts/close-ladder'
 import { defense } from './parts/close-defense'
@@ -95,5 +95,9 @@ export default defineScene({
       K.label(L('deployed'), MX, 900, { size: 24 })
       metricValue(K, M('deploy.url'), MX + 200, 910, { size: 40, fam: 'mono' })
     })
+    // the evaluation dimensions, drawn last: ink-grey while the yellow field owns the top of the frame
+    const yellow = inOutCubic(gk) * (1 - fold)
+    dims(K, L('dims'), outCubic(seg(t, 0.3, 0.8)) * (1 - yellow), C.mute)
+    dims(K, L('dims'), yellow, C.inkDim)
   },
 })

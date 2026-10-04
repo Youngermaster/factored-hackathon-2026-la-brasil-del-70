@@ -139,6 +139,16 @@ export function source(K: Kit, m: Metric, a = 1, extra?: string, color?: string)
   K.cite(`${KIND_LABEL[m.kind]}  |  ${m.source}${extra ? `  |  ${extra}` : ''}`, a, color)
 }
 
+/**
+ * The evaluation dimensions a slide answers, top-right in the caption voice,
+ * so a judge can map the slide to the organizers' criteria. One per slide,
+ * drawn at rest; `color` follows the ground (mute on ink, inkMute on paper,
+ * inkDim on yellow).
+ */
+export function dims(K: Kit, s: string, a = 1, color: string = C.mute) {
+  K.text(s, 1920 - 120, 72, { size: 22, weight: 500, fam: 'mono', color, align: 'right', alpha: a })
+}
+
 /** A metric value, or a visible "pending" placeholder when phase 14 has not landed. Returns width. */
 export function metricValue(
   K: Kit, m: Metric, x: number, y: number,

@@ -53,14 +53,15 @@ THESIS. Narration: script.md, section "thesis". Click 1 understand, 2 decide,
 ---
 layout: scene
 routeAlias: architecture
-clicks: 5
+clicks: 3
 ---
 
 <Scene name="arch" />
 
 <!--
-ARCHITECTURE. Narration: script.md, section "architecture". Click 1 policy
-kernel, 2 LLM gateway, 3 grounding verifier, 4 data platform, 5 direction.
+ARCHITECTURE. Narration: script.md, section "architecture". Arrive: the stack.
+Click 1 the deployment on one Azure VM, 2 the AI and ML path of one turn,
+3 learned components against their baselines, and the decision.
 -->
 
 ---
