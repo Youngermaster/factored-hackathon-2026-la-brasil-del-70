@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Create the Azure resources for the production stack (ADR 0036; deploy/README.md, "Azure VM with Key Vault"), from an
+# Create the Azure resources for the production stack (ADR 0037; deploy/README.md, "Azure VM with Key Vault"), from an
 # administrator's machine with the Azure CLI signed in (`az login`). Every step is idempotent: run it again to finish an
 # interrupted run. It creates no credential for the application: the VM reads Key Vault with its managed identity.
 #
@@ -93,8 +93,11 @@ PRINCIPAL_ID="$(az vm show --resource-group "${RESOURCE_GROUP}" --name "${VM_NAM
   --query identity.principalId --output tsv)"
 for name in "${APP_SECRETS[@]}"; do
   if az keyvault secret show --vault-name "${VAULT_NAME}" --name "${name}" --query id --output tsv > /dev/null 2>&1; then
-    az role assignment create --assignee-object-id "${PRINCIPAL_ID}" --assignee-principal-type ServicePrincipal \
-      --role "Key Vault Secrets User" --scope "${VAULT_ID}/secrets/${name}" --output none
+    if [[ -z "$(az role assignment list --assignee "${PRINCIPAL_ID}" --scope "${VAULT_ID}/secrets/${name}" \
+      --role "Key Vault Secrets User" --query "[0].id" --output tsv)" ]]; then
+      az role assignment create --assignee-object-id "${PRINCIPAL_ID}" --assignee-principal-type ServicePrincipal \
+        --role "Key Vault Secrets User" --scope "${VAULT_ID}/secrets/${name}" --output none
+    fi
     say "    ${name}: readable by the VM"
   else
     say "    ${name}: not in the vault yet (optional); run this script again after setting it"

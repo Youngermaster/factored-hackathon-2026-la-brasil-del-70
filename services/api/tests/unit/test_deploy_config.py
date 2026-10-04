@@ -31,7 +31,7 @@ EXPECTED_SECRETS: dict[str, set[str]] = {
     "postgres": {"POSTGRES_SUPERUSER_PASSWORD", "POSTGRES_ADMIN_PASSWORD", "POSTGRES_APP_PASSWORD"},
     "grafana": {"GRAFANA_ADMIN_PASSWORD"},
 }
-"""The secret files each service mounts (ADR 0036); every other service mounts none."""
+"""The secret files each service mounts (ADR 0037); every other service mounts none."""
 SECRET_CONSUMER = {
     "api": "app",
     "migrate": "app",
@@ -168,14 +168,37 @@ def test_services_read_their_secrets_from_the_mounted_files() -> None:
     assert 'cat "$POSTGRES_APP_PASSWORD_FILE"' in init
 
 
-@pytest.mark.parametrize("script", ["keyvault-secrets.sh", "provision.sh"])
-def test_the_azure_scripts_use_the_stager_vault_names(script: str) -> None:
-    text = (DEPLOY / "azure" / script).read_text(encoding="utf-8")
+def test_the_azure_scripts_use_the_stager_vault_names() -> None:
+    provision = (DEPLOY / "azure" / "provision.sh").read_text(encoding="utf-8")
     for secret in STAGER.SECRETS:
-        assert secret.vault_name in text, (script, secret.vault_name)
-    if script == "keyvault-secrets.sh":
-        for secret in STAGER.SECRETS:
-            assert f"[{secret.variable}]={secret.vault_name}" in text
+        assert secret.vault_name in provision, secret.vault_name
+    # keyvault-secrets.sh lists the variables and derives each vault name: lower case, dashes for underscores.
+    manager = (DEPLOY / "azure" / "keyvault-secrets.sh").read_text(encoding="utf-8")
+    (listed,) = re.findall(r"^VARIABLES=\(([^)]*)\)", manager, flags=re.MULTILINE)
+    assert listed.split() == [secret.variable for secret in STAGER.SECRETS]
+    assert "tr '[:upper:]' '[:lower:]' | tr '_' '-'" in manager
+    for secret in STAGER.SECRETS:
+        assert secret.vault_name == secret.variable.lower().replace("_", "-")
+
+
+BASH_4_ONLY = re.compile(r"declare -A|\bmapfile\b|\breadarray\b|\$\{[A-Za-z_]+(,,|\^\^)\}|&>>")
+
+
+@pytest.mark.parametrize("script", sorted(path.relative_to(DEPLOY).as_posix() for path in DEPLOY.rglob("*.sh")))
+def test_deploy_scripts_run_on_the_macos_default_bash(script: str) -> None:
+    """Administrators run these from macOS too, whose /usr/bin/env bash is 3.2: no bash 4 features."""
+    text = (DEPLOY / script).read_text(encoding="utf-8")
+    assert not BASH_4_ONLY.search(text), script
+
+
+def test_key_vault_init_never_mistakes_a_failed_lookup_for_a_missing_secret() -> None:
+    """A transient error read as "absent" would store a new database password that PostgreSQL does not hold."""
+    manager = (DEPLOY / "azure" / "keyvault-secrets.sh").read_text(encoding="utf-8")
+    init = manager.split("cmd_init() {", 1)[1].split("\n}", 1)[0]
+    assert init.index("load_names") < init.index("exists")
+    assert 'az keyvault secret list --vault-name "${VAULT}" --query "[].name" --output tsv)" ||' in manager
+    assert "az keyvault secret show" not in manager
+    assert "refusing to store an empty value" in manager
 
 
 def test_the_boot_unit_stages_from_key_vault_with_the_root_owned_copy_before_docker() -> None:
