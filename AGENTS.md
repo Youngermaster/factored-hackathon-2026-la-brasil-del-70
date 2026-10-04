@@ -38,6 +38,8 @@ An AI-first banking customer-service system for the Factored AI and Data Hackath
 
 Everything else gets a clarifying question, a clause-backed abstention, or a structured handoff to a human.
 
+The end-to-end explanation of the whole system, in the order of the pitch, is [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md).
+
 Design thesis: **the language model understands, deterministic code decides, and evidence proves it.** In practice:
 
 - Policy is data under `policies/`, evaluated by pure rule functions; every decision names its rule ids and clause versions.
@@ -47,7 +49,19 @@ Design thesis: **the language model understands, deterministic code decides, and
 - Handoffs carry the request, verified facts, actions taken, evidence, and open questions, never a raw transcript.
 - Credit keeps conversation, risk estimate, and eligibility behind separate ports (`RiskEstimator`, `EligibilityPolicy`). The model never sees the risk estimate or the credit profile and never states or implies approval.
 
-**Scope is settled.** All four workflows are automated as built. [ADR 0025](docs/adr/0025-tuesday-account-inquiry-mvp-and-observability.md) proposed a narrower "Tuesday MVP" (only `account_inquiry` automated, the other workflows sent to a mock human agent, plus an assistant profile and Langfuse traces). The human decided the build does not follow that scope (pending action 32 in [PROGRESS.md](docs/PROGRESS.md)), and the teammate branch `feat/privacy-safe-langfuse-api` stays unmerged. Do not reopen the decision, and do not build ADR 0025's mock agent, assistant profile, or Langfuse integration unless the human asks.
+**Scope is settled.** The build has four workflows. [ADR 0025](docs/adr/0025-tuesday-account-inquiry-mvp-and-observability.md) records a superseded historical plan for a narrower Tuesday release; the human decided the build does not follow that plan (resolved action 32 in [PROGRESS.md](docs/PROGRESS.md)). Preserve the accepted four-workflow scope in [ADR 0020](docs/adr/0020-four-workflows-and-the-workflow-registry.md). Two capabilities from the historical bundle later landed independently: the customer-visible assistant name and predefined avatar preferences (PR 18), and privacy-safe, metadata-only Langfuse generation export (PR 20), which is opt-in and disabled by default. They are secondary capabilities, not reasons to narrow or expand the four-workflow scope. The mock human agent from ADR 0025 was not built; do not add it or reopen the scope decision unless the human asks.
+
+## Hackathon alignment
+
+Read [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md) before planning work that changes product scope, architecture, evaluation, or submission readiness. It maps official challenge requirements to implementation, evidence, and known gaps; [docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md) tracks submission steps.
+
+- Keep work within the existing four-workflow scope, with `account_inquiry` as the prioritized reference path. Prioritize a working, verifiable end-to-end demonstration over adding breadth or trying to maximize every evaluation dimension.
+- The revised **internal MVP completion window ends Sunday, October 4, 2026**, leaving one calendar day before the official challenge-window end, **October 5, 2026**. No cutoff time or timezone is specified. The previous Tuesday target was missed while work continued; its date is preserved in ADR 0025. This target is a planning window, not a completion claim.
+- Spanish and Portuguese customer interactions remain required. Where relevant, state whether AI interprets language or deterministic logic makes the policy, permission, and outcome decision.
+- Preserve privacy, safety boundaries, evidence-backed verification, and appropriate human escalation. Never report a write as successful before its read-back verifies it.
+- Support claims with tests, commands actually run, or concrete artifacts. Distinguish implemented, verified, planned, blocked, and deferred work; a test file alone does not prove a passing test run.
+- Update documentation when behavior, scope, status, or evidence materially changes. Do not add features, frameworks, infrastructure, or refactors only to chase every evaluation dimension.
+- These alignment instructions do not override the safety, security, approval, data-use, or git-safety rules elsewhere in this guide or in `CLAUDE.md`.
 
 ## 3. Current state
 
@@ -64,7 +78,8 @@ As of this file's last update:
 | Phase 16 | Done: security review and the single-host production stack (`deploy/`), verified locally with TLS and the local model |
 | Phase 17 | Done: the final documentation and audit (README, LIMITATIONS, architecture views, the brief traceability matrix, the submission package in `docs/submission/`), the data-use record, no license ("All rights reserved"), the demo-guide fixes |
 | Remaining (human) | Choose the host and deploy, fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email ([docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md)) |
-| Submission deadline | 2026-10-05 |
+| Internal MVP completion window end | Sunday, 2026-10-04; completion is pending |
+| Official challenge-window end | 2026-10-05; no cutoff time or timezone published |
 
 Runtime defaults (from [.env.example](.env.example)): `LLM_PROVIDER=fake` (no model call; workflows use deterministic fallbacks), `WORKFLOW_ROUTER=keyword@1`, `WORKFLOW_RESOLVER=rules@1`, `WORKFLOW_RISK_ESTIMATOR=score_band@1`, `DEMO_MODE=true`. Learned components exist but are not the defaults.
 
@@ -116,6 +131,8 @@ A verified, timed walkthrough of every local path (dev stack, browser, local mod
 The production stack (Caddy with TLS, two API workers, PostgreSQL with a non-superuser owner, the jobs) also runs locally in its local TLS mode: [deploy/README.md](deploy/README.md), "Run the production stack locally".
 
 Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM, and `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke` runs the fixture prompts (a bare `make llm-smoke` reads the fake provider from `.env` and stops). See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
+
+Opt-in hosted model (never in `make check` or CI): with `LLM_PRIMARY_MODEL` (for example `openai/gpt-5-mini`) and `LLM_API_KEY_PRIMARY` in the shell or `.env`, `make api-hosted-llm` runs the API through LiteLLM after a preflight that prints each required variable as set or unset, never a value. The steps, the price table entry, and the smoke test are in [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7.
 
 ### Data sources
 
@@ -384,7 +401,7 @@ Rules:
 
 | Person | Role |
 |---|---|
-| Young | Technical lead: repository setup, core architecture, stack, agent integration, phase sessions |
+| Juan Young | Technical lead: repository setup, core architecture, stack, agent integration, phase sessions |
 | Miguel Correa | Project manager and AI engineer: project management, ADR and pull request drafting, alignment with the challenge criteria |
 | David Fonseca | Developer and analyst: dataset analysis at kickoff; further responsibilities to be agreed |
 | Julián Valencia | Developer, analyst, and data engineer: relational dataset analysis, data extraction, schema requirements |

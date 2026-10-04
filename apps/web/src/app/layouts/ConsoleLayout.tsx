@@ -15,6 +15,7 @@ interface NavItem {
   readonly to: string;
   readonly label:
     | 'layout.overview'
+    | 'layout.dashboard'
     | 'layout.inbox'
     | 'layout.creditApplications'
     | 'layout.evaluation'
@@ -40,6 +41,7 @@ const NAV: Record<Exclude<Schema<'Role'>, 'customer'>, readonly NavItem[]> = {
   ],
   evaluator: [
     OVERVIEW,
+    { to: '/console/dashboard', label: 'layout.dashboard', icon: ChartIcon },
     { to: '/console/evaluation', label: 'layout.evaluation', icon: ChartIcon },
     { to: '/console/traces', label: 'layout.traces', icon: TraceIcon },
   ],

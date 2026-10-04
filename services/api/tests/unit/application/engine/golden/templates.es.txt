@@ -138,20 +138,32 @@ En este momento funciono en modo limitado: te respondo con mensajes estándar y,
 [common.nothing_recorded]
 De acuerdo, no registré nada. ¿Hay algo más en lo que te ayude?
 
+[common.off_topic]
+Lo siento, ese tema está fuera de lo que puedo atender. Solo te ayudo con tus productos de este banco: tarjetas y reclamaciones. ¿Te ayudo con alguno de esos temas?
+
 [common.out_of_scope]
 Eso no lo puedo hacer aquí. Puedo ayudarte con tarjetas y reclamaciones. Si prefieres, te comunico con una persona del equipo.
 
 [common.refused]
 No encontré ese registro entre tus productos. Solo puedo ayudarte con tus propios productos y transacciones.
 
+[common.refused_review_notice]
+Por seguridad, debido a esta solicitud, si necesitas algo más en esta conversación te atenderá una persona del equipo.
+
+[common.refused_step_up_notice]
+Por seguridad, debido a esta solicitud, si quieres seguir con tus propios productos te pediré una verificación reforzada de tu identidad.
+
 [common.refused_third_party]
-No puedo atender solicitudes sobre los productos de otra persona.
+No puedo atender solicitudes sobre los productos o los datos de otra persona u otro cliente. Solo puedo ayudarte con tus propios productos.
 
 [common.resume]
 Gracias por verificar tu identidad. Retomemos donde íbamos.
 
 [common.step_up_required]
 Para hacer esto necesito una verificación reforzada de tu identidad. Complétala y escríbeme para continuar.
+
+[common.step_up_required_risk]
+Por seguridad, debido a lo que se pidió en esta conversación, necesito una verificación reforzada de tu identidad antes de continuar. Complétala y escríbeme para seguir.
 
 [common.switch_confirm]
 Todavía tenemos pendiente tu reclamación. ¿Quieres dejarlo y pasar a tus tarjetas? Responde sí o no.

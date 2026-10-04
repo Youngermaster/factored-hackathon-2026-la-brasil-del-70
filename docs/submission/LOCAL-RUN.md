@@ -191,13 +191,13 @@ docker image rm bank-agent-api:<tag> bank-agent-job:<tag> bank-agent-web:<tag>  
 ```bash
 cd slides
 pnpm install             # 5 s warm
-pnpm verify              # 4 s: types, then check:content; ends "ok content is consistent, 1 metric(s) pending"
+pnpm verify              # 4 s: types, then check:content; ends "ok content is consistent"
 pnpm dev                 # http://localhost:3131 (presenter view at /#/presenter); leave it running
 pnpm check:fit           # second terminal, 2 s: "ok every scene fits the safe area at every cue, with no overlapping text"
-pnpm export              # draft PDF, 4 s warm: export/la-brasil-del-70-pitch.pdf (35 pages, gitignored)
+pnpm export              # export/la-brasil-del-70-pitch.pdf (the 6 main slides, 32 pages, one per click) and export/la-brasil-del-70-appendix.pdf (7 pages); gitignored
 ```
 
-The pending metric is `deploy.url`, filled after the deployment; until then `pnpm export:final` stops on purpose. The export prints a `Failed to patch FloatingVue` console error from Slidev's own client; it does not affect the PDF. `pnpm export` launches its own server, so it does not need `pnpm dev`.
+No metric is pending since `deploy.url` was filled from the README on 2026-10-04, so `pnpm export:final` runs; it stops on purpose whenever a metric is pending again. The export prints a `Failed to patch FloatingVue` console error from Slidev's own client; it does not affect the PDF. `pnpm export` launches its own server, so it does not need `pnpm dev`.
 
 ## 8. The gates
 
@@ -222,7 +222,7 @@ Every row is a friction point met during the verification run. Rows marked "fixe
 | The dispute intake asks again for "la fecha aproximada, el monto y el comercio" after "Sí" | Before the fix the parser did not read the date and amount the statement table shows ("23 abr 2026", "23 de abr. de 2026", "COP 1,015,801.59"); only a Colombian-Spanish browser (`23/04/2026`) worked. Fixed: abbreviated dates and currency codes before the amount are read |
 | "No puedo registrar esta reclamación aquí" when disputing the same charge again | A charge can be disputed once per database; [reset](#5-reset-the-demo-data) |
 | The balance card says "Datos al 18 jun 2026, 12:59 a.m." while the reply says "17 de junio" | The card shows the data cut (`2026-06-18T05:59:59Z`, the end of 17 June in Mexico City) in the browser's time zone. Not changed: which zone to show is a human decision ([BACKLOG](../BACKLOG.md)) |
-| "Assistant" in English beside the avatar in a Spanish or Portuguese chat | The API's default assistant name; left as is, a human decision on the assistant profile feature ([BACKLOG](../BACKLOG.md)) |
+| "Assistant" in English beside the avatar in a Spanish or Portuguese chat | The API's default assistant name in the secondary assistant-profile feature; localization remains a low-priority follow-up ([BACKLOG](../BACKLOG.md)) |
 | A card shows "Activa" with an expiry date in 2023 (`crd-co-declined`) | The organizer's synthetic data; the assistant reports what the record says |
 | The evaluation view repeated its run notes three times, and the console showed React duplicate-key errors | Fixed: each note shows once, and a note only some systems carry names them |
 | `make llm-smoke` exits 2: `set LLM_PROVIDER=litellm and LLM_PRIMARY_MODEL` | `.env` keeps the fake provider; pass the three settings on the command line ([section 3](#3-the-fake-model-and-the-local-ollama-model)); README and AGENTS.md now say so |
@@ -235,7 +235,7 @@ Every row is a friction point met during the verification run. Rows marked "fixe
 | The production stack is reachable from other machines | Caddy publishes 8080 and 8443 on every interface; take the stack down when you are done |
 | `pnpm dev` in `slides/` and another Slidev deck | This deck uses port 3131, so it does not clash with a deck on Slidev's default 3030 |
 | `pnpm export` prints `Failed to patch FloatingVue` | Noise from Slidev's client; the PDF is complete |
-| `pnpm export:final` stops on a pending metric | By design until `deploy.url` is filled in `slides/data/metrics.yml` after the deployment |
+| `pnpm export:final` stops on a pending metric | By design: fill the metric in `slides/data/metrics.yml` (the check lists it) |
 
 ## Verification log
 
@@ -248,7 +248,7 @@ Date: 2026-09-30. Started from `main` at `b1e1f7b` in a fresh clone, on the bran
 | 3 | Local model: `make llm-smoke` (with the three settings), `make api-local-llm`, all 32 guide conversations through the browser | Pass | llm-smoke 32 of 32 in 2 min 24 s; per turn p50 4.8 s, p95 7.7 s; one behavior difference (the card choice in Spanish), recorded in BACKLOG |
 | 4 | Evaluation: `make eval-smoke`; regenerate the published report without a model | Pass for `eval-smoke` and for `bank-eval publish` on the run directory (byte for byte); the committed cassettes alone cannot reproduce the published numbers | Replay: 214 misses, P 165/304 against 177/304, the same at `6bc2e9d`; documented in the methodology, a harness fix is in BACKLOG for a human decision |
 | 5 | Local production stack: `init-env`, `check`, `build`, `up`, `seed`, `make smoke`, `make csp-check`, two write flows in the browser through the model, then down with its volumes | Pass after fixes | `make smoke` and `make csp-check` could not take the local CA flags, and the CSP check timed out on a fresh seed's empty inbox; both fixed |
-| 6 | Slides: `pnpm install`, `pnpm verify`, `pnpm dev`, `pnpm check:fit`, draft `pnpm export` | Pass | 35-page PDF; 1 metric pending (`deploy.url`) by design |
+| 6 | Slides: `pnpm install`, `pnpm verify`, `pnpm dev`, `pnpm check:fit`, draft `pnpm export` | Pass | 35-page PDF at verification time (41 pages after the 2026-10-03 deck update); 1 metric pending (`deploy.url`) by design |
 | 7 | `make check` and `make submission-check` in the clone | Pass | At `dd03fba`: `make check` 8 min 12 s (2,870 unit, 1,489 integration with 3 skipped for the optional `ml` extra, 349 web tests, all 11 coverage gates); `make submission-check` 7 min 56 s, every gate `pass`, then the seven human steps |
 
 Commits on `e2e-verify`:
@@ -263,4 +263,4 @@ Commits on `e2e-verify`:
 | `7c5d2a4` | fix(infra): let the CSP check pass on a freshly seeded stack |
 | `c018f25` | fix(infra): pass the local CA flags through make smoke and csp-check |
 
-Needs a human decision (each has a BACKLOG row): re-recording the evaluation cassettes so a replay reproduces a run; the time zone of the as-of instant in the answer cards; the English default assistant name; the model choosing a card the customer did not name. Also for the human: `slides/package.json` declares `"license": "Apache-2.0"` while the repository states "All rights reserved; no license is granted".
+Needs a human decision (each has a BACKLOG row): re-recording the evaluation cassettes so a replay reproduces a run; the time zone of the as-of instant in the answer cards; the model choosing a card the customer did not name. The English default assistant name is an accepted low-priority localization follow-up for the secondary assistant-profile feature. Also for the human: `slides/package.json` declares `"license": "Apache-2.0"` while the repository states "All rights reserved; no license is granted".

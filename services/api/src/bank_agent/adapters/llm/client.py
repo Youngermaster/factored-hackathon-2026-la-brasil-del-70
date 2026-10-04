@@ -73,6 +73,7 @@ class RawCompletion:
     text: str
     usage: TokenUsage
     model_id: str
+    provider_model_id: str | None = None
 
 
 class ChatCompletion(Protocol):
@@ -186,6 +187,7 @@ class PromptedLLMClient:
             usage=usage,
             latency_ms=self._elapsed_ms(started),
             model_id=raw.model_id,
+            provider_model_id=raw.provider_model_id,
             prompt=prompt,
             repaired=repaired,
         )
@@ -209,7 +211,12 @@ class PromptedLLMClient:
         if not text:
             raise LlmInvalidOutputError(f"{prompt}: empty text output")
         return TextGeneration(
-            text=text, usage=raw.usage, latency_ms=self._elapsed_ms(started), model_id=raw.model_id, prompt=prompt
+            text=text,
+            usage=raw.usage,
+            latency_ms=self._elapsed_ms(started),
+            model_id=raw.model_id,
+            provider_model_id=raw.provider_model_id,
+            prompt=prompt,
         )
 
     async def _complete(

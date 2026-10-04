@@ -43,6 +43,11 @@ class OtelSpanHandle:
     def trace_id(self) -> str | None:
         return trace_id_of(self._span)
 
+    @property
+    def span_id(self) -> str | None:
+        context = self._span.get_span_context()
+        return format(context.span_id, "016x") if context.is_valid else None
+
     def set_attribute(self, key: str, value: AttributeValue) -> None:
         try:
             self._span.set_attribute(key, value)

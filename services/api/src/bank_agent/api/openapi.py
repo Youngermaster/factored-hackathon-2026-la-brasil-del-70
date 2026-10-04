@@ -20,6 +20,7 @@ from bank_agent.api.dependencies import ANYONE
 from bank_agent.api.problems import PROBLEM_CONTENT_TYPE
 from bank_agent.api.provider import ApiConfig
 from bank_agent.application.agent.inbox import AgentInbox
+from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.reliability.ladder import StaticDegradation
@@ -90,6 +91,10 @@ class SchemaOnlyProvider:
 
     @property
     def inbox(self) -> AgentInbox:
+        raise self._unavailable()
+
+    @property
+    def human_service(self) -> HumanService:
         raise self._unavailable()
 
     @property

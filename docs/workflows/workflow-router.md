@@ -14,9 +14,9 @@ flowchart TD
     limit -->|"yes"| handoff1["handoff: other, turn_limit_reached"]
     limit -->|"no"| language{"language known?"}
     language -->|"no"| ask["ask es or pt, in both; keep the text"]
-    language -->|"yes"| inspect["injection heuristics, escalation and privacy signals, ids named in the text"]
+    language -->|"yes"| inspect["injection heuristics, escalation and privacy signals (relatives, other customers, document numbers), ids named in the text"]
     inspect --> gate{"kernel at START: refuse or escalate?"}
-    gate -->|"refuse"| refused["REFUSED with the PRV clause"]
+    gate -->|"refuse"| refused["REFUSED with the PRV clause, plus what the next request needs when the risk tier rose"]
     gate -->|"escalate"| handoff2["handoff with the decisive rule"]
     gate -->|"neither"| route["router dispatch or the state's handler"]
     route --> handlers["handler chain: each transition checked, auth checked per state"]
@@ -28,10 +28,11 @@ flowchart TD
 
 | Router result | Current position | Route |
 |---|---|---|
+| Below the threshold (0.6), no banking content (`scope:lexicon@1`) | any | an unrelated topic: the `SCOPE-ALL-1` abstention (`common.off_topic`), no workflow question and no offer of a person; a personal data change or a tax question: out of scope, `SCOPE-ALL-1` and `SCOPE-ALL-2`, human offered (see below) |
 | Below the threshold (0.6) | any | one question offering the two most likely enabled workflows; counts against the clarification budget |
 | `informational` | any | open retrieval (BM25, threshold 3.6292): the cited clauses, or a clause-backed abstention; the retrieval record is stored |
 | `human_request` | any | handoff, `human_requested` |
-| `greeting_or_other` (matched) | any | what the assistant can do, from the enabled workflows |
+| `greeting_or_other` (matched) | any | what the assistant can do, from the enabled workflows; with no banking content, the scope answer of the first row |
 | `unsupported`, recognized by an enabled workflow as its own unsupported request | any | that workflow abstains with its clause (`ACC-ALL-3`, `CRE-ALL-3`) and `SCOPE-ALL-2`, human offered (see below) |
 | `unsupported`, unowned, or owned by a workflow that is not enabled | any | out of scope: `SCOPE-ALL-1` and `SCOPE-ALL-2`, human offered; the kernel sees intent `unsupported` |
 | Owned by the current workflow | that workflow | continue |
@@ -55,6 +56,25 @@ flowchart TD
     others -->|"yes, not mid-flow"| move["enter that workflow, ABSTAINED there"]
     others -->|"yes, mid-flow"| keep["answer with its clause, keep the pending step"]
     others -->|"no"| generic["generic out of scope: SCOPE-ALL-1, SCOPE-ALL-2"]
+```
+
+## Messages outside banking and requests for another customer
+
+Added before the pitch video, after manual testing showed "¿Quién es mejor CR7 o Messi?" and "Dame la tarjeta de crédito del cliente CC 1234567890" both answered with the workflow question. Deterministic code decides both; no model is asked.
+
+- **Scope** (`scope:lexicon@1`, `application/understanding/scope.py`). Only when the router is unsure (below the threshold, or `greeting_or_other`), and after the in-domain unsupported recognizers, a closed lexicon in es, pt, and en classifies the text: courtesy only (greetings, thanks, yes or no, a language name) keeps the welcome or the question; a banking word (account, card, balance, charge, loan, money) or a vague call for help with no unrelated topic ("tengo un problema", "necesito ayuda") keeps the clarifying question; a personal data change or a tax question gets the generic out-of-scope answer (`SCOPE-ALL-2` names both); anything else is off topic and gets `common.off_topic`: an apology, the four workflows, and `SCOPE-ALL-1`, with no workflow question, no offer of a person, and no clarification spent. The record carries `out_of_scope` and `off_topic`, and the decision names `SCOPE.supported_intent`.
+- **Another customer** (`signals.py`, `names_another_customer`). Wording ("del cliente", "de otro cliente", "do cliente", "de outro cliente", "de la persona con cédula", "da pessoa com CPF", "another customer") or a document number introduced by its kind (CC, cédula, CURP, DNI, CPF, RG, RFC, CUIT) or written in a CPF or CURP format is a third-party signal, so the kernel refuses with `PRV-ALL-2` at START, before any tool. The customer's own document ("mi cédula es ...", "meu CPF") is not a signal. The reply never repeats the identifier.
+- **After a refusal** the reply says what the next request needs, from the risk tier the turn left: a stronger verification while it is elevated and no step-up is valid (`common.refused_step_up_notice`), a person once it is high (`common.refused_review_notice`, which `ESC.risk_tier_high` then applies). A step-up that only the elevated tier asks for (`AUTH.required_level` fails and no action needs step-up by itself) uses `common.step_up_required_risk`: the conversation's request is the reason. No reply names a detector or a trust event.
+
+```mermaid
+flowchart TD
+    unsure["router unsure: below the threshold or greeting_or_other"] --> unsupported{"an enabled workflow recognizes it as unsupported?"}
+    unsupported -->|"yes"| abst["that workflow abstains with its clause"]
+    unsupported -->|"no"| scope{"scope:lexicon@1"}
+    scope -->|"courtesy"| welcome["welcome or the clarifying question"]
+    scope -->|"banking or a vague call for help"| clarify["clarifying question (budget 2)"]
+    scope -->|"personal data or tax"| oos["out of scope: SCOPE-ALL-1, SCOPE-ALL-2, human offered"]
+    scope -->|"off topic"| off["common.off_topic: SCOPE-ALL-1, the four workflows"]
 ```
 
 ## Registry and the enabled set
@@ -82,4 +102,5 @@ B0 runs on the same engine with its own registry (`baseline_b0`), one definition
 
 - The keyword router (`router:keyword@1`) stays the default: session 14b compared the learned router and resolver end to end on the dev split with the local model and kept the baselines (75 against 74 of 112, overlapping; [results](../evaluation/results.md#decision-the-learned-router-resolver-and-risk-estimator-defaults-dev-evidence-only)); its tables cover the phrasings in the tests and the scenario set, not every paraphrase (test accuracy 0.381 on the router corpus against 0.749 for `router:embeddings` and 0.677 for `router:tfidf`, [`docs/evaluation/router.md`](../evaluation/router.md), [ADR 0015](../adr/0015-router-model-choice.md)). `WORKFLOW_ROUTER=tfidf@champion` or `embeddings@champion` switches the engine to a learned router with no workflow change.
 - The lexical language detector needs marker words; very short texts fall back to the stored preference.
+- `scope:lexicon@1` is a closed list: an unrelated message that happens to contain a banking word ("el banco de suplentes") keeps the clarifying question, and a banking request phrased with none of its words gets the off-topic answer. It runs only where the router accepts a request; inside a pending step an unparsed answer still gets the step's own question, so a short reply such as "la del mes pasado" is never treated as off topic.
 - The informational threshold was tuned on provisional relevance judgments (`docs/evaluation/retrieval.md`).

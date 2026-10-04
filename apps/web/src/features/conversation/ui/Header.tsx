@@ -8,17 +8,17 @@ import { useConversation } from '../model/context';
 /** The chat's title bar: the page title, the conversation status, a new conversation, and page actions (a slot). */
 export function Header({ children }: { readonly children?: ReactNode }) {
   const { t } = useTranslation();
-  const { conversation, startNew, conversationId } = useConversation();
+  const { conversation, startNew, conversationId, closed } = useConversation();
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div className="flex min-w-0 items-center gap-3">
         <h1 className="font-display text-heading font-semibold tracking-tight text-fg">
           {t('chat.title')}
         </h1>
-        {conversation?.status === 'escalated' && (
+        {conversation?.status === 'escalated' && !closed && (
           <Badge tone="risk">{t('chat.status.escalated')}</Badge>
         )}
-        {conversation?.status === 'closed' && <Badge>{t('chat.status.closed')}</Badge>}
+        {closed && <Badge>{t('chat.status.closed')}</Badge>}
       </div>
       <div className="flex flex-wrap items-center gap-2">
         {children}

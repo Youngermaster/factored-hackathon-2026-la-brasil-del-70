@@ -64,9 +64,36 @@ COMMON: dict[str, dict[Language, str]] = {
         EN: "I did not find that record among your products. I can only help with your own products and transactions.",
     },
     "common.refused_third_party": {
-        ES: "No puedo atender solicitudes sobre los productos de otra persona.",
-        PT: "Não posso atender pedidos sobre os produtos de outra pessoa.",
-        EN: "I cannot handle requests about another person's products.",
+        ES: "No puedo atender solicitudes sobre los productos o los datos de otra persona u otro cliente. Solo "
+        "puedo ayudarte con tus propios productos.",
+        PT: "Não posso atender pedidos sobre os produtos ou os dados de outra pessoa ou de outro cliente. Só posso "
+        "ajudar com os seus próprios produtos.",
+        EN: "I cannot handle requests about another person's or another customer's products or data. I can only "
+        "help with your own products.",
+    },
+    "common.refused_step_up_notice": {
+        ES: "Por seguridad, debido a esta solicitud, si quieres seguir con tus propios productos te pediré una "
+        "verificación reforzada de tu identidad.",
+        PT: "Por segurança, devido a este pedido, se quiser seguir com os seus próprios produtos vou pedir uma "
+        "verificação reforçada da sua identidade.",
+        EN: "For security, because of this request, if you want to continue with your own products I will ask for "
+        "a stronger verification of your identity.",
+    },
+    "common.refused_review_notice": {
+        ES: "Por seguridad, debido a esta solicitud, si necesitas algo más en esta conversación te atenderá una "
+        "persona del equipo.",
+        PT: "Por segurança, devido a este pedido, se precisar de mais alguma coisa nesta conversa, uma pessoa da "
+        "equipe vai atender você.",
+        EN: "For security, because of this request, if you need anything else in this conversation a person from "
+        "the team will assist you.",
+    },
+    "common.off_topic": {
+        ES: "Lo siento, ese tema está fuera de lo que puedo atender. Solo te ayudo con tus productos de este "
+        "banco: {capabilities}. ¿Te ayudo con alguno de esos temas?",
+        PT: "Desculpe, esse assunto está fora do que posso atender. Só ajudo com os seus produtos deste banco: "
+        "{capabilities}. Posso ajudar com algum desses assuntos?",
+        EN: "Sorry, that topic is outside what I can handle. I only help with your products at this bank: "
+        "{capabilities}. Can I help with one of those topics?",
     },
     "common.auth_required": {
         ES: "Tu sesión venció. Para continuar necesito que verifiques tu identidad de nuevo; después retomamos "
@@ -99,6 +126,14 @@ COMMON: dict[str, dict[Language, str]] = {
         PT: "Para fazer isso, preciso de uma verificação reforçada da sua identidade. Conclua e me escreva para "
         "continuar.",
         EN: "To do this I need a stronger verification of your identity. Complete it and write to me to continue.",
+    },
+    "common.step_up_required_risk": {
+        ES: "Por seguridad, debido a lo que se pidió en esta conversación, necesito una verificación reforzada de "
+        "tu identidad antes de continuar. Complétala y escríbeme para seguir.",
+        PT: "Por segurança, devido ao que foi pedido nesta conversa, preciso de uma verificação reforçada da sua "
+        "identidade antes de continuar. Conclua e me escreva para seguir.",
+        EN: "For security, because of what was asked in this conversation, I need a stronger verification of your "
+        "identity before continuing. Complete it and write to me to continue.",
     },
     "common.informational_answer": {
         ES: "Esto es lo que dice la política que aplica a tu consulta:",

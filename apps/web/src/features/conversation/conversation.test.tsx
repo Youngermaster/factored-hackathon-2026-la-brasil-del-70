@@ -184,13 +184,11 @@ describe('the customer chat', () => {
     await openChat();
     await userEvent.click(screen.getByRole('button', { name: 'Hablar con una persona' }));
     const notice = await screen.findByRole('region', {
-      name: 'Tu caso pasó a una persona del equipo',
+      name: 'Solicitud de atención humana',
     });
     expect(within(notice).getByText('ho-fixture-7')).toBeInTheDocument();
     expect(within(notice).getByText(/30 sep 2026, 3:00/)).toBeInTheDocument();
-    expect(
-      await screen.findByText('Tu caso ya está con una persona del equipo.'),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/Tu solicitud está en espera/)).toBeInTheDocument();
     expect(screen.getByText('Quiero hablar con una persona')).toBeInTheDocument();
   });
 

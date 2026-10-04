@@ -17,6 +17,8 @@ def _instance(error_type: type[DomainError]) -> DomainError:
         return errors.SessionExpiredError("idle")
     if error_type is errors.IdentityLockedError:
         return errors.IdentityLockedError(timedelta(minutes=5))
+    if error_type is errors.ConversationCreationLimitedError:
+        return errors.ConversationCreationLimitedError(timedelta(hours=1))
     return error_type()
 
 
@@ -31,6 +33,7 @@ def test_every_domain_error_maps_to_a_problem(error_type: type[DomainError]) -> 
 @pytest.mark.parametrize(
     ("error", "status", "slug"),
     [
+        (errors.ConversationCreationLimitedError(timedelta(hours=1)), 429, "conversation-creation-limited"),
         (errors.CaseNotFoundError(), 404, "resource-not-found"),
         (errors.SessionExpiredError("absolute"), 401, "session-expired"),
         (errors.IdentityChallengeFailedError(), 401, "authentication-required"),

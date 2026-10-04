@@ -120,6 +120,7 @@
   "layout": {
     "consoleNav": "Console navigation",
     "overview": "Overview",
+    "dashboard": "Dashboard",
     "inbox": "Inbox",
     "creditApplications": "Credit applications",
     "evaluation": "Evaluation",
@@ -148,6 +149,7 @@
     "heading": "Overview",
     "agentBody": "You handle structured handoffs: verified facts, actions taken, the policy basis, and open questions. Never the full transcript.",
     "evaluatorBody": "You review execution records and offline evaluation results, always with the per-workflow numbers next to the total.",
+    "dashboardBody": "Executive indicators, system comparisons, workflow performance, and quality slices.",
     "inboxBody": "Handoffs with verified facts, actions, policy, and open questions. Claim and resolve.",
     "applicationsBody": "Applications recorded for human review, with their assessment and originating conversation.",
     "evaluationBody": "Published results per workflow and in aggregate, with sample sizes and intervals.",
@@ -206,7 +208,6 @@
     "notFoundTitle": "We could not find that conversation",
     "notFoundBody": "It may belong to another session or no longer exist. Start a new one and we will help all the same.",
     "human": "Talk to a person",
-    "withPerson": "Your case is already with a person on the team.",
     "showTrace": "Show in the record",
     "stepUpWaiting": "This action needs you to confirm your identity with a new code.",
     "stepUpAgain": "Confirm identity",
@@ -415,7 +416,7 @@
       "evidence": "Checked in"
     },
     "escalation": {
-      "title": "Your case went to a person on the team",
+      "title": "Human service request",
       "reference": "Case reference",
       "expected": "Expected answer by"
     },
@@ -897,6 +898,40 @@
     "emptyTitle": "Look up a conversation",
     "emptyBody": "Paste a conversation reference to read its records, turn by turn."
   },
+  "dashboard": {
+    "heading": "Administrative dashboard",
+    "intro": "An executive view of quality, safety, and efficiency over published runs. Aggregate results always appear with the per-workflow detail.",
+    "restricted": "Evaluator access",
+    "loading": "Loading analytics",
+    "error": "We could not load the analytics",
+    "emptyTitle": "No dashboard data yet",
+    "emptyBody": "Publish an evaluation run to enable metrics and comparisons.",
+    "runLabel": "Run",
+    "systemLabel": "System analyzed",
+    "kpis": "Key indicators",
+    "cases": "{{count}} cases in total",
+    "vsBaseline": "{{delta}} against {{baseline}}",
+    "rate": "Rate: {{value}}",
+    "p50": "p50: {{value}}",
+    "costAttempted": "Per attempted case: {{value}}",
+    "workflowTitle": "Performance by workflow",
+    "workflowIntro": "Safe automated resolution, with containment, unsafe outcomes, and the difference against the baseline.",
+    "barLabel": "{{workflow}}: {{value}} safe automated resolution",
+    "workflowDetail": "Containment {{containment}} · Unsafe {{unsafe}} · Difference {{delta}}",
+    "riskTitle": "Safety and escalation",
+    "riskIntro": "Errors that require priority review. Each rate preserves its specific denominator.",
+    "comparisonTitle": "Overall system comparison",
+    "system": "System",
+    "breakdownTitle": "Consistency across populations",
+    "breakdownIntro": "Safe automated resolution for published aggregate slices. A missing value means that the run did not publish that slice.",
+    "dimensions": {
+      "language": "Language",
+      "dialect": "Dialect",
+      "segment": "Segment"
+    },
+    "provenanceTitle": "Provenance and scope",
+    "provenanceBody": "{{measurement}} measurement over {{dataset}}, generated {{generated}} from commit {{sha}}. It does not represent production traffic or outcomes."
+  },
   "eval": {
     "heading": "Evaluation results",
     "intro": "Summaries the evaluation harness published for the same held-out workload: per workflow first, then the aggregate. Every figure carries its sample size and 95% interval.",
@@ -1096,5 +1131,27 @@
     "transparency": "Beside the chat you see each turn's record: what the system understood, which rules and clauses it applied, and what it checked. Model reasoning is neither stored nor shown, by design.",
     "humanTitle": "You can always talk to a person",
     "human": "When you ask, when something needs human judgment, or when a rule requires it, your case goes to a person with what we already checked, so you do not have to repeat it."
+  },
+  "humanService": {
+    "title": "Human service",
+    "messages": "Messages with the agent",
+    "status": {
+      "queued": "Your request is queued. You can leave more details here; an agent will reply when they claim the case.",
+      "joined": "An agent claimed your case. Messages in this chat go to that person.",
+      "closed": "The agent closed the conversation. You can read its history or start another chat."
+    },
+    "author": {
+      "user": "You",
+      "agent": "Human agent",
+      "customer": "Customer"
+    },
+    "disconnected": "The chat connection was lost",
+    "reconnectBody": "We cannot update messages. A connection problem does not change the service status. Retry to recover the history.",
+    "sending": "Sending message",
+    "loading": "Loading messages",
+    "assignedElsewhere": "Only the agent who claimed this case can read and reply to its messages.",
+    "replyLabel": "Your reply to the customer",
+    "replySend": "Send to customer",
+    "creationLimit": "You created five chats in the past 60 minutes. Continue in existing chats or wait until a slot becomes available."
   }
 }

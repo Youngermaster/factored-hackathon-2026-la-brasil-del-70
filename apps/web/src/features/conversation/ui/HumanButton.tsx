@@ -10,15 +10,8 @@ import { useConversation } from '../model/context';
  */
 export function HumanButton() {
   const { t } = useTranslation();
-  const { reply, inFlight, conversation } = useConversation();
-  if (conversation?.status === 'escalated') {
-    return (
-      <p className="flex items-center gap-2 text-small text-fg-secondary">
-        <HumanIcon aria-hidden="true" size={18} />
-        {t('chat.withPerson')}
-      </p>
-    );
-  }
+  const { reply, inFlight, humanMode, closed } = useConversation();
+  if (closed || humanMode) return null;
   return (
     <Button
       variant="ghost"

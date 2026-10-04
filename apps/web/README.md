@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-The browser client for the banking agent: the customer chat, the transparency panel that shows rules, cited policies, tool calls, and verification per turn, the human agent inbox for structured handoffs, and a read-only evaluation view. Phase 01 provided the build, types, lint, boundaries, and tests; phase 12 added the design system, the app shell, the typed API layer, i18n, and sign-in; phase 13 added the conversation, glass box, agent inbox, evaluation view, demo guide, and About page ([`docs/frontend/features.md`](../../docs/frontend/features.md)).
+The browser client for the banking agent: the customer chat, the transparency panel that shows rules, cited policies, tool calls, and verification per turn, the human agent inbox for structured handoffs, the administrative analytics dashboard, and the detailed evaluation view. Phase 01 provided the build, types, lint, boundaries, and tests; phase 12 added the design system, the app shell, the typed API layer, i18n, and sign-in; phase 13 added the conversation, glass box, agent inbox, evaluation view, demo guide, and About page ([`docs/frontend/features.md`](../../docs/frontend/features.md)).
 
 Stack: Vite, React 19, TypeScript in strict mode (with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`), React Router 8, TanStack Query 5, Radix primitives (`radix-ui`), Tailwind CSS v4 with design tokens, Phosphor icons, i18next, react-hook-form with zod/mini, openapi-fetch over types from openapi-typescript, Vitest with jsdom, React Testing Library, MSW, and vitest-axe. Design rules: [`docs/design/DESIGN.md`](../../docs/design/DESIGN.md); components: [`docs/frontend/components.md`](../../docs/frontend/components.md); state: [`docs/frontend/state.md`](../../docs/frontend/state.md). Package manager: pnpm (version pinned by `packageManager`), Node 24.15 or later (`engines`, root `.nvmrc`).
 
@@ -44,19 +44,20 @@ Run from `apps/web` (or use the root Make targets):
 
 ## Public interfaces
 
-| Import                      | What it gives                                                                                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `@/shared/ui`               | The primitives (see the components doc), `ThemeProvider`, `useTheme`, `useToast`, the icons                                                                  |
-| `@/shared/i18n`             | `LocaleProvider`, `useLocale`, `useFormat` (money, dates, relative time, countdowns per locale), `LocaleSwitcher`                                            |
-| `@/shared/api`              | `createApiClient`, `useApi`, `unwrap`, `ApiError` and `NetworkError`, `hasProblem`, `errorMessageKey`, `createQueryClient`, `queryKeys`, `Schema<'Name'>`    |
-| `@/shared/config`           | `isDemoMode()` (`VITE_DEMO_MODE`)                                                                                                                            |
-| `@/features/auth`           | `LoginFlow`, `RequireSession`, `AuthProvider`, `useSession`, `useStepUp`, `SessionStatus`, `LogoutButton`, `SessionNotice`, the `StepUp` compound, `homeFor` |
-| `@/features/conversation`   | The `Conversation` compound (`Root`, `Header`, `Starters`, `Messages`, `HumanButton`, `Composer`) and `useConversation`                                      |
-| `@/features/glass-box`      | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace`                                                                               |
-| `@/features/agent-inbox`    | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail`                                                         |
-| `@/features/eval-report`    | `EvaluationReport` and the interval helpers (`proportion`, `wilson`, `zeroEventUpperBound`)                                                                  |
-| `@/features/demo-guide`     | `DemoGuide` and the verified `SCENARIOS`                                                                                                                     |
-| `@/entities/turn-selection` | `TurnSelectionProvider`, `useTurnSelection` (linked selection between the chat and the glass box)                                                            |
+| Import                       | What it gives                                                                                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `@/shared/ui`                | The primitives (see the components doc), `ThemeProvider`, `useTheme`, `useToast`, the icons                                                                  |
+| `@/shared/i18n`              | `LocaleProvider`, `useLocale`, `useFormat` (money, dates, relative time, countdowns per locale), `LocaleSwitcher`                                            |
+| `@/shared/api`               | `createApiClient`, `useApi`, `unwrap`, `ApiError` and `NetworkError`, `hasProblem`, `errorMessageKey`, `createQueryClient`, `queryKeys`, `Schema<'Name'>`    |
+| `@/shared/config`            | `isDemoMode()` (`VITE_DEMO_MODE`)                                                                                                                            |
+| `@/features/auth`            | `LoginFlow`, `RequireSession`, `AuthProvider`, `useSession`, `useStepUp`, `SessionStatus`, `LogoutButton`, `SessionNotice`, the `StepUp` compound, `homeFor` |
+| `@/features/conversation`    | The `Conversation` compound (`Root`, `Header`, `Starters`, `Messages`, `HumanButton`, `Composer`) and `useConversation`                                      |
+| `@/features/glass-box`       | `GlassBox.Panel`, `GlassBox.SheetTrigger`, `GlassBox.Standalone`, `StaffTrace`                                                                               |
+| `@/features/agent-inbox`     | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail`                                                         |
+| `@/features/eval-report`     | `EvaluationReport`, the published summary hook and types, run grouping, and interval helpers                                                                 |
+| `@/features/admin-dashboard` | The evaluator-only administrative analytics dashboard over versioned published runs                                                                          |
+| `@/features/demo-guide`      | `DemoGuide` and the verified `SCENARIOS`                                                                                                                     |
+| `@/entities/turn-selection`  | `TurnSelectionProvider`, `useTurnSelection` (linked selection between the chat and the glass box)                                                            |
 
 The composition root is `src/app/`: `services.ts` creates the API client, the query client, and the session-loss channel once; `AppProviders.tsx` provides theme, locale, icons, tooltips, toasts, the query client, and the API client; `routes.tsx` is the route tree (`/login`; the public `/about`, and `/demo` in demo mode; the customer chat at `/` and `/glass-box/:id`; the console at `/console` with `inbox`, `credit-applications`, `evaluation`, and `traces`; a not-found page; and a route error boundary), where every page except sign-in is a lazy route; `layouts/` holds `CustomerLayout` (chat-first, mobile-first) and `ConsoleLayout` (desktop-first, with navigation). Features consume everything through hooks, never props.
 
@@ -104,3 +105,7 @@ pnpm run test:coverage     # or: make test-web
 - Unit tests sit beside the code (`*.test.ts(x)`); integration tests per feature drive the app through MSW fakes typed from the schema (`src/test/msw/{auth,conversation,trace,agent}.ts`); `src/app/a11y.test.tsx` and `src/app/a11y-surfaces.test.tsx` run vitest-axe on every page in both themes. `tooling/eligibility-copy.test.ts` keeps the eligibility sentences identical to the policy pack. jsdom cannot judge color contrast, so `src/shared/ui/tokens.test.ts` checks it from the tokens.
 - Vitest runs on worker processes (`pool: 'forks'`), capped at half the cores (two in CI), with 20 s test and 30 s hook and teardown timeouts, so a busy machine during `make check` does not fail worker start-up.
 - Coverage gate: 70% line coverage for `src/features/**`.
+
+## Live human service
+
+Escalated chats show queued, joined, and closed states and send follow-ups through the human channel. Assigned agents reply in the handoff detail. Refresh and reconnect restore persisted cursor pages; transport errors are shown separately from assignment. See [the guide](../../docs/workflows/human-service.md) for the two-browser walkthrough.

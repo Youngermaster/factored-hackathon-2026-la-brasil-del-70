@@ -1,115 +1,101 @@
 # Pitch narration
 
-The spoken script for the video, one section per slide (keyed by the slide's `routeAlias` in `slides.md`) plus the two live demo segments. Words in square brackets are cues, not speech: `[click 2]` means press the right arrow once and let the scene play to its next rest before speaking the line after it.
+The spoken script of the video pitch, in the order it is spoken: slide sections are keyed by the slide's `routeAlias` in `slides.md`, and the four live segments (`demo-*`) sit between them. It is the same text as the team monologue in [docs/demo/video-monologue.md](../docs/demo/video-monologue.md), which splits it across the four speakers; `pnpm check:content` fails when the two differ by one word. The timed shot list, with the exact clicks and commands, is [docs/demo/video-plan.md](../docs/demo/video-plan.md).
 
-`pnpm check:content` counts the spoken words of every section at 150 words per minute and fails when the total leaves the target range below (in seconds). The table it prints is the timing check; the shot list with timestamps is in [VIDEO.md](VIDEO.md).
+Words in square brackets are not spoken. `[click 2]` means press the right arrow and let the scene play to its next rest before the line after it; `[Juan Young]` names who speaks from there on. Slides without spoken lines (the thesis, the workflows, the appendix) are in the PDF, not in the video.
 
-<!-- total-target: 195-240 -->
+`pnpm check:content` counts the spoken words at 150 words per minute and fails when the total leaves the target range below (in seconds) or passes 3:00, the organizers' hard limit for the whole video, demo footage included. The spoken target leaves about 20 seconds of the 2:50 cut for typing and loading in the live segments.
 
-Rules for editing: English, plain words, no em dashes, no number that is not in `data/metrics.yml`. The `evidence` section carries the phase 14b test numbers; if the evaluation is rerun, update it from `data/metrics.yml`.
+<!-- total-target: 140-165 -->
+
+Rules for editing: English, plain words, no em dashes, no number that is not in `data/metrics.yml`. Names as on screen: the product is Bank Agent; the systems are P (the proposed system), B0 (the menu and rules bot) and B1 (the naive LLM agent); the team names match the README team table. Edit this file and the monologue together.
 
 ## hook
 
-<!-- slide 1, about 30 s -->
+<!-- video 0:00 to 0:14, slide 1: arrive, click 1, click 2 -->
 
-[arrive] We ingested twenty-three and a half million rows of the organizers' synthetic bank data, under contracts.
+[arrive] [Julián Valencia] A synthetic Latin American bank: twenty-three and a half million rows.
 
-[click 1] A third of all contacts are account inquiries. Cards and disputes are a fifth each. Credit is seven percent.
+[click 1] [click 2] Disputes hurt most: only forty-four percent are resolved at first contact.
 
-[click 2] Most contacts are resolved at first contact. Disputes are not: forty-four percent, with the worst satisfaction.
+[Miguel Correa] We are La Brasil del 70, and this is Bank Agent.
 
-[click 3] The transcripts carry no intent: a hundred and forty-seven thousand of them, forty-two distinct texts. So routing learns from utterances we wrote and labeled.
+## demo-guardrail
 
-[click 4] We built four workflows, in Spanish and Portuguese.
+<!-- video 0:14 to 0:34, live: out of scope, then a third-party request -->
 
-## thesis
-
-<!-- slide 2, about 45 s -->
-
-[arrive] One turn. A customer in Argentina writes: I don't recognize a charge of fifteen lucas on my card.
-
-[click 1] The language model understands. Slang becomes fields: a new dispute, fifteen thousand pesos, an unrecognized charge.
-
-[click 2] Deterministic code decides. Each check is a policy clause: completed, inside thirty days, a supported reason, under the automatic limit.
-
-[click 3] Then it acts, and reports the case only after reading it back.
-
-[click 4] Tell it to ignore its rules and block another customer's card, and nothing happens. Customer text is data; tools come from an allowlist per state.
-
-[click 5] When a person is needed, the handoff carries verified facts and open questions, never the transcript.
-
-[click 6] The model understands. Code decides. Evidence proves it.
-
-## demo-dispute
-
-<!-- live clip A, about 20 s; see VIDEO.md for what to record -->
-
-Here is the working system. A real dispute in the chat, and beside it the glass box: the state, the rule ids, the tool call and its verification, straight from the execution record, and an injection refused.
-
-## architecture
-
-<!-- slide 3, about 35 s -->
-
-[arrive] The backend is hexagonal: the core imports nothing from the edges.
-
-[click 1] Rules are pure functions. Clause text lives in files, in three languages.
-
-[click 2] Every model call passes one gateway: redaction, budgets, tracing, retries, a circuit breaker. The provider is a setting.
-
-[click 3] Every draft meets a grounding verifier. One unsupported number, and the customer gets a template instead.
-
-[click 4] Underneath, a data platform with contracts. Bad rows are quarantined, never dropped.
-
-[click 5] Imports flow inward, and the build fails if they don't.
-
-## workflows
-
-<!-- slide 4, about 35 s -->
-
-[arrive] Four workflows, one bar.
-
-[click 1] Account inquiries are read only, and every balance says how fresh it is.
-
-[click 2] Card support makes the first write: a protective block with confirmation, a step-up code and a read-back.
-
-[click 3] Disputes confirm the transaction with the customer, because the data never links a complaint to one.
-
-[click 4] Credit keeps the risk estimate away from the model. A synthetic service decides, and there is no approved outcome at all.
-
-[click 5] Every workflow gets clauses, a state machine, verified actions, a handoff and its own evaluation.
+[Juan Young] This is the customer chat. On the right, the glass box records every turn. Who is better, Cristiano or Messi? It declines, lists what it can help with, and cites the scope clause. No tool ran. Another customer's credit card? Refused under the privacy clause, and the number is never repeated.
 
 ## demo-card
 
-<!-- live clip B, about 15 s -->
+<!-- video 0:34 to 1:08, live, es-MX: a protective card block -->
 
-The card block in Portuguese, with its step-up code, then a credit question answered as indicative, with reasons and a way to reach a person.
+[David Fonseca] Now a real task, in Spanish: I lost my card, block it. The model only understands. The glass box shows the intent, then the rules that decided, each tied to a policy clause. Two cards, so it asks which one instead of guessing. Before writing, it asks for confirmation and a fresh one-time code. It says blocked only after reading the card back.
+
+## demo-handoff
+
+<!-- video 1:08 to 1:28, live, pt-BR: an escalation, then the agent console -->
+
+[Miguel Correa] The same engine, in Portuguese. This customer threatens to go to the central bank, so a person takes over, with verified facts and open questions, not the transcript. In the agent console, an agent claims the case and answers in the same conversation.
+
+## demo-backend
+
+<!-- video 1:28 to 1:46, live: the evaluator record, one Jaeger trace, the Grafana dashboard -->
+
+[Juan Young] Behind each reply is a full execution record, and one OpenTelemetry trace from the HTTP request through the router, the policy check, the tool call and its SQL.
+
+[Julián Valencia] Grafana turns the same telemetry into live operations: turns by workflow, outcomes, escalations, safety interventions and latency.
+
+## architecture
+
+<!-- video 1:46 to 2:12, slide 3: arrive, clicks 1 to 3 -->
+
+[arrive] [Juan Young] FastAPI with a hexagonal core, React, and PostgreSQL with row-level security.
+
+[click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it.
+
+[click 2] Every model call passes one LiteLLM gateway, so the provider is a setting.
+
+[click 3] [David Fonseca] Our learned router, resolver and risk estimator beat their baselines offline, but not end to end, so the baselines stay the default.
 
 ## evidence
 
-<!-- slide 5, about 30 s. Numbers from data/metrics.yml (phase 14b test run, local model) -->
+<!-- video 2:12 to 2:36, slide 5: arrive, clicks 1 to 3. Numbers from data/metrics.yml: the phase 14b test run, simulated on qwen2.5:7b-instruct -->
 
-[arrive] The baseline and the system run the same held-out cases: every workflow, both languages, all three paths.
+[arrive] [Julián Valencia] Three hundred and four held-out cases, three systems, simulated on a small local model.
 
-[click 1] Including the brief's stress cases, from prompt injection to tool failures.
+[click 1] Per workflow first: card support is not ahead of the menu and rules bot yet.
 
-[click 2] On a small local model, the system resolves fifty eight percent safely, against forty two for the baseline. Unsafe outcomes: eight of three hundred and four, each one read and listed.
+[click 2] In aggregate, fifty-eight percent safe automated resolution, against forty-two and thirteen.
 
-[click 3] Always per workflow and per language: credit gains the most, and card support does not beat the baseline yet.
-
-[click 4] Retrieval is measured already: recall at one of zero point seven four, provisional.
+[click 3] Eight unsafe outcomes, against ninety for the naive LLM agent.
 
 ## close
 
-<!-- slide 6, about 20 s -->
+<!-- video 2:36 to 2:50, slide 6: arrive, then cut to click 2 and click 4 -->
 
-[arrive] What we cannot claim yet: the data is synthetic, the Portuguese is ours, our labels await review, and the verifier only catches what its word lists know.
+[arrive] [Miguel Correa] When something fails, it steps down, and writes never fail open.
 
-[click 1] Retries, fallbacks, row-level security, traces and alerts are in place. Next: a hosted model, managed secrets and a real identity provider.
+[click 2] We cannot claim real data or a hosted-model evaluation yet.
 
-[click 2] We are La Brasil del 70.
+[click 4] The model understands. Code decides. Evidence proves it.
 
-[click 3] The model understands. Code decides. Evidence proves it.
+## thesis
+
+<!-- slide 2, in the PDF; not narrated in the video (the live segments show the same loop) -->
+
+## workflows
+
+<!-- slide 4, in the PDF; not narrated in the video (the live segments play two of the four workflows) -->
+
+## appendix-evidence
+
+<!-- appendix, not in the six-slide PDF, not narrated -->
+
+## appendix-ops
+
+<!-- appendix, not in the six-slide PDF, not narrated -->
 
 ## appendix-data
 
-<!-- appendix, not narrated in the video; for questions and the PDF -->
+<!-- appendix, not in the six-slide PDF, not narrated -->

@@ -20,6 +20,7 @@ Every page links the scenario tests in `services/api/tests/integration/workflows
 | [workflow-router.md](workflow-router.md) | One turn end to end, dispatch and switch rules, in-domain unsupported requests, the registry and the enabled set, the guarantees, and baseline B0 |
 | [policy-evaluation.md](policy-evaluation.md) | Evaluation order and precedence, a decision end to end, explanations, and what each workflow binds |
 | [grounding.md](grounding.md) | Bound policy lookup, which intents may use open retrieval, and the grounding verifier with its fallback |
+| [human-service.md](human-service.md) | Live human exchange on the existing conversation, queued delivery, closure, and new-chat quota |
 | [handoff.md](handoff.md) | How a handoff is built, the field walkthrough, and one worked example per workflow |
 | [execution-records.md](execution-records.md) | Where records live, their fields, and explaining a decision without chain-of-thought |
 | [data-pipeline.md](data-pipeline.md) | Source to serving, an incremental run with a late partition, and a breaking file |

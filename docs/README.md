@@ -7,6 +7,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [../README.md](../README.md) | What the system is, the four workflows, the evaluation headline, the quickstart |
+| [HOW-IT-WORKS.md](HOW-IT-WORKS.md) | The whole system end to end in one sitting: data path, one turn, workflows, guardrails with examples, the model, an OpenAI key, ML, evaluation, operations, the team runbook, glossary |
 | [submission/brief-traceability.md](submission/brief-traceability.md) | Every requirement of the brief mapped to code, tests, docs, and evidence, per workflow |
 | [submission/README.md](submission/README.md) | The submission package: checklist, draft email, pre-submission check |
 | [submission/SUBMISSION.md](submission/SUBMISSION.md) | The submission checklist: what is done and the human steps in order |
@@ -17,6 +18,8 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 
 ## Working agreement and status
 
+The [brief traceability matrix](submission/brief-traceability.md) is the shared reference for official requirements, implementation evidence, evaluation status, and known gaps. The [submission checklist](submission/SUBMISSION.md) tracks internal readiness and human steps, including the revised October 4 internal MVP completion window and the separate October 5 official challenge-window end.
+
 | Document | Purpose |
 |---|---|
 | [CLAUDE.md](../CLAUDE.md) | Rules, stack, architecture, testing, documentation, and commit conventions for every session |
@@ -24,6 +27,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes (listed below) |
+| [plans/adr-0026-live-agent.md](plans/adr-0026-live-agent.md) | Current-main and PR reference review, gaps, and implementation increments for live human service in the existing chat |
 | [plans/kickoff-notes.md](plans/kickoff-notes.md) | The team's kickoff notes: roles and the scope decision |
 | Phase plans | [00](plans/phase-00.md), [01](plans/phase-01.md), [02](plans/phase-02.md), [02b](plans/phase-02b.md), [03](plans/phase-03.md), [04](plans/phase-04.md), [05](plans/phase-05.md), [06](plans/phase-06.md), [07](plans/phase-07.md), [08](plans/phase-08.md), [09a](plans/phase-09a.md), [09b](plans/phase-09b.md), [10a](plans/phase-10a.md), [10b](plans/phase-10b.md), [11](plans/phase-11.md), [12](plans/phase-12.md), [13](plans/phase-13.md), [14a](plans/phase-14a.md), [14b](plans/phase-14b.md), [15](plans/phase-15.md), [16](plans/phase-16.md), [17](plans/phase-17.md), and [the local EDA](plans/eda-local.md) |
 
@@ -50,6 +54,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [frontend/components.md](frontend/components.md) | The UI primitives and how to use them |
 | [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
 | [frontend/features.md](frontend/features.md) | The product features: composition diagrams, context boundaries, and TanStack Query data flow |
+| [frontend/admin-dashboard.md](frontend/admin-dashboard.md) | Administrative analytics: every field, formula, data source, access rule, and limitation |
 | [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 
 ## Architecture decision records
@@ -82,7 +87,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0022](adr/0022-committed-bounded-data-sample.md) | A committed, bounded, pseudonymized organizer sample, and an explicit data source |
 | [adr/0023](adr/0023-workflow-prioritization-method.md) | Pre-registered weighted scoring for workflow prioritization, with a labeled proxy while human labels are pending |
 | [adr/0024](adr/0024-workflow-registry-with-router-dispatch.md) | A workflow registry with router dispatch over one generic engine |
-| [adr/0025](adr/0025-tuesday-account-inquiry-mvp-and-observability.md) | Tuesday MVP includes account inquiry, mock escalation, and assistant profile |
+| [adr/0025](adr/0025-tuesday-account-inquiry-mvp-and-observability.md) | Superseded historical Tuesday MVP plan: account inquiry, mock escalation, and assistant profile |
 | [adr/0026](adr/0026-live-agent-joins-escalated-conversation.md) | Human escalation progresses from simulated replies to a human service agent joining the conversation |
 | [adr/0027](adr/0027-opt-in-financial-memory-and-guidance.md) | Financial memory and guidance are opt-in and grounded |
 | [adr/0028](adr/0028-mocked-multibank-and-digital-asset-surfaces.md) | Multi-bank connectors and digital-asset tabs start as mock surfaces |
@@ -93,6 +98,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0033](adr/0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer |
 | [adr/0034](adr/0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP |
 | [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
+| [adr/0036](adr/0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation |
 
 ## Exploratory data analysis
 
@@ -176,6 +182,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [workflows/card-support.md](workflows/card-support.md) | Card support state machine, state table, sequences, and matrix |
 | [workflows/account-inquiry.md](workflows/account-inquiry.md) | Account inquiry state machine (read only), state table, as-of dates, sequences, and matrix |
 | [workflows/credit-information.md](workflows/credit-information.md) | Credit state machine, the separation of conversation, risk estimate, and eligibility, the score-band baseline, sequences, and matrix |
+| [workflows/human-service.md](workflows/human-service.md) | Live customer and assigned-agent messages, lifecycle, isolation, quota, and verification |
 | [workflows/handoff.md](workflows/handoff.md) | The handoff schema walkthrough, worked examples, and what agents see |
 | [workflows/execution-records.md](workflows/execution-records.md) | Execution record fields, storage, and explaining a decision without chain-of-thought |
 | [../services/api/src/bank_agent/application/README.md](../services/api/src/bank_agent/application/README.md) | How to add a state, a workflow, or a tool |
@@ -192,6 +199,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | Document | Purpose |
 |---|---|
 | [operations/observability.md](operations/observability.md) | Telemetry flow, the signal catalog, log retention, and how to read the trace of one conversation |
+| [operations/grafana-dashboard.md](operations/grafana-dashboard.md) | Grafana dashboards: every live field, PromQL formula, filter, access rule, and limitation |
 | [operations/degradation.md](operations/degradation.md) | The degradation ladder L0 to L4: triggers, behavior, flags, customer wording, and the chaos tests |
 | [operations/runbook.md](operations/runbook.md) | Each alert mapped to its symptom, diagnosis, and action |
 | [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |

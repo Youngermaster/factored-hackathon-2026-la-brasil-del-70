@@ -204,6 +204,24 @@ def test_production_with_litellm_accepts_a_strong_primary_key(
     assert load_settings(env_file=None).llm.provider == "litellm"
 
 
+def test_production_langfuse_export_requires_https(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("LANGFUSE_ENABLED", "true")
+    monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", "fixture-public-key")
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", _strong_secret())
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "http://langfuse.example")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LANGFUSE_BASE_URL must use https in production"]
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "https://langfuse.example")
+    assert load_settings(env_file=None).langfuse.enabled
+
+
 def test_cors_origins_parse_from_a_comma_separated_list(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173, https://demo.example.org ,")
 
@@ -344,10 +362,14 @@ def test_owner_jobs_refuse_a_missing_or_weak_secret(monkeypatch: pytest.MonkeyPa
 def test_owner_jobs_are_not_held_to_the_api_rules(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CORS_ALLOWED_ORIGINS", "*")
     monkeypatch.setenv("DEMO_MODE", "true")
+    monkeypatch.setenv("LANGFUSE_ENABLED", "true")
 
-    assert load_settings(env_file=None, owner=True).runtime.demo_mode is True
-    with pytest.raises(SettingsError):
+    owner = load_settings(env_file=None, owner=True)
+    assert owner.runtime.demo_mode is True
+    assert owner.langfuse.enabled
+    with pytest.raises(SettingsError) as raised:
         load_settings(env_file=None)
+    assert "LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true" in raised.value.problems
 
 
 @pytest.mark.parametrize(

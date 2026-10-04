@@ -25,6 +25,7 @@ from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.execution_record import RetrievalDecisionCode, RetrievalRecord
 from bank_agent.domain.identifiers import CaseId
 from bank_agent.domain.locale import Language
+from bank_agent.domain.trust import RiskTier
 from bank_agent.domain.workflow import Intent, Outcome
 
 BUILDER = HandoffBuilder()
@@ -92,7 +93,35 @@ def abstain(
 def refuse(ctx: TurnContext, decision: Decision) -> Step:
     third_party = any(r.rule_id == "PRV.no_third_party_disclosure" and not r.passed for r in decision.rule_results)
     template = "common.refused_third_party" if third_party else "common.refused"
-    return Step(REFUSED, Reply(template=template, explain=explanation(decision)), Outcome.REFUSED)
+    reply = Reply(template=template, explain=explanation(decision), suffix=risk_notice(ctx))
+    return Step(REFUSED, reply, Outcome.REFUSED)
+
+
+def risk_notice(ctx: TurnContext) -> tuple[tuple[str, dict[str, Param]], ...]:
+    """What the customer's next request will need after a refusal, from the session's risk tier: step-up while it is
+    elevated (unless a step-up is already valid), a person once it is high (``ESC.risk_tier_high``). The reply says
+    only that the request is the reason; it never names a detector or a trust event."""
+    tier = ctx.trust.risk_tier
+    if tier is RiskTier.HIGH:
+        return (("common.refused_review_notice", {}),)
+    if tier is RiskTier.ELEVATED and not ctx.snapshot.step_up_valid:
+        return (("common.refused_step_up_notice", {}),)
+    return ()
+
+
+def off_topic(ctx: TurnContext) -> Step:
+    """A message with no banking content at all (sports, weather, recipes): a ``SCOPE-ALL-1`` abstention that says
+    what the assistant does, without the workflow question and without the offer of a person. The decision is
+    evaluated with intent ``unsupported``, so the record names ``SCOPE.supported_intent`` as for out of scope."""
+    evaluate(ctx, policy_state="START", intent=Intent.UNSUPPORTED)
+    ctx.recorder.intervention("out_of_scope")
+    ctx.recorder.intervention("off_topic")
+    reply = Reply(
+        template="common.off_topic",
+        params={"capabilities": capabilities(ctx)},
+        explain=(clause_ref(ctx, "SCOPE-ALL-1"),),
+    )
+    return Step(ABSTAINED, reply, Outcome.ABSTAINED)
 
 
 def out_of_scope(ctx: TurnContext) -> Step:
@@ -152,9 +181,20 @@ def human_requested(ctx: TurnContext) -> Step:
     return escalate(ctx, EscalationReasonCode.HUMAN_REQUESTED, "customer asked for a person", decision=decision)
 
 
-def step_up(ctx: TurnContext, state: str) -> Step:
-    reply = Reply(template="common.step_up_required", step_up_required=True)
-    return Step(state, reply, Outcome.IN_PROGRESS)
+def step_up(ctx: TurnContext, state: str, *, because_of_risk: bool = False) -> Step:
+    """Ask for step-up. When only the session's raised risk tier asks for it (a read that otherwise needs a verified
+    session), the reply says the conversation's requests are the reason, without naming what was detected."""
+    template = "common.step_up_required_risk" if because_of_risk else "common.step_up_required"
+    return Step(state, Reply(template=template, step_up_required=True), Outcome.IN_PROGRESS)
+
+
+def step_up_from_risk(ctx: TurnContext, decision: Decision) -> bool:
+    """True when ``decision`` asks for step-up only because the risk tier is elevated: ``AUTH.required_level`` asks
+    for it while no action needs step-up by itself (``AUTH.step_up_valid`` passed)."""
+    if ctx.trust.risk_tier.rank < RiskTier.ELEVATED.rank:
+        return False
+    failing = {r.rule_id for r in decision.rule_results if not r.passed and r.effect is DecisionKind.REQUIRE_STEP_UP}
+    return failing == {"AUTH.required_level"}
 
 
 def escalation_code(decision: Decision) -> EscalationReasonCode:
@@ -217,7 +257,7 @@ def blocking_step(ctx: TurnContext, decision: Decision, *, state: str, step_up_o
         ctx.engine = ctx.engine.evolve(resume_state=state)
         return Step(AUTH_REQUIRED, Reply(template="common.auth_required", notices=REAUTH_NOTICES))
     if kind is DecisionKind.REQUIRE_STEP_UP and not step_up_ok:
-        return step_up(ctx, state)
+        return step_up(ctx, state, because_of_risk=step_up_from_risk(ctx, decision))
     return None
 
 

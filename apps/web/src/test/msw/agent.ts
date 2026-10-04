@@ -4,6 +4,7 @@ import type { Schema } from '@/shared/api';
 
 import { apiGet, apiPost, problem } from './api';
 import { server } from './server';
+import { humanServiceView, startHumanServiceServer } from './human-service';
 
 /** Agent console fixtures and a stateful fake of `/v1/agent`, typed from the generated schema. Synthetic. */
 type Handoff = Schema<'HandoffView'>;
@@ -190,5 +191,16 @@ export function startAgentServer(
     move('closed', 'under_human_review'),
   );
 
-  return { handoffs, applications, listed };
+  const human = startHumanServiceServer('agent', (id) => {
+    const handoff = handoffs.get(id);
+    if (handoff?.claimed_by !== 'agent-demo-01') return null;
+    return humanServiceView({
+      handoff_id: id,
+      conversation_id: handoff.conversation_ref,
+      status: handoff.status === 'resolved' ? 'closed' : 'joined',
+      joined_at: handoff.claimed_at,
+      closed_at: handoff.resolution?.resolved_at ?? null,
+    });
+  });
+  return { handoffs, applications, listed, human };
 }

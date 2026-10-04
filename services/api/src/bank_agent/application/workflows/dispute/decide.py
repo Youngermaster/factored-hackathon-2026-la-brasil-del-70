@@ -7,6 +7,7 @@ from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import beyond_step_up, evaluate, explanation
 from bank_agent.application.engine.definition import RESOLVED
 from bank_agent.application.engine.idempotency import derive_key
+from bank_agent.application.engine.render import clean_record_text
 from bank_agent.application.engine.reply import Masked, Param, RecordText, Reply
 from bank_agent.application.engine.security import detect_injection
 from bank_agent.application.engine.shared import abstain, blocking_step, escalate_decision
@@ -189,9 +190,10 @@ async def _summary(ctx: TurnContext, data: DisputeData, txn: Transaction, *, una
     reason = data.reason or DisputeReason.OTHER
     due = ctx.today + timedelta(days=_sla_days(ctx))
     blocking = data.block_offer is BlockOffer.ACCEPTED
+    merchant = clean_record_text(txn.merchant_name or "")
     params: dict[str, Param] = {
         "date": txn.occurred_at.astimezone(ctx.zone).date(),
-        "merchant": RecordText(txn.merchant_name or "-"),
+        "merchant": RecordText(merchant or "-"),
         "amount": data.disputed_amount or txn.amount,
         "card": Masked(data.product_last4 or "----"),
         "reason": REASONS[reason][language],
@@ -200,7 +202,7 @@ async def _summary(ctx: TurnContext, data: DisputeData, txn: Transaction, *, una
     planned = (ActionKind.BLOCK_CARD, ActionKind.CREATE_DISPUTE_CASE) if blocking else (ActionKind.CREATE_DISPUTE_CASE,)
     card = ConfirmationCard(
         occurred_on=txn.occurred_at.astimezone(ctx.zone).date(),
-        merchant_display=(txn.merchant_name or "")[:150] or None,
+        merchant_display=merchant or None,
         amount=data.disputed_amount or txn.amount,
         card_last4=data.product_last4,
         reason=reason,

@@ -65,3 +65,9 @@ The host is not chosen yet; until it is, the demo runs only locally (pending act
 - The in-domain unsupported recognizers and the keyword router are closed lexicons; paraphrases they miss fall back to the generic answer or a clarifying question.
 - Zero observed failures in a small test set does not establish zero risk: an unsafe rate of 0/76 still allows up to 3.9% at 95% confidence.
 - The public demo shows one-time codes by design, bounded by synthetic data, rate limits, budget caps, retention, and a take-down date ([demo mode](docs/security/demo-mode.md)).
+
+## Live human service
+
+- The channel requires an authenticated person to claim the handoff. When nobody takes it, the customer stays truthfully queued; there is no simulated reply or staffing guarantee.
+- Delivery uses two-second polling and persisted sequence cursors. A joined state means the handoff was claimed; it is not a live presence heartbeat. Transport errors show a separate reconnect notice.
+- The frozen assistant evaluation predates this capability. Repository contracts, HTTP exchanges, web integration checks, and non-superuser production-role checks verify it; published assistant success rates are not live-service measurements. See [the channel guide](docs/workflows/human-service.md).

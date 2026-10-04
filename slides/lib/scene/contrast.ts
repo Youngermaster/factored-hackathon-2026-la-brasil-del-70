@@ -37,6 +37,8 @@ export const TEXT_PAIRS: readonly TextPair[] = [
   { fg: 'bg', bg: 'paper', min: 4.5, use: 'ink on a filled paper tab' },
   { fg: 'bg', bg: 'blue', min: 4.5, use: 'ink on a filled blue tab' },
   { fg: 'bg', bg: 'red', min: 3, use: 'ink on a filled red tab or field, large only' },
+  { fg: 'bg', bg: 'dim', min: 4.5, use: 'ink on the light-gray B0 tab (the baseline)' },
+  { fg: 'redText', bg: 'bg2', min: 4.5, use: 'risk text on the raised surface' },
   // colour fields and the light-gray slide
   { fg: 'inkDim', bg: 'paper', min: 4.5, use: 'secondary text on the light-gray slide' },
   { fg: 'inkMute', bg: 'paper', min: 4.5, use: 'captions and citations on the light-gray slide' },

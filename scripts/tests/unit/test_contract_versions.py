@@ -33,5 +33,12 @@ def test_file_version_matches_the_model_default(contract: Any) -> None:
     assert field.default == contract.version
 
 
-def test_every_contract_is_on_the_same_minor_release() -> None:
-    assert {contract.version for contract in contracts.CONTRACTS} == {"1.4.0"}
+def test_output_contracts_share_the_new_release_and_input_contracts_remain_pinned() -> None:
+    versions = {contract.file_name: contract.version for contract in contracts.CONTRACTS}
+    assert versions == {
+        "handoff.v1.json": "1.5.0",
+        "execution_record.v1.json": "1.5.0",
+        "decision.v1.json": "1.5.0",
+        "scenario.v1.json": "1.4.0",
+        "policy_clause.v1.json": "1.4.0",
+    }
