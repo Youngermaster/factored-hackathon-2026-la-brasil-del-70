@@ -124,3 +124,20 @@ async def test_an_out_of_scope_request_abstains_at_the_router(api_backend: ApiBa
         reply = _message(await client.say(conversation, "Recomiéndame una inversión para mis ahorros"))
     assert (reply["workflow"]["id"], reply["state"], reply["outcome"]) == ("router", "ABSTAINED", "abstained")
     assert {"SCOPE-ALL-1@1", "SCOPE-ALL-2@1"} <= {citation["clause"] for citation in reply["message"]["citations"]}
+
+
+async def test_an_out_of_scope_request_after_a_catalog_answer_abstains_in_the_same_conversation(
+    api_backend: ApiBackend,
+) -> None:
+    """The deploy smoke test sends its out-of-scope check in the credit conversation, to spare the creation quota."""
+    harness = api_backend.build(llm=scripted())
+    async with ApiClient(harness.app) as client:
+        await client.login("persona-mx")
+        conversation = await client.open_conversation()
+        catalog = _message(await client.say(conversation, "Quais cartões de crédito vocês têm?"))
+        assert (catalog["workflow"]["id"], catalog["outcome"]) == ("credit", "resolved")
+        reply = _message(
+            await client.say(conversation, "¿En qué acciones de la bolsa me recomiendas invertir mis ahorros?")
+        )
+    assert (reply["state"], reply["outcome"]) == ("ABSTAINED", "abstained")
+    assert reply["message"]["text"]
