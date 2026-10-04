@@ -51,6 +51,8 @@ The verification run used exactly these two values beside a running main checkou
 
 `make seed` also migrates, so after a volume reset `make db-upgrade` is not needed. The committed sample has 59 customers, fewer than `SEED_CUSTOMERS=200`; that is expected.
 
+After installing dependencies with `make setup`, `bash scripts/prepare-local.sh` automates env creation, development PostgreSQL startup, password synchronization, migrations, the sample pipeline, and seeding. It preserves database volumes and existing cases and applications; seeding restores demo card statuses. Passwords are synchronized from the container environment through the local PostgreSQL socket, without printing values or parsing `.env`. Use this only for the development stack, including when an existing volume has older passwords. It stops on the first failure and prints the two server commands on success.
+
 Then two terminals (each with Node 24 and, for a second checkout, the two exports above):
 
 ```bash

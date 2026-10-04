@@ -106,6 +106,10 @@ make seed DATA_SOURCE=local LOCAL_DIR=data SEED_CUSTOMERS=200
 make verify-seed DATA_SOURCE=local LOCAL_DIR=data SEED_CUSTOMERS=200
 ```
 
+When a different source or selection assigns a demo persona to another customer, the seed clears the
+previous persona assignment in the same transaction. Existing customers, identity digests, sessions,
+conversations, and audit records are retained; the persona identifies the newly selected customer.
+
 `make seed` applies pending Alembic migrations, then upserts in one transaction. The selection
 (`data_platform/src/bank_data/seed/selection.py`) is deterministic:
 

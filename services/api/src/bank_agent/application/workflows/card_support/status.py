@@ -7,6 +7,7 @@ from bank_agent.application.engine.decide import evaluate
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
 from bank_agent.application.engine.shared import blocking_step, clause_ref
 from bank_agent.application.engine.templates.labels import CARD_STATUSES, CARD_TYPES
+from bank_agent.application.understanding import extraction
 from bank_agent.application.workflows.card_support.data import INTENT_ACTIONS, load, save
 from bank_agent.application.workflows.card_support.select import CONFIRM_BLOCK, absorb
 from bank_agent.domain.cards import CardAction, CardStatusView
@@ -28,6 +29,9 @@ async def card_status(ctx: TurnContext) -> Step:
         intent = ctx.prediction.intent if ctx.prediction is not None else None
         data = await absorb(ctx, data)
         if intent is Intent.CARD_BLOCK or data.action is CardAction.BLOCK:
+            if extraction.card_type(ctx.text) is not None or extraction.card_last4(ctx.text) is not None:
+                save(ctx, data.evolve(action=CardAction.BLOCK, product_id=None, answered=False, confirm_shown=False))
+                return Step("SELECT_CARD")
             save(ctx, data.evolve(action=CardAction.BLOCK, confirm_shown=False))
             return Step(CONFIRM_BLOCK)
         if intent in INTENT_ACTIONS or intent is Intent.CARD_STATUS:

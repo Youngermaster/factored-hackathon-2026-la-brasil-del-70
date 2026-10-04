@@ -4,6 +4,7 @@ Reference tables (customers, products, transactions, complaints, credit profiles
 staff) are upserted on their primary keys, so a rerun leaves the same rows, and a product's status returns to the
 source value (a demo reset). Seeded dispute cases and credit applications are inserted only when missing.
 Tables the service writes at run time (sessions, conversations, records, handoffs, audit) are never touched.
+When a source selects a different customer for a persona, its previous assignment is cleared before loading.
 """
 
 from collections.abc import Sequence
@@ -109,6 +110,15 @@ class PostgresSeeder:
             counts["staff_members"] = await _write(
                 connection, "staff_members", [vars(item) for item in bundle.staff], ["staff_id"]
             )
+            reassigned = [vars(item) for item in bundle.identities if item.persona_id is not None]
+            if reassigned:
+                await connection.execute(
+                    text(
+                        "UPDATE app.identity_directory SET persona_id = NULL "
+                        "WHERE persona_id = :persona_id AND customer_id <> :customer_id"
+                    ),
+                    reassigned,
+                )
             counts["identity_directory"] = await _write(
                 connection, "identity_directory", [vars(item) for item in bundle.identities], ["customer_id"]
             )

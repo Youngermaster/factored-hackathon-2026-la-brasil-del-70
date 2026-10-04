@@ -5,12 +5,14 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 import pytest
+from sqlalchemy import text
 
 from bank_agent.adapters.identity.codes import IdentityKeys
 from bank_agent.adapters.identity.provider import MockIdentityProvider
 from bank_agent.adapters.identity.sender import DemoOtpSender
 from bank_agent.adapters.persistence.postgres.audit import PostgresStandaloneAuditLog
 from bank_agent.adapters.persistence.postgres.challenges import PostgresChallengeStore
+from bank_agent.adapters.persistence.postgres.database import DatabaseRole, open_transaction
 from bank_agent.adapters.persistence.postgres.seed import IdentityEntry, PostgresSeeder, SeedBundle, StaffEntry
 from bank_agent.adapters.persistence.postgres.sessions import PostgresSessionStore
 from bank_agent.application.identity.sessions import IssuedSession, SessionService
@@ -103,6 +105,57 @@ async def test_personas_documents_and_staff_log_in(identity: Identity) -> None:
     assert (await identity.provider.verify(by_document.challenge_id, _code(by_document))).customer_id == "CUS-A-0001"
     agent = await identity.provider.start(PersonaIdentification(persona_id=PersonaId("persona-agent")))
     assert (await identity.provider.verify(agent.challenge_id, _code(agent))).role is Role.AGENT
+
+
+@pytest.mark.parametrize("swap", [False, True])
+async def test_seed_reassigns_personas_without_removing_identity_rows(
+    migrated_postgres: PostgresInstance, swap: bool
+) -> None:
+    await reset_database(migrated_postgres)
+    owner = owner_engine(migrated_postgres)
+
+    def entry(customer_id: str, persona: str | None) -> IdentityEntry:
+        return IdentityEntry(
+            customer_id=customer_id,
+            persona_id=persona,
+            document_lookup=KEYS.document_lookup(customer_id),
+            phone_last4_lookup=KEYS.phone_lookup(customer_id, "9876"),
+        )
+
+    try:
+        await PostgresSeeder(owner).load(
+            SeedBundle(
+                customers=(customer(), customer("CUS-B-0002"), customer("CUS-C-0003")),
+                identities=(
+                    entry("CUS-A-0001", "persona-a"),
+                    entry("CUS-B-0002", "persona-b" if swap else None),
+                    entry("CUS-C-0003", "persona-c"),
+                ),
+            )
+        )
+        bundle = SeedBundle(
+            identities=(
+                (entry("CUS-A-0001", "persona-b"), entry("CUS-B-0002", "persona-a"))
+                if swap
+                else (entry("CUS-B-0002", "persona-a"),)
+            )
+        )
+        for _ in range(2):
+            await PostgresSeeder(owner).load(bundle)
+            async with open_transaction(owner, DatabaseRole.SEED) as connection:
+                rows = (
+                    await connection.execute(
+                        text("SELECT customer_id, persona_id, document_lookup FROM app.identity_directory")
+                    )
+                ).all()
+            assert {row.customer_id: row.persona_id for row in rows} == {
+                "CUS-A-0001": "persona-b" if swap else None,
+                "CUS-B-0002": "persona-a",
+                "CUS-C-0003": "persona-c",
+            }
+            assert all(row.document_lookup == KEYS.document_lookup(row.customer_id) for row in rows)
+    finally:
+        await owner.dispose()
 
 
 async def test_wrong_codes_expiry_lockout_and_cooldown(identity: Identity) -> None:

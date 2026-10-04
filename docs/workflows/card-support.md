@@ -31,7 +31,7 @@ stateDiagram-v2
     ESCALATED --> [*]
 ```
 
-Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. CARD_STATUS accepts new requests but still holds the chosen card, so a request for another workflow there is confirmed before switching (scenario 17).
+Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. CARD_STATUS accepts new requests and keeps the chosen card for a follow-up such as "block it". A block request that explicitly names a card goes through SELECT_CARD again before confirmation. A request for another workflow is confirmed before switching (scenario 17).
 
 ## States, rules, clauses, tools, and exits
 
@@ -51,8 +51,9 @@ Common clauses as in [dispute intake](dispute-intake.md#states-rules-clauses-too
 | RESOLVED, ABSTAINED, REFUSED | START | IntentRouter | common | SCOPE-ALL-2 | none | UNDERSTAND, switch |
 | ESCALATED | ESCALATE (card requests evaluated in CARD_REQUEST_HANDOFF) | HandoffBuilder | common, CRD request rules | ESC-{c}-2, CRD-ALL-3 | none | terminal |
 
-- SELECT_CARD reads only the session customer's cards (`list_my_cards`, added in this phase; status and expiry, never balances). A card ending or a type narrows the choice; a block prefers active cards. Options are shown masked (type and last four).
+- SELECT_CARD reads only the session customer's cards (`list_my_cards`, added in this phase; status and expiry, never balances). A card ending or a type explicitly recognized in the customer's message narrows the choice; model-only card hints are ignored and ambiguous requests get masked options; a block prefers active cards. Options are shown masked (type and last four).
 - CARD_STATUS never interprets `response_code`: the data has no code table, so declined purchases are listed with date, merchant, and amount and the statement that the records do not give the reason (`CRD-ALL-1`).
+- New requests after RESOLVED, ABSTAINED, or REFUSED start with empty card-flow data. A new explicit card hint replaces both previous hint fields; conflicting type and ending hints show all owned cards for clarification.
 - The block reason (`lost`, `stolen`, `unrecognized_activity`, `precaution`) is a tool argument on the audit allowlist, so it is visible in the audit event and the execution record.
 - "I did not make this purchase" is a `dispute_new` intent: the router asks before switching and carries the chosen card into the dispute as a candidate filter.
 
@@ -134,10 +135,11 @@ sequenceDiagram
 
 ## Tests
 
-Scenarios 13 to 17 and follow-ups run on both backends (`services/api/tests/integration/workflows/test_card_and_routing.py`, `test_denials_and_follow_ups.py`).
+Scenarios 13 to 17 and follow-ups run on both backends (`services/api/tests/integration/workflows/test_card_and_routing.py`, `test_denials_and_follow_ups.py`). Selection regressions in `test_card_selection_evidence.py` cover invented model hints and explicit customer choices in es and pt on both backends. `test_card_block_follow_ups.py` covers selecting another card after a status answer, cancellation followed by a new request, and contradictory type and ending hints.
 
 ## Limitations
 
+- Card selection uses the deterministic Spanish and Portuguese type and ending recognizers. Unrecognized phrasings require clarification even if the model proposes a card.
 - There is no unblock or replacement tool by design; a person handles both.
 - Declined purchases show no reason because the data has no response-code table.
 - Step-up itself is an HTTP route (`/v1/auth/step-up/*`, [API](../api/README.md)); the engine only asks for it and re-checks the window at EXECUTE. After it the client sends the next message and the block runs. A new sign-in (a new session lineage) at EXECUTE goes back to CONFIRM_BLOCK and asks again.
