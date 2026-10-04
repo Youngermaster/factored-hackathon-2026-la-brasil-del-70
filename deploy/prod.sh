@@ -7,10 +7,14 @@
 #   deploy/prod.sh stage-secrets    stage the secrets as files for compose (sudo): from Key Vault or the env file
 #   deploy/prod.sh check            validate the env file, the staged secret files (never read), and the compose file
 #   deploy/prod.sh build            build the web, api, and job images, tagged with the current git commit
+#   deploy/prod.sh pull             instead of build: pull those images from IMAGE_REGISTRY (pushed by the deploy
+#                                   workflow under the full commit SHA) and tag them as build would
 #   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama)
 #   deploy/prod.sh rotate           stage the secrets again and recreate the services, after a new Key Vault version
 #   deploy/prod.sh seed             load the demo personas and customers (run once after the first up)
 #   deploy/prod.sh update           git pull --ff-only, back up, build, migrate, start
+#   deploy/prod.sh release          pull, back up (when the database is running), migrate, start: what continuous
+#                                   deployment runs after checking out the commit (deploy/azure/vm-deploy.sh)
 #   deploy/prod.sh backup           pg_dump into deploy/backups/ (mode 600)
 #   deploy/prod.sh restore <file>   restore a backup (stops the API and the purge while it runs)
 #   deploy/prod.sh rollback         start the previously deployed image tag again
@@ -22,7 +26,10 @@
 #
 # Environment: ENV_FILE (default deploy/.env.production), PROJECT (default bank-agent-prod), IMAGE_TAG (default the
 # tag of the last deploy, else the current commit), SECRETS_NO_CHOWN=1 (a Docker Desktop test host only: staged files
-# keep the caller as owner, no sudo). The script never prints a secret value.
+# keep the caller as owner, no sudo). For pull: IMAGE_REGISTRY (or the env file's), IMAGE_DIGEST_API, IMAGE_DIGEST_JOB,
+# IMAGE_DIGEST_WEB (pull by digest when set), REGISTRY_USER and REGISTRY_TOKEN_FILE (a file holding a short-lived
+# registry token; login happens in a throwaway Docker config that is deleted afterwards). The script never prints a
+# secret value.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -173,6 +180,54 @@ cmd_build() {
   say "built images tagged ${tag}"
 }
 
+IMAGE_NAMES=(api job web)
+REGISTRY_PATTERN='^[a-z0-9][a-z0-9.-]*(:[0-9]+)?(/[a-z0-9][a-z0-9._-]*)+$'
+DIGEST_PATTERN='^sha256:[0-9a-f]{64}$'
+
+cmd_pull() (
+  # A subshell, so the throwaway Docker config and its removal stay local to this command.
+  local registry commit tag name ref digest variable config=""
+  registry="${IMAGE_REGISTRY:-}"
+  if [[ -z "${registry}" && -f "${ENV_FILE}" ]]; then registry="$(env_value IMAGE_REGISTRY)"; fi
+  [[ "${registry}" =~ ${REGISTRY_PATTERN} ]] ||
+    fail "set IMAGE_REGISTRY to the lower-case image prefix, for example ghcr.io/<owner>/<repository>"
+  commit="$(git -C "${ROOT}" rev-parse HEAD)"
+  tag="$(git -C "${ROOT}" rev-parse --short=12 HEAD)"
+  if [[ -n "${REGISTRY_TOKEN_FILE:-}" ]]; then
+    [[ -f "${REGISTRY_TOKEN_FILE}" && -n "${REGISTRY_USER:-}" ]] ||
+      fail "REGISTRY_TOKEN_FILE needs REGISTRY_USER and an existing token file"
+    config="$(mktemp -d)"
+    trap 'rm -rf -- "${config}"' EXIT
+    export DOCKER_CONFIG="${config}"
+    docker login "${registry%%/*}" --username "${REGISTRY_USER}" --password-stdin < "${REGISTRY_TOKEN_FILE}" > /dev/null
+  fi
+  for name in "${IMAGE_NAMES[@]}"; do
+    variable="IMAGE_DIGEST_$(printf '%s' "${name}" | tr '[:lower:]' '[:upper:]')"
+    digest="${!variable:-}"
+    if [[ -n "${digest}" ]]; then
+      [[ "${digest}" =~ ${DIGEST_PATTERN} ]] || fail "${variable} must look like sha256:<64 hex digits>"
+      ref="${registry}/bank-agent-${name}@${digest}"
+    else
+      ref="${registry}/bank-agent-${name}:${commit}"
+    fi
+    docker pull --quiet "${ref}" > /dev/null
+    docker tag "${ref}" "bank-agent-${name}:${tag}"
+    say "pulled ${ref} as bank-agent-${name}:${tag}"
+  done
+  if [[ -n "${config}" ]]; then docker logout "${registry%%/*}" > /dev/null 2>&1 || true; fi
+)
+
+database_running() {
+  [[ -n "$(compose ps --status running --quiet postgres 2> /dev/null)" ]]
+}
+
+cmd_release() {
+  # The pull-by-tag twin of update: the caller has checked out the commit to release.
+  cmd_pull
+  if database_running; then cmd_backup; else say "no running database to back up (first release)"; fi
+  cmd_up
+}
+
 cmd_up() {
   cmd_stage_secrets
   cmd_check
@@ -269,6 +324,8 @@ main() {
     stage-secrets) cmd_stage_secrets ;;
     check) cmd_check ;;
     build) cmd_build ;;
+    pull) cmd_pull ;;
+    release) cmd_release ;;
     up) cmd_up ;;
     rotate) cmd_rotate ;;
     seed) cmd_seed ;;
@@ -282,7 +339,7 @@ main() {
     logs) compose logs --tail 200 "$@" ;;
     down) cmd_down ;;
     destroy) cmd_destroy "$@" ;;
-    *) sed -n '2,25p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+    *) sed -n '2,32p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   esac
 }
 
