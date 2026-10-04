@@ -1,0 +1,205 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sshPublicKey": {
+      "type": "string"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_B2as_v2",
+      "allowedValues": [
+        "Standard_B2as_v2"
+      ]
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-11-01",
+      "name": "vm-bank-database-nsg",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-pipeline"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "deny-all-inbound",
+            "properties": {
+              "priority": 100,
+              "direction": "Inbound",
+              "access": "Deny",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-11-01",
+      "name": "vm-bank-database-vnet",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-pipeline"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.70.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "pipeline",
+            "properties": {
+              "addressPrefix": "10.70.1.0/24",
+              "defaultOutboundAccess": false,
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'vm-bank-database-nsg')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'vm-bank-database-nsg')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-11-01",
+      "name": "vm-bank-database-ip",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-pipeline"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      },
+      "sku": {
+        "name": "Standard"
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2023-11-01",
+      "name": "vm-bank-database-nic",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-pipeline"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "primary",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'vm-bank-database-vnet', 'pipeline')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'vm-bank-database-ip')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'vm-bank-database-vnet')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'vm-bank-database-ip')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-09-01",
+      "name": "vm-bank-database",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-pipeline"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "ubuntu-24_04-lts",
+            "sku": "server",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage",
+            "diskSizeGB": 128,
+            "managedDisk": {
+              "storageAccountType": "StandardSSD_LRS"
+            },
+            "deleteOption": "Delete"
+          }
+        },
+        "osProfile": {
+          "computerName": "bank-database",
+          "adminUsername": "la70",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "/home/la70/.ssh/authorized_keys",
+                  "keyData": "[parameters('sshPublicKey')]"
+                }
+              ]
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'vm-bank-database-nic')]"
+            }
+          ]
+        },
+        "securityProfile": {
+          "securityType": "TrustedLaunch",
+          "uefiSettings": {
+            "secureBootEnabled": true,
+            "vTpmEnabled": true
+          }
+        }
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', 'vm-bank-database-nic')]"
+      ]
+    }
+  ],
+  "outputs": {
+    "vmName": {
+      "type": "string",
+      "value": "vm-bank-database"
+    }
+  }
+}

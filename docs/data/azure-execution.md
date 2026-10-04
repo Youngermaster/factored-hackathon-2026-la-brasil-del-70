@@ -1,7 +1,8 @@
 # Azure data execution status
 
 Updated: 2026-10-04. Owner: Julian Valencia. Subscription: `32847dfa-5fd4-4276-8bdf-243d72b35119`.
-Scope: `rg-la70-test`, `eastus2`. The architecture and commands are in
+Scope: dedicated compute `vm-bank-database` in `rg-bank-agent`, `westus2`; private Blob storage
+in `rg-la70-test`, `eastus2`. The architecture and commands are in
 [the deployment guide](../../deploy/azure-data/README.md).
 
 ## Verified evidence
@@ -9,7 +10,7 @@ Scope: `rg-la70-test`, `eastus2`. The architecture and commands are in
 | Requirement | Evidence | Status |
 |---|---|---|
 | Correct identity and tenant | Azure CLI reports the requested subscription, tenant, and operator | Verified |
-| Infrastructure preflight | ARM validation reached Compute and returned `QuotaExceeded`: 4 used of 4, 2 more required | Waiting for quota |
+| Infrastructure preflight | Dedicated westus2 VM ARM validation and provisioning both returned `Succeeded` | Verified in Azure |
 | Subscription offer | Azure reports `FreeTrial_2014-09-01` with spending limit on; the quota request returned `ResourceNotAvailableForOffer` | Offer upgrade required before requesting more quota |
 | Existing compute | The Nequi AKS node pool uses two `Standard_D2s_v6` instances, accounting for all 4 regional vCPU; no changes were made | Outside authorized scope |
 | Alternative-region preflights | Tested VM placements in eastus and centralus returned `SkuNotAvailable`; no resources were created there | Tested placements unavailable |
@@ -17,7 +18,8 @@ Scope: `rg-la70-test`, `eastus2`. The architecture and commands are in
 | Reference-value reconciliation | 10 PostgreSQL/unit tests passed, including money, currency, timestamp, and credit-score corruption | Verified locally |
 | Artifact and stage safety | 17 tests passed, including archive corruption, unsafe paths and links, preserved existing state, and failure before ingestion/PostgreSQL | Verified locally |
 | Full local application path | Fresh sample preparation, strict PostgreSQL reconciliation, eight es/pt workflow checks, cross-customer 404, and zero loaded objects on unchanged ingestion passed in the integration suite | Verified locally |
-| VM pipeline execution | No VM exists yet; no cloud pipeline run or application result is claimed | Pending |
+| Dedicated VM | `vm-bank-database` is running in westus2 with 2 vCPU, 8 GiB RAM, a verified 128 GiB disk, and denied inbound access | Verified in Azure |
+| VM pipeline execution | Source restoration, cloud transformations, PostgreSQL reconciliation, and a retained-state rerun are next | Pending |
 | Full gold migration | Five private Parquet files, 5,192,103 rows, 241,693,714 bytes; each downloaded SHA-256 matches the validated local file | Verified in Azure Blob |
 | Full input migration | 7,671 contracted source objects archived privately; uploaded archive downloaded and SHA-256 verified; complete per-file restoration passed locally | Verified in Azure Blob |
 | Cloud code publication | Release `bb6069e6c01f106041ff239d331107a2993b6343` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
@@ -26,11 +28,12 @@ Scope: `rg-la70-test`, `eastus2`. The architecture and commands are in
 Three optional real-embedding tests were skipped because the ml extra is absent. The full suite ran in the
 current working tree; existing uncommitted card-support changes remain outside the published release.
 The resource group itself is `Succeeded` in `eastus2` with the requested project, event, and environment tags.
-The final Compute preflight still returned `QuotaExceeded` (4 used of 4, minimum limit 6).
+The original eastus2 preflight returned `QuotaExceeded`. The operator subsequently authorized a
+separate data VM in westus2; provisioning succeeded without changing the existing application or Nequi.
 
 ## Completion criteria
 
-After compute capacity is available within an authorized deployment scope: provision, upload the committed release, execute the sample, inspect the actual
+Upload the committed release, execute the full local source on the dedicated data VM, inspect the actual
 systemd unit and result file, publish artifacts, and repeat the run. Record the resource inventory, revision,
 run identifiers, hashes, row counts, eight workflow checks, customer-isolation result, unchanged ingestion,
 and retained database state here. Report all failures explicitly. Passing local tests is not evidence of a
@@ -119,3 +122,17 @@ all 11 coverage gates, documentation/data/code-generation checks, and the histor
 The same three optional embedding tests were skipped because the ml extra is absent. ShellCheck,
 source-specific strict typing, and the 17 integrity/orchestration tests also passed. These checks
 prove local behavior and migration integrity; compute execution remains blocked by the regional quota.
+
+## Dedicated data VM
+
+The operator authorized a separate `vm-bank-database` after the activity log identified a different
+creator for `vm-bank-agent` and read-only inspection found the public application stack already running
+there. The separate VM and its network resources are `Succeeded` in `rg-bank-agent`, westus2.
+The disk is 128 GiB Standard SSD; the dedicated NSG denies all inbound traffic at priority 100.
+The VM managed identity received Blob contributor access limited to the existing private container.
+No public application configuration, Nequi resource, or existing database was changed.
+
+The unmerged pipeline ADR was renumbered to 0039 after fetching main, whose ADR 0038 now describes
+Azure continuous deployment. Main and current remote branches were checked; PR metadata was not
+available through the current unauthenticated client. [ADR 0040](../adr/0040-isolated-bank-database-vm.md)
+records the operator's new deployment scope and first full-source run.

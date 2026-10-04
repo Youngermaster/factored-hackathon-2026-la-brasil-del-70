@@ -41,7 +41,8 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 | [0033](0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
 | [0034](0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |
 | [0035](0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder | Accepted | 2026-09-29 |
-| [0038](0038-azure-vm-data-pipeline.md) | Execute the existing data pipeline on an Azure VM | Accepted | 2026-10-03 |
+| [0039](0039-azure-vm-data-pipeline.md) | Execute the existing data pipeline on an Azure VM | Accepted | 2026-10-03 |
+| [0040](0040-isolated-bank-database-vm.md) | Isolate the data pipeline on vm-bank-database in westus2 | Accepted | 2026-10-04 |
 
 ## Notes on status
 

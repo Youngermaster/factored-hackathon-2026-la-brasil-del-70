@@ -16,10 +16,11 @@ flowchart LR
     vm --> artifacts["Private versioned artifacts and reports"]
 ```
 
-All resources belong to `rg-la70-test` in `eastus2`, subscription
-`32847dfa-5fd4-4276-8bdf-243d72b35119`, tenant `4a5e7334-7901-444c-964b-3e6100209fd1`.
-The scripts refuse a different tenant, operator account, or resource-group location.
-They never modify another resource group.
+Compute belongs to `rg-bank-agent` in `westus2`: `vm-bank-database` and its dedicated
+`vm-bank-database-*` network resources. Private Blob storage remains in `rg-la70-test`, `eastus2`.
+Both use subscription `32847dfa-5fd4-4276-8bdf-243d72b35119` and tenant
+`4a5e7334-7901-444c-964b-3e6100209fd1`. The scripts refuse a different tenant, operator, or group
+location. The existing `vm-bank-agent` application VM and Nequi resources are excluded from the template.
 
 ## Deploy and execute
 
@@ -36,12 +37,15 @@ bash deploy/azure-data/deploy.sh status
 bash deploy/azure-data/deploy.sh publish
 ```
 
-While VM quota is pending, `provision-storage` deploys only the artifact account, private container, and
-operator data role. It creates no VM or network resources. A later `provision` completes the same template.
+`provision` uses `bank-database.json` to create only the dedicated compute resources and grants its
+managed identity contributor access to the existing private `artifacts` container. `provision-storage`
+uses `main.json` with compute disabled in the original storage group. It creates no VM or network resources.
 
-The initial VM size is `Standard_B2ms` (2 vCPU, 8 GiB RAM), with a 128 GiB Standard SSD. Availability and
+The dedicated VM size is `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), with a 128 GiB Standard SSD. Availability and
 subscription quota must pass Azure preflight; this is not a claim of capacity reservation. The sample run
-uses no hosted model. VM, disk, public IP, storage, and transactions have separate Azure charges.
+uses no hosted model. The B-series CPU is burstable; long batches can slow when credits are exhausted.
+VM, disk, public IP, storage, and transactions have separate Azure charges. Reusing the existing Blob
+account avoids duplicate storage but incurs cross-region transfer when downloading to westus2.
 
 The Standard public IP supplies explicit outbound connectivity. The network security group denies all
 inbound traffic, including SSH, API, and PostgreSQL. Administration uses VM Run Command. The required SSH
@@ -122,7 +126,7 @@ The sample lacks four full-delivery personas; the selected sample persona file s
 PostgreSQL uses the existing non-superuser owner, unprivileged application role, and forced RLS.
 Backups require restore rehearsal before this environment is considered a durable production service.
 
-To stop VM compute charges while preserving disks, use `az vm deallocate` for `vm-la70-data` in this group.
+To stop VM compute charges while preserving disks, use `az vm deallocate` for `vm-bank-database` in `rg-bank-agent`.
 Disks and the public IP continue to incur charges. Resource deletion is a separate explicit operator action.
 
 ## Verification
@@ -138,5 +142,6 @@ The managed-identity transfer uses fixed Azure hosts and checks downloaded conte
 previous release. Tests prove hash mismatch preservation, address rejection, infrastructure isolation,
 execution metadata, and that failed dbt stages cannot reach PostgreSQL.
 
-See [ADR 0038](../../docs/adr/0038-azure-vm-data-pipeline.md) and
+See [ADR 0039](../../docs/adr/0039-azure-vm-data-pipeline.md) and
+[ADR 0040](../../docs/adr/0040-isolated-bank-database-vm.md), and
 [execution status](../../docs/data/azure-execution.md).

@@ -7,17 +7,19 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.."
 
 subscription=32847dfa-5fd4-4276-8bdf-243d72b35119
 tenant=4a5e7334-7901-444c-964b-3e6100209fd1
-group=rg-la70-test
-vm='vm-la70-data'
+group=rg-bank-agent
+vm='vm-bank-database'
+storage_group=rg-la70-test
 state=data/azure-data
 mkdir -p "$state"
-storage="stla70$(printf '%s' "$subscription/$group" | sha256sum | cut -c1-16)"
+storage="stla70$(printf '%s' "$subscription/$storage_group" | sha256sum | cut -c1-16)"
 az_args=(--subscription "$subscription" --only-show-errors)
 [[ "$(az account show --query tenantId -o tsv)" == "$tenant" ]] || { printf 'Wrong tenant.\n' >&2; exit 2; }
 [[ "$(az account show "${az_args[@]}" --query user.name -o tsv)" == valenciajuliann@hotmail.com ]] || {
     printf 'Wrong operator account.\n' >&2; exit 2;
 }
-[[ "$(az group show -n "$group" "${az_args[@]}" --query location -o tsv)" == eastus2 ]] || exit 2
+[[ "$(az group show -n "$group" "${az_args[@]}" --query location -o tsv)" == westus2 ]] || exit 2
+[[ "$(az group show -n "$storage_group" "${az_args[@]}" --query location -o tsv)" == eastus2 ]] || exit 2
 
 invoke() {
     az vm run-command invoke -g "$group" -n "$vm" --command-id RunShellScript \
@@ -38,16 +40,30 @@ root = Path(sys.argv[1])
 (root / 'bootstrap-key.pub').unlink()
 PY
         fi
-        operator=$(az ad signed-in-user show --query id -o tsv)
-        parameters=("storageName=$storage" "operatorId=$operator" "sshPublicKey=$(cat "$state/ssh.pub")")
-        if [[ "$1" == *-storage ]]; then parameters+=(deployVm=false); fi
-        az deployment group validate -g "$group" -n la70-data \
-            --template-file deploy/azure-data/main.json --parameters "${parameters[@]}" \
+        deployment_group=$group
+        template=deploy/azure-data/bank-database.json
+        parameters=("sshPublicKey=$(cat "$state/ssh.pub")")
+        if [[ "$1" == *-storage ]]; then
+            deployment_group=$storage_group
+            template=deploy/azure-data/main.json
+            operator=$(az ad signed-in-user show --query id -o tsv)
+            parameters+=("storageName=$storage" "operatorId=$operator" deployVm=false)
+        fi
+        az deployment group validate -g "$deployment_group" -n bank-database \
+            --template-file "$template" --parameters "${parameters[@]}" \
             "${az_args[@]}" --query properties.provisioningState -o tsv
         if [[ "$1" == provision* ]]; then
-            az deployment group create -g "$group" -n la70-data \
-                --template-file deploy/azure-data/main.json --parameters "${parameters[@]}" \
+            az deployment group create -g "$deployment_group" -n bank-database \
+                --template-file "$template" --parameters "${parameters[@]}" \
                 "${az_args[@]}" --query properties.provisioningState -o tsv
+            if [[ "$1" == provision ]]; then
+                principal=$(az vm show -g "$group" -n "$vm" "${az_args[@]}" --query identity.principalId -o tsv)
+                [[ "$principal" =~ ^[0-9a-f-]{36}$ ]] || exit 2
+                az role assignment create --assignee-object-id "$principal" --assignee-principal-type ServicePrincipal \
+                    --role 'Storage Blob Data Contributor' \
+                    --scope "/subscriptions/$subscription/resourceGroups/$storage_group/providers/Microsoft.Storage/storageAccounts/$storage/blobServices/default/containers/artifacts" \
+                    "${az_args[@]}" -o none
+            fi
         fi
         ;;
     release)

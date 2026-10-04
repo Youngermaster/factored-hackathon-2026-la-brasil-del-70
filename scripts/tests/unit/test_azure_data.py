@@ -66,16 +66,34 @@ def test_execution_evidence_contains_hashes_and_declared_snapshot(tmp_path: Path
     assert evidence["ingestion"] == {"loaded": 0, "unchanged": 13}
 
 
-def test_infrastructure_closes_ingress_and_disables_storage_keys() -> None:
-    resources = json.loads((ROOT / "deploy" / "azure-data" / "main.json").read_text())["resources"]
-    storage = next(item for item in resources if item["type"] == "Microsoft.Storage/storageAccounts")
-    assert storage["properties"]["allowSharedKeyAccess"] is False
-    assert storage["properties"]["allowBlobPublicAccess"] is False
+@pytest.mark.parametrize("template", ["main.json", "bank-database.json"])
+def test_infrastructure_closes_ingress_and_disables_storage_keys(template: str) -> None:
+    resources = json.loads((ROOT / "deploy" / "azure-data" / template).read_text())["resources"]
+    if template == "main.json":
+        storage = next(item for item in resources if item["type"] == "Microsoft.Storage/storageAccounts")
+        assert storage["properties"]["allowSharedKeyAccess"] is False
+        assert storage["properties"]["allowBlobPublicAccess"] is False
     nsg = next(item for item in resources if item["type"] == "Microsoft.Network/networkSecurityGroups")
     assert all(rule["properties"]["access"] == "Deny" for rule in nsg["properties"]["securityRules"])
     vm = next(item for item in resources if item["type"] == "Microsoft.Compute/virtualMachines")
     assert vm["identity"]["type"] == "SystemAssigned"
     assert vm["properties"]["osProfile"]["linuxConfiguration"]["disablePasswordAuthentication"] is True
+
+
+def test_database_infrastructure_excludes_existing_application_resources() -> None:
+    template = json.loads((ROOT / "deploy" / "azure-data" / "bank-database.json").read_text())
+    resources = template["resources"]
+    assert {item["name"] for item in resources} == {
+        "vm-bank-database",
+        "vm-bank-database-nsg",
+        "vm-bank-database-vnet",
+        "vm-bank-database-ip",
+        "vm-bank-database-nic",
+    }
+    assert all(item["location"] == "[resourceGroup().location]" for item in resources)
+    assert "vm-bank-agent" not in json.dumps(template)
+    assert "nequi" not in json.dumps(template)
+    assert template["parameters"]["vmSize"]["allowedValues"] == ["Standard_B2as_v2"]
 
 
 @pytest.mark.parametrize("failure", ["build", "test", "source"])

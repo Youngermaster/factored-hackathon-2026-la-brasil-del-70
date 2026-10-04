@@ -1,12 +1,15 @@
 # Azure data pipeline execution
 
-Date: 2026-10-03. Owner: Julian Valencia. Scope: deploy and execute the existing data pipeline in
-`rg-la70-test`, `eastus2`, then version its infrastructure, application changes, and execution evidence.
+Updated: 2026-10-04. Owner: Julian Valencia. Scope: deploy and execute the existing data pipeline in
+`vm-bank-database` in `rg-bank-agent`, `westus2`, retaining private Blob storage in
+`rg-la70-test`, `eastus2`, then version its infrastructure and execution evidence. The operator approved
+the new scope in [ADR 0040](../adr/0040-isolated-bank-database-vm.md).
 
 ## Implementation
 
 - Add an ARM template for an Ubuntu VM, closed inbound networking, private artifact container, and
-  managed identity access. Keep every resource in the authorized resource group.
+  managed identity access. Restrict writes to the dedicated data resources and the original artifact
+  container; preserve the existing public application VM and Nequi.
 - Add a deployment command that packages a committed revision, uploads it with Entra authentication,
   and uses VM Run Command. Never copy local secrets or the working tree's unrelated changes.
 - Run ingestion, contracts, dbt build and freshness, quality and lineage reports, bounded seed,
@@ -25,9 +28,10 @@ Date: 2026-10-03. Owner: Julian Valencia. Scope: deploy and execute the existing
 
 ## Risks and decisions
 
-- Regional CPU quota is currently exhausted; the human authorized requesting a rise from 4 to 6 vCPU.
-- First execution uses the committed sample, explicitly labeled; local and S3 inputs retain their
-  existing commands. Full organizer loading remains a separate batch-loader project.
+- Westus2 has capacity for the dedicated 2-vCPU VM, subject to current SKU validation. Eastus2 remains
+  full; a Free Trial quota increase was rejected.
+- Execute the full local source on the new VM, preserving the bounded PostgreSQL seed. The complete
+  PostgreSQL batch loader remains a separate project. The public application is not rewired by this task.
 - The VM and disks incur charges. Use 2 vCPU, 8 GiB RAM, and a 128 GiB Standard SSD; no hosted LLM.
 - PostgreSQL on the VM avoids unverified managed-server bootstrap changes but requires backups.
 - Existing uncommitted card fixes and local setup changes belong to the human and remain untouched.

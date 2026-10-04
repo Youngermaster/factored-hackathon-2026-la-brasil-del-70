@@ -1,4 +1,4 @@
-# ADR 0038: execute the existing data pipeline on an Azure VM
+# ADR 0039: execute the existing data pipeline on an Azure VM
 
 - Status: Accepted
 - Date: 2026-10-03
@@ -48,3 +48,10 @@ customer isolation. Publish logs, gold, reports, and a backup privately.
 - VM creation waits for sufficient regional quota and an available SKU; storage can be deployed separately.
 - No hosted-model credentials, organizer credentials, tokens, or server environment files enter Git or
   execution artifacts.
+
+## Later deployment scope
+
+[ADR 0040](0040-isolated-bank-database-vm.md) supersedes the original resource-group, region,
+and VM naming choice. The pipeline contracts, private PostgreSQL roles, reconciliation, and
+no-reseed rules remain applicable. This unmerged record was renumbered from 0038 because the
+updated main branch already uses that number for Azure continuous deployment.

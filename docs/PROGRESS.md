@@ -8,7 +8,7 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 |---|---|
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
 | Next phase | None. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
-| Blocked | Azure data VM: regional quota is 4 used of 4 vCPU; 6 required |
+| In progress | Dedicated Azure data VM provisioned in westus2; full-source pipeline and PostgreSQL verification pending |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
 
 Pending human actions (the phase 09 prompt asks that phase 11 start after actions 21 and 25):
@@ -70,6 +70,16 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Dedicated Azure data VM (2026-10-04)
+
+Owner: Julian Valencia. Authorized compute scope: `vm-bank-database` and its dedicated network in
+`rg-bank-agent`, westus2. Private artifact storage remains in `rg-la70-test`, eastus2.
+
+- The operator confirmed the bank project and requested a separate data VM after Azure activity logs identified another creator for `vm-bank-agent`. Read-only inspection found the existing public application running there; its configuration and database were preserved.
+- ARM validation and provisioning succeeded for `vm-bank-database`, `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), Ubuntu 24.04, a verified 128 GiB Standard SSD, managed identity, and denied inbound traffic. Blob access is limited to the existing private artifact container. Nequi remains untouched.
+- Updated the deployment script to target only the dedicated VM, its network resources, and the artifact container. Nineteen safety/integrity/orchestration tests, strict typing, shell syntax, and ShellCheck passed. Full-source execution, retained-state rerun, cloud evidence publication, and the updated repository-wide check remain pending.
+- Fetched main and checked current remote branches. Main now uses ADR 0038 for Azure continuous deployment, so the unmerged data record was renumbered to [0039](adr/0039-azure-vm-data-pipeline.md). [ADR 0040](adr/0040-isolated-bank-database-vm.md) records the new scope. PR metadata was unavailable through the current client.
+
 ### Azure data pipeline (2026-10-03)
 
 Owner: Julian Valencia. Scope: `rg-la70-test`, `eastus2`, subscription `32847dfa-5fd4-4276-8bdf-243d72b35119`.
@@ -80,7 +90,7 @@ Owner: Julian Valencia. Scope: `rg-la70-test`, `eastus2`, subscription `32847dfa
 - Published the five full gold Parquet tables to private Azure Blob: 5,192,103 rows and 241,693,714 bytes. Each file matched its local DuckDB gold table and its downloaded Azure SHA-256. Uploaded quality, lineage, dbt/freshness results, unchanged-source evidence, and a final manifest. Validation ran locally: 271 dbt passes with two branch-reference warnings, and 11 freshness passes with two warnings. Cloud PostgreSQL loading and cloud pipeline execution remain pending.
 - Ten reconciliation tests and six orchestration/integrity tests passed. Local workflow verification passed after preparing the stored policy index, using independent clients, and using unambiguous language markers. The final `make check` passed in the current working tree: 2,876 unit tests, 1,532 integration tests, 349 web tests, all 11 coverage gates, documentation and data checks, and the history secret scan. Three optional real-embedding tests were skipped because the ml extra is absent. Code release `0ccfa6d` was uploaded privately and its downloaded SHA-256 verified.
 - Added private contracted-source packaging and managed-identity restoration for `start local`, replacing manual CSV copying. Published the 7,671 contracted inputs (5,349,322,481 bytes) as a private archive and verified its downloaded SHA-256. Complete local restoration checked every file before installation. Seventeen integrity/orchestration tests, typing, Ruff, Bandit, shell syntax, and ShellCheck passed. The updated `make check` passed: 2,887 unit, 1,532 integration, 349 web, all 11 coverage gates and remaining checks; the same three optional embedding tests were skipped. Cloud compute execution remains pending.
-- No cloud pipeline execution is claimed. See [the execution record](data/azure-execution.md), [the plan](plans/azure-data-pipeline.md), and [ADR 0038](adr/0038-azure-vm-data-pipeline.md). Existing uncommitted card-support and local-loading work stays outside these commits.
+- No cloud pipeline execution is claimed. See [the execution record](data/azure-execution.md), [the plan](plans/azure-data-pipeline.md), and [ADR 0039](adr/0039-azure-vm-data-pipeline.md). Existing uncommitted card-support and local-loading work stays outside these commits.
 
 ### Phase 17: documentation completion and final audit (2026-09-30)
 
