@@ -1,6 +1,6 @@
 # Pitch deck
 
-The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides plus three appendix slides, built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
+The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides (the submission PDF) plus three appendix slides (a separate PDF), built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
 
 The scene kit, the `<Scene>` component, the seams and the check scripts are adapted from the team lead's earlier deck, VLA-introduction-slides (Apache-2.0, same author); the robot drawing helpers and the bilingual machinery were dropped.
 
@@ -19,14 +19,15 @@ pnpm dev                 # http://localhost:3131, presenter view at /#/presenter
 |---|---|
 | `pnpm dev` | Dev server on port 3131 with hot reload |
 | `pnpm verify` | Types plus `check:content`; run before every commit |
-| `pnpm check:content` | Strings, metrics, intervals, token parity, contrast, narration timing, em dashes, naming; lists pending metrics |
+| `pnpm check:content` | Strings, metrics, intervals, token parity, contrast, narration timing (fails past the 3:00 video limit), parity with the team monologue, the six-slide export range, em dashes, naming; lists pending metrics |
 | `pnpm check:content --strict` | Same, and fails while any metric is still pending or any placeholder remains |
 | `pnpm check:fit` | Renders every scene at every cue and flags text outside the safe area or touching other text (dev server running) |
 | `pnpm shots` | Screenshots of every slide at every click into `.shots/deck/` (dev server running) |
 | `node scripts/sheet.mjs <scene>` | Contact sheet of one scene at every cue and midpoint, into `.shots/scenes/` |
 | `pnpm build` | Static site into `dist/` |
-| `pnpm export` | PDF with one page per click into `export/` |
-| `pnpm export:final` | `check:content --strict`, then the PDF: the submission build |
+| `pnpm export` | The six main slides as a PDF, one page per click, into `export/la-brasil-del-70-pitch.pdf` |
+| `pnpm export:appendix` | The three appendix slides as their own PDF, `export/la-brasil-del-70-appendix.pdf` |
+| `pnpm export:final` | `check:content --strict`, then `pnpm export`: the submission build |
 
 The workbench is at `http://localhost:3131/#/lab`: pick a scene, scrub its playhead, jump between cues. Add `?scene_t=3.2` to a deck URL to freeze every scene at that time, or `?scene_snap` to show each click's finished frame.
 
@@ -46,24 +47,24 @@ lib/metrics.ts          M('key') for scenes; lib/metric-kinds.ts for the labels
 components/Scene.vue    plays a scene to the current click's cue, snaps in print mode
 pages/lab.vue           the scrubber, contact sheets, and the fit probe
 styles/                 tokens.css (the palette as CSS variables), base, motion
-scripts/                check-content, check-fit, check-types, shots, sheet
-script.md               the spoken narration, timed per section
-VIDEO.md                how to record and export the video
+scripts/                check-content (with narration.ts), check-fit, check-types, shots, sheet
+script.md               the spoken narration of the 3:00 video, by segment and speaker
+VIDEO.md                how to record and export the video (the shot list is docs/demo/video-plan.md)
 ```
 
-| Slide | Scene | Clicks |
-|---|---|---|
-| 1 hook | `hook` | 4: the data field folds into the contact bar, first contact resolution, transcripts, four workflow tiles |
-| 2 thesis | `thesis` | 6: understand, decide, act and verify, injection, escalate, thesis line |
-| 3 architecture | `arch` | 5: clause to Decision, a call through the gateway onto the provider the settings name (local Ollama today, a hosted model by setting), draft sent or templated, rows to quarantine, inward packets |
-| 4 workflows | `workflows` | 5: account inquiry, card support, dispute, credit separation, depth grid |
-| 5 evidence | `evidence` | 4: arrive with 304 cases into P, B0 and B1; per workflow with intervals, the aggregate and the trade-offs, unsafe grids with B1's 90 by kind, P's weak spots |
-| 6 close | `close` | 4: arrive on the degradation ladder; defense in depth, limits and next steps, team on yellow, thesis bands and links |
-| appendix A | `appendixEvidence` | 1: pass^3 and the language slices, then efficiency and retrieval |
-| appendix B | `appendixOps` | 1: one turn as a trace, then the budget guard and the load test |
-| appendix C | `appendixData` | 2: announced problems measured at zero, what profiling found, projected cost per resolved contact |
+| Slide | Scene | Dimension tag | Clicks |
+|---|---|---|---|
+| 1 hook | `hook` | Data Analytics, Data Engineering | 4: the data field folds into the contact bar, first contact resolution, the pipeline with quarantine and three real data problems with the decision each forced, four workflow tiles |
+| 2 thesis | `thesis` | Technical Judgment, AI Engineering | 6: understand, decide, act and verify, injection, escalate, thesis line |
+| 3 architecture | `arch` | AI Engineering, Machine Learning, Technical Judgment | 3: arrive on the stack around the hexagonal core; the deployment on one Azure VM behind Caddy with the obs profile and the managed path; one turn model by model with the risk estimate bouncing off the wall; learned components against their baselines and the decision to keep the baselines |
+| 4 workflows | `workflows` | AI Engineering, Technical Judgment | 5: account inquiry, card support, dispute, credit separation, depth grid |
+| 5 evidence | `evidence` | Machine Learning, Data Analytics | 4: arrive with 304 cases into P, B0 and B1; per workflow with intervals, the aggregate and the trade-offs, unsafe grids with B1's 90 by kind, P's weak spots |
+| 6 close | `close` | Technical Judgment, AI Engineering | 4: arrive on the degradation ladder; defense in depth on the deployed host, limits and next steps, team on yellow, thesis bands and links |
+| appendix A | `appendixEvidence` | none | 1: pass^3 and the language slices, then efficiency and retrieval |
+| appendix B | `appendixOps` | none | 1: one turn as a trace, then the budget guard and the load test |
+| appendix C | `appendixData` | none | 2: announced problems measured at zero, what profiling found, projected cost per resolved contact |
 
-The six main slides carry the story (problem, thesis, architecture, workflows and credit, evidence, reliability with security and the close) for the organizers' 4 to 6 slide limit. The appendix slides carry an "appendix" eyebrow, are not narrated, and can be dropped from the PDF.
+The six main slides cover the organizers' five evaluation dimensions between them, and each carries a small tag top-right naming the ones it answers (`dims` in each scene's locale block, drawn by `dims()` in `lib/scene/bank.ts`). The appendix slides carry an "appendix" eyebrow, are not narrated, and are not in the submission PDF. The video narrates slides 1, 3, 5, and 6; slides 2 and 4 are in the PDF, and the live segments show the same loop.
 
 ## Colour meaning
 
@@ -89,7 +90,7 @@ Two moments use the light-gray paper as the ground: the arrival of the hook (the
 
 Open `locales/en.yml`, find the scene's block, and change the value. The scene redraws on save. Rules the check enforces: no em dashes; every key a scene draws must exist. YAML traps: a value containing `": "` must be quoted, and so must a value starting with `*`. Inside kinetic lines, `*asterisks*` mark the accent words.
 
-Spoken words live in `script.md`, not in the locale file. After editing it, `pnpm check:content` prints the new duration per section.
+Spoken words live in `script.md`, not in the locale file, and the same words, split by speaker, in `docs/demo/video-monologue.md`: edit both, then `pnpm check:content` prints the duration per section and per speaker and fails if the two differ or the total passes 3:00.
 
 ## Updating numbers
 
@@ -111,7 +112,7 @@ eval.unsafe.p: {value: 8, of: 304, display: "8 of 304", lo: 1.1, hi: 5.1, kind: 
 - A pending metric renders as a dashed "pending" box, so a missing number is visible, never invented.
 - If the evaluation is rerun (BACKLOG 14c: a hosted model, the 14c fixes), refresh the `eval.*` block from `docs/evaluation/results.md` and the `evidence` section of `script.md` with it.
 
-Today 1 metric is pending: `deploy.url`, filled once the human deploys ([docs/submission/SUBMISSION.md](../docs/submission/SUBMISSION.md)). `pnpm check:content` lists what is pending.
+Today no metric is pending: `deploy.url` holds the demo URL from the README. `pnpm check:content` lists anything pending.
 
 ## Naming
 
@@ -126,11 +127,12 @@ One name per thing, everywhere in the deck, the narration and the video guide:
 ## Exporting the PDF
 
 ```bash
-pnpm export:final        # fails while any metric is pending
-pnpm export              # draft PDF, pending boxes included
+pnpm export:final        # the submission PDF: six main slides, fails while any metric is pending
+pnpm export              # the same six slides as a draft, pending boxes included
+pnpm export:appendix     # the three appendix slides, a separate PDF
 ```
 
-The export has one page per click of every slide (41 pages: 34 for the six main slides, 7 for the appendix), which is what makes the build-ups readable on paper. Do not add `--per-slide`: it renders one page per slide and every scene would export at its arrival frame only. For the organizers' 4 to 6 slide limit, send the six main slides and drop the appendix pages, or keep the appendix as a clearly labeled extra.
+`pnpm export` uses `--range 1-6`, so the submission PDF holds only the six main slides (32 pages, one per click, which keeps the build-ups readable on paper); `export:appendix` uses `--range 7-9` (7 pages). `pnpm check:content` fails if a range stops matching the deck. Do not add `--per-slide`: every scene would export at its arrival frame only.
 
 Slidev does not reliably hot-reload frontmatter: after changing `clicks:` or `transition:` in `slides.md`, restart `pnpm dev`.
 

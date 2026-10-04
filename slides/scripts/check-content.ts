@@ -7,7 +7,10 @@
  *   3. tokens: styles/tokens.css and the kit's C object agree
  *   4. contrast: every allowed text pair meets its WCAG ratio
  *   5. script: every slide has a narration section; total spoken duration at
- *      150 words per minute sits inside the declared target
+ *      150 words per minute sits inside the declared target and under the
+ *      3:00 video limit; script.md and docs/demo/video-monologue.md say the
+ *      same words by the same speakers (scripts/narration.ts)
+ *  5b. the submission PDF: 4 to 6 main slides, and export --range covers only them
  *   6. writing: no em dashes in anything shown or spoken
  *   7. naming: no known variant spelling of the product, team, systems,
  *      workflows, metrics or levels; team names identical on the close slide,
