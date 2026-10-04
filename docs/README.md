@@ -26,7 +26,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes (listed below) |
 | [plans/kickoff-notes.md](plans/kickoff-notes.md) | The team's kickoff notes: roles and the scope decision |
 | Phase plans | [00](plans/phase-00.md), [01](plans/phase-01.md), [02](plans/phase-02.md), [02b](plans/phase-02b.md), [03](plans/phase-03.md), [04](plans/phase-04.md), [05](plans/phase-05.md), [06](plans/phase-06.md), [07](plans/phase-07.md), [08](plans/phase-08.md), [09a](plans/phase-09a.md), [09b](plans/phase-09b.md), [10a](plans/phase-10a.md), [10b](plans/phase-10b.md), [11](plans/phase-11.md), [12](plans/phase-12.md), [13](plans/phase-13.md), [14a](plans/phase-14a.md), [14b](plans/phase-14b.md), [15](plans/phase-15.md), [16](plans/phase-16.md), [17](plans/phase-17.md), and [the local EDA](plans/eda-local.md) |
-| [plans/azure-data-pipeline.md](plans/azure-data-pipeline.md) | Azure pipeline execution plan and acceptance criteria |
+| [plans/data-engineering-deployment.md](plans/data-engineering-deployment.md) | Azure pipeline execution plan and acceptance criteria |
 
 ## Organizer material
 
@@ -96,6 +96,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [adr/0035](adr/0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder |
 | [adr/0039-azure-vm-data-pipeline.md](adr/0039-azure-vm-data-pipeline.md) | Azure data deployment decision and trade-offs |
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
+| [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 
 ## Exploratory data analysis
 
@@ -120,7 +121,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [data/local-postgres-mvp.md](data/local-postgres-mvp.md) | Build gold from the local delivery, seed and verify the 200-customer MVP slice, and the plan for the full load |
 | [workflows/data-pipeline.md](workflows/data-pipeline.md) | Source to serving flowchart and the incremental run with a late arrival |
 | [../data_platform/sample/README.md](../data_platform/sample/README.md) | The committed organizer sample: provenance, counts, treatments, and example rows per table |
-| [data/azure-execution.md](data/azure-execution.md) | Verified Azure deployment and execution status |
+| [data/data-engineering-execution.md](data/data-engineering-execution.md) | Verified Azure deployment and execution status |
 
 ## Analysis and decisions
 

@@ -24,9 +24,17 @@ flowchart LR
 | `bank_owner` | yes | the database, schemas `app` and `eval`, every table | no in production (`NOSUPERUSER NOCREATEROLE NOCREATEDB NOBYPASSRLS`, `deploy/postgres/init-production`); the image superuser in development and tests | migrations (`bank-agent db upgrade`), the seed, and the retention purge |
 | `bank_app` | yes | nothing | no (`NOBYPASSRLS`) | the API: every unit of work, the session store, the identity service |
 | `bank_evaluator` | no (NOLOGIN group role) | nothing | no | evaluation runs: schema `eval`, read access to records, audit events, and handoffs |
+| `bank_datagrip` (dedicated Azure data VM only) | after interactive password setup | nothing | no | operator-authorized TLS inspection of five customer reference tables and the Alembic revision; no writes |
 | `postgres` (production only) | local socket only (peer authentication) | nothing after the bootstrap | yes (the image superuser) | creating the roles on an empty volume, backups, and restores; no service connects with it |
 
 `bank_app` privileges after migration 0007: SELECT only on `customers`, `staff_members`, `identity_directory`, `transactions`, `historical_complaints`, `credit_profiles`; SELECT and `UPDATE (status, status_changed_at)` on `products`; SELECT and INSERT only on `execution_records`, `audit_events`, `trust_events`; no DELETE or TRUNCATE anywhere; no access to schema `eval`. Migrations 0011 and 0012 add SELECT, INSERT, and UPDATE on `llm_budget` and `rate_limit_windows`, two tables of opaque counters (session and conversation ids, dates, HMAC digests of addresses and sessions) without row-level security.
+
+The optional Azure inspection role has explicit SELECT-only policies on `customers`, `products`,
+`transactions`, `historical_complaints`, and `credit_profiles`, scoped to `bank_datagrip` alone. These
+policies permit inspection of all loaded reference rows without changing the application's customer or
+staff policies. It has no access to identity, session, dispute, credit-intake, or audit records. TLS,
+SCRAM authentication, a single authorized client IPv4, and an NSG source restriction are required;
+see [the DataGrip setup](../../deploy/data-engineering/README.md#datagrip-inspection).
 
 ## Database contexts
 

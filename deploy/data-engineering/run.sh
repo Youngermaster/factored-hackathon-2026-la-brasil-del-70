@@ -31,7 +31,7 @@ finish() {
     if [[ "$result" == 0 ]]; then status=succeeded; else status=failed; fi
     printf '%s\n' "$status" > "$run_dir/status"
     if [[ -x "$root/venv/$revision/bin/python" ]]; then
-        if ! "$root/venv/$revision/bin/python" deploy/azure-data/runtime.py evidence \
+        if ! "$root/venv/$revision/bin/python" deploy/data-engineering/runtime.py evidence \
             "$run_dir" "$warehouse" "$revision" "$source_kind" "$status"; then
             status=failed
             [[ "$result" != 0 ]] || result=1
@@ -70,7 +70,7 @@ step() {
     printf '%s succeeded\n' "$name"
 }
 if [[ "$source_kind" == local ]]; then
-    step source uv run --frozen python deploy/azure-data/source.py restore \
+    step source uv run --frozen python deploy/data-engineering/source.py restore \
         "$root/sources/$source_digest.tar.gz" "$root/source" "$source_digest"
 fi
 step ingest uv run --frozen bank-data ingest "${args[@]}"
@@ -83,9 +83,13 @@ printf '\nExecution revision: %s.\n' "$revision" >> "$run_dir/lineage.md"
 step retrieval uv run --frozen bank-agent index build --output "$root/data/retrieval-index"
 export RETRIEVAL_INDEX_SOURCE=stored
 export RETRIEVAL_INDEX_DIR="$root/data/retrieval-index"
-step postgres docker compose -f deploy/azure-data/compose.yml up -d --wait
+compose=(docker compose -f deploy/data-engineering/compose.yml)
+if [[ -f "$root/datagrip.compose.yml" ]]; then
+    compose+=(-f "$root/datagrip.compose.yml")
+fi
+step postgres "${compose[@]}" up -d --wait
 step migrations uv run --frozen bank-agent db upgrade
-if uv run --frozen python deploy/azure-data/runtime.py empty; then
+if uv run --frozen python deploy/data-engineering/runtime.py empty; then
     step seed uv run --frozen bank-data seed "${args[@]}" --customers 200
 else
     result=$?
@@ -98,9 +102,9 @@ set -a
 # shellcheck source=/dev/null
 source "$root/api.env"
 set +a
-step application uv run --frozen python deploy/azure-data/smoke.py "$run_dir/application.json"
+step application uv run --frozen python deploy/data-engineering/smoke.py "$run_dir/application.json"
 mkdir -p "$run_dir/gold"
 cp "$warehouse"/gold/*_serving.parquet "$run_dir/gold/"
-docker compose -f deploy/azure-data/compose.yml exec -T postgres \
+"${compose[@]}" exec -T postgres \
     pg_dump -U postgres -d bank_agent -Fc > "$run_dir/database.dump"
 printf 'All pipeline stages completed.\n'

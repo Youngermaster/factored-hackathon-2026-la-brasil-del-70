@@ -70,6 +70,51 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 ## Phase log
 
+### Data engineering names and end-to-end deployment (2026-10-04)
+
+- Renamed the local branch to `data-engineering`, the deployment package to `deploy/data-engineering`,
+  the operational state to ignored `data/data-engineering`, the engineering tests, and plan/execution
+  documents. Existing immutable releases keep an explicit Compose fallback; persisted PostgreSQL
+  volume and VM paths are retained to avoid starting an empty database.
+- The operator also requested Azure resource names. Target: `rg-data-engineering-test`,
+  `vm-data-engineering-database`, engineering network/disk/snapshot names, and private
+  `stdataeng213c0ee90850`, all in westus2. Storage and closed networking are deployed; the original
+  database backup, snapshot, and engineering disk clone exist. All 27 artifacts passed downloaded
+  SHA-256/source-ETag checks. A network-isolated backup restore verified schema, five reference-table
+  hashes/counts, application RLS, and inspection grants. Westus2 uses 4/4 regional and family vCPU, so replacement requires an explicit approved
+  cutover after preserving the original disk; deallocation alone does not release quota.
+- [ADR 0041](adr/0041-data-engineering-deployment-and-datagrip.md) explains the full identity/infrastructure,
+  immutable source/release transfer, contracts/quarantine, dbt, schema mapping, bounded load, retained
+  reruns, reconciliation, API tests, private evidence/backup, TLS, password setup, and DataGrip connection.
+- Added reproducible inspection configuration and password-free certificate/TLS checking, plus guarded
+  artifact migration with download SHA-256 and source ETag verification. The preparation preserves
+  the source VM and current DataGrip endpoint. The inspection password was set successfully by the operator.
+- Previous full repository checks passed: 2,902 unit, 1,537 integration, 349 web, three optional embedding
+  skips, all coverage gates, docs, and secret checks. The 47 focused naming/migration/inspection tests, strict typing,
+  documentation checks, and real isolated backup restore passed. The final repository-wide gate passed:
+  2,912 unit, 1,537 integration, 349 web, all 11 coverage gates, docs/data/code-generation checks,
+  and the history secret scan. Three optional embedding tests remain skipped. Azure also validated
+  the attached-disk replacement template. The explicitly approved Azure cutover remains pending.
+
+### DataGrip access to the dedicated data VM (2026-10-04)
+
+- The operator authorized username/password inspection and supplied client IPv4 `181.140.234.12`.
+  Configured only `vm-bank-database`: direct PostgreSQL TLS at `13.66.169.189:5432`, an NSG allow for
+  this client `/32` at priority 110, and denied remaining inbound traffic at priority 200. Nequi and
+  the application VM were preserved. [ADR 0041](adr/0041-data-engineering-deployment-and-datagrip.md) records this change.
+- PostgreSQL is healthy with TLS enabled, a valid IP certificate, zero HBA parsing errors, schema
+  `0014`, 200 customers, 559 products, and 6,119 transactions. A workstation handshake negotiated
+  TLS 1.3 and verified the certificate. The application role still sees zero customers without context.
+- `bank_datagrip` has SELECT-only grants and role-specific RLS policies for the five reference tables,
+  plus the schema revision. It has no write, ownership, schema-creation, superuser, or bypass privileges.
+  The operator completed the hidden interactive password command and received its success marker; no
+  password was requested in chat or generated for display. The helper installs an encrypted SCRAM
+  verifier and downloads the public CA certificate for DataGrip `verify-full`.
+- Authentication and isolation tests passed: 33 deployment/inspection tests, followed by 14 focused
+  tests including a real PostgreSQL login with the locally derived SCRAM verifier. The full repository
+  gate passed: 2,912 unit, 1,537 integration, 349 web, all coverage gates and remaining checks,
+  with three optional embedding skips. External TLS 1.3 certificate/IP verification passed again.
+
 ### Dedicated Azure data VM (2026-10-04)
 
 Owner: Julian Valencia. Authorized compute scope: `vm-bank-database` and its dedicated network in
@@ -92,7 +137,7 @@ Owner: Julian Valencia. Scope: `rg-la70-test`, `eastus2`, subscription `32847dfa
 - Published the five full gold Parquet tables to private Azure Blob: 5,192,103 rows and 241,693,714 bytes. Each file matched its local DuckDB gold table and its downloaded Azure SHA-256. Uploaded quality, lineage, dbt/freshness results, unchanged-source evidence, and a final manifest. Validation ran locally: 271 dbt passes with two branch-reference warnings, and 11 freshness passes with two warnings. Cloud PostgreSQL loading and cloud pipeline execution remain pending.
 - Ten reconciliation tests and six orchestration/integrity tests passed. Local workflow verification passed after preparing the stored policy index, using independent clients, and using unambiguous language markers. The final `make check` passed in the current working tree: 2,876 unit tests, 1,532 integration tests, 349 web tests, all 11 coverage gates, documentation and data checks, and the history secret scan. Three optional real-embedding tests were skipped because the ml extra is absent. Code release `0ccfa6d` was uploaded privately and its downloaded SHA-256 verified.
 - Added private contracted-source packaging and managed-identity restoration for `start local`, replacing manual CSV copying. Published the 7,671 contracted inputs (5,349,322,481 bytes) as a private archive and verified its downloaded SHA-256. Complete local restoration checked every file before installation. Seventeen integrity/orchestration tests, typing, Ruff, Bandit, shell syntax, and ShellCheck passed. The updated `make check` passed: 2,887 unit, 1,532 integration, 349 web, all 11 coverage gates and remaining checks; the same three optional embedding tests were skipped. Cloud compute execution remains pending.
-- No cloud pipeline execution is claimed. See [the execution record](data/azure-execution.md), [the plan](plans/azure-data-pipeline.md), and [ADR 0039](adr/0039-azure-vm-data-pipeline.md). Existing uncommitted card-support and local-loading work stays outside these commits.
+- No cloud pipeline execution is claimed. See [the execution record](data/data-engineering-execution.md), [the plan](plans/data-engineering-deployment.md), and [ADR 0039](adr/0039-azure-vm-data-pipeline.md). Existing uncommitted card-support and local-loading work stays outside these commits.
 
 ### Phase 17: documentation completion and final audit (2026-09-30)
 

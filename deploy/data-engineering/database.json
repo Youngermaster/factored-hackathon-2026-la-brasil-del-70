@@ -1,0 +1,232 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sshPublicKey": {
+      "type": "string"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_B2as_v2",
+      "allowedValues": [
+        "Standard_B2as_v2"
+      ]
+    },
+    "deployVm": {
+      "type": "bool",
+      "defaultValue": true
+    },
+    "osDiskId": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-11-01",
+      "name": "nsg-data-engineering-database",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-engineering"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "deny-all-inbound",
+            "properties": {
+              "priority": 200,
+              "direction": "Inbound",
+              "access": "Deny",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-11-01",
+      "name": "vnet-data-engineering",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-engineering"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.70.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "pipeline",
+            "properties": {
+              "addressPrefix": "10.70.1.0/24",
+              "defaultOutboundAccess": false,
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsg-data-engineering-database')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsg-data-engineering-database')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-11-01",
+      "name": "pip-data-engineering-database",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-engineering"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      },
+      "sku": {
+        "name": "Standard"
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2023-11-01",
+      "name": "nic-data-engineering-database",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-engineering"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "primary",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'vnet-data-engineering', 'pipeline')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'pip-data-engineering-database')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-data-engineering')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'pip-data-engineering-database')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-09-01",
+      "name": "vm-data-engineering-database",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "project": "la70",
+        "event": "factored-hackathon-2026",
+        "env": "test",
+        "component": "data-engineering"
+      },
+      "properties": "[union(variables('vmCore'), createObject('storageProfile', if(empty(parameters('osDiskId')), variables('freshStorageProfile'), variables('attachedStorageProfile'))), if(empty(parameters('osDiskId')), variables('imageOsProfile'), createObject()))]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', 'nic-data-engineering-database')]"
+      ],
+      "condition": "[parameters('deployVm')]"
+    }
+  ],
+  "outputs": {
+    "vmName": {
+      "type": "string",
+      "value": "vm-data-engineering-database"
+    }
+  },
+  "variables": {
+    "vmCore": {
+      "hardwareProfile": {
+        "vmSize": "[parameters('vmSize')]"
+      },
+      "networkProfile": {
+        "networkInterfaces": [
+          {
+            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'nic-data-engineering-database')]"
+          }
+        ]
+      },
+      "securityProfile": {
+        "securityType": "TrustedLaunch",
+        "uefiSettings": {
+          "secureBootEnabled": true,
+          "vTpmEnabled": true
+        }
+      }
+    },
+    "freshStorageProfile": {
+      "imageReference": {
+        "publisher": "Canonical",
+        "offer": "ubuntu-24_04-lts",
+        "sku": "server",
+        "version": "latest"
+      },
+      "osDisk": {
+        "createOption": "FromImage",
+        "diskSizeGB": 128,
+        "managedDisk": {
+          "storageAccountType": "StandardSSD_LRS"
+        },
+        "deleteOption": "Detach",
+        "name": "disk-data-engineering-database-os"
+      }
+    },
+    "imageOsProfile": {
+      "osProfile": {
+        "computerName": "data-engineering-database",
+        "adminUsername": "la70",
+        "linuxConfiguration": {
+          "disablePasswordAuthentication": true,
+          "ssh": {
+            "publicKeys": [
+              {
+                "path": "/home/la70/.ssh/authorized_keys",
+                "keyData": "[parameters('sshPublicKey')]"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "attachedStorageProfile": {
+      "osDisk": {
+        "name": "disk-data-engineering-database-os",
+        "osType": "Linux",
+        "createOption": "Attach",
+        "deleteOption": "Detach",
+        "caching": "ReadWrite",
+        "managedDisk": {
+          "id": "[parameters('osDiskId')]"
+        }
+      }
+    }
+  }
+}

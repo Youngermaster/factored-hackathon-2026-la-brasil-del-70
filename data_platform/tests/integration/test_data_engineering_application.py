@@ -86,7 +86,9 @@ def test_prepared_sample_supports_all_workflows_and_unchanged_ingestion(
     for key, value in settings.items():
         monkeypatch.setenv(key, value)
     monkeypatch.delenv("POSTGRES_ADMIN_PASSWORD", raising=False)
-    spec = importlib.util.spec_from_file_location("azure_data_smoke", REPOSITORY_ROOT / "deploy/azure-data/smoke.py")
+    spec = importlib.util.spec_from_file_location(
+        "data_engineering_smoke", REPOSITORY_ROOT / "deploy/data-engineering/smoke.py"
+    )
     assert spec is not None
     assert spec.loader is not None
     smoke = importlib.util.module_from_spec(spec)

@@ -4,6 +4,7 @@
 - Date: 2026-10-04
 - Decision makers: Julian Valencia
 - Supersedes: [ADR 0039](0039-azure-vm-data-pipeline.md), deployment scope and first source only
+- Superseded by: [ADR 0041](0041-data-engineering-deployment-and-datagrip.md), engineering resource names, artifact placement, and PostgreSQL inspection ingress
 
 ## Context
 

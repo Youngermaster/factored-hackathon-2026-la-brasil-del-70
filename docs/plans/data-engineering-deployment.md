@@ -1,11 +1,14 @@
-# Azure data pipeline execution
+# Data engineering deployment and connection
 
 Updated: 2026-10-04. Owner: Julian Valencia. Scope: deploy and execute the existing data pipeline in
-`vm-bank-database` in `rg-bank-agent`, `westus2`, retaining private Blob storage in
-`rg-la70-test`, `eastus2`, then version its infrastructure and execution evidence. The operator approved
-the new scope in [ADR 0040](../adr/0040-isolated-bank-database-vm.md).
+`vm-data-engineering-database` in `rg-data-engineering-test`, `westus2`, with private engineering storage
+in the same region, then version its infrastructure and execution evidence. The operator approved
+the naming and inspection scope in [ADR 0041](../adr/0041-data-engineering-deployment-and-datagrip.md).
 
 ## Implementation
+
+- Prepare snapshots, a retained original disk, a database backup, and verified artifact copies before
+  the explicitly approved replacement of the source VM. Verify recovery before retiring source resources.
 
 - Add an ARM template for an Ubuntu VM, closed inbound networking, private artifact container, and
   managed identity access. Restrict writes to the dedicated data resources and the original artifact
@@ -14,7 +17,8 @@ the new scope in [ADR 0040](../adr/0040-isolated-bank-database-vm.md).
   and uses VM Run Command. Never copy local secrets or the working tree's unrelated changes.
 - Run ingestion, contracts, dbt build and freshness, quality and lineage reports, bounded seed,
   value reconciliation, and application workflow checks on the VM.
-- Keep PostgreSQL private on the VM with the existing production roles. Refuse automatic reseeding
+- Use the existing production roles and enable operator-authorized TLS inspection only from a single
+  client IPv4 through [ADR 0041](../adr/0041-data-engineering-deployment-and-datagrip.md). Refuse automatic reseeding
   of an existing database. Preserve warehouses and publish content-addressed artifacts and evidence.
 - Extend seed verification with an optional full reference-row comparison and corruption regressions.
 - Record the deployment choice and measured execution in the deployment guide and progress log.

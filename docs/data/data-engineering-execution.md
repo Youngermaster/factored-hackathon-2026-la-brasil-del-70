@@ -1,9 +1,34 @@
-# Azure data execution status
+# Data engineering execution status
 
 Updated: 2026-10-04. Owner: Julian Valencia. Subscription: `32847dfa-5fd4-4276-8bdf-243d72b35119`.
 Scope: dedicated compute `vm-bank-database` in `rg-bank-agent`, `westus2`; private Blob storage
 in `rg-la70-test`, `eastus2`. The architecture and commands are in
-[the deployment guide](../../deploy/azure-data/README.md).
+[the deployment guide](../../deploy/data-engineering/README.md).
+
+## Engineering naming migration
+
+Preparation completed on 2026-10-04 in `rg-data-engineering-test`, westus2. Private storage
+`stdataeng213c0ee90850`, the closed engineering network, reserved IP `4.154.75.23`, snapshot
+`snap-data-engineering-database-20261004`, and `disk-data-engineering-database-os` exist. All 27 source
+artifacts were copied without overwriting existing destination objects and verified by downloaded
+SHA-256 and unchanged source ETags. The original OS disk uses `deleteOption=Detach`.
+
+The private database backup was downloaded from the replacement storage, SHA-256 verified, and
+restored into a disposable PostgreSQL 16 container with no network or published ports. Verification
+passed for revision `0014`, all five reference-table counts and hashes, application RLS, and inspection
+grants. The ignored restore proof is bound to `data/data-engineering/migration.json`.
+
+The final repository gate passed: 2,912 unit tests, 1,537 integration tests, 349 web tests, all 11
+coverage gates, documentation/data/code-generation checks, and the history secret scan. Three optional
+embedding tests were skipped. The 47 focused inspection/migration tests and attached-disk ARM template
+validation also passed.
+
+The replacement VM has not been created. Westus2 regional and B-series quota is 4/4; replacing the VM
+resource requires explicit approval. The existing `vm-bank-database` remains available at
+`13.66.169.189:5432`, with the operator-configured password and current public CA certificate.
+The reserved new IP is not yet a database endpoint. Neither the application VM nor Nequi was changed.
+See [ADR 0041](../adr/0041-data-engineering-deployment-and-datagrip.md) for the guarded cutover and
+post-boot database/TLS verification. Earlier evidence below records the original pipeline deployment.
 
 ## Verified evidence
 

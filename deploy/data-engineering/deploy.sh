@@ -7,19 +7,19 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.."
 
 subscription=32847dfa-5fd4-4276-8bdf-243d72b35119
 tenant=4a5e7334-7901-444c-964b-3e6100209fd1
-group=rg-bank-agent
-vm='vm-bank-database'
-storage_group=rg-la70-test
-state=data/azure-data
+group=rg-data-engineering-test
+vm='vm-data-engineering-database'
+storage_group=$group
+state=data/data-engineering
 mkdir -p "$state"
-storage="stla70$(printf '%s' "$subscription/$storage_group" | sha256sum | cut -c1-16)"
+storage="stdataeng$(printf '%s' "$subscription/$storage_group" | sha256sum | cut -c1-12)"
 az_args=(--subscription "$subscription" --only-show-errors)
 [[ "$(az account show --query tenantId -o tsv)" == "$tenant" ]] || { printf 'Wrong tenant.\n' >&2; exit 2; }
 [[ "$(az account show "${az_args[@]}" --query user.name -o tsv)" == valenciajuliann@hotmail.com ]] || {
     printf 'Wrong operator account.\n' >&2; exit 2;
 }
 [[ "$(az group show -n "$group" "${az_args[@]}" --query location -o tsv)" == westus2 ]] || exit 2
-[[ "$(az group show -n "$storage_group" "${az_args[@]}" --query location -o tsv)" == eastus2 ]] || exit 2
+[[ "$(az group show -n "$storage_group" "${az_args[@]}" --query location -o tsv)" == westus2 ]] || exit 2
 
 invoke() {
     az vm run-command invoke -g "$group" -n "$vm" --command-id RunShellScript \
@@ -41,19 +41,22 @@ root = Path(sys.argv[1])
 PY
         fi
         deployment_group=$group
-        template=deploy/azure-data/bank-database.json
+        template=deploy/data-engineering/database.json
         parameters=("sshPublicKey=$(cat "$state/ssh.pub")")
+        if [[ -f "$state/os-disk-id" ]]; then
+            parameters+=("osDiskId=$(cat "$state/os-disk-id")")
+        fi
         if [[ "$1" == *-storage ]]; then
             deployment_group=$storage_group
-            template=deploy/azure-data/main.json
+            template=deploy/data-engineering/storage.json
             operator=$(az ad signed-in-user show --query id -o tsv)
-            parameters+=("storageName=$storage" "operatorId=$operator" deployVm=false)
+            parameters=("storageName=$storage" "operatorId=$operator")
         fi
-        az deployment group validate -g "$deployment_group" -n bank-database \
+        az deployment group validate -g "$deployment_group" -n data-engineering \
             --template-file "$template" --parameters "${parameters[@]}" \
             "${az_args[@]}" --query properties.provisioningState -o tsv
         if [[ "$1" == provision* ]]; then
-            az deployment group create -g "$deployment_group" -n bank-database \
+            az deployment group create -g "$deployment_group" -n data-engineering \
                 --template-file "$template" --parameters "${parameters[@]}" \
                 "${az_args[@]}" --query properties.provisioningState -o tsv
             if [[ "$1" == provision ]]; then
@@ -65,6 +68,46 @@ PY
                     "${az_args[@]}" -o none
             fi
         fi
+        ;;
+    datagrip)
+        client=${2:?authorized public client IPv4 required}
+        host=$(az network public-ip show -g "$group" -n pip-data-engineering-database "${az_args[@]}" \
+            --query ipAddress -o tsv)
+        python3 - "$host" "$client" <<'PY'
+import ipaddress
+import sys
+for value in sys.argv[1:]:
+    if not ipaddress.IPv4Address(value).is_global:
+        raise SystemExit('A public IPv4 is required.')
+PY
+        revision=$(git rev-parse HEAD)
+        {
+            printf 'set -eu\numask 077\n'
+            for file in datagrip.py datagrip-readonly.sql; do
+                printf "cat > /opt/la70-data/%s.next <<'DATA_ENGINEERING_FILE'\n" "$file"
+                git show "$revision:deploy/data-engineering/$file"
+                printf 'DATA_ENGINEERING_FILE\nmv /opt/la70-data/%s.next /opt/la70-data/%s\n' "$file" "$file"
+            done
+            printf 'python3 /opt/la70-data/datagrip.py configure %s %s\n' "$host" "$client"
+        } > "$state/datagrip-configure.sh"
+        invoke "$state/datagrip-configure.sh" > "$state/datagrip-configuration.log"
+        python3 - "$state/datagrip-configuration.log" "$host" "$client" <<'PY'
+import json
+import sys
+from pathlib import Path
+records = [json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines() if line.startswith('{"host":')]
+if len(records) != 1 or records[0].get('tls') is not True:
+    raise SystemExit('TLS configuration was not verified; ingress was not changed.')
+if records[0]['host'] != sys.argv[2] or records[0]['client_ipv4'] != sys.argv[3]:
+    raise SystemExit('Inspection source mismatch; ingress was not changed.')
+PY
+        az network nsg rule update -g "$group" --nsg-name nsg-data-engineering-database -n deny-all-inbound \
+            --priority 200 "${az_args[@]}" -o none
+        az network nsg rule create -g "$group" --nsg-name nsg-data-engineering-database -n allow-datagrip-ip \
+            --priority 110 --direction Inbound --access Allow --protocol Tcp \
+            --source-address-prefixes "$client/32" --source-port-ranges '*' \
+            --destination-address-prefixes '*' --destination-port-ranges 5432 "${az_args[@]}" -o none
+        printf 'Data engineering inspection ready: %s:5432 from %s/32.\n' "$host" "$client"
         ;;
     release)
         revision=$(git rev-parse HEAD)
@@ -80,7 +123,7 @@ PY
         source_dir=${2:?local source directory required}
         revision=$(git rev-parse HEAD)
         source_archive="$state/source-$(date -u +%Y%m%dT%H%M%S%N).tar.gz"
-        uv run --frozen python deploy/azure-data/source.py pack "$source_dir" "$source_archive" "$revision" \
+        uv run --frozen python deploy/data-engineering/source.py pack "$source_dir" "$source_archive" "$revision" \
             > "$state/source-summary.json"
         digest=$(sha256sum "$source_archive" | cut -d' ' -f1)
         source_blob="sources/$digest.tar.gz"
@@ -111,18 +154,18 @@ PY
         {
             printf 'set -eu\numask 077\nmkdir -p /opt/la70-data\n'
             printf "cat > /opt/la70-data/blob.py <<'LA70_BLOB_PY'\n"
-            git show "$revision:deploy/azure-data/blob.py"
+            git show "$revision:deploy/data-engineering/blob.py"
             printf 'LA70_BLOB_PY\n'
             printf 'python3 /opt/la70-data/blob.py download %s releases/%s.tar.gz /opt/la70-data/release.tar.gz --sha256 %s\n' "$storage" "$digest" "$digest"
             printf 'mkdir -p /opt/la70-data/releases/%s\n' "$revision"
             printf 'tar -xzf /opt/la70-data/release.tar.gz -C /opt/la70-data/releases/%s\n' "$revision"
-            printf 'cd /opt/la70-data/releases/%s\nbash deploy/azure-data/bootstrap.sh > /opt/la70-data/bootstrap.log 2>&1\n' "$revision"
+            printf 'cd /opt/la70-data/releases/%s\nbash deploy/data-engineering/bootstrap.sh > /opt/la70-data/bootstrap.log 2>&1\n' "$revision"
             if [[ "$source_kind" == local ]]; then
                 printf 'python3 /opt/la70-data/blob.py download %s sources/%s.tar.gz /opt/la70-data/sources/%s.tar.gz --sha256 %s\n' \
                     "$storage" "$source_digest" "$source_digest" "$source_digest"
             fi
             # No inbound port is needed. systemd gives the pipeline an independently inspectable handle.
-            printf 'systemd-run --unit=la70-data-pipeline --collect bash /opt/la70-data/releases/%s/deploy/azure-data/run.sh %s %s /opt/la70-data %s\n' \
+            printf 'systemd-run --unit=la70-data-pipeline --collect bash /opt/la70-data/releases/%s/deploy/data-engineering/run.sh %s %s /opt/la70-data %s\n' \
                 "$revision" "$revision" "$source_kind" "$source_digest"
         } > "$state/start.sh"
         invoke "$state/start.sh"
@@ -160,5 +203,5 @@ SH
         } > "$state/publish.sh"
         invoke "$state/publish.sh"
         ;;
-    *) printf 'Usage: %s validate|provision|provision-storage|release|source <local-dir>|start [sample|local|s3]|status|publish\n' "$0" >&2; exit 2 ;;
+    *) printf 'Usage: %s validate|provision|provision-storage|release|source <local-dir>|start [sample|local|s3]|status|publish|datagrip <client-ipv4>\n' "$0" >&2; exit 2 ;;
 esac

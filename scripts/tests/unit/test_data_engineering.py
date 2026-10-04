@@ -15,7 +15,9 @@ ROOT = Path(__file__).resolve().parents[3]
 
 
 def load_module(name: str) -> ModuleType:
-    spec = importlib.util.spec_from_file_location(f"azure_data_{name}", ROOT / "deploy" / "azure-data" / f"{name}.py")
+    spec = importlib.util.spec_from_file_location(
+        f"data_engineering_{name}", ROOT / "deploy" / "data-engineering" / f"{name}.py"
+    )
     assert spec is not None
     assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
@@ -66,29 +68,37 @@ def test_execution_evidence_contains_hashes_and_declared_snapshot(tmp_path: Path
     assert evidence["ingestion"] == {"loaded": 0, "unchanged": 13}
 
 
-@pytest.mark.parametrize("template", ["main.json", "bank-database.json"])
-def test_infrastructure_closes_ingress_and_disables_storage_keys(template: str) -> None:
-    resources = json.loads((ROOT / "deploy" / "azure-data" / template).read_text())["resources"]
-    if template == "main.json":
-        storage = next(item for item in resources if item["type"] == "Microsoft.Storage/storageAccounts")
-        assert storage["properties"]["allowSharedKeyAccess"] is False
-        assert storage["properties"]["allowBlobPublicAccess"] is False
+def test_storage_template_disables_keys_and_cannot_deploy_compute_or_networks() -> None:
+    resources = json.loads((ROOT / "deploy/data-engineering/storage.json").read_text())["resources"]
+    storage = next(item for item in resources if item["type"] == "Microsoft.Storage/storageAccounts")
+    assert storage["properties"]["allowSharedKeyAccess"] is False
+    assert storage["properties"]["allowBlobPublicAccess"] is False
+    assert all(not item["type"].startswith(("Microsoft.Compute/", "Microsoft.Network/")) for item in resources)
+    assert not any("vm-la70-data" in dependency for item in resources for dependency in item.get("dependsOn", []))
+
+
+def test_database_template_closes_ingress_and_requires_managed_identity() -> None:
+    template = json.loads((ROOT / "deploy/data-engineering/database.json").read_text())
+    resources = template["resources"]
     nsg = next(item for item in resources if item["type"] == "Microsoft.Network/networkSecurityGroups")
     assert all(rule["properties"]["access"] == "Deny" for rule in nsg["properties"]["securityRules"])
     vm = next(item for item in resources if item["type"] == "Microsoft.Compute/virtualMachines")
     assert vm["identity"]["type"] == "SystemAssigned"
-    assert vm["properties"]["osProfile"]["linuxConfiguration"]["disablePasswordAuthentication"] is True
+    assert (
+        template["variables"]["imageOsProfile"]["osProfile"]["linuxConfiguration"]["disablePasswordAuthentication"]
+        is True
+    )
 
 
 def test_database_infrastructure_excludes_existing_application_resources() -> None:
-    template = json.loads((ROOT / "deploy" / "azure-data" / "bank-database.json").read_text())
+    template = json.loads((ROOT / "deploy" / "data-engineering" / "database.json").read_text())
     resources = template["resources"]
     assert {item["name"] for item in resources} == {
-        "vm-bank-database",
-        "vm-bank-database-nsg",
-        "vm-bank-database-vnet",
-        "vm-bank-database-ip",
-        "vm-bank-database-nic",
+        "vm-data-engineering-database",
+        "nsg-data-engineering-database",
+        "vnet-data-engineering",
+        "pip-data-engineering-database",
+        "nic-data-engineering-database",
     }
     assert all(item["location"] == "[resourceGroup().location]" for item in resources)
     assert "vm-bank-agent" not in json.dumps(template)
@@ -106,7 +116,9 @@ def test_failed_validation_never_reaches_postgres_or_seed(tmp_path: Path, failur
     tools.mkdir()
     trace = tmp_path / "trace"
     uv = tools / "uv"
-    failed_command = "python deploy/azure-data/source.py restore" if failure == "source" else f"bank-data {failure}"
+    failed_command = (
+        "python deploy/data-engineering/source.py restore" if failure == "source" else f"bank-data {failure}"
+    )
     uv.write_text(
         f'#!/bin/sh\nprintf "%s\\n" "$*" >> "$TRACE"\ncase "$*" in *"{failed_command}"*) exit 5 ;; esac\nexit 0\n'
     )
@@ -118,7 +130,7 @@ def test_failed_validation_never_reaches_postgres_or_seed(tmp_path: Path, failur
     result = subprocess.run(
         [
             "bash",
-            str(ROOT / "deploy" / "azure-data" / "run.sh"),
+            str(ROOT / "deploy" / "data-engineering" / "run.sh"),
             "a" * 40,
             "local" if failure == "source" else "sample",
             str(root),
