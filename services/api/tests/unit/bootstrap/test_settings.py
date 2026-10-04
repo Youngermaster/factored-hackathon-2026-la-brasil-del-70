@@ -531,3 +531,60 @@ def test_retention_defaults_and_bounds(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("RETENTION_CONVERSATION_DAYS", "0")
     with pytest.raises(ValueError, match="conversation_days"):
         load_settings(env_file=None)
+
+
+@pytest.mark.parametrize(
+    ("value", "problem"),
+    [
+        ("dev-only-not-a-secret-session-secret-from-env-example", "must not be a development-only value"),
+        ("changeme", "must not be a known default value"),
+        ("short", "must be at least"),
+        ("", "must be set"),
+    ],
+)
+def test_production_refuses_a_weak_secret_in_a_secret_file_like_in_the_environment(
+    production_with_secret_files: dict[str, str], tmp_path: Path, value: str, problem: str
+) -> None:
+    """The file source changes where a value comes from, never the rules it must pass."""
+    (tmp_path / "secrets" / "SESSION_SECRET").write_text(value + "\n", encoding="utf-8")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert len(raised.value.problems) == 1
+    assert raised.value.problems[0].startswith(f"SESSION_SECRET {problem}")
+    if value:
+        assert value not in str(raised.value)
+
+
+def test_an_empty_model_key_file_counts_as_no_key(
+    production_with_secret_files: dict[str, str], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The stager writes optional secrets as empty files; a hosted model must still refuse to start without a key."""
+    (tmp_path / "secrets" / "LLM_API_KEY_PRIMARY").write_text("", encoding="utf-8")
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_PRIMARY_MODEL", "gemini/gemini-3.1-flash-lite")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LLM_API_KEY_PRIMARY must be set in production"]
+
+
+def test_langfuse_keys_come_from_the_secrets_dir_and_never_from_the_environment(
+    production_with_secret_files: dict[str, str], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    values = _secret_files(tmp_path / "secrets", ("LANGFUSE_PUBLIC_KEY", "LANGFUSE_SECRET_KEY"))
+
+    settings = load_settings(env_file=None)
+    assert settings.langfuse.secret_key is not None
+    assert settings.langfuse.secret_key.get_secret_value() == values["LANGFUSE_SECRET_KEY"]
+
+    leftover = _strong_secret()
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", leftover)
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+    assert raised.value.problems == [
+        "LANGFUSE_SECRET_KEY must come from SECRETS_DIR, not from the environment, in production"
+    ]
+    assert leftover not in str(raised.value)

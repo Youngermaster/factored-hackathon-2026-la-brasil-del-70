@@ -4,7 +4,7 @@ Environment variable names match the root ``.env.example`` exactly. Only this pa
 environment. Secrets are ``SecretStr`` so they never appear in reprs, logs, or validation messages.
 
 ``SECRETS_DIR`` names a directory of mounted secret files, one file per variable named like the variable (for example
-``/run/secrets/SESSION_SECRET``), as the production stack mounts them from Azure Key Vault (ADR 0036). Development and
+``/run/secrets/SESSION_SECRET``), as the production stack mounts them from Azure Key Vault (ADR 0037). Development and
 tests leave it empty and keep using the environment and ``.env``. An environment variable still wins over a file, so in
 production with ``SECRETS_DIR`` set, a secret variable in the environment is refused.
 
@@ -621,15 +621,21 @@ SECRET_VARIABLES: tuple[str, ...] = (
     "CSRF_SECRET",
     "LLM_API_KEY_PRIMARY",
     "LLM_API_KEY_FALLBACK",
+    "LANGFUSE_PUBLIC_KEY",
+    "LANGFUSE_SECRET_KEY",
 )
-"""Every variable that holds a secret; with ``SECRETS_DIR`` each one is a file of that name."""
+"""Every variable that holds a secret; with ``SECRETS_DIR`` each one is a file of that name.
+
+The production stack stages the first six (``deploy/secrets_stage.py``); it does not enable Langfuse, so its keys have
+no staged file, but a file of that name is read and the environment is refused for them all the same.
+"""
 
 
 def secret_source_problems(settings: AppSettings, environ: Mapping[str, str]) -> list[str]:
     """In production with ``SECRETS_DIR``, secrets come only from its files, never from the environment.
 
     An environment variable outranks a secret file, so a leftover variable would silently replace the Key Vault value
-    and would show in ``docker inspect`` and in the rendered compose configuration (ADR 0036).
+    and would show in ``docker inspect`` and in the rendered compose configuration (ADR 0037).
     """
     if not settings.is_production or settings.runtime.secrets_dir is None:
         return []
@@ -659,7 +665,7 @@ def load_settings(
         security=SecuritySettings(_env_file=env_file, _secrets_dir=secrets_dir),
         llm=LLMSettings(_env_file=env_file, _secrets_dir=secrets_dir),
         observability=ObservabilitySettings(_env_file=env_file),
-        langfuse=LangfuseSettings(_env_file=env_file),
+        langfuse=LangfuseSettings(_env_file=env_file, _secrets_dir=secrets_dir),
         policy=PolicySettings(_env_file=env_file),
         retrieval=RetrievalSettings(_env_file=env_file),
         workflow=WorkflowSettings(_env_file=env_file),
