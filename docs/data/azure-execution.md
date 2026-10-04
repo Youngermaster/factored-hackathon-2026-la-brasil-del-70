@@ -1,6 +1,6 @@
 # Azure data execution status
 
-Date: 2026-10-03. Owner: Julian Valencia. Subscription: `32847dfa-5fd4-4276-8bdf-243d72b35119`.
+Updated: 2026-10-04. Owner: Julian Valencia. Subscription: `32847dfa-5fd4-4276-8bdf-243d72b35119`.
 Scope: `rg-la70-test`, `eastus2`. The architecture and commands are in
 [the deployment guide](../../deploy/azure-data/README.md).
 
@@ -15,12 +15,13 @@ Scope: `rg-la70-test`, `eastus2`. The architecture and commands are in
 | Alternative-region preflights | Tested VM placements in eastus and centralus returned `SkuNotAvailable`; no resources were created there | Tested placements unavailable |
 | Private artifact storage | `stla70238253ae46a02964` is `Succeeded` in `eastus2`; `artifacts` has no public access, Shared Key is disabled, minimum TLS is 1.2 | Verified in Azure |
 | Reference-value reconciliation | 10 PostgreSQL/unit tests passed, including money, currency, timestamp, and credit-score corruption | Verified locally |
-| Artifact and stage safety | 6 tests passed, including hash mismatch preservation and failure before PostgreSQL | Verified locally |
+| Artifact and stage safety | 17 tests passed, including archive corruption, unsafe paths and links, preserved existing state, and failure before ingestion/PostgreSQL | Verified locally |
 | Full local application path | Fresh sample preparation, strict PostgreSQL reconciliation, eight es/pt workflow checks, cross-customer 404, and zero loaded objects on unchanged ingestion passed in the integration suite | Verified locally |
 | VM pipeline execution | No VM exists yet; no cloud pipeline run or application result is claimed | Pending |
 | Full gold migration | Five private Parquet files, 5,192,103 rows, 241,693,714 bytes; each downloaded SHA-256 matches the validated local file | Verified in Azure Blob |
-| Cloud code publication | Release `0ccfa6ded3f2585bdf440a95c893d3d48a85264b` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
-| Repository-wide checks | `make check` passed: 2,876 unit, 1,532 integration, 349 web, 11 coverage gates, docs/data/code-generation checks, and the history secret scan; ShellCheck also passed | Verified locally |
+| Full input migration | 7,671 contracted source objects archived privately; uploaded archive downloaded and SHA-256 verified; complete per-file restoration passed locally | Verified in Azure Blob |
+| Cloud code publication | Release `bb6069e6c01f106041ff239d331107a2993b6343` uploaded privately, downloaded, and SHA-256 verified | Verified in Azure |
+| Repository-wide checks | `make check` passed: 2,887 unit, 1,532 integration, 349 web, 11 coverage gates, docs/data/code-generation checks, and the history secret scan; ShellCheck also passed | Verified locally |
 
 Three optional real-embedding tests were skipped because the ml extra is absent. The full suite ran in the
 current working tree; existing uncommitted card-support changes remain outside the published release.
@@ -37,9 +38,9 @@ successful Azure run. The goal stays unfinished until the cloud run and required
 
 ## Published code release
 
-- Revision: `0ccfa6ded3f2585bdf440a95c893d3d48a85264b`.
-- SHA-256: `4c8234c6e930803bd818bf2411ce72c398a0f70f86b8ca7ad29c88ccd09879b6`.
-- Private blob: `artifacts/releases/4c8234c6e930803bd818bf2411ce72c398a0f70f86b8ca7ad29c88ccd09879b6.tar.gz`.
+- Revision: `bb6069e6c01f106041ff239d331107a2993b6343`.
+- SHA-256: `3f0d545f1bff19e033c8e8102390ea56c88e047ea8597ae5c55352455b7f6b16`.
+- Private blob: `artifacts/releases/3f0d545f1bff19e033c8e8102390ea56c88e047ea8597ae5c55352455b7f6b16.tar.gz`.
 - The archive contains committed code and the governed sample; uncommitted card-support changes and local
   source files are excluded. This is code-publication evidence, not a VM execution artifact.
 
@@ -93,3 +94,28 @@ The published manifest explicitly records `cloud_pipeline_executed=false` and
 `postgres_loaded_in_azure=false`. VM execution, application PostgreSQL loading, and a verified cloud
 rerun remain completion requirements. The uploaded gold snapshot can be retrieved independently
 of VM provisioning.
+
+## Full contracted source in private Azure Blob
+
+The versioned `source` command packaged 7,671 contracted inputs (5,349,322,481 uncompressed bytes)
+using revision `bb6069e6c01f106041ff239d331107a2993b6343`. It excluded ancillary files and generated
+warehouses. The archive contains the per-file path, size, and SHA-256 manifest, dataset version,
+business snapshot date, and packaging revision.
+
+- Private blob: `artifacts/sources/43475e3fa4c060ffe93c2245e4e88f8bd8f1f96493a62dfd2cccbd4ee4cd7efd.tar.gz`.
+- Compressed bytes: 1,332,722,002.
+- Download-verified SHA-256: `43475e3fa4c060ffe93c2245e4e88f8bd8f1f96493a62dfd2cccbd4ee4cd7efd`.
+- Complete local restoration verified every source member's byte count and SHA-256 before installing
+  the input directory. No Azure VM restoration or pipeline execution is claimed.
+
+`start local` now retrieves this archive with managed identity and restores it under the pipeline lock
+before ingestion. A changed or damaged existing source is refused. Once compute is available, the
+full local source can run on an empty application database; running a sample first does not authorize
+automatic replacement of its database or source state. The bounded PostgreSQL load remains limited to
+200 selected customers plus demo personas; the full gold snapshot is retained separately.
+
+The updated `make check` completed with 2,887 unit tests, 1,532 integration tests, 349 web tests,
+all 11 coverage gates, documentation/data/code-generation checks, and the history secret scan.
+The same three optional embedding tests were skipped because the ml extra is absent. ShellCheck,
+source-specific strict typing, and the 17 integrity/orchestration tests also passed. These checks
+prove local behavior and migration integrity; compute execution remains blocked by the regional quota.
