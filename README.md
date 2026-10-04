@@ -6,7 +6,7 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 
 | Link | Where |
 |---|---|
-| Deployed demo | <https://bank-agent-yzaf9.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It calls the hosted model `gemini/gemini-3.1-flash-lite` ([deploy guide](deploy/README.md)) |
+| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)); no hosted model is configured yet, so every workflow takes its deterministic path |
 | Video pitch | Pending, 3:00 at most: the [timed shot list](docs/demo/video-plan.md), the [narration by speaker](docs/demo/video-monologue.md), and the [practice cases](docs/demo/practice-cases.md) |
 | Slides | [slides/](slides/README.md) (Slidev; `pnpm export:final` builds the six-slide PDF) |
 | Demo guide for judges | `/demo` in the running app (demo mode), and [docs/demo/script.md](docs/demo/script.md) |
@@ -14,7 +14,7 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
 | Limitations | [LIMITATIONS.md](LIMITATIONS.md) |
 
-**Deployment status (2026-10-03).** The demo runs commit `2d5763a` from the open pull request [Youngermaster/factored-hackathon-2026-la-brasil-del-70#27](https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70/pull/27), which stages the production secrets from Azure Key Vault. That branch starts from `main` as of 2026-09-30, so the deployed build does not include the live human service described below, `detect_escalation_signals@2`, or the phase 14c follow-up corrections listed under "Freshness" yet.
+**Deployment status (2026-10-04).** The demo at <https://la-brasil-del-70.westus2.cloudapp.azure.com> runs `main` on one Azure VM (`Standard_B2as_v2`, Docker Compose behind Caddy, Let's Encrypt), with the production secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). Every push to `main` that passes CI is built once, pushed to GHCR, and released on the VM by the deploy workflow over Azure OpenID Connect, with a smoke test, a CSP check, and an automatic rollback ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). The observability profile (OpenTelemetry, Prometheus, Grafana, Jaeger) runs on the same VM and is reached through an SSH tunnel. No hosted model is configured yet; a key added to the vault switches it on without a code change. A teammate's earlier VM (`bank-agent-yzaf9.westus2.cloudapp.azure.com`, pull request 27, hosted `gemini-3.1-flash-lite`) runs an older build.
 
 Escalated customers can continue on the same conversation with an authenticated human service agent. The chat shows truthful waiting and joined states, persists both sides' messages across refreshes, and stays readable after the assigned agent closes it. The [live human-service guide](docs/workflows/human-service.md) includes a two-browser walkthrough; existing databases need `make db-upgrade`.
 

@@ -11,7 +11,7 @@ Hello Factored team,
 We are submitting La Brasil del 70's project for the Factored AI & Data Hackathon 2026.
 
 Repository (public): https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70
-Deployed demo: https://bank-agent-yzaf9.westus2.cloudapp.azure.com   (demo mode: pick a profile on the sign-in page; the one-time code is shown on screen, and /demo lists the messages to try)
+Deployed demo: https://la-brasil-del-70.westus2.cloudapp.azure.com   (demo mode: pick a profile on the sign-in page; the one-time code is shown on screen, and /demo lists the messages to try)
 Slides (PDF, the six main slides): <link, or attached>
 Video pitch (under 3:00): <link>
 
