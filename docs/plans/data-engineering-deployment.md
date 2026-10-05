@@ -10,7 +10,7 @@ records the decision. [The process guide](../data/data-engineering-process.md) e
 
 - Add an ARM template for an Ubuntu VM, closed inbound networking, private artifact container, and
   managed identity access. Restrict writes to the dedicated data resources and the original artifact
-  container; preserve the existing public application VM and Nequi.
+  container; preserve the existing public application VM and unrelated workloads.
 - Add a deployment command that packages a committed revision, uploads it with Entra authentication,
   and uses VM Run Command. Never copy local secrets or the working tree's unrelated changes.
 - Run ingestion, contracts, dbt build and freshness, quality and lineage reports, bounded seed,

@@ -29,7 +29,7 @@ operator-configured password and current public CA certificate. Original storage
 `stla70238253ae46a02964` in `rg-la70-test`. The reserved new IP is not a database endpoint.
 [ADR 0042](../adr/0042-preserve-azure-resource-names.md) records this decision. Repository helpers now
 reference the original resources. [The process guide](data-engineering-process.md) is the current
-end-to-end operating document. Neither the application VM nor Nequi was changed.
+end-to-end operating document. Neither the application VM nor any unrelated workload was changed.
 
 ## Verification after keeping Azure names
 
@@ -57,7 +57,7 @@ requested or changed. The existing endpoint and CA certificate remain the DataGr
 | Correct identity and tenant | Azure CLI reports the requested subscription, tenant, and operator | Verified |
 | Infrastructure preflight | Dedicated westus2 VM ARM validation and provisioning both returned `Succeeded` | Verified in Azure |
 | Subscription offer | Azure reports `FreeTrial_2014-09-01` with spending limit on; the quota request returned `ResourceNotAvailableForOffer` | Offer upgrade required before requesting more quota |
-| Existing compute | The Nequi AKS node pool uses two `Standard_D2s_v6` instances, accounting for all 4 regional vCPU; no changes were made | Outside authorized scope |
+| Existing compute | An unrelated workload's AKS node pool uses two `Standard_D2s_v6` instances, accounting for all 4 regional vCPU; no changes were made | Outside authorized scope |
 | Alternative-region preflights | Tested VM placements in eastus and centralus returned `SkuNotAvailable`; no resources were created there | Tested placements unavailable |
 | Private artifact storage | `stla70238253ae46a02964` is `Succeeded` in `eastus2`; `artifacts` has no public access, Shared Key is disabled, minimum TLS is 1.2 | Verified in Azure |
 | Reference-value reconciliation | 10 PostgreSQL/unit tests passed, including money, currency, timestamp, and credit-score corruption | Verified locally |
@@ -74,7 +74,7 @@ Three optional real-embedding tests were skipped because the ml extra is absent.
 current working tree; existing uncommitted card-support changes remain outside the published release.
 The resource group itself is `Succeeded` in `eastus2` with the requested project, event, and environment tags.
 The original eastus2 preflight returned `QuotaExceeded`. The operator subsequently authorized a
-separate data VM in westus2; provisioning succeeded without changing the existing application or Nequi.
+separate data VM in westus2; provisioning succeeded without changing the existing application or any unrelated workload.
 
 ## Completion status
 
@@ -97,7 +97,7 @@ PostgreSQL batch loader and a backup restore rehearsal remain outside this compl
 ## Compute diagnosis
 
 The eastus2 regional limit is an Azure subscription quota, not an architecture rule. Its 4 vCPU are
-already allocated to the existing Nequi AKS node pool in a different resource group. A separate 2-vCPU
+already allocated to an unrelated workload's AKS node pool in a different resource group. A separate 2-vCPU
 VM requires 6 total regional vCPU while those nodes remain allocated. The operator prohibited changes
 to other resource groups; scaling or reusing that cluster requires a new explicit instruction.
 
@@ -178,7 +178,7 @@ creator for `vm-bank-agent` and read-only inspection found the public applicatio
 there. The separate VM and its network resources are `Succeeded` in `rg-bank-agent`, westus2.
 The disk is 128 GiB Standard SSD; the dedicated NSG denies all inbound traffic at priority 100.
 The VM managed identity received Blob contributor access limited to the existing private container.
-The public application configuration and database, and all Nequi resources, were preserved.
+The public application configuration and database, and all unrelated workloads, were preserved.
 
 The unmerged pipeline ADR was renumbered to 0039 after fetching main, whose ADR 0038 now describes
 Azure continuous deployment. Main and current remote branches were checked; PR metadata was not
@@ -252,7 +252,7 @@ The retained-state run met all of those requirements, as recorded below.
   hashes, quality results, PostgreSQL counts, application checks, local gates, and explicit limits.
 
 The final VM check reports `VM running` and `Succeeded` in westus2. No repository push, public
-application reconfiguration, Nequi change, or quota increase was performed. The existing application
+application reconfiguration, change to an unrelated workload, or quota increase was performed. The existing application
 was not redirected to this private database. A final optional read-only container recheck was refused
 because another Run Command was active on the existing VM; it was left alone. Schema alignment here
 is tied to the previously inspected application revision, not to any concurrent deployment by another

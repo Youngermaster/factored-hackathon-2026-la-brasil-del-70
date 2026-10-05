@@ -23,7 +23,7 @@ use `data-engineering`. Azure resource names remain unchanged by the operator's 
 | Persistent VM state | `/opt/la70-data`, Docker project `la70-data` |
 
 The existing application VM `vm-bank-agent` has its own database and deployment; this task does not
-rewire it to the engineering database. Nequi and other workloads remain outside the deployment scope.
+rewire it to the engineering database. Unrelated workloads remain outside the deployment scope.
 
 ## Input, transformations, and serving contract
 

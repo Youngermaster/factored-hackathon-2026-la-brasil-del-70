@@ -11,7 +11,7 @@
 The operator requested a complete data engineering environment in Azure, a dedicated `vm-bank-database`,
 username/password inspection through DataGrip, consistent repository names, and a record explaining the
 process from deployment through testing and connection. Quality takes precedence over loading more rows.
-The application VM and Nequi must be preserved. Passwords and tokens must never appear in chat or logs.
+The application VM and unrelated workloads in the subscription must be preserved. Passwords and tokens must never appear in chat or logs.
 
 The source compute is `vm-bank-database` in `rg-bank-agent`, `westus2`: two vCPU, 8 GiB RAM, and a
 128 GiB SSD. Source artifact storage is `stla70238253ae46a02964` in `rg-la70-test`, `eastus2`. The operator
@@ -65,7 +65,7 @@ empty database. Older immutable releases remain readable through a Compose-path 
 | Private storage account | `stdataeng213c0ee90850` |
 
 Compute and replacement storage are in westus2, reducing future cross-region transfer. Existing bank
-application and Nequi resources are excluded. Azure resource names cannot be changed in place; a new
+application resources and unrelated workloads are excluded. Azure resource names cannot be changed in place; a new
 resource group, storage account, network, disk, and VM are required. Westus2 has all four regional and
 B-series vCPU allocated. Deallocation still counts toward quota, so the source VM resource must be
 replaced before the new two-vCPU VM can start. See [Azure vCPU quotas](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas).
