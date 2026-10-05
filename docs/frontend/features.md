@@ -10,6 +10,7 @@ The product surfaces of phase 13, as self-contained features under `apps/web/src
 | `agent-inbox` | `HandoffFilters`, `HandoffList`, `HandoffDetail`, `CreditApplicationList`, `CreditApplicationDetail` | `AgentInboxPage`, `HandoffDetailPage`, `CreditApplicationsPage`, `CreditApplicationPage` |
 | `eval-report` | `EvaluationReport`, the interval helpers | `EvaluationPage` (`/console/evaluation`) |
 | `admin-dashboard` | `AdminDashboard` | `AdminDashboardPage` (`/console/dashboard`) |
+| `supervision` | `SupervisionOverview` | `SupervisionPage` (`/console/supervision`) |
 | `demo-guide` | `DemoGuide`, `SCENARIOS` | `DemoGuidePage` (`/demo`, demo mode only) |
 
 Linked selection between the chat and the glass box lives in `entities/turn-selection` (`TurnSelectionProvider`, `useTurnSelection`): the page provides it, both features read it, so neither feature depends on the other. Every page is a lazy route (`app/routes.tsx`), so the sign-in screen never downloads the console or the chat.
@@ -116,6 +117,25 @@ sequenceDiagram
 
 The administrative dashboard reuses `['api','evaluation','summaries']`; changing its run or system is local UI
 state and never starts another request. See [the field and formula catalog](admin-dashboard.md).
+
+## Supervision
+
+The evaluator's supervision view composes three read-only sources, each loading and failing in its own section.
+It reuses `useSummaries`, `RateCell`, and `SystemLabel` from `@/features/eval-report` through that feature's
+`index.ts`. Field catalog: [supervision.md](supervision.md).
+
+```mermaid
+flowchart TD
+    page["SupervisionPage<br/>RequireSession evaluator"] --> overview["SupervisionOverview"]
+    overview --> inv["useModelInventory<br/>GET /v1/eval/models"]
+    overview --> e2e["EndToEnd<br/>useSummaries (shared cache)"]
+    overview --> live["LiveOperations<br/>useHealthDetails, 503 body at L4"]
+    inv --> who["WhoDecides"]
+    inv --> served["ServedModels"]
+    inv --> offline["OfflineEvidence<br/>IntervalPlot, metric tables, promotions"]
+    inv --> llm["LanguageModel<br/>models, price basis, prompts"]
+    live --> grafana["link to /grafana/"]
+```
 
 A sign-in, sign-out, or lost session drops every cached record (phase 12 `replaceSession`), so nothing from one identity reaches the next.
 

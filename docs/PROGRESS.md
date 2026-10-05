@@ -2301,3 +2301,33 @@ python3 scripts/checks/check_env_keys.py
 #### Next phase
 
 Phase 01, monorepo scaffold and quality gates (`kit/prompts/01-scaffold.md`), in plan mode.
+
+### Supervision view for evaluators (2026-10-05)
+
+- Added `GET /v1/eval/models` (evaluator only, no database, operation `eval_model_inventory`): the models this
+  process serves, recorded by the composition root at startup (router, resolver, risk estimator, retriever,
+  language detector; concrete versions, the alias a selection used, fallback reason codes), the language model
+  setup (provider, model ids with the price basis and USD per million tokens the cost metrics charge, the
+  `WORKFLOW_LLM_*` flags, budget limits), every prompt version with whether the flags let it run, the policy pack
+  version, and the enabled workflows; plus the curated model cards in `services/api/config/model_cards.yaml`
+  (offline test metrics with 95% intervals for the router, resolver, risk estimator, and retrieval, each citing its
+  report, commit, and generation time, and the simulated session 14b promotion decisions of fixed against learned
+  defaults). The response carries no customer data, identifiers, endpoints, keys, or file system paths.
+- Added the Supervision view at `/console/supervision` (evaluator sidebar and console start): who decides each
+  step with the versions served, models in service, offline evidence (dot-and-whisker plot plus metric tables, the
+  served model marked), why the baselines are served, B0, B1, and P per workflow with intervals and cost per
+  resolution, the language model setup and prompts, and the live degradation level from `/health/details` (its
+  503 body at L4 is read as data) with a link to `/grafana/`. Copy in es, pt, and en. Field catalog:
+  [frontend/supervision.md](frontend/supervision.md).
+- Decisions: the evaluator role plays the supervisor (no new role); no live database aggregates, as ADR 0036
+  requires (an operations snapshot is a backlog row that needs an ADR amending it); the cards are a reviewed copy
+  of the generated reports, pinned by unit tests to the numbers those reports print.
+- How to verify: `uv run --frozen pytest -m unit services/api/tests/unit/domain/test_model_inventory.py
+  services/api/tests/unit/adapters/test_model_cards.py services/api/tests/unit/bootstrap
+  services/api/tests/unit/application/supervision services/api/tests/unit/api`; `pnpm --dir apps/web exec vitest
+  run src/features/supervision src/app/a11y-surfaces.test.tsx`; integration (CI):
+  `services/api/tests/integration/api/test_supervision.py`. On the deployment, sign in as `evaluator-demo-01` and
+  open Supervisión.
+- Known limitations: the inventory and the degradation level are per worker; the router cards quote the report at
+  `2c19633`, before three `keyword@1` fixes (backlog); end-to-end costs are what each run recorded, zero for the
+  local model; the curated cards can drift until they are generated (backlog).

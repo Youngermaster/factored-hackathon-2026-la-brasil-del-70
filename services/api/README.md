@@ -57,7 +57,7 @@ Because `api` and `bootstrap` cannot import each other, the wiring lives in two 
 
 Settings are validated per process: `load_settings()` checks the API's production rules (it refuses the owner password, requires the shared rate limiter, and allows demo mode only with `ALLOW_PUBLIC_DEMO_MODE=true`), and `load_settings(owner=True)` checks an owner job's (the owner password and `SESSION_SECRET` only).
 
-The production images are `services/api/Dockerfile`: target `api` (the package with the `litellm` extra, the policy pack, the price table, the published evaluation summaries, and a stored retrieval index, running as a non-root user on a read-only root) and target `job` (plus `bank-data` and gold tables built from the committed sample, for migrations, the seed, and the purge). The deployment is `deploy/` ([guide](../../deploy/README.md)).
+The production images are `services/api/Dockerfile`: target `api` (the package with the `litellm` extra, the policy pack, the price table, the model cards of the supervision view, the published evaluation summaries, and a stored retrieval index, running as a non-root user on a read-only root) and target `job` (plus `bank-data` and gold tables built from the committed sample, for migrations, the seed, and the purge). The deployment is `deploy/` ([guide](../../deploy/README.md)).
 
 The API layer declares what it needs as the `ServiceProvider` Protocol in `api/provider.py`. The composition root, `bootstrap/container.py`, satisfies it structurally. It is the only module that constructs concrete adapters.
 

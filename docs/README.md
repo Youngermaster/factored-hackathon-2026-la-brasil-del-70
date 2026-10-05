@@ -56,6 +56,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
 | [frontend/features.md](frontend/features.md) | The product features: composition diagrams, context boundaries, and TanStack Query data flow |
 | [frontend/admin-dashboard.md](frontend/admin-dashboard.md) | Administrative analytics: every field, formula, data source, access rule, and limitation |
+| [frontend/supervision.md](frontend/supervision.md) | Supervision view: served models, offline model cards, promotion decisions, evaluation, language model setup, live level, and their sources |
 | [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 
 ## Architecture decision records
