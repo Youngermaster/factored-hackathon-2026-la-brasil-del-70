@@ -117,11 +117,10 @@ function CardGroupView({
               unit: labels.unit(first.sample_unit),
             })}
           </span>
-          {kinds.map((kind) => (
-            <Badge key={kind} tone={kind === 'provisional' ? 'neutral' : 'understanding'}>
-              {labels.cardKind(kind)}
-            </Badge>
-          ))}
+          <Badge tone="neutral">{t('eval.measurement.offline')}</Badge>
+          {kinds.includes('provisional') && (
+            <Badge tone="neutral">{labels.cardKind('provisional')}</Badge>
+          )}
         </span>
       </header>
       {plotted.length > 0 && <IntervalPlot metric={labels.metric(headline)} points={plotted} />}
@@ -232,7 +231,10 @@ function PromotionView({ promotion }: { readonly promotion: PromotionDecision })
   return (
     <article className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
-        <h3 className="text-body font-semibold text-fg">{decision}</h3>
+        <span className="flex flex-wrap items-center gap-2">
+          <h3 className="text-body font-semibold text-fg">{decision}</h3>
+          <Badge tone="understanding">{t(`eval.measurement.${promotion.measurement}`)}</Badge>
+        </span>
         <p className="text-small text-fg">
           {t('supervision.promotion.verdict', {
             outcome: labels.outcome(promotion.outcome),
