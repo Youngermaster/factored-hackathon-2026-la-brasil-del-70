@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ec3f5347187323fb96bf031079f9462a339061b8ef60462734b462c0ddad41c9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1200,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "unsupported"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:02.347799Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Quero fazer um Pix de 50 conto",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "38b0ecab6b31be432d2bd0250aa53e68da13df614253e13f45e8ced925575f37",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 806,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.8,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:13.852735Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Eu consigo um emprestimo pessoal?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

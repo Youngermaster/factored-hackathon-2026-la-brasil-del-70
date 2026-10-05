@@ -2470,3 +2470,35 @@ uv run --frozen bank-eval retrieval --no-dense --no-mlflow --output /tmp/retriev
 - The judgments are pending human review, so the switch is provisional; production latency of the embedding call is not measured offline.
 - Qdrant has no API key; it holds public synthetic policy text only.
 - The Qdrant contract test against a real server runs only where Docker is available (CI).
+
+### Router benchmark against a hosted language model (2026-10-05)
+
+Appended at the end of the log so parallel final-day tracks do not collide. Newer entries otherwise sit at the top.
+
+- **What was done.**
+  - Closed ADR 0015 option 4 and the BACKLOG row "zero-shot router reference".
+  - The decision rule, systems, and metrics were pre-registered in [`docs/plans/router-llm.md`](plans/router-llm.md), committed before any model call. That commit, like the rest of the original branch, was lost to local disk corruption before it was pushed; the files were restored from the intact working tree and recommitted on `feat/router-llm-benchmark-v2`.
+  - `bank-ml router zero-shot` (`ml/src/bank_ml/router/zero_shot.py`, `zero_shot_report.py`) calls `classify_intent_fallback@1` zero-shot through the full gateway. It runs with bounded concurrency, a request-rate cap, and backoff on 429, and it records redacted cassettes. It scores `keyword@1`, the TF-IDF champion, the model alone, and cascades with the existing seed-group bootstrap and dev-only thresholds.
+  - `router:tfidf` was retrained from the committed seeds and reproduced `986872f0284f` exactly. The artifact stays in the gitignored `data/artifacts`.
+  - The calls were recorded once: 887 dev and test messages per model, `azure/gpt-4.1-mini` on the evaluation account and `azure/gpt-4o` on the production account (2 in flight, 35 per minute), with no failures. The cassettes are committed in `ml/cassettes/router_llm/` (1,774 files, about 1 KB each), and the report was generated from them as [`docs/evaluation/router-llm.md`](evaluation/router-llm.md).
+  - The Azure retail list prices of both models (read from the Azure Retail Prices API) were added to `services/api/config/llm_prices.yaml`, marked `verified: false` until a person confirms them, as the table's policy and its test require.
+- **Headline (test, offline, synthetic; 95% seed-group intervals).**
+  - Macro-F1: `keyword@1` 0.395 [0.308, 0.447], TF-IDF 0.661 [0.575, 0.713], `gpt-4.1-mini` zero-shot 0.885 [0.819, 0.925], `gpt-4o` zero-shot 0.936 [0.890, 0.969], TF-IDF then `gpt-4.1-mini` 0.873 [0.802, 0.918], TF-IDF then `gpt-4o` 0.910 [0.857, 0.948].
+  - Confident write-intent misroutes (of 601): 33, 1, 31, 23, 11, and 11, in the same order.
+  - Cost per 1,000 messages at list price: 0, 0, 0.42, 3.17, 0.22, and 1.64 USD. The p95 per message is about 2 s with a model call, against under 10 ms for the classical routers.
+- **Decision.**
+  - Under the pre-registered dev rule, no cascade qualifies for an end-to-end trial. The `gpt-4.1-mini` cascade made 2 confident write-intent misroutes against a limit of 1, and the `gpt-4o` cascade costs 1.89 USD per 1,000 against a limit of 1.00.
+  - Production keeps `keyword@1`, and no routing default changed.
+  - The one production-visible effect after deployment is the price table. The cost decorator and budget guard price `azure/gpt-4.1-mini` and `azure/gpt-4o` at their list prices times the unverified multiplier (1.5), instead of the unknown-model fallback (the highest listed price times 1.5).
+  - The model card ([router.md](models/router.md)) and the ADR notes ([adr/README.md](adr/README.md)) record the evidence. Three follow-up rows were added to the BACKLOG: a prompt with intent definitions chosen on dev, a human audit of the label audit candidates, and a conditional default-off fallback with an end-to-end dev run.
+- **How to verify.**
+  - `uv run --frozen bank-ml router train --no-embeddings` (expect `router:tfidf@986872f0284f`), then `uv run --frozen bank-ml router zero-shot`. This replays the cassettes without a key; only the in-process latency of the classical routers and the timestamp change.
+  - `uv run --frozen pytest ml/tests/unit/router/test_zero_shot.py ml/tests/unit/router/test_command.py ml/tests/integration/test_router_zero_shot.py`.
+- **Known limitations.**
+  - The text is synthetic and team-authored.
+  - The prompt has label names without definitions.
+  - The stated confidence is coarse.
+  - Dev has 68 seed groups.
+  - The latency is from the development machine under recording concurrency, not a production service level.
+  - The cost covers the routing call only.
+  - `docs/evaluation/router.md` was not regenerated. Its keyword rows are stale (0.385 published against 0.395 now), but a rebuild with the `ml` extra gave a different embeddings artifact (`b1fbdb7b1aa2`, not `32666d7d4e3f`), so regenerating it would replace the documented champion. This is a BACKLOG row, and the current keyword numbers are in `router-llm.md`.

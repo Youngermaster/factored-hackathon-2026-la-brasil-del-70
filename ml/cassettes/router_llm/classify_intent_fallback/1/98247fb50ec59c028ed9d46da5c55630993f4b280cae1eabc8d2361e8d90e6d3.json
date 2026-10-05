@@ -1,0 +1,36 @@
+{
+  "cassette_id": "98247fb50ec59c028ed9d46da5c55630993f4b280cae1eabc8d2361e8d90e6d3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2346,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.7,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:04.901105Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Si denncio la tarjeta por robo, ¿los débitos automáticos se siguen cobrano?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

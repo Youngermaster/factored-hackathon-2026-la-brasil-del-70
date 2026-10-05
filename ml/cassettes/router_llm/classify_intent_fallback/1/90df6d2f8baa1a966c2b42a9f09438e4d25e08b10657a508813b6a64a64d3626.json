@@ -1,0 +1,40 @@
+{
+  "cassette_id": "90df6d2f8baa1a966c2b42a9f09438e4d25e08b10657a508813b6a64a64d3626",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1250,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.8,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:48.587013Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Me rechazaron un pago con la ed crédito, ¿tiene algún problema?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

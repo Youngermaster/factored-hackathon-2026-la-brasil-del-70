@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0afe30043d7202c187994b72f8aa3195a50fb71cda2899fa13d7660963b871fa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1317,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.4,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:35.264890Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Me cobraron más de lo que marcaba el datáfono, ¿dónde pongo la queja?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

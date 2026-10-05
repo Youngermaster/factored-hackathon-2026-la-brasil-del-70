@@ -1,0 +1,36 @@
+{
+  "cassette_id": "72bafb9bc0269e164f0ae581591735bfca6f81d8f63f8c75006b666004db1c3d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1419,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:51.045923Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero invertiir en acciones, ¿qué e recomiendan?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

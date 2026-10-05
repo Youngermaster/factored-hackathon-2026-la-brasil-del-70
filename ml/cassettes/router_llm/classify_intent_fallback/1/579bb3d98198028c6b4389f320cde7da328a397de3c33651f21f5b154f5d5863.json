@@ -1,0 +1,36 @@
+{
+  "cassette_id": "579bb3d98198028c6b4389f320cde7da328a397de3c33651f21f5b154f5d5863",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1482,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:21.415577Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Connsultar saldo de mi cuenta de ahorrro",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

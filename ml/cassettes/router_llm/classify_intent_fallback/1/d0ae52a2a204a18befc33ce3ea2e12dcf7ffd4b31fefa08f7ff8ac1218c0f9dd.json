@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d0ae52a2a204a18befc33ce3ea2e12dcf7ffd4b31fefa08f7ff8ac1218c0f9dd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1149,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:57.052538Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me dan n préstqmo personal?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e95d9033d277af472ce86faea98861356e3646e036ceff6d4b9bbddccd207a09",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1282,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:17.764716Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "quais tipos de empréstimo vocês oferecem",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "079a69de7ae92e5a46d94b89838e641e5f59c52f05f4cf0132d0d0c0529e4733",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 927,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:38.524879Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me rechazaron el préstamo? No me llegó ningún mail",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

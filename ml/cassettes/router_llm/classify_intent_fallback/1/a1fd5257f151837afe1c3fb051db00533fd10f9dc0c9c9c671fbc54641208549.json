@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a1fd5257f151837afe1c3fb051db00533fd10f9dc0c9c9c671fbc54641208549",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1053,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:58.685783Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Achei o vartão que tinha bloqueeado, dá pra reativar?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

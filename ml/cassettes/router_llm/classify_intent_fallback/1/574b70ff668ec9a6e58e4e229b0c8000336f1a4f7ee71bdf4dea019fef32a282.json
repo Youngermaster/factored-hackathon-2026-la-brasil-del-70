@@ -1,0 +1,32 @@
+{
+  "cassette_id": "574b70ff668ec9a6e58e4e229b0c8000336f1a4f7ee71bdf4dea019fef32a282",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 966,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:12:46.587720Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Quiero hablar con alguien del banco",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

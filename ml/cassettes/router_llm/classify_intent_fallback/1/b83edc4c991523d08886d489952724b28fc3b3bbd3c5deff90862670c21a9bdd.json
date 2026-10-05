@@ -1,0 +1,40 @@
+{
+  "cassette_id": "b83edc4c991523d08886d489952724b28fc3b3bbd3c5deff90862670c21a9bdd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1065,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.2,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:39.165754Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 43
+  },
+  "variables": {
+    "customer_message": "HOLA, NECESITO QUE ME HAGAN UNA REIMPRESIÓN DE LA TARJETA",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

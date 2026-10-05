@@ -1,0 +1,36 @@
+{
+  "cassette_id": "af5d63ae0d81141318b7981d987969dd8a696b37aa4e5b8af6133624e94928fb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1152,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.4,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:12.352666Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Oi, acho que clonaram meu cartão de crédito, queo bloquear urgente",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "530144b01b2e9d9c3310d7d8b3258f3687e63357053f1121ff54b1b32a7c9a7b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1748,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.7,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:29.891505Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Oi, fiz uma transferência de cem reais e a pessoa diz que não recebeu",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

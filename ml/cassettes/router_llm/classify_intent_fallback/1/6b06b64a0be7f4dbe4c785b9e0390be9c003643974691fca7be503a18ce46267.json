@@ -1,0 +1,40 @@
+{
+  "cassette_id": "6b06b64a0be7f4dbe4c785b9e0390be9c003643974691fca7be503a18ce46267",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1110,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.7,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:36.905646Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Me robaron la tarjeta la semana paada y ya la bloqueé, ¿me mandqn otra?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

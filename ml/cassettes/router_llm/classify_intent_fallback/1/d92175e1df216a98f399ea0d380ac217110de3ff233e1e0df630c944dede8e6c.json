@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d92175e1df216a98f399ea0d380ac217110de3ff233e1e0df630c944dede8e6c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1083,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:42.375738Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Queria acompanhar a análise do meu financiamento",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

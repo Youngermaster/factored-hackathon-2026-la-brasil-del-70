@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ceaedd938735fee39254e2da1f931318eba3199a781f43c20b46412e161287a1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 826,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.7,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:35.575915Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿La tarjeta que termina en 5528 está bloqueada?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

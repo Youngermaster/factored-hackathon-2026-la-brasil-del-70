@@ -1,0 +1,36 @@
+{
+  "cassette_id": "aa127396bd0c62950192d67e76dd6aeec2f586793d71615980fd7d525b820dd9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 956,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:07.286533Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "NECESITO UN CRÉDITO DE 500 PESOS, QUIERO HACER LA SOLICITUD AHORITA",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

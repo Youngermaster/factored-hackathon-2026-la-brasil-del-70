@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9fff22dd339601920c16ed2d2412ed12aed10578b9e247f53fa1bfb007607560",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1004,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:11:32.914769Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, como está minha contestação da compra na Boutique Moda?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

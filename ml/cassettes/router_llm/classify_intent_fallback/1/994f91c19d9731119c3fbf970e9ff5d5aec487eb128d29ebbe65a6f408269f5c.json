@@ -1,0 +1,36 @@
+{
+  "cassette_id": "994f91c19d9731119c3fbf970e9ff5d5aec487eb128d29ebbe65a6f408269f5c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1043,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:32.953700Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Cuál es el monto máximo que prestan en crédito de nómina?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

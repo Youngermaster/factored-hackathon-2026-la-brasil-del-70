@@ -1,0 +1,36 @@
+{
+  "cassette_id": "aa8d8fbbd41fca1688fc65f152881b817f47127fd259b0080e16f6b460b6c3e1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1219,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:43.804269Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me alcanza para gastar mil pesos con lo que tengo en débito?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

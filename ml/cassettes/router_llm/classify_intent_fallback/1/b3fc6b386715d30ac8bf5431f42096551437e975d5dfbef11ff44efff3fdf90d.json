@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b3fc6b386715d30ac8bf5431f42096551437e975d5dfbef11ff44efff3fdf90d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1267,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:49.524178Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Hola, bloqueé mi plástico porque creí que la perdí, pero ya la encontré, ¿me la reactivan?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "f7052e1303abebff1d2659ccd23b41519c395b8cc70b73e9bd939af4058f37db",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1236,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.8,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:02.289326Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 38
+  },
+  "variables": {
+    "customer_message": "por que meu cartão foi recusado na mercado central?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

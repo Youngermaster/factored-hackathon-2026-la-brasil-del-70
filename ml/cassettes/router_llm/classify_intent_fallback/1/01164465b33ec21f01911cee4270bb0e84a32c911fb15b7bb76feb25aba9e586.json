@@ -1,0 +1,36 @@
+{
+  "cassette_id": "01164465b33ec21f01911cee4270bb0e84a32c911fb15b7bb76feb25aba9e586",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1224,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:02.421567Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pueden decir cuando vence mi tarjeta terminacion 4821?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "688b502a8d2c5171a8e80c8c53f649a899b288d4f2898ea3a1112c959fdb4bc7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 807,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:05.216001Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "meu cartão foi bloqueado por senha errada, preciso liberar",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

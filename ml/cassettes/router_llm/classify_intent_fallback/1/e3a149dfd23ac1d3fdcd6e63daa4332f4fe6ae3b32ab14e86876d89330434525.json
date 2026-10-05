@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e3a149dfd23ac1d3fdcd6e63daa4332f4fe6ae3b32ab14e86876d89330434525",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1116,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "unsupported"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:57.204143Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Quiero cambiar la fecha de pago de la tarjeta de credito",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

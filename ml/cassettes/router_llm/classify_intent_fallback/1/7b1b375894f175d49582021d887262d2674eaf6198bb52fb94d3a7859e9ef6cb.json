@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7b1b375894f175d49582021d887262d2674eaf6198bb52fb94d3a7859e9ef6cb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 772,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:34.718760Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "El chp ya no jala, porfa tramítenme yn plástico nuevo",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

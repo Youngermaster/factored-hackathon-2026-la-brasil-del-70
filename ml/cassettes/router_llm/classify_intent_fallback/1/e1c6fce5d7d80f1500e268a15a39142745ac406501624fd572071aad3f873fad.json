@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e1c6fce5d7d80f1500e268a15a39142745ac406501624fd572071aad3f873fad",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 994,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:20.896527Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "buenos días necesito que me expidan una tarjeta nueva",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

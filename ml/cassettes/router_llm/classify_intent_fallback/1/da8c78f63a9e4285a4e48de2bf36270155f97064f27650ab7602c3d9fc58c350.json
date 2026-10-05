@@ -1,0 +1,36 @@
+{
+  "cassette_id": "da8c78f63a9e4285a4e48de2bf36270155f97064f27650ab7602c3d9fc58c350",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1053,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:06:15.821491Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "tô precisando de grana quero solicitar crédito hoje",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

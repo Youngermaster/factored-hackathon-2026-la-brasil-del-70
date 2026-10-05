@@ -1,0 +1,36 @@
+{
+  "cassette_id": "99662ee9600ffdc6f0c054b454680e8d4be6e994f50d39ed52b670980dee6b5c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 865,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:21.643421Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "SUMERCÉ, ¿ME CONFIRMA SI EL ABONO QUE HICE ESTA MAÑANA ENTRÓ?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "31549b7326cf88342d86be6211de80c1d01a680cbf345f5e735b0ba4e60dcca6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1300,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:14.446571Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Me bloquearon la plástico por una compra que sí hice yo, necesito que la liberen",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

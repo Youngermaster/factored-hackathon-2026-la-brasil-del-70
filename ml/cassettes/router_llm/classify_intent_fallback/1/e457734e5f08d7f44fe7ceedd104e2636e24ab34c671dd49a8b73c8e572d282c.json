@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e457734e5f08d7f44fe7ceedd104e2636e24ab34c671dd49a8b73c8e572d282c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1335,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.02,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:34.970348Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No revonozco un cargo de 500 pesos en Super Ahorro",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

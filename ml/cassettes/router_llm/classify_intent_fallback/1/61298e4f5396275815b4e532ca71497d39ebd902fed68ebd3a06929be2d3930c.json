@@ -1,0 +1,36 @@
+{
+  "cassette_id": "61298e4f5396275815b4e532ca71497d39ebd902fed68ebd3a06929be2d3930c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1459,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:50.651602Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hace diez díad mandé la solicitud y no tengo novedades",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

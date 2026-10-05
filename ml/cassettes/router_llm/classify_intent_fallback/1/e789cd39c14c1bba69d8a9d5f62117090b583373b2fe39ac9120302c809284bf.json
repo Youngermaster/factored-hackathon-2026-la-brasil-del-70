@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e789cd39c14c1bba69d8a9d5f62117090b583373b2fe39ac9120302c809284bf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 898,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:33.929330Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "cancelé mi suscripción de streaming hace un mes y me siguen cobrando, quiero reclamarlo",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

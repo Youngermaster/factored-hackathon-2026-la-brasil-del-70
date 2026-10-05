@@ -1,0 +1,36 @@
+{
+  "cassette_id": "911dba3e037a8b38e7f80f8c091bae16f4caab2dfe743c2659599de034aa3c17",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1113,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:17.589780Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Quiero ver todas las transacciones de la tarjeta que termina en 8864 en abril",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

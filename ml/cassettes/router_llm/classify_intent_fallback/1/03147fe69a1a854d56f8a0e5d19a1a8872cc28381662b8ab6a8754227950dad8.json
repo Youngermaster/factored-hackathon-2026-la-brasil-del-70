@@ -1,0 +1,36 @@
+{
+  "cassette_id": "03147fe69a1a854d56f8a0e5d19a1a8872cc28381662b8ab6a8754227950dad8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1467,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:14:31.665246Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Buenas tardes, hice una transferencia hace tres días y no aparece en la otra cuenta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

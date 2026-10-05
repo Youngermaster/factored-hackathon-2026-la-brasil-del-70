@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5ea80a656b6ac246564d46dbf30fc130312a41266c6cebd45f3bdef9973ed03a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 911,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:12.248297Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Porfa, ¿me confirman si la tarjeta que me llegó ya quedó activada?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

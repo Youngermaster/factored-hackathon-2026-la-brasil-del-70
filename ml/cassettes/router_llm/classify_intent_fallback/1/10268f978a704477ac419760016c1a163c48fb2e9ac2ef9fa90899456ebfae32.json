@@ -1,0 +1,36 @@
+{
+  "cassette_id": "10268f978a704477ac419760016c1a163c48fb2e9ac2ef9fa90899456ebfae32",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1355,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:28.387540Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pasás info sobre crédito hipotecario?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

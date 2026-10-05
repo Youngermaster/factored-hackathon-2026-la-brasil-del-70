@@ -1,0 +1,32 @@
+{
+  "cassette_id": "a992b1a66fdf60ca2e8bf127e7f9615fde41507128a892f242d0573fa7ded588",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 704,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:34.989426Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "¿La tarjeta que termina en 3310 está bloqueada?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

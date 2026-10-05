@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5440e813d04526ca9dfe05649f0569f41340b68df15e90246e727459a7ed87ea",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 926,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:58.543606Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Boa tarde, meu cartão vence ue o novo não chegou, podem enviar?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

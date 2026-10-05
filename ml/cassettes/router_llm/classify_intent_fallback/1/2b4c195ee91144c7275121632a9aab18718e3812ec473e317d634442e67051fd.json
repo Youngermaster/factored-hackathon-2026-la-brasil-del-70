@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2b4c195ee91144c7275121632a9aab18718e3812ec473e317d634442e67051fd",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 721,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:29.458782Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "boa tarde meu cartão venceu e o novo não chegou podem enviar",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

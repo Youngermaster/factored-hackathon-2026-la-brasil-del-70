@@ -1,0 +1,36 @@
+{
+  "cassette_id": "028f967b6f6a247d434cb19dd5f4c274d550d5d644f6394fc2e6450f3dd21355",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1006,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:39.174045Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber el saldo de la tarjeta terminada en 9912",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

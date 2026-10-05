@@ -1,0 +1,36 @@
+{
+  "cassette_id": "065638078b65555c82b6c0ca601ce67ea471bee351ae5136e0ebfd6041a19020",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 893,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:49.951312Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 922,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "resumen de cuetna",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

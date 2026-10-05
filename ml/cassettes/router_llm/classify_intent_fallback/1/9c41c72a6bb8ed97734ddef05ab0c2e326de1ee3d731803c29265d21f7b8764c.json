@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9c41c72a6bb8ed97734ddef05ab0c2e326de1ee3d731803c29265d21f7b8764c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1910,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:09.557310Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿ME RECHAZARON EL CRÉDITO O SIGUE EN ANÁLISIS?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

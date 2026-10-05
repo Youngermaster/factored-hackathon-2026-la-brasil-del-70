@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ca6a3daf8b2d8efcaea914e7ee751e8f4ff08d548eacd4ec3702eec8e8116d49",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2034,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.7,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:14.307472Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Qué pasa si me atraso en una cuta del crédito?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "cassette_id": "f53e83b1d62c1d6a21a363bc8e793b035638b4f2c8cab0a86b610befdf22e029",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1572,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.03,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.01,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.005,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.005,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:48.441775Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 62
+  },
+  "variables": {
+    "customer_message": "stiuação do meu crtão",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

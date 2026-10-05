@@ -1,0 +1,36 @@
+{
+  "cassette_id": "37342f139f88a09e67b50ba672756f0035857d53009d948d316042f2b929f7d6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 934,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:39.704407Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 953,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Compreii um celuular pela internet no dia 3 de maio e nunca chegou, quero reclamar a cobrança",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

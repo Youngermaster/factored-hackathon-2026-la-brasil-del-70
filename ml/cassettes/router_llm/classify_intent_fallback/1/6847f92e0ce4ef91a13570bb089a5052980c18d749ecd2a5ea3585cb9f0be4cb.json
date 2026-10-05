@@ -1,0 +1,40 @@
+{
+  "cassette_id": "6847f92e0ce4ef91a13570bb089a5052980c18d749ecd2a5ea3585cb9f0be4cb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 794,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.04,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:58.739166Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Me bloquearon la débito por equivocarme con el PIN, necesito que la habiliten",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e33abd5411183029179a64ff08c6d8684a76f15e40837093833e24f7c7dadd0d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1146,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:45.049434Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "sumercé quiero tramitar un crédito de libranza",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

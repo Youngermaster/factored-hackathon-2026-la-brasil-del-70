@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0573f562d56bb3d9a9f29d55cd258f82983a220f7d301a4021b9ac8067368ca0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1174,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:36.505684Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Comprei um celular pela internet hoje cedo e nunca chegou, quero reclamar a cobrança",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

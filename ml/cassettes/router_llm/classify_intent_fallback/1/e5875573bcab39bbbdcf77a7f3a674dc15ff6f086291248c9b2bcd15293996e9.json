@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e5875573bcab39bbbdcf77a7f3a674dc15ff6f086291248c9b2bcd15293996e9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 886,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:18.036387Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 920,
+    "output_tokens": 19
+  },
+  "variables": {
+    "customer_message": "Buenks días",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

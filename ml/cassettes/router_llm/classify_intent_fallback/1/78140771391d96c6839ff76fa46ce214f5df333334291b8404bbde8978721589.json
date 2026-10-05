@@ -1,0 +1,36 @@
+{
+  "cassette_id": "78140771391d96c6839ff76fa46ce214f5df333334291b8404bbde8978721589",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2555,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:09.033455Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 961,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "NÃO QUERO ABRIR OUTRA, SÓ SABER SE A CONTESTAÇÃO QUE JÁ FIZ FOI APROVADA",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

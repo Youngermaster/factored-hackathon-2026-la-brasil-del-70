@@ -1,0 +1,36 @@
+{
+  "cassette_id": "42d4a3142697ef22e3477c1c1894c066c94a11f6f4ca849a370d419c2d825d0a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 977,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:55.173430Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Qué plaxos tienen para crédito hipotecairo?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

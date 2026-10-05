@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7e628f6faeb83e7ec981f8b1075eedb35bdc49fa3176592759e484472357ea4f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 3659,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "greeting_or_other"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:45.586787Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "E zí, tudo bek?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

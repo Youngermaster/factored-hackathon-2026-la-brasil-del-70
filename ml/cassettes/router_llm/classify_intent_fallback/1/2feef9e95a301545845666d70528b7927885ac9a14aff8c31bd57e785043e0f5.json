@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2feef9e95a301545845666d70528b7927885ac9a14aff8c31bd57e785043e0f5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1034,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:22.517707Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Me manda o formulario que eu quero dar entrada no emprestimo",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

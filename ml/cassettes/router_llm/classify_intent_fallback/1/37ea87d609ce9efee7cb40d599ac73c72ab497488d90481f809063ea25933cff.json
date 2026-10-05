@@ -1,0 +1,36 @@
+{
+  "cassette_id": "37ea87d609ce9efee7cb40d599ac73c72ab497488d90481f809063ea25933cff",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1239,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:10.877020Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me alcanza para gastar 300 varos con lo que tengo en débito?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5e1c23dbbad0856437ec28b27acd53d84d192832580ac39cafbe99490d1c1d1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 913,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:00.913736Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hice un erclamo el finde, ¿ya lo reslovieron?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

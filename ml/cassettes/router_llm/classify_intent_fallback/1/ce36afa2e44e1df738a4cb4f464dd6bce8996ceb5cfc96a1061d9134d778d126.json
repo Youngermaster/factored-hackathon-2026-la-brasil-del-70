@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ce36afa2e44e1df738a4cb4f464dd6bce8996ceb5cfc96a1061d9134d778d126",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 842,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:21.277999Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Se me dano la banda magnetica, quiero cambiar la tarjeta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

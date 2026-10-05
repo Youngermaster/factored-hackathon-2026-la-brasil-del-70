@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a2d26ef23e267177177dee686f841fb9a1784628e3f84084c6ddc9cf0d7c571a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1824,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "unsupported"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:01.145159Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Quero fazer um Pix de R$ 150",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

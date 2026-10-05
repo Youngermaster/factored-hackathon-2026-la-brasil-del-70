@@ -1,0 +1,36 @@
+{
+  "cassette_id": "826cd7add5c6d389e4aae135258d4cc0bd6132e91ddf0df6f208c5777693088a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 905,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:03.667151Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Necesito una plástic nueva, lw mía ya está toda rota",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

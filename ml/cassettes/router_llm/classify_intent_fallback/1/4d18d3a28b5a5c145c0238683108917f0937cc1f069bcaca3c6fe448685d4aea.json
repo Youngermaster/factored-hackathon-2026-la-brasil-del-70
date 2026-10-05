@@ -1,0 +1,44 @@
+{
+  "cassette_id": "4d18d3a28b5a5c145c0238683108917f0937cc1f069bcaca3c6fe448685d4aea",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4032,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.03,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.01,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:31.232534Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 51
+  },
+  "variables": {
+    "customer_message": "Che, me aparece un consumo de cinco mil pesos en Streaming Music que no hice yo",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

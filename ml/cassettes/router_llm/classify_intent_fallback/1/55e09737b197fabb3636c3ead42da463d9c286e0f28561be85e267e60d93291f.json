@@ -1,0 +1,32 @@
+{
+  "cassette_id": "55e09737b197fabb3636c3ead42da463d9c286e0f28561be85e267e60d93291f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 870,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:12:36.205656Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "No me estás entendiendo, pásame con alguien de verdad",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

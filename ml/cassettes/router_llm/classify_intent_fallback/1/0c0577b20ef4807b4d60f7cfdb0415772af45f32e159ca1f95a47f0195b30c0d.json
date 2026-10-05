@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0c0577b20ef4807b4d60f7cfdb0415772af45f32e159ca1f95a47f0195b30c0d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1246,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:29.739825Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No reconozco un cargo de 1,250 pesos en Gasolinera Express",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

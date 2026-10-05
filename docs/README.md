@@ -182,6 +182,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [models/resolver.md](models/resolver.md) | Model card of the transaction resolver (LightGBM ranker against the rule baseline) |
 | [models/risk-estimator.md](models/risk-estimator.md) | Model card of the credit risk estimator (snapshot risk estimate; logistic regression and LightGBM against the score-band baseline) |
 | [evaluation/router.md](evaluation/router.md) | Generated router evaluation: per intent, language, locale, and workflow, calibration, robustness, transfer |
+| [evaluation/router-llm.md](evaluation/router-llm.md) | Generated router benchmark against a hosted language model (zero-shot and cascade): accuracy, safety, slices, calibration, latency, and cost, with the pre-registered decision |
 | [evaluation/resolver.md](evaluation/resolver.md) | Generated resolver evaluation: per use, language, country, candidate count, clue, silver labels |
 | [evaluation/risk-estimator.md](evaluation/risk-estimator.md) | Generated risk estimator evaluation: test metrics with intervals, calibration, bands, interval coverage, slices and disparities |
 | [evaluation/router-labeling.md](evaluation/router-labeling.md) | The protocol for the 200-item router validation sample |

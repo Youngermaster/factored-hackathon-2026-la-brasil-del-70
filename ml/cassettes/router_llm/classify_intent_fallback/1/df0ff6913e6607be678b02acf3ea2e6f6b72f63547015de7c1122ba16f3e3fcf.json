@@ -1,0 +1,36 @@
+{
+  "cassette_id": "df0ff6913e6607be678b02acf3ea2e6f6b72f63547015de7c1122ba16f3e3fcf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1689,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.3,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:30.097936Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "HOLA, ¿ME PASÁS INFO SOBRE PRÉSTAMO PERSONAL?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

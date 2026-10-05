@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5d425efaf68db5d3491a8f7456f45e0ea744595589cd9f0beb2bca04fb789fef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1116,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:12.460403Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 921,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "bloquear tarjeta urgente",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

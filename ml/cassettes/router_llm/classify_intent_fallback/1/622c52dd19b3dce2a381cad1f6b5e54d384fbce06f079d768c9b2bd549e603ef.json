@@ -1,0 +1,32 @@
+{
+  "cassette_id": "622c52dd19b3dce2a381cad1f6b5e54d384fbce06f079d768c9b2bd549e603ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 659,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:11.086848Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "¿En qué horario ateinden las ducursales?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

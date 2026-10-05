@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d7abf4a4d1ce6191152af87b5a03609dbc758d080a37e3da624a587eda8e3439",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1005,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:43.195845Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cumplo los requisitos para crédito de lbire inversión?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

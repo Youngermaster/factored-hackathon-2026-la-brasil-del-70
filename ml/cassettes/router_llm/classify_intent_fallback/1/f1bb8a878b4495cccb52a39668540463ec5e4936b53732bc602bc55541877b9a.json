@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f1bb8a878b4495cccb52a39668540463ec5e4936b53732bc602bc55541877b9a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 854,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:05.259638Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Preciso de uma declaracao da conta pra apresentar no trabalho",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

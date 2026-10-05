@@ -1,0 +1,32 @@
+{
+  "cassette_id": "6e115ad7ebdd7215220107e94c01443b1c21fc3fc302df89941b370b5033d26f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1125,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:15.446498Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 19
+  },
+  "variables": {
+    "customer_message": "Chau, graaciaas",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

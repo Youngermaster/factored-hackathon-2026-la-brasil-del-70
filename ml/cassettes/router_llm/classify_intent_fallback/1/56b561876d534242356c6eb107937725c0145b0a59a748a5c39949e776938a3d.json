@@ -1,0 +1,36 @@
+{
+  "cassette_id": "56b561876d534242356c6eb107937725c0145b0a59a748a5c39949e776938a3d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 991,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_unblock_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:33.883997Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Porfa, ¿me confirman si la pplástico que me llegó ya quedó activada?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

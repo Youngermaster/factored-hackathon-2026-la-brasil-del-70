@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a9e7e4f0b491152c552fd71be235bb6f3c7462b349ed26018b63e62d7e1510f9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1425,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:43.755662Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Hasta cuánta plata prestta nen un crédito de libranza?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

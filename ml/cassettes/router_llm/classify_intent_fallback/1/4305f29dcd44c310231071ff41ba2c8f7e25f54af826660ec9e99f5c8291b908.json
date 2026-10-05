@@ -1,0 +1,32 @@
+{
+  "cassette_id": "4305f29dcd44c310231071ff41ba2c8f7e25f54af826660ec9e99f5c8291b908",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 711,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "dispute_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:11:17.195838Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 921,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "estado del reclamo",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

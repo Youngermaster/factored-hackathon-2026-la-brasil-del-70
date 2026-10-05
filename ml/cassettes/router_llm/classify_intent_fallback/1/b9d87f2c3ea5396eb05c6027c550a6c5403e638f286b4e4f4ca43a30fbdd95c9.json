@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b9d87f2c3ea5396eb05c6027c550a6c5403e638f286b4e4f4ca43a30fbdd95c9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1316,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:31.506559Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "¿Qué pasa si pago menoz del mínimo del resumenn?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

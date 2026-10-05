@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8d20c1f49bc4146d75e3b58c36df636127ddd605c8b78d7b80d4af0a0f58611e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1168,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:08.483921Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Necesito pausar la tarjeta de créditl ya, cre que me la copiaron",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

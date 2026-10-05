@@ -1,0 +1,36 @@
+{
+  "cassette_id": "25b10f19eaac704c2e6de2e565d85c180da46b64fdc14a66545a7f86853af5c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1243,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:29.126162Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "ME ROBARON LA TARJETA LA SEMANA PASADA Y YA LA BLOQUEÉ, ¿ME MANDAN OTRA?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

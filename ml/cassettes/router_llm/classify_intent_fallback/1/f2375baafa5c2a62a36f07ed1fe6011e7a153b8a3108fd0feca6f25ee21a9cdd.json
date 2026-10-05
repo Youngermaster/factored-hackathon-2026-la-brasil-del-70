@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f2375baafa5c2a62a36f07ed1fe6011e7a153b8a3108fd0feca6f25ee21a9cdd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 711,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:29.186151Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "¿Me cobran comisión si retiro en dajeros d otro banco?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "c281696f7fe7a565f428a4364ebfcf8f47188f22a09ec21021af1fe267329cc8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1109,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.6,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:28.788024Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Oi, fiz uma transferência de 80 pila e a pessoa diz que não recebeu",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

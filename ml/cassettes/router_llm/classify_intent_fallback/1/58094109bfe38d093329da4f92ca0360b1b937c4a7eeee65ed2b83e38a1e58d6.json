@@ -1,0 +1,40 @@
+{
+  "cassette_id": "58094109bfe38d093329da4f92ca0360b1b937c4a7eeee65ed2b83e38a1e58d6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2422,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.75,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:25.758304Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Oi, apareceu uma compra de cem reais na Cine Premium que eu não fiz",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

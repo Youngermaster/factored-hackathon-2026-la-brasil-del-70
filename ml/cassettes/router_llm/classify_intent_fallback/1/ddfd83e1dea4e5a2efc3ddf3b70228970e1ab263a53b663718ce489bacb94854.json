@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ddfd83e1dea4e5a2efc3ddf3b70228970e1ab263a53b663718ce489bacb94854",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 995,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:26.189008Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Ainda não quero pedir, só saber se eu seria elegível pro cartão de crédito",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

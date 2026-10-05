@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9d0012540ffcdc199b61cde72d765f84433de8a5dc24e3897512fe25da6fd5ae",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 920,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:04.874658Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "dale, quiero pedir el préstamo preaprobado que me aparece",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

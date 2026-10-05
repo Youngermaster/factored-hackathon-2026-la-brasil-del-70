@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a8d01cdd61e86d57f061d109cf00e86a2e785b966f1b48c869f4d0d4ece9349b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 933,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:05.426069Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Que requisitos piden para la tarjeta de credito?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

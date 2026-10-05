@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c9ef5f64b305cc53c0236ae236e2f977b21d980c995b0c7c290c92895b5dd772",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 961,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:33.063610Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "bloqueio de cartão",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

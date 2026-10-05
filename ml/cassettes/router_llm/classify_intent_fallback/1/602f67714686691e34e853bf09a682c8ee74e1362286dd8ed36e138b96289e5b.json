@@ -1,0 +1,36 @@
+{
+  "cassette_id": "602f67714686691e34e853bf09a682c8ee74e1362286dd8ed36e138b96289e5b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1302,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:16.214452Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "stiuação do meu crtão",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

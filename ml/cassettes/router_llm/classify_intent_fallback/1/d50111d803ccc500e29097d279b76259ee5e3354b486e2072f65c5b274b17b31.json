@@ -1,0 +1,40 @@
+{
+  "cassette_id": "d50111d803ccc500e29097d279b76259ee5e3354b486e2072f65c5b274b17b31",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1125,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.8,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:14.177903Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 921,
+    "output_tokens": 38
+  },
+  "variables": {
+    "customer_message": "bloquear plástico urgente",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

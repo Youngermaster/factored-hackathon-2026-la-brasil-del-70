@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0bb0ddba2b184a8b0acd4ff50612c3e3fb86726221c542b50e053af96c2037e3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 925,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:22.541725Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pueden mandar mis movmiientos de la plástico de los últimos tres mses?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

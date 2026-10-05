@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b9d980961b0040c6f0e19ff38e875d2223354db7bab92c25753dbf576b9650ff",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1213,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:21.118380Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, apareceu uma compra de R$ 150 na Mercado Central que eu não fiz",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

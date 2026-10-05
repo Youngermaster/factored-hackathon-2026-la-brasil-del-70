@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ad44c29f922778f91e7a6ec21491299a5bc0f5f00934b2386a39c35c597d2153",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2496,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:20.688371Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Queria acompanhar a análise do meu tinanciamebto",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

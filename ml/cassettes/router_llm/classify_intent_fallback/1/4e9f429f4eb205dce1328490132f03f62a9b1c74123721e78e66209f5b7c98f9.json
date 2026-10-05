@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4e9f429f4eb205dce1328490132f03f62a9b1c74123721e78e66209f5b7c98f9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 787,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:53.284996Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "QUIERO DESBLOQUEAR LA TARJETA DE DÉBITO",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a1aeb7e789c63f96e9c494d9562e8a253f3e3530f4af5a388d6853cb4f603b39",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1072,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:39.133248Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me rechazaron el ppréstamo? No me llegó ningún mail",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

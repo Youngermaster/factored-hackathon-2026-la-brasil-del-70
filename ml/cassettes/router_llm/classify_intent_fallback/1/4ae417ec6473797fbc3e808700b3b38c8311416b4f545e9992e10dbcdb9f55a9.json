@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4ae417ec6473797fbc3e808700b3b38c8311416b4f545e9992e10dbcdb9f55a9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1286,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:36.637497Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿CUÁL ES LA FECHA DE VENCIMIENTO DE MI PLÁSTICO?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

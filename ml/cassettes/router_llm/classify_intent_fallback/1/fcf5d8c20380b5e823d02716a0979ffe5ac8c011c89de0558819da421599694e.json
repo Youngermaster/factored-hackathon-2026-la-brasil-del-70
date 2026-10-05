@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fcf5d8c20380b5e823d02716a0979ffe5ac8c011c89de0558819da421599694e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1910,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.5,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:14.124714Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Che, ¿los prestamos son a tasa fija o variable?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

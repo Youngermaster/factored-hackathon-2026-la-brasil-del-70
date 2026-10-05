@@ -1,0 +1,36 @@
+{
+  "cassette_id": "af4c7f0bd8f1b8dab47fb51663b953d445df24d19d464f2a7b5049b89217b988",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1032,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.3,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:12.834481Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Qual a diferenca entre cancelar e bloquear o cartao?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

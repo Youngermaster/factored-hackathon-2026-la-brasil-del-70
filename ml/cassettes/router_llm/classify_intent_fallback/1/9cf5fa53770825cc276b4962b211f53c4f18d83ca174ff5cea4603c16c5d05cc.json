@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9cf5fa53770825cc276b4962b211f53c4f18d83ca174ff5cea4603c16c5d05cc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1107,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:14.301076Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Quisiera saber si con mi suledo me alcanza para un crédifo de vivienda",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e2a5fd2ed4ba940692ea1c7d13bfb2a0f6c94c6d6d8e3f62ac0b45de93fd326f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1201,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:50.272864Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "quiero desbloquear la tarjeta de débito",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

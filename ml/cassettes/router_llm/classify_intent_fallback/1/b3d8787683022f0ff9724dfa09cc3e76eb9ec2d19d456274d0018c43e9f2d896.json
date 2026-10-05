@@ -1,0 +1,32 @@
+{
+  "cassette_id": "b3d8787683022f0ff9724dfa09cc3e76eb9ec2d19d456274d0018c43e9f2d896",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 981,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:20.381600Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 19
+  },
+  "variables": {
+    "customer_message": "Belza, muito obrigada",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "873204256ebe4a0b5ab19d44a246085406fecc1d22dea4bbebc9b0b95545dc94",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2082,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.02,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:50.542137Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Boa noite, podem me informar o saldo ztual, pfv?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

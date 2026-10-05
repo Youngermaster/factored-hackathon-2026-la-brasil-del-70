@@ -1,0 +1,36 @@
+{
+  "cassette_id": "53a2f130c9504feb816e349c615422eb1bb45a71ef421a574adb11ba6894259d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 838,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:53.711332Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "¿Me ayudan a vvolver a activar mi tarjeta de débito?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

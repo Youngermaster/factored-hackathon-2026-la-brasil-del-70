@@ -1,0 +1,36 @@
+{
+  "cassette_id": "07d4f699dd9010f411815efdf41dea3842ad9b5c0c8108d52e73f9bd4f8018a0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1566,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:35.185752Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Me colabora enviándome el extracto de la tarjeta de crédito",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

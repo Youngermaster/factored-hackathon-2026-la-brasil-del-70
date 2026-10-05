@@ -1,0 +1,36 @@
+{
+  "cassette_id": "388e427f80af4a560069025f95e9100afc713cd801e5f370a25cfdcb51a4665c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1079,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:07.289132Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿Mi plástco está actia?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

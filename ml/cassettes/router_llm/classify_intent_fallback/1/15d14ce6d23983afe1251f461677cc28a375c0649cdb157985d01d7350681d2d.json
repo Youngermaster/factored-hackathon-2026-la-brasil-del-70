@@ -1,0 +1,36 @@
+{
+  "cassette_id": "15d14ce6d23983afe1251f461677cc28a375c0649cdb157985d01d7350681d2d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1984,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:15.538700Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "le mandé lana a mi hermano anoche, ¿ya le cayó?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

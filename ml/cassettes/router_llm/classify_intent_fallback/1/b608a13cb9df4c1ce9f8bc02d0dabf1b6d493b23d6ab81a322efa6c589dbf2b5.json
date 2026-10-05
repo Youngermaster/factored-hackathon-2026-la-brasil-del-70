@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b608a13cb9df4c1ce9f8bc02d0dabf1b6d493b23d6ab81a322efa6c589dbf2b5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 900,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:19.840552Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "me confirman si pasó mi pago",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

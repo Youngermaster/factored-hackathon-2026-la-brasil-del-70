@@ -1,0 +1,32 @@
+{
+  "cassette_id": "8ce164580d94dab19fdfae674f67c31aceefbc562d4dfcba8de602f6e4f157e2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2016,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:06.495169Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Ncesito que me ateinda alguien del banco, esto es complicado",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

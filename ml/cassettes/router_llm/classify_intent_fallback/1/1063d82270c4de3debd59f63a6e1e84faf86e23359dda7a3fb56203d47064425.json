@@ -1,0 +1,36 @@
+{
+  "cassette_id": "1063d82270c4de3debd59f63a6e1e84faf86e23359dda7a3fb56203d47064425",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1466,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:09.375201Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "oi não quero cancelar nem bloquear só saber se o cartão tá funcionando",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

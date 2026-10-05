@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c797a8ce64807b8b0342565db2b91b249e434208c28ac1acbc514a85cdbf3824",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1186,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.02,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:33.095682Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No reconozco un cargo de 300 varos en Cine Premium",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

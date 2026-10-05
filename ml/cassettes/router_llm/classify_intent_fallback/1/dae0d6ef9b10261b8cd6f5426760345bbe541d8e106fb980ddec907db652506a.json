@@ -1,0 +1,36 @@
+{
+  "cassette_id": "dae0d6ef9b10261b8cd6f5426760345bbe541d8e106fb980ddec907db652506a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1183,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:16.084208Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "solicitar crédito hipotecarrio",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

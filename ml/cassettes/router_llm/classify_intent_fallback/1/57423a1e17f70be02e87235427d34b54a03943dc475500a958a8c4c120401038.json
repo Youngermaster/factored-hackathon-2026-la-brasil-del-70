@@ -1,0 +1,36 @@
+{
+  "cassette_id": "57423a1e17f70be02e87235427d34b54a03943dc475500a958a8c4c120401038",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 906,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:00.238683Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me dan un prestamo personal?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

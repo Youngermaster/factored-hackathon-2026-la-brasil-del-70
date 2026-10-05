@@ -1,0 +1,36 @@
+{
+  "cassette_id": "91f2225d9ae8675cda4b92b0d9aca238041b1e3448e4f7e135a83e1cfb90da4c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 969,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:16.514482Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No quiero hacer otra transferencia, solo saber si la primera sí se fue",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

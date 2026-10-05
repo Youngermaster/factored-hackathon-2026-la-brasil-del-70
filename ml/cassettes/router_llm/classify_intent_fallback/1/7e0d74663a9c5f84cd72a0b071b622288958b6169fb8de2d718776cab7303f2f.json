@@ -1,0 +1,40 @@
+{
+  "cassette_id": "7e0d74663a9c5f84cd72a0b071b622288958b6169fb8de2d718776cab7303f2f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1404,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.85,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:53.288346Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Hola, vi movimientos raros en mi tarjeta, ¿me la pueden congelar mientras?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

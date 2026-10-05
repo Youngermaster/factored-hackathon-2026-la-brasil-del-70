@@ -1,0 +1,40 @@
+{
+  "cassette_id": "17ed4e20982770fb144d5e8b3907f85c034728aa3d66b81f298a3c84a0c98e1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1113,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:38.704197Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Hola, pedi prestamo personal ayer, ¿ya esta aprobado?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "be83c921d5961437dd6a364b20c5d9705f617f4e3737a7fa4d0f6b21e67a8ca8",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1387,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.5,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "payment_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:15.027864Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Nao quero pedir de novo, so saber como ficou a solicitacao que ja enviei",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

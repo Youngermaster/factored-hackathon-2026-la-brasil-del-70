@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4634052451bcae6563435e058b19be9b3d6f97dd0ae72fd27879e61a466e9831",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1013,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:05.628553Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me darían crédito hipotecario si gano el mínimo?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

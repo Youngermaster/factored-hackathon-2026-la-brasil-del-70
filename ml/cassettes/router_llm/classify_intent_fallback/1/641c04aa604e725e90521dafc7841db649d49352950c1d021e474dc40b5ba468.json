@@ -1,0 +1,40 @@
+{
+  "cassette_id": "641c04aa604e725e90521dafc7841db649d49352950c1d021e474dc40b5ba468",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1178,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.8,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:03.352750Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 38
+  },
+  "variables": {
+    "customer_message": "QUIERO CONGELAR MI TARJETA DE CRÉDITO POR SEGURIDAD",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

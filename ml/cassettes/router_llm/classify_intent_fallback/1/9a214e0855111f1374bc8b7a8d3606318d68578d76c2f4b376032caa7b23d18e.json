@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9a214e0855111f1374bc8b7a8d3606318d68578d76c2f4b376032caa7b23d18e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 807,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "payment_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:53.215636Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Necesito sacar el bloqueo de la tarjeta, tengo que ppagar el alquilr",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

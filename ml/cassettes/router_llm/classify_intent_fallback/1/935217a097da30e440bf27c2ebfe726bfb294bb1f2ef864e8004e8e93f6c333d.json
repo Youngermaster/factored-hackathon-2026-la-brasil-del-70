@@ -1,0 +1,36 @@
+{
+  "cassette_id": "935217a097da30e440bf27c2ebfe726bfb294bb1f2ef864e8004e8e93f6c333d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1613,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:14.664269Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "MEU CARTÃO DE CRÉDITO FOI APROVADO?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

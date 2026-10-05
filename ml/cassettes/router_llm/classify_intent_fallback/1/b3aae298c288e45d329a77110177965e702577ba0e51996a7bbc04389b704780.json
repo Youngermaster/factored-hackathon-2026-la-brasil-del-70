@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b3aae298c288e45d329a77110177965e702577ba0e51996a7bbc04389b704780",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1307,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.3,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:49.430167Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Cual es el cupo disponible de mi tarjeta de credito?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

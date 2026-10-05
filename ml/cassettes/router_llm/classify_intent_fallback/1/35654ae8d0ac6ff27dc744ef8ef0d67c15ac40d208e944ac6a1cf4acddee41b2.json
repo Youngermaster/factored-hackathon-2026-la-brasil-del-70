@@ -1,0 +1,40 @@
+{
+  "cassette_id": "35654ae8d0ac6ff27dc744ef8ef0d67c15ac40d208e944ac6a1cf4acddee41b2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 794,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.7,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:43.507664Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Me rechazaron un pago con la de crédito, ¿tiene algún problema?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "737afc3a72e3ecc4495b6164b5e101eda46d2256d8815d5b037dcaa903e87336",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1041,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:50.086827Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "CHE, UNA CONSULTA GENERAL: ¿QUÉ ES EL CFT?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

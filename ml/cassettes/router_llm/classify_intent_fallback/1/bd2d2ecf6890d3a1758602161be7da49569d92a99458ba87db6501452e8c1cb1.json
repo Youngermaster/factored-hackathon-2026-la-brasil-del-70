@@ -1,0 +1,40 @@
+{
+  "cassette_id": "bd2d2ecf6890d3a1758602161be7da49569d92a99458ba87db6501452e8c1cb1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1093,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.85,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:56.995632Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Exijo que ke devuelvan la guita ya, quiero un contrcaargo garantizado",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

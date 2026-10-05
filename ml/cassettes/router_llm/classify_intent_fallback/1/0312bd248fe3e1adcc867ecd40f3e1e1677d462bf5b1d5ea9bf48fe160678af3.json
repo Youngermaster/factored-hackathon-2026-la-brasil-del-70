@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0312bd248fe3e1adcc867ecd40f3e1e1677d462bf5b1d5ea9bf48fe160678af3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1186,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.8,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:34.955406Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cuáles son los requisitos para sacar una plástico de crédito con ustedes?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "2a2de01c1e56278eba892cac0a82c040f0ec23f863e4a2f7e41865d82a5b88be",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 885,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.04,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:39.178861Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Sumwrcé, necesito el histórico de mi cuenta para presentarlo en la declaración de rwnta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

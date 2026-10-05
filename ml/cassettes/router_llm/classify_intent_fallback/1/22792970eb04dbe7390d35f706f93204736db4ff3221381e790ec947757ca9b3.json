@@ -1,0 +1,36 @@
+{
+  "cassette_id": "22792970eb04dbe7390d35f706f93204736db4ff3221381e790ec947757ca9b3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 890,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:58.381305Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "activar otra vez mii tarjeta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

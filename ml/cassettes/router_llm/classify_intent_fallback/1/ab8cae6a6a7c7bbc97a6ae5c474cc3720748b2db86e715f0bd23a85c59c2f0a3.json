@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ab8cae6a6a7c7bbc97a6ae5c474cc3720748b2db86e715f0bd23a85c59c2f0a3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1321,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:39.751791Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿A qué hora juega Boca hoy?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

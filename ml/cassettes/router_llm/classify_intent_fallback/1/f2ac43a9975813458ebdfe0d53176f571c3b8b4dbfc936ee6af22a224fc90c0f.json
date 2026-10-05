@@ -1,0 +1,32 @@
+{
+  "cassette_id": "f2ac43a9975813458ebdfe0d53176f571c3b8b4dbfc936ee6af22a224fc90c0f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 698,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.99,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:10.051513Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Persi meu cartão, preciso bloqueear agora",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

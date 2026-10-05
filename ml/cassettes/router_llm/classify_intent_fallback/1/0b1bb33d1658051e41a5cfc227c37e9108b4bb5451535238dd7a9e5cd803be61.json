@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0b1bb33d1658051e41a5cfc227c37e9108b4bb5451535238dd7a9e5cd803be61",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2487,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:22.731381Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 919,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "saldo plástico",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

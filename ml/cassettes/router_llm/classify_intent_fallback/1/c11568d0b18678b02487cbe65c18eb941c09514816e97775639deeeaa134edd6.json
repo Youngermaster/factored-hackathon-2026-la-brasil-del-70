@@ -1,0 +1,40 @@
+{
+  "cassette_id": "c11568d0b18678b02487cbe65c18eb941c09514816e97775639deeeaa134edd6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1522,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.85,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:30.136086Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "hola, bloqueé mi tarjeta porque creí que la perdí, pero ya la encontré, ¿me la reactivan?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

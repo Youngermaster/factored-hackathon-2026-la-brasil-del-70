@@ -1,0 +1,36 @@
+{
+  "cassette_id": "1a8efdbf167a69be4034d92818d5f1b09079058924eff5eef11e923786a8b881",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 846,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:14:41.327070Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "le giré plata a mi mamá y dice que no le ha llegado nada",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

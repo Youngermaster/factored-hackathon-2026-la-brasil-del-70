@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5ccc8c5c460b2157955db0f2b79fef35958fad5e623e3945aa89a0514eacd733",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1457,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:05.934530Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Che, me aparece un consumo de 15 lucas en Super Ahorro que no hice yo",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

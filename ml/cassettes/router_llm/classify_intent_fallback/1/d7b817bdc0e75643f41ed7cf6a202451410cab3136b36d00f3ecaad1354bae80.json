@@ -1,0 +1,40 @@
+{
+  "cassette_id": "d7b817bdc0e75643f41ed7cf6a202451410cab3136b36d00f3ecaad1354bae80",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1139,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.6,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_unblock_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:24.470749Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "HOLA, SI BLOQUEO MI TARJETA, ¿DESPUÉS LA PUEDO DESBLOQUEAR?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

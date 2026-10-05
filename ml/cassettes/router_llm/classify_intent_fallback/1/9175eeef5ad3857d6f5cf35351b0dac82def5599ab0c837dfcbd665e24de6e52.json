@@ -1,0 +1,40 @@
+{
+  "cassette_id": "9175eeef5ad3857d6f5cf35351b0dac82def5599ab0c837dfcbd665e24de6e52",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2139,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.04,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.01,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:46.662116Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "¿Soy candidato para un credito de auto?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}
