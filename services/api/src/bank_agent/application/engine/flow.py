@@ -33,10 +33,14 @@ from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.decision import DecisionKind
 from bank_agent.domain.errors import AuthenticationError, StepUpRequiredError, ToolError, ToolNotAllowedError
 from bank_agent.domain.escalation import EscalationReasonCode
+from bank_agent.domain.intelligence import IntentPrediction, ModelComponent, ModelRef
 from bank_agent.domain.locale import Language
 from bank_agent.domain.workflow import Outcome, WorkflowId
 
 SHARED_REPLIES = frozenset({RouteKind.OUT_OF_SCOPE, RouteKind.INFORMATIONAL})
+UNSURE_ROUTES = frozenset({RouteKind.CLARIFY_WORKFLOW, RouteKind.GREETING})
+FOLLOW_UP_MODEL = ModelRef(component=ModelComponent.ROUTER, name="context_follow_up", version="1")
+"""Recorded when a context follow-up, not the router, gave the turn's intent."""
 
 
 def _label(table: dict[WorkflowId, dict[Language, str]], workflow: WorkflowId, language: Language) -> str:
@@ -252,6 +256,24 @@ def _answered_with_another_workflow(ctx: TurnContext, registry: WorkflowRegistry
     return owner
 
 
+def follow_up_route(ctx: TurnContext, spec: StateSpec, route: Route) -> Route:
+    """Continue the current workflow when the router is unsure of a message that follows up on the answer a
+    context-holding state just gave ("¿y nomás en la de ahorro?" after balances, "e a de crédito?" after a card
+    status, "y ahora el de abril" after a statement). Found in production QA (ACC-01, ACC-02, CRD-03): such turns got
+    the generic workflow question or an off-topic abstention. A message the router places (another workflow's
+    request, a person, an unsupported request) is never redirected, and the workflow's handlers and the kernel still
+    decide everything that follows."""
+    recognize = ctx.definition.follow_up
+    if ctx.at_router or not spec.holds_context or route.kind not in UNSURE_ROUTES or recognize is None:
+        return route
+    intent = recognize(ctx)
+    if intent is None or intent not in ctx.definition.intents:
+        return route
+    ctx.prediction = IntentPrediction(intent=intent, confidence=1.0, below_threshold=False, model=FOLLOW_UP_MODEL)
+    ctx.recorder.model(FOLLOW_UP_MODEL)
+    return Route(RouteKind.CONTINUE, target=ctx.workflow)
+
+
 async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
     pending = await answer_pending(ctx, registry)
     if pending is not None:
@@ -263,7 +285,7 @@ async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
         ctx.prediction = prediction
         ctx.recorder.model(prediction.model)
         route = dispatch(prediction, registry, current=current, mid_flow=spec.mid_flow)
-        return await apply_route(ctx, registry, route)
+        return await apply_route(ctx, registry, follow_up_route(ctx, spec, route))
     step = await run_handlers(ctx)
     if not step.unanswered:
         return step

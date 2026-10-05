@@ -32,7 +32,7 @@ stateDiagram-v2
     ESCALATED --> [*]
 ```
 
-Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. BALANCES, PAYMENT_STATUS, and STATEMENT_SUMMARY accept new requests but hold the answer just given, so a request for another workflow there (for example "no reconozco esa transferencia") is confirmed before switching.
+Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. BALANCES, PAYMENT_STATUS, and STATEMENT_SUMMARY accept new requests but hold the answer just given, so a request for another workflow there (for example "no reconozco esa transferencia") is confirmed before switching. A message the router cannot place that only names a product, an ending, or a period ("¿y nomás en la de ahorro?", "y ahora el de abril") is a follow-up: the workflow's `follow_up` recognizer continues the same inquiry, recorded as `router:context_follow_up@1` (QA findings ACC-01 and ACC-02). A period follow-up after a statement asks for the product again, because UNDERSTAND does not yet carry the previous product over.
 
 ## States, rules, clauses, tools, and exits
 

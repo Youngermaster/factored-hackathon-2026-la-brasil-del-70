@@ -18,6 +18,7 @@ from bank_agent.application.engine.definition import (
 from bank_agent.application.engine.states import accept_request, auth_required_state, end_state, escalated_state
 from bank_agent.application.workflows.account_inquiry.answers import balances, payment_status
 from bank_agent.application.workflows.account_inquiry.data import load, open_questions
+from bank_agent.application.workflows.account_inquiry.follow_up import follow_up
 from bank_agent.application.workflows.account_inquiry.payments import locate_payment
 from bank_agent.application.workflows.account_inquiry.select import clarify, select_product
 from bank_agent.application.workflows.account_inquiry.statement import statement_period, statement_summary
@@ -80,4 +81,5 @@ def build_account_inquiry() -> WorkflowDefinition:
         intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.ACCOUNT_INQUIRY).intents),
         open_questions=questions,
         unsupported=recognize,
+        follow_up=follow_up,
     )
