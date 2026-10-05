@@ -1085,7 +1085,7 @@
       "agent": "abra a caixa, filtre, assuma uma transferência e resolva; veja também as solicitações de crédito.",
       "evaluator": "cole a referência de uma conversa em Registros para ver o que o cliente nunca vê, e abra Avaliação."
     },
-    "reset": "Os dados são sintéticos. As ações ficam registradas: recarregue os dados de demonstração com make seed antes de gravar."
+    "reset": "Os dados são sintéticos e compartilhados por todas as pessoas que usam esta demonstração: uma ação que alguém já fez, como bloquear um cartão ou abrir uma contestação, continua valendo até a equipe recarregar os dados de demonstração."
   },
   "about": {
     "title": "O que este assistente faz",

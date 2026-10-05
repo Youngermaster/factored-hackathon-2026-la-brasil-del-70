@@ -1085,7 +1085,7 @@
       "agent": "abre la bandeja, filtra, toma un traspaso y resuélvelo; revisa también las solicitudes de crédito.",
       "evaluator": "pega la referencia de una conversación en Registros para ver lo que el cliente nunca ve, y abre Evaluación."
     },
-    "reset": "Los datos son sintéticos. Las acciones quedan registradas: vuelve a cargar los datos de demostración con make seed antes de grabar."
+    "reset": "Los datos son sintéticos y los comparten todas las personas que usan esta demostración: una acción que alguien ya hizo, como bloquear una tarjeta o abrir una aclaración, se mantiene hasta que el equipo recarga los datos de demostración."
   },
   "about": {
     "title": "Qué hace este asistente",
