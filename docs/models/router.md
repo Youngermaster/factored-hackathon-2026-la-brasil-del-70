@@ -43,6 +43,8 @@ Artifacts are JSON parameters, evaluated in pure Python inside `bank_agent`. The
 
 ## Metrics (test split, 601 items in 136 seed groups, 95% seed-group bootstrap intervals)
 
+This table is the phase 08 measurement, which the deck quotes so that `keyword@1` and the learned routers come from one run (`keyword@1` macro-F1 0.385). The 2026-10-05 re-measurement in the next section reports `keyword@1` at 0.395 on the same 601 items; [router-llm](../evaluation/router-llm.md) uses that later figure.
+
 | Model | Accuracy | Macro-F1 | Workflow accuracy | Coverage at threshold | Error among covered | ECE | High-stakes recall (mean) |
 |---|---|---|---|---|---|---|---|
 | Majority | 0.075 [0.031, 0.128] | 0.008 | 0.136 | 1.000 | 0.925 | 0.007 | 0.167 |
@@ -69,7 +71,7 @@ ADR 0015 option 4, a language model classifier, is now measured. The full result
 
 | Test (601 items) | Macro-F1 | Accuracy | Confident write-intent misroutes | Out-of-scope messages confidently routed into a workflow (of 32) | Cost per 1,000 messages (list price) | p95 per message |
 |---|---|---|---|---|---|---|
-| `keyword@1` (served) | 0.395 [0.308, 0.447] | 0.393 | 33 | 0 | 0 | under 1 ms |
+| `keyword@1` (served; re-measured 2026-10-05) | 0.395 [0.308, 0.447] | 0.393 | 33 | 0 | 0 | under 1 ms |
 | `tfidf@986872f0284f` | 0.661 [0.575, 0.713] | 0.677 | 1 | 0 | 0 | under 10 ms |
 | `gpt-4.1-mini` zero-shot | 0.885 [0.819, 0.925] | 0.889 | 31 | 13 | 0.42 USD | 2.4 s |
 | `gpt-4o` zero-shot | 0.936 [0.890, 0.969] | 0.937 | 23 | 7 | 3.17 USD | 1.9 s |
