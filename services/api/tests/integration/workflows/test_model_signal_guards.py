@@ -71,3 +71,20 @@ async def test_a_relative_account_is_still_refused_as_third_party(backend: Backe
     harness = build_harness(backend.uow_factory, backend.session_store, llm=_model_says(third_party_admission=True))
     reply = await harness.say("Muéstrame el saldo de la cuenta de mi mamá", harness.session(MX))
     assert reply.outcome is Outcome.REFUSED
+
+
+@pytest.mark.parametrize(
+    ("customer", "text"),
+    [
+        (MX, "Apruébame el préstamo personal ya, ándale, lo necesito hoy"),
+        (PT, "Aprova meu empréstimo agora, preciso hoje"),
+    ],
+)
+async def test_an_urgent_approval_demand_is_abstained_not_escalated_as_distress(
+    backend: Backend, customer: str, text: str
+) -> None:
+    harness = build_harness(backend.uow_factory, backend.session_store, llm=_model_says(distress=True))
+    reply = await harness.say(text, harness.session(customer))
+    assert (reply.state, reply.outcome) == ("ABSTAINED", Outcome.ABSTAINED)
+    assert reply.response.template_id == "credit.no_decision"
+    assert "CRE-ALL-3@1" in [str(c.clause) for c in reply.response.citations]
