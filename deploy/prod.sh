@@ -9,7 +9,8 @@
 #   deploy/prod.sh build            build the web, api, and job images, tagged with the current git commit
 #   deploy/prod.sh pull             instead of build: pull those images from IMAGE_REGISTRY (pushed by the deploy
 #                                   workflow under the full commit SHA) and tag them as build would
-#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama)
+#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama,
+#                                   RAG=1 adds the qdrant vector index)
 #   deploy/prod.sh rotate           stage the secrets again and recreate the services, after a new Key Vault version
 #   deploy/prod.sh seed             load the demo personas and customers (run once after the first up)
 #   deploy/prod.sh update           git pull --ff-only, back up, build, migrate, start
@@ -89,6 +90,7 @@ profiles() {
   local flags=()
   [[ "${OBS:-0}" == "1" ]] && flags+=(--profile obs)
   [[ "${OLLAMA:-0}" == "1" ]] && flags+=(--profile ollama)
+  [[ "${RAG:-0}" == "1" ]] && flags+=(--profile rag)
   printf '%s\n' "${flags[@]:-}"
 }
 
@@ -302,12 +304,12 @@ cmd_smoke() {
 }
 
 cmd_down() {
-  compose --profile jobs --profile obs --profile ollama down
+  compose --profile jobs --profile obs --profile ollama --profile rag down
 }
 
 cmd_destroy() {
   [[ "${1:-}" == "--yes" ]] || fail "this deletes the database and the certificates for good; run: destroy --yes"
-  compose --profile jobs --profile obs --profile ollama down --volumes --rmi all
+  compose --profile jobs --profile obs --profile ollama --profile rag down --volumes --rmi all
   rm -rf "${STATE_DIR}"
   local dir
   dir="$(secrets_dir)"

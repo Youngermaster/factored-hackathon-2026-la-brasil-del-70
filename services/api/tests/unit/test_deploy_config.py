@@ -283,3 +283,36 @@ def test_the_smoke_test_covers_every_workflow_in_both_languages() -> None:
     languages = {flow.name.rsplit("(", 1)[1].rstrip(")") for flow in module.FLOWS}
     assert languages == {"es", "pt"}
     assert any(flow.outcomes == frozenset({"abstained"}) for flow in module.FLOWS)
+
+
+def test_qdrant_is_an_opt_in_internal_service_with_a_read_only_root_and_a_health_check() -> None:
+    qdrant = SERVICES["qdrant"]
+    assert qdrant["profiles"] == ["rag"]
+    assert re.fullmatch(r"qdrant/qdrant:v[0-9.]+-unprivileged@sha256:[0-9a-f]{64}", qdrant["image"])
+    assert qdrant["user"] == "1000:1000"
+    assert qdrant["read_only"] is True
+    assert qdrant["networks"] == ["backend"]
+    assert COMPOSE["networks"]["backend"].get("internal") is True
+    assert "ports" not in qdrant
+    assert "secrets" not in qdrant
+    assert qdrant["deploy"]["resources"]["limits"]["memory"] == "512M"
+    assert qdrant["environment"]["QDRANT__TELEMETRY_DISABLED"] == "true"
+    assert set(qdrant["volumes"]) == {"qdrant-storage:/qdrant/storage", "qdrant-snapshots:/qdrant/snapshots"}
+    assert {entry.split(":", 1)[0] for entry in qdrant["tmpfs"]} == {"/tmp", "/qdrant/init"}  # noqa: S108
+    assert qdrant["environment"]["QDRANT_INIT_FILE_PATH"].startswith("/qdrant/init/")
+    test = " ".join(qdrant["healthcheck"]["test"])
+    assert "/dev/tcp/127.0.0.1/6333" in test
+    assert "/readyz" in test
+
+
+def test_the_api_selects_bm25_unless_the_rag_settings_are_given() -> None:
+    environment = _env("api")
+    assert environment["RETRIEVAL_RETRIEVER"] == "${RETRIEVAL_RETRIEVER:-bm25}"
+    assert environment["RETRIEVAL_QDRANT_URL"] == "${RETRIEVAL_QDRANT_URL:-}"
+    assert "qdrant" not in SERVICES["api"].get("depends_on", {})
+
+
+def test_prod_sh_starts_and_stops_the_rag_profile() -> None:
+    script = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
+    assert '[[ "${RAG:-0}" == "1" ]] && flags+=(--profile rag)' in script
+    assert script.count("--profile ollama --profile rag") == 2

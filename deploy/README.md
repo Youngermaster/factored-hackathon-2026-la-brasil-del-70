@@ -6,7 +6,7 @@ Everything needed to run the system outside the Python and web packages: the dev
 
 | Path | Purpose |
 |---|---|
-| `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
+| `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs`, `ollama`, and `rag` profiles |
 | `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
 | `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
 | `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker); continuous deployment: `setup-github-oidc.sh` (the one-time OIDC identity), `run-on-vm.sh` and `vm-deploy.sh` (release or roll back through run-command) |
@@ -256,6 +256,39 @@ LLM_TIMEOUT_SECONDS=60
 ```
 
 Then start with `OLLAMA=1 deploy/prod.sh up` and pull the model once: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod --profile ollama exec ollama ollama pull qwen2.5:7b-instruct` (about 4.7 GB). The model costs nothing per token (verified entry in the price table).
+
+## Knowledge retrieval with Qdrant
+
+Informational questions are answered from the policy clauses by BM25 in the API process (the default,
+`RETRIEVAL_RETRIEVER=bm25`). The `rag` profile adds Qdrant, a vector index of the same clauses embedded with Azure
+OpenAI `text-embedding-3-small` ([ADR 0047](../docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md)). The
+evaluation and the pre-registered switching rule are in [retrieval.md](../docs/evaluation/retrieval.md).
+
+The service: the `qdrant/qdrant` unprivileged image pinned by digest, uid 1000, a read-only root with named volumes
+for its storage and snapshots, every capability dropped, 0.5 CPU and 512 MB, the internal `backend` network only (no
+published port, no egress), and a readiness health check. It holds derived data only, so `backup` skips it and the
+indexing command rebuilds it. Without an API key every container on `backend` can reach it; it holds public synthetic
+policy text only.
+
+Turn it on (after the release that contains it is deployed):
+
+```bash
+# 1. In deploy/.env.production (the embedding call reuses LLM_API_BASE and LLM_API_KEY_PRIMARY):
+RETRIEVAL_RETRIEVER=qdrant_hybrid       # or qdrant; bm25 turns it off again
+RETRIEVAL_QDRANT_URL=http://qdrant:6333 # plain http is accepted only for a private-network host
+
+# 2. Start Qdrant with the stack, then build the collection inside the api container (it has the key and egress;
+#    the job containers have no egress). Running it again rewrites the same points.
+RAG=1 deploy/prod.sh up
+docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod \
+  exec api bank-agent index qdrant
+```
+
+The API starts even when Qdrant or the collection is missing: it logs `retrieval_vector_index_unavailable`, and every
+informational question is answered by BM25 until the collection exists. A failure of the embedding call or the store
+at run time also answers with BM25 (`bank.retrieval.fallbacks` counts it by error code). Continuous deployment passes
+no profile, so it neither updates nor removes the `qdrant` container; `RAG=1 deploy/prod.sh up` does. After a policy
+pack change, run the indexing command again: the collection name carries the pack version.
 
 ## Deploy
 
