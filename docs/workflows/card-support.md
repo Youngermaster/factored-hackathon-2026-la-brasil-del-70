@@ -137,6 +137,8 @@ sequenceDiagram
 
 Scenarios 13 to 17 and follow-ups run on both backends (`services/api/tests/integration/workflows/test_card_and_routing.py`, `test_denials_and_follow_ups.py`). Selection regressions in `test_card_selection_evidence.py` cover invented model hints and explicit customer choices in es and pt on both backends. `test_card_block_follow_ups.py` covers selecting another card after a status answer, cancellation followed by a new request, and contradictory type and ending hints.
 
+`services/api/tests/unit/application/workflows/test_qa_card_regressions.py` (production QA, 2026-10-05) covers a status follow-up that names no card (answered again for the same card), a block request after it, and a block request typed while choosing a card, which keeps the request and reason and chooses through the normal selection.
+
 ## Limitations
 
 - Card selection uses the deterministic Spanish and Portuguese type and ending recognizers. Unrecognized phrasings require clarification even if the model proposes a card.

@@ -176,6 +176,8 @@ sequenceDiagram
 
 Scenarios 24 to 29 with variants run on both backends (`test_credit_workflow.py`, `test_credit_edges.py`); `test_credit_separation.py` drives every credit path with a recording `FakeLLM` (understanding, phrasing, and summaries on) and asserts that no prompt receives a profile or estimate value; `test_credit_properties.py` is the Hypothesis property over profile gaps and estimator outcomes; `test_credit_wording.py` scans every template for approval wording.
 
+`services/api/tests/unit/application/workflows/test_qa_credit_regressions.py` (production QA, 2026-10-05) covers approval questions and injected approval statements (`credit.no_decision` with `CRE-ALL-3` and `CRE-ALL-1`, at UNDERSTAND, and before the pending question at COLLECT_APPLICATION_FACTS and EXPLAIN_ELIGIBILITY), natural intake acceptance (a leading filler, `regístrala`), the intake confirmation without `INF-ALL-3`, the catalog list for a text naming several products, and the review button staying a short yes that the gate leaves to the credit handler.
+
 ## Limitations
 
 - The default estimator is a score-band baseline with no trained label; its intervals are wide by design and not calibrated. The learned estimators are cross-sectional and weak (ADR 0030), and with them every first-time applicant is out of distribution and goes to review.

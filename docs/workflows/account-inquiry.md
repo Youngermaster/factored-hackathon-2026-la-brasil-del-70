@@ -129,6 +129,8 @@ sequenceDiagram
 
 Scenarios 19 to 23 with language variants run on both backends (`services/api/tests/integration/workflows/test_account_inquiry.py`); the period table and slots are unit tests (`tests/unit/application/understanding/`).
 
+Production QA regressions (2026-10-05) are in `services/api/tests/unit/application/workflows/test_qa_account_regressions.py`: relative periods count from the earlier of today and the data as-of date (`reference_day`), so a clock past the data cut still summarizes the right month; colloquial contested balances escalate; a record without a payee shows a localized label instead of `-`; pt statements agree in gender (`PRODUCT_OF_YOUR`); and the balance as-of date never passes the data as-of date.
+
 ## Limitations
 
 - The data is a monthly snapshot: nothing after the as-of date appears, and statements have no opening or closing balances.
