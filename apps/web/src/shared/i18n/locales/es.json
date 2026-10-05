@@ -120,6 +120,7 @@
   "layout": {
     "consoleNav": "Navegación de la consola",
     "overview": "Resumen",
+    "supervision": "Supervisión",
     "dashboard": "Dashboard",
     "inbox": "Bandeja",
     "creditApplications": "Solicitudes de crédito",
@@ -149,6 +150,7 @@
     "heading": "Resumen",
     "agentBody": "Atiendes traspasos estructurados: hechos verificados, acciones realizadas, base de política y preguntas abiertas. Nunca la transcripción completa.",
     "evaluatorBody": "Revisas registros de ejecución y resultados de evaluación offline, siempre con las cifras por flujo junto al total.",
+    "supervisionBody": "Modelos en servicio y su evidencia offline, quién decide cada paso, evaluación por flujo y estado del servicio.",
     "dashboardBody": "Indicadores ejecutivos, comparación de sistemas, desempeño por flujo y cortes de calidad.",
     "inboxBody": "Traspasos con hechos verificados, acciones, política y preguntas abiertas. Toma y resuelve.",
     "applicationsBody": "Solicitudes registradas para revisión humana, con su evaluación y su conversación de origen.",
@@ -985,6 +987,279 @@
     "interval": "IC 95 %: {{low}} a {{high}}",
     "upperBound": "cero eventos, límite superior 95 %: {{high}}",
     "ms": "{{value}} ms"
+  },
+  "supervision": {
+    "heading": "Supervisión de modelos y operación",
+    "intro": "Qué modelos sirven hoy y con qué evidencia, quién decide cada paso y en qué estado está el servicio. Solo configuración y evidencia publicada: ningún dato de clientes.",
+    "restricted": "Acceso de evaluación",
+    "servingSince": "Configuración registrada al iniciar el proceso: {{time}}",
+    "loading": "Cargando el inventario de modelos",
+    "error": "No pudimos cargar el inventario de modelos",
+    "decides": {
+      "title": "Quién decide",
+      "intro": "El modelo propone, la política determinista decide, las herramientas verificadas actúan y las personas atienden los traspasos. Cada paso con la versión que sirve este proceso.",
+      "steps": {
+        "propose": {
+          "title": "El modelo propone",
+          "body": "Clasifica la solicitud, extrae datos y detecta señales. Nunca elige una herramienta ni toma una decisión."
+        },
+        "decide": {
+          "title": "La política decide",
+          "body": "El kernel de políticas aplica reglas y cláusulas versionadas; cada decisión nombra las reglas que usó."
+        },
+        "act": {
+          "title": "Las herramientas actúan",
+          "body": "Solo se informan las acciones cuyo resultado se leyó de vuelta en los registros."
+        },
+        "escalate": {
+          "title": "Las personas atienden",
+          "body": "Lo ambiguo, sensible o que requiere revisión pasa a una persona con un traspaso estructurado."
+        }
+      },
+      "noModel": "Sin modelo de lenguaje: responden las rutas deterministas",
+      "llmLine": "Modelo de lenguaje {{model}}",
+      "componentLine": "{{component}}: {{model}}",
+      "packLine": "Paquete de políticas {{version}}",
+      "workflowsLine": "Flujos: {{workflows}}",
+      "handoffLine": "Traspaso con hechos verificados, acciones, política y preguntas abiertas"
+    },
+    "components": {
+      "router": "Enrutador de intención",
+      "resolver": "Resolución de transacciones",
+      "risk_estimator": "Estimador de riesgo crediticio",
+      "retriever": "Recuperación de políticas",
+      "language_detector": "Detector de idioma",
+      "llm": "Modelo de lenguaje"
+    },
+    "models": {
+      "title": "Modelos en servicio",
+      "intro": "Lo que sirve este proceso, registrado al iniciar. La versión servida siempre es concreta, nunca un alias.",
+      "caption": "Componentes y modelo servido",
+      "component": "Componente",
+      "selected": "Selección configurada",
+      "served": "Modelo servido",
+      "kind": "Tipo",
+      "fallback": "Respaldo",
+      "noFallback": "Ninguno",
+      "none": "Nada en servicio",
+      "alias": "alias {{alias}}",
+      "kinds": {
+        "baseline": "Línea base",
+        "learned": "Entrenado",
+        "unavailable": "No disponible"
+      },
+      "reasons": {
+        "artifact_not_found": "Artefacto no encontrado",
+        "model_unavailable": "Modelo no disponible",
+        "registry_unreadable": "Registro ilegible"
+      },
+      "riskNote": "El estimador de riesgo es interno: su resultado nunca se muestra al cliente ni se envía a un modelo de lenguaje, y la elegibilidad la decide el servicio sintético de reglas."
+    },
+    "offline": {
+      "title": "Evidencia offline de los modelos",
+      "intro": "Partición de prueba retenida sobre datos sintéticos, con intervalos del 95 % cuando el reporte los publica. No son mediciones de producción.",
+      "plotTitle": "{{metric}}, intervalo del 95 %",
+      "plotPoint": "{{model}}: {{value}}",
+      "plotPointInterval": "{{model}}: {{value}}, de {{low}} a {{high}}",
+      "groupUse": "{{component}}: {{use}}",
+      "caption": "{{group}}: métricas por modelo",
+      "model": "Modelo",
+      "serving": "En servicio",
+      "sample": "Partición de {{split}}, {{count}} {{unit}}",
+      "provenance": "Reporte {{report}}, commit {{sha}}, generado el {{generated}}. Ficha del modelo: {{source}}.",
+      "lowerBetter": "menor es mejor",
+      "interval": "{{low}} a {{high}}",
+      "empty": "No hay fichas de modelo publicadas.",
+      "kindHelp": "Provisional: etiquetas del equipo pendientes de revisión humana.",
+      "roles": {
+        "default": "Predeterminado",
+        "champion": "Campeón",
+        "candidate": "Candidato",
+        "reference": "Referencia"
+      },
+      "notes": {
+        "needs_ml_extra": "Requiere el extra ml, fuera de la imagen",
+        "promotion_refused": "Promoción rechazada"
+      },
+      "uses": {
+        "dispute": "aclaraciones",
+        "payment_lookup": "búsqueda de pagos"
+      },
+      "units": {
+        "items": "mensajes",
+        "queries": "consultas",
+        "customers": "clientes"
+      },
+      "splits": {
+        "test": "prueba",
+        "dev": "desarrollo"
+      },
+      "kinds": {
+        "offline": "Offline",
+        "provisional": "Provisional"
+      }
+    },
+    "metrics": {
+      "accuracy": "Exactitud",
+      "macro_f1": "F1 macro",
+      "workflow_accuracy": "Exactitud de flujo",
+      "coverage": "Cobertura",
+      "error_among_covered": "Error al actuar",
+      "ece": "Error de calibración (ECE)",
+      "high_stakes_recall": "Recall de alto impacto",
+      "accuracy_es": "Exactitud en español",
+      "accuracy_pt": "Exactitud en portugués",
+      "top1": "Top 1",
+      "mrr": "MRR",
+      "wrong_transaction_rate": "Transacción equivocada",
+      "wrong_among_auto": "Error entre selecciones automáticas",
+      "roc_auc": "ROC AUC",
+      "pr_auc": "PR AUC",
+      "brier": "Brier",
+      "recall_at_1": "Recall en 1",
+      "abstention_precision": "Precisión de abstención",
+      "abstention_recall": "Recall de abstención",
+      "false_abstention": "Abstención falsa",
+      "latency_p95_ms": "Latencia p95 (ms)"
+    },
+    "promotion": {
+      "title": "Por qué se sirven las líneas base",
+      "intro": "Comparación de punta a punta con una regla fijada antes: un valor predeterminado cambia solo con una mejora en desarrollo cuyos intervalos no se superponen. Es una simulación con clientes simulados, no producción.",
+      "caption": "{{decision}}: configuraciones comparadas",
+      "configuration": "Configuración",
+      "status": "Estado",
+      "served": "En servicio",
+      "notServed": "No servida",
+      "routing": "Enrutamiento correcto",
+      "meta": "Partición de {{split}}, modelo de lenguaje {{model}}, sesión {{session}}, fuente {{source}}.",
+      "verdict": "Resultado: {{outcome}}, porque {{reason}}.",
+      "decisions": {
+        "router_and_resolver_defaults": "Enrutador y resolución de transacciones",
+        "risk_estimator_default": "Estimador de riesgo crediticio"
+      },
+      "outcomes": {
+        "keep_baselines": "se mantienen las líneas base",
+        "keep_baseline": "se mantiene la línea base"
+      },
+      "reasons": {
+        "overlapping_intervals": "los intervalos se superponen",
+        "indicative_eligibility_where_review_expected": "el modelo dio resultados indicativos donde se esperaba revisión humana"
+      }
+    },
+    "evaluation": {
+      "title": "Evaluación de punta a punta",
+      "intro": "Resolución automática segura por flujo y sistema con su intervalo del 95 %, y el costo por resolución al lado. Primero los cuatro flujos, luego el total.",
+      "caption": "Corrida {{run}}: resolución automática segura y costo por resolución",
+      "workflow": "Flujo",
+      "aggregate": "Total",
+      "rate": "{{system}}: resolución segura",
+      "cost": "{{system}}: costo por resolución",
+      "meta": "Datos {{dataset}}, generado el {{generated}}, commit {{sha}}.",
+      "costNote": "El costo es el que registró la corrida con el modelo que usó; con un modelo local es cero y no anticipa el costo de un modelo alojado.",
+      "openDashboard": "Abrir el dashboard",
+      "openEvaluation": "Abrir la evaluación completa",
+      "empty": "Todavía no hay una corrida publicada con el sistema propuesto.",
+      "error": "No pudimos cargar los resultados de evaluación"
+    },
+    "llm": {
+      "title": "Modelo de lenguaje",
+      "intro": "Entiende y redacta dentro de límites; nunca decide. Los precios por millón de tokens son los que usan el control de presupuesto y las métricas de costo.",
+      "none": "Sin modelo configurado: responden las rutas deterministas.",
+      "provider": "Proveedor",
+      "caption": "Modelos configurados y base de precio",
+      "role": "Papel",
+      "model": "Modelo",
+      "basis": "Base de precio",
+      "input": "Entrada, USD por millón",
+      "output": "Salida, USD por millón",
+      "listedOn": "Precio leído el",
+      "notListed": "Sin precio publicado",
+      "roles": {
+        "primary": "Principal",
+        "fallback": "Respaldo"
+      },
+      "bases": {
+        "verified": "Verificado",
+        "unverified": "Sin verificar, con margen",
+        "unknown_model": "Sin precio, tope con margen"
+      },
+      "features": "Funciones del modelo",
+      "understanding": "Comprensión: datos y señales",
+      "phrasing": "Redacción de respuestas",
+      "handoff_summary": "Resumen de traspaso",
+      "on": "Activa",
+      "off": "Inactiva",
+      "limits": "Límites",
+      "dailyBudget": "Presupuesto diario",
+      "conversationBudget": "Presupuesto por conversación",
+      "sessionTokens": "Tokens por sesión",
+      "multiplier": "Margen para precios sin verificar",
+      "multiplierValue": "{{value}} veces",
+      "promptsCaption": "Versiones de prompt",
+      "prompt": "Prompt",
+      "purpose": "Uso",
+      "state": "Estado",
+      "purposes": {
+        "understanding": "Comprensión",
+        "phrasing": "Redacción",
+        "handoff_summary": "Resumen de traspaso",
+        "not_called_by_engine": "El motor no lo llama"
+      }
+    },
+    "live": {
+      "title": "Operación en vivo",
+      "intro": "Nivel de degradación del servicio ahora. Las series en vivo de turnos, resultados, latencia, traspasos y costo están en Grafana, separadas de la evaluación offline.",
+      "level": "Nivel",
+      "status": "Estado",
+      "perWorker": "Estado del proceso que respondió; con dos procesos puede variar entre consultas.",
+      "budget": "Presupuesto diario de modelo usado",
+      "reasons": "Motivos",
+      "noReasons": "Sin motivos de degradación",
+      "templateOnly": "Solo plantillas",
+      "yes": "Sí",
+      "no": "No",
+      "componentsCaption": "Estado de cada dependencia",
+      "grafana": "Abrir el tablero de Grafana",
+      "error": "No pudimos leer el estado del servicio",
+      "levels": {
+        "L0": "L0: normal",
+        "L1": "L1: proveedor de respaldo",
+        "L2": "L2: solo plantillas",
+        "L3": "L3: líneas base de modelos",
+        "L4": "L4: base de datos no disponible"
+      },
+      "statuses": {
+        "normal": "Normal",
+        "degraded": "Degradado",
+        "unavailable": "No disponible"
+      },
+      "components": {
+        "llm_primary": "Modelo principal",
+        "llm_fallback": "Modelo de respaldo",
+        "llm_budget": "Presupuesto de modelo",
+        "models": "Modelos aprendidos",
+        "credit_catalog": "Catálogo de crédito",
+        "database": "Base de datos"
+      },
+      "states": {
+        "ok": "Disponible",
+        "degraded": "Degradado",
+        "unavailable": "No disponible",
+        "disabled": "Desactivado"
+      },
+      "reasonCodes": {
+        "llm_budget_exhausted": "Presupuesto de modelo agotado",
+        "llm_primary_unavailable": "Modelo principal no disponible",
+        "llm_unavailable": "Ningún modelo disponible",
+        "learned_models_unavailable": "Modelos aprendidos no disponibles",
+        "credit_catalog_unavailable": "Catálogo de crédito no disponible",
+        "database_unavailable": "Base de datos no disponible"
+      }
+    },
+    "provenance": {
+      "title": "Procedencia y límites",
+      "body": "Offline: partición de prueba retenida. Provisional: etiquetas del equipo pendientes de revisión humana. Simulado: corridas con clientes simulados y un evaluador automático. Ninguna cifra de esta vista es una medición de producción ni una proyección."
+    }
   },
   "demo": {
     "title": "Guía de demostración",

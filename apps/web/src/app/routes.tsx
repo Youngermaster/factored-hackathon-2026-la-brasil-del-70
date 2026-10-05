@@ -107,6 +107,12 @@ export function createRoutes(services: AppServices): RouteObject[] {
               }),
             },
             {
+              path: 'supervision',
+              lazy: async () => ({
+                Component: (await import('@/pages/supervision/SupervisionPage')).SupervisionPage,
+              }),
+            },
+            {
               path: 'dashboard',
               lazy: async () => ({
                 Component: (await import('@/pages/dashboard/AdminDashboardPage'))

@@ -14,6 +14,7 @@ export {
   CopyIcon as CopyIcon,
   FileTextIcon as DocumentIcon,
   FunnelSimpleIcon as FilterIcon,
+  GaugeIcon as GaugeIcon,
   InfoIcon as InfoIcon,
   ListMagnifyingGlassIcon as TraceIcon,
   MagnifyingGlassIcon as SearchIcon,
