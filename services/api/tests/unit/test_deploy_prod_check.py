@@ -143,3 +143,46 @@ def test_up_refuses_before_starting_anything_when_a_hosted_key_is_empty(tmp_path
     assert "app/LLM_API_KEY_PRIMARY" in result.stderr
     calls = log.read_text(encoding="utf-8") if log.exists() else ""
     assert " up " not in f" {calls} "
+
+
+def _logging_docker(log: Path) -> str:
+    return f'#!/usr/bin/env bash\nprintf "%s\\n" "$*" >> "{log}"\nexit 0\n'
+
+
+def test_llm_probe_stages_checks_and_runs_one_throwaway_api_container(tmp_path: Path) -> None:
+    settings = {"LLM_PROVIDER": "litellm", "LLM_PRIMARY_MODEL": "azure/gpt-4.1-mini", "LLM_API_KEY_PRIMARY": _key()}
+    env_file, values = _env_file(tmp_path, settings)
+    log = tmp_path / "docker.log"
+
+    result = _prod(tmp_path, env_file, "llm-probe", _logging_docker(log))
+
+    assert result.returncode == 0, result.stderr
+    assert (tmp_path / "staged" / "app" / "LLM_API_KEY_PRIMARY").stat().st_size > 0
+    calls = log.read_text(encoding="utf-8").splitlines()
+    assert calls[-1].endswith("run --rm --no-deps -T api bank-agent llm-probe")
+    assert not any(" up " in f" {call} " for call in calls)
+    output = result.stdout + result.stderr
+    assert not any(value in output for value in values.values() if value)
+
+
+def test_llm_probe_refuses_before_any_container_when_the_key_file_is_empty(tmp_path: Path) -> None:
+    env_file, _ = _env_file(tmp_path, {"LLM_PROVIDER": "litellm", "LLM_PRIMARY_MODEL": "azure/gpt-4.1-mini"})
+    log = tmp_path / "docker.log"
+
+    result = _prod(tmp_path, env_file, "llm-probe", _logging_docker(log))
+
+    assert result.returncode != 0
+    assert "app/LLM_API_KEY_PRIMARY" in result.stderr
+    calls = log.read_text(encoding="utf-8") if log.exists() else ""
+    assert "llm-probe" not in calls
+
+
+def test_help_lists_every_command_including_the_last_header_line(tmp_path: Path) -> None:
+    env_file, _ = _env_file(tmp_path, {})
+
+    result = _prod(tmp_path, env_file, "help")
+
+    assert result.returncode == 0
+    assert "deploy/prod.sh llm-probe" in result.stdout
+    assert result.stdout.rstrip().endswith("secret value.")
+    assert "set -euo pipefail" not in result.stdout

@@ -7,7 +7,7 @@ Everything needed to run the system outside the Python and web packages: the dev
 | Path | Purpose |
 |---|---|
 | `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
-| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `llm-probe`, `status`, `logs`, `down`, `destroy` |
 | `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
 | `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker); continuous deployment: `setup-github-oidc.sh` (the one-time OIDC identity), `run-on-vm.sh` and `vm-deploy.sh` (release or roll back through run-command) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |

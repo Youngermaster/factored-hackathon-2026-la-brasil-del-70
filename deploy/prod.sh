@@ -21,6 +21,9 @@
 #   deploy/prod.sh rollback         start the previously deployed image tag again
 #   deploy/prod.sh purge            run the retention purge once now
 #   deploy/prod.sh smoke            run deploy/smoke_test.sh against PUBLIC_ORIGIN
+#   deploy/prod.sh llm-probe        stage and check, then call each configured model once in es and once in pt from a
+#                                   throwaway API container with the env file's settings (running services untouched);
+#                                   prints outcomes and latencies, never a key, prompt, or reply
 #   deploy/prod.sh status | logs [service]
 #   deploy/prod.sh down             stop the stack, keep the data
 #   deploy/prod.sh destroy --yes    take the demo down for good: containers, volumes (database, certificates), images
@@ -337,6 +340,17 @@ cmd_smoke() {
   "${ROOT}/deploy/smoke_test.sh" "$(env_value PUBLIC_ORIGIN)" "$@"
 }
 
+cmd_llm_probe() {
+  # The preflight for a model change: edit the env file, run this, then `up` only if every call passed. The throwaway
+  # container reads the edited env file and the freshly staged keys; the running API keeps its own until `up`.
+  cmd_stage_secrets
+  cmd_check
+  local tag
+  tag="$(current_tag)"
+  docker image inspect "bank-agent-api:${tag}" > /dev/null 2>&1 || fail "no image bank-agent-api:${tag}; run build first"
+  compose run --rm --no-deps -T api bank-agent llm-probe
+}
+
 cmd_down() {
   compose --profile jobs --profile obs --profile ollama down
 }
@@ -371,11 +385,12 @@ main() {
     rollback) cmd_rollback ;;
     purge) cmd_purge ;;
     smoke) cmd_smoke "$@" ;;
+    llm-probe) cmd_llm_probe ;;
     status) compose ps ;;
     logs) compose logs --tail 200 "$@" ;;
     down) cmd_down ;;
     destroy) cmd_destroy "$@" ;;
-    *) sed -n '2,32p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+    *) awk 'NR == 1 { next } /^#/ { sub(/^# ?/, ""); print; next } { exit }' "${BASH_SOURCE[0]}" ;;
   esac
 }
 
