@@ -60,15 +60,15 @@ Rules for editing: English, plain words, no em dashes, no number that is not in 
 
 ## evidence
 
-<!-- video 2:12 to 2:36, slide 5: arrive, clicks 1 to 3. Numbers from data/metrics.yml: the phase 14b test run, simulated on qwen2.5:7b-instruct -->
+<!-- video 2:12 to 2:36, slide 5: arrive, clicks 1 to 3. Numbers from data/metrics.yml: the hosted test run, simulated on azure/gpt-4.1-mini -->
 
-[arrive] [Julián Valencia] Three hundred and four held-out cases, three systems, simulated on a small local model.
+[arrive] [Julián Valencia] Three hundred and four held-out cases, three systems, simulated on a hosted model.
 
-[click 1] Per workflow first: card support is not ahead of the menu and rules bot yet.
+[click 1] Per workflow first: card support ties the menu and rules bot.
 
-[click 2] In aggregate, fifty-eight percent safe automated resolution, against forty-two and thirteen.
+[click 2] In aggregate, sixty-one percent safe automated resolution, against forty-six and twenty-three.
 
-[click 3] Eight unsafe outcomes, against ninety for the naive LLM agent.
+[click 3] One graded unsafe outcome, a confirmed second write, against ninety-two for the naive LLM agent.
 
 ## close
 
@@ -76,7 +76,7 @@ Rules for editing: English, plain words, no em dashes, no number that is not in 
 
 [arrive] [Miguel Correa] When something fails, it steps down, and writes never fail open.
 
-[click 2] We cannot claim real data or a hosted-model evaluation yet.
+[click 2] We cannot claim real data or human-reviewed labels yet.
 
 [click 4] The model understands. Code decides. Evidence proves it.
 

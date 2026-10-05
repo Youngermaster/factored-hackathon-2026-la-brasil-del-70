@@ -101,8 +101,8 @@ deploy.url: {status: pending, kind: offline, source: "deploy/README.md (phase 16
 deploy.url: {value: "https://...", kind: offline, source: deploy/README.md}
 
 # a rate with its interval, and a count with its denominator:
-eval.sar.all.p: {value: 58.2, display: "177/304", lo: 53, hi: 64, kind: simulation, source: docs/evaluation/results.md}
-eval.unsafe.p: {value: 8, of: 304, display: "8 of 304", lo: 1.1, hi: 5.1, kind: simulation, source: docs/evaluation/results.md}
+eval.sar.all.p: {value: 60.9, display: "185/304", lo: 55, hi: 66, kind: simulation, source: docs/evaluation/results.md}
+eval.unsafe.p: {value: 1, of: 304, display: "1 of 304", lo: 0.0, hi: 1.8, kind: simulation, source: docs/evaluation/results.md}
 ```
 
 - `kind` is one of `offline`, `provisional`, `projection`, `simulation`, `synthetic`. Scenes print it next to the source, because the brief requires offline measurements, simulations and projections to be labeled apart. The evidence slides print "simulation on a local open model (qwen2.5:7b-instruct)".
