@@ -7,12 +7,13 @@ pass also shows that the production service definition can run. Telemetry is off
 """
 
 import re
+import time
 from collections.abc import Iterator
 from pathlib import Path
 
+import httpx
 import pytest
 from testcontainers.core.container import DockerContainer
-from testcontainers.core.wait_strategies import HttpWaitStrategy
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 QDRANT_PORT = 6333
@@ -40,7 +41,6 @@ def qdrant_url() -> Iterator[str]:
             security_opt=["no-new-privileges:true"],
             user="1000:1000",
         )
-        .waiting_for(HttpWaitStrategy(QDRANT_PORT, "/readyz").for_status_code(200))
     )
     # Mount options per path (docker's tmpfs mapping); the storage volumes are tmpfs here, named volumes in production.
     container.tmpfs.update(
@@ -54,4 +54,25 @@ def qdrant_url() -> Iterator[str]:
     with container:
         host = container.get_container_host_ip()
         port = container.get_exposed_port(QDRANT_PORT)
-        yield f"http://{host}:{port}"
+        url = f"http://{host}:{port}"
+        wait_until_ready(url)
+        yield url
+
+
+def wait_until_ready(url: str, timeout_seconds: float = 60.0) -> None:
+    """Poll ``/readyz`` with a client closed on every attempt.
+
+    testcontainers' HTTP wait strategy leaves sockets open when Qdrant resets connections while it starts, and pytest
+    turns those ResourceWarnings into errors in unrelated tests.
+    """
+    deadline = time.monotonic() + timeout_seconds
+    while True:
+        try:
+            with httpx.Client(timeout=2.0) as client:
+                if client.get(f"{url}/readyz").status_code == 200:
+                    return
+        except httpx.HTTPError:
+            pass
+        if time.monotonic() > deadline:
+            raise AssertionError(f"Qdrant at {url} was not ready within {timeout_seconds:.0f} s")
+        time.sleep(0.5)

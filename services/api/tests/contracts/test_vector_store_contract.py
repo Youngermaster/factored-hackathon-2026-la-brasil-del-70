@@ -37,6 +37,10 @@ def store(request: pytest.FixtureRequest) -> Iterator[VectorStore]:
     yield built
     for name in set(built.list_collections()) - before:
         built.delete_collection(name)
+    # The REST adapter owns an httpx client; an unclosed one leaks sockets that pytest reports as errors elsewhere.
+    close = getattr(built, "close", None)
+    if callable(close):
+        close()
 
 
 @pytest.fixture
