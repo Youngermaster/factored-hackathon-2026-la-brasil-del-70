@@ -80,6 +80,9 @@ def retrieval(
     qdrant_url: str = typer.Option("", help="Search a real Qdrant at this URL instead of the in-memory store."),
 ) -> None:
     """Compare BM25, dense, hybrid, Qdrant, and Qdrant hybrid retrieval on the relevance judgments; write the report."""
+    # Stamp the report with the commit and time at start: loading a local model can take minutes, and edits made
+    # meanwhile must not mark the run's inputs as dirty.
+    started_at, commit = generated_now(), git_sha()
     use_dense = ml_extra_installed() if dense is None else dense
     use_qdrant = (record_embeddings or embeddings.is_file()) if qdrant is None else qdrant
     embedder = query_embedder = None
@@ -98,8 +101,8 @@ def retrieval(
             policy_dir=policy_dir,
             output=output,
             tracker=MlflowTracker(tracking_uri) if mlflow else NullTracker(),
-            generated_at=generated_now(),
-            git_sha=git_sha(),
+            generated_at=started_at,
+            git_sha=commit,
             embedder=embedder,
             query_embedder=query_embedder,
             embedder_kind="sentence-transformers" if use_dense else None,
