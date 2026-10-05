@@ -265,4 +265,4 @@ Commits on `e2e-verify`:
 | `7c5d2a4` | fix(infra): let the CSP check pass on a freshly seeded stack |
 | `c018f25` | fix(infra): pass the local CA flags through make smoke and csp-check |
 
-Needs a human decision (each has a BACKLOG row): re-recording the evaluation cassettes so a replay reproduces a run; the time zone of the as-of instant in the answer cards; the model choosing a card the customer did not name. The English default assistant name is an accepted low-priority localization follow-up for the secondary assistant-profile feature. Also for the human: `slides/package.json` declares `"license": "Apache-2.0"` while the repository states "All rights reserved; no license is granted".
+Needs a human decision (each has a BACKLOG row): re-recording the evaluation cassettes so a replay reproduces a run; the time zone of the as-of instant in the answer cards; the model choosing a card the customer did not name. The English default assistant name is an accepted low-priority localization follow-up for the secondary assistant-profile feature.

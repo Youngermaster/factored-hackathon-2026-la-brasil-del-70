@@ -1085,7 +1085,7 @@
       "agent": "open the inbox, filter, claim a handoff, and resolve it; also review the credit applications.",
       "evaluator": "paste a conversation reference into Records to see what the customer never sees, and open Evaluation."
     },
-    "reset": "The data is synthetic. Actions are recorded: reload the demo data with make seed before recording."
+    "reset": "The data is synthetic and shared by everyone using this demo: an action someone already took, such as a blocked card or an opened dispute, stays until the team reloads the demo data."
   },
   "about": {
     "title": "What this assistant does",

@@ -6,15 +6,15 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 
 | Link | Where |
 |---|---|
-| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)); no hosted model is configured yet, so every workflow takes its deterministic path |
+| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). Since 2026-10-05 it calls Azure OpenAI (`gpt-4.1-mini`, with `gpt-4o` as the fallback) only to extract details and detect escalation signals; deterministic policy decides, and every workflow keeps its deterministic path when no model can answer |
 | Video pitch | Pending, 3:00 at most: the [timed shot list](docs/demo/video-plan.md), the [narration by speaker](docs/demo/video-monologue.md), and the [practice cases](docs/demo/practice-cases.md) |
-| Slides | [slides/](slides/README.md) (Slidev; `pnpm export:final` builds the six-slide PDF) |
+| Slides | [slides/](slides/README.md) (Slidev): six slides; `pnpm export:final` builds the six-page pitch PDF (one page per slide, its build-up frames in order) and a 32-page version with one page per click |
 | Demo guide for judges | `/demo` in the running app (demo mode), and [docs/demo/script.md](docs/demo/script.md) |
 | Evaluation results | [docs/evaluation/results.md](docs/evaluation/results.md) and [failures.md](docs/evaluation/failures.md) |
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
 | Limitations | [LIMITATIONS.md](LIMITATIONS.md) |
 
-**Deployment status (2026-10-04).** The demo at <https://la-brasil-del-70.westus2.cloudapp.azure.com> runs `main` on one Azure VM (`Standard_B2as_v2`, Docker Compose behind Caddy, Let's Encrypt), with the production secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). Every push to `main` that passes CI is built once, pushed to GHCR, and released on the VM by the deploy workflow over Azure OpenID Connect, with a smoke test, a CSP check, and an automatic rollback ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). The observability profile (OpenTelemetry, Prometheus, Grafana, Jaeger) runs on the same VM and is reached through an SSH tunnel. No hosted model is configured yet; a key added to the vault switches it on without a code change. A teammate's earlier VM (`bank-agent-yzaf9.westus2.cloudapp.azure.com`, pull request 27, hosted `gemini-3.1-flash-lite`) runs an older build.
+**Deployment status (2026-10-05).** The demo at <https://la-brasil-del-70.westus2.cloudapp.azure.com> runs `main` on one Azure VM (`Standard_B2as_v2`, Docker Compose behind Caddy, Let's Encrypt), with the production secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). Every push to `main` that passes CI is built once, pushed to GHCR, and released on the VM by the deploy workflow over Azure OpenID Connect, with a smoke test, a CSP check, and an automatic rollback ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). The observability profile (OpenTelemetry, Prometheus, Grafana, Jaeger) runs on the same VM and is reached through an SSH tunnel; a public read-only Grafana dashboard and metadata-only Langfuse tracing are planned, not live. The language model is Azure OpenAI in the team's own resource group (`aoai-la70-bank-agent`, Sweden Central): `gpt-4.1-mini` answers, `gpt-4o` takes over when the primary fails after its retries or while its circuit is open (degradation level L1), both keys are Key Vault secrets like every other, and a daily budget cap and a per-session token limit bound the spend. The model only proposes typed details and escalation signals; the policy kernel, the state machines, and verified tools decide and act.
 
 Escalated customers can continue on the same conversation with an authenticated human service agent. The chat shows truthful waiting and joined states, persists both sides' messages across refreshes, and stays readable after the assigned agent closes it. The [live human-service guide](docs/workflows/human-service.md) includes a two-browser walkthrough; existing databases need `make db-upgrade`.
 
@@ -44,6 +44,33 @@ The contact reasons are coarse (six values), so three of the four mappings to wo
 
 Across all four: identity comes from a trusted test session (one-time codes; a document number alone never proves identity), customer isolation is enforced in the tool layer and again by PostgreSQL row-level security, no money moves, and hidden model reasoning is never stored or shown. Credit keeps conversation handling, the risk estimate (`RiskEstimator`), and eligibility policy (`EligibilityPolicy`) behind separate ports ([credit separation](docs/architecture/credit-separation.md)).
 
+## Who decides
+
+The language model understands and proposes; deterministic policy decides; verified tools act; people handle escalations. Blue is the language model, amber is deterministic code, green is a verified tool, and red is a person.
+
+```mermaid
+flowchart LR
+    msg["Customer message<br/>(es, pt)"] --> understand
+    understand["Language model understands and proposes:<br/>typed details and escalation signals,<br/>validated against a schema"]
+    msg -. "no model available:<br/>rule-based extraction" .-> decide
+    understand -- "a proposal, never a decision" --> decide
+    decide["Deterministic policy decides:<br/>versioned rules and clauses,<br/>state machine, per-state tool allowlist"]
+    decide -- "allowed write, after<br/>confirmation and step-up" --> act["Verified tools act:<br/>idempotent write,<br/>then a read-back"]
+    decide -- "clarify or abstain,<br/>with the clause" --> reply["Reply from es and pt templates,<br/>checked by the grounding verifier"]
+    act -- "only verified outcomes" --> reply
+    decide -- "an escalation rule fires" --> people["People handle escalations:<br/>structured handoff,<br/>live human service"]
+    classDef model fill:#dbeafe,stroke:#1d4ed8,color:#0f172a
+    classDef code fill:#fef3c7,stroke:#b45309,color:#0f172a
+    classDef tool fill:#dcfce7,stroke:#15803d,color:#0f172a
+    classDef person fill:#fee2e2,stroke:#b91c1c,color:#0f172a
+    class understand model
+    class decide,reply code
+    class act tool
+    class people person
+```
+
+The model never sees the customer's credit profile or risk estimate, never chooses a tool, a state, or a customer, and never receives document numbers, names, emails, phones, or addresses. Every turn leaves an execution record with the rule ids, clause versions, tool calls and their verification, and the model and prompt versions ([architecture overview](docs/architecture/overview.md), [prompt injection](docs/security/prompt-injection.md)).
+
 ## Architecture
 
 ```mermaid
@@ -62,7 +89,7 @@ flowchart LR
     web -- "HTTP, generated types" --> api --> engine
     engine --> policy
     engine --> tools --> pg
-    engine --> gateway --> llm["Model provider<br/>(fake, local Ollama, or hosted)"]
+    engine --> gateway --> llm["Model provider<br/>(fake, local Ollama, or Azure OpenAI)"]
     data["Data platform<br/>DuckDB + dbt + Pandera"] -- "seed from gold" --> pg
     ml["Learned models<br/>router, resolver, risk"] -- "digest-checked artifacts" --> engine
     evals["Evaluation harness<br/>B0, B1, P on held-out scenarios"] -- "composition root" --> engine
@@ -98,13 +125,13 @@ What the intervals support: P above B1 in every workflow; P above B0 in aggregat
 
 **Cost.** Measured: 0.00 USD per attempted case and per safe automated resolution, because the local model has a zero price (hardware and energy not counted). **Projected, not measured:** P's recorded tokens priced at the unverified `claude-sonnet-5` list price give 0.0052 USD per attempted case and 0.0076 USD per safe automated resolution in aggregate; per workflow (attempted / resolution) account inquiry 0.0044 / 0.0053, card support 0.0047 / 0.0065, dispute 0.0064 / 0.0118, credit 0.0053 / 0.0081 USD.
 
-**Freshness.** Since `6bc2e9d` the policy pack and the price table are unchanged. Three other parts changed, and the run was not repeated:
+**Freshness.** Since `6bc2e9d` the policy pack and the price entries the projection uses are unchanged (entries for other models were added). Three other parts changed, and the run was not repeated:
 
 - **Prompts.** `detect_escalation_signals@2` is now the selected version. It separates stolen or cloned products and block requests from actual distress, the main cause of card support's unnecessary transfers. It has not been measured on dev or test yet.
 - **Engine.** Telemetry, the degradation ladder, and one clarification line (phase 15); the per-session eligibility assessment limit and the agent credit moves (phase 16); masking of instruction-like merchant text and record identifiers in replies and confirmations, and segmented case-id parsing (phase 14c follow-up); the live human service ([ADR 0026](docs/adr/0026-live-agent-joins-escalated-conversation.md)).
 - **Harness.** The account-data and income graders no longer raise the false positives described above, and the simulated customer's synthetic instructions are no longer redacted. The published counts stay as graded.
 
-`make eval-smoke` passes on the current code in CI. The deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured. A rerun on the current code, with the local or a hosted model, is future work ([BACKLOG](docs/BACKLOG.md)).
+`make eval-smoke` passes on the current code in CI. Since 2026-10-05 the deployed demo calls Azure OpenAI `gpt-4.1-mini`, which this published run did not measure. A rerun of the same held-out workload on that model is in progress; until it is published, the numbers above are the local-model run ([BACKLOG](docs/BACKLOG.md)).
 
 ## Quickstart
 
@@ -134,7 +161,7 @@ make eval-smoke           # the 12-scenario evaluation smoke suite, no model
 make submission-check     # the pre-submission gates plus the remaining human steps
 ```
 
-Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), a hosted model such as OpenAI (`make api-hosted-llm`, [HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
+Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), a hosted model such as OpenAI or Azure OpenAI (`make api-hosted-llm`, [HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7; Azure also needs `LLM_API_BASE` set to the resource endpoint and `azure/<deployment>` as the model id), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
 
 ## Repository map
 
@@ -162,8 +189,8 @@ Stated in full in [LIMITATIONS.md](LIMITATIONS.md). In short:
 
 - **Four workflows against a depth-over-breadth brief.** Each meets the same depth bar and is evaluated separately, but the per-workflow samples are small (76 cases each, 47 es and 29 pt), and in card support the system does not beat the menu baseline yet.
 - **Synthetic everything.** The organizer data is synthetic; the policy pack, the eligibility rules, and the credit catalog are the team's synthetic documents; the risk estimate is trained on one synthetic snapshot and is not a lending model.
-- **Evidence from a local 7B model.** Every model role in the evaluation ran on `qwen2.5:7b-instruct`; the deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured; the scenarios and their labels are team-written and not yet reviewed by humans; the judge's agreement with human raters is pending; the Portuguese text has had no native review.
-- **Deployment work remaining.** One Azure VM with Docker Compose for the event ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md)); staging the secrets from Azure Key Vault is in review ([pull request 27](https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70/pull/27)). High availability, a real identity provider and one-time-code channel, key management, and a compliance review are future work.
+- **Evidence from a local 7B model.** Every model role in the published evaluation ran on `qwen2.5:7b-instruct`; the deployed demo calls Azure OpenAI `gpt-4.1-mini`, which the published run did not measure; the scenarios and their labels are team-written and not yet reviewed by humans; the judge's agreement with human raters is pending; the Portuguese text has had no native review.
+- **Deployment work remaining.** One Azure VM with Docker Compose for the event ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md)), secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)), and continuous deployment from `main` ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). High availability, a real identity provider and one-time-code channel, a provider-side spending limit, and a compliance review are future work.
 
 ## Data statement
 

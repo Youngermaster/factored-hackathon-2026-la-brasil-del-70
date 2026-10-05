@@ -13,6 +13,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [submission/SUBMISSION.md](submission/SUBMISSION.md) | The submission checklist: what is done and the human steps in order |
 | [submission/email-draft.md](submission/email-draft.md) | The draft email to the organizers (never sent by a session) |
 | [../LIMITATIONS.md](../LIMITATIONS.md) | What the system cannot claim: scope, credit, data, language, evaluation, capacity, deployment, risks |
+| [LEARNINGS.md](LEARNINGS.md) | Lessons from the build, each from the repository's own records: what happened, what caught it, what changed, the lesson |
 | [workflows/README.md](workflows/README.md) | Index of the workflow pages |
 | [security/README.md](security/README.md) | Index of the security documents and the controls on one page |
 
@@ -26,6 +27,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [AGENTS.md](../AGENTS.md) | Guide for every coding agent: precedence, quick start, repository map, enforced rules, recipes for common changes, pitfalls, collaboration |
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
+| [EVALUATION_CRITERIA.md](EVALUATION_CRITERIA.md) | The team's rubric reference: the official evaluation dimensions and submission items, the evidence for each in this repository, and their status |
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes (listed below) |
 | [plans/adr-0026-live-agent.md](plans/adr-0026-live-agent.md) | Current-main and PR reference review, gaps, and implementation increments for live human service in the existing chat |
 | [plans/kickoff-notes.md](plans/kickoff-notes.md) | The team's kickoff notes: roles and the scope decision |
@@ -106,6 +108,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
+| [adr/0043](adr/0043-langgraph-migration.md) | Staged post-hackathon migration of the workflow engine to LangGraph StateGraph (proposed roadmap) |
 | [adr/0044](adr/0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider: one account per environment, keys in Key Vault, the production delta, and how to change models |
 
 ## Exploratory data analysis
@@ -228,7 +231,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [data_platform](../data_platform/README.md) | Data platform: sources, commands, how to add a table or a source adapter |
 | [ml](../ml/README.md) | Learned components |
 | [evals](../evals/README.md) | Evaluation harness |
-| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes (hand-authored fixtures until a provider is chosen) |
+| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes: hand-authored fixtures plus the session 14b recordings on `ollama/qwen2.5:7b-instruct` |
 | [services/api/src/bank_agent/prompts](../services/api/src/bank_agent/prompts/README.md) | Versioned prompts: format, rules, how to add, test, and evaluate one |
 | [deploy](../deploy/README.md) | The production stack, the deployment guide, database roles, and observability configuration |
 | [slides](../slides/README.md) | The pitch deck: commands, structure, colour meaning, numbers from `data/metrics.yml`, export |

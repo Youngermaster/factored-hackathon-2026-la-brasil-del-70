@@ -11,7 +11,7 @@
 The operator confirmed that `rg-bank-agent` belongs to this project and requested a separate VM named
 `vm-bank-database` when the existing `vm-bank-agent` was found to have been created by another operator.
 The existing VM already runs the public application and its own PostgreSQL. Its workloads must remain
-untouched. Nequi remains outside scope. Eastus2 uses all four regional vCPU; westus2 has two of four
+untouched. Unrelated workloads in the subscription remain outside scope. Eastus2 uses all four regional vCPU; westus2 has two of four
 allocated, leaving capacity for the separate two-vCPU data VM.
 
 The full contracted local source and gold tables are already stored privately in the original Blob
@@ -34,7 +34,7 @@ Choose option 2, as instructed by the operator. Deploy `vm-bank-database` and de
 under `rg-bank-agent`, westus2, using `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), Ubuntu 24.04, a 128 GiB
 Standard SSD, Trusted Launch, managed identity, and denied inbound traffic. The deployment script checks
 the authorized operator, tenant, subscription, and both resource-group locations. Its compute template
-contains neither `vm-bank-agent` nor Nequi resources.
+contains neither `vm-bank-agent` nor resources of unrelated workloads.
 
 Reuse the existing private `artifacts` container in eastus2. Give only the new VM identity contributor
 access at that container's scope. Package committed code and use the already verified full source archive.

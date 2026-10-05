@@ -2,7 +2,7 @@
 
 Three cases to rehearse before recording, and to run for anyone who asks to see the system work. Together they cover every acceptance behavior the brief names: a normal path, an ambiguous or unsupported request, and a case that needs a person, in Spanish and Portuguese, with a verified write and a guardrail. The [video plan](video-plan.md) uses all three; the full set of scenarios per workflow is the demo guide (`/demo` in demo mode) and [script.md](script.md).
 
-Run them on a stack with current `main` (the deployed build predates the guardrail fixes; see "Which stack to record" in the video plan), right after a fresh seed: case 2 writes, so it runs once per seed.
+Run them on the deployed demo or on a local stack with current `main` (both include the guardrail fixes; see "Which stack to record" in the video plan), right after a fresh seed: case 2 writes, so it runs once per seed. The deployed demo calls Azure OpenAI `gpt-4.1-mini` to extract details and detect escalation signals, so the glass box lists model calls with tokens and cost; the outcome of each case is decided by the same deterministic rules as on the fake provider.
 
 | Case | Persona | Language | Brief behavior | Evaluation dimension |
 |---|---|---|---|---|

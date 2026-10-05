@@ -2,19 +2,18 @@
 
 The timed shot list for the video pitch: what is on screen, the exact clicks and commands, and who speaks, second by second. This page is the single source of truth for the cut. The spoken words are in the [team monologue](video-monologue.md) (identical to [slides/script.md](../../slides/script.md), checked by `pnpm check:content`); how to record the deck, the audio, and the export settings are in [slides/VIDEO.md](../../slides/VIDEO.md); the longer demo walkthrough for judges is [script.md](script.md).
 
-**Organizer requirements (normative).** A video pitch no longer than 3:00 that demonstrates the working solution and explains the core architectural decisions. The brief also asks to see Spanish and Portuguese, a normal case, an ambiguous or unsupported case, and a case that needs a person. Submissions close 2026-10-05.
+**Organizer requirements (normative).** A video pitch no longer than 3:00 that demonstrates the working solution and explains the core architectural decisions. The brief also asks to see Spanish and Portuguese, a normal case, an ambiguous or unsupported case, and a case that needs a person. Submissions close 2026-10-05; the team's cutoff is 23:59 Colombia time (UTC-5), since the public page gives only the date.
 
 **Target 2:50, hard limit 3:00, demo footage included.** The spoken text takes 2:30 at 150 words per minute; the remaining 20 seconds are typing, model replies, and the pause after each click. Cut waiting time in the edit, never words.
 
 ## Which stack to record (decision for the team)
 
-The deployed demo (<https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Azure VM) runs the current `main` through the deploy workflow, so the guardrail fixes and the live human service are on it; it has no hosted model configured yet (deterministic paths). Record on it after a fresh seed, or on a local stack with the same commit; add a hosted key to Key Vault first if the video should show model calls in the glass box.
+The deployed demo (<https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Azure VM) runs the current `main` through the deploy workflow, so the guardrail fixes and the live human service are on it, and since 2026-10-05 it calls Azure OpenAI `azure/gpt-4.1-mini` (fallback `azure/gpt-4o`) to extract details and detect escalation signals; the glass box lists those model calls with tokens and cost.
 
-- **Recommended: record every live segment on one local stack running current `main`**, with the hosted model and the observability profile on. One stack gives the fixed guardrail replies, the Jaeger trace, and the Grafana panels for the same conversations. Commands in "Setup" below.
-- **Alternative: the team redeploys `main` first** (`deploy/prod.sh update`, then `deploy/prod.sh seed` on a fresh volume, as in [deploy/README.md](../../deploy/README.md)) and records the chat segments against the deployed URL. The backend segment still comes from a local stack or an SSH tunnel to the server's loopback Grafana and Jaeger (`OBS=1 deploy/prod.sh up`).
-- **Never** record the guardrail segment on the deployed build as it is today.
+- **Recommended: record the chat segments on the deployed URL** (the link the judges get), right after `deploy/prod.sh seed`, and the backend segment through the SSH tunnel to the VM's loopback Grafana (3000) and Jaeger (16686) ([deploy/README.md](../../deploy/README.md), "Operate"). A public read-only Grafana dashboard is planned; until it is live, use the tunnel.
+- **Alternative: one local stack on the same commit**, with the hosted model and the observability profile on (Setup below), if the VM or the tunnel misbehaves. One stack gives the guardrail replies, the Jaeger trace, and the Grafana panels for the same conversations.
 
-Whichever is chosen, the close slide names the deployed URL, and the narration never claims the live replies were evaluated: the evaluation ran on the local `qwen2.5:7b-instruct` ([results](../evaluation/results.md)).
+Whichever is chosen, the close slide names the deployed URL, and the narration never claims the live replies were evaluated: the published evaluation ran on the local `qwen2.5:7b-instruct` ([results](../evaluation/results.md)), and the rerun on the deployed model is reported only once it is published.
 
 ## Timeline
 
@@ -44,9 +43,9 @@ If the cut runs long, trim in this order: the second guardrail message (keep the
 | (d1) Handoff | The Portuguese reply, the handoff with verified facts and open questions, and the agent claiming it in the console | Human escalation in Portuguese; AI Engineering (system integration) |
 | (d2) Backend | One trace from HTTP to SQL; Grafana panels with non-zero values | AI Engineering (observability); Data Analytics (live metrics) |
 
-## Setup for the recommended local stack
+## Setup for the alternative local stack
 
-From a clean checkout of current `main`, with `.env` created by `make env` and the hosted model's two values set in it (`LLM_PRIMARY_MODEL`, `LLM_API_KEY_PRIMARY`; [HOW-IT-WORKS](../HOW-IT-WORKS.md) section 7). Writes persist, so start from a fresh database volume: a card can be blocked once per seed.
+From a clean checkout of current `main`, with `.env` created by `make env` and the model values set in it (`LLM_PRIMARY_MODEL=azure/gpt-4.1-mini`, `LLM_API_BASE` set to the Azure OpenAI endpoint, `LLM_API_KEY_PRIMARY`; optionally `LLM_FALLBACK_MODEL=azure/gpt-4o` and `LLM_API_KEY_FALLBACK`; [HOW-IT-WORKS](../HOW-IT-WORKS.md) section 7). Writes persist, so start from a fresh database volume: a card can be blocked once per seed.
 
 ```bash
 make up PROFILES=obs              # PostgreSQL plus collector, Jaeger (16686), Prometheus (9090), Grafana (3000)

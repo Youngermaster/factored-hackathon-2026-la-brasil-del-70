@@ -2,15 +2,15 @@
 
 The spoken script of the video pitch, split across the four members of La Brasil del 70. It is the same text as the narration in [slides/script.md](../../slides/script.md), in the same order; `pnpm check:content` (from `slides/`) fails when the two differ by one word or one speaker, and when the word-count table below is wrong. What is on screen during each line, and the exact clicks, is in the [video plan](video-plan.md).
 
-The video has a hard limit of 3:00, demo footage included. The cut targets 2:50. At 150 words per minute the 375 spoken words take about 2:30, which leaves about 20 seconds for typing, loading, and the pauses after each click.
+The video has a hard limit of 3:00, demo footage included. The cut targets 2:50. At 150 words per minute the 376 spoken words take about 2:30, which leaves about 20 seconds for typing, loading, and the pauses after each click.
 
 ## Who says what, and why
 
 | Speaker | Words | Seconds at 150 wpm | Segments | Why this person |
 |---|---|---|---|---|
-| Juan Young | 118 | 47 | guardrail, backend trace, architecture | Technical lead: built the core architecture, the agent integration, and the safety layers the guardrail shows |
+| Juan Young | 119 | 48 | guardrail, backend trace, architecture | Technical lead: built the core architecture, the agent integration, and the safety layers the guardrail shows |
 | Miguel Correa | 83 | 33 | hook close line, Portuguese handoff, close | Project manager: owns the problem framing, the product story, and the pitch |
-| David Fonseca | 85 | 34 | card block, the learned-model decision | The demo flow and the machine learning trade-off |
+| David Fonseca | 85 | 34 | card block, the learned-model decision | Presents the demo flow and the machine learning trade-off |
 | Julián Valencia | 89 | 36 | hook data line, Grafana, evidence | Data engineering and the evaluation evidence: the pipeline, the analytics, the results |
 
 To swap a part, move the `**Name:**` tag here and the matching `[Name]` tag in `slides/script.md`, then run `pnpm check:content`: it prints the new counts and fails until this table matches them. Keep each person's lines in one or two blocks; a voice change every few seconds is hard to follow.
@@ -45,7 +45,7 @@ Words in square brackets are cues, not speech. Times are the video timeline in t
 
 ### 1:46 to 2:12, architecture (slide 3)
 
-**Juan Young:** [arrive] FastAPI with a hexagonal core, React, and PostgreSQL with row-level security. [click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it. [click 2] Every model call passes one LiteLLM gateway, so the provider is a setting.
+**Juan Young:** [arrive] FastAPI with a hexagonal core, React, and PostgreSQL with row-level security. [click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it. [click 2] Model calls pass one gateway to Azure OpenAI, so the provider is a setting.
 
 **David Fonseca:** [click 3] Our learned router, resolver and risk estimator beat their baselines offline, but not end to end, so the baselines stay the default.
 
@@ -61,7 +61,7 @@ Words in square brackets are cues, not speech. Times are the video timeline in t
 
 - Credit: never say "approved", "aprobado", or "aprovado", even negated. The video does not play a credit case.
 - Numbers: every number spoken is in `slides/data/metrics.yml`; the evidence numbers are a simulation on the local model `qwen2.5:7b-instruct`, and the line says so ("simulated on a small local model").
-- The deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured. Do not present the live replies as the evaluated system's quality.
+- The deployed demo calls Azure OpenAI `azure/gpt-4.1-mini` (fallback `azure/gpt-4o`) to extract details and detect escalation signals; the published evaluation did not measure it, so its numbers come from the local `qwen2.5:7b-instruct`. Do not present the live replies as the evaluated system's quality.
 - "Cristiano or Messi" is spoken in English over the Spanish message on screen ("¿Quién es mejor CR7 o Messi?").
 
 ## Rehearsal checklist

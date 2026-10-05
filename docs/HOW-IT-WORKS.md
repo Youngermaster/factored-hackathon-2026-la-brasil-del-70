@@ -387,13 +387,13 @@ Redaction is outermost so nothing below it (tracing, cassettes, the provider) se
 | Fake (the default) | `LLM_PROVIDER=fake` | No model call at all; every workflow runs its deterministic path; what `make check` and CI use (tests inject `FakeLLM`) |
 | Cassette | `LLM_PROVIDER=cassette`, `LLM_PRIMARY_MODEL=<the model the cassettes hold>` | Replays recorded replies from `evals/cassettes/`, keyed by prompt, model, language, and the redacted variables; the evaluation uses it to rerun without a model |
 | Local Ollama | `LLM_PROVIDER=litellm`, `LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct`, `LLM_API_BASE=http://localhost:11434`, or simply `make api-local-llm` | Development and the published evaluation; no key, zero cost (a verified zero-price entry) |
-| Hosted | `LLM_PROVIDER=litellm`, `LLM_PRIMARY_MODEL=<provider>/<model>`, `LLM_API_KEY_PRIMARY`, or `make api-hosted-llm` | A provider such as OpenAI, Anthropic, or Gemini through LiteLLM; section 7 has the steps |
+| Hosted | `LLM_PROVIDER=litellm`, `LLM_PRIMARY_MODEL=<provider>/<model>`, `LLM_API_KEY_PRIMARY`, or `make api-hosted-llm` | A provider such as Azure OpenAI (what the deployed demo uses: `azure/gpt-4.1-mini`, fallback `azure/gpt-4o`), OpenAI, Anthropic, or Gemini through LiteLLM; section 7 has the steps |
 
 Switching is a settings change only; no workflow code knows which mode is active. Only `services/api/src/bank_agent/bootstrap/` reads the environment, and the process environment wins over `.env`.
 
 ## 7. How to use an OpenAI key
 
-Everything below was checked against `bootstrap/settings.py` (`LLMSettings`), `bootstrap/llm.py`, `adapters/llm/litellm_client.py`, `scripts/llm_smoke.py`, and the `Makefile`. **Never write the key into a tracked file, a commit, an issue, a chat, or a prompt.** The only places it may live are your shell session, your local `.env` (gitignored, never committed), and `deploy/.env.production` on the server (mode 600).
+Everything below was checked against `bootstrap/settings.py` (`LLMSettings`), `bootstrap/llm.py`, `adapters/llm/litellm_client.py`, `scripts/llm_smoke.py`, and the `Makefile`. **Never write the key into a tracked file, a commit, an issue, a chat, or a prompt.** The only places it may live are your shell session, your local `.env` (gitignored, never committed), and, on the Azure VM, Key Vault (`llm-api-key-primary`, `llm-api-key-fallback`), staged as read-only files at boot; there the env file holds no secret.
 
 ### 7.1 The settings
 
@@ -402,7 +402,7 @@ Everything below was checked against `bootstrap/settings.py` (`LLMSettings`), `b
 | `LLM_PROVIDER` | `litellm` | `make api-hosted-llm` sets it for you; export it yourself for `make llm-smoke` |
 | `LLM_PRIMARY_MODEL` | `openai/<model>`, for example `openai/gpt-5-mini` | LiteLLM's `provider/model` naming; the gateway sends exactly this id. For `openai/gpt-5*` models the client omits the temperature, because those models reject non-default values |
 | `LLM_API_KEY_PRIMARY` | your OpenAI key | Required for every hosted model (startup fails with "the model ... has no API key configured" otherwise); only local `ollama/...` models are keyless. The client passes it to LiteLLM explicitly, so an `OPENAI_API_KEY` variable alone is not enough. Production also requires at least 32 characters |
-| `LLM_API_BASE` | leave empty | Empty means the provider's default https endpoint. Set it only for a proxy or a compatible gateway; production accepts https only (plain http only for a private host with `LLM_ALLOW_PRIVATE_HTTP_BASE=true`) |
+| `LLM_API_BASE` | leave empty | Empty means the provider's default https endpoint. Set it for a proxy, a compatible gateway, or Azure OpenAI, where it is the resource endpoint (the deployed demo uses `https://aoai-la70-bank-agent.openai.azure.com/`) and the model id is `azure/<deployment>`; production accepts https only (plain http only for a private host with `LLM_ALLOW_PRIVATE_HTTP_BASE=true`) |
 | `LLM_FALLBACK_MODEL`, `LLM_API_KEY_FALLBACK` | optional | A second model for degradation level L1, with its own key |
 | `LLM_DAILY_BUDGET_USD` | default `5` | Daily spend cap; at 80% an alert, at 100% template-only mode (L2) until the next UTC day |
 | `LLM_CONVERSATION_BUDGET_USD` | default `0.50` | Spend cap per conversation |
@@ -412,7 +412,7 @@ Everything below was checked against `bootstrap/settings.py` (`LLMSettings`), `b
 
 ### 7.2 The price table entry
 
-The budget guard and the cost in the glass box come only from `services/api/config/llm_prices.yaml`. It already lists `openai/gpt-5-mini` (0.25 USD input and 2.00 USD output per million tokens, `verified: false`). Unverified entries are charged at 1.5 times their price, and a model missing from the table is charged at the highest prices in the table times 1.5, so the guard errs on the side of spending less. Before relying on the numbers:
+The budget guard and the cost in the glass box come only from `services/api/config/llm_prices.yaml`. It already lists `openai/gpt-5-mini` (0.25 USD input and 2.00 USD output per million tokens, `verified: false`). Unverified entries are charged at 1.5 times their price, and a model missing from the table is charged at the highest prices in the table times 1.5, so the guard errs on the side of spending less. At commit `2ddabb0` the table has no `azure/...` entry, so the deployed demo's `azure/gpt-4.1-mini` and `azure/gpt-4o` are charged as missing models until entries for them are added. Before relying on the numbers:
 
 1. Open the entry's `source_url` and check both prices for the exact model id.
 2. Update `input_usd_per_million`, `output_usd_per_million`, and `effective_date`, and set `verified: true`, in one commit (scope `infra` or `docs`).
@@ -442,7 +442,7 @@ VITE_DEMO_MODE=true pnpm --dir apps/web run dev                  # in a second t
 - Check it worked: `curl -s http://127.0.0.1:8000/health/details` shows the primary model's state; in the browser, the glass box's "Versions and cost" lists each model call with the model id, tokens, and cost, and "Understanding" shows a model took part.
 - If another API process already holds port 8000, stop it first: the target binds 127.0.0.1:8000, like `make api-local-llm`.
 
-For the deployed VM, the same settings go in `deploy/.env.production`, followed by `deploy/prod.sh up` ([deploy guide](../deploy/README.md), "Choosing the model"). Read [data use](security/data-use.md) first: which fields reach the provider, redaction, and the advice to use a scoped key with a spending limit at the provider.
+On the Azure VM the keys go into Key Vault (`deploy/azure/keyvault-secrets.sh <vault> set LLM_API_KEY_PRIMARY`, and `LLM_API_KEY_FALLBACK`), `deploy/azure/provision.sh` runs again so the VM identity can read the new secrets, the model ids and `LLM_API_BASE` go into `deploy/.env.production`, and `deploy/prod.sh rotate` recreates the services ([deploy guide](../deploy/README.md), "Choosing the model"). The deployed demo runs this way since 2026-10-05 with Azure OpenAI (`LLM_PRIMARY_MODEL=azure/gpt-4.1-mini`, `LLM_FALLBACK_MODEL=azure/gpt-4o`, `LLM_API_BASE` set to the team's resource endpoint). Read [data use](security/data-use.md) first: which fields reach the provider, redaction, and the advice to use a scoped key with a spending limit at the provider.
 
 ## 8. The machine learning parts
 
@@ -520,7 +520,7 @@ How to rerun and regenerate:
 | `make eval-test` | The frozen test split from the committed cassettes: a deterministic regression run, not a reproduction of the published numbers (some recorded calls were overwritten by later identical keys) |
 | `uv run --frozen bank-eval publish reports/eval/<run_id>` | Regenerates `docs/evaluation/results.md`, `docs/evaluation/failures.md`, and the summaries from a run directory (the published run's directory is not in git; it holds transcripts) |
 
-Honest limits: the workload is synthetic and team-written, the labels are pending human review, every model role ran on a local 7B model (the deployed hosted model has not been evaluated), the per-workflow cells are small (76 cases), the Portuguese has had no native review, and the judge's agreement with human raters is pending. Since `6bc2e9d`, prompts (`detect_escalation_signals@2`), parts of the engine, and the harness changed without a rerun ([README](../README.md#evaluation-headline), "Freshness"). Detail: [plan](evaluation/plan.md), [methodology](evaluation/methodology.md), [LIMITATIONS.md](../LIMITATIONS.md).
+Honest limits: the workload is synthetic and team-written, the labels are pending human review, every model role ran on a local 7B model (the deployed `azure/gpt-4.1-mini` was not part of that run; a rerun on it is in progress), the per-workflow cells are small (76 cases), the Portuguese has had no native review, and the judge's agreement with human raters is pending. Since `6bc2e9d`, prompts (`detect_escalation_signals@2`), parts of the engine, and the harness changed without a rerun ([README](../README.md#evaluation-headline), "Freshness"). Detail: [plan](evaluation/plan.md), [methodology](evaluation/methodology.md), [LIMITATIONS.md](../LIMITATIONS.md).
 
 ## 10. Operations and deployment
 
@@ -543,10 +543,10 @@ flowchart LR
         purge["purge job<br/>daily retention"] --> pg
         api -. "OTEL_ENABLED" .-> obs["obs profile:<br/>collector, Jaeger,<br/>Prometheus, Grafana"]
     end
-    api -- "https" --> provider["Hosted model provider<br/>(optional)"]
+    api -- "https" --> provider["Hosted model provider<br/>(Azure OpenAI on the demo)"]
 ```
 
-The deployed demo runs this stack on one Azure VM in demo mode with the hosted model `gemini/gemini-3.1-flash-lite` ([README](../README.md), [ADR 0019](adr/0019-single-host-compose-deployment.md)). Only ports 80 and 443 are public; PostgreSQL, the API, Grafana, and Jaeger are reachable only from inside the VM (Grafana and Jaeger through an SSH tunnel).
+The deployed demo runs this stack on one Azure VM in demo mode with Azure OpenAI (`azure/gpt-4.1-mini`, fallback `azure/gpt-4o`, Sweden Central) as the hosted model provider ([README](../README.md), [ADR 0019](adr/0019-single-host-compose-deployment.md)). Only ports 80 and 443 are public; PostgreSQL, the API, Grafana, and Jaeger are reachable only from inside the VM (Grafana and Jaeger through an SSH tunnel).
 
 ### Security layers
 
@@ -609,7 +609,7 @@ The deploy identity can only read the VM and run commands on it, and only a job 
 
 ## 11. Team runbook for the final days
 
-The plan we agreed, in order. Each step has a done condition, so nobody moves on with a step half finished.
+The plan we agreed, in order. Each step has a done condition, so nobody moves on with a step half finished. Status on 2026-10-05: steps 3 and 4 are done on Azure: the deployed demo runs `main` with Azure OpenAI (`azure/gpt-4.1-mini`, fallback `azure/gpt-4o`) through continuous deployment.
 
 ```mermaid
 flowchart LR
@@ -625,7 +625,7 @@ flowchart LR
 3. **Run them with an OpenAI key.** Section 7: `make llm-smoke` first, then `make api-hosted-llm`, then the same cases. Compare with the fake provider: the end state and outcome must be the same; the glass box should now list model calls with tokens and cost. Note any difference (the local model once picked a card without asking, [LOCAL-RUN.md](submission/LOCAL-RUN.md) section 3). Done when both cases pass with the key and `llm-smoke` passes.
 4. **Deploy if it works.** Section 10 and [deploy/README.md](../deploy/README.md): put the model settings in `deploy/.env.production`, `deploy/prod.sh up`, `deploy/prod.sh seed`, then `make smoke` and `make csp-check` against the URL. Done when the smoke test passes and both cases run on the public URL. If the key or the provider misbehaves, the demo still works with `LLM_PROVIDER=fake`: every workflow has a deterministic path.
 5. **Understand the flow both ways.** Forward: from the customer's message to the reply (section 3). Backward: from any line of the glass box to the rule, clause, tool, or template that produced it, and to the file that implements it (the table in section 3). Also both sides of the product: the customer's chat, and what the agent (`agent-demo-01`) and the evaluator (`evaluator-demo-01`) see for the same conversation. Done when each of us can answer "why did it do that?" for any turn of the chosen cases, from the record alone.
-6. **Record the video.** Follow [video plan](demo/video-plan.md) and the shot list in [slides/VIDEO.md](../slides/VIDEO.md); reset the data right before (`make seed` locally on a fresh volume, or `deploy/prod.sh seed`). Never say "approved" about credit, even negated, and never show document numbers or phone digits.
+6. **Record the video.** Follow the shot list in the [video plan](demo/video-plan.md) and the recording guide in [slides/VIDEO.md](../slides/VIDEO.md); reset the data right before (`make seed` locally on a fresh volume, or `deploy/prod.sh seed`). Never say "approved" about credit, even negated, and never show document numbers or phone digits.
 
 Questions judges are likely to ask, and where the answer is:
 
