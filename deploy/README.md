@@ -121,6 +121,7 @@ deploy/prod.sh init-env        # writes deploy/.env.production (mode 600) with f
 nano deploy/.env.production    # or vi; set the values below, then save
 deploy/prod.sh stage-secrets   # stages the secrets as files (sudo); `up` does this too
 deploy/prod.sh check           # names any missing value (never prints one), checks the staged files and the compose file
+                               # (and refuses an empty key file for a hosted model or an enabled Langfuse export)
 ```
 
 Set at least:
@@ -264,7 +265,7 @@ Optional and off by default (`LANGFUSE_ENABLED=false`). When on, the API sends o
 On the Azure VM, in order:
 
 1. Store the keys (an administrator with Key Vault Secrets Officer; typed at a hidden prompt, never shown): `deploy/azure/keyvault-secrets.sh <vault> set LANGFUSE_PUBLIC_KEY`, then the same for `LANGFUSE_SECRET_KEY`.
-2. Grant the VM identity **Key Vault Secrets User** on each of the two secrets (`langfuse-public-key`, `langfuse-secret-key`), as `provision.sh` step 7 does: `az role assignment create --assignee-object-id <VM principal id> --assignee-principal-type ServicePrincipal --role "Key Vault Secrets User" --scope "<vault id>/secrets/langfuse-public-key"`. Without the grant the stager reads HTTP 403, stages the optional secret empty, and the API refuses to start with the export on.
+2. Grant the VM identity **Key Vault Secrets User** on each of the two secrets (`langfuse-public-key`, `langfuse-secret-key`), as `provision.sh` step 7 does: `az role assignment create --assignee-object-id <VM principal id> --assignee-principal-type ServicePrincipal --role "Key Vault Secrets User" --scope "<vault id>/secrets/langfuse-public-key"`. Without the grant the stager reads HTTP 403, stages the optional secret empty, and `deploy/prod.sh check` (run by `up` and every release) refuses to start with the export on, naming the empty file.
 3. Refresh the boot unit's copy of the stager once after the release that added these secrets: `sudo bash deploy/azure/install-vm.sh <vault>`. Otherwise, after a reboot, the unit stages without the two files and the API cannot mount them until someone runs `deploy/prod.sh up`.
 4. In `deploy/.env.production`: `LANGFUSE_ENABLED=true` and `LANGFUSE_BASE_URL=https://us.cloud.langfuse.com` (Langfuse Cloud, US region; the exporter appends `/api/public/otel/v1/traces`). Then `deploy/prod.sh up`: it stages, checks, and recreates the API with the new files.
 5. Verify: generations appear in the Langfuse project, and `deploy/prod.sh logs api | grep langfuse_export_failed` prints nothing.
@@ -280,7 +281,7 @@ deploy/prod.sh seed            # once: the demo personas and 200 customers from 
 deploy/prod.sh smoke           # the smoke test against PUBLIC_ORIGIN
 ```
 
-`up` refuses to start without the images of the current commit, without every required value, or with a group- or world-readable env file. The first request makes Caddy fetch the certificate; if it fails, `deploy/prod.sh logs web` says why (usually DNS or the firewall on port 80).
+`up` refuses to start without the images of the current commit, without every required value, with a group- or world-readable env file, or with an empty staged key file for a hosted model or an enabled Langfuse export (the check names the file, never a value). The first request makes Caddy fetch the certificate; if it fails, `deploy/prod.sh logs web` says why (usually DNS or the firewall on port 80).
 
 ## Verify
 
