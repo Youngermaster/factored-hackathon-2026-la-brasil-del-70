@@ -115,7 +115,7 @@ arch:
   a_gw: LLM gateway
   a_gwS: LiteLLM behind one port
   a_prov: Model provider
-  a_provS: fake, Ollama or hosted
+  a_provS: fake, Ollama or Azure
   a_pg: PostgreSQL 16
   a_pgS: row-level security
   a_core: FastAPI
@@ -134,8 +134,8 @@ arch:
   b_pg: postgres
   b_pgS: internal network
   b_jobs: migrate, seed, purge
-  b_prov: hosted model
-  b_provS: LiteLLM, https
+  b_prov: Azure OpenAI
+  b_provS: gpt-4.1-mini, 4o
   b_obs: obs profile
   b_col: collector
   b_colS: OpenTelemetry
@@ -148,8 +148,8 @@ arch:
   b_next: "next, documented:"
   b_m1: managed PostgreSQL
   b_m2: a container service
-  b_m3: Key Vault secrets (in review)
-  cite1: deploy/README.md  |  ADR 0019  |  the demo calls gemini-3.1-flash-lite; Key Vault staging is pull request 27
+  b_m3: high availability
+  cite1: deploy/README.md  |  ADR 0019, 0037, 0038  |  Azure OpenAI gpt-4.1-mini, gpt-4o as fallback
   # 2 the AI and ML path of one turn (docs/models, docs/architecture/credit-separation.md)
   c_msg: message
   c_msgS: es or pt

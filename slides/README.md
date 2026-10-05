@@ -1,6 +1,6 @@
 # Pitch deck
 
-The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides (the submission PDF) plus three appendix slides (a separate PDF), built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
+The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides (the submission PDF, exactly six pages) plus three appendix slides (a separate PDF), built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
 
 The scene kit, the `<Scene>` component, the seams and the check scripts are adapted from the team lead's earlier deck, VLA-introduction-slides (Apache-2.0, same author); the robot drawing helpers and the bilingual machinery were dropped.
 
@@ -25,7 +25,7 @@ pnpm dev                 # http://localhost:3131, presenter view at /#/presenter
 | `pnpm shots` | Screenshots of every slide at every click into `.shots/deck/` (dev server running) |
 | `node scripts/sheet.mjs <scene>` | Contact sheet of one scene at every cue and midpoint, into `.shots/scenes/` |
 | `pnpm build` | Static site into `dist/` |
-| `pnpm export` | Two PDFs, one page per click: the six main slides in `export/la-brasil-del-70-pitch.pdf` (the submission) and the appendix in `export/la-brasil-del-70-appendix.pdf` |
+| `pnpm export` | Three PDFs: `export/la-brasil-del-70-pitch.pdf` (the submission: six pages, one per main slide, each page showing that slide's build-up frames in order), `export/la-brasil-del-70-pitch-steps.pdf` (the same six slides, one full page per click, 32 pages), and the appendix in `export/la-brasil-del-70-appendix.pdf` |
 | `pnpm export:final` | `check:content --strict`, then `pnpm export`: the submission build |
 
 The workbench is at `http://localhost:3131/#/lab`: pick a scene, scrub its playhead, jump between cues. Add `?scene_t=3.2` to a deck URL to freeze every scene at that time, or `?scene_snap` to show each click's finished frame.
@@ -130,7 +130,7 @@ pnpm export:final        # check:content --strict, then pnpm export; fails while
 pnpm export              # the same PDFs as a draft, pending boxes included
 ```
 
-`pnpm export` renders the whole deck once, then `scripts/split-pdf.mjs` cuts it by `routeAlias`: the main slides go to `la-brasil-del-70-pitch.pdf` (32 pages, one per click, which keeps the build-ups readable on paper), the slides whose alias starts with `appendix` to `la-brasil-del-70-appendix.pdf` (7 pages). The split is needed because Slidev 52 ignores `--range` in hash router mode, and it fails when the page count does not match the `clicks:` budgets in `slides.md`. Do not add `--per-slide`: every scene would export at its arrival frame only.
+`pnpm export` renders the whole deck once, one page per click, then `scripts/split-pdf.mjs` cuts it by `routeAlias`. The scenes replace their content between clicks, so no single frame carries a whole slide; the submission PDF `la-brasil-del-70-pitch.pdf` therefore has exactly one page per main slide (six pages), and each page draws that slide's frames (the arrival, then every click) as a grid, left to right and top to bottom. The frames are embedded as they were rendered, so a reader can zoom into any of them, and the script fails unless the PDF has one page per main slide. `la-brasil-del-70-pitch-steps.pdf` keeps one full page per click (32 pages for the six slides), which reads better on a screen, and the slides whose alias starts with `appendix` go to `la-brasil-del-70-appendix.pdf` (7 pages). The split is needed because Slidev 52 ignores `--range` in hash router mode, and it fails when the page count does not match the `clicks:` budgets in `slides.md`. Do not add `--per-slide`: every scene would export at its arrival frame only.
 
 Slidev does not reliably hot-reload frontmatter: after changing `clicks:` or `transition:` in `slides.md`, restart `pnpm dev`.
 
