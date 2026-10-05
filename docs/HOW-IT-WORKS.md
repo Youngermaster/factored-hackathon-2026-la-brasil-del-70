@@ -402,7 +402,7 @@ Everything below was checked against `bootstrap/settings.py` (`LLMSettings`), `b
 | `LLM_PROVIDER` | `litellm` | `make api-hosted-llm` sets it for you; export it yourself for `make llm-smoke` |
 | `LLM_PRIMARY_MODEL` | `openai/<model>`, for example `openai/gpt-5-mini` | LiteLLM's `provider/model` naming; the gateway sends exactly this id. For `openai/gpt-5*` models the client omits the temperature, because those models reject non-default values |
 | `LLM_API_KEY_PRIMARY` | your OpenAI key | Required for every hosted model (startup fails with "the model ... has no API key configured" otherwise); only local `ollama/...` models are keyless. The client passes it to LiteLLM explicitly, so an `OPENAI_API_KEY` variable alone is not enough. Production also requires at least 32 characters |
-| `LLM_API_BASE` | leave empty | Empty means the provider's default https endpoint. Set it only for a proxy or a compatible gateway; production accepts https only (plain http only for a private host with `LLM_ALLOW_PRIVATE_HTTP_BASE=true`) |
+| `LLM_API_BASE` | leave empty | Empty means the provider's default https endpoint. Set it for a proxy, a compatible gateway, or Azure OpenAI, where it is the resource endpoint (the deployed demo uses `https://aoai-la70-bank-agent.openai.azure.com/`) and the model id is `azure/<deployment>`; production accepts https only (plain http only for a private host with `LLM_ALLOW_PRIVATE_HTTP_BASE=true`) |
 | `LLM_FALLBACK_MODEL`, `LLM_API_KEY_FALLBACK` | optional | A second model for degradation level L1, with its own key |
 | `LLM_DAILY_BUDGET_USD` | default `5` | Daily spend cap; at 80% an alert, at 100% template-only mode (L2) until the next UTC day |
 | `LLM_CONVERSATION_BUDGET_USD` | default `0.50` | Spend cap per conversation |
@@ -412,7 +412,7 @@ Everything below was checked against `bootstrap/settings.py` (`LLMSettings`), `b
 
 ### 7.2 The price table entry
 
-The budget guard and the cost in the glass box come only from `services/api/config/llm_prices.yaml`. It already lists `openai/gpt-5-mini` (0.25 USD input and 2.00 USD output per million tokens, `verified: false`). Unverified entries are charged at 1.5 times their price, and a model missing from the table is charged at the highest prices in the table times 1.5, so the guard errs on the side of spending less. Before relying on the numbers:
+The budget guard and the cost in the glass box come only from `services/api/config/llm_prices.yaml`. It already lists `openai/gpt-5-mini` (0.25 USD input and 2.00 USD output per million tokens, `verified: false`). Unverified entries are charged at 1.5 times their price, and a model missing from the table is charged at the highest prices in the table times 1.5, so the guard errs on the side of spending less. At commit `2ddabb0` the table has no `azure/...` entry, so the deployed demo's `azure/gpt-4.1-mini` and `azure/gpt-4o` are charged as missing models until entries for them are added. Before relying on the numbers:
 
 1. Open the entry's `source_url` and check both prices for the exact model id.
 2. Update `input_usd_per_million`, `output_usd_per_million`, and `effective_date`, and set `verified: true`, in one commit (scope `infra` or `docs`).

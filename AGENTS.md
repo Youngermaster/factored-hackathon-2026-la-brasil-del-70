@@ -132,7 +132,7 @@ The production stack (Caddy with TLS, two API workers, PostgreSQL with a non-sup
 
 Opt-in local model (never in `make check` or CI): with Ollama serving `qwen2.5:7b-instruct`, `make api-local-llm` runs the API through LiteLLM, and `LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct LLM_API_BASE=http://localhost:11434 make llm-smoke` runs the fixture prompts (a bare `make llm-smoke` reads the fake provider from `.env` and stops). See `.env.example` and [docs/architecture/llm-gateway.md](docs/architecture/llm-gateway.md).
 
-Opt-in hosted model (never in `make check` or CI): with `LLM_PRIMARY_MODEL` (for example `openai/gpt-5-mini`) and `LLM_API_KEY_PRIMARY` in the shell or `.env`, `make api-hosted-llm` runs the API through LiteLLM after a preflight that prints each required variable as set or unset, never a value. The steps, the price table entry, and the smoke test are in [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7.
+Opt-in hosted model (never in `make check` or CI): with `LLM_PRIMARY_MODEL` (for example `openai/gpt-5-mini`, or `azure/gpt-4.1-mini` with `LLM_API_BASE` set to the Azure OpenAI endpoint, as on the deployed demo) and `LLM_API_KEY_PRIMARY` in the shell or `.env`, `make api-hosted-llm` runs the API through LiteLLM after a preflight that prints each required variable as set or unset, never a value. The steps, the price table entry, and the smoke test are in [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7.
 
 ### Data sources
 
