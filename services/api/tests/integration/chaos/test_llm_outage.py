@@ -6,15 +6,20 @@ the circuit again when the provider answers.
 """
 
 from datetime import timedelta
+from decimal import Decimal
+from pathlib import Path
 
 import pytest
 
+from bank_agent.adapters.llm.prices import PriceTable
 from bank_agent.domain.errors import LlmProviderError, LlmTimeoutError
 from bank_agent.domain.intelligence import PromptRef, TokenUsage
 from bank_agent.testing.fake_llm import FakeLLM, ScriptedError, ScriptedResponse
 from bank_agent_api import ApiBackend, ApiClient
 from bank_agent_chaos import LIMITED_ES, LIMITED_PT, staff_records
 from bank_agent_workflow_support import ACCOUNT_SLOTS, NO_SIGNALS, SIGNALS
+
+PRICES_FILE = Path(__file__).resolve().parents[3] / "config" / "llm_prices.yaml"
 
 MODEL_PROMPTS = (SIGNALS, ACCOUNT_SLOTS)
 ACCOUNT_OUTPUT = {"product_hint": None, "statement_period_expression": None, "payment": None}
@@ -112,10 +117,12 @@ async def test_timeouts_open_the_circuit_and_a_successful_trial_closes_it(
 async def test_the_spent_daily_budget_switches_to_template_only_until_the_next_day(
     memory_api: ApiBackend, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setenv("LLM_DAILY_BUDGET_USD", "0.01")
-    fake = FakeLLM()
-    # 600 output tokens of an unlisted model at the highest listed price times 1.5 cost 0.009 USD, the reservation.
+    # An unlisted model is charged at the highest listed prices times the unverified multiplier, so the charge for
+    # 600 output tokens follows the price table; the budget is set so that one such turn spends 90% of it.
     usage = TokenUsage(input_tokens=0, output_tokens=600)
+    charge = PriceTable.from_yaml(PRICES_FILE).cost("fixture/unlisted-model", usage)
+    monkeypatch.setenv("LLM_DAILY_BUDGET_USD", str(charge / Decimal("0.9")))
+    fake = FakeLLM()
     fake.script(SIGNALS, ScriptedResponse(output=NO_SIGNALS, usage=usage))
     fake.script(ACCOUNT_SLOTS, ScriptedResponse(output=ACCOUNT_OUTPUT, usage=usage))
     harness = memory_api.build(llm=fake)
