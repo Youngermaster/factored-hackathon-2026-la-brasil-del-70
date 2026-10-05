@@ -2,7 +2,7 @@
 
 | Document | Purpose |
 |---|---|
-| [SUBMISSION.md](SUBMISSION.md) | The checklist that follows the brief's submission requirements: what is done, and the human steps in order (deploy, fill `deploy.url`, export the slides, record the video, make the repository public, send the email) |
+| [SUBMISSION.md](SUBMISSION.md) | The checklist that follows the brief's submission requirements: what is done, and the human steps in order (export the slides, record the video, make the repository public, send the email; the deployment and `deploy.url` are done) |
 | [brief-traceability.md](brief-traceability.md) | Every requirement of the brief mapped to where it is implemented, where it is proven, and its status, with one column per workflow |
 | [LOCAL-RUN.md](LOCAL-RUN.md) | A verified, step-by-step local walkthrough: the dev stack with the fake and the local model, what to check in the browser, the evaluation report, the production stack in local TLS mode, the slides, the gates, troubleshooting, and the verification log |
 | [email-draft.md](email-draft.md) | The draft email to `hackathon.admin@factored.ai`; never sent by a session |

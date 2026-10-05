@@ -227,7 +227,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [data_platform](../data_platform/README.md) | Data platform: sources, commands, how to add a table or a source adapter |
 | [ml](../ml/README.md) | Learned components |
 | [evals](../evals/README.md) | Evaluation harness |
-| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes (hand-authored fixtures until a provider is chosen) |
+| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes: hand-authored fixtures plus the session 14b recordings on `ollama/qwen2.5:7b-instruct` |
 | [services/api/src/bank_agent/prompts](../services/api/src/bank_agent/prompts/README.md) | Versioned prompts: format, rules, how to add, test, and evaluate one |
 | [deploy](../deploy/README.md) | The production stack, the deployment guide, database roles, and observability configuration |
 | [slides](../slides/README.md) | The pitch deck: commands, structure, colour meaning, numbers from `data/metrics.yml`, export |

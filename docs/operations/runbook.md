@@ -77,7 +77,7 @@ The single-host stack of [ADR 0019](../adr/0019-single-host-compose-deployment.m
 | Situation | Do |
 |---|---|
 | First deployment | `deploy/prod.sh init-env`, edit `deploy/.env.production`, `deploy/prod.sh check`, `build`, `up`, `seed`, `smoke` |
-| New commit to deploy | `deploy/prod.sh update` (pulls, backs up, builds, migrates, starts); then `deploy/prod.sh smoke` |
+| New commit to deploy | The deploy workflow releases every CI-green push to `main` on the Azure VM, with a smoke test, a CSP check, and automatic rollback ([ADR 0038](../adr/0038-continuous-deployment-to-azure-with-github-actions.md)); by hand: `deploy/prod.sh update` (pulls, backs up, builds, migrates, starts), then `deploy/prod.sh smoke` |
 | The new release misbehaves | `deploy/prod.sh rollback`; if the update ran a migration the old code cannot use, `deploy/prod.sh restore <the backup update took>` first |
 | Data lost or corrupted | `deploy/prod.sh restore deploy/backups/<file>.dump`; the API, the purge, and the edge stop during the restore and start again after it |
 | A secret leaked or must change | the rotation table in the guide; `SESSION_SECRET` needs `deploy/prod.sh seed` afterwards |

@@ -77,9 +77,9 @@ As of this file's last update:
 | Phase 15 | Done: OpenTelemetry traces and metrics, the degradation ladder, the chaos suite, alerts, the local load test |
 | Phase 16 | Done: security review and the single-host production stack (`deploy/`), verified locally with TLS and the local model |
 | Phase 17 | Done: the final documentation and audit (README, LIMITATIONS, architecture views, the brief traceability matrix, the submission package in `docs/submission/`), the data-use record, no license ("All rights reserved"), the demo-guide fixes |
-| Remaining (human) | Choose the host and deploy, fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email ([docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md)) |
-| Internal MVP completion window end | Sunday, 2026-10-04; completion is pending |
-| Official challenge-window end | 2026-10-05; no cutoff time or timezone published |
+| Remaining (human) | Export the slides, record the video, make the repository public, send the email ([docs/submission/SUBMISSION.md](docs/submission/SUBMISSION.md)); the demo runs on Azure from `main`, with Azure OpenAI since 2026-10-05, and `deploy.url` is filled |
+| Internal MVP completion window end | Passed (Sunday, 2026-10-04) |
+| Official challenge-window end | 2026-10-05; the public page gives no time, so the team submits before 23:59 Colombia time (UTC-5) |
 
 Runtime defaults (from [.env.example](.env.example)): `LLM_PROVIDER=fake` (no model call; workflows use deterministic fallbacks), `WORKFLOW_ROUTER=keyword@1`, `WORKFLOW_RESOLVER=rules@1`, `WORKFLOW_RISK_ESTIMATOR=score_band@1`, `DEMO_MODE=true`. Learned components exist but are not the defaults.
 
@@ -321,7 +321,7 @@ Detail: [contracts/README.md](contracts/README.md) (versioning, deprecation, cha
 
 ### Add an ADR
 
-1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 stays reserved and unused. 0037 (Key Vault) and 0038 (continuous deployment) came with the Azure deployment, and pull request 23 also proposed a 0037, so it needs a new number; the next free number is 0039.
+1. Find the next free number in [docs/adr/README.md](docs/adr/README.md) on an up-to-date `main`, and check open branches and pull requests too. Numbers have collided three times (0025, the EDA records renumbered to 0032 and 0033, the seed record renumbered to 0034). 0017 stays reserved and unused. 0037 (Key Vault) and 0038 (continuous deployment) came with the Azure deployment; pull request 23's dispute-only 0037 was closed as superseded by [ADR 0043](docs/adr/0043-langgraph-migration.md). On 2026-10-05, 0043 to 0047 were reserved for parallel work (0044 Azure OpenAI, 0045 Grafana exposure, 0046 and 0047 retrieval), so check the index for the next free number after them.
 2. Write `docs/adr/NNNN-short-title.md` in MADR form: context, at least two real options, decision, consequences.
 3. Add the row to the table in `docs/adr/README.md` and the entry in `docs/README.md` in the same commit.
 4. Records are never rewritten; a later record supersedes an earlier one and both link to each other.
@@ -333,7 +333,7 @@ Detail: [evals/README.md](evals/README.md), [docs/evaluation/plan.md](docs/evalu
 1. Add the situation to `evals/src/bank_evals/scenarios/family_data/<workflow>.yaml` with at least two phrasings, labels taken from the policy documents, and facts in braces from `evals/src/bank_evals/scenarios/facts.py`. New persona roles or records go in `evals/src/bank_evals/world/records.py`, named symbolically; never copy organizer records.
 2. `make eval-scenarios` regenerates both splits deterministically and runs lint, leakage guards, and the test set lock. Changing the locked test split needs `uv run --frozen bank-eval scenarios generate --relock` and a recorded reason in the phase log; never tune on the test split.
 3. `make eval-smoke` must still pass (the CI smoke suite, no model).
-4. Coordinate with whoever runs the live evaluation before touching `evals/` while a run is in progress (session 14b).
+4. Coordinate with whoever runs the live evaluation before touching `evals/` while a run is in progress (for example the hosted-model rerun).
 
 ## 8. Testing and quality gates
 
