@@ -52,3 +52,17 @@ models:
     source_url: https://ollama.com/library/qwen2.5
     verified: true
     notes: Local development model served by Ollama on the developer's machine, so there is no per-token charge. Opt-in only (LLM_PROVIDER=litellm with LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct); never a default and never a production provider.
+  - model_id: azure/gpt-4.1-mini
+    input_usd_per_million: "0.40"
+    output_usd_per_million: "1.60"
+    effective_date: 2025-04-01
+    source_url: https://prices.azure.com/api/retail/prices
+    verified: false
+    notes: Azure OpenAI gpt-4.1-mini 2025-04-14, Global Standard deployment. Azure Retail Prices API, region swedencentral, meters 'gpt 4.1 mini Inp glbl Tokens' and 'gpt 4.1 mini Outp glbl Tokens', read 2026-10-05; awaits a person's confirmation.
+  - model_id: azure/gpt-4o
+    input_usd_per_million: "3.025"
+    output_usd_per_million: "12.10"
+    effective_date: 2024-12-01
+    source_url: https://prices.azure.com/api/retail/prices
+    verified: false
+    notes: Azure OpenAI gpt-4o 2024-11-20, regional Standard deployment. Azure Retail Prices API, region swedencentral, meters 'gpt 4o 1120 Inp regnl Tokens' and 'gpt 4o 1120 Outp regnl Tokens', read 2026-10-05; awaits a person's confirmation.
