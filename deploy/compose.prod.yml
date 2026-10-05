@@ -164,8 +164,12 @@ services:
       OTEL_ENABLED: ${OTEL_ENABLED:-false}
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
       OTEL_TRACES_SAMPLER_ARG: ${OTEL_TRACES_SAMPLER_ARG:-1.0}
-    # The application role, the session and CSRF keys, and the model keys (empty files when no hosted model is used);
-    # never the owner or superuser password.
+      # Metadata-only export of model calls to Langfuse (docs/operations/observability.md); needs LLM_PROVIDER=litellm,
+      # an https base URL, and both Langfuse key files. The keys are never environment variables.
+      LANGFUSE_ENABLED: ${LANGFUSE_ENABLED:-false}
+      LANGFUSE_BASE_URL: ${LANGFUSE_BASE_URL:-}
+    # The application role, the session and CSRF keys, the model keys, and the Langfuse keys (empty files when no
+    # hosted model or no Langfuse export is used); never the owner or superuser password.
     secrets:
       - source: app_postgres_app_password
         target: POSTGRES_APP_PASSWORD
@@ -177,6 +181,10 @@ services:
         target: LLM_API_KEY_PRIMARY
       - source: app_llm_api_key_fallback
         target: LLM_API_KEY_FALLBACK
+      - source: app_langfuse_public_key
+        target: LANGFUSE_PUBLIC_KEY
+      - source: app_langfuse_secret_key
+        target: LANGFUSE_SECRET_KEY
     tmpfs:
       - /tmp:size=64m
     # host.docker.internal reaches a model served on the host itself (the local verification with Ollama).
@@ -412,6 +420,10 @@ secrets:
     file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LLM_API_KEY_PRIMARY
   app_llm_api_key_fallback:
     file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LLM_API_KEY_FALLBACK
+  app_langfuse_public_key:
+    file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LANGFUSE_PUBLIC_KEY
+  app_langfuse_secret_key:
+    file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LANGFUSE_SECRET_KEY
   postgres_superuser_password:
     file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/postgres/POSTGRES_SUPERUSER_PASSWORD
   postgres_admin_password:

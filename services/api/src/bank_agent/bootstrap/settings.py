@@ -636,9 +636,10 @@ def langfuse_problems(settings: AppSettings) -> list[str]:
         problems.append("LANGFUSE_ENABLED requires LLM_PROVIDER=litellm")
     if settings.llm.trace_content:
         problems.append("LLM_TRACE_CONTENT must be false when LANGFUSE_ENABLED=true")
-    if settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(
-        settings.langfuse.base_url.rstrip("/")
-    ):
+    base_url = settings.langfuse.base_url.strip().rstrip("/")
+    if not base_url:
+        problems.append("LANGFUSE_BASE_URL must be set when LANGFUSE_ENABLED=true")
+    elif settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(base_url):
         problems.append("OTEL_EXPORTER_OTLP_ENDPOINT must not point to Langfuse when LANGFUSE_ENABLED=true")
     if not _is_set(settings.langfuse.public_key):
         problems.append("LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true")
@@ -656,7 +657,7 @@ def langfuse_problems(settings: AppSettings) -> list[str]:
         )
     except ValueError:
         valid_target = False
-    if not valid_target:
+    if base_url and not valid_target:
         problems.append("LANGFUSE_BASE_URL must be an HTTP URL without credentials, query, or fragment")
     return problems
 
@@ -673,8 +674,8 @@ SECRET_VARIABLES: tuple[str, ...] = (
 )
 """Every variable that holds a secret; with ``SECRETS_DIR`` each one is a file of that name.
 
-The production stack stages the first six (``deploy/secrets_stage.py``); it does not enable Langfuse, so its keys have
-no staged file, but a file of that name is read and the environment is refused for them all the same.
+The production stack stages all of them (``deploy/secrets_stage.py``); the model and Langfuse keys are optional and
+staged empty until they exist in Key Vault, and the environment is refused for every one of them.
 """
 
 

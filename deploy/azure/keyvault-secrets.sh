@@ -6,6 +6,7 @@
 #
 #   deploy/azure/keyvault-secrets.sh <vault> init            generate every missing generated secret (never overwrites)
 #   deploy/azure/keyvault-secrets.sh <vault> set <VARIABLE>  type a provider value, for example LLM_API_KEY_PRIMARY
+#                                                            or LANGFUSE_SECRET_KEY
 #   deploy/azure/keyvault-secrets.sh <vault> rotate <VARIABLE>  a new random version of SESSION_SECRET, CSRF_SECRET,
 #                                                            or GRAFANA_ADMIN_PASSWORD (then deploy/prod.sh rotate)
 #   deploy/azure/keyvault-secrets.sh <vault> list            names, enabled, and last update; never values
@@ -16,7 +17,7 @@ export MSYS_NO_PATHCONV=1
 
 # Bash 3.2 compatible (the macOS default shell): no associative arrays.
 VARIABLES=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET
-  LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK GRAFANA_ADMIN_PASSWORD)
+  LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK GRAFANA_ADMIN_PASSWORD LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY)
 GENERATED=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET
   GRAFANA_ADMIN_PASSWORD)
 ROTATABLE=(SESSION_SECRET CSRF_SECRET GRAFANA_ADMIN_PASSWORD)

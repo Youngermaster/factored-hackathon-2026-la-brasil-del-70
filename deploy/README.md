@@ -257,6 +257,20 @@ LLM_TIMEOUT_SECONDS=60
 
 Then start with `OLLAMA=1 deploy/prod.sh up` and pull the model once: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod --profile ollama exec ollama ollama pull qwen2.5:7b-instruct` (about 4.7 GB). The model costs nothing per token (verified entry in the price table).
 
+## Langfuse export
+
+Optional and off by default (`LANGFUSE_ENABLED=false`). When on, the API sends one Langfuse generation per model call over OTLP: identifiers, model, prompt and schema versions, tokens, cost, latency, and status, never prompts, replies, or customer data ([observability](../docs/operations/observability.md), "Optional Langfuse generation export"). It needs `LLM_PROVIDER=litellm`, an https base URL, and both keys; the API refuses to start otherwise. The keys are secrets like the model keys: staged files (`app/LANGFUSE_PUBLIC_KEY`, `app/LANGFUSE_SECRET_KEY`, empty until set), never environment variables.
+
+On the Azure VM, in order:
+
+1. Store the keys (an administrator with Key Vault Secrets Officer; typed at a hidden prompt, never shown): `deploy/azure/keyvault-secrets.sh <vault> set LANGFUSE_PUBLIC_KEY`, then the same for `LANGFUSE_SECRET_KEY`.
+2. Grant the VM identity **Key Vault Secrets User** on each of the two secrets (`langfuse-public-key`, `langfuse-secret-key`), as `provision.sh` step 7 does: `az role assignment create --assignee-object-id <VM principal id> --assignee-principal-type ServicePrincipal --role "Key Vault Secrets User" --scope "<vault id>/secrets/langfuse-public-key"`. Without the grant the stager reads HTTP 403, stages the optional secret empty, and the API refuses to start with the export on.
+3. Refresh the boot unit's copy of the stager once after the release that added these secrets: `sudo bash deploy/azure/install-vm.sh <vault>`. Otherwise, after a reboot, the unit stages without the two files and the API cannot mount them until someone runs `deploy/prod.sh up`.
+4. In `deploy/.env.production`: `LANGFUSE_ENABLED=true` and `LANGFUSE_BASE_URL=https://us.cloud.langfuse.com` (Langfuse Cloud, US region; the exporter appends `/api/public/otel/v1/traces`). Then `deploy/prod.sh up`: it stages, checks, and recreates the API with the new files.
+5. Verify: generations appear in the Langfuse project, and `deploy/prod.sh logs api | grep langfuse_export_failed` prints nothing.
+
+Rollback: `LANGFUSE_ENABLED=false`, then `deploy/prod.sh up`. Setting `LLM_PROVIDER=fake` while the export is on stops the API from starting, so turn the export off in the same edit.
+
 ## Deploy
 
 ```bash
@@ -335,6 +349,7 @@ Store the new value where `SECRETS_SOURCE` points: edit `deploy/.env.production`
 | `POSTGRES_SUPERUSER_PASSWORD` | `\password postgres` the same way; nothing else uses it |
 | `GRAFANA_ADMIN_PASSWORD` | change it in Grafana (profile, "Change password"); the variable only sets the first password |
 | `LLM_API_KEY_*` | revoke the old key at the provider |
+| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` | store both from one new key pair, then revoke the old pair in the Langfuse project settings |
 
 ## Keep it running until 2026-10-16
 

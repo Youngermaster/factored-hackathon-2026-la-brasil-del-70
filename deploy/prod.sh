@@ -40,9 +40,10 @@ BACKUP_DIR="${BACKUP_DIR:-${ROOT}/deploy/backups}"
 STAGER="${ROOT}/deploy/secrets_stage.py"
 REQUIRED=(SITE_ADDRESS PUBLIC_ORIGIN)
 REQUIRED_SECRETS=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET)
-# The secrets init-env generates, and every secret variable (the model keys come from the provider, not from here).
+# The secrets init-env generates, and every secret variable (the model and Langfuse keys come from their providers,
+# not from here).
 SECRETS=("${REQUIRED_SECRETS[@]}" GRAFANA_ADMIN_PASSWORD)
-SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK)
+SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY)
 
 say() { printf '%s\n' "$*" >&2; }
 fail() { say "error: $*"; exit 1; }

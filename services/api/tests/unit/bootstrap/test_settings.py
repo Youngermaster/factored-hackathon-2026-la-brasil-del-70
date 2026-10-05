@@ -673,3 +673,25 @@ def test_the_azure_api_version_refuses_anything_but_a_dated_or_named_version(
 
     with pytest.raises(ValueError, match="api_version"):
         load_settings(env_file=None)
+
+
+def test_an_enabled_langfuse_export_without_a_base_url_names_the_missing_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The production compose file passes LANGFUSE_BASE_URL through empty by default."""
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("OTEL_ENABLED", "true")
+    monkeypatch.setenv("LANGFUSE_ENABLED", "true")
+    monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", "fixture-public-key")
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", _strong_secret())
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LANGFUSE_BASE_URL must be set when LANGFUSE_ENABLED=true"]
+
+
+def test_a_disabled_langfuse_export_accepts_the_empty_compose_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("LANGFUSE_ENABLED", "false")
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "")
+
+    assert not load_settings(env_file=None).langfuse.enabled

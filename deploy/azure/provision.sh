@@ -35,7 +35,7 @@ DISK_GB="${DISK_GB:-40}"
 VM_IMAGE="${VM_IMAGE:-Canonical:ubuntu-24_04-lts:server:latest}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_SECRETS=(postgres-superuser-password postgres-admin-password postgres-app-password session-secret csrf-secret
-  llm-api-key-primary llm-api-key-fallback grafana-admin-password)
+  llm-api-key-primary llm-api-key-fallback grafana-admin-password langfuse-public-key langfuse-secret-key)
 
 say() { printf '%s\n' "$*" >&2; }
 fail() { say "error: $*"; exit 1; }
