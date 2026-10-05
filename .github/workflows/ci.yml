@@ -28,7 +28,9 @@ jobs:
     name: python
     if: github.event_name != 'schedule'
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    # Successful runs took 12 to 23 minutes on 2026-10-04 and 05 and kept growing with the integration suite
+    # (PostgreSQL through testcontainers); 25 minutes cancelled healthy runs on main and blocked every deploy.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
