@@ -1,10 +1,10 @@
 # Language model prices, read by the cost accounting decorator and the budget guard.
 #
 # Prices are US dollars per million tokens, written as quoted strings so they parse as exact decimals.
-# No price exists anywhere in code. Every hosted entry below has verified: false, including the Azure demo's primary
-# model (gemini/gemini-3.1-flash-lite); the local Ollama entry costs nothing and is verified. Before relying on an
-# entry, a person opens source_url, checks both prices for the exact model id, updates effective_date, and sets
-# verified: true in the same commit.
+# No price exists anywhere in code. Every hosted entry below has verified: false, including the deployed demo's
+# Azure OpenAI models (azure/gpt-4.1-mini, fallback azure/gpt-4o; ADR 0044); the local Ollama entry costs nothing and
+# is verified. Before relying on an entry, a person opens source_url, checks both prices for the exact model id and
+# deployment type, updates effective_date (the date the price was read), and sets verified: true in the same commit.
 #
 # Unverified entries are charged at their price times unverified_price_multiplier, and a model missing from
 # this table is charged at the highest input and output prices below times the multiplier, so the budget guard
@@ -44,7 +44,7 @@ models:
     effective_date: 2026-10-02
     source_url: https://ai.google.dev/gemini-api/docs/pricing
     verified: false
-    notes: Primary model of the Azure demo (Google AI Studio key). Paid tier standard text input price ($0.50 for audio input, unused here). gemini-2.5-flash is closed to new Google AI Studio users. The free tier has no per-token charge but Google may use its content to improve products, so a key without billing does not meet docs/security/data-use.md.
+    notes: Candidate model through a Google AI Studio key; no deployment uses it (the demo runs Azure OpenAI, ADR 0044). Paid tier standard text input price ($0.50 for audio input, unused here). gemini-2.5-flash is closed to new Google AI Studio users. The free tier has no per-token charge but Google may use its content to improve products, so a key without billing does not meet docs/security/data-use.md.
   - model_id: ollama/qwen2.5:7b-instruct
     input_usd_per_million: "0"
     output_usd_per_million: "0"
@@ -52,3 +52,31 @@ models:
     source_url: https://ollama.com/library/qwen2.5
     verified: true
     notes: Local development model served by Ollama on the developer's machine, so there is no per-token charge. Opt-in only (LLM_PROVIDER=litellm with LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct); never a default and never a production provider.
+  # Azure OpenAI (ADR 0044). The model id is azure/<deployment name>; the price depends on the deployment type, so each
+  # note names the Azure Retail Prices API meter it was read from (https://prices.azure.com/api/retail/prices, filtered
+  # by armRegionName and meterName; per 1K tokens there, per million here). The human-readable page is
+  # https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/. Global meters carry the same
+  # price in every region (swedencentral for production, eastus for the evaluation account). Cached input is cheaper
+  # and is not modeled, so these prices err high. Read from the API on 2026-10-05; verified stays false until a person
+  # confirms them against the source (docs/PROGRESS.md, pending action 7), so the budget guard charges 1.5 times.
+  - model_id: azure/gpt-4.1-mini
+    input_usd_per_million: "0.40"
+    output_usd_per_million: "1.60"
+    effective_date: 2026-10-05
+    source_url: https://prices.azure.com/api/retail/prices
+    verified: false
+    notes: Primary model of the deployed demo. Deployment gpt-4.1-mini (model 2025-04-14, GlobalStandard). Meters 'gpt 4.1 mini Inp glbl Tokens' 0.0004 and 'gpt 4.1 mini Outp glbl Tokens' 0.0016 USD per 1K tokens, effective 2025-04-01. A Data Zone or regional deployment costs more (0.44/1.76 and 0.484/1.936). Read 2026-10-05; awaits a person's confirmation.
+  - model_id: azure/gpt-4o
+    input_usd_per_million: "3.025"
+    output_usd_per_million: "12.10"
+    effective_date: 2026-10-05
+    source_url: https://prices.azure.com/api/retail/prices
+    verified: false
+    notes: Fallback model of the deployed demo (degradation level L1). Deployment gpt-4o (model 2024-11-20, regional Standard, Sweden Central). Meters 'gpt 4o 1120 Inp regnl Tokens' 0.003025 and 'gpt 4o 1120 Outp regnl Tokens' 0.0121 USD per 1K tokens, effective 2024-12-01. A Global deployment would cost 2.50/10.00. Read 2026-10-05; awaits a person's confirmation.
+  - model_id: azure/text-embedding-3-small
+    input_usd_per_million: "0.02"
+    output_usd_per_million: "0"
+    effective_date: 2026-10-05
+    source_url: https://prices.azure.com/api/retail/prices
+    verified: false
+    notes: Embedding model (GlobalStandard). Meter 'text-embedding-3-small-glbl Tokens' 0.00002 USD per 1K input tokens, effective 2024-06-01 (Data Zone 0.000022). Embeddings bill input tokens only. The chat gateway never calls it; a retrieval adapter that does must price its own calls. Read 2026-10-05; awaits a person's confirmation.
