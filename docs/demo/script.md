@@ -7,7 +7,7 @@ The scenes below are an outline, not the video cut. Every message below is from 
 ## Before recording
 
 1. Start from a fresh compose volume, then `make up && make pipeline && make seed` (the committed sample): writes persist (a blocked card, an opened case, a recorded intake), a charge can be disputed once, and the seeded open case keeps its deadline for 45 days after the seed. Re-running the seed restores card statuses but does not delete cases or intakes, and never moves the seeded case. On the deployed demo, record right after `deploy/prod.sh seed` on a fresh volume.
-2. Run the API with `DEMO_MODE=true` (codes shown on screen) and the web app with `VITE_DEMO_MODE=true`. With `LLM_PROVIDER=fake` every answer comes from the deterministic path; say so if the model is not configured, and show "no disponible: se usó la ruta determinista" in the glass box as a feature, not a bug.
+2. Run the API with `DEMO_MODE=true` (codes shown on screen) and the web app with `VITE_DEMO_MODE=true`. The deployed demo uses Azure OpenAI (`azure/gpt-4.1-mini`, fallback `azure/gpt-4o`) for understanding; locally, with `LLM_PROVIDER=fake`, every answer comes from the deterministic path; say so if the model is not configured, and show "no disponible: se usó la ruta determinista" in the glass box as a feature, not a bug.
 3. Use a 1440 px wide window (the glass box beside the chat) and one phone-width take for the chat.
 4. Sign in only with the persona picker's first group: the four personas in the "only with the full data" group do not exist on a sample seed ([personas](personas.md)).
 
@@ -32,5 +32,5 @@ On the committed sample the credit result in scene 6 is "information is missing"
 ## Lines to avoid
 
 - Never say "approved", "aprobado", or "aprovado" about credit, even negated in narration over the eligibility card.
-- Do not claim model quality from these takes: with the fake provider the answers are deterministic templates. Evaluation numbers come only from the published run ([results](../evaluation/results.md)), a simulation on the local `qwen2.5:7b-instruct` model.
+- Do not claim model quality from these takes: replies are deterministic templates on either provider (model phrasing is off), and the model only proposes details and signals. Evaluation numbers come only from the published run ([results](../evaluation/results.md)), a simulation on the local `qwen2.5:7b-instruct` model.
 - Do not show document numbers or phone digits; sign in with the persona picker.

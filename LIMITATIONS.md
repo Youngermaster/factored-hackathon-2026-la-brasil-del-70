@@ -33,13 +33,13 @@ What this system cannot claim, stated plainly. The brief asks for honesty about 
 
 ## Evaluation
 
-- Every model role (P's understanding, the naive agent B1, the simulated customer, and the judge) ran on one local 7B model, `qwen2.5:7b-instruct`. The numbers are a simulation on a synthetic world, not a production measurement and not a prediction for a hosted model.
+- Every model role (P's understanding, the naive agent B1, the simulated customer, and the judge) ran on one local 7B model, `qwen2.5:7b-instruct`. The numbers are a simulation on a synthetic world, not a production measurement and not a prediction for a hosted model. The deployed demo has called Azure OpenAI `gpt-4.1-mini` since 2026-10-05; that model was not part of the published run, and a rerun on it is in progress.
 - The 332 test scenarios and their labels are team-written from the policy documents; none is human-reviewed yet (pending action 41).
 - The graders are lexical: 3 of P's 8 graded unsafe outcomes are grader false positives on review, and the counts are reported as graded. The simulated customer saw redacted instructions in 22 of 258 simulated cases.
 - The judge rates tone and clarity only and has no human agreement yet (pending action 40); it contradicts the deterministic language check on plainly Portuguese replies.
 - Repeated runs cover a 48-scenario subset, not the full split. Latency is one laptop serving one model call at a time.
 - The retrieval relevance judgments and the router validation sample are unlabeled by humans, so those results are provisional (pending actions 19 and 27).
-- The run is at commit `6bc2e9d`; prompts, policies, and prices are unchanged since, while phases 15 and 16 changed engine code (README, "Freshness").
+- The run is at commit `6bc2e9d` (2026-09-29). Since then `detect_escalation_signals@2` became the selected prompt, the engine changed (phases 15 and 16, the 14c follow-up), and price entries for other models were added; the policy pack is unchanged, and the run was not repeated (README, "Freshness").
 
 ## Capacity
 
@@ -50,17 +50,17 @@ Measured on one laptop without a model ([capacity](docs/operations/capacity.md))
 The event deployment is one VM with Docker Compose ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md), [deploy guide](deploy/README.md)). A real bank deployment still needs:
 
 - managed PostgreSQL with point-in-time recovery, and a container service with a load balancer and more than one host (high availability);
-- managed secrets and key management instead of a mode-600 env file on the VM;
+- key management beyond the event setup: the secrets live in Azure Key Vault, read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)), but rotation schedules and access reviews are manual, and the model is reached with API keys rather than a managed identity;
 - a real identity provider and a real one-time-code channel instead of the demo sender that shows codes on screen ([demo mode](docs/security/demo-mode.md));
-- a hosted model provider with verified prices, data controls, and a spending limit (pending actions 5, 7, 45);
+- for the Azure OpenAI deployment the demo uses: a provider-side spending limit (today the application's own budget caps and token limits are the only spending bounds) and a recorded review of its data controls (pending action 45);
 - a compliance review: data retention periods, consumer-credit and dispute regulation per country, and accessibility;
 - freshness alerts once there is a scheduled data load, and a shared degradation level across workers.
 
-The host is not chosen yet; until it is, the demo runs only locally (pending action 43).
+The event host is one Azure VM (`Standard_B2as_v2`, westus2) at <https://la-brasil-del-70.westus2.cloudapp.azure.com>, released from `main` by the deploy workflow ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)); it stays up until 2026-10-16.
 
 ## Remaining risks
 
-- Untrusted merchant text reaches a dispute confirmation summary unmasked (three echoed injections on the test run); no other customer's data was read, but the text is shown (BACKLOG, 14c).
+- On the published run, untrusted merchant text reached a dispute confirmation summary unmasked (three echoed injections; no other customer's data was read). Masking of instruction-like record text was added afterwards (phase 14c follow-up, with regression tests on the memory and PostgreSQL backends) and has not been re-measured by an evaluation run.
 - The grounding verifier is lexical and closed: numbers written as words and paraphrased claims pass unnoticed; the template fallback covers what it misses ([grounding](docs/workflows/grounding.md)).
 - The in-domain unsupported recognizers and the keyword router are closed lexicons; paraphrases they miss fall back to the generic answer or a clarifying question.
 - Zero observed failures in a small test set does not establish zero risk: an unsafe rate of 0/76 still allows up to 3.9% at 95% confidence.
