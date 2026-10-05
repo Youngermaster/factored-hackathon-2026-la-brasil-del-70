@@ -28,7 +28,7 @@ Offline measurements, simulations, and projected figures are always labeled sepa
 | `src/bank_evals/prompts/` | Evaluation prompts: `naive_agent_step`, `simulate_customer`, `judge_transcript`, `translate_to_portuguese`, and their output models |
 | `src/bank_evals/commands/` | The `bank-eval` commands |
 | `src/bank_evals/retrieval/`, `language_checks.py` | Phase 07 retrieval evaluation; lexical language checks |
-| `data/` | `scenarios.dev.jsonl`, `scenarios.test.jsonl`, `test_set.lock`, and the retrieval judgments |
+| `data/` | `scenarios.dev.jsonl`, `scenarios.test.jsonl`, `test_set.lock`, the retrieval judgments, and the recorded hosted embeddings for them |
 | `cassettes/` | `eval/<split>/` recordings of evaluation runs (session 14b) and the phase 08 fixtures ([README](cassettes/README.md)) |
 | `tests/unit/`, `tests/integration/`, `tests/support/` | Unit tests, the smoke suite end to end, and shared test support |
 
@@ -46,7 +46,7 @@ The `bank-eval` command:
 | `estimate` | Project calls, wall clock, and cost from a measured run |
 | `judge` | Rate a stratified sample; with `--ratings`, the agreement with human ratings |
 | `publish` | Summaries for `/v1/eval/summaries`, `docs/evaluation/results.md` and `failures.md`, and the run's metrics |
-| `retrieval` | The phase 07 retrieval evaluation |
+| `retrieval` | The retrieval evaluation: BM25, e5 dense and hybrid (with the `ml` extra), Qdrant and Qdrant hybrid (from the committed recording of hosted embeddings; `--record-embeddings` re-records on the evaluation account) |
 
 ## How to extend
 

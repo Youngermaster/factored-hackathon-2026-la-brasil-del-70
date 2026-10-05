@@ -1,4 +1,9 @@
-"""Compare BM25, dense, and hybrid retrieval on the same judgments and the same index."""
+"""Compare BM25, dense, hybrid, Qdrant, and Qdrant hybrid retrieval on the same judgments and the same corpus.
+
+The Qdrant retrievers run over a ``VectorStore``: the in-memory store by default (exact cosine search, the same
+ranking Qdrant returns for a collection this small, by the shared store contract) or a real Qdrant when one is given.
+Their query and passage vectors come from the committed recorded embeddings, so the comparison runs offline.
+"""
 
 import time
 from collections import Counter
@@ -11,7 +16,10 @@ from bank_agent.adapters.retrieval.embedding import Embedder
 from bank_agent.adapters.retrieval.hybrid import FusionComponent, HybridRetriever
 from bank_agent.adapters.retrieval.index_store import RetrievalIndex, build_index
 from bank_agent.adapters.retrieval.ranking import DEFAULT_RRF_K
+from bank_agent.adapters.retrieval.vector_index import VectorClauseIndex, VectorRetriever, model_version
+from bank_agent.adapters.vector.memory import InMemoryVectorStore
 from bank_agent.ports.policy import PolicyRepository
+from bank_agent.ports.vector_store import VectorStore
 from bank_evals.retrieval.judgments import Judgment, JudgmentsError
 from bank_evals.retrieval.runner import RetrieverReport, evaluate_retriever
 
@@ -26,6 +34,9 @@ class RetrievalEvaluation:
     embedder_kind: str | None
     dense_note: str | None
     rrf_k: int
+    vector_model: str | None = None
+    vector_note: str | None = None
+    vector_store: str | None = None
     judgment_counts: dict[str, int] = field(default_factory=dict)
     review_status: dict[str, int] = field(default_factory=dict)
 
@@ -48,9 +59,13 @@ def evaluate(
     embedder_kind: str | None = None,
     dense_note: str | None = None,
     rrf_k: int = DEFAULT_RRF_K,
+    vector_embedder: Embedder | None = None,
+    vector_store: VectorStore | None = None,
+    vector_note: str | None = None,
     clock: Callable[[], float] = time.perf_counter,
 ) -> RetrievalEvaluation:
-    """Evaluate BM25 always, and dense and hybrid when an embedder is given.
+    """Evaluate BM25 always, dense and hybrid when an embedder is given, and Qdrant and Qdrant hybrid when a
+    vector embedder (the hosted model's recorded embeddings, behind query redaction) is given.
 
     ``query_embedder`` embeds the queries (default: ``embedder``); pass the uncached model so latency includes
     the query embedding.
@@ -66,6 +81,23 @@ def evaluate(
             (FusionComponent(bm25, reports[0].threshold), FusionComponent(dense, dense_report.threshold)), k=rrf_k
         )
         reports += [dense_report, evaluate_retriever(hybrid, judgments, threshold=0.0, clock=clock)]
+    store_kind = None
+    if vector_embedder is not None:
+        store = vector_store if vector_store is not None else InMemoryVectorStore()
+        store_kind = type(store).__name__
+        clauses = VectorClauseIndex(store, vector_embedder, pack_version=index.manifest.pack_version)
+        clauses.build(index.documents)
+        qdrant = VectorRetriever(store, vector_embedder, collection=clauses.name)
+        qdrant_report = evaluate_retriever(qdrant, judgments, clock=clock)
+        fused = HybridRetriever(
+            (FusionComponent(bm25, reports[0].threshold), FusionComponent(qdrant, qdrant_report.threshold)),
+            k=rrf_k,
+            version=f"bm25-qdrant.{model_version(vector_embedder.model_id)}"[:64],
+        )
+        reports += [
+            qdrant_report,
+            evaluate_retriever(fused, judgments, threshold=0.0, name="qdrant_hybrid", clock=clock),
+        ]
     counts = Counter(f"{j.split}.{j.workflow}" for j in judgments) + Counter(j.split for j in judgments)
     return RetrievalEvaluation(
         reports=tuple(reports),
@@ -76,6 +108,9 @@ def evaluate(
         embedder_kind=embedder_kind if embedder is not None else None,
         dense_note=dense_note,
         rrf_k=rrf_k,
+        vector_model=vector_embedder.model_id if vector_embedder is not None else None,
+        vector_note=vector_note,
+        vector_store=store_kind,
         judgment_counts=dict(sorted(counts.items())),
         review_status=dict(Counter(j.review_status for j in judgments)),
     )

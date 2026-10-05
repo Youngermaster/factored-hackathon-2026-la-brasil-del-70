@@ -16,6 +16,10 @@ Open retrieval over the synthetic policy pack for informational questions, behin
 | `hybrid.py` | `HybridRetriever` over `FusionComponent(retriever, floor)` with reciprocal rank fusion, model `retriever:hybrid@1` |
 | `ranking.py` | `rank_hits`, `reciprocal_rank_fusion(rankings, k)` |
 | `index_store.py` | `build_index`, `write_index`, `load_index` (refuses another pack version, corpus, tokenizer, or model), `IndexManifest` |
+| `vector_index.py` | `VectorClauseIndex` (one collection per pack version and embedding model, UUID v5 point ids from the clause key, keyword-only payload, idempotent `build`, `check`), `VectorRetriever` over the `VectorStore` port, model `retriever:qdrant@<embedding model>` (ADR 0047) |
+| `fallback.py` | `FallbackRetriever`: the primary retriever, or BM25 when a remote dependency raises a `RetrievalBackendError`; counts `bank.retrieval.fallbacks` |
+
+The Qdrant pieces sit on two sibling packages: `adapters/vector` (the `VectorStore` port over Qdrant's REST API with httpx, and an in-memory store with the same contract) and `adapters/embeddings` (the hosted `Embedder` gateway: query redaction, cost accounting, circuit breaker, bounded retry, and LiteLLM's embedding call with a timeout; plus `RecordedEmbedder`, the committed recording that lets evaluations and tests run offline).
 
 Every retriever filters by the query's language and jurisdiction (plus `ALL`) before scoring, returns hits best first with ties broken by clause key, and identifies itself with a `ModelRef`.
 
@@ -33,6 +37,13 @@ make index DENSE=1              # also embed every clause (needs the ml extra)
 uv run bank-agent index build --help
 ```
 
+For the Qdrant retrievers (`RETRIEVAL_RETRIEVER=qdrant` or `qdrant_hybrid`), build the collection once per pack version and embedding model; the command reads the environment for the store URL and the embedding key, and running it twice writes the same points:
+
+```bash
+uv run --extra litellm bank-agent index qdrant              # RETRIEVAL_QDRANT_URL, LLM_API_KEY_PRIMARY, LLM_API_BASE
+uv run --extra litellm bank-agent index qdrant --recreate   # drop and rebuild after a change of the indexing code
+```
+
 Re-index after any pack change: the pack version changes with any clause, binding, or catalog edit, and an API started with `RETRIEVAL_INDEX_SOURCE=stored` refuses an index built for another version. Development (`RETRIEVAL_INDEX_SOURCE=build`, the default) builds the BM25 index from the loaded pack at startup. Changing the tokenizer lists or the prefix length requires a new `TOKENIZER_VERSION`.
 
 ## How to add a retriever
@@ -46,8 +57,11 @@ Re-index after any pack change: the pack version changes with any clause, bindin
 ## How to test
 
 ```bash
-uv run pytest services/api/tests/unit/adapters/retrieval -q          # tokenizer, BM25 formula, fusion, dense, cache, index store
+uv run pytest services/api/tests/unit/adapters/retrieval -q          # tokenizer, BM25 formula, fusion, dense, cache, index store, vector index, fallback
+uv run pytest -m unit services/api/tests/contracts/test_vector_store_contract.py services/api/tests/unit/adapters/vector services/api/tests/unit/adapters/embeddings -q
 uv run pytest services/api/tests/integration/grounding -q            # real pack, composition, CLI; real model only with the ml extra
 ```
 
 Unit tests never download a model: they use the deterministic `HashingEmbedder`. `test_real_embedding_model.py` runs the real model and is skipped, with its reason, only when the `ml` extra is not installed.
+
+The vector store contract also runs against the pinned, hardened Qdrant image under the `integration` marker (testcontainers; CI runs it, and it needs Docker). Locally, the Qdrant adapter is tested with an `httpx.MockTransport` that replays Qdrant's REST replies.

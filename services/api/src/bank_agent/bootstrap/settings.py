@@ -94,6 +94,10 @@ DEFAULT_THRESHOLD_BM25 = 3.6292
 """Tuned on the dev split of retrieval_judgments.v1 (docs/evaluation/retrieval.md); rerun `make eval-retrieval`."""
 DEFAULT_THRESHOLD_DENSE = 0.8275
 """Cosine similarity with intfloat/multilingual-e5-small, tuned on the same dev split."""
+DEFAULT_THRESHOLD_QDRANT = 0.4618
+"""Cosine similarity with azure/text-embedding-3-small at 512 dimensions in Qdrant, tuned on the same dev split."""
+DEFAULT_HOSTED_EMBEDDING_MODEL = "azure/text-embedding-3-small"
+DEFAULT_HOSTED_EMBEDDING_DIMENSIONS = 512
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:
@@ -246,7 +250,8 @@ class PolicySettings(BaseSettings):
         return value
 
 
-RetrieverName = Literal["bm25", "dense", "hybrid"]
+RetrieverName = Literal["bm25", "dense", "hybrid", "qdrant", "qdrant_hybrid"]
+QDRANT_RETRIEVERS: frozenset[str] = frozenset({"qdrant", "qdrant_hybrid"})
 IndexSource = Literal["build", "stored"]
 
 
@@ -255,9 +260,12 @@ class RetrievalSettings(BaseSettings):
 
     ``index_source=build`` builds the BM25 index from the loaded pack at startup, so it matches by construction;
     ``stored`` loads ``<index_dir>/<pack version>/`` and refuses a mismatch; production requires ``stored``.
-    ``dense`` and ``hybrid`` need the optional ``ml`` extra, which the API image never installs. The thresholds
-    were tuned on the development split of the relevance judgments; the hybrid retriever uses them as the
-    floors of its components.
+    ``dense`` and ``hybrid`` need the optional ``ml`` extra, which the API image never installs. ``qdrant`` searches
+    the clause collection in Qdrant (``qdrant_url``) with hosted query embeddings (``hosted_embedding_model`` through
+    LiteLLM with ``LLM_API_BASE`` and ``LLM_API_KEY_PRIMARY``, or ``embedding_api_base`` when set), and
+    ``qdrant_hybrid`` fuses it with BM25; both answer with BM25 when either service fails (ADR 0047). The
+    thresholds were tuned on the development split of the relevance judgments; the hybrid retrievers use them as
+    the floors of their components.
     """
 
     model_config = _config("RETRIEVAL_")
@@ -272,6 +280,18 @@ class RetrievalSettings(BaseSettings):
     threshold_bm25: float = Field(default=DEFAULT_THRESHOLD_BM25, ge=0)
     threshold_dense: float = Field(default=DEFAULT_THRESHOLD_DENSE, ge=-1, le=1)
     answer_k: int = Field(default=3, ge=1, le=20)
+    qdrant_url: str = ""
+    """Qdrant's REST base, ``http://qdrant:6333`` with the ``rag`` compose profile; empty means not configured."""
+    qdrant_timeout_seconds: float = Field(default=2.0, gt=0, le=30)
+    threshold_qdrant: float = Field(default=DEFAULT_THRESHOLD_QDRANT, ge=-1, le=1)
+    hosted_embedding_model: str = DEFAULT_HOSTED_EMBEDDING_MODEL
+    hosted_embedding_dimensions: int = Field(default=DEFAULT_HOSTED_EMBEDDING_DIMENSIONS, ge=64, le=3072)
+    embedding_api_base: str = ""
+    """Empty means ``LLM_API_BASE``: the same Azure OpenAI account serves the chat and embedding deployments."""
+    embedding_timeout_seconds: float = Field(default=3.0, gt=0, le=60)
+    embedding_max_retries: int = Field(default=1, ge=0, le=2)
+    embedding_circuit_failure_threshold: int = Field(default=5, ge=1, le=100)
+    embedding_circuit_reset_seconds: float = Field(default=30.0, gt=0, le=3600)
 
     @field_validator(
         "index_dir",
@@ -280,6 +300,14 @@ class RetrievalSettings(BaseSettings):
         "embedding_model",
         "threshold_bm25",
         "threshold_dense",
+        "threshold_qdrant",
+        "hosted_embedding_model",
+        "hosted_embedding_dimensions",
+        "qdrant_timeout_seconds",
+        "embedding_timeout_seconds",
+        "embedding_max_retries",
+        "embedding_circuit_failure_threshold",
+        "embedding_circuit_reset_seconds",
         mode="before",
     )
     @classmethod
@@ -587,6 +615,25 @@ def _llm_problems(llm: LLMSettings) -> tuple[list[str], list[tuple[str, SecretSt
     return problems, secrets
 
 
+def _retrieval_problems(settings: AppSettings) -> list[str]:
+    """Qdrant retrieval: a reachable private or https store, and a hosted embedding model with a key over https."""
+    retrieval = settings.retrieval
+    if retrieval.retriever not in QDRANT_RETRIEVERS:
+        return []
+    problems: list[str] = []
+    variable = f"RETRIEVAL_RETRIEVER={retrieval.retriever}"
+    if not retrieval.qdrant_url:
+        problems.append(f"{variable} needs RETRIEVAL_QDRANT_URL")
+    elif not retrieval.qdrant_url.startswith("https://") and not _private_http_base(retrieval.qdrant_url):
+        problems.append("RETRIEVAL_QDRANT_URL must use https or plain http to a private-network host")
+    if settings.llm.provider != "litellm":
+        problems.append(f"{variable} needs LLM_PROVIDER=litellm, whose key the embedding gateway uses")
+    base = retrieval.embedding_api_base or settings.llm.api_base
+    if base and not base.startswith("https://"):
+        problems.append("the embedding API base (RETRIEVAL_EMBEDDING_API_BASE or LLM_API_BASE) must use https")
+    return problems
+
+
 def production_problems(settings: AppSettings, *, owner: bool = False) -> list[str]:
     """Return every production rule the settings violate; empty outside production.
 
@@ -615,6 +662,7 @@ def production_problems(settings: AppSettings, *, owner: bool = False) -> list[s
         llm_problems, llm_secrets = _llm_problems(settings.llm)
         problems.extend(llm_problems)
         secrets.extend(llm_secrets)
+        problems.extend(_retrieval_problems(settings))
         if settings.retrieval.index_source != "stored":
             problems.append(
                 "RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)"

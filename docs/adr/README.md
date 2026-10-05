@@ -51,6 +51,8 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 | [0043](0043-langgraph-migration.md) | A staged migration of the workflow engine to LangGraph StateGraph after the hackathon (roadmap; ADR 0014 stays in force) | Proposed | 2026-10-05 |
 | [0044](0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider | Accepted | 2026-10-05 |
 | [0045](0045-expose-grafana-read-only-under-grafana.md) | Expose Grafana read-only under /grafana (amends 0036's access model) | Accepted | 2026-10-05 |
+| [0046](0046-customer-service-history-vector-retrieval.md) | Customer-service history uses consented vector retrieval (renumbered teammate draft) | Proposed | 2026-10-05 |
+| [0047](0047-qdrant-vector-index-for-knowledge-retrieval.md) | Qdrant vector index for customer-service knowledge retrieval | Accepted | 2026-10-05 |
 
 ## Notes on status
 

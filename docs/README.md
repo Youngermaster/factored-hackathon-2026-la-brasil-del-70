@@ -112,6 +112,8 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0043](adr/0043-langgraph-migration.md) | Staged post-hackathon migration of the workflow engine to LangGraph StateGraph (proposed roadmap) |
 | [adr/0044](adr/0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider: one account per environment, keys in Key Vault, the production delta, and how to change models |
 | [adr/0045](adr/0045-expose-grafana-read-only-under-grafana.md) | Expose Grafana read-only under /grafana, behind switches, with the bank's cookies stripped |
+| [adr/0046](adr/0046-customer-service-history-vector-retrieval.md) | Customer-service history uses consented vector retrieval (Proposed: consent, deletion, and indexing are not built) |
+| [adr/0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md) | Qdrant vector index for customer-service knowledge retrieval, behind a flag with a BM25 fallback |
 
 ## Exploratory data analysis
 

@@ -10,6 +10,7 @@
 #   obs       profile: collector, Jaeger with Badger storage, Prometheus, Grafana (127.0.0.1, and read-only at
 #             /grafana/ through Caddy when GRAFANA_ROUTE=on; ADR 0045)
 #   ollama    profile: a self-hosted model on the private network (needs a VM with at least 16 GB of memory)
+#   qdrant    profile rag: the vector index for knowledge retrieval (ADR 0047), on the internal network only
 #
 # Every service: no-new-privileges, every Linux capability dropped, CPU and memory limits, rotated logs, and a
 # read-only root filesystem except where a note says why not.
@@ -165,6 +166,9 @@ services:
       WORKFLOW_LLM_HANDOFF_SUMMARY: ${WORKFLOW_LLM_HANDOFF_SUMMARY:-false}
       WORKFLOW_MAX_ELIGIBILITY_ASSESSMENTS: ${WORKFLOW_MAX_ELIGIBILITY_ASSESSMENTS:-5}
       WORKFLOW_ELIGIBILITY_ASSESSMENT_WINDOW_MINUTES: ${WORKFLOW_ELIGIBILITY_ASSESSMENT_WINDOW_MINUTES:-60}
+      # Open retrieval (ADR 0047): bm25 by default; qdrant or qdrant_hybrid need the rag profile and a built collection.
+      RETRIEVAL_RETRIEVER: ${RETRIEVAL_RETRIEVER:-bm25}
+      RETRIEVAL_QDRANT_URL: ${RETRIEVAL_QDRANT_URL:-}
       EVAL_SUMMARIES_PUBLIC: ${EVAL_SUMMARIES_PUBLIC:-false}
       OTEL_ENABLED: ${OTEL_ENABLED:-false}
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
@@ -441,6 +445,45 @@ services:
           cpus: "3.0"
           memory: 10G
 
+  # The vector index for knowledge retrieval (ADR 0047). Derived data only: the collections hold the synthetic policy
+  # clauses and are rebuilt by `bank-agent index qdrant`, so the volume is never backed up. Internal network only (no
+  # egress, no published port); the unprivileged image runs as uid 1000 with a read-only root, and writes only its
+  # storage and snapshot volumes and two tmpfs mounts. Started only with RAG=1 deploy/prod.sh up.
+  qdrant:
+    profiles: [rag]
+    image: qdrant/qdrant:v1.19.2-unprivileged@sha256:efb96a9425a90d2d5a1a0a474156280df1892dcdf1af3e8515bd2589b1bfd88b
+    <<: *hardening
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
+      QDRANT__LOG_LEVEL: INFO
+      # The "initialized" marker must land on a writable path when the root is read-only.
+      QDRANT_INIT_FILE_PATH: /qdrant/init/.qdrant-initialized
+    volumes:
+      - qdrant-storage:/qdrant/storage
+      - qdrant-snapshots:/qdrant/snapshots
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,size=64m
+      - /qdrant/init:uid=1000,gid=1000,size=1m
+    networks: [backend]
+    healthcheck:
+      # The image has bash and grep but no curl or wget: an HTTP readiness request over bash's /dev/tcp.
+      test:
+        - CMD
+        - bash
+        - -c
+        - exec 3<>/dev/tcp/127.0.0.1/6333 && printf 'GET /readyz HTTP/1.0\r\n\r\n' >&3 && grep -q 'all shards are ready' <&3
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
 networks:
   edge:
     ipam:
@@ -490,3 +533,5 @@ volumes:
   prometheus-data:
   grafana-data:
   ollama-models:
+  qdrant-storage:
+  qdrant-snapshots:

@@ -2439,3 +2439,34 @@ The orchestrator sets `OBS=1`, `GRAFANA_ROUTE=on`, and `GRAFANA_ANONYMOUS_VIEWER
 - Known limitations: the inventory and the degradation level are per worker; the router cards quote the report at
   `2c19633`, before three `keyword@1` fixes (backlog); end-to-end costs are what each run recorded, zero for the
   local model; the curated cards can drift until they are generated (backlog).
+
+### Qdrant knowledge retrieval behind a flag (2026-10-05, branch feat/qdrant-retrieval)
+
+#### What was done
+
+- A `VectorStore` port with a Qdrant REST adapter on httpx and an in-memory store; one contract suite runs against the in-memory store (unit) and the pinned, hardened Qdrant image (integration, CI only). A `MockTransport` suite replays Qdrant's REST replies offline.
+- A hosted `Embedder` gateway for `azure/text-embedding-3-small` (512 dimensions) through LiteLLM: query redaction, cost accounting into `bank.llm.cost_usd`, circuit breaker, bounded retry, and a timeout. The `Embedder` protocol moved to `ports/embeddings.py`.
+- `RETRIEVAL_RETRIEVER=qdrant` and `qdrant_hybrid` (reciprocal rank fusion with BM25), both behind `FallbackRetriever` to BM25 and counted in `bank.retrieval.fallbacks`; `bm25` stays the default. Open retrieval now runs in a worker thread. `bank-agent index qdrant` builds the collection idempotently (UUID v5 point ids from the clause key, keyword-only payload, one collection per pack version and model).
+- The `rag` compose profile (Qdrant unprivileged image by digest, read-only root, internal network, 512 MB) and `RAG=1` in `deploy/prod.sh`.
+- `bank-eval retrieval` adds `qdrant`, `qdrant_hybrid`, and a cross-language slice, replays a committed recording of hosted embeddings (`make eval-retrieval-embeddings` re-records on the evaluation account), states the outcome of a pre-registered switching rule, and keeps a hand-written section across regenerations.
+- No second collection: the organizer free text is templated (42 distinct customer texts in 147,292 transcripts), documented in ADR 0047 and the data card.
+
+#### Decisions
+
+- [ADR 0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md): Qdrant vector index, accepted, with a production delta.
+- [ADR 0046](adr/0046-customer-service-history-vector-retrieval.md): the teammate's history-memory draft, renumbered from 0029 and set to Proposed.
+- The switching rule passes on the provisional judgments (`qdrant_hybrid` test MRR 0.89 against 0.83, no recall loss in es or pt); see [retrieval.md](evaluation/retrieval.md).
+- No new runtime dependency: httpx and LiteLLM were already in the API image.
+
+#### How to verify
+
+```bash
+uv run --frozen pytest -m unit services/api/tests/contracts/test_vector_store_contract.py services/api/tests/unit/adapters/vector services/api/tests/unit/adapters/embeddings services/api/tests/unit/adapters/retrieval services/api/tests/unit/bootstrap/test_vector_retrieval.py evals/tests/unit/retrieval
+uv run --frozen bank-eval retrieval --no-dense --no-mlflow --output /tmp/retrieval.md   # offline, from the recording
+```
+
+#### Known limitations
+
+- The judgments are pending human review, so the switch is provisional; production latency of the embedding call is not measured offline.
+- Qdrant has no API key; it holds public synthetic policy text only.
+- The Qdrant contract test against a real server runs only where Docker is available (CI).

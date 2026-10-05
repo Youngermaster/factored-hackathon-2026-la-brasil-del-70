@@ -3,6 +3,8 @@
 Each builds a ``Step`` from verified state and clause references; none writes customer text by hand.
 """
 
+import asyncio
+
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import current_intent, evaluate, explanation
 from bank_agent.application.engine.definition import (
@@ -149,12 +151,20 @@ def greeting(ctx: TurnContext, *, clarify: bool = False) -> Step:
     return Step(ctx.state, reply, Outcome.CLARIFIED if clarify else Outcome.IN_PROGRESS)
 
 
-def informational(ctx: TurnContext) -> Step:
-    """Open retrieval (informational intent only): the cited clauses, or a clause-backed abstention."""
+async def informational(ctx: TurnContext) -> Step:
+    """Open retrieval (informational intent only): the cited clauses, or a clause-backed abstention.
+
+    The search runs in a worker thread: a retriever may call remote services (the hosted embedding model and
+    Qdrant, ADR 0047) with bounded timeouts, and those calls must not block the event loop.
+    """
     evaluate(ctx, policy_state="START", intent=Intent.INFORMATIONAL)
     try:
-        outcome = ctx.services.informational.search(
-            intent=Intent.INFORMATIONAL, text=ctx.text, customer=ctx.customer, language=ctx.language
+        outcome = await asyncio.to_thread(
+            ctx.services.informational.search,
+            intent=Intent.INFORMATIONAL,
+            text=ctx.text,
+            customer=ctx.customer,
+            language=ctx.language,
         )
     except ConfigurationError:
         ctx.recorder.intervention("retrieval_unavailable")
