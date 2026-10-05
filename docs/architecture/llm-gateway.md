@@ -48,9 +48,9 @@ Why this order:
 |---|---|---|
 | `fake` (default) | The client injected through `LlmOverrides` (tests, evaluation harness), otherwise `UnconfiguredLLMClient` | The unconfigured client raises `LlmProviderRejectedError` (never retried), so workflows run deterministically |
 | `cassette` | `CassetteLLM` in replay mode, keyed by `LLM_PRIMARY_MODEL` | Record mode (`LLM_CASSETTE_MODE=record`) wraps `LiteLLMClient` and is refused in production |
-| `litellm` | `LiteLLMClient` | Needs the optional `litellm` extra, `LLM_PRIMARY_MODEL`, and a key for every hosted model; local Ollama models (`ollama/...`, `ollama_chat/...`) need no key. `LLM_API_BASE` sets the provider base URL (https only in production) |
+| `litellm` | `LiteLLMClient` | Needs the optional `litellm` extra, `LLM_PRIMARY_MODEL`, and a key for every hosted model; local Ollama models (`ollama/...`, `ollama_chat/...`) need no key. `LLM_API_BASE` sets the provider base URL (https only in production; for Azure OpenAI the resource endpoint, shared by the primary and the fallback). `LLM_API_VERSION` (optional) pins the Azure OpenAI data-plane API version; empty sends none, so LiteLLM uses its default (`2025-02-01-preview` in 1.102.1) |
 
-`LiteLLMClient` is `PromptedLLMClient` (provider-neutral: rendering, the language directive, structured output, repair) over `LiteLLMCompletion` (one `litellm.acompletion` call with explicit model, key, timeout, and `num_retries=0`).
+`LiteLLMClient` is `PromptedLLMClient` (provider-neutral: rendering, the language directive, structured output, repair) over `LiteLLMCompletion` (one `litellm.acompletion` call with explicit model, key, timeout, and `num_retries=0`, plus the base URL and the API version when they are configured).
 
 ## Structured outputs
 

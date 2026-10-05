@@ -192,7 +192,12 @@ class LLMSettings(BaseSettings):
     api_key_primary: SecretStr | None = None
     api_key_fallback: SecretStr | None = None
     api_base: str = ""
-    """Optional provider base URL passed to LiteLLM, for example ``http://localhost:11434`` for a local Ollama."""
+    """Optional provider base URL passed to LiteLLM, for example ``http://localhost:11434`` for a local Ollama, or the
+    Azure OpenAI resource endpoint ``https://<resource>.openai.azure.com/``."""
+    api_version: str = Field(default="", pattern=r"^(\d{4}-\d{2}-\d{2}(-preview)?|v1|latest|preview)?$")
+    """Optional Azure OpenAI data-plane API version passed to LiteLLM (``2024-10-21``, ``2025-04-01-preview``, or
+    ``v1`` for the versionless API). Empty passes nothing, so LiteLLM uses its own default (``2025-02-01-preview`` in
+    1.102.1)."""
     allow_private_http_base: bool = False
     """Production accepts a plain http ``api_base`` only with this set and a private host (a self-hosted model on the
     host's private network, such as the ``ollama`` compose profile); hosted providers always need https and a key."""

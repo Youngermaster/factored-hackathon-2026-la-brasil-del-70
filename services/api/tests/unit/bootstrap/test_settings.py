@@ -656,3 +656,20 @@ def test_conversation_creation_settings_refuse_values_outside_their_bounds(
     monkeypatch.setenv(variable, value)
     with pytest.raises(ValueError, match=variable.removeprefix("CONVERSATION_").lower()):
         load_settings(env_file=None)
+
+
+@pytest.mark.parametrize("value", ["", "2024-10-21", "2025-04-01-preview", "v1"])
+def test_the_azure_api_version_is_optional_and_read_as_written(monkeypatch: pytest.MonkeyPatch, value: str) -> None:
+    monkeypatch.setenv("LLM_API_VERSION", value)
+
+    assert load_settings(env_file=None).llm.api_version == value
+
+
+@pytest.mark.parametrize("value", ["2024/10/21", "v1; rm", "2024-10-21-beta", "latest version"])
+def test_the_azure_api_version_refuses_anything_but_a_dated_or_named_version(
+    monkeypatch: pytest.MonkeyPatch, value: str
+) -> None:
+    monkeypatch.setenv("LLM_API_VERSION", value)
+
+    with pytest.raises(ValueError, match="api_version"):
+        load_settings(env_file=None)

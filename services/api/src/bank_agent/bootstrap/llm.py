@@ -101,6 +101,7 @@ def _litellm(
         api_key=key if key is not None and key.get_secret_value().strip() else None,
         timeout_seconds=settings.timeout_seconds,
         api_base=settings.api_base or None,
+        api_version=settings.api_version or None,
     )
 
 

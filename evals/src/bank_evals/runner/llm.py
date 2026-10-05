@@ -159,6 +159,7 @@ def build_run_llm(
                 api_key=settings.api_key_primary,
                 timeout_seconds=settings.timeout_seconds,
                 api_base=settings.api_base or None,
+                api_version=settings.api_version or None,
             )
         cassettes = CassetteLLM(
             directory,
