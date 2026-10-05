@@ -14,6 +14,7 @@ from itertools import pairwise
 
 from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.intelligence import RetrievalQuery
+from bank_agent.domain.locale import Language
 from bank_agent.ports.retrieval import Retriever
 from bank_evals.retrieval.judgments import Judgment
 from bank_evals.retrieval.metrics import (
@@ -140,11 +141,34 @@ def _slices(results: Sequence[QueryResult], threshold: float) -> tuple[SliceMetr
     return tuple(slices)
 
 
+CROSS_LANGUAGE = {Language.ES: Language.PT, Language.PT: Language.ES}
+"""Every clause exists in both languages under the same id, so the relevance labels carry over."""
+
+
+def swapped_language(judgment: Judgment) -> Judgment:
+    """The same query text searched against the other language's documents (a language misdetection)."""
+    return judgment.model_copy(update={"language": CROSS_LANGUAGE[judgment.language]})
+
+
+def cross_language_slices(
+    retriever: Retriever, test: Sequence[QueryResult], threshold: float, clock: Callable[[], float]
+) -> tuple[SliceMetrics, ...]:
+    """In-scope test queries with the document language swapped, one slice per direction."""
+    slices = []
+    for source, target in CROSS_LANGUAGE.items():
+        group = [r.judgment for r in test if r.judgment.expected == "answer" and r.judgment.language is source]
+        if group:
+            results = run_queries(retriever, [swapped_language(j) for j in group], clock=clock)
+            slices.append(slice_metrics(f"cross_language={source.value}_to_{target.value}", results, threshold))
+    return tuple(slices)
+
+
 def evaluate_retriever(
     retriever: Retriever,
     judgments: Sequence[Judgment],
     *,
     threshold: float | None = None,
+    name: str | None = None,
     clock: Callable[[], float] = time.perf_counter,
 ) -> RetrieverReport:
     results = run_queries(retriever, judgments, clock=clock)
@@ -153,14 +177,15 @@ def evaluate_retriever(
     chosen = tune_threshold(dev) if threshold is None else threshold
     latencies = [r.latency_ms for r in results]
     model = getattr(retriever, "model", None)
+    default_name = model.name if model is not None else type(retriever).__name__
     return RetrieverReport(
-        name=model.name if model is not None else type(retriever).__name__,
+        name=name or default_name,
         model=str(model) if model is not None else "unknown",
         threshold=chosen,
         tuned=threshold is None,
         dev=slice_metrics("dev", dev, chosen),
         test=slice_metrics("test", test, chosen),
-        slices=_slices(test, chosen),
+        slices=_slices(test, chosen) + cross_language_slices(retriever, test, chosen, clock),
         latency_p50_ms=percentile(latencies, 0.5),
         latency_p95_ms=percentile(latencies, 0.95),
         latency_mean_ms=sum(latencies) / len(latencies),

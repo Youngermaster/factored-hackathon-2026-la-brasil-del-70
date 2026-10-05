@@ -23,7 +23,7 @@ BANK_DATA := $(UV_RUN) bank-data
 
 .PHONY: help setup up down check lint format typecheck test-unit test-integration test-web env-check docs-check contracts \
 	data-download pipeline pipeline-sample data-sample data-report lineage data-codegen analysis db-upgrade seed verify-seed \
-	policy-lock policy-catalog index eval-retrieval eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
+	policy-lock policy-catalog index eval-retrieval eval-retrieval-embeddings eval eval-test eval-smoke eval-scenarios train promote openapi llm-smoke \
 	api-local-llm api-hosted-llm env api-obs load-test submission-check
 
 help: ## List the available targets
@@ -127,8 +127,11 @@ policy-catalog: ## Regenerate docs/policy/catalog.md from the policy pack and th
 index: ## Build the retrieval index for the current pack under data/artifacts (DENSE=1 embeds too; needs the ml extra)
 	$(UV_RUN) bank-agent index build $(if $(DENSE),--dense,)
 
-eval-retrieval: ## Compare BM25, dense, and hybrid on the relevance judgments; writes docs/evaluation/retrieval.md
+eval-retrieval: ## Compare BM25, dense, hybrid, Qdrant, and Qdrant hybrid on the judgments; writes docs/evaluation/retrieval.md
 	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) bank-eval retrieval
+
+eval-retrieval-embeddings: ## Opt-in: record missing hosted embeddings (evaluation account: LLM_API_KEY_PRIMARY, RETRIEVAL_EMBEDDING_API_BASE)
+	MLFLOW_TRACKING_URI=$${MLFLOW_TRACKING_URI:-file:./mlruns} $(UV_RUN) --extra litellm bank-eval retrieval --record-embeddings
 
 # Scenario evaluation (phase 14). EVAL_LLM: replay (cassettes; the default), off (no model), or record (live, writes
 # cassettes; needs LLM_PROVIDER=litellm and the litellm extra). EVAL_MODEL names the model the cassettes hold.
