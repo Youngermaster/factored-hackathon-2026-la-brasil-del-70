@@ -90,6 +90,11 @@ class PriceTable:
     def entries(self) -> tuple[ModelPrice, ...]:
         return self._table.models
 
+    @property
+    def unverified_multiplier(self) -> Decimal:
+        """The factor applied to unverified and unknown prices (at least 1)."""
+        return self._table.unverified_price_multiplier
+
     def effective(self, model_id: str) -> EffectivePrice:
         multiplier = self._table.unverified_price_multiplier
         entry = self._entries.get(model_id)

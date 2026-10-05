@@ -85,6 +85,7 @@ DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retriev
 DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
 DEFAULT_MODEL_REGISTRY_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "models"
 DEFAULT_EVAL_SUMMARIES_DIR = _REPOSITORY_ROOT / "evals" / "reports" / "summaries"
+DEFAULT_MODEL_CARDS_FILE = _SERVICE_ROOT / "config" / "model_cards.yaml"
 _SELECTION = r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}"
 ROUTER_SELECTION = rf"^(keyword@1|(tfidf|embeddings)@{_SELECTION})$"
 RESOLVER_SELECTION = rf"^(rules@1|lgbm@{_SELECTION})$"
@@ -331,22 +332,25 @@ class WorkflowSettings(BaseSettings):
 
 
 class EvaluationSettings(BaseSettings):
-    """Published evaluation summaries served by ``/v1/eval/summaries``.
+    """Published evaluation summaries served by ``/v1/eval/summaries`` and model cards served by ``/v1/eval/models``.
 
     ``summaries_dir`` holds the summary files the evaluation harness publishes (phase 14); a missing directory
-    means nothing is published yet. ``summaries_public=true`` serves them without a session.
+    means nothing is published yet. ``summaries_public=true`` serves them without a session. ``model_cards_file`` is
+    the curated copy of the published model reports (``services/api/config/model_cards.yaml``); a missing file serves
+    an empty set.
     """
 
     model_config = _config("EVAL_")
 
     summaries_dir: Path = DEFAULT_EVAL_SUMMARIES_DIR
     summaries_public: bool = False
+    model_cards_file: Path = DEFAULT_MODEL_CARDS_FILE
 
-    @field_validator("summaries_dir", mode="before")
+    @field_validator("summaries_dir", "model_cards_file", mode="before")
     @classmethod
-    def _empty_means_default(cls, value: object) -> object:
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
         if isinstance(value, str) and not value.strip():
-            return DEFAULT_EVAL_SUMMARIES_DIR
+            return DEFAULT_EVAL_SUMMARIES_DIR if info.field_name == "summaries_dir" else DEFAULT_MODEL_CARDS_FILE
         return value
 
 

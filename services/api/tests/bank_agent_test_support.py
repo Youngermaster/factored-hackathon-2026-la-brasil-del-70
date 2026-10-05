@@ -13,7 +13,8 @@ from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.reliability.ladder import StaticDegradation
-from bank_agent.ports.evaluation import EvaluationSummaryReader
+from bank_agent.domain.model_inventory import ModelInventory
+from bank_agent.ports.evaluation import EvaluationSummaryReader, ModelCardReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.testing.clock import FixedClock
 from bank_agent.testing.telemetry import RecordingTelemetry
@@ -102,6 +103,14 @@ class FakeProvider:
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:
         raise AssertionError("FakeProvider has no evaluation summaries")
+
+    @property
+    def model_inventory(self) -> ModelInventory:
+        raise AssertionError("FakeProvider has no model inventory")
+
+    @property
+    def model_cards(self) -> ModelCardReader:
+        raise AssertionError("FakeProvider has no model cards")
 
     @property
     def credit_product_names(self) -> CreditProductNames:

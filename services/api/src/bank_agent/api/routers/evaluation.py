@@ -1,8 +1,10 @@
-"""``/v1/eval``: published evaluation summaries and every conversation's execution records, for evaluators.
+"""``/v1/eval``: published evaluation summaries, the model inventory, and every conversation's execution records.
 
 Summaries are offline measurements, per workflow and in aggregate. They are public read-only when
 ``EVAL_SUMMARIES_PUBLIC=true``; otherwise, like the traces, they need an evaluator session. The evaluator trace
-includes the internal risk estimates (phase 02b rule).
+includes the internal risk estimates (phase 02b rule). The model inventory (what the process serves, recorded at
+startup, plus the curated offline model cards) is for evaluator sessions only; it needs no database, so it answers at
+every degradation level.
 """
 
 from typing import Annotated
@@ -11,7 +13,7 @@ from fastapi import APIRouter, Depends, Path, Request
 
 from bank_agent.api.config import RateClass
 from bank_agent.api.dependencies import endpoint, role_dependency, security_config, services
-from bank_agent.api.schemas.evaluation import EvaluationSummariesResponse
+from bank_agent.api.schemas.evaluation import EvaluationSummariesResponse, ModelInventoryResponse
 from bank_agent.api.schemas.trace import StaffTraceRecord, StaffTraceResponse
 from bank_agent.domain.access import Role
 from bank_agent.domain.identifiers import ID_PATTERN, ConversationId
@@ -46,6 +48,18 @@ _EVAL_LIST_SUMMARIES = endpoint(
 async def list_summaries(request: Request) -> EvaluationSummariesResponse:
     """Published evaluation summaries, newest first; empty until the harness publishes a run."""
     return EvaluationSummariesResponse(summaries=tuple(await services(request).evaluation_summaries.list()))
+
+
+_EVAL_MODEL_INVENTORY = endpoint(
+    rate=RateClass.READ, roles=EVALUATOR, changes_state=False, operation_id="eval_model_inventory"
+)
+
+
+@router.get("/models", response_model=ModelInventoryResponse, **_EVAL_MODEL_INVENTORY)
+async def model_inventory(request: Request) -> ModelInventoryResponse:
+    """The models, language model setup, prompts, and policy pack this process serves, and their offline evidence."""
+    provider = services(request)
+    return ModelInventoryResponse(inventory=provider.model_inventory, cards=await provider.model_cards.read())
 
 
 _EVAL_CONVERSATION_TRACE = endpoint(

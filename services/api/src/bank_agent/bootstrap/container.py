@@ -9,7 +9,8 @@ the policy pack, the synthetic credit catalog, and the eligibility service from 
 clause lookup, open retrieval, and the grounding verifier from ``bootstrap/retrieval.py`` (tests and the evaluation
 harness may inject an embedder so dense retrieval runs without the optional ``ml`` extra); the workflow engines (the
 proposed system and baseline B0) from ``bootstrap/workflows.py``; the HTTP use cases (conversations, the agent inbox,
-the published evaluation summaries) are wired here too.
+the published evaluation summaries, the model cards, and the model inventory recorded at startup) are wired here
+too.
 """
 
 from collections.abc import Callable, Sequence
@@ -17,6 +18,7 @@ from collections.abc import Callable, Sequence
 from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
+from bank_agent.adapters.evaluation.model_cards import FilesystemModelCards
 from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
 from bank_agent.adapters.persistence.postgres.budget import PostgresBudgetLedger
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
@@ -35,6 +37,7 @@ from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
 from bank_agent.application.reliability.ladder import LadderFlags
 from bank_agent.application.tools.banking import BankingTools
+from bank_agent.bootstrap.inventory import build_model_inventory
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_stack
 from bank_agent.bootstrap.models import ModelFallbacks, default_embedder
 from bank_agent.bootstrap.persistence import (
@@ -51,9 +54,10 @@ from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings, LLMSett
 from bank_agent.bootstrap.workflows import WorkflowServices, build_workflows
 from bank_agent.domain.degradation import ComponentState
 from bank_agent.domain.errors import ConfigurationError
+from bank_agent.domain.model_inventory import ModelInventory
 from bank_agent.ports.budget import BudgetLedger
 from bank_agent.ports.determinism import Clock, IdGenerator
-from bank_agent.ports.evaluation import EvaluationSummaryReader
+from bank_agent.ports.evaluation import EvaluationSummaryReader, ModelCardReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
@@ -191,6 +195,17 @@ class Container:
         self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
         self._human_service = HumanService(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
+        self._model_cards = FilesystemModelCards(settings.evaluation.model_cards_file)
+        self._model_inventory = build_model_inventory(
+            settings,
+            served=self._model_fallbacks.served,
+            retriever=self._grounding.retriever,
+            llm=self._llm_stack.health,
+            prompts=self._prompt_registry.refs,
+            policy_pack_version=self._policy.pack.version,
+            credit_catalog_available=self._policy.credit_catalog_available,
+            now=self._clock.now(),
+        )
         self._degradation.current()
 
     @property
@@ -276,6 +291,15 @@ class Container:
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:
         return self._evaluation_summaries
+
+    @property
+    def model_cards(self) -> ModelCardReader:
+        return self._model_cards
+
+    @property
+    def model_inventory(self) -> ModelInventory:
+        """What this process serves, recorded once at startup (no secrets, paths, or identifiers)."""
+        return self._model_inventory
 
     @property
     def rate_limit_store(self) -> RateLimitStore | None:
