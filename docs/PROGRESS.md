@@ -2549,3 +2549,26 @@ Appended at the end of the log so parallel final-day tracks do not collide. Newe
 #### Next phase
 
 - The human actions in the current state: export the slides, record the video, make the repository public, and send the submission email.
+
+### Final day: live verification fixes, releases 0bfe644 and 6b56d58 (2026-10-05)
+
+A live verification of release e8f0d0c on production (es and pt flows, RAG, Grafana, Langfuse, and a rubric audit) found four gaps; each was fixed with regression tests, merged, released manually on the VM (GitHub Actions was degraded), smoke-tested, and checked live.
+
+#### What was done
+
+- Pull request 39 (`0bfe644`): deadline, definition, and how-it-works questions reach open retrieval instead of dispute intake or card support (keyword router; no evaluation scenario message changes route); a policy-question scenario in the judges' demo guide; the README RAG section, rubric map, and architecture diagram; stale claims corrected.
+- Pull request 40: the README records the live RAG check after the router fix.
+- Pull request 41 (`6b56d58`): a refusal sent after a step-up now cancels the pending write (card block, dispute case, credit intake) instead of executing it; `DSP.amount_within_auto_limit` version 2 compares USD charges in the limit's currency at a synthetic, dated rate carried by `DSP-{CO,MX,AR}-3` version 2, and a currency without a rate gets an honest needs-a-person handoff.
+
+#### Verified on production (2026-10-05, about 21:00 UTC)
+
+- "¿Cuántos días tengo para levantar una aclaración?", "Quantos dias tenho para abrir uma contestação?", and both definition questions are answered from cited clauses (`DSP-MX-1@1`, `DSP-MX-2@2`, `CRD-ALL-2@1`) through `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512`.
+- The Colombian intake with a 261.15 USD charge reaches the confirmation summary; declining records nothing.
+- The Qdrant collection was rebuilt for the new pack version (123 points); the smoke test passed after each release.
+
+#### Known limitations
+
+- The consent fix after step-up is verified by in-memory workflow tests in es and pt, not yet by a live step-up on production.
+- CI on `main` was cancelled by the GitHub Actions incident and rerun; the releases were verified locally (ruff, 4,037 unit and offline integration tests, docs check) and by the smoke test. The PostgreSQL integration variants run in CI.
+- The `crd-mx-two-cards` debit card **** 3231 stays blocked after the verification run (no unblock tool); a fresh seed before recording the video resets the demo data.
+
