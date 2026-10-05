@@ -80,11 +80,11 @@ COMMON: dict[str, dict[Language, str]] = {
         "a stronger verification of your identity.",
     },
     "common.refused_review_notice": {
-        ES: "Por seguridad, debido a esta solicitud, si necesitas algo más en esta conversación te atenderá una "
+        ES: "Por seguridad, debido a esta solicitud, si necesitas algo más en esta sesión te atenderá una "
         "persona del equipo.",
-        PT: "Por segurança, devido a este pedido, se precisar de mais alguma coisa nesta conversa, uma pessoa da "
+        PT: "Por segurança, devido a este pedido, se precisar de mais alguma coisa nesta sessão, uma pessoa da "
         "equipe vai atender você.",
-        EN: "For security, because of this request, if you need anything else in this conversation a person from "
+        EN: "For security, because of this request, if you need anything else in this session a person from "
         "the team will assist you.",
     },
     "common.off_topic": {
