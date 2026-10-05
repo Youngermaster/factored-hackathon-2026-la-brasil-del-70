@@ -49,6 +49,7 @@ async def test_a_period_follow_up_after_a_statement_stays_in_the_statement_inqui
     reply = await harness.say(follow_up, session, shown.conversation_id)
     assert reply.response.text != shown.response.text
     assert reply.state in {"STATEMENT_SUMMARY", "CLARIFY"}
+    assert reply.workflow is not None
     assert reply.workflow.id == "account_inquiry"
     assert reply.response.template_id not in {"common.off_topic", "common.clarify_workflow"}
 

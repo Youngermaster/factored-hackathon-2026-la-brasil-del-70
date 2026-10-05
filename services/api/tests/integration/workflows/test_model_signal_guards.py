@@ -3,6 +3,7 @@ DSP-01 and ACC-04): the bank's own dispute words are not a legal mention, and a 
 third-party request. Real legal mentions and a relative's products keep escalating or refusing."""
 
 import pytest
+from pydantic import JsonValue
 
 from bank_agent.domain.trust import TrustEventKind
 from bank_agent.domain.workflow import Outcome
@@ -11,7 +12,7 @@ from bank_agent_scenarios import CO, MX, PT
 from bank_agent_workflow_support import DISPUTE_SLOTS, NO_SIGNALS, SIGNALS, Backend
 from bank_agent_workflows import build_harness
 
-DISPUTE_EXTRACTION = {
+DISPUTE_EXTRACTION: dict[str, JsonValue] = {
     "intent_candidates": [{"intent": "dispute_status", "confidence": 0.6}],
     "transaction": {"amount": None, "currency_hint": None, "merchant_text": None, "date_expression": None,
                     "channel_hint": None, "card_last4_hint": None},
