@@ -386,7 +386,7 @@ Redaction is outermost so nothing below it (tracing, cassettes, the provider) se
 |---|---|---|
 | Fake (the default) | `LLM_PROVIDER=fake` | No model call at all; every workflow runs its deterministic path; what `make check` and CI use (tests inject `FakeLLM`) |
 | Cassette | `LLM_PROVIDER=cassette`, `LLM_PRIMARY_MODEL=<the model the cassettes hold>` | Replays recorded replies from `evals/cassettes/`, keyed by prompt, model, language, and the redacted variables; the evaluation uses it to rerun without a model |
-| Local Ollama | `LLM_PROVIDER=litellm`, `LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct`, `LLM_API_BASE=http://localhost:11434`, or simply `make api-local-llm` | Development and the published evaluation; no key, zero cost (a verified zero-price entry) |
+| Local Ollama | `LLM_PROVIDER=litellm`, `LLM_PRIMARY_MODEL=ollama/qwen2.5:7b-instruct`, `LLM_API_BASE=http://localhost:11434`, or simply `make api-local-llm` | Development and the archived 14b evaluation; no key, zero cost (a verified zero-price entry) |
 | Hosted | `LLM_PROVIDER=litellm`, `LLM_PRIMARY_MODEL=<provider>/<model>`, `LLM_API_KEY_PRIMARY`, or `make api-hosted-llm` | A provider such as Azure OpenAI (what the deployed demo uses: `azure/gpt-4.1-mini`, fallback `azure/gpt-4o`), OpenAI, Anthropic, or Gemini through LiteLLM; section 7 has the steps |
 
 Switching is a settings change only; no workflow code knows which mode is active. Only `services/api/src/bank_agent/bootstrap/` reads the environment, and the process environment wins over `.env`.
@@ -501,15 +501,15 @@ flowchart LR
 
 **Unsafe outcomes are detected from what the system did, not from what it said.** The action grader (`evals/src/bank_evals/graders/actions.py`) audits every tool call: a write without a prior confirmation and step-up, a success claim without a verified action in that turn, a call on an expired session, a call that read or wrote another customer's records, or a write the scenario did not expect. The disclosure grader checks the text for another customer's identifiers, internal flags, a score, income, or risk estimate, and approval wording. A system cannot talk its way out of an unsafe tool call.
 
-Published results (run `test-local`, commit `6bc2e9d`, every model role on the local `ollama/qwen2.5:7b-instruct`; [results](evaluation/results.md), [failures](evaluation/failures.md)):
+Published results (run `test-hosted`, commit `2ddabb0`, before the final-day fixes, every model role on the hosted `azure/gpt-4.1-mini`; [results](evaluation/results.md), [failures](evaluation/failures.md); the local-model run is archived in [runs/test-local](evaluation/runs/test-local/results.md)):
 
 | System | Safe automated resolution (of 304) | Unsafe outcomes (of 304) |
 |---|---|---|
-| P, proposed | 177 (58%) [53 to 64] | 8 (2.6%) [1.1 to 5.1] |
-| B0, menu and rules bot | 128 | 4 |
-| B1, naive agent | 39 | 90 |
+| P, proposed | 185 (61%) [55 to 66] | 1 (0.3%) [0.0 to 1.8] |
+| B0, menu and rules bot | 141 | 0 |
+| B1, naive agent | 69 | 92 |
 
-What the intervals support: P above B1 in every workflow; P above B0 in aggregate and in credit only; in card support B0 is ahead on the point estimate (43 against 40 of 76). No P case read or changed another customer's data, claimed a credit approval, or claimed an action that did not happen. The per-workflow table is in the [README](../README.md#evaluation-headline) and must be quoted next to any aggregate.
+What the intervals support: P above B1 in aggregate and in every workflow but account inquiry (overlapping); P above B0 in aggregate and in credit only; account inquiry and card support are ties with B0. P's one graded unsafe outcome is a confirmed, step-up-verified second write the scenario did not expect. No P case read or changed another customer's data, claimed a credit approval, or claimed an action that did not happen. The per-workflow table is in the [README](../README.md#evaluation-headline) and must be quoted next to any aggregate.
 
 How to rerun and regenerate:
 
@@ -520,7 +520,7 @@ How to rerun and regenerate:
 | `make eval-test` | The frozen test split from the committed cassettes: a deterministic regression run, not a reproduction of the published numbers (some recorded calls were overwritten by later identical keys) |
 | `uv run --frozen bank-eval publish reports/eval/<run_id>` | Regenerates `docs/evaluation/results.md`, `docs/evaluation/failures.md`, and the summaries from a run directory (the published run's directory is not in git; it holds transcripts) |
 
-Honest limits: the workload is synthetic and team-written, the labels are pending human review, every model role ran on a local 7B model (the deployed `azure/gpt-4.1-mini` was not part of that run; a rerun on it is in progress), the per-workflow cells are small (76 cases), the Portuguese has had no native review, and the judge's agreement with human raters is pending. Since `6bc2e9d`, prompts (`detect_escalation_signals@2`), parts of the engine, and the harness changed without a rerun ([README](../README.md#evaluation-headline), "Freshness"). Detail: [plan](evaluation/plan.md), [methodology](evaluation/methodology.md), [LIMITATIONS.md](../LIMITATIONS.md).
+Honest limits: the workload is synthetic and team-written, the labels are pending human review, the simulated customer runs on the same hosted model as the systems under test, the run predates the final-day fixes, the per-workflow cells are small (76 cases), the Portuguese has had no native review, and the judge's agreement with human raters is pending. The final-day fixes after `2ddabb0` are not measured ([README](../README.md#evaluation-headline), "Freshness"). Detail: [plan](evaluation/plan.md), [methodology](evaluation/methodology.md), [LIMITATIONS.md](../LIMITATIONS.md).
 
 ## 10. Operations and deployment
 
@@ -636,7 +636,7 @@ Questions judges are likely to ask, and where the answer is:
 | What if the model is down or too expensive? | The degradation ladder: fallback model, then template-only, never a write without a read-back | Section 5.7 |
 | Is the credit result a decision? | No. An indicative result from a labeled synthetic service, with reasons, uncertainty, and a review path; no approved outcome exists | Section 4 |
 | Why four workflows when the brief says depth over breadth? | One engine carries the depth once; each workflow meets the same bar and is evaluated separately | [ADR 0020](adr/0020-four-workflows-and-the-workflow-registry.md) |
-| How good is it? | Simulated and offline: 177 of 304 safe automated resolutions against 128 (B0) and 39 (B1), with 8 unsafe outcomes against 4 and 90, on a local 7B model | Section 9 |
+| How good is it? | Simulated and offline: 185 of 304 safe automated resolutions against 141 (B0) and 69 (B1), with 1 graded unsafe outcome against 0 and 92, on the hosted `gpt-4.1-mini` | Section 9 |
 | Why not the learned router by default? | It is more accurate on its own test set, but end to end it gained one case of 112 on dev | Section 8 |
 
 ## 12. Glossary

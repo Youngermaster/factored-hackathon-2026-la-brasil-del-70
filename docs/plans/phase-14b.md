@@ -67,7 +67,7 @@ uv run --frozen bank-eval publish reports/eval/test-local
 
 ## Part 2: what happened
 
-The orchestrator ran the test split from a separate worktree pinned at `6bc2e9d` (2 h 51 min, 1,284 cases, 0 cassette misses, no lever needed); the judge and `publish` ran there too, and the published files were copied into `main` byte for byte. The generated `results.md` and `failures.md` carry a hand-written analysis after the generated part. The results, the categorized unsafe outcomes, and the limitations are in [results.md](../evaluation/results.md#analysis-hand-written-session-14b); the phase log has the summary. The test cassettes (8.6 MB) and the judge's (0.4 MB, kept in `evals/cassettes/eval/test-judge/`) stay uncommitted until pending action 42 is decided.
+The orchestrator ran the test split from a separate worktree pinned at `6bc2e9d` (2 h 51 min, 1,284 cases, 0 cassette misses, no lever needed); the judge and `publish` ran there too, and the published files were copied into `main` byte for byte. The generated `results.md` and `failures.md` carry a hand-written analysis after the generated part. The results, the categorized unsafe outcomes, and the limitations are in [results.md](../evaluation/runs/test-local/results.md#analysis-hand-written-session-14b); the phase log has the summary. The test cassettes (8.6 MB) and the judge's (0.4 MB, kept in `evals/cassettes/eval/test-judge/`) stay uncommitted until pending action 42 is decided.
 
 ## Files
 
