@@ -79,7 +79,9 @@ async def balances(ctx: TurnContext) -> Step:
     if not views:
         return Step("RESOLVED", Reply(template="account.no_balances"), Outcome.RESOLVED)
     as_of_instant = max(view.as_of for view in views)
-    as_of = as_of_instant.astimezone(ctx.zone).date()
+    # The balance cut is stamped at the end of the business day in UTC-6; east of it the local date is the next day.
+    # The shown date never passes the data as-of date, so balances and payments agree (QA 2026-10-05, ACC-12).
+    as_of = min(as_of_instant.astimezone(ctx.zone).date(), ctx.services.policy.data_as_of)
     currencies = {view.current_balance.currency for view in views}
     ctx.currency = next(iter(currencies)) if len(currencies) == 1 else None
     decision = evaluate(ctx, account=AccountFacts(product_owned_by_session_customer=True, answer_as_of=as_of_instant))
@@ -87,7 +89,7 @@ async def balances(ctx: TurnContext) -> Step:
     if stop is not None:
         return stop
     for view in views:
-        _balance_fact(ctx, view, view.as_of.astimezone(ctx.zone).date())
+        _balance_fact(ctx, view, min(view.as_of.astimezone(ctx.zone).date(), ctx.services.policy.data_as_of))
     if contested(ctx.text):
         return escalate(ctx, EscalationReasonCode.UNSUPPORTED_NEEDS_HUMAN, "balance_contested", decision=decision,
                         open_questions=("Which balance does the customer consider wrong, and why?",))  # fmt: skip
@@ -95,7 +97,7 @@ async def balances(ctx: TurnContext) -> Step:
     lines = tuple(
         ("account.balance_item_credit" if "available" in row else "account.balance_item", row) for row, _ in rows
     )
-    facts = (_fact(FactKind.AS_OF, at=as_of_instant.astimezone(ctx.zone)), *(f for _, fs in rows for f in fs))
+    facts = (_fact(FactKind.AS_OF, day=as_of), *(f for _, fs in rows for f in fs))
     save(ctx, data.evolve(answered=True))
     reply = Reply(
         template="account.balances",

@@ -12,7 +12,7 @@ from bank_agent.application.workflows.account_inquiry.answers import contested
 from bank_agent.domain.money import Currency
 from bank_agent.domain.transaction import TransactionType
 from bank_agent.domain.workflow import Outcome
-from bank_agent_scenarios import CO, MX, PT, scenario_data, txn
+from bank_agent_scenarios import AR, CO, MX, PT, scenario_data, txn
 from bank_agent_workflow_support import Backend
 from bank_agent_workflows import Harness, build_harness
 
@@ -120,3 +120,22 @@ async def test_a_dispute_summary_without_a_merchant_leaves_the_merchant_out(back
     assert "la compra" not in summary.response.text
     assert summary.response.confirmation is not None
     assert summary.response.confirmation.merchant_display is None
+
+
+async def test_balance_as_of_never_passes_the_data_cut_east_of_the_stamp_zone() -> None:
+    """A balance stamped at 05:59:59Z on 18 June (end of 17 June in UTC-6) is shown as 17 June in Argentina, the
+    same date the payment and statement answers give."""
+    data = scenario_data()
+    stamp = datetime(2026, 6, 18, 5, 59, 59, tzinfo=UTC)
+    data.products = [p.evolve(balance_as_of=stamp) if p.product_id == "PRD-FIXAR-SAV" else p for p in data.products]
+    store = InMemoryStore()
+    store.seed(customers=data.customers, products=data.products, transactions=data.transactions, cases=data.cases,
+               credit_profiles=data.credit_profiles)  # fmt: skip
+    harness = build_harness(InMemoryUnitOfWorkFactory(store), InMemorySessionStore())
+    session = harness.session(AR)
+    reply = await harness.say("¿Cuál es el saldo de mi caja de ahorro?", session)
+    assert reply.state == "BALANCES"
+    assert "17 de junio de 2026" in reply.response.text
+    assert "18 de junio" not in reply.response.text
+    record = await harness.record(session, reply.turn_id)
+    assert record.grounding.violations == ()
