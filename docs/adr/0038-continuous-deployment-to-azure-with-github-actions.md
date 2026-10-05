@@ -1,6 +1,6 @@
 # 0038: Continuous deployment to the Azure VM with GitHub Actions, GHCR, OIDC, and run-command
 
-- Status: proposed
+- Status: accepted
 - Date: 2026-10-04
 - Amends: [ADR 0019](0019-single-host-compose-deployment.md) ("images are built on the VM; nothing is pushed to a registry") for the continuous deployment path; the build-on-the-VM path stays for local and manual use.
 - Builds on: [ADR 0037](0037-cloud-secret-management-with-azure-key-vault.md) (the VM reads its secrets from Key Vault with its managed identity).

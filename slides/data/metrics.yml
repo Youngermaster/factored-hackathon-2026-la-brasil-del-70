@@ -55,6 +55,10 @@ retrieval.test_queries: {value: 60, kind: provisional, source: docs/evaluation/r
 retrieval.r1.bm25: {value: 0.68, display: "0.68", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.r1.dense: {value: 0.69, display: "0.69", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.r1.hybrid: {value: 0.72, display: "0.72", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.r1.qdrant: {value: 0.67, display: "0.67", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.r1.qdrant_hybrid: {value: 0.76, display: "0.76", kind: provisional, source: docs/evaluation/retrieval.md, note: "the retriever production serves (RETRIEVAL_RETRIEVER=qdrant_hybrid, BM25 fallback)"}
+retrieval.mrr.bm25: {value: 0.83, display: "0.83", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.mrr.qdrant_hybrid: {value: 0.89, display: "0.89", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.abst_p.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.abst_r.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.p95.hybrid: {value: 24.31, display: "24.3 ms", kind: provisional, source: docs/evaluation/retrieval.md}
@@ -138,7 +142,7 @@ deploy.url: {value: "https://la-brasil-del-70.westus2.cloudapp.azure.com", displ
 # Component metrics on each model's held-out test split; the end-to-end pair is
 # P on the dev split with the local model. Component values are fractions, so
 # they carry no lo/hi here: the intervals are in the model cards.
-ml.router.f1.keyword: {value: 0.385, display: "0.39", kind: provisional, source: docs/models/router.md, note: "macro-F1, test split, 601 team-authored items, labels pending review"}
+ml.router.f1.keyword: {value: 0.385, display: "0.39", kind: provisional, source: docs/models/router.md, note: "macro-F1, test split, 601 team-authored items, labels pending review; phase 08 table in docs/models/router.md, the same run as the learned routers; the 2026-10-05 re-measurement in docs/evaluation/router-llm.md gives 0.395"}
 ml.router.f1.embeddings: {value: 0.742, display: "0.74", kind: provisional, source: docs/models/router.md, note: "multilingual-e5-small plus logistic regression"}
 ml.resolver.coverage.rules: {value: 0.793, display: "0.79", kind: offline, source: docs/models/resolver.md, note: "dispute queries auto-resolved, test split; wrong-transaction rate 0.003"}
 ml.resolver.coverage.lgbm: {value: 0.913, display: "0.91", kind: offline, source: docs/models/resolver.md, note: "LightGBM lambdarank; wrong-transaction rate 0.000"}

@@ -63,7 +63,8 @@ The event host is one Azure VM (`Standard_B2as_v2`, westus2) at <https://la-bras
 - On the published run, untrusted merchant text reached a dispute confirmation summary unmasked (three echoed injections; no other customer's data was read). Masking of instruction-like record text was added afterwards (phase 14c follow-up, with regression tests on the memory and PostgreSQL backends) and has not been re-measured by an evaluation run.
 - The grounding verifier is lexical and closed: numbers written as words and paraphrased claims pass unnoticed; the template fallback covers what it misses ([grounding](docs/workflows/grounding.md)).
 - The in-domain unsupported recognizers and the keyword router are closed lexicons; paraphrases they miss fall back to the generic answer or a clarifying question.
-- Zero observed failures in a small test set does not establish zero risk: an unsafe rate of 0/76 still allows up to 3.9% at 95% confidence.
+- Open retrieval can answer an out-of-scope question with loosely related clauses instead of abstaining: on the live demo "¿Cómo funciona el seguro de viaje de la tarjeta?" returned the card-block clauses (2026-10-05). The hybrid accepts a hit when either component clears its floor; the 12 out-of-scope test queries did not catch it. The answer only quotes clauses, so no false fact is stated.
+- Zero observed failures in a small test set does not establish zero risk: an unsafe rate of 0/76 still allows up to 3.9% (one-sided 95%; 4.7% two-sided exact, the bound the README tables quote).
 - The public demo shows one-time codes by design, bounded by synthetic data, rate limits, budget caps, retention, and a take-down date ([demo mode](docs/security/demo-mode.md)).
 
 ## Live human service
