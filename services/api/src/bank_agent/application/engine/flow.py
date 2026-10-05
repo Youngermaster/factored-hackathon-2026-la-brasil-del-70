@@ -109,7 +109,7 @@ async def apply_route(ctx: TurnContext, registry: WorkflowRegistry, route: Route
     if kind is RouteKind.OUT_OF_SCOPE:
         return in_domain_unsupported(ctx, registry) or out_of_scope(ctx)
     if kind is RouteKind.INFORMATIONAL:
-        return informational(ctx)
+        return await informational(ctx)
     if kind is RouteKind.HUMAN:
         return human_requested(ctx)
     if kind is RouteKind.GREETING:

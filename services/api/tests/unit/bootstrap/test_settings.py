@@ -656,3 +656,42 @@ def test_conversation_creation_settings_refuse_values_outside_their_bounds(
     monkeypatch.setenv(variable, value)
     with pytest.raises(ValueError, match=variable.removeprefix("CONVERSATION_").lower()):
         load_settings(env_file=None)
+
+
+@pytest.mark.parametrize(
+    ("environment", "problem"),
+    [
+        ({}, "RETRIEVAL_RETRIEVER=qdrant needs RETRIEVAL_QDRANT_URL"),
+        ({"RETRIEVAL_QDRANT_URL": "http://qdrant.example.com:6333"}, "RETRIEVAL_QDRANT_URL must use https"),
+        ({"RETRIEVAL_QDRANT_URL": "http://qdrant:6333", "LLM_PROVIDER": "fake"}, "needs LLM_PROVIDER=litellm"),
+        (
+            {"RETRIEVAL_QDRANT_URL": "http://qdrant:6333", "RETRIEVAL_EMBEDDING_API_BASE": "http://aoai.example.com"},
+            "the embedding API base",
+        ),
+    ],
+)
+def test_production_refuses_an_unsafe_qdrant_configuration(
+    production_environment: dict[str, str],
+    monkeypatch: pytest.MonkeyPatch,
+    environment: dict[str, str],
+    problem: str,
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("RETRIEVAL_RETRIEVER", "qdrant")
+    for name, value in environment.items():
+        monkeypatch.setenv(name, value)
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+    assert any(problem in item for item in raised.value.problems)
+
+
+def test_production_accepts_qdrant_on_the_internal_network(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("LLM_API_BASE", "https://aoai.example.com/")
+    monkeypatch.setenv("RETRIEVAL_RETRIEVER", "qdrant_hybrid")
+    monkeypatch.setenv("RETRIEVAL_QDRANT_URL", "http://qdrant:6333")
+    assert load_settings(env_file=None).retrieval.retriever == "qdrant_hybrid"
