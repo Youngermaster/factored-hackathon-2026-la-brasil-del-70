@@ -3,6 +3,7 @@
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 import pytest
 import yaml
@@ -78,3 +79,43 @@ def test_every_alert_links_its_runbook_section() -> None:
             anchor = rule["annotations"]["runbook"].split("#")[1]
             assert anchor == rule["alert"].lower()
             assert f"## {rule['alert'].lower()}" in runbook
+
+
+COLLECTOR: dict[str, Any] = yaml.safe_load((OBSERVABILITY / "otel-collector.yaml").read_text(encoding="utf-8"))
+CLIENT_IDENTIFIERS = {"client.address", "client.port", "user_agent.original"}
+"""Span attributes the ASGI instrumentation records about the caller; none may be stored (ADR 0045)."""
+
+
+def test_the_collector_drops_client_addresses_and_user_agents_before_anything_is_stored() -> None:
+    privacy = COLLECTOR["processors"]["attributes/privacy"]["actions"]
+    deleted = {action["key"] for action in privacy if action["action"] == "delete"}
+    assert deleted >= CLIENT_IDENTIFIERS
+    for pipeline in ("traces", "metrics"):
+        processors = COLLECTOR["service"]["pipelines"][pipeline]["processors"]
+        assert "attributes/privacy" in processors
+        assert processors[0] == "memory_limiter"
+        assert processors[-1] == "batch"
+
+
+def test_a_stopped_workers_series_expire_within_five_minutes() -> None:
+    """Workers export every 15 s; a dead worker's last value must not linger in max() panels and alerts."""
+    assert COLLECTOR["exporters"]["prometheus"]["metric_expiration"] == "5m"
+
+
+def test_host_metrics_reach_prometheus_without_network_counters() -> None:
+    """/proc/net/dev inside the container describes the container's interface, not the VM's."""
+    receiver = COLLECTOR["receivers"]["host_metrics"]
+    assert set(receiver["scrapers"]) == {"cpu", "load", "memory", "disk", "filesystem"}
+    assert receiver["scrapers"]["filesystem"]["include_mount_points"]["mount_points"] == ["/"]
+    assert "host_metrics" in COLLECTOR["service"]["pipelines"]["metrics"]["receivers"]
+    assert "host_metrics" not in COLLECTOR["service"]["pipelines"]["traces"]["receivers"]
+
+
+def test_grafana_offers_only_prometheus_and_deletes_the_jaeger_datasource() -> None:
+    """Anonymous or signed-in viewers must not read traces through Grafana's datasource proxy."""
+    path = OBSERVABILITY / "grafana" / "provisioning" / "datasources" / "datasources.yaml"
+    provisioning = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert [(source["name"], source["type"]) for source in provisioning["datasources"]] == [("Prometheus", "prometheus")]
+    assert provisioning["datasources"][0]["uid"] == "prometheus"
+    assert provisioning["datasources"][0]["editable"] is False
+    assert {"name": "Jaeger", "orgId": 1} in provisioning["deleteDatasources"]

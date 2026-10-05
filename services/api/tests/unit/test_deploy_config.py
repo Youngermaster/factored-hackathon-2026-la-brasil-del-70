@@ -432,3 +432,12 @@ def test_prod_sh_refuses_a_grafana_switch_caddy_or_grafana_would_not_understand(
     script = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
     check = script.split("check_env_file() {", 1)[1].split("\n}", 1)[0]
     assert "check_grafana_switches" in check
+
+
+def test_the_collector_reads_host_metrics_without_the_docker_socket_or_a_host_mount() -> None:
+    """Host CPU, memory, and disk come from the container's /proc; anything more would widen what it can reach."""
+    collector = SERVICES["otel-collector"]
+    assert collector["volumes"] == ["./observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro"]
+    assert collector["networks"] == ["backend"]
+    assert "pid" not in collector
+    assert "privileged" not in collector

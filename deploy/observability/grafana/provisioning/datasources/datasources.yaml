@@ -1,5 +1,12 @@
-# Grafana datasources for the development `obs` profile. Dashboards are provisioned by phase 15.
+# Grafana datasources for the `obs` profile, development and production. Prometheus is the only one.
 apiVersion: 1
+
+# Jaeger 2.21 serves only its v3 query API, which Grafana's Jaeger datasource cannot read (BACKLOG). It is also
+# removed so that no Grafana viewer can read traces through the datasource proxy now that Grafana can be reached at
+# /grafana/ (ADR 0045): traces stay in the Jaeger UI, on the SSH tunnel only.
+deleteDatasources:
+  - name: Jaeger
+    orgId: 1
 
 datasources:
   - name: Prometheus
@@ -9,9 +16,7 @@ datasources:
     url: http://prometheus:9090
     isDefault: true
     editable: false
-  - name: Jaeger
-    uid: jaeger
-    type: jaeger
-    access: proxy
-    url: http://jaeger:16686
-    editable: false
+    jsonData:
+      timeInterval: 15s
+      queryTimeout: 30s
+      httpMethod: POST

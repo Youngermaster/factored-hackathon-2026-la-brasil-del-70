@@ -276,6 +276,8 @@ services:
     <<: *hardening
     restart: unless-stopped
     command: ["--config=/etc/otelcol/config.yaml"]
+    # Its config and nothing else: host metrics come from the container's own /proc (ADR 0045), never from the Docker
+    # socket or a host mount.
     volumes:
       - ./observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro
     networks: [backend]
