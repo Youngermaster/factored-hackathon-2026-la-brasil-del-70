@@ -148,7 +148,7 @@ Eso no lo puedo hacer aquí. Puedo ayudarte con tarjetas y reclamaciones. Si pre
 No encontré ese registro entre tus productos. Solo puedo ayudarte con tus propios productos y transacciones.
 
 [common.refused_review_notice]
-Por seguridad, debido a esta solicitud, si necesitas algo más en esta conversación te atenderá una persona del equipo.
+Por seguridad, debido a esta solicitud, si necesitas algo más en esta sesión te atenderá una persona del equipo.
 
 [common.refused_step_up_notice]
 Por seguridad, debido a esta solicitud, si quieres seguir con tus propios productos te pediré una verificación reforzada de tu identidad.

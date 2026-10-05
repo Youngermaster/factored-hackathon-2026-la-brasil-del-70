@@ -17,7 +17,21 @@ SIGNAL_DETECTOR = "signals:keyword@1"
 _LEGAL = re.compile(
     r"\b(condusef|profeco|superintendencia|superfinanciera|banco central|bcra|bacen|banxico|defensa del consumidor|"
     r"defensoria|procon|reclame aqui|consumidor gov|abogad[oa]|advogad[oa]|demanda\w*|denuncia\w*|processar|"
-    r"processo judicial|juicio|tribunal|juzgado|justicia|justica|regulador\w*|ombudsman|lawyer|sue|court)\b"
+    r"processo judicial|juicio|tribunal|juzgado|justicia|justica|regulador\w*|ombudsman|lawyer|sue|court|"
+    r"autoridad(?:es)?|autoridades?|defensor del consumidor\w*|ouvidoria)\b"
+)
+# The bank's own dispute vocabulary ("reclamación" is the word the bot itself uses for a dispute, and a Colombian
+# PQR). A small model read "¿Cómo va mi reclamación?" as a formal complaint body and escalated it as a legal or
+# regulator mention (QA finding DSP-01). When the text has these words and no legal or authority hint, the model's
+# legal flag is dropped; the keyword list above still escalates on its own.
+_BANK_COMPLAINT = re.compile(
+    r"\b(reclam\w*|aclarac\w*|contest\w*|disput\w*|desconoc\w*|desconhec\w*|queja\w*|queix\w*)"
+)
+_AUTHORITY_HINT = re.compile(
+    r"\b(legal\w*|judicial\w*|juridic\w*|formal\w*|instancia\w*|autoridad\w*|autoridade\w*|denunc\w*|demand\w*|"
+    r"policia|fiscalia|gobierno|governo|ministerio|extern\w*|superior\w*|super\w*|sic|sfc|defensor\w*|"
+    r"defensoria|ouvidoria|procon|condusef|profeco|bacen|bcra|banxico|banco central|regulador\w*|ombudsman|"
+    r"tribunal|juzgado|juicio|justic\w*|abogad\w*|advogad\w*|reclame aqui|consumidor)\b"
 )
 _DISTRESS = re.compile(
     r"\b(desesperad[oa]|angustiad[oa]|no tengo (para|con que) comer|no se que hacer|nao sei o que fazer|panico|"
@@ -53,6 +67,19 @@ _THIRD_PARTY = re.compile(
     r"|\b(?:apoderad[oa]|procurador[a]?|poder notarial|procuracao) (?:de|da|do|del)\b"
     rf"|\b(?:compra|cargo|cobro|cobranca)s? {_OWNER}\b"
     rf"|\b{_PRODUCT} (?:{_QUALIFIER} ){{0,3}}(?:{_OWNER}|dele|dela|deles|delas)\b"
+)
+# Moving the customer's own money to a relative ("Faz um pix de 300 reais pro meu irmão", "Pásale 2000 pesos a mi
+# hermana"): the relative is the recipient, not the owner of a product or of data. The model flagged these as third
+# party, the kernel refused them with PRV-ALL-2 and the raised risk tier asked for step-up on the next read (QA
+# finding ACC-04). With a transfer verb and the relative as the recipient, the model's third-party flag is dropped;
+# the keyword detector above still refuses a relative's product ("la cuenta de mi mamá").
+_MONEY_MOVEMENT = re.compile(
+    r"\b(transfer\w*|transfi\w*|pix|deposit\w*|pasale\w*|pasarle\w*|mandale\w*|enviale\w*|transfierele)\b"
+    r"|\b(mand[aeo]|mandar|envi[aeo]|enviar|faz|faca|fazer|paga|pagar|presta|prestar|empresta|emprestar)\b"
+    r".{0,40}(\d|\b(dinero|dinheiro|plata|pesos?|reais|real|dolares?|grana|lana)\b)"
+)
+_TO_RELATIVE = re.compile(
+    rf"\b(?:a|al|para|pra|pro|pros|pras|ao|aos|as) (?:mi|mis|meu|minha|meus|minhas) {_RELATIVE}s?\b"
 )
 # Another customer or another person named as the owner ("la tarjeta del cliente CC 1234567890", "o saldo de outro
 # cliente", "da pessoa com CPF"): added before the pitch video, when such requests got the workflow question. Tools
@@ -99,15 +126,25 @@ class DetectedSignals:
     distress: bool = False
     human_requested: bool = False
     third_party_admission: bool = False
+    transfer_to_relative: bool = False
+    """The text moves the customer's own money to a relative (the recipient); the model's third-party flag is then
+    not trusted on its own."""
+    bank_complaint_only: bool = False
+    """The text uses the bank's own dispute words ("reclamación", "contestação") with no legal or authority hint;
+    the model's legal flag is then not trusted on its own."""
 
     def merged(self, model: ModelSignals | None) -> "DetectedSignals":
         if model is None:
             return self
+        model_legal = model.legal_or_regulator_mention and not self.bank_complaint_only
+        model_third_party = model.third_party_admission and not self.transfer_to_relative
         return DetectedSignals(
-            legal_or_regulator_mention=self.legal_or_regulator_mention or model.legal_or_regulator_mention,
+            legal_or_regulator_mention=self.legal_or_regulator_mention or model_legal,
             distress=self.distress or model.distress,
             human_requested=self.human_requested or model.human_requested,
-            third_party_admission=self.third_party_admission or model.third_party_admission,
+            third_party_admission=self.third_party_admission or model_third_party,
+            transfer_to_relative=self.transfer_to_relative,
+            bank_complaint_only=self.bank_complaint_only,
         )
 
 
@@ -139,4 +176,6 @@ def detect_signals(text: str, *, person_offered: bool = False) -> DetectedSignal
         distress=bool(_DISTRESS.search(folded)),
         human_requested=bool(_HUMAN.search(folded)) or (person_offered and accepts_offer(text)),
         third_party_admission=bool(_THIRD_PARTY.search(folded)) or names_another_customer(folded),
+        transfer_to_relative=bool(_MONEY_MOVEMENT.search(folded)) and bool(_TO_RELATIVE.search(folded)),
+        bank_complaint_only=bool(_BANK_COMPLAINT.search(folded)) and not _AUTHORITY_HINT.search(folded),
     )

@@ -148,7 +148,7 @@ Isso eu não consigo fazer aqui. Posso ajudar com cartões e contestações. Se 
 Não encontrei esse registro entre os seus produtos. Só posso ajudar com os seus próprios produtos e transações.
 
 [common.refused_review_notice]
-Por segurança, devido a este pedido, se precisar de mais alguma coisa nesta conversa, uma pessoa da equipe vai atender você.
+Por segurança, devido a este pedido, se precisar de mais alguma coisa nesta sessão, uma pessoa da equipe vai atender você.
 
 [common.refused_step_up_notice]
 Por segurança, devido a este pedido, se quiser seguir com os seus próprios produtos vou pedir uma verificação reforçada da sua identidade.

@@ -17,6 +17,7 @@ from bank_agent.application.engine.definition import (
 from bank_agent.application.engine.states import accept_request, auth_required_state, end_state, escalated_state
 from bank_agent.application.workflows.card_support.block import confirm_block, execute, verify
 from bank_agent.application.workflows.card_support.data import load
+from bank_agent.application.workflows.card_support.follow_up import follow_up
 from bank_agent.application.workflows.card_support.select import WHICH_CARD, clarify, select_card, understand
 from bank_agent.application.workflows.card_support.status import card_status
 from bank_agent.domain.actions import ActionKind, ToolName
@@ -73,4 +74,5 @@ def build_card_support() -> WorkflowDefinition:
         transitions=TRANSITIONS,
         intents=frozenset(WORKFLOW_CATALOG.descriptor(WorkflowId.CARD_SUPPORT).intents),
         open_questions=questions,
+        follow_up=follow_up,
     )

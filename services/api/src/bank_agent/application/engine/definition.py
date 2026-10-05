@@ -52,6 +52,9 @@ class UnsupportedRequest:
 
 
 UnsupportedRecognizer = Callable[[str], UnsupportedRequest | None]
+FollowUpRecognizer = Callable[["TurnContext"], Intent | None]
+"""Recognizes an elliptical follow-up to the answer a context-holding state just gave ("¿y nomás la de ahorro?",
+"e a de crédito?", "y ahora el de abril") and returns the workflow intent it continues, or ``None``."""
 
 
 @dataclass(frozen=True)
@@ -88,6 +91,8 @@ class WorkflowDefinition:
     unsupported: UnsupportedRecognizer | None = None
     """Recognizes in-domain requests the workflow does not handle; the engine checks it before the generic
     out-of-scope answer, so the abstention cites the workflow's clause."""
+    follow_up: FollowUpRecognizer | None = None
+    """Recognizes a follow-up in a state that holds context, used only when the router is unsure of the message."""
 
     def __post_init__(self) -> None:
         if self.entry_state not in self.states:
@@ -136,6 +141,7 @@ def build_definition(
     variant: str = "proposed",
     open_questions: Callable[["TurnContext"], tuple[str, ...]] | None = None,
     unsupported: UnsupportedRecognizer | None = None,
+    follow_up: FollowUpRecognizer | None = None,
 ) -> WorkflowDefinition:
     """A definition whose table also holds the shared exits and the AUTH_REQUIRED resumes."""
     by_name = {spec.name: spec for spec in states}
@@ -159,4 +165,5 @@ def build_definition(
         variant=variant,
         open_questions=open_questions,
         unsupported=unsupported,
+        follow_up=follow_up,
     )

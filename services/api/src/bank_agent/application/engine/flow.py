@@ -1,6 +1,7 @@
 """Routing and the handler loop: pending questions, router dispatch, workflow entry and switches, and the chain
 of state handlers within one turn, each transition checked against the definition."""
 
+import re
 from dataclasses import replace
 
 from bank_agent.application.engine.context import Step, TurnContext
@@ -24,6 +25,7 @@ from bank_agent.application.engine.shared import (
     out_of_scope,
     step_up,
 )
+from bank_agent.application.engine.signals import plain_answer
 from bank_agent.application.engine.templates.labels import PENDING, TOPICS
 from bank_agent.application.understanding.answers import YesNo, parse_choice, parse_yes_no
 from bank_agent.application.understanding.scope import Scope, classify_scope
@@ -33,10 +35,14 @@ from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.decision import DecisionKind
 from bank_agent.domain.errors import AuthenticationError, StepUpRequiredError, ToolError, ToolNotAllowedError
 from bank_agent.domain.escalation import EscalationReasonCode
+from bank_agent.domain.intelligence import IntentPrediction, ModelComponent, ModelRef
 from bank_agent.domain.locale import Language
 from bank_agent.domain.workflow import Outcome, WorkflowId
 
 SHARED_REPLIES = frozenset({RouteKind.OUT_OF_SCOPE, RouteKind.INFORMATIONAL})
+UNSURE_ROUTES = frozenset({RouteKind.CLARIFY_WORKFLOW, RouteKind.GREETING})
+FOLLOW_UP_MODEL = ModelRef(component=ModelComponent.ROUTER, name="context_follow_up", version="1")
+"""Recorded when a context follow-up, not the router, gave the turn's intent."""
 
 
 def _label(table: dict[WorkflowId, dict[Language, str]], workflow: WorkflowId, language: Language) -> str:
@@ -53,7 +59,7 @@ def enter(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId, *, s
     ctx.flow = {}
     ctx.clarifications_used = 0
     ctx.turns_used = 0
-    ctx.engine = ctx.engine.evolve(pending_switch=None, pending_choice=None, resume_state=None)
+    ctx.engine = ctx.engine.evolve(pending_switch=None, pending_choice=None, resume_state=None, step_up_state=None)
 
 
 def auth_gate(ctx: TurnContext, spec: StateSpec) -> Step | None:
@@ -175,11 +181,15 @@ def clarify_workflow(ctx: TurnContext, options: tuple[WorkflowId, ...]) -> Step:
     return Step(ctx.state, Reply(template="common.clarify_workflow", params=params), Outcome.CLARIFIED)
 
 
-def confirm_switch(ctx: TurnContext, target: WorkflowId) -> Step:
-    intent = ctx.prediction.intent if ctx.prediction is not None else None
-    if intent is None:
-        return greeting(ctx, clarify=True)
-    ctx.engine = ctx.engine.evolve(pending_switch=PendingSwitch(target=target, intent=intent, text=ctx.text))
+def confirm_switch(ctx: TurnContext, target: WorkflowId, *, pending: PendingSwitch | None = None) -> Step:
+    """Ask whether to leave the current work for ``target``; ``pending`` asks the same question again, keeping the
+    original request (an unclear answer must not replace it)."""
+    if pending is None:
+        intent = ctx.prediction.intent if ctx.prediction is not None else None
+        if intent is None:
+            return greeting(ctx, clarify=True)
+        pending = PendingSwitch(target=target, intent=intent, text=ctx.text)
+    ctx.engine = ctx.engine.evolve(pending_switch=pending)
     params: dict[str, Param] = {
         "pending": _label(PENDING, ctx.workflow, ctx.language),
         "target": _label(TOPICS, target, ctx.language),
@@ -209,9 +219,9 @@ async def answer_pending(ctx: TurnContext, registry: WorkflowRegistry) -> Step |
     pending = ctx.engine.pending_switch
     if pending is None:
         return None
-    answer = parse_yes_no(ctx.text)
+    answer = _switch_answer(ctx, registry, pending.target)
     if answer is YesNo.UNCLEAR:
-        return confirm_switch(ctx, pending.target)
+        return confirm_switch(ctx, pending.target, pending=pending)
     ctx.engine = ctx.engine.evolve(pending_switch=None)
     if answer is YesNo.YES:
         ctx.text = UntrustedText(pending.text)
@@ -223,6 +233,32 @@ async def answer_pending(ctx: TurnContext, registry: WorkflowRegistry) -> Step |
     if step.reply is not None and step.reply.prefix is None:
         step = Step(step.next_state, _with_prefix(step.reply, "common.switch_declined", params), step.outcome)
     return step
+
+
+_CONTINUE_CURRENT = re.compile(
+    r"\b(sigamos|seguimos|sigamos con|continuemos|continuamos|continuar|continua|volvamos|volvamos a|retomemos|"
+    r"retomar|retoma|vamos continuar|vamos seguir|voltemos|voltar|prossigamos|prosseguir|prossiga)\b"
+)
+
+
+def _switch_answer(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId) -> YesNo:
+    """The answer to the engine's switch question. A message that asks to go on with the pending work ("Listo,
+    sigamos con lo del cargo") is a no unless it routes to the offered workflow; a plain yes or no is read as is; a
+    longer yes counts only when it routes to the offered workflow, and is asked again otherwise. Before QA finding
+    DSP-08, the leading "listo" alone switched workflows and dropped the dispute."""
+    answer = parse_yes_no(ctx.text)
+    routes_to_target = answer is YesNo.YES and _routes_to(ctx, registry, target)
+    if _CONTINUE_CURRENT.search(fold(ctx.text)):
+        return YesNo.YES if routes_to_target else YesNo.NO
+    if plain_answer(ctx.text):
+        return answer
+    if answer is YesNo.YES:
+        return YesNo.YES if routes_to_target else YesNo.UNCLEAR
+    return answer
+
+
+def _routes_to(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId) -> bool:
+    return registry.owner(ctx.services.router.route(ctx.text, ctx.language).intent) is target
 
 
 def _with_prefix(reply: Reply, prefix: str, params: dict[str, Param]) -> Reply:
@@ -252,10 +288,51 @@ def _answered_with_another_workflow(ctx: TurnContext, registry: WorkflowRegistry
     return owner
 
 
+def follow_up_route(ctx: TurnContext, spec: StateSpec, route: Route) -> Route:
+    """Continue the current workflow when the router is unsure of a message that follows up on the answer a
+    context-holding state just gave ("¿y nomás en la de ahorro?" after balances, "e a de crédito?" after a card
+    status, "y ahora el de abril" after a statement). Found in production QA (ACC-01, ACC-02, CRD-03): such turns got
+    the generic workflow question or an off-topic abstention. A message the router places (another workflow's
+    request, a person, an unsupported request) is never redirected, and the workflow's handlers and the kernel still
+    decide everything that follows."""
+    recognize = ctx.definition.follow_up
+    if ctx.at_router or not spec.holds_context or route.kind not in UNSURE_ROUTES or recognize is None:
+        return route
+    intent = recognize(ctx)
+    if intent is None or intent not in ctx.definition.intents:
+        return route
+    ctx.prediction = IntentPrediction(intent=intent, confidence=1.0, below_threshold=False, model=FOLLOW_UP_MODEL)
+    ctx.recorder.model(FOLLOW_UP_MODEL)
+    return Route(RouteKind.CONTINUE, target=ctx.workflow)
+
+
+_STEPPED_UP = re.compile(
+    r"\b(ya (me )?(confirme|verifique|valide|autentique)|ja (me )?(confirmei|verifiquei|validei|autentiquei)|"
+    r"listo|pronto|hecho|feito|ya esta|ja esta|confirmad[oa]|confirmei|confirme)\b"
+)
+
+
+def continues_after_step_up(ctx: TurnContext) -> bool:
+    """True when this turn says the step-up asked for in the same accepting state is done ("Listo, ya confirmé mi
+    identidad", "Pronto, já confirmei minha identidade", a plain yes) and the session is now stepped up. Before QA
+    finding CRE-14 such a turn was routed as a new message, got an off-topic answer, and the request was lost. The
+    state's auth gate still evaluates the kernel again, so nothing is bypassed."""
+    held = ctx.engine.step_up_state
+    if held is None:
+        return False
+    ctx.engine = ctx.engine.evolve(step_up_state=None)
+    if ctx.at_router or held != ctx.state or not ctx.snapshot.step_up_valid:
+        return False
+    folded = fold(ctx.text)
+    return bool(_STEPPED_UP.search(folded)) or (plain_answer(ctx.text) and parse_yes_no(ctx.text) is YesNo.YES)
+
+
 async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
     pending = await answer_pending(ctx, registry)
     if pending is not None:
         return pending
+    if continues_after_step_up(ctx):
+        return await run_handlers(ctx)
     spec = ctx.definition.spec(ctx.state)
     current = None if ctx.at_router else ctx.workflow
     if ctx.at_router or spec.kind is StateKind.ACCEPTS_REQUEST:
@@ -263,7 +340,7 @@ async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
         ctx.prediction = prediction
         ctx.recorder.model(prediction.model)
         route = dispatch(prediction, registry, current=current, mid_flow=spec.mid_flow)
-        return await apply_route(ctx, registry, route)
+        return await apply_route(ctx, registry, follow_up_route(ctx, spec, route))
     step = await run_handlers(ctx)
     if not step.unanswered:
         return step

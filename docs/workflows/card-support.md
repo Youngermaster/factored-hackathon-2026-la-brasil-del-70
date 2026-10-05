@@ -31,7 +31,7 @@ stateDiagram-v2
     ESCALATED --> [*]
 ```
 
-Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. CARD_STATUS accepts new requests and keeps the chosen card for a follow-up such as "block it". A block request that explicitly names a card goes through SELECT_CARD again before confirmation. A request for another workflow is confirmed before switching (scenario 17).
+Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. CARD_STATUS accepts new requests and keeps the chosen card for a follow-up such as "block it". A block request that explicitly names a card goes through SELECT_CARD again before confirmation. A request for another workflow is confirmed before switching (scenario 17). When the router cannot place a message in CARD_STATUS that names a card by type or ending ("e o de débito?", "¿y la terminada en 1357?"), the `follow_up` recognizer continues with a status request for that card (QA finding CRD-03). "The other one" and a bare four-digit number are not recognized yet.
 
 ## States, rules, clauses, tools, and exits
 
