@@ -32,6 +32,7 @@ export type ScenarioId =
   | 'card-unblock'
   | 'dispute-intake'
   | 'dispute-status'
+  | 'informational-question'
   | 'dispute-details'
   | 'dispute-regulator'
   | 'credit-eligibility'
@@ -149,6 +150,17 @@ export const SCENARIOS: readonly Scenario[] = [
     persona: 'dsp-mx-open-case',
     es: [say('¿Cómo va mi aclaración?')],
     pt: [say('Qual é a situação da minha contestação?')],
+  },
+  {
+    // An informational question, not a case: the router answers it from retrieved policy clauses (hybrid
+    // retrieval, BM25 fallback) with common.informational_answer and cites the clauses; the execution record names
+    // the retriever. Both phrasings were also checked against the production deployment with the hosted model.
+    id: 'informational-question',
+    workflow: 'dispute',
+    path: 'normal',
+    persona: 'acc-mx-accounts',
+    es: [say('¿Cuánto tiempo tarda normalmente en resolverse una aclaración?')],
+    pt: [say('Quanto tempo leva para resolver uma contestação normalmente?')],
   },
   {
     id: 'dispute-details',

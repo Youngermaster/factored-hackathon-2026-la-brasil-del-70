@@ -1326,6 +1326,10 @@
         "title": "Case status",
         "note": "Finds the customer's open case and answers with its status and the committed answer date."
       },
+      "informational-question": {
+        "title": "Policy question",
+        "note": "An informational question, not a case: the answer quotes the policy clauses it cites (common.informational_answer), and the execution record names the retriever that found them."
+      },
       "dispute-details": {
         "title": "Charge without details",
         "note": "The request is not enough to find the purchase: the assistant asks for the date, amount, and merchant."

@@ -1326,6 +1326,10 @@
         "title": "Estado de un caso",
         "note": "Busca el caso abierto del cliente y responde con su estado y la fecha comprometida de respuesta."
       },
+      "informational-question": {
+        "title": "Pregunta sobre la política",
+        "note": "Una pregunta informativa, no un caso: la respuesta cita las cláusulas de la política en que se basa (common.informational_answer) y el registro de ejecución nombra el recuperador que las encontró."
+      },
       "dispute-details": {
         "title": "Cargo sin datos",
         "note": "La solicitud no basta para ubicar la compra: el asistente pide fecha, monto y comercio."
