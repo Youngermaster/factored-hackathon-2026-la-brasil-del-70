@@ -181,3 +181,22 @@ async def test_a_refund_guarantee_question_at_the_summary_gets_an_answer(
     assert expected in answer.response.text
     record = await harness.record(session, answer.turn_id)
     assert any(str(ref).startswith("INF-ALL-1") for ref in record.clause_refs)
+
+
+@pytest.mark.parametrize(
+    ("text", "paragraph"),
+    [
+        ("¿Cómo va mi reclamación?", "El equipo de revisión analiza la transacción"),
+        ("Qual é a situação da minha contestação?", "A equipe de análise examina a transação"),
+    ],
+)
+async def test_dispute_status_cites_the_after_filing_clause_without_appending_it(
+    backend: Backend, text: str, paragraph: str
+) -> None:
+    harness = harness_with(backend)
+    session = harness.session(CO)
+    reply = await harness.say(text, session)
+    assert reply.state == "RESOLVED"
+    assert "case-fixco000001-0001" in reply.response.text
+    assert paragraph not in reply.response.text
+    assert "INF-ALL-1@1" in [str(c.clause) for c in reply.response.citations]
