@@ -43,7 +43,7 @@ What this system cannot claim, stated plainly. The brief asks for honesty about 
 
 ## Capacity
 
-Measured on one laptop without a model ([capacity](docs/operations/capacity.md)): on the production stack with two workers capped at 1.5 CPUs, 27.4 turns per second at 50 simulated customers with p95 250 ms and no errors; the ceiling is the API's CPU allowance, then Jaeger's memory. With a model, the model call dominates latency (P's p50 per turn is 2.3 s on the local model). The load test has not been repeated on a cloud host.
+Measured on one laptop without a model ([capacity](docs/operations/capacity.md)): on the production stack with two workers capped at 1.5 CPUs, 27.4 turns per second at 50 simulated customers with p95 250 ms and no errors; the ceiling is the API's CPU allowance, then Jaeger's memory. With a model, the model call dominates latency (P's p50 per turn is 1.6 s and p95 8.5 s on the hosted run). The load test has not been repeated on a cloud host.
 
 ## Deployment work remaining
 

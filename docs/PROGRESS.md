@@ -8,8 +8,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 |---|---|
 | Internal MVP completion window end | Sunday, 2026-10-04 (revised; leaves one calendar day before the official October 5 challenge-window end; completion is pending) |
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
-| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and merged into `main`. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
-| Latest product increment | ADR 0026: live human service on the existing conversation, merged into `main`; public deployment is not verified here |
+| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and merged into `main`. Remaining human actions: export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` (`docs/submission/SUBMISSION.md`); deployment and the hosted evaluation are done |
+| Latest product increment | ADR 0026: live human service on the existing conversation, merged into `main`; deployed on Azure since 2026-10-04 |
 | Blocked | None |
 | Azure data platform | Complete: dedicated vm-bank-database in westus2, full-source pipeline, schema 0014, strict PostgreSQL reconciliation, retained-state rerun and private evidence verified |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
@@ -2521,3 +2521,26 @@ Appended at the end of the log so parallel final-day tracks do not collide. Newe
 
 - The run predates the final-day fixes; the simulated customer runs on the same model; the judge was not rerun; cost is priced, not invoiced; the scenario labels await human review.
 - The Azure evaluation cassettes stay in the evaluation worktree and are not committed; the run directory (`reports/eval/test-hosted`, transcripts) is not in git.
+
+### Final day: release PR 37 and production switches (2026-10-05)
+
+#### What was done
+
+- Released the final-day integration (PR 37) to `main`: the Azure OpenAI provider (`gpt-4.1-mini`, fallback `gpt-4o`), the read-only Grafana route ([ADR 0045](adr/0045-expose-grafana-read-only-under-grafana.md)), the Supervision view for evaluators ([guide](frontend/supervision.md)), Qdrant hybrid retrieval ([ADR 0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md), [retrieval](evaluation/retrieval.md)), the hosted-LLM router benchmark ([router-llm](evaluation/router-llm.md)), the hosted evaluation run `test-hosted`, and the final-day QA fixes to routing, the engine, and the handlers.
+- Production switches with the release: metadata-only Langfuse tracing enabled (`LANGFUSE_ENABLED=true`), Grafana served read-only at `/grafana/` with anonymous Viewer access (`GRAFANA_ROUTE=on`, `obs` profile), and open retrieval on `qdrant_hybrid` (`RETRIEVAL_RETRIEVER=qdrant_hybrid`, `rag` profile, `bank-agent index qdrant`), with BM25 as the automatic fallback.
+- Documentation brought in line with the release from the rubric audit: the README links the rubric map, the RAG evidence, the router study, and the Supervision view and has a RAG section; the narration, demo script, video plan, rubric map, LIMITATIONS, and slides README quote the hosted run.
+
+#### How to verify
+
+- `make docs-check`; `pnpm check:content --strict` from `slides/`.
+- In production, send "Quanto tempo leva para resolver uma contestação normalmente?" as `acc-mx-accounts`: the trace names `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512` and cites `INF-ALL-1@1`. `GET /grafana/api/health` returns JSON.
+
+#### Known limitations
+
+- The final-day QA fixes are not re-measured; the published numbers are from `test-hosted` at `2ddabb0`.
+- `qdrant_hybrid` latency and fallback rate on the VM are not measured yet (BACKLOG).
+- An informational card-block question can be misrouted to `card_support` (BACKLOG).
+
+#### Next phase
+
+- The human actions in the current state: export the slides, record the video, make the repository public, and send the submission email.

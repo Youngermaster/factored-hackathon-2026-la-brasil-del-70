@@ -2,14 +2,14 @@
 
 The spoken script of the video pitch, split across the four members of La Brasil del 70. It is the same text as the narration in [slides/script.md](../../slides/script.md), in the same order; `pnpm check:content` (from `slides/`) fails when the two differ by one word or one speaker, and when the word-count table below is wrong. What is on screen during each line, and the exact clicks, is in the [video plan](video-plan.md).
 
-The video has a hard limit of 3:00, demo footage included. The cut targets 2:50. At 150 words per minute the 376 spoken words take about 2:30, which leaves about 20 seconds for typing, loading, and the pauses after each click.
+The video has a hard limit of 3:00, demo footage included. The cut targets 2:50. At 150 words per minute the 384 spoken words take about 2:34, which leaves about 16 seconds for typing, loading, and the pauses after each click.
 
 ## Who says what, and why
 
 | Speaker | Words | Seconds at 150 wpm | Segments | Why this person |
 |---|---|---|---|---|
-| Juan Young | 119 | 48 | guardrail, backend trace, architecture | Technical lead: built the core architecture, the agent integration, and the safety layers the guardrail shows |
-| Miguel Correa | 83 | 33 | hook close line, Portuguese handoff, close | Project manager: owns the problem framing, the product story, and the pitch |
+| Juan Young | 128 | 51 | guardrail, backend trace, architecture | Technical lead: built the core architecture, the agent integration, and the safety layers the guardrail shows |
+| Miguel Correa | 82 | 33 | hook close line, Portuguese handoff, close | Project manager: owns the problem framing, the product story, and the pitch |
 | David Fonseca | 85 | 34 | card block, the learned-model decision | Presents the demo flow and the machine learning trade-off |
 | Julián Valencia | 89 | 36 | hook data line, Grafana, evidence | Data engineering and the evaluation evidence: the pipeline, the analytics, the results |
 
@@ -45,23 +45,23 @@ Words in square brackets are cues, not speech. Times are the video timeline in t
 
 ### 1:46 to 2:12, architecture (slide 3)
 
-**Juan Young:** [arrive] FastAPI with a hexagonal core, React, and PostgreSQL with row-level security. [click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it. [click 2] Model calls pass one gateway to Azure OpenAI, so the provider is a setting.
+**Juan Young:** [arrive] FastAPI with a hexagonal core, React, and PostgreSQL with row-level security. [click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it. [click 2] Model calls pass one gateway to Azure OpenAI, so the provider is a setting. Policy answers come from retrieved clauses, not model memory.
 
 **David Fonseca:** [click 3] Our learned router, resolver and risk estimator beat their baselines offline, but not end to end, so the baselines stay the default.
 
 ### 2:12 to 2:36, evidence (slide 5)
 
-**Julián Valencia:** [arrive] Three hundred and four held-out cases, three systems, simulated on a small local model. [click 1] Per workflow first: card support is not ahead of the menu and rules bot yet. [click 2] In aggregate, fifty-eight percent safe automated resolution, against forty-two and thirteen. [click 3] Eight unsafe outcomes, against ninety for the naive LLM agent.
+**Julián Valencia:** [arrive] Three hundred and four held-out cases, three systems, simulated on a hosted model. [click 1] Per workflow first: card support ties the menu and rules bot. [click 2] In aggregate, sixty-one percent safe automated resolution, against forty-six and twenty-three. [click 3] One graded unsafe outcome, a confirmed second write, against ninety-two for the naive LLM agent.
 
 ### 2:36 to 2:50, close (slide 6)
 
-**Miguel Correa:** [arrive] When something fails, it steps down, and writes never fail open. [click 2] We cannot claim real data or a hosted-model evaluation yet. [click 4] The model understands. Code decides. Evidence proves it.
+**Miguel Correa:** [arrive] When something fails, it steps down, and writes never fail open. [click 2] We cannot claim real data or human-reviewed labels yet. [click 4] The model understands. Code decides. Evidence proves it.
 
 ## Lines to keep exact
 
 - Credit: never say "approved", "aprobado", or "aprovado", even negated. The video does not play a credit case.
-- Numbers: every number spoken is in `slides/data/metrics.yml`; the evidence numbers are a simulation on the local model `qwen2.5:7b-instruct`, and the line says so ("simulated on a small local model").
-- The deployed demo calls Azure OpenAI `azure/gpt-4.1-mini` (fallback `azure/gpt-4o`) to extract details and detect escalation signals; the published evaluation did not measure it, so its numbers come from the local `qwen2.5:7b-instruct`. Do not present the live replies as the evaluated system's quality.
+- Numbers: every number spoken is in `slides/data/metrics.yml`; the evidence numbers are the hosted test run (`test-hosted`, simulated on `azure/gpt-4.1-mini`, before the final-day fixes), and the line says so ("simulated on a hosted model").
+- The deployed demo calls Azure OpenAI `azure/gpt-4.1-mini` (fallback `azure/gpt-4o`); the published evaluation ran the same model at commit `2ddabb0`, before the final-day fixes. Do not present the live replies as evaluated results.
 - "Cristiano or Messi" is spoken in English over the Spanish message on screen ("¿Quién es mejor CR7 o Messi?").
 
 ## Rehearsal checklist
