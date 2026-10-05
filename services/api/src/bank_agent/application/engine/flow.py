@@ -59,7 +59,7 @@ def enter(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId, *, s
     ctx.flow = {}
     ctx.clarifications_used = 0
     ctx.turns_used = 0
-    ctx.engine = ctx.engine.evolve(pending_switch=None, pending_choice=None, resume_state=None)
+    ctx.engine = ctx.engine.evolve(pending_switch=None, pending_choice=None, resume_state=None, step_up_state=None)
 
 
 def auth_gate(ctx: TurnContext, spec: StateSpec) -> Step | None:
@@ -306,10 +306,33 @@ def follow_up_route(ctx: TurnContext, spec: StateSpec, route: Route) -> Route:
     return Route(RouteKind.CONTINUE, target=ctx.workflow)
 
 
+_STEPPED_UP = re.compile(
+    r"\b(ya (me )?(confirme|verifique|valide|autentique)|ja (me )?(confirmei|verifiquei|validei|autentiquei)|"
+    r"listo|pronto|hecho|feito|ya esta|ja esta|confirmad[oa]|confirmei|confirme)\b"
+)
+
+
+def continues_after_step_up(ctx: TurnContext) -> bool:
+    """True when this turn says the step-up asked for in the same accepting state is done ("Listo, ya confirmé mi
+    identidad", "Pronto, já confirmei minha identidade", a plain yes) and the session is now stepped up. Before QA
+    finding CRE-14 such a turn was routed as a new message, got an off-topic answer, and the request was lost. The
+    state's auth gate still evaluates the kernel again, so nothing is bypassed."""
+    held = ctx.engine.step_up_state
+    if held is None:
+        return False
+    ctx.engine = ctx.engine.evolve(step_up_state=None)
+    if ctx.at_router or held != ctx.state or not ctx.snapshot.step_up_valid:
+        return False
+    folded = fold(ctx.text)
+    return bool(_STEPPED_UP.search(folded)) or (plain_answer(ctx.text) and parse_yes_no(ctx.text) is YesNo.YES)
+
+
 async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
     pending = await answer_pending(ctx, registry)
     if pending is not None:
         return pending
+    if continues_after_step_up(ctx):
+        return await run_handlers(ctx)
     spec = ctx.definition.spec(ctx.state)
     current = None if ctx.at_router else ctx.workflow
     if ctx.at_router or spec.kind is StateKind.ACCEPTS_REQUEST:

@@ -67,6 +67,10 @@ class EngineData(DomainModel):
     """A card chosen in ``card_support``, carried into ``dispute`` after a switch as a verified fact."""
     lineage: LineageId | None = None
     """The session lineage of the last turn. A different one means the customer signed in again (phase 11)."""
+    step_up_state: str | None = None
+    """An accepting state that asked for step-up before it could answer. After the step-up, the next turn's
+    continuation ("Listo, ya confirmé mi identidad") runs that state again instead of being routed as a new message.
+    Cleared on the next turn either way."""
     person_offered: bool = False
     """The last reply offered a person (an abstention with the offer), so a bare yes in the next turn accepts it.
     Set from each turn's reply, so it lasts exactly one turn."""

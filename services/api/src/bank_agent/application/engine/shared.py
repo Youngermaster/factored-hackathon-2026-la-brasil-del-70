@@ -10,6 +10,7 @@ from bank_agent.application.engine.definition import (
     AUTH_REQUIRED,
     ESCALATED,
     REFUSED,
+    StateKind,
     UnsupportedRequest,
 )
 from bank_agent.application.engine.handoff import HandoffBuilder, HandoffPlan
@@ -185,6 +186,8 @@ def step_up(ctx: TurnContext, state: str, *, because_of_risk: bool = False) -> S
     """Ask for step-up. When only the session's raised risk tier asks for it (a read that otherwise needs a verified
     session), the reply says the conversation's requests are the reason, without naming what was detected."""
     template = "common.step_up_required_risk" if because_of_risk else "common.step_up_required"
+    if not ctx.at_router and ctx.definition.spec(state).kind is StateKind.ACCEPTS_REQUEST:
+        ctx.engine = ctx.engine.evolve(step_up_state=state)
     return Step(state, Reply(template=template, step_up_required=True), Outcome.IN_PROGRESS)
 
 
