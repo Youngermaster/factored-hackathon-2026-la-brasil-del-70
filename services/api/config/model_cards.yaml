@@ -225,16 +225,16 @@ cards:
     sample_unit: queries
     kind: provisional
     metrics:
-      - {name: recall_at_1, value: 0.72}
-      - {name: mrr, value: 0.85}
+      - {name: recall_at_1, value: 0.68}
+      - {name: mrr, value: 0.83}
       - {name: abstention_precision, value: 0.80}
       - {name: abstention_recall, value: 1.00}
       - {name: false_abstention, value: 0.06}
-      - {name: latency_p95_ms, value: 0.07, unit: ms}
+      - {name: latency_p95_ms, value: 0.16, unit: ms}
     source: docs/workflows/grounding.md
     report: docs/evaluation/retrieval.md
-    generated_at: "2026-09-27T15:03:56Z"
-    git_sha: "992fdd6"
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
   - component: retriever
     model: "retriever:dense@intfloat.multilingual-e5-small"
     role: candidate
@@ -249,11 +249,11 @@ cards:
       - {name: abstention_precision, value: 0.92}
       - {name: abstention_recall, value: 0.92}
       - {name: false_abstention, value: 0.02}
-      - {name: latency_p95_ms, value: 7.57, unit: ms}
+      - {name: latency_p95_ms, value: 20.42, unit: ms}
     source: docs/workflows/grounding.md
     report: docs/evaluation/retrieval.md
-    generated_at: "2026-09-27T15:03:56Z"
-    git_sha: "992fdd6"
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
   - component: retriever
     model: "retriever:hybrid@1"
     role: candidate
@@ -263,16 +263,52 @@ cards:
     sample_unit: queries
     kind: provisional
     metrics:
-      - {name: recall_at_1, value: 0.74}
+      - {name: recall_at_1, value: 0.72}
       - {name: mrr, value: 0.85}
       - {name: abstention_precision, value: 0.92}
       - {name: abstention_recall, value: 0.92}
       - {name: false_abstention, value: 0.02}
-      - {name: latency_p95_ms, value: 6.88, unit: ms}
+      - {name: latency_p95_ms, value: 24.31, unit: ms}
     source: docs/workflows/grounding.md
     report: docs/evaluation/retrieval.md
-    generated_at: "2026-09-27T15:03:56Z"
-    git_sha: "992fdd6"
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+  - component: retriever
+    model: "retriever:qdrant@azure.text-embedding-3-small.512"
+    role: candidate
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.67}
+      - {name: mrr, value: 0.83}
+      - {name: abstention_precision, value: 1.00}
+      - {name: abstention_recall, value: 1.00}
+      - {name: false_abstention, value: 0.00}
+      - {name: latency_p95_ms, value: 1.40, unit: ms}
+    source: docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+  - component: retriever
+    model: "retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512"
+    role: candidate
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.76}
+      - {name: mrr, value: 0.89}
+      - {name: abstention_precision, value: 1.00}
+      - {name: abstention_recall, value: 1.00}
+      - {name: false_abstention, value: 0.00}
+      - {name: latency_p95_ms, value: 1.64, unit: ms}
+    source: docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
 
 promotions:
   # docs/evaluation/results.md, "Decision: the learned router, resolver, and risk estimator defaults (dev evidence

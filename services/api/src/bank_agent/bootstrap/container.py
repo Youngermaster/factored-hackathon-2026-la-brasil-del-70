@@ -38,8 +38,8 @@ from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
 from bank_agent.application.reliability.ladder import LadderFlags
 from bank_agent.application.tools.banking import BankingTools
-from bank_agent.bootstrap.inventory import build_model_inventory
 from bank_agent.bootstrap.embeddings import build_hosted_embedder
+from bank_agent.bootstrap.inventory import build_model_inventory
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_stack
 from bank_agent.bootstrap.models import ModelFallbacks, default_embedder
 from bank_agent.bootstrap.persistence import (

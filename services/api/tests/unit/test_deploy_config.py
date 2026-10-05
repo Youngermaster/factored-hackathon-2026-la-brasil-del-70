@@ -490,5 +490,7 @@ def test_the_api_selects_bm25_unless_the_rag_settings_are_given() -> None:
 
 def test_prod_sh_starts_and_stops_the_rag_profile() -> None:
     script = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
-    assert '[[ "${RAG:-0}" == "1" ]] && flags+=(--profile rag)' in script
+    # Like OBS, RAG also comes from the server env file, so a continuous-deployment release keeps the profile.
+    assert 'from_env_or_file RAG "${RAG:-}"' in script
+    assert "rag_enabled && flags+=(--profile rag)" in script
     assert script.count("--profile ollama --profile rag") == 2
