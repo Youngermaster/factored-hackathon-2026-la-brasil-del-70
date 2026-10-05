@@ -7,7 +7,8 @@
 #   migrate   one-shot: migrations as the owner, before the API starts
 #   seed      one-shot (profile jobs): demo personas and customers from the committed sample
 #   purge     the retention purge, once a day, as the owner
-#   obs       profile: collector, Jaeger with Badger storage, Prometheus, Grafana with a login (127.0.0.1 only)
+#   obs       profile: collector, Jaeger with Badger storage, Prometheus, Grafana (127.0.0.1, and read-only at
+#             /grafana/ through Caddy when GRAFANA_ROUTE=on; ADR 0045)
 #   ollama    profile: a self-hosted model on the private network (needs a VM with at least 16 GB of memory)
 #
 # Every service: no-new-privileges, every Linux capability dropped, CPU and memory limits, rotated logs, and a
@@ -91,6 +92,8 @@ services:
       SITE_ADDRESS: ${SITE_ADDRESS:?set SITE_ADDRESS (the public host name) in the server env file}
       CADDY_TLS: ${CADDY_TLS:-acme}
       ACME_EMAIL: ${ACME_EMAIL:-}
+      # on serves Grafana at /grafana/ (ADR 0045; needs the obs profile); off keeps it on the SSH tunnel only.
+      GRAFANA_ROUTE: ${GRAFANA_ROUTE:-off}
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
@@ -103,6 +106,8 @@ services:
     networks:
       edge:
         ipv4_address: ${WEB_EDGE_ADDRESS:-172.28.10.10}
+      # Caddy's only path to Grafana. No depends_on: grafana belongs to a profile that may be off.
+      observability: {}
     depends_on:
       api:
         condition: service_healthy
@@ -264,7 +269,7 @@ services:
           cpus: "0.25"
           memory: 256M
 
-  # --- obs profile: traces and metrics, persisted; Grafana needs its admin login and listens on 127.0.0.1 only ----
+  # --- obs profile: traces and metrics, persisted; Grafana on 127.0.0.1 and, with GRAFANA_ROUTE=on, at /grafana/ ---
   otel-collector:
     profiles: [obs]
     image: otel/opentelemetry-collector:0.161.0@sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913
@@ -313,6 +318,10 @@ services:
       - --storage.tsdb.path=/prometheus
       - --storage.tsdb.retention.time=15d
       - --storage.tsdb.retention.size=2GB
+      # Grafana viewers can send any PromQL through the datasource (ADR 0045): bound what one query may cost.
+      - --query.timeout=30s
+      - --query.max-samples=5000000
+      - --query.max-concurrency=4
     volumes:
       - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./observability/alerts.yml:/etc/prometheus/alerts.yml:ro
@@ -333,14 +342,44 @@ services:
       # deploy/prod.sh refuses to start this profile without a staged GRAFANA_ADMIN_PASSWORD.
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/GRAFANA_ADMIN_PASSWORD
-      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      # Served by Caddy at <PUBLIC_ORIGIN>/grafana/ (ADR 0045), and through the tunnel at http://localhost:3000/grafana/.
+      GF_SERVER_ROOT_URL: ${PUBLIC_ORIGIN:?set PUBLIC_ORIGIN (https://your-host) in the server env file}/grafana/
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      # true lets anyone view the provisioned dashboards without signing in (role Viewer: no editing, no Explore);
+      # the admin login stays. Default false (ADR 0045, "anonymous viewer").
+      GF_AUTH_ANONYMOUS_ENABLED: ${GRAFANA_ANONYMOUS_VIEWER:-false}
+      GF_AUTH_ANONYMOUS_ORG_NAME: Main Org.
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_AUTH_ANONYMOUS_HIDE_VERSION: "true"
       GF_AUTH_DISABLE_LOGIN_FORM: "false"
+      GF_AUTH_BASIC_ENABLED: "false"
+      GF_AUTH_LOGIN_MAXIMUM_INACTIVE_LIFETIME_DURATION: 1h
+      GF_AUTH_LOGIN_MAXIMUM_LIFETIME_DURATION: 12h
       GF_USERS_ALLOW_SIGN_UP: "false"
-      GF_SECURITY_COOKIE_SECURE: "false"
+      GF_USERS_ALLOW_ORG_CREATE: "false"
+      GF_USERS_VIEWERS_CAN_EDIT: "false"
+      GF_SECURITY_COOKIE_SECURE: "true"
+      GF_SECURITY_COOKIE_SAMESITE: strict
+      GF_SECURITY_DISABLE_GRAVATAR: "true"
+      GF_SECURITY_ALLOW_EMBEDDING: "false"
+      GF_SECURITY_CONTENT_SECURITY_POLICY: "true"
+      # Grafana's own CSP (Caddy adds none on /grafana/): its default template without external hosts or websockets
+      # (Live is off), and no framing. $$ is compose's escape: Grafana receives $NONCE.
+      GF_SECURITY_CONTENT_SECURITY_POLICY_TEMPLATE: >-
+        script-src 'self' 'unsafe-eval' 'unsafe-inline' 'strict-dynamic' $$NONCE; object-src 'none';
+        font-src 'self'; style-src 'self' 'unsafe-inline' blob:; img-src 'self' data: blob:; base-uri 'self';
+        connect-src 'self'; manifest-src 'self'; media-src 'none'; form-action 'self'; frame-ancestors 'none'
+      GF_SNAPSHOTS_ENABLED: "false"
+      GF_SNAPSHOTS_EXTERNAL_ENABLED: "false"
+      GF_PUBLIC_DASHBOARDS_ENABLED: "false"
+      GF_LIVE_MAX_CONNECTIONS: "0"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
-      # No plugin downloads at startup: the bundled Prometheus and Jaeger datasources serve as shipped (an update
-      # would try to replace them on the read-only root filesystem and unload them).
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/provisioning/dashboards/bank-agent-service.json
+      # No plugin downloads at startup: the bundled Prometheus datasource serves as shipped (an update would try to
+      # replace it on the read-only root filesystem and unload it).
       GF_PLUGINS_PREINSTALL_DISABLED: "true"
       GF_PATHS_DATA: /var/lib/grafana
     secrets:
@@ -352,15 +391,18 @@ services:
     tmpfs:
       - /tmp:size=32m
     ports:
-      # Reach it through an SSH tunnel (deploy/README.md); never open 3000 in the firewall.
+      # The SSH tunnel (deploy/README.md), the administrator's path when the Caddy route is off; never open 3000 in
+      # the firewall.
       - "127.0.0.1:${GRAFANA_PORT:-3000}:3000"
-    networks: [backend, egress]
-    depends_on: [prometheus, jaeger]
+    # backend reaches Prometheus, egress carries the loopback port, observability is Caddy's path in.
+    networks: [backend, egress, observability]
+    depends_on: [prometheus]
     deploy:
       resources:
         limits:
           cpus: "0.5"
-          memory: 384M
+          # 276 MB in use at 384 MB before the public route; viewers add sessions and query buffers.
+          memory: 512M
 
   # --- ollama profile: a self-hosted model on the private network (not the default; about 5 GB of model) --------
   ollama:
@@ -394,6 +436,9 @@ networks:
     internal: true
   # A non-internal network: Grafana's loopback port and the ollama model download need it.
   egress: {}
+  # Caddy to Grafana and nothing else: internal (no route out), joined by web and grafana only (ADR 0045).
+  observability:
+    internal: true
 
 # Staged by deploy/secrets_stage.py; the directory is the consumer whose container user owns the files (app: uid 10001
 # for the api and the jobs, postgres: uid 70, grafana: uid 472). The names match its SECRETS table.
