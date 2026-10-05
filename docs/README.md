@@ -106,6 +106,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
+| [adr/0043](adr/0043-langgraph-migration.md) | Staged post-hackathon migration of the workflow engine to LangGraph StateGraph (proposed roadmap) |
 
 ## Exploratory data analysis
 
