@@ -106,6 +106,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
+| [adr/0044](adr/0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider: one account per environment, keys in Key Vault, the production delta, and how to change models |
 
 ## Exploratory data analysis
 
@@ -215,6 +216,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |
 | [plans/phase-15.md](plans/phase-15.md) | The phase 15 plan and its decided questions |
 | [../deploy/README.md](../deploy/README.md) | The single-host deployment guide: AWS Lightsail, EC2, Azure VM, DNS, firewall, the env file, deploy, update, back up, restore, roll back, take down |
+| [AZURE_INFRASTRUCTURE.md](AZURE_INFRASTRUCTURE.md) | The verified live Azure topology: resource group, VMs, network rules, Key Vault secrets, the model accounts and deployments, release path, findings |
 | [plans/phase-16.md](plans/phase-16.md) | The phase 16 plan: deployment topology, hardening checklist, and decided questions |
 
 ## Packages and apps

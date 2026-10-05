@@ -2,7 +2,7 @@
 
 The language model understands; deterministic code decides. Every model call goes through one port, `LLMClient` (`services/api/src/bank_agent/ports/llm.py`), with structured outputs derived from Pydantic models, versioned prompts, and cross-cutting behavior added as decorators that implement the same port ([ADR 0013](../adr/0013-litellm-behind-a-port-with-composable-decorators.md)). Callers handle every LLM error by falling back to deterministic behavior (clarify, abstain, or hand off).
 
-**Provider status.** The human has not chosen a provider. The LiteLLM adapter exists but nothing calls a live provider: tests use `FakeLLM` or cassettes, the default setting (`LLM_PROVIDER=fake` with no injected client) refuses every call, and the committed cassettes are hand-authored fixtures. Model choice is decided by evaluation in phase 14.
+**Provider status.** The default is still no model (`LLM_PROVIDER=fake` with no injected client refuses every call), and tests use `FakeLLM` or cassettes and never call a provider. The deployed Azure demo calls Azure OpenAI since 2026-10-05 ([ADR 0044](../adr/0044-azure-openai-as-the-hosted-model-provider.md)): primary `azure/gpt-4.1-mini` (GlobalStandard) and fallback `azure/gpt-4o` (regional Standard) in one account in Sweden Central, for the understanding prompts only (`WORKFLOW_LLM_UNDERSTANDING=true`; phrasing and handoff summaries stay off). The committed evaluation cassettes were recorded with the local `ollama/qwen2.5:7b-instruct`, so no recorded evaluation describes the Azure models.
 
 ## Decorator stack
 
@@ -88,6 +88,10 @@ Why this order:
 
 One `gen_ai.chat` span per logical call (the `Telemetry` port requires dot-separated names, so the convention's `chat {model}` name becomes attributes). Attributes: `gen_ai.operation.name`, `gen_ai.provider.name`, `gen_ai.request.model`, `gen_ai.request.max_tokens`, `gen_ai.request.temperature`, `gen_ai.output.type`, `gen_ai.response.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `error.type`, plus `bank.prompt.id`, `bank.prompt.version`, `bank.language`, `bank.llm.latency_ms`, `bank.llm.cost_usd`, `bank.llm.repaired`. Metrics: `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` histograms, and `bank.llm.cost_usd`. Phase 15 exports them through the OpenTelemetry adapter, whose tracer and meter carry the schema URL `https://opentelemetry.io/schemas/1.37.0` (the pinned `GENAI_SEMCONV_VERSION`); the circuit states, budget refusals, and the daily ratio are gauges and counters of the degradation monitor ([observability](../operations/observability.md)). Content capture (`LLM_TRACE_CONTENT`) is off by default and refused in production; when on, spans carry the already redacted variables and the output.
 
+## Switching or probing a hosted model
+
+`bank-agent llm-probe` (`bootstrap/llm_probe.py`) calls each configured model (`LLM_PRIMARY_MODEL`, then `LLM_FALLBACK_MODEL`) once in Spanish and once in Portuguese with a fixed synthetic message, the real `detect_escalation_signals@2` prompt, and its output model, straight through the provider client: no fallback, retry, circuit breaker, or budget, so neither a fallback nor a retry can hide a failing model. It prints the model, the language, `ok` or the error code, and the latency, never a key, prompt, or reply; exit 0 means every structured reply validated. On the server `deploy/prod.sh llm-probe` runs it in a throwaway API container with the edited env file and the freshly staged keys before `up` recreates the API. The procedure (edit, probe, up, smoke, rollback) is in `deploy/README.md` ("Choosing the model") and the [runbook](../operations/runbook.md).
+
 ## Opt-in local model (development only)
 
 A developer with [Ollama](https://ollama.com) serving `qwen2.5:7b-instruct` can run the gateway against it without changing any default:
@@ -108,7 +112,8 @@ make api-local-llm                    # the API on 127.0.0.1:8000 with the same 
 
 ## Limitations
 
-- No hosted provider has been exercised: request shapes are tested against LiteLLM's documented interface with an injected completion function. The only live runs are the opt-in local Ollama smoke runs, which check schema validity, not quality.
+- Hosted calls are exercised by opt-in runs only, never by tests: request shapes are tested against LiteLLM's documented interface with an injected completion function. On 2026-10-05 `make llm-smoke` against `azure/gpt-4.1-mini` on the evaluation account passed 32 of 32 fixture cases (p50 1,169 ms, p95 2,137 ms, first call 36,109 ms; a local development measurement of schema-valid replies, not an evaluation of answer quality), and `bank-agent llm-probe` passed in es and pt with the default API version, `2024-10-21`, and `2025-04-01-preview`.
+- LiteLLM is imported on the first model call of each process, inside that call's timeout; the first call can therefore time out and succeed on the retry (backlog).
 - Without a database the budget ledger is per process; with one it is shared in PostgreSQL (phase 15).
 - The Portuguese check over cassettes is lexical; it catches Spanish leakage, not awkward phrasing.
 - Name redaction masks the session's known names and names introduced by phrases such as "me llamo"; a name mentioned without such a phrase passes through. Workflow code must never put names in variables (CLAUDE.md rule 6); the redaction is a second line of defense.
