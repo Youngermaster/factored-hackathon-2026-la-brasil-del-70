@@ -334,8 +334,9 @@ docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p b
 
 The API starts even when Qdrant or the collection is missing: it logs `retrieval_vector_index_unavailable`, and every
 informational question is answered by BM25 until the collection exists. A failure of the embedding call or the store
-at run time also answers with BM25 (`bank.retrieval.fallbacks` counts it by error code). Continuous deployment passes
-no profile, so it neither updates nor removes the `qdrant` container; `RAG=1 deploy/prod.sh up` does. After a policy
+at run time also answers with BM25 (`bank.retrieval.fallbacks` counts it by error code). `deploy/prod.sh` reads
+`RAG` from the server env file like `OBS`, so with `RAG=1` in `deploy/.env.production` continuous deployment keeps
+the `qdrant` container in the project. After a policy
 pack change, run the indexing command again: the collection name carries the pack version.
 
 ## Deploy
