@@ -79,4 +79,4 @@ models:
     effective_date: 2026-10-05
     source_url: https://prices.azure.com/api/retail/prices
     verified: false
-    notes: Embedding model (GlobalStandard). Meter 'text-embedding-3-small-glbl Tokens' 0.00002 USD per 1K input tokens, effective 2024-06-01 (Data Zone 0.000022). Embeddings bill input tokens only. The chat gateway never calls it; a retrieval adapter that does must price its own calls. Read 2026-10-05; awaits a person's confirmation.
+    notes: Embedding model (GlobalStandard). Meter 'text-embedding-3-small-glbl Tokens' 0.00002 USD per 1K input tokens, effective 2024-06-01, the same in swedencentral and eastus (the regional meter costs more, 0.000025 in swedencentral and 0.000022 in eastus). Embeddings bill input tokens only. The chat gateway never calls it; a retrieval adapter that does must price its own calls. Read 2026-10-05; awaits a person's confirmation.
