@@ -175,3 +175,25 @@ def index_build(
         f"wrote {directory} ({manifest.document_count} documents, tokenizer {manifest.tokenizer}, "
         f"dense {manifest.embedding_model or 'no'})"
     )
+
+
+@app.command("llm-probe")
+def llm_probe() -> None:
+    """Call each configured model once in Spanish and once in Portuguese with a fixed synthetic message.
+
+    Prints the model, the language, ``ok`` or the error code, and the latency per call; never a key, prompt, or reply.
+    Exit 0 when every call returned a valid structured reply, 1 when one did not, 2 without a live model configured.
+    """
+    from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
+    from bank_agent.bootstrap.llm_probe import litellm_builder, probe, report
+
+    settings = load_settings().llm
+    try:
+        results = asyncio.run(probe(settings, litellm_builder(settings, FilePromptRegistry.from_package())))
+    except ConfigurationError as error:
+        typer.echo(f"llm-probe: {error}", err=True)
+        raise typer.Exit(2) from error
+    for line in report(results):
+        typer.echo(line)
+    if not all(result.ok for result in results):
+        raise typer.Exit(1)

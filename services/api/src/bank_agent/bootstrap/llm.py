@@ -85,9 +85,10 @@ def provider_name(model_id: str) -> str:
     return head if separator else "unknown"
 
 
-def _litellm(
+def litellm_provider(
     settings: LLMSettings, registry: PromptRegistry, model: str, key: SecretStr | None, find_spec: FindSpec
 ) -> LiteLLMClient:
+    """The undecorated provider client for one model: the gateway's innermost layer, and what ``llm-probe`` calls."""
     if find_spec("litellm") is None:
         raise ConfigurationError("LLM_PROVIDER=litellm needs the litellm extra: uv sync --all-packages --extra litellm")
     if not model:
@@ -116,12 +117,12 @@ def _provider(
     find_spec: FindSpec,
 ) -> LLMClient:
     if settings.provider == "litellm":
-        return _litellm(settings, registry, model, key, find_spec)
+        return litellm_provider(settings, registry, model, key, find_spec)
     if settings.provider == "cassette":
         if not model:
             raise ConfigurationError("LLM_PROVIDER=cassette needs LLM_PRIMARY_MODEL, the model the cassettes hold")
         mode = CassetteMode(settings.cassette_mode)
-        inner = _litellm(settings, registry, model, key, find_spec) if mode is CassetteMode.RECORD else None
+        inner = litellm_provider(settings, registry, model, key, find_spec) if mode is CassetteMode.RECORD else None
         return CassetteLLM(
             settings.cassette_dir, model_id=model, redactor=redactor, clock=clock, mode=mode, inner=inner
         )

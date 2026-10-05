@@ -53,7 +53,7 @@ Three contracts apply:
 Because `api` and `bootstrap` cannot import each other, the wiring lives in two package-root modules outside every layer:
 
 - `bank_agent.asgi:create_app` is the uvicorn factory. It loads settings, configures logging, builds the container, and passes it to `bank_agent.api.app.create_app`.
-- `bank_agent.cli:app` is the `bank-agent` typer command: `db upgrade`, `retention purge` (the owner's retention job; `--dry-run`, `--every-hours`), `policy lock`, `policy catalog`, `index build`.
+- `bank_agent.cli:app` is the `bank-agent` typer command: `db upgrade`, `retention purge` (the owner's retention job; `--dry-run`, `--every-hours`), `policy lock`, `policy catalog`, `index build`, `llm-probe` (one structured call per configured model in es and pt; outcomes only).
 
 Settings are validated per process: `load_settings()` checks the API's production rules (it refuses the owner password, requires the shared rate limiter, and allows demo mode only with `ALLOW_PUBLIC_DEMO_MODE=true`), and `load_settings(owner=True)` checks an owner job's (the owner password and `SESSION_SECRET` only).
 
@@ -64,7 +64,7 @@ The API layer declares what it needs as the `ServiceProvider` Protocol in `api/p
 ## Public interfaces
 
 - HTTP: `GET /health/live` and `GET /health/ready`. Errors are RFC 9457 problem details (`application/problem+json`). Every response carries `X-Request-ID`.
-- CLI: `bank-agent version`, `bank-agent db upgrade`, `bank-agent policy lock|catalog`, and `bank-agent index build` (the retrieval index for the current pack version), with `bank-agent --help`.
+- CLI: `bank-agent version`, `bank-agent db upgrade`, `bank-agent policy lock|catalog`, `bank-agent index build` (the retrieval index for the current pack version), and `bank-agent llm-probe` (the operator's model check, run on the server by `deploy/prod.sh llm-probe`), with `bank-agent --help`.
 - Configuration: environment variables documented in the root `.env.example`, read only by `bootstrap/settings.py`.
 
 Run the API locally:
