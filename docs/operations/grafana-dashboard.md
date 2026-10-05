@@ -128,6 +128,7 @@ they remain separate and visibly labeled:
 |---|---|---|---|
 | Grafana | Live operational telemetry | OpenTelemetry to Prometheus | 7 days in development, 15 days or 2 GB in production |
 | Web administrative dashboard | Offline, simulated, or projected evaluation | `GET /v1/eval/summaries` | Published summary artifacts |
+| Web supervision view | Served configuration, offline model cards, simulated promotion decisions, and the current degradation level (no live aggregates; it links to Grafana) | `GET /v1/eval/models`, `GET /v1/eval/summaries`, `GET /health/details` | Process start, the committed `services/api/config/model_cards.yaml`, published summaries |
 
 ## Access and hardening
 

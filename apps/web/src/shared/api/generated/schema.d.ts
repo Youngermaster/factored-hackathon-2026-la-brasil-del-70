@@ -587,6 +587,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/eval/models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Model Inventory
+         * @description The models, language model setup, prompts, and policy pack this process serves, and their offline evidence.
+         */
+        get: operations["eval_model_inventory"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/eval/summaries": {
         parameters: {
             query?: never;
@@ -779,6 +799,26 @@ export interface components {
          * @enum {string}
          */
         CardBlockReason: "lost" | "stolen" | "unrecognized_activity" | "precaution";
+        /**
+         * CardMetric
+         * @description One published metric with its 95% interval when the report gives one.
+         */
+        CardMetric: {
+            /** High */
+            high: number | null;
+            /** Low */
+            low: number | null;
+            /** Name */
+            name: string;
+            /**
+             * Unit
+             * @default ratio
+             * @enum {string}
+             */
+            unit: "ratio" | "ms";
+            /** Value */
+            value: number;
+        };
         /**
          * CardRequest
          * @description The card request a handoff carries: what the customer asked for, and for which card.
@@ -1708,6 +1748,65 @@ export interface components {
          */
         LlmCallStatus: "ok" | "repaired" | "failed" | "fallback";
         /**
+         * LlmConfiguration
+         * @description The language model gateway as configured: provider, models, feature flags, and budget limits.
+         *
+         *     ``configured`` is false when no provider is set up (``LLM_PROVIDER=fake`` without an injected client): every
+         *     model call is refused and the workflows answer on their deterministic paths.
+         */
+        LlmConfiguration: {
+            /** Configured */
+            configured: boolean;
+            /** Conversation Budget Usd */
+            conversation_budget_usd: string;
+            /** Daily Budget Usd */
+            daily_budget_usd: string;
+            /** Fallback Enabled */
+            fallback_enabled: boolean;
+            /** Handoff Summary */
+            handoff_summary: boolean;
+            /** Models */
+            models: components["schemas"]["LlmModelSetup"][];
+            /** Phrasing */
+            phrasing: boolean;
+            /** Provider */
+            provider: string;
+            /** Session Token Limit */
+            session_token_limit: number;
+            /** Understanding */
+            understanding: boolean;
+            /** Unverified Price Multiplier */
+            unverified_price_multiplier: string;
+        };
+        /**
+         * LlmModelSetup
+         * @description A configured language model and the price the budget guard and the cost metrics charge for it.
+         *
+         *     The prices are the effective ones (``adapters/llm/prices.py``): as listed when ``verified``, times the
+         *     unverified multiplier when ``unverified``, and the table's highest prices times the multiplier for an
+         *     ``unknown_model``. ``listed_on`` is the date the listed price was read (``None`` for an unknown model).
+         */
+        LlmModelSetup: {
+            /** Input Usd Per Million */
+            input_usd_per_million: string;
+            /** Listed On */
+            listed_on: string | null;
+            /** Model Id */
+            model_id: string;
+            /** Output Usd Per Million */
+            output_usd_per_million: string;
+            /**
+             * Price Basis
+             * @enum {string}
+             */
+            price_basis: "verified" | "unverified" | "unknown_model";
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "primary" | "fallback";
+        };
+        /**
          * MaskedNumber
          * @description The last four alphanumeric characters of a product number, rendered as ``**** 1234``.
          */
@@ -1726,10 +1825,126 @@ export interface components {
             denominator: number;
         };
         /**
+         * ModelCard
+         * @description The offline test (or dev) metrics of one model, copied from a generated report.
+         *
+         *     ``kind`` is ``offline`` for labels made by construction or from the data, ``provisional`` while team-authored
+         *     labels await human review. ``note`` qualifies the role, for example ``promotion_refused`` or
+         *     ``needs_ml_extra`` (the model cannot run in the API image). ``use`` names the task slice (``dispute``).
+         */
+        ModelCard: {
+            component: components["schemas"]["ModelComponent"];
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Git Sha */
+            git_sha: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "offline" | "provisional";
+            /** Metrics */
+            metrics: components["schemas"]["CardMetric"][];
+            model: components["schemas"]["ModelRef"];
+            /** Note */
+            note: string | null;
+            /** Report */
+            report: string;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "default" | "champion" | "candidate" | "reference";
+            /** Sample Size */
+            sample_size: number;
+            /**
+             * Sample Unit
+             * @enum {string}
+             */
+            sample_unit: "items" | "queries" | "customers";
+            /** Source */
+            source: string;
+            /**
+             * Split
+             * @enum {string}
+             */
+            split: "test" | "dev";
+            /** Use */
+            use: string | null;
+        };
+        /**
+         * ModelCardSet
+         * @description The curated model cards and promotion decisions; empty when no file is published.
+         */
+        ModelCardSet: {
+            /**
+             * Cards
+             * @default []
+             */
+            cards: components["schemas"]["ModelCard"][];
+            /**
+             * Data
+             * @default synthetic
+             * @constant
+             */
+            data: "synthetic";
+            /**
+             * Measurement
+             * @default offline
+             * @constant
+             */
+            measurement: "offline";
+            /**
+             * Promotions
+             * @default []
+             */
+            promotions: components["schemas"]["PromotionDecision"][];
+            /**
+             * Schema Version
+             * @default 1.0.0
+             * @constant
+             */
+            schema_version: "1.0.0";
+        };
+        /**
          * ModelComponent
          * @enum {string}
          */
         ModelComponent: "router" | "resolver" | "retriever" | "language_detector" | "llm" | "risk_estimator";
+        /**
+         * ModelInventory
+         * @description The process's served models and configuration, recorded once at startup (``generated_at``).
+         */
+        ModelInventory: {
+            /** Components */
+            components: components["schemas"]["ServedModel"][];
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            llm: components["schemas"]["LlmConfiguration"];
+            /** Policy Pack Version */
+            policy_pack_version: string;
+            /** Prompts */
+            prompts: components["schemas"]["PromptUse"][];
+            /** Workflows Enabled */
+            workflows_enabled: components["schemas"]["WorkflowId"][];
+        };
+        /**
+         * ModelInventoryResponse
+         * @description What the process serves, recorded at startup, and the published offline evidence for each model.
+         *
+         *     ``inventory`` is configuration (no customer data, identifiers, endpoints, or keys); ``cards`` are offline
+         *     metrics on synthetic data and simulated end-to-end promotion decisions, never production measurements.
+         */
+        ModelInventoryResponse: {
+            cards: components["schemas"]["ModelCardSet"];
+            inventory: components["schemas"]["ModelInventory"];
+        };
         /** ModelRef */
         ModelRef: string;
         /**
@@ -1838,8 +2053,78 @@ export interface components {
          * @enum {string}
          */
         ProductType: "checking_account" | "savings_account" | "credit_card" | "debit_card" | "personal_loan" | "mortgage" | "investment" | "other";
+        /**
+         * PromotionDecision
+         * @description A pre-registered default decision: the configurations compared end to end, which one serves, and why.
+         *
+         *     The comparison is a simulation (simulated customers and a grader), on the dev split, with the language model
+         *     named by ``language_model``; it is never a production measurement.
+         */
+        PromotionDecision: {
+            /** Decision */
+            decision: string;
+            /** Language Model */
+            language_model: string;
+            /**
+             * Measurement
+             * @constant
+             */
+            measurement: "simulated";
+            /** Outcome */
+            outcome: string;
+            /** Reason */
+            reason: string;
+            /** Rows */
+            rows: components["schemas"]["PromotionRow"][];
+            /** Session */
+            session: string;
+            /** Source */
+            source: string;
+            /**
+             * Split
+             * @enum {string}
+             */
+            split: "dev" | "test";
+            /** Workflows */
+            workflows: components["schemas"]["WorkflowId"][];
+        };
+        /**
+         * PromotionRow
+         * @description One configuration of an end-to-end comparison, with the counts its intervals are computed from.
+         */
+        PromotionRow: {
+            /** Cases */
+            cases: number;
+            escalation_missed: components["schemas"]["MetricCount"] | null;
+            escalation_unnecessary: components["schemas"]["MetricCount"] | null;
+            /** Git Sha */
+            git_sha: string | null;
+            /** Models */
+            models: string[];
+            routing_correct: components["schemas"]["MetricCount"] | null;
+            /** Run Id */
+            run_id: string | null;
+            safe_automated_resolution: components["schemas"]["MetricCount"];
+            /** Served */
+            served: boolean;
+            unsafe_outcomes: components["schemas"]["MetricCount"];
+        };
         /** PromptRef */
         PromptRef: string;
+        /**
+         * PromptUse
+         * @description A registered prompt version, what the engine calls it for, and whether the current flags let it run.
+         */
+        PromptUse: {
+            /** Active */
+            active: boolean;
+            prompt: components["schemas"]["PromptRef"];
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "understanding" | "phrasing" | "handoff_summary" | "not_called_by_engine";
+        };
         /** ReadinessResponse */
         ReadinessResponse: {
             /** Checks */
@@ -2008,6 +2293,34 @@ export interface components {
          * @enum {string}
          */
         Sentiment: "positive" | "neutral" | "negative" | "very_negative" | "unknown";
+        /**
+         * ServedModel
+         * @description One component as the process serves it.
+         *
+         *     ``selected`` is the configured selection; ``served`` the concrete model (``None`` when nothing serves, as for a
+         *     risk estimator that could not load without the band fallback). ``alias`` is the alias the selection named when it
+         *     differs from the served version. A component that ``fell_back`` names the reason code.
+         */
+        ServedModel: {
+            /** Alias */
+            alias: string | null;
+            component: components["schemas"]["ModelComponent"];
+            /**
+             * Fell Back
+             * @default false
+             */
+            fell_back: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "baseline" | "learned" | "unavailable";
+            /** Reason */
+            reason: ("artifact_not_found" | "model_unavailable" | "registry_unreadable") | null;
+            /** Selected */
+            selected: string;
+            served: components["schemas"]["ModelRef"] | null;
+        };
         /** ServiceRef */
         ServiceRef: string;
         /** SessionView */
@@ -3587,6 +3900,35 @@ export interface operations {
                 };
                 content: {
                     "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+            /** @description Problem details (RFC 9457) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["ProblemDetails"];
+                };
+            };
+        };
+    };
+    eval_model_inventory: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelInventoryResponse"];
                 };
             };
             /** @description Problem details (RFC 9457) */

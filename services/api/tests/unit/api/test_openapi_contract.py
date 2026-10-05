@@ -21,7 +21,8 @@ OPERATION_IDS = {
     "agent_list_handoffs", "agent_get_handoff", "agent_claim_handoff", "agent_resolve_handoff",
     "agent_list_credit_applications", "agent_get_credit_application", "agent_review_credit_application",
     "agent_close_credit_application",
-    "eval_list_summaries", "eval_conversation_trace", "health_live", "health_ready", "health_details",
+    "eval_list_summaries", "eval_model_inventory", "eval_conversation_trace",
+    "health_live", "health_ready", "health_details",
     "assistant_profile_get", "assistant_profile_name_set", "assistant_profile_image_change",
 }  # fmt: skip
 

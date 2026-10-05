@@ -134,6 +134,10 @@ for (const theme of ['light', 'dark']) {
     const evaluator = await open(browser, { theme, viewport });
     await signInPatiently(evaluator.page, 'evaluator-demo-01');
     await visit(evaluator.page, '/console/evaluation', heading);
+    // The supervision view positions its interval plot with style properties set from script.
+    await visit(evaluator.page, '/console/supervision', (page) =>
+      page.getByRole('figure').first().waitFor(),
+    );
     await visit(evaluator.page, `/console/traces/${conversation}`, (page) =>
       page.getByRole('article').first().waitFor(),
     );

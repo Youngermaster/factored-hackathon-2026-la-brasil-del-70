@@ -17,10 +17,11 @@ from bank_agent.application.conversations.service import ConversationService
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.domain.identifiers import CreditProductCode
 from bank_agent.domain.locale import Language
+from bank_agent.domain.model_inventory import ModelInventory
 from bank_agent.domain.policy import PolicyClause
 from bank_agent.policy.loader.catalog import ProductDisplay
 from bank_agent.ports.determinism import Clock
-from bank_agent.ports.evaluation import EvaluationSummaryReader
+from bank_agent.ports.evaluation import EvaluationSummaryReader, ModelCardReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.rate_limits import RateLimitStore
 from bank_agent.ports.reliability import DegradationSource
@@ -70,7 +71,8 @@ class PolicyClauses(Protocol):
 
 
 class ServiceProvider(Protocol):
-    """Services the HTTP layer resolves: identity, conversations, the agent inbox, and evaluation summaries."""
+    """Services the HTTP layer resolves: identity, conversations, the agent inbox, evaluation summaries, and the
+    model inventory with its model cards."""
 
     @property
     def clock(self) -> Clock:
@@ -93,6 +95,16 @@ class ServiceProvider(Protocol):
 
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader: ...
+
+    @property
+    def model_inventory(self) -> ModelInventory:
+        """What the process serves (models, language model setup, prompts, policy pack), recorded at startup."""
+        ...
+
+    @property
+    def model_cards(self) -> ModelCardReader:
+        """The curated offline model cards and promotion decisions."""
+        ...
 
     @property
     def credit_product_names(self) -> CreditProductNames:

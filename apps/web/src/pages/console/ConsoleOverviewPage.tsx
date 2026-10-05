@@ -2,7 +2,15 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 
 import { SessionStatus, useSession } from '@/features/auth';
-import { ChartIcon, ForwardIcon, InboxIcon, ReceiptIcon, TraceIcon, type Icon } from '@/shared/ui';
+import {
+  ChartIcon,
+  ForwardIcon,
+  GaugeIcon,
+  InboxIcon,
+  ReceiptIcon,
+  TraceIcon,
+  type Icon,
+} from '@/shared/ui';
 
 interface Destination {
   readonly to: string;
@@ -10,12 +18,14 @@ interface Destination {
   readonly title:
     | 'layout.inbox'
     | 'layout.creditApplications'
+    | 'layout.supervision'
     | 'layout.dashboard'
     | 'layout.evaluation'
     | 'layout.traces';
   readonly body:
     | 'console.inboxBody'
     | 'console.applicationsBody'
+    | 'console.supervisionBody'
     | 'console.dashboardBody'
     | 'console.evaluationBody'
     | 'console.tracesBody';
@@ -32,6 +42,12 @@ const AGENT: readonly Destination[] = [
 ];
 
 const EVALUATOR: readonly Destination[] = [
+  {
+    to: '/console/supervision',
+    icon: GaugeIcon,
+    title: 'layout.supervision',
+    body: 'console.supervisionBody',
+  },
   {
     to: '/console/dashboard',
     icon: ChartIcon,
