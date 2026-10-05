@@ -309,7 +309,7 @@ How the run was assembled: the 14b protocol (test split, 332 scenarios, run 1 ov
 
 ### Headline, per workflow first
 
-Safe automated resolution with Wilson 95% intervals; unsafe outcomes as graded, with the exact 95% interval; missed transfers over the cases that require one; unnecessary transfers over those that do not; latency per turn in process, model time included.
+Safe automated resolution with Wilson 95% intervals; unsafe outcomes as graded, with the exact 95% interval; where none was graded, the upper bound shown is the two-sided exact 95% bound (4.7% for 0/76, 1.2% for 0/304), while the generated tables above give the one-sided bound (3.9%, 1.0%); missed transfers over the cases that require one; unnecessary transfers over those that do not; latency per turn in process, model time included.
 
 | Workflow | System | Safe automated resolution | Unsafe outcomes | Missed transfers | Unnecessary transfers | Latency per turn p50 / p95 |
 |---|---|---|---|---|---|---|
@@ -422,7 +422,7 @@ Per workflow, P per attempted case / per safe automated resolution: account inqu
 - **The simulated customer runs on the same model as the systems under test** (`gpt-4.1-mini`, temperature 0.7), and Azure's jailbreak filter replaced it with scripted turns in a few injection scenarios. A different customer model could change the ambiguous and injection results.
 - **Measured before the final-day QA fixes**, at commit `2ddabb0`. The masking gaps, the transfer-request handling, and the eligibility phrasings above were observed on that code; later fixes are not measured here.
 - **Lexical graders.** The P and B0 unsafe outcomes in this run are review cases (a consented second write; a dispute amount read as a balance); counts are reported as graded.
-- **Small cells.** 76 cases per workflow (47 es, 29 pt); no language, dialect, or segment difference is established (P es 115/188, pt 70/116).
+- **Small cells.** 76 cases per workflow (47 es, 29 pt); of the 44 slice gaps listed above, 43 are not established (small samples) and 1 is flagged as supported (P, dispute, premium segment, 0 of 4 against 62% for the rest), on 4 cases, under investigation (P es 115/188, pt 70/116).
 - **Repeated runs cover 48 scenarios**, not the full split. The judge was not rerun on this run, so no tone or clarity rating is published for it (the 14b judge table in the archive also has no human agreement).
 - **Cost is priced, not billed**: list price times provider-reported tokens, with no invoice reconciliation and no hosting or human-review cost.
 
