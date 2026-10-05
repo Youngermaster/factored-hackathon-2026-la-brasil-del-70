@@ -66,6 +66,7 @@ Cross-customer attempts are played by any persona asking about another customer'
 1. Start a login with the persona id (for example `crd-mx-two-cards`), or with the customer's document number plus the last four digits of the phone on file.
 2. With `DEMO_MODE=true` the one-time code is returned with the challenge so the UI can show it, labeled as a demo. Without demo mode the code is never shown or logged.
 3. Enter the code to receive a session. Writes such as a card block ask for a fresh code first (step-up).
+4. After an adversarial test (a prompt injection, or a request for another customer's data or products), sign out and sign in again before testing anything else. The risk tier belongs to the sign-in and never decreases within it, so every later request of that sign-in, new conversations included, asks for step-up or goes to a person (`ESC.risk_tier_high`). This is by design (QA finding CRE-22), not a failure of the later request.
 
 The flows are described in `docs/security/identity-and-sessions.md`, and the HTTP routes in `docs/api/README.md`.
 
