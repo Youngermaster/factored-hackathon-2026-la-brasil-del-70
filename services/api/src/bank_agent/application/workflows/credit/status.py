@@ -67,7 +67,8 @@ async def application_status(ctx: TurnContext) -> Step:
     if intakes is None:
         return Step(RESOLVED, Reply(template="credit.status_not_found"), Outcome.RESOLVED)
     if not intakes:
-        return Step(RESOLVED, Reply(template="credit.status_none_on_record", explain=explain), Outcome.RESOLVED)
+        # No intake on record: INF-ALL-3 ("tu solicitud queda registrada") would contradict the answer (CRE-11).
+        return Step(RESOLVED, Reply(template="credit.status_none_on_record"), Outcome.RESOLVED)
     catalog = {p.product_code: p for p in await ctx.tools.list_credit_products()}
     explain = (*explain, clause_ref(ctx, "CRE-ALL-1"))
     if len(intakes) == 1:

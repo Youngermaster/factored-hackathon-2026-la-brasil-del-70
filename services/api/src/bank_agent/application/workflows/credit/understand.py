@@ -12,6 +12,7 @@ from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.llm import EXTRACT_CREDIT, structured
 from bank_agent.application.engine.shared import abstain_unsupported
 from bank_agent.application.understanding import slots
+from bank_agent.application.workflows.credit.approval import APPROVAL_QUESTION, asks_approval
 from bank_agent.application.workflows.credit.data import CreditData, load, save
 from bank_agent.application.workflows.credit.unsupported import recognize
 from bank_agent.domain.credit import CreditProductType
@@ -44,7 +45,11 @@ async def absorb(ctx: TurnContext, data: CreditData, text: str, *, use_model: bo
         model = await structured(ctx, EXTRACT_CREDIT, variables, CreditSlotExtraction)
     currency = ctx.customer.country.default_currency
     changes: dict[str, object] = {}
-    product_type = slots.credit_product_type(text) or (model.product_of_interest if model is not None else None)
+    named = slots.credit_product_types(text)
+    product_type = slots.credit_product_type(text)
+    if product_type is None and not named and model is not None:
+        # The model's product is used only when the text names none; a text naming several asks for the list.
+        product_type = model.product_of_interest
     if product_type is not None and product_type is not data.product_type:
         changes["product_type"], changes["product_code"] = product_type, None
     found = slots.credit_amounts(text)
@@ -78,6 +83,8 @@ async def understand(ctx: TurnContext) -> Step:
     request = recognize(ctx.text)
     if request is not None:
         return abstain_unsupported(ctx, request)
+    if asks_approval(ctx.text):
+        return abstain_unsupported(ctx, APPROVAL_QUESTION)
     routed = ctx.prediction.intent if ctx.prediction is not None else None
     intent = routed if routed in CREDIT_INTENTS else (ctx.engine.intent or Intent.CREDIT_PRODUCT_INFO)
     if intent not in CREDIT_INTENTS:

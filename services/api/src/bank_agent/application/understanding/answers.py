@@ -18,13 +18,15 @@ class YesNo(StrEnum):
     UNCLEAR = "unclear"
 
 
+_FILLER = r"^(?:(?:bueno|pues|entonces|bom|entao|ah|eh|mira|olha)\s+)*"
+"""Leading fillers before the answer ("Bueno, sí, regístrala"; QA 2026-10-05, CRE-10)."""
 _YES = re.compile(
-    r"^(?:si|sim|claro|dale|de una|ok|okay|vale|va|sale|listo|confirmo|confirmado|correcto|correto|adelante|"
+    _FILLER + r"(?:si|sim|claro|dale|de una|ok|okay|vale|va|sale|listo|confirmo|confirmado|correcto|correto|adelante|"
     r"hazlo|hacelo|por supuesto|afirmativo|exacto|isso|certo|pode|beleza|com certeza|fechado|positivo|manda ver|"
     r"yes|yep|sure)\b"
 )
 _NO = re.compile(
-    r"^(?:no|nel|nop|nao|nem|para nada|cancelar|cancela|cancelalo|mejor no|todavia no|aun no|negativo|"
+    _FILLER + r"(?:no|nel|nop|nao|nem|para nada|cancelar|cancela|cancelalo|mejor no|todavia no|aun no|negativo|"
     r"melhor nao|ainda nao|de jeito nenhum|nope)\b"
 )
 _DOUBT = re.compile(r"\b(?:no se|nao sei|tal vez|talvez|quizas|quiza|capaz)\b")
