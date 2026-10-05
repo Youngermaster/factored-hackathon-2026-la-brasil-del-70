@@ -48,6 +48,24 @@ describe('the demo guide', () => {
     expect(within(balances).getByText('Qual é o saldo das minhas contas?')).toBeInTheDocument();
   });
 
+  it('shows an informational question that the retriever answers with cited clauses', async () => {
+    vi.stubEnv('VITE_DEMO_MODE', 'true');
+    startAuthServer();
+    renderApp({ path: '/demo' });
+    await screen.findByRole('heading', { level: 1, name: 'Guía de demostración' });
+    const scenario = SCENARIOS.find((item) => item.id === 'informational-question');
+    expect(scenario?.persona).toBe('acc-mx-accounts');
+    expect(screen.getByText('Pregunta sobre la política')).toBeInTheDocument();
+    expect(screen.getByText(/common\.informational_answer/)).toBeInTheDocument();
+    expect(screen.getByText(/nombra el recuperador/)).toBeInTheDocument();
+    expect(
+      screen.getByText('¿Cuánto tiempo tarda normalmente en resolverse una aclaración?'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Quanto tempo leva para resolver uma contestação normalmente?'),
+    ).toBeInTheDocument();
+  });
+
   it('does not exist outside demo mode', async () => {
     vi.stubEnv('VITE_DEMO_MODE', 'false');
     startAuthServer();

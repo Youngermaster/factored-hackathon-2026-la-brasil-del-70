@@ -1155,7 +1155,7 @@
       "rate": "{{system}}: resolução segura",
       "cost": "{{system}}: custo por resolução",
       "meta": "Dados {{dataset}}, gerado em {{generated}}, commit {{sha}}.",
-      "costNote": "O custo é o que a execução registrou com o modelo que usou; com um modelo local é zero e não antecipa o custo de um modelo hospedado.",
+      "costNote": "O custo é o que a execução publicada registrou com o modelo hospedado, a preços de tabela da Azure (não é uma fatura): 0.0013 USD por caso tentado e 0.0019 USD por resolução automática segura.",
       "openDashboard": "Abrir o dashboard",
       "openEvaluation": "Abrir a avaliação completa",
       "empty": "Ainda não há uma execução publicada com o sistema proposto.",
@@ -1163,7 +1163,7 @@
     },
     "llm": {
       "title": "Modelo de linguagem",
-      "intro": "Entende e redige dentro de limites; nunca decide. Os preços por milhão de tokens são os que o controle de orçamento e as métricas de custo usam.",
+      "intro": "Nunca decide. Extrai os dados de uma mensagem e detecta sinais de escalonamento; por padrão, as respostas vêm de modelos de texto aprovados. Um modelo de embeddings representa as perguntas informativas para a recuperação. Os preços por milhão de tokens são os que o controle de orçamento e as métricas de custo usam.",
       "none": "Sem modelo configurado: respondem os caminhos determinísticos.",
       "provider": "Provedor",
       "caption": "Modelos configurados e base de preço",
@@ -1325,6 +1325,10 @@
       "dispute-status": {
         "title": "Situação de um caso",
         "note": "Procura o caso aberto do cliente e responde com a situação e a data prevista de resposta."
+      },
+      "informational-question": {
+        "title": "Pergunta sobre a política",
+        "note": "Uma pergunta informativa, não um caso: a resposta cita as cláusulas da política em que se baseia (common.informational_answer) e o registro de execução nomeia o recuperador que as encontrou."
       },
       "dispute-details": {
         "title": "Cobrança sem dados",
