@@ -441,3 +441,12 @@ def test_the_collector_reads_host_metrics_without_the_docker_socket_or_a_host_mo
     assert collector["networks"] == ["backend"]
     assert "pid" not in collector
     assert "privileged" not in collector
+
+
+def test_grafana_opens_on_a_provisioned_dashboard() -> None:
+    """The home dashboard is the service health board, read from the mounted provisioning directory."""
+    home = _env("grafana")["GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH"]
+    prefix = "/etc/grafana/provisioning/"
+    assert home.startswith(prefix)
+    assert (DEPLOY / "observability" / "grafana" / "provisioning" / home.removeprefix(prefix)).is_file()
+    assert "./observability/grafana/provisioning:/etc/grafana/provisioning:ro" in SERVICES["grafana"]["volumes"]

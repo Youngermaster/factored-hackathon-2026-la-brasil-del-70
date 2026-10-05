@@ -1,7 +1,7 @@
 {
   "uid": "bank-agent-overview",
   "title": "Bank agent: reliability and operations",
-  "description": "Phase 15 signals: degradation, turns by workflow, tools, safety, the model gateway, and HTTP. Local development stack; see docs/operations/observability.md.",
+  "description": "Phase 15 signals: degradation, turns by workflow, tools, safety, the model gateway, and HTTP. Development and production; see docs/operations/observability.md.",
   "tags": [
     "bank-agent",
     "phase-15"
@@ -46,11 +46,57 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "short"
+          "unit": "short",
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "L0 normal",
+                  "color": "green",
+                  "index": 0
+                },
+                "1": {
+                  "text": "L1 fallback model",
+                  "color": "yellow",
+                  "index": 1
+                },
+                "2": {
+                  "text": "L2 template only",
+                  "color": "orange",
+                  "index": 2
+                },
+                "3": {
+                  "text": "L3 baselines",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "L4 database unavailable",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
-      "options": {},
+      "options": {
+        "colorMode": "background"
+      },
       "targets": [
         {
           "datasource": {
@@ -347,7 +393,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (bank_workflow, bank_outcome) (rate(bank_turn_outcomes_total[5m]))",
+          "expr": "sum by (bank_workflow, bank_outcome) (rate(bank_turn_outcomes_total[5m])) > 0",
           "legendFormat": "{{bank_workflow}} {{bank_outcome}}",
           "refId": "A"
         }
@@ -386,7 +432,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (bank_workflow, bank_escalation_reason) (increase(bank_escalations_total[15m]))",
+          "expr": "sum by (bank_workflow, bank_escalation_reason) (increase(bank_escalations_total[15m])) > 0",
           "legendFormat": "{{bank_workflow}} {{bank_escalation_reason}}",
           "refId": "A"
         }
@@ -771,8 +817,8 @@
     },
     {
       "type": "timeseries",
-      "title": "Model call latency p50 and p95",
-      "description": "",
+      "title": "Successful model call latency p50 and p95 by serving model",
+      "description": "Model calls that succeeded, by the model that answered (the fallback model after a failover). Failed calls are left out so an open circuit does not pull the percentiles down.",
       "id": 23,
       "datasource": {
         "type": "prometheus",
@@ -802,8 +848,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.5, sum by (le, gen_ai_request_model) (rate(gen_ai_client_operation_duration_seconds_bucket[5m])))",
-          "legendFormat": "p50 {{gen_ai_request_model}}",
+          "expr": "histogram_quantile(0.5, sum by (le, gen_ai_response_model) (rate(gen_ai_client_operation_duration_seconds_bucket{error_type=\"\"}[5m])))",
+          "legendFormat": "p50 {{gen_ai_response_model}}",
           "refId": "A"
         },
         {
@@ -811,8 +857,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_request_model) (rate(gen_ai_client_operation_duration_seconds_bucket[5m])))",
-          "legendFormat": "p95 {{gen_ai_request_model}}",
+          "expr": "histogram_quantile(0.95, sum by (le, gen_ai_response_model) (rate(gen_ai_client_operation_duration_seconds_bucket{error_type=\"\"}[5m])))",
+          "legendFormat": "p95 {{gen_ai_response_model}}",
           "refId": "B"
         }
       ]
@@ -1036,7 +1082,7 @@
     },
     {
       "type": "timeseries",
-      "title": "Active sessions (sum over processes) and rate-limit rejections",
+      "title": "Active sessions (deployment-wide) and rate-limit rejections",
       "description": "",
       "id": 30,
       "datasource": {
@@ -1081,6 +1127,18 @@
           "refId": "B"
         }
       ]
+    }
+  ],
+  "links": [
+    {
+      "type": "dashboards",
+      "tags": [
+        "bank-agent"
+      ],
+      "asDropdown": false,
+      "includeVars": false,
+      "keepTime": true,
+      "title": "Bank agent dashboards"
     }
   ]
 }
