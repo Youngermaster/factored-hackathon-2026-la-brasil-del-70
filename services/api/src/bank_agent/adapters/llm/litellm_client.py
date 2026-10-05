@@ -89,6 +89,7 @@ class LiteLLMCompletion:
         timeout_seconds: float,
         acompletion: AsyncCompletion | None = None,
         api_base: str | None = None,
+        api_version: str | None = None,
     ) -> None:
         if not model:
             raise LlmProviderRejectedError("no model is configured")
@@ -97,10 +98,16 @@ class LiteLLMCompletion:
         self._timeout_seconds = timeout_seconds
         self._acompletion = acompletion
         self._api_base = api_base or None
+        self._api_version = api_version or None
 
     @property
     def model_id(self) -> str:
         return self._model
+
+    @property
+    def api_version(self) -> str | None:
+        """The provider API version sent with every call, or ``None`` for LiteLLM's default."""
+        return self._api_version
 
     def _arguments(self, request: CompletionRequest) -> Mapping[str, Any]:
         arguments: dict[str, Any] = {
@@ -117,6 +124,8 @@ class LiteLLMCompletion:
             arguments["api_key"] = self._api_key.get_secret_value()
         if self._api_base is not None:
             arguments["api_base"] = self._api_base
+        if self._api_version is not None:
+            arguments["api_version"] = self._api_version
         if request.json_schema is not None:
             arguments["response_format"] = {
                 "type": "json_schema",
@@ -155,8 +164,19 @@ class LiteLLMClient(PromptedLLMClient):
         acompletion: AsyncCompletion | None = None,
         monotonic: Callable[[], float] = time.perf_counter,
         api_base: str | None = None,
+        api_version: str | None = None,
     ) -> None:
-        completion = LiteLLMCompletion(
-            model, api_key=api_key, timeout_seconds=timeout_seconds, acompletion=acompletion, api_base=api_base
+        self._litellm = LiteLLMCompletion(
+            model,
+            api_key=api_key,
+            timeout_seconds=timeout_seconds,
+            acompletion=acompletion,
+            api_base=api_base,
+            api_version=api_version,
         )
-        super().__init__(registry, completion, monotonic=monotonic)
+        super().__init__(registry, self._litellm, monotonic=monotonic)
+
+    @property
+    def api_version(self) -> str | None:
+        """The provider API version sent with every call, or ``None`` for LiteLLM's default."""
+        return self._litellm.api_version

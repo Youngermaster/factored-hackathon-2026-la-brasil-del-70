@@ -277,3 +277,38 @@ async def test_passes_the_configured_base_url_for_a_local_provider() -> None:
 
     assert recorder.kwargs[0]["api_base"] == "http://localhost:11434"
     assert "api_key" not in recorder.kwargs[0]
+
+
+async def test_passes_the_configured_azure_api_version_and_endpoint() -> None:
+    recorder = Recorder(_response("hola"))
+    completion = LiteLLMCompletion(
+        "azure/gpt-4.1-mini", api_key=SecretStr("k" * 40), timeout_seconds=5, acompletion=recorder,
+        api_base="https://example-resource.openai.azure.com/", api_version="2024-10-21",
+    )  # fmt: skip
+
+    await completion.complete(REQUEST)
+
+    (kwargs,) = recorder.kwargs
+    assert kwargs["model"] == "azure/gpt-4.1-mini"
+    assert kwargs["api_base"] == "https://example-resource.openai.azure.com/"
+    assert kwargs["api_version"] == "2024-10-21"
+    assert completion.api_version == "2024-10-21"
+
+
+@pytest.mark.parametrize("api_version", [None, ""])
+async def test_sends_no_api_version_when_none_is_configured(api_version: str | None) -> None:
+    recorder = Recorder(_response("hola"))
+    completion = LiteLLMCompletion(
+        "azure/gpt-4.1-mini", api_key=SecretStr("k" * 40), timeout_seconds=5, acompletion=recorder,
+        api_version=api_version,
+    )  # fmt: skip
+    client = LiteLLMClient(
+        FilePromptRegistry.from_package(), model="azure/gpt-4.1-mini", api_key=SecretStr("k" * 40),
+        timeout_seconds=5, acompletion=recorder, api_version=api_version,
+    )  # fmt: skip
+
+    await completion.complete(REQUEST)
+
+    assert "api_version" not in recorder.kwargs[0]
+    assert completion.api_version is None
+    assert client.api_version is None

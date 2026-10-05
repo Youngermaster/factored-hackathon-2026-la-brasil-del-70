@@ -12,6 +12,7 @@ Bootstrap turns the environment into a running process: typed settings, logging,
 | `logging.py` | `configure_logging()`: structlog JSON output for structlog and standard-library loggers, with `RedactionProcessor` |
 | `container.py` | `Container`: builds the database engine, readiness checks, the prompt registry, the language model gateway, persistence, identity, policy, grounding, the workflow engines, and the HTTP use cases (`ConversationService`, `AgentInbox`, the evaluation summary reader); satisfies `ServiceProvider` structurally. Tests and the evaluation harness pass a clock, a telemetry double, `LlmOverrides` (an injected base client), and optionally `PersistenceServices` |
 | `llm.py` | `build_llm_client()`: the provider chosen by `LLM_PROVIDER` wrapped in the decorator stack in the order `STACK_ORDER` documents (`docs/architecture/llm-gateway.md`) |
+| `llm_probe.py` | `probe()`: one structured `detect_escalation_signals` call per configured model in Spanish and Portuguese, straight to each provider client (no fallback, retry, or budget), reported as `ok` or an error code with the latency; behind `bank-agent llm-probe` and `deploy/prod.sh llm-probe` |
 
 ## Settings rules
 

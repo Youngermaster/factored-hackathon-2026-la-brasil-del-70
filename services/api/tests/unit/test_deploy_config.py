@@ -24,7 +24,15 @@ OWNER_SERVICES = {"postgres", "migrate", "seed", "purge"}
 LOOPBACK_PORTS = {"grafana", "jaeger"}
 OWNER_JOB_SECRETS = {"POSTGRES_ADMIN_PASSWORD", "SESSION_SECRET"}
 EXPECTED_SECRETS: dict[str, set[str]] = {
-    "api": {"POSTGRES_APP_PASSWORD", "SESSION_SECRET", "CSRF_SECRET", "LLM_API_KEY_PRIMARY", "LLM_API_KEY_FALLBACK"},
+    "api": {
+        "POSTGRES_APP_PASSWORD",
+        "SESSION_SECRET",
+        "CSRF_SECRET",
+        "LLM_API_KEY_PRIMARY",
+        "LLM_API_KEY_FALLBACK",
+        "LANGFUSE_PUBLIC_KEY",
+        "LANGFUSE_SECRET_KEY",
+    },
     "migrate": OWNER_JOB_SECRETS,
     "seed": OWNER_JOB_SECRETS,
     "purge": OWNER_JOB_SECRETS,

@@ -62,4 +62,4 @@ Every chaos test asserts a safe outcome, the wording in both languages where the
 
 - The monitor is per process; each API worker decides its own level from its own breakers, while the budget ledger, the rate limits, and the active-session count are shared. Phase 16 decided not to publish the level through the database: a breaker reflects the calls of its own worker, a provider outage trips every worker's breaker within a few calls, and a shared level would add a query to every turn for no safety gain (`docs/plans/phase-16.md`, decision 10). Dashboards take the maximum over workers.
 - Recovery from L3 needs a restart: artifacts load at startup only.
-- L1 needs `LLM_FALLBACK_MODEL`; no fallback provider is configured today (the provider choice is pending action 5).
+- L1 needs `LLM_FALLBACK_MODEL`; the deployed Azure demo configures `azure/gpt-4o` as the fallback of `azure/gpt-4.1-mini`, in the same Azure OpenAI account ([ADR 0044](../adr/0044-azure-openai-as-the-hosted-model-provider.md)), so L1 covers one deployment's failures, not an outage of the account.

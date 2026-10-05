@@ -2301,3 +2301,38 @@ python3 scripts/checks/check_env_keys.py
 #### Next phase
 
 Phase 01, monorepo scaffold and quality gates (`kit/prompts/01-scaffold.md`), in plan mode.
+
+### Final day: Azure OpenAI as the hosted provider, Langfuse deployability (2026-10-05)
+
+Branch `feat/azure-openai-provider`. Production has called Azure OpenAI since about 15:30 UTC through env file edits; this change makes that setup first-class in the repository and makes the Langfuse export deployable.
+
+#### What was done
+
+- Price entries for `azure/gpt-4.1-mini` (0.40 and 1.60 USD per million tokens, GlobalStandard), `azure/gpt-4o` (3.025 and 12.10, regional Standard in Sweden Central), and `azure/text-embedding-3-small` (0.02 input), each naming its Azure Retail Prices API meter, read on 2026-10-05; `verified: false` as the repository requires for every hosted entry (pending action 7). The Gemini note no longer claims the demo uses it.
+- Optional `LLM_API_VERSION` (empty: LiteLLM's default), passed to LiteLLM only when set, through compose and both env templates; `LLM_MAX_RETRIES` passes through compose.
+- Langfuse keys as optional production secrets end to end: the stager, compose (API only), `prod.sh`, `keyvault-secrets.sh`, `provision.sh`, and the deploy config tests; `LANGFUSE_ENABLED` (default false) and `LANGFUSE_BASE_URL` through compose; an empty `LANGFUSE_BASE_URL` is refused when the export is on.
+- `deploy/prod.sh check` (run by `up`, `llm-probe`, and every release) refuses an empty staged key file for a hosted model or an enabled Langfuse export, naming the file and never a value.
+- `bank-agent llm-probe` and `deploy/prod.sh llm-probe`: one structured call per configured model in es and pt, straight to each provider client, outcomes and latencies only; the preflight for a model change before `up`. `prod.sh help` prints its whole header again.
+- `make llm-smoke` with `LANGFUSE_ENABLED=true` exports its calls through the API's own Langfuse exporter, which verified the export without a database.
+- Docs: [ADR 0044](adr/0044-azure-openai-as-the-hosted-model-provider.md), [AZURE_INFRASTRUCTURE.md](AZURE_INFRASTRUCTURE.md) (committed, corrected to today), `deploy/README.md` (Azure OpenAI recipe, Langfuse steps), `docs/security/data-use.md` (Azure OpenAI and Langfuse providers), `docs/architecture/llm-gateway.md`, `docs/operations/runbook.md` (switch or roll back the model), `docs/operations/observability.md` (the Langfuse Cloud verification), `docs/operations/degradation.md`, ADR 0037's update note.
+
+#### Measured (local development measurements, not an evaluation)
+
+- `make llm-smoke` against `azure/gpt-4.1-mini` on the evaluation account: 32 of 32 fixture cases valid, p50 1,169 ms, p95 2,137 ms, first call 36,109 ms; 40,292 input and 1,236 output tokens.
+- Langfuse Cloud (US) read back through `/api/public/v2/observations`: 32 generations in 32 traces, model `azure/gpt-4.1-mini`, input, output, and user id empty on all, metadata limited to the allowlist (`docs/operations/observability.md`).
+- `bank-agent llm-probe`: valid replies in es and pt with the default API version, `2024-10-21`, and `2025-04-01-preview`; an unsupported version was rejected by Azure.
+
+#### How to verify
+
+```bash
+uv run --frozen pytest -m unit services/api/tests/unit/bootstrap/test_llm_probe.py services/api/tests/unit/test_deploy_prod_check.py services/api/tests/unit/test_deploy_config.py services/api/tests/unit/adapters/llm scripts/tests/unit/test_llm_smoke.py
+LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=azure/gpt-4.1-mini LLM_API_BASE=<evaluation endpoint> LLM_API_KEY_PRIMARY=<from the shell> \
+  uv run --frozen --package bank-agent --extra litellm bank-agent llm-probe
+```
+
+#### Known limitations
+
+- The Azure prices are unverified (charged at 1.5 times) until a person confirms them.
+- No recorded evaluation describes the Azure models; the committed cassettes are the local 7B model's.
+- The primary and the fallback share one account and endpoint: no protection against an account or regional outage.
+- `scripts/verify_e2e_tracing.py` (needs PostgreSQL) was not rerun against Langfuse Cloud.

@@ -7,7 +7,7 @@ Everything needed to run the system outside the Python and web packages: the dev
 | Path | Purpose |
 |---|---|
 | `compose.prod.yml` | The production stack: Caddy (web), the API, PostgreSQL, the migrate, seed, and purge jobs, and the `obs` and `ollama` profiles |
-| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `status`, `logs`, `down`, `destroy` |
+| `prod.sh` | The operations script: `init-env`, `stage-secrets`, `check`, `build`, `pull`, `up`, `rotate`, `seed`, `update`, `release`, `backup`, `restore`, `rollback`, `purge`, `smoke`, `llm-probe`, `status`, `logs`, `down`, `destroy` |
 | `secrets_stage.py` | Stages the secrets as files for compose ([ADR 0037](../docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)): from Azure Key Vault through the VM's managed identity, or from the env file; standard library Python |
 | `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker); continuous deployment: `setup-github-oidc.sh` (the one-time OIDC identity), `run-on-vm.sh` and `vm-deploy.sh` (release or roll back through run-command) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |
@@ -61,7 +61,7 @@ Any 64-bit Linux VM with Docker works (x86_64 or arm64). Use Ubuntu 24.04 LTS so
 
 | Model option | Memory | vCPU | Disk | AWS Lightsail | EC2 | Azure |
 |---|---|---|---|---|---|---|
-| No model (`fake`) or a hosted provider | 4 GB | 2 | 40 GB SSD | the 4 GB plan (recommended) | `t3.medium` | `Standard_B2s` |
+| No model (`fake`) or a hosted provider | 4 GB | 2 | 40 GB SSD | the 4 GB plan (recommended) | `t3.medium` | `Standard_B2s` (the event VM is `Standard_B2as_v2`, 8 GB) |
 | Same, with the `obs` profile | 8 GB | 2 | 60 GB SSD | the 8 GB plan | `t3.large` | `Standard_B2ms` |
 | Self-hosted model (`ollama` profile, `qwen2.5:7b-instruct`, CPU inference) | 16 GB or more | 4 or more | 80 GB SSD | the 16 GB plan | `m7i.xlarge` or `t3.xlarge` | `Standard_B4ms` |
 
@@ -121,6 +121,7 @@ deploy/prod.sh init-env        # writes deploy/.env.production (mode 600) with f
 nano deploy/.env.production    # or vi; set the values below, then save
 deploy/prod.sh stage-secrets   # stages the secrets as files (sudo); `up` does this too
 deploy/prod.sh check           # names any missing value (never prints one), checks the staged files and the compose file
+                               # (and refuses an empty key file for a hosted model or an enabled Langfuse export)
 ```
 
 Set at least:
@@ -227,11 +228,43 @@ flowchart TD
 
 ## Choosing the model
 
-Switching the model is a settings-only change in `deploy/.env.production`, followed by `deploy/prod.sh up`. The budget guard stays on in every option (`LLM_DAILY_BUDGET_USD`, default 5; `LLM_CONVERSATION_BUDGET_USD`, default 0.50; `LLM_SESSION_TOKEN_LIMIT`, default 20000). Prices come from `services/api/config/llm_prices.yaml`, shipped in the image; unverified entries are charged at 1.5 times until someone verifies them (pending human action 7).
+Switching the model is a change of settings in `deploy/.env.production` (and, for a new key, of a Key Vault secret), checked with `deploy/prod.sh llm-probe` and applied with `deploy/prod.sh up`; a new key with unchanged settings needs `deploy/prod.sh rotate`, because a running container keeps the key file it started with. The budget guard stays on in every option (`LLM_DAILY_BUDGET_USD`, default 5; `LLM_CONVERSATION_BUDGET_USD`, default 0.50; `LLM_SESSION_TOKEN_LIMIT`, default 20000). Prices come from `services/api/config/llm_prices.yaml`, shipped in the image; unverified entries are charged at 1.5 times until someone verifies them (pending human action 7).
 
 **No model** (the default, `LLM_PROVIDER=fake`): every workflow runs on its deterministic path. Nothing leaves the VM.
 
-**A hosted provider through LiteLLM** (https only; production refuses a plain http base for it):
+**Azure OpenAI** (what the Azure demo runs since 2026-10-05; [ADR 0044](../docs/adr/0044-azure-openai-as-the-hosted-model-provider.md), live state in [AZURE_INFRASTRUCTURE.md](../docs/AZURE_INFRASTRUCTURE.md)):
+
+- **One account per environment.** Production uses `aoai-la70-bank-agent` (Sweden Central) with the deployments `gpt-4.1-mini` (GlobalStandard, primary) and `gpt-4o` (regional Standard, fallback); offline evaluation uses its own account (`aoai-la70-bank-eval`), so it never spends production quota or holds the production key.
+- **The key lives in Key Vault only.** Store it with `deploy/azure/keyvault-secrets.sh <vault> set LLM_API_KEY_PRIMARY` (and `LLM_API_KEY_FALLBACK`; for one account both hold one of its two keys), typed at a hidden prompt. The env file keeps both lines empty.
+- **The VM identity reads each key through its own grant**: Key Vault Secrets User on `<vault id>/secrets/llm-api-key-primary` and on `.../llm-api-key-fallback`, as `provision.sh` step 7 does. Without it the stager reads HTTP 403 and stages an empty file, and `deploy/prod.sh check` (run by `up`, `llm-probe`, and every release) refuses to start, naming the file.
+- **`LLM_API_BASE` is the account endpoint**, `https://<account>.openai.azure.com/`, shared by the primary and the fallback; the model ids are `azure/<deployment name>`. `LLM_API_VERSION` stays empty (LiteLLM's default, `2025-02-01-preview` in 1.102.1) unless a version must be pinned; `2024-10-21` was verified to work.
+
+```bash
+LLM_PROVIDER=litellm
+LLM_PRIMARY_MODEL=azure/gpt-4.1-mini
+LLM_FALLBACK_MODEL=azure/gpt-4o
+LLM_API_BASE=https://aoai-la70-bank-agent.openai.azure.com/
+LLM_API_VERSION=
+LLM_API_KEY_PRIMARY=                     # empty: Key Vault llm-api-key-primary
+LLM_API_KEY_FALLBACK=                    # empty: Key Vault llm-api-key-fallback
+WORKFLOW_LLM_UNDERSTANDING=true          # escalation signals and slot extraction
+WORKFLOW_LLM_PHRASING=false              # replies stay template-based
+WORKFLOW_LLM_HANDOFF_SUMMARY=false
+LLM_DAILY_BUDGET_USD=10
+LLM_SESSION_TOKEN_LIMIT=200000
+```
+
+Apply it in this order, so the running API is untouched until the change is proven:
+
+1. Edit `deploy/.env.production` (keep a copy of the previous lines).
+2. `deploy/prod.sh llm-probe`: stages the secrets, runs `check`, then calls each configured model once in Spanish and once in Portuguese from a throwaway API container with the edited settings. Every line must end in `ok`; a line with `not_configured` means an empty or ungranted key, `llm_provider_rejected` a wrong endpoint, deployment, or API version.
+3. `deploy/prod.sh up` (recreates the API with the new settings; about a minute of 502s), then `deploy/prod.sh smoke`, and `curl -s "$PUBLIC_ORIGIN/health/details"`: `llm_primary`, `llm_fallback`, and `llm_budget` must be `ok`.
+4. Budget: the guard reserves at the highest configured output price before each call and charges unverified prices at 1.5 times (pending action 7). At 80 percent of `LLM_DAILY_BUDGET_USD` it logs `llm_budget_alert`; at 100 percent the system answers from templates until the next UTC day. A per-session lineage stops calling the model after `LLM_SESSION_TOKEN_LIMIT` tokens.
+5. Rollback: put the previous lines back and run `deploy/prod.sh up`. To stop sending anything to a model, set `LLM_PROVIDER=fake` (and `LANGFUSE_ENABLED=false` in the same edit, or the API refuses to start). A release rollback swaps images, not the env file, so it never undoes a model change.
+
+Before switching a new account on, read [data use](../docs/security/data-use.md), "Providers" (training, abuse monitoring, processing location).
+
+**Another hosted provider through LiteLLM** (https only; production refuses a plain http base for it):
 
 ```bash
 LLM_PROVIDER=litellm
@@ -257,6 +290,20 @@ LLM_TIMEOUT_SECONDS=60
 
 Then start with `OLLAMA=1 deploy/prod.sh up` and pull the model once: `docker compose -f deploy/compose.prod.yml --env-file deploy/.env.production -p bank-agent-prod --profile ollama exec ollama ollama pull qwen2.5:7b-instruct` (about 4.7 GB). The model costs nothing per token (verified entry in the price table).
 
+## Langfuse export
+
+Optional and off by default (`LANGFUSE_ENABLED=false`). When on, the API sends one Langfuse generation per model call over OTLP: identifiers, model, prompt and schema versions, tokens, cost, latency, and status, never prompts, replies, or customer data ([observability](../docs/operations/observability.md), "Optional Langfuse generation export"). It needs `LLM_PROVIDER=litellm`, an https base URL, and both keys; the API refuses to start otherwise. The keys are secrets like the model keys: staged files (`app/LANGFUSE_PUBLIC_KEY`, `app/LANGFUSE_SECRET_KEY`, empty until set), never environment variables.
+
+On the Azure VM, in order (steps 1 and 2 are done for the Azure demo: both secrets exist and the VM identity has its two grants since 2026-10-05):
+
+1. Store the keys (an administrator with Key Vault Secrets Officer; typed at a hidden prompt, never shown): `deploy/azure/keyvault-secrets.sh <vault> set LANGFUSE_PUBLIC_KEY`, then the same for `LANGFUSE_SECRET_KEY`.
+2. Grant the VM identity **Key Vault Secrets User** on each of the two secrets (`langfuse-public-key`, `langfuse-secret-key`), as `provision.sh` step 7 does: `az role assignment create --assignee-object-id <VM principal id> --assignee-principal-type ServicePrincipal --role "Key Vault Secrets User" --scope "<vault id>/secrets/langfuse-public-key"`. Without the grant the stager reads HTTP 403, stages the optional secret empty, and `deploy/prod.sh check` (run by `up` and every release) refuses to start with the export on, naming the empty file.
+3. Refresh the boot unit's copy of the stager once after the release that added these secrets: `sudo bash deploy/azure/install-vm.sh <vault>`. Otherwise, after a reboot, the unit stages without the two files and the API cannot mount them until someone runs `deploy/prod.sh up`.
+4. In `deploy/.env.production`: `LANGFUSE_ENABLED=true` and `LANGFUSE_BASE_URL=https://us.cloud.langfuse.com` (Langfuse Cloud, US region; the exporter appends `/api/public/otel/v1/traces`). Then `deploy/prod.sh up`: it stages, checks, and recreates the API with the new files.
+5. Verify: generations appear in the Langfuse project (one per model call: type `GENERATION`, name `gen_ai.chat`, no input or output), and `deploy/prod.sh logs api | grep langfuse_export_failed` prints nothing. The same exporter was verified against Langfuse Cloud from a workstation on 2026-10-05 ([observability](../docs/operations/observability.md), "Verified against Langfuse Cloud").
+
+Rollback: `LANGFUSE_ENABLED=false`, then `deploy/prod.sh up`. Setting `LLM_PROVIDER=fake` while the export is on stops the API from starting, so turn the export off in the same edit.
+
 ## Deploy
 
 ```bash
@@ -266,7 +313,7 @@ deploy/prod.sh seed            # once: the demo personas and 200 customers from 
 deploy/prod.sh smoke           # the smoke test against PUBLIC_ORIGIN
 ```
 
-`up` refuses to start without the images of the current commit, without every required value, or with a group- or world-readable env file. The first request makes Caddy fetch the certificate; if it fails, `deploy/prod.sh logs web` says why (usually DNS or the firewall on port 80).
+`up` refuses to start without the images of the current commit, without every required value, with a group- or world-readable env file, or with an empty staged key file for a hosted model or an enabled Langfuse export (the check names the file, never a value). The first request makes Caddy fetch the certificate; if it fails, `deploy/prod.sh logs web` says why (usually DNS or the firewall on port 80).
 
 ## Verify
 
@@ -335,6 +382,7 @@ Store the new value where `SECRETS_SOURCE` points: edit `deploy/.env.production`
 | `POSTGRES_SUPERUSER_PASSWORD` | `\password postgres` the same way; nothing else uses it |
 | `GRAFANA_ADMIN_PASSWORD` | change it in Grafana (profile, "Change password"); the variable only sets the first password |
 | `LLM_API_KEY_*` | revoke the old key at the provider |
+| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` | store both from one new key pair, then revoke the old pair in the Langfuse project settings |
 
 ## Keep it running until 2026-10-16
 

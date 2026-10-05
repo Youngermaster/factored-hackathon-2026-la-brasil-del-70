@@ -18,6 +18,7 @@ _SETTINGS_PREFIXES = (
     "EVAL_",
     "LLM_",
     "OTEL_",
+    "LANGFUSE_",
     "POLICY_",
     "RETRIEVAL_",
     "WORKFLOW_",

@@ -37,7 +37,9 @@ Never sent, by construction: document numbers, full names, emails, phone numbers
 |---|---|
 | `LLM_PROVIDER=fake` (the default) | Nowhere: every model call is refused and the workflows use their deterministic paths |
 | The local verification and the optional `ollama` profile (`ollama/qwen2.5:7b-instruct`) | A model on the same machine or the VM's private Docker network; nothing leaves the host |
-| A hosted provider through LiteLLM (for example `openai/gpt-5-mini` or an Anthropic model) | The provider's API over https, with the operator's key; the only path where prompts leave the host |
+| Azure OpenAI (`azure/gpt-4.1-mini`, fallback `azure/gpt-4o`; the Azure demo since 2026-10-05, [ADR 0044](../adr/0044-azure-openai-as-the-hosted-model-provider.md)) | The team's own account `aoai-la70-bank-agent` (Sweden Central) over https, with a key from Key Vault; see below |
+| Another hosted provider through LiteLLM (for example `openai/gpt-5-mini` or an Anthropic model) | The provider's API over https, with the operator's key |
+| Optional Langfuse export (`LANGFUSE_ENABLED=true`, off by default) | No prompts: one metadata-only generation per model call (identifiers, model, prompt and schema versions, tokens, cost, latency, status) to the configured Langfuse project, Langfuse Cloud US for the Azure demo ([observability](../operations/observability.md)) |
 
 Before switching to a hosted provider, the operator checks, for the account the key belongs to:
 
@@ -47,3 +49,14 @@ Before switching to a hosted provider, the operator checks, for the account the 
 - that the key is scoped to this project and has a spending limit at the provider, in addition to the service's own budget caps (`LLM_DAILY_BUDGET_USD`, per conversation and per session).
 
 The deployment guide (`deploy/README.md`, "Choosing the model") lists the settings for each option.
+
+### Azure OpenAI
+
+What the Azure demo sends and where it goes, from Microsoft Learn's "Data, privacy, and security for Foundry Models sold by Azure" (<https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy>, updated 2026-05-18) and "Foundry Models sold by Azure abuse monitoring" (<https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/abuse-monitoring>, updated 2026-05-13), both read on 2026-10-05:
+
+- **Training.** Prompts and completions are not available to other customers or to OpenAI, are not used by model providers to improve their models, and are not used to train any generative AI foundation model without the customer's permission or instruction. The models are stateless: no prompt or completion is stored in the model.
+- **Abuse monitoring.** Microsoft screens prompts and completions for harmful content and Code of Conduct violations. When the automated system flags a pattern, a sample of prompts and completions may be reviewed, first by automated means and then by authorized Microsoft employees when needed; the data store for that review is logically separated per resource and stays in the resource's geography. The team has not applied for modified abuse monitoring, so this review can take place.
+- **Processing location.** The production account is in Sweden Central. The primary deployment, `gpt-4.1-mini`, is GlobalStandard: a request may be processed in any geography where Microsoft deploys the model, while data at rest, including the abuse monitoring store, stays in the account's geography. The fallback, `gpt-4o` 2024-11-20, is a regional Standard deployment, processed in the account's geography (possibly across regions within it). The evaluation account (`aoai-la70-bank-eval`, East US) receives only synthetic evaluation scenarios and fixtures, never production traffic. The cross-border notes in `docs/security/data-retention.md` apply.
+- **What is sent.** Only the redacted, minimized variables in the table at the top of this page, wrapped in data delimiters; in production only the understanding prompts (`detect_escalation_signals` and the four `extract_*_slots` prompts) run, because `WORKFLOW_LLM_PHRASING` and `WORKFLOW_LLM_HANDOFF_SUMMARY` are false. No identifier, credit profile, risk estimate, or eligibility rule reaches the model.
+- **Key and spend.** The keys are Key Vault secrets readable only by the VM identity, and the service's own caps apply (`LLM_DAILY_BUDGET_USD=10`, the per-conversation cap, and `LLM_SESSION_TOKEN_LIMIT`). Azure OpenAI has no per-account spending cap, so these caps bound the spend and the deployments' tokens-per-minute quotas bound the rate.
+- **Content filters.** Azure's content filtering runs on every request. A filtered request comes back as a provider error, which the gateway treats like any other failure: the fallback, then the deterministic path.

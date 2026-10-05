@@ -5,7 +5,8 @@
 #                                   SECRETS_SOURCE=keyvault in the environment its secret lines stay empty, else they
 #                                   get fresh random values
 #   deploy/prod.sh stage-secrets    stage the secrets as files for compose (sudo): from Key Vault or the env file
-#   deploy/prod.sh check            validate the env file, the staged secret files (never read), and the compose file
+#   deploy/prod.sh check            validate the env file, the staged secret files (never read), and the compose file;
+#                                   refuse an empty key file for a hosted model or an enabled Langfuse export
 #   deploy/prod.sh build            build the web, api, and job images, tagged with the current git commit
 #   deploy/prod.sh pull             instead of build: pull those images from IMAGE_REGISTRY (pushed by the deploy
 #                                   workflow under the full commit SHA) and tag them as build would
@@ -20,6 +21,9 @@
 #   deploy/prod.sh rollback         start the previously deployed image tag again
 #   deploy/prod.sh purge            run the retention purge once now
 #   deploy/prod.sh smoke            run deploy/smoke_test.sh against PUBLIC_ORIGIN
+#   deploy/prod.sh llm-probe        stage and check, then call each configured model once in es and once in pt from a
+#                                   throwaway API container with the env file's settings (running services untouched);
+#                                   prints outcomes and latencies, never a key, prompt, or reply
 #   deploy/prod.sh status | logs [service]
 #   deploy/prod.sh down             stop the stack, keep the data
 #   deploy/prod.sh destroy --yes    take the demo down for good: containers, volumes (database, certificates), images
@@ -40,9 +44,12 @@ BACKUP_DIR="${BACKUP_DIR:-${ROOT}/deploy/backups}"
 STAGER="${ROOT}/deploy/secrets_stage.py"
 REQUIRED=(SITE_ADDRESS PUBLIC_ORIGIN)
 REQUIRED_SECRETS=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET)
-# The secrets init-env generates, and every secret variable (the model keys come from the provider, not from here).
+# The secrets init-env generates, and every secret variable (the model and Langfuse keys come from their providers,
+# not from here).
 SECRETS=("${REQUIRED_SECRETS[@]}" GRAFANA_ADMIN_PASSWORD)
-SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK)
+SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY)
+# LiteLLM providers that need no key (bootstrap/llm.py, KEYLESS_PROVIDERS): a model served on the host's own network.
+KEYLESS_MODEL_PROVIDERS=(ollama ollama_chat)
 
 say() { printf '%s\n' "$*" >&2; }
 fail() { say "error: $*"; exit 1; }
@@ -162,6 +169,37 @@ cmd_stage_secrets() {
   esac
 }
 
+is_true() {
+  # The values pydantic reads as true for a boolean setting, in any case.
+  case "$(printf '%s' "${1:-}" | tr '[:upper:]' '[:lower:]')" in true | 1 | yes | on) return 0 ;; *) return 1 ;; esac
+}
+
+check_staged_keys() {
+  # The optional key files are staged empty when a secret is not set or the VM may not read it (HTTP 403). An enabled
+  # hosted model or Langfuse export would then start an API that refuses its settings, and the automatic restore after
+  # a failed release reads the same env file: refuse here, before anything is recreated. File sizes only, never values.
+  local dir pair setting model variable empty=()
+  dir="$(secrets_dir)/app"
+  if [[ "$(env_value LLM_PROVIDER)" == "litellm" ]]; then
+    for pair in LLM_PRIMARY_MODEL:LLM_API_KEY_PRIMARY LLM_FALLBACK_MODEL:LLM_API_KEY_FALLBACK; do
+      setting="${pair%%:*}"
+      variable="${pair#*:}"
+      model="$(env_value "${setting}")"
+      [[ -n "${model}" ]] || continue
+      [[ " ${KEYLESS_MODEL_PROVIDERS[*]} " == *" ${model%%/*} "* ]] && continue
+      [[ -s "${dir}/${variable}" ]] || empty+=("${dir}/${variable} (for ${setting}=${model})")
+    done
+  fi
+  if is_true "$(env_value LANGFUSE_ENABLED)"; then
+    for variable in LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY; do
+      [[ -s "${dir}/${variable}" ]] || empty+=("${dir}/${variable} (for LANGFUSE_ENABLED)")
+    done
+  fi
+  (( ${#empty[@]} == 0 )) || fail "empty staged key file: ${empty[*]}. Store the value (Key Vault secret named like the \
+file in lower case with dashes, or the env file), grant the VM identity read access to it, and run this again; or turn \
+the setting off"
+}
+
 cmd_check() {
   check_env_file
   # Metadata only: the files are root-owned and readable by their container user alone.
@@ -169,6 +207,7 @@ cmd_check() {
   if [[ "${OBS:-0}" == "1" && ! -s "$(secrets_dir)/grafana/GRAFANA_ADMIN_PASSWORD" ]]; then
     fail "the obs profile needs GRAFANA_ADMIN_PASSWORD (Key Vault secret grafana-admin-password, or the env file)"
   fi
+  check_staged_keys
   compose config --quiet
   say "env file, staged secrets, and compose file are valid"
 }
@@ -301,6 +340,17 @@ cmd_smoke() {
   "${ROOT}/deploy/smoke_test.sh" "$(env_value PUBLIC_ORIGIN)" "$@"
 }
 
+cmd_llm_probe() {
+  # The preflight for a model change: edit the env file, run this, then `up` only if every call passed. The throwaway
+  # container reads the edited env file and the freshly staged keys; the running API keeps its own until `up`.
+  cmd_stage_secrets
+  cmd_check
+  local tag
+  tag="$(current_tag)"
+  docker image inspect "bank-agent-api:${tag}" > /dev/null 2>&1 || fail "no image bank-agent-api:${tag}; run build first"
+  compose run --rm --no-deps -T api bank-agent llm-probe
+}
+
 cmd_down() {
   compose --profile jobs --profile obs --profile ollama down
 }
@@ -335,11 +385,12 @@ main() {
     rollback) cmd_rollback ;;
     purge) cmd_purge ;;
     smoke) cmd_smoke "$@" ;;
+    llm-probe) cmd_llm_probe ;;
     status) compose ps ;;
     logs) compose logs --tail 200 "$@" ;;
     down) cmd_down ;;
     destroy) cmd_destroy "$@" ;;
-    *) sed -n '2,32p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+    *) awk 'NR == 1 { next } /^#/ { sub(/^# ?/, ""); print; next } { exit }' "${BASH_SOURCE[0]}" ;;
   esac
 }
 

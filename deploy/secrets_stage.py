@@ -14,8 +14,9 @@ image, or a volume, and a reboot clears it until the systemd unit stages it agai
     postgres/<NAME>  owned by uid 70, the user of the postgres image
     grafana/<NAME>   owned by uid 472, the user of the grafana image
 Files are mode 0400 and directories 0711: dockerd (root) bind-mounts known paths, and no other host user can list or
-read them. A secret that a source does not have is written empty when it is optional (a model key, the Grafana
-password) and stops the run when it is required. Values never appear in output, logs, or command-line arguments.
+read them. A secret that a source does not have is written empty when it is optional (a model key, a Langfuse key,
+the Grafana password) and stops the run when it is required. Values never appear in output, logs, or command-line
+arguments.
 
     sudo python3 deploy/secrets_stage.py stage --source keyvault --vault <vault name>
     sudo python3 deploy/secrets_stage.py stage --source env-file --env-file deploy/.env.production
@@ -70,6 +71,8 @@ SECRETS: tuple[Secret, ...] = (
     Secret("LLM_API_KEY_PRIMARY", "llm-api-key-primary", ("app",), required=False),
     Secret("LLM_API_KEY_FALLBACK", "llm-api-key-fallback", ("app",), required=False),
     Secret("GRAFANA_ADMIN_PASSWORD", "grafana-admin-password", ("grafana",), required=False),
+    Secret("LANGFUSE_PUBLIC_KEY", "langfuse-public-key", ("app",), required=False),
+    Secret("LANGFUSE_SECRET_KEY", "langfuse-secret-key", ("app",), required=False),
 )
 CONSUMERS: dict[str, tuple[int, int]] = {"app": (10001, 10001), "postgres": (70, 70), "grafana": (472, 0)}
 """Owner uid and gid of each consumer directory: the non-root user its container runs as."""

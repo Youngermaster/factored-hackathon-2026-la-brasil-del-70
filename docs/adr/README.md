@@ -48,6 +48,7 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 | [0040](0040-isolated-bank-database-vm.md) | Isolate the data pipeline on vm-bank-database in westus2 | Accepted | 2026-10-04 |
 | [0041](0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment, validation, and DataGrip access | Accepted; Azure naming replacement superseded | 2026-10-04 |
 | [0042](0042-preserve-azure-resource-names.md) | Keep Azure resource names and organize data engineering | Accepted | 2026-10-04 |
+| [0044](0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider | Accepted | 2026-10-05 |
 
 ## Notes on status
 

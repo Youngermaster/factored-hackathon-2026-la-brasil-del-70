@@ -274,3 +274,34 @@ def test_a_local_ollama_model_needs_no_key_and_gets_the_base_url() -> None:
 def test_a_hosted_model_without_a_key_is_still_refused() -> None:
     with pytest.raises(ConfigurationError, match="no API key"):
         _build(LLMSettings(provider="litellm", primary_model="openai/gpt-5-mini", api_base="https://example.test"))
+
+
+def test_azure_deployments_share_the_endpoint_and_get_the_configured_api_version() -> None:
+    settings = LLMSettings(
+        provider="litellm",
+        primary_model="azure/gpt-4.1-mini",
+        fallback_model="azure/gpt-4o",
+        api_key_primary=_key(),  # type: ignore[arg-type]
+        api_key_fallback=_key(),  # type: ignore[arg-type]
+        api_base="https://example-resource.openai.azure.com/",
+        api_version="2024-10-21",
+    )
+
+    layers = _chain(_build(settings))
+    fallback = next(layer for layer in layers if isinstance(layer, FallbackDecorator))
+    primary, secondary = layers[-1], _chain(fallback.fallback)[-1]
+
+    assert isinstance(primary, LiteLLMClient)
+    assert isinstance(secondary, LiteLLMClient)
+    assert (primary.model_id, secondary.model_id) == ("azure/gpt-4.1-mini", "azure/gpt-4o")
+    assert primary.api_version == secondary.api_version == "2024-10-21"
+    assert provider_name(primary.model_id) == "azure"
+
+
+def test_an_empty_api_version_leaves_the_litellm_default() -> None:
+    settings = LLMSettings(provider="litellm", primary_model="azure/gpt-4.1-mini", api_key_primary=_key())  # type: ignore[arg-type]
+
+    provider = _chain(_build(settings))[-1]
+
+    assert isinstance(provider, LiteLLMClient)
+    assert provider.api_version is None
