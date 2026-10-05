@@ -278,6 +278,60 @@ class LlmCircuitOpenError(LlmError):
     code = "llm_circuit_open"
 
 
+class RetrievalBackendError(DependencyError):
+    """A remote retrieval dependency (the embedding provider or the vector store) failed. Retrieval falls back to
+    BM25, so a customer never sees this error."""
+
+    code = "retrieval_backend_error"
+
+
+class EmbeddingTimeoutError(RetrievalBackendError):
+    code = "embedding_timeout"
+    retryable = True
+
+
+class EmbeddingRateLimitedError(RetrievalBackendError):
+    code = "embedding_rate_limited"
+    retryable = True
+
+
+class EmbeddingProviderError(RetrievalBackendError):
+    code = "embedding_provider_error"
+    retryable = True
+
+
+class EmbeddingRejectedError(EmbeddingProviderError):
+    """The embedding provider refused the request (authentication, an unknown deployment, a malformed request) or
+    no provider is configured; the same request fails the same way, so it is never retried."""
+
+    code = "embedding_rejected"
+    retryable = False
+
+
+class EmbeddingCircuitOpenError(RetrievalBackendError):
+    code = "embedding_circuit_open"
+
+
+class VectorStoreError(RetrievalBackendError):
+    """The vector store is unreachable, timed out, or failed."""
+
+    code = "vector_store_error"
+    retryable = True
+
+
+class VectorStoreRejectedError(VectorStoreError):
+    """The vector store refused the request (for example a dimension mismatch); retrying cannot help."""
+
+    code = "vector_store_rejected"
+    retryable = False
+
+
+class VectorCollectionMissingError(RetrievalBackendError):
+    """The collection for the loaded pack version and embedding model is missing or incomplete: run the indexer."""
+
+    code = "vector_collection_missing"
+
+
 class ToolError(DependencyError):
     code = "tool_error"
 
