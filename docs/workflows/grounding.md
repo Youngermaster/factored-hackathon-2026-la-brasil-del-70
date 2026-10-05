@@ -95,7 +95,7 @@ sequenceDiagram
         F->>B: the same query
         B-->>F: BM25 hits (retriever:bm25@1), fallback counted
     end
-    F-->>E: hits; RetrievalPolicy applies the threshold of the retriever that served
+    F-->>E: hits, then RetrievalPolicy applies the threshold of the retriever that served
 ```
 
 ## The grounding verifier
