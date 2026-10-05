@@ -249,8 +249,16 @@ def escalation_code(
         "ESC.credit_review_required": EscalationReasonCode.CREDIT_REVIEW_REQUIRED,
         "ESC.eligibility_contested": EscalationReasonCode.ELIGIBILITY_CONTESTED,
     }
+    not_comparable = {
+        result.rule_id
+        for result in decision.rule_results
+        if not result.passed and result.reason_code == "amount_not_comparable"
+    }
     for rule_id in decision.decisive_rule_ids:
         code = codes.get(rule_id)
+        if rule_id in not_comparable:
+            # A foreign-currency amount without a pack rate is not "above the limit": a person compares it.
+            code = EscalationReasonCode.UNSUPPORTED_NEEDS_HUMAN
         if code is None:
             continue
         action = _CARD_REQUEST_ACTIONS.get(code)

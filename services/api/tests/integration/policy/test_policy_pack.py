@@ -54,12 +54,16 @@ def test_every_clause_has_es_pt_and_en_twins_with_equal_params_and_placeholders(
         assert len({twin.metadata.version for twin in twins}) == 1
 
 
-def test_only_the_sla_clauses_moved_past_version_1() -> None:
+def test_only_the_sla_and_auto_limit_clauses_moved_past_version_1() -> None:
+    """The SLA clauses gained a sentence (version 2); the auto-limit clauses gained a synthetic USD rate (version 2)."""
     moved = {clause_id: PACK.get_clause(clause_id, Language.ES).metadata.version for clause_id in PACK.clause_ids()}
     assert {clause_id: version for clause_id, version in moved.items() if version != 1} == {
         "DSP-AR-2": 2,
         "DSP-CO-2": 2,
         "DSP-MX-2": 2,
+        "DSP-AR-3": 2,
+        "DSP-CO-3": 2,
+        "DSP-MX-3": 2,
     }
 
 
