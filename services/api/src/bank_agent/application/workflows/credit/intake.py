@@ -86,7 +86,9 @@ def _confirm_reply(ctx: TurnContext, data: CreditData, product: CreditProduct, r
         template="credit.confirm_intake",
         params=params,
         suffix=suffix,
-        explain=(clause_ref(ctx, "INF-ALL-3"), clause_ref(ctx, "CRE-ALL-1")),
+        # INF-ALL-3 says the application "queda registrada": it is cited after the verified read-back, never before
+        # the customer confirms (QA 2026-10-05, CRE-11).
+        explain=(clause_ref(ctx, "CRE-ALL-1"),),
         credit=CreditEvidence(product=product, assessment=data.assessment),
         prefix="common.confirm_again" if data.intake_shown and not ctx.reprompt else None,
         credit_intake_confirmation=CreditIntakeConfirmation(

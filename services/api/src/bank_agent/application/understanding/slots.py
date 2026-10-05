@@ -28,7 +28,7 @@ _CREDIT_TYPES: tuple[tuple[CreditProductType, str], ...] = (
         CreditProductType.MORTGAGE,
         r"hipoteca|hipotecario|imobiliario|vivienda|casa propia|imovel|apartamento|\bdepartamento\b|mortgage",
     ),
-    (CreditProductType.CREDIT_CARD, r"tarjeta|cartao|credit card|\bcard\b"),
+    (CreditProductType.CREDIT_CARD, r"tarjeta|cartao|cartoes|credit card|\bcard\b"),
     (CreditProductType.PERSONAL_LOAN, r"prestamo|emprestimo|credito personal|credito pessoal|libre inversion|\bloan\b"),
 )
 _PURPOSES: tuple[tuple[str, str], ...] = (
@@ -53,8 +53,20 @@ def account_product_type(text: str) -> ProductType | None:
     return _first(_ACCOUNT_TYPES, fold(text))
 
 
+def credit_product_types(text: str) -> frozenset[CreditProductType]:
+    """Every credit product type ``text`` names; a mortgage is a kind of loan, so it absorbs ``prestamo``."""
+    folded = fold(text)
+    found = {value for value, pattern in _CREDIT_TYPES if re.search(pattern, folded)}
+    if CreditProductType.MORTGAGE in found:
+        found.discard(CreditProductType.PERSONAL_LOAN)
+    return frozenset(found)
+
+
 def credit_product_type(text: str) -> CreditProductType | None:
-    return _first(_CREDIT_TYPES, fold(text))
+    """The one credit product type ``text`` names, or ``None`` when it names none or several ("qué préstamos y
+    tarjetas tienen" asks for the list, not the card detail: QA 2026-10-05, CRE-13)."""
+    found = credit_product_types(text)
+    return next(iter(found)) if len(found) == 1 else None
 
 
 def purpose(text: str) -> str | None:

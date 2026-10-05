@@ -15,6 +15,11 @@ DISPUTE: dict[str, dict[Language, str]] = {
         PT: "Encontrei várias transações parecidas. Qual você quer contestar?\n{options}",
         EN: "I found several similar transactions. Which one do you want to dispute?\n{options}",
     },
+    "dispute.clarify_one": {
+        ES: "Encontré esta transacción. ¿Es la que quieres reclamar? Responde sí o no.\n{options}",
+        PT: "Encontrei esta transação. É a que você quer contestar? Responda sim ou não.\n{options}",
+        EN: "I found this transaction. Is it the one you want to dispute? Answer yes or no.\n{options}",
+    },
     "dispute.option": {
         ES: "{n}) {date}, {merchant}, {amount}, tarjeta {card}",
         PT: "{n}) {date}, {merchant}, {amount}, cartão {card}",
@@ -34,9 +39,9 @@ DISPUTE: dict[str, dict[Language, str]] = {
         "amount, something not received, an ATM withdrawal without cash, or a cancelled subscription.",
     },
     "dispute.offer_block": {
-        ES: "Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta {card} para evitar más "
+        ES: "Como no reconoces este cargo, puedo bloquear preventivamente tu tarjeta {card} para evitar más "
         "cargos. ¿Quieres que la bloquee? Responde sí o no.",
-        PT: "Como você não reconhece a compra, posso bloquear preventivamente o seu cartão {card} para evitar "
+        PT: "Como você não reconhece esta transação, posso bloquear preventivamente o seu cartão {card} para evitar "
         "novas cobranças. Quer que eu bloqueie? Responda sim ou não.",
         EN: "Since you do not recognize the purchase, I can block your card {card} as a precaution. Do you want "
         "me to block it? Answer yes or no.",
@@ -58,6 +63,22 @@ DISPUTE: dict[str, dict[Language, str]] = {
         "ou não.",
         EN: "I will block your card {card} and record a dispute for the transaction of {date} at {merchant} for "
         "{amount}, reason: {reason}. You will get an answer by {due}. Do you confirm? Answer yes or no.",
+    },
+    "dispute.confirm_no_merchant": {
+        ES: "Voy a registrar una reclamación por la transacción del {date} por {amount} (tarjeta {card}), motivo: "
+        "{reason}. Recibirás respuesta a más tardar el {due}. ¿Confirmas? Responde sí o no.",
+        PT: "Vou registrar uma contestação da transação de {date} no valor de {amount} (cartão {card}), motivo: "
+        "{reason}. Você receberá uma resposta até {due}. Confirma? Responda sim ou não.",
+        EN: "I will record a dispute for the transaction of {date} for {amount} (card {card}), reason: {reason}. "
+        "You will get an answer by {due}. Do you confirm? Answer yes or no.",
+    },
+    "dispute.confirm_with_block_no_merchant": {
+        ES: "Voy a bloquear tu tarjeta {card} y a registrar una reclamación por la transacción del {date} por "
+        "{amount}, motivo: {reason}. Recibirás respuesta a más tardar el {due}. ¿Confirmas? Responde sí o no.",
+        PT: "Vou bloquear o seu cartão {card} e registrar uma contestação da transação de {date} no valor de "
+        "{amount}, motivo: {reason}. Você receberá uma resposta até {due}. Confirma? Responda sim ou não.",
+        EN: "I will block your card {card} and record a dispute for the transaction of {date} for {amount}, "
+        "reason: {reason}. You will get an answer by {due}. Do you confirm? Answer yes or no.",
     },
     "dispute.case_created": {
         ES: "Listo: registramos tu reclamación con el número de caso {case}. Te responderemos a más tardar el {due}.",
@@ -94,6 +115,18 @@ DISPUTE: dict[str, dict[Language, str]] = {
         "você não reconhece.",
         EN: "I found no disputes in your name. If you want to open one, tell me which transaction you do not "
         "recognize.",
+    },
+    "dispute.no_refund_guarantee": {
+        ES: "Registrar la reclamación no garantiza un reembolso ni un abono provisional: el equipo de revisión lo "
+        "decide.",
+        PT: "Registrar a contestação não garante reembolso nem crédito provisório: a equipe de revisão decide.",
+        EN: "Recording the dispute does not guarantee a refund or a provisional credit: the review team decides.",
+    },
+    "dispute.existing_case": {
+        ES: "Esta transacción ya tiene el caso {case}, que está {status}. La fecha comprometida de respuesta es "
+        "el {due}.",
+        PT: "Esta transação já tem o caso {case}, que está {status}. A data prevista de resposta é {due}.",
+        EN: "This transaction already has case {case}, which is {status}. The committed answer date is {due}.",
     },
     "dispute.denied": {
         ES: "No puedo registrar esta reclamación aquí. Si quieres, te comunico con una persona del equipo.",

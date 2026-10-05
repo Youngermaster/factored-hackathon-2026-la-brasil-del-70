@@ -51,7 +51,11 @@ PENDING: dict[WorkflowId, Labels] = {
     WorkflowId.CREDIT: {ES: "tu consulta de crédito", PT: "a sua consulta de crédito", EN: "your credit request"},
 }
 REASONS: dict[DisputeReason, Labels] = {
-    DisputeReason.UNRECOGNIZED: {ES: "no reconoces la compra", PT: "você não reconhece a compra", EN: "unrecognized"},
+    DisputeReason.UNRECOGNIZED: {
+        ES: "no reconoces la transacción",
+        PT: "você não reconhece a transação",
+        EN: "unrecognized",
+    },
     DisputeReason.DUPLICATE: {ES: "cargo duplicado", PT: "cobrança duplicada", EN: "duplicate charge"},
     DisputeReason.WRONG_AMOUNT: {
         ES: "monto distinto al acordado",
@@ -102,6 +106,25 @@ PRODUCT_TYPES: dict[ProductType, Labels] = {
     ProductType.INVESTMENT: {ES: "inversión", PT: "investimento", EN: "investment"},
     ProductType.OTHER: {ES: "producto", PT: "produto", EN: "product"},
 }
+PRODUCT_OF_YOUR: dict[ProductType, Labels] = {
+    ProductType.CHECKING_ACCOUNT: {ES: "tu cuenta corriente", PT: "da sua conta corrente", EN: "your checking account"},
+    ProductType.SAVINGS_ACCOUNT: {ES: "tu cuenta de ahorro", PT: "da sua conta poupança", EN: "your savings account"},
+    ProductType.CREDIT_CARD: {ES: "tu tarjeta de crédito", PT: "do seu cartão de crédito", EN: "your credit card"},
+    ProductType.DEBIT_CARD: {ES: "tu tarjeta de débito", PT: "do seu cartão de débito", EN: "your debit card"},
+    ProductType.PERSONAL_LOAN: {ES: "tu préstamo personal", PT: "do seu empréstimo pessoal", EN: "your personal loan"},
+    ProductType.MORTGAGE: {
+        ES: "tu crédito hipotecario",
+        PT: "do seu financiamento imobiliário",
+        EN: "your mortgage",
+    },
+    ProductType.INVESTMENT: {ES: "tu inversión", PT: "do seu investimento", EN: "your investment"},
+    ProductType.OTHER: {ES: "tu producto", PT: "do seu produto", EN: "your product"},
+}
+"""A product with its possessive, agreeing in gender in pt ("da sua conta poupança", "do seu cartão"; ACC-11)."""
+NO_MERCHANT: Labels = {ES: "sin comercio registrado", PT: "sem estabelecimento registrado", EN: "no merchant on record"}
+"""Shown instead of a merchant the record does not have (an ATM withdrawal; DSP-10)."""
+NO_PAYEE: Labels = {ES: "sin destinatario registrado", PT: "sem destinatário registrado", EN: "no payee on record"}
+"""Shown instead of a payee the record does not have (a transfer without a merchant name; ACC-10)."""
 PAYMENT_KINDS: dict[TransactionType, Labels] = {
     TransactionType.TRANSFER: {ES: "tu transferencia", PT: "da sua transferência", EN: "your transfer"},
     TransactionType.PAYMENT: {ES: "tu pago", PT: "do seu pagamento", EN: "your payment"},

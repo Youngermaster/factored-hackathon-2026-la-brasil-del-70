@@ -40,6 +40,11 @@ ACCOUNT: dict[str, dict[Language, str]] = {
         PT: "Encontrei vários pagamentos ou transferências parecidos. Qual deles é?\n{options}",
         EN: "I found several similar payments or transfers. Which one is it?\n{options}",
     },
+    "account.choose_payment": {
+        ES: "Estos son tus pagos o transferencias más recientes. ¿Cuál es?\n{options}",
+        PT: "Estes são os seus pagamentos ou transferências mais recentes. Qual deles é?\n{options}",
+        EN: "These are your most recent payments or transfers. Which one is it?\n{options}",
+    },
     "account.payment_option": {
         ES: "{n}) {date}, {payee}, {amount}, {card}",
         PT: "{n}) {date}, {payee}, {amount}, {card}",
@@ -56,6 +61,11 @@ ACCOUNT: dict[str, dict[Language, str]] = {
         PT: "Situação {kind} de {amount} de {date} para {payee}: {status}. Dados de {as_of}.",
         EN: "Status of {kind} of {amount} on {date} to {payee}: {status}. Data as of {as_of}.",
     },
+    "account.payment_status_no_payee": {
+        ES: "Estado de {kind} de {amount} del {date}: {status}. Datos al {as_of}.",
+        PT: "Situação {kind} de {amount} de {date}: {status}. Dados de {as_of}.",
+        EN: "Status of {kind} of {amount} on {date}: {status}. Data as of {as_of}.",
+    },
     "account.ask_period": {
         ES: "¿De qué periodo quieres el resumen? Por ejemplo: el mes pasado, mayo o la semana pasada.",
         PT: "De qual período você quer o resumo? Por exemplo: o mês passado, maio ou a semana passada.",
@@ -67,10 +77,10 @@ ACCOUNT: dict[str, dict[Language, str]] = {
         EN: "That period is longer than I can summarize. Can you give me a shorter one?",
     },
     "account.statement": {
-        ES: "Resumen de tu {type} {card} del {start} al {end}, con datos al {as_of}. Operaciones en el periodo: "
+        ES: "Resumen de {of_type} {card} del {start} al {end}, con datos al {as_of}. Operaciones en el periodo: "
         "{count}.",
-        PT: "Resumo do seu {type} {card} de {start} a {end}, com dados de {as_of}. Operações no período: {count}.",
-        EN: "Summary of your {type} {card} from {start} to {end}, with data as of {as_of}. Operations in the "
+        PT: "Resumo {of_type} {card} de {start} a {end}, com dados de {as_of}. Operações no período: {count}.",
+        EN: "Summary of {of_type} {card} from {start} to {end}, with data as of {as_of}. Operations in the "
         "period: {count}.",
     },
     "account.statement_totals": {
@@ -85,9 +95,9 @@ ACCOUNT: dict[str, dict[Language, str]] = {
         EN: "Not classified as a debit or a credit: {unclassified}. Pending, declined, or reversed: {unsettled}.",
     },
     "account.statement_empty": {
-        ES: "No hay operaciones de tu {type} {card} del {start} al {end}, con datos al {as_of}.",
-        PT: "Não há operações do seu {type} {card} de {start} a {end}, com dados de {as_of}.",
-        EN: "There are no operations on your {type} {card} from {start} to {end}, with data as of {as_of}.",
+        ES: "No hay operaciones de {of_type} {card} del {start} al {end}, con datos al {as_of}.",
+        PT: "Não há operações {of_type} {card} de {start} a {end}, com dados de {as_of}.",
+        EN: "There are no operations on {of_type} {card} from {start} to {end}, with data as of {as_of}.",
     },
     "account.anything_else": {
         ES: "¿Hay algo más en lo que te ayude con tus cuentas?",

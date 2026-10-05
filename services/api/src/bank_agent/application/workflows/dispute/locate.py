@@ -11,8 +11,9 @@ from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.render import clean_record_text
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
 from bank_agent.application.engine.security import detect_injection
-from bank_agent.application.engine.shared import spend_clarification
-from bank_agent.application.understanding.answers import parse_choice
+from bank_agent.application.engine.shared import abstain, clause_ref, spend_clarification
+from bank_agent.application.engine.templates.labels import NO_MERCHANT, pick
+from bank_agent.application.understanding.answers import YesNo, parse_choice, parse_yes_no
 from bank_agent.application.understanding.dates import MONTHS, narrow
 from bank_agent.application.understanding.text import words
 from bank_agent.application.workflows.dispute.data import DisputeData, load, open_questions, save
@@ -51,8 +52,23 @@ async def _last4_by_product(ctx: TurnContext) -> dict[ProductId, str]:
     return {ProductId(card.product_ref.key): card.masked_number.last4 for card in cards}
 
 
+MAX_LOOKBACK_DAYS = 400
+
+
+def before_window(ctx: TurnContext, data: DisputeData) -> bool:
+    """Every date reading the customer gave ends before the dispute window opens."""
+    start = window_start(ctx).date()
+    return bool(data.date_options) and all(option.end < start for option in data.date_options)
+
+
 async def _candidates(ctx: TurnContext, data: DisputeData) -> list[Transaction]:
-    query = TransactionQuery(occurred_from=window_start(ctx), limit=MAX_TRANSACTION_PAGE)
+    start = window_start(ctx)
+    if before_window(ctx, data):
+        # Search back to the stated date, so the kernel's DSP.within_window rule decides on the real transaction and
+        # the reply cites the window clause instead of asking for details again (QA 2026-10-05).
+        earliest = datetime.combine(min(o.start for o in data.date_options), time.min, UTC) - timedelta(days=2)
+        start = max(earliest, start - timedelta(days=MAX_LOOKBACK_DAYS))
+    query = TransactionQuery(occurred_from=start, limit=MAX_TRANSACTION_PAGE)
     found = list(await ctx.tools.list_recent_transactions(query))
     currencies = {txn.amount.currency for txn in found}
     ctx.currency = next(iter(currencies)) if len(currencies) == 1 else None
@@ -91,11 +107,12 @@ async def _ask_options(ctx: TurnContext, data: DisputeData, ranked: list[Transac
                 card_last4=card,
             )
         )
-        items.append({"date": occurred_on, "merchant": RecordText(merchant or "-"), "amount": txn.amount,
+        shown: Param = RecordText(merchant) if merchant else pick(NO_MERCHANT, ctx.language)
+        items.append({"date": occurred_on, "merchant": shown, "amount": txn.amount,
                       "card": Masked(card or "----")})  # fmt: skip
     save(ctx, data.evolve(option_ids=tuple(txn.transaction_id for txn in ranked[:MAX_OPTIONS]), asked_details=False))
     reply = Reply(
-        template="dispute.clarify_options",
+        template="dispute.clarify_one" if len(items) == 1 else "dispute.clarify_options",
         params={"options": Choices("dispute.option", tuple(items))},
         clarification=Clarification(options=tuple(options)),
     )
@@ -130,6 +147,9 @@ async def locate(ctx: TurnContext) -> Step:
         return stop
     if ranked:
         return await _ask_options(ctx, data, ranked)
+    if before_window(ctx, data):
+        clause = clause_ref(ctx, f"DSP-{ctx.customer.country.value}-1")
+        return abstain(ctx, "dispute.denied", (clause,))
     return _ask_details(ctx, data)
 
 
@@ -160,6 +180,13 @@ async def clarify(ctx: TurnContext) -> Step:
         transactions = {txn_id: await ctx.tools.get_transaction(txn_id) for txn_id in data.option_ids}
         known = {txn_id: txn for txn_id, txn in transactions.items() if txn is not None}
         index = parse_choice(ctx.text, [i for i in data.option_ids if i in known], Matcher(ctx, known))
+        if index is None and len(known) == 1:
+            # One candidate is shown as "is it this one?": a yes picks it, a no asks for more details.
+            answer = parse_yes_no(ctx.text)
+            if answer is YesNo.YES:
+                index = 0
+            elif answer is YesNo.NO:
+                return exhausted(ctx, data) or _ask_details(ctx, data)
         if index is not None:
             chosen = [i for i in data.option_ids if i in known][index]
             save(ctx, data.evolve(transaction_id=chosen, option_ids=()))

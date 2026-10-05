@@ -103,7 +103,7 @@ describe.each(CASES)(
       await screen.findByText('Listo.');
       expect(chat.sent.at(-1)?.text).toBe(
         language === 'es'
-          ? 'Sí, quiero que una persona lo revise'
+          ? 'Sí, que lo revise una persona'
           : 'Sim, quero que uma pessoa revise',
       );
     });

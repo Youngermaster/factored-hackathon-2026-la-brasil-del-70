@@ -228,7 +228,7 @@
       "cancel": "No, cancelar",
       "option": "Opción {{number}}",
       "human": "Quiero hablar con una persona",
-      "review": "Sí, quiero que una persona lo revise",
+      "review": "Sí, que lo revise una persona",
       "steppedUp": "Listo, ya confirmé mi identidad"
     },
     "hideTracePanel": "Ocultar registro",

@@ -16,6 +16,11 @@ De qual período você quer o resumo? Por exemplo: o mês passado, maio ou a sem
 [account.balances]
 Estes são os seus saldos, com dados de 17 de junho de 2026.
 
+[account.choose_payment]
+Estes são os seus pagamentos ou transferências mais recentes. Qual deles é?
+1) 15 de junho de 2026, JOAO PEREIRA, 1.250,00 MXN, **** 1234
+2) 15 de junho de 2026, JOAO PEREIRA, 1.250,00 MXN, **** 1234
+
 [account.clarify_payment]
 Encontrei vários pagamentos ou transferências parecidos. Qual deles é?
 1) 15 de junho de 2026, JOAO PEREIRA, 1.250,00 MXN, **** 1234
@@ -34,6 +39,9 @@ Não encontrei produtos com saldo em seu nome.
 
 [account.payment_status]
 Situação da sua transferência de 1.250,00 MXN de 15 de junho de 2026 para JOAO PEREIRA: aberto. Dados de 17 de junho de 2026.
+
+[account.payment_status_no_payee]
+Situação da sua transferência de 1.250,00 MXN de 15 de junho de 2026: aberto. Dados de 17 de junho de 2026.
 
 [account.period_too_long]
 Esse período é mais longo do que consigo resumir. Pode indicar um mais curto?
@@ -280,22 +288,39 @@ Pronto: bloqueamos o seu cartão **** 1234 e registramos sua contestação com o
 [dispute.clarify_date]
 Quando você diz 03/04, se refere a os seus cartões ou a uma contestação?
 
+[dispute.clarify_one]
+Encontrei esta transação. É a que você quer contestar? Responda sim ou não.
+1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+2) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+
 [dispute.clarify_options]
 Encontrei várias transações parecidas. Qual você quer contestar?
 1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
 2) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
 
 [dispute.confirm]
-Vou registrar uma contestação da transação de 15 de junho de 2026 em FIXTURE MARKET no valor de 1.250,00 MXN (cartão **** 1234), motivo: você não reconhece a compra. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
+Vou registrar uma contestação da transação de 15 de junho de 2026 em FIXTURE MARKET no valor de 1.250,00 MXN (cartão **** 1234), motivo: você não reconhece a transação. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
+
+[dispute.confirm_no_merchant]
+Vou registrar uma contestação da transação de 15 de junho de 2026 no valor de 1.250,00 MXN (cartão **** 1234), motivo: você não reconhece a transação. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
 
 [dispute.confirm_with_block]
-Vou bloquear o seu cartão **** 1234 e registrar uma contestação da transação de 15 de junho de 2026 em FIXTURE MARKET no valor de 1.250,00 MXN, motivo: você não reconhece a compra. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
+Vou bloquear o seu cartão **** 1234 e registrar uma contestação da transação de 15 de junho de 2026 em FIXTURE MARKET no valor de 1.250,00 MXN, motivo: você não reconhece a transação. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
+
+[dispute.confirm_with_block_no_merchant]
+Vou bloquear o seu cartão **** 1234 e registrar uma contestação da transação de 15 de junho de 2026 no valor de 1.250,00 MXN, motivo: você não reconhece a transação. Você receberá uma resposta até 2 de agosto de 2026. Confirma? Responda sim ou não.
 
 [dispute.denied]
 Não posso registrar esta contestação aqui. Se quiser, transfiro você para uma pessoa da equipe.
 
+[dispute.existing_case]
+Esta transação já tem o caso case-000001, que está aberto. A data prevista de resposta é 2 de agosto de 2026.
+
+[dispute.no_refund_guarantee]
+Registrar a contestação não garante reembolso nem crédito provisório: a equipe de revisão decide.
+
 [dispute.offer_block]
-Como você não reconhece a compra, posso bloquear preventivamente o seu cartão **** 1234 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.
+Como você não reconhece esta transação, posso bloquear preventivamente o seu cartão **** 1234 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.
 
 [dispute.option]
 1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
