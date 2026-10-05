@@ -102,6 +102,21 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
         (r"cuanto tiempo|cuantos dias|que plazo|como funciona|que pasa si|cual es el plazo", _MEDIUM),
         (r"quanto tempo|quantos dias|qual (e )?o prazo|como funciona|o que acontece se", _MEDIUM),
         (r"how long|how does .* work", _MEDIUM),
+        # Rubric audit 2026-10-05 (fix 1): a message that opens with a deadline, definition, or how-it-works question
+        # is a general question for open retrieval, so it outranks the intake verbs it mentions ("¿Cuántos días tengo
+        # para levantar una aclaración?" is not a dispute intake). The guard keeps questions about the customer's own
+        # card, case, or charge ("¿Cuánto tiempo tarda en bloquearse mi tarjeta?") with their workflow.
+        (
+            r"^[\W_]*(?:(?:y|e|oye|hola|oi|ola|disculpa|perdon)\W+)?"
+            r"(?!.*\b(?:mi|mis|minha|minhas|meu|meus|este|esta|ese|esa|esse|essa)\s+"
+            r"(?:tarjeta|cartao|reclamac|aclarac|contestac|caso|disputa|cargo|cobro|cobranca|compra|solicitud|"
+            r"solicitacao|pedido|transferencia|pago|pagamento|cuenta|conta))"
+            r"(?:cuantos dias|cuanto tiempo|en cuanto tiempo|que plazo|cual es el plazo|"
+            r"quantos dias|quanto tempo|em quanto tempo|qual (?:e )?o prazo|"
+            r"(?:que es|que significa|o que e|o que significa) (?:un|una|el|la|los|las|um|uma|o|a|os|as)\b|"
+            r"como funciona|que pasa si|o que acontece se)",
+            0.95,
+        ),
     ),
     Intent.UNSUPPORTED: (
         (r"(?<!libre )invers|invert|acciones de|cripto|investimento|investir|recomienda|recomenda", _STRONG),

@@ -1155,7 +1155,7 @@
       "rate": "{{system}}: resolución segura",
       "cost": "{{system}}: costo por resolución",
       "meta": "Datos {{dataset}}, generado el {{generated}}, commit {{sha}}.",
-      "costNote": "El costo es el que registró la corrida con el modelo que usó; con un modelo local es cero y no anticipa el costo de un modelo alojado.",
+      "costNote": "El costo es el que registró la corrida publicada con el modelo alojado, a precios de lista de Azure (no es una factura): 0.0013 USD por caso intentado y 0.0019 USD por resolución automática segura.",
       "openDashboard": "Abrir el dashboard",
       "openEvaluation": "Abrir la evaluación completa",
       "empty": "Todavía no hay una corrida publicada con el sistema propuesto.",
@@ -1163,7 +1163,7 @@
     },
     "llm": {
       "title": "Modelo de lenguaje",
-      "intro": "Entiende y redacta dentro de límites; nunca decide. Los precios por millón de tokens son los que usan el control de presupuesto y las métricas de costo.",
+      "intro": "Nunca decide. Extrae los datos de un mensaje y detecta señales de escalamiento; por defecto, las respuestas salen de plantillas aprobadas. Un modelo de embeddings representa las preguntas informativas para la recuperación. Los precios por millón de tokens son los que usan el control de presupuesto y las métricas de costo.",
       "none": "Sin modelo configurado: responden las rutas deterministas.",
       "provider": "Proveedor",
       "caption": "Modelos configurados y base de precio",
@@ -1325,6 +1325,10 @@
       "dispute-status": {
         "title": "Estado de un caso",
         "note": "Busca el caso abierto del cliente y responde con su estado y la fecha comprometida de respuesta."
+      },
+      "informational-question": {
+        "title": "Pregunta sobre la política",
+        "note": "Una pregunta informativa, no un caso: la respuesta cita las cláusulas de la política en que se basa (common.informational_answer) y el registro de ejecución nombra el recuperador que las encontró."
       },
       "dispute-details": {
         "title": "Cargo sin datos",

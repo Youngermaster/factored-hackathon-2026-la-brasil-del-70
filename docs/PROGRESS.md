@@ -2541,6 +2541,11 @@ Appended at the end of the log so parallel final-day tracks do not collide. Newe
 - `qdrant_hybrid` latency and fallback rate on the VM are not measured yet (BACKLOG).
 - An informational card-block question can be misrouted to `card_support` (BACKLOG).
 
+#### Manual release of e8f0d0c (2026-10-05, about 20:05 UTC)
+
+- A GitHub Actions incident cancelled the CI and CD runs for `e8f0d0c`, so the release was applied by hand on `vm-bank-agent` through `az vm run-command`: images built on the VM, a database backup taken first, the production env switches above applied, and the smoke test passed. The Qdrant collection was created with 123 points, and the boot unit's copy of the secret stager was refreshed.
+- The CI rerun on `main` follows; until it passes, this release is verified only by the smoke test and the live checks in the README.
+
 #### Next phase
 
 - The human actions in the current state: export the slides, record the video, make the repository public, and send the submission email.

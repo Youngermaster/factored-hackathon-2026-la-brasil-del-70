@@ -6,7 +6,7 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 
 | Link | Where |
 |---|---|
-| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). Since 2026-10-05 it calls Azure OpenAI (`gpt-4.1-mini`, with `gpt-4o` as the fallback) only to extract details and detect escalation signals; deterministic policy decides, and every workflow keeps its deterministic path when no model can answer |
+| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). Since 2026-10-05 it calls Azure OpenAI (`gpt-4.1-mini`, with `gpt-4o` as the fallback) only to extract details and detect escalation signals, and Azure text-embedding-3-small embeds the redacted text of informational questions for retrieval; deterministic policy decides, and every workflow keeps its deterministic path when no model can answer |
 | Video pitch | Pending, 3:00 at most: the [timed shot list](docs/demo/video-plan.md), the [narration by speaker](docs/demo/video-monologue.md), and the [practice cases](docs/demo/practice-cases.md) |
 | Slides | [slides/](slides/README.md) (Slidev): six slides; `pnpm export:final` builds the six-page pitch PDF (one page per slide, its build-up frames in order) and a 32-page version with one page per click |
 | Demo guide for judges | `/demo` in the running app (demo mode), the Supervision view (`evaluator-demo-01`, Supervisión: who decides each step, served model versions, evidence) ([guide](docs/frontend/supervision.md)), and [docs/demo/script.md](docs/demo/script.md) |
@@ -16,6 +16,16 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 | Router: classical against a hosted LLM | [docs/evaluation/router-llm.md](docs/evaluation/router-llm.md): pre-registered rule, why `keyword@1` keeps serving |
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
 | Limitations | [LIMITATIONS.md](LIMITATIONS.md) |
+
+| Rubric dimension | Main evidence |
+|---|---|
+| Technical Judgment | [Who decides](#who-decides), [architecture overview](docs/architecture/overview.md), [LIMITATIONS.md](LIMITATIONS.md) |
+| AI Engineering | The deployed demo above, [deploy guide](deploy/README.md) |
+| Data Engineering | [Data-quality report](docs/data/quality-report.md) |
+| Machine Learning | [Evaluation results](docs/evaluation/results.md), [retrieval](docs/evaluation/retrieval.md), [router against a hosted LLM](docs/evaluation/router-llm.md) |
+| Data Analytics | [Workflow evidence](docs/analysis/workflow-evidence.md) |
+
+Production concerns. Privacy: redaction and field minimization ([data use](docs/security/data-use.md)); explainability: execution records and cited clauses ([grounding](docs/workflows/grounding.md)); fairness: language and segment slices ([results](docs/evaluation/results.md)); reliability: degradation ladder and read-back ([degradation](docs/operations/degradation.md)); scalability: load test and managed-service path ([capacity](docs/operations/capacity.md)).
 
 **Deployment status (2026-10-05).** The demo at <https://la-brasil-del-70.westus2.cloudapp.azure.com> runs `main` on one Azure VM (`Standard_B2as_v2`, Docker Compose behind Caddy, Let's Encrypt), with the production secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). Every push to `main` that passes CI is built once, pushed to GHCR, and released on the VM by the deploy workflow over Azure OpenID Connect, with a smoke test, a CSP check, and an automatic rollback ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). The observability profile (OpenTelemetry, Prometheus, Grafana, Jaeger) runs on the same VM; Grafana is served read-only at </grafana/> ([ADR 0045](docs/adr/0045-expose-grafana-read-only-under-grafana.md)) and Jaeger stays on an SSH tunnel; metadata-only Langfuse tracing is live: one generation per model call with identifiers, model and prompt versions, tokens, cost, latency, and status, never prompts or message text ([data use](docs/security/data-use.md)). The language model is Azure OpenAI in the team's own resource group (`aoai-la70-bank-agent`, Sweden Central): `gpt-4.1-mini` answers, `gpt-4o` takes over when the primary fails after its retries or while its circuit is open (degradation level L1), both keys are Key Vault secrets like every other, and a daily budget cap and a per-session token limit bound the spend. The model only proposes typed details and escalation signals; the policy kernel, the state machines, and verified tools decide and act.
 
@@ -78,7 +88,7 @@ The model never sees the customer's credit profile or risk estimate, never choos
 
 Workflow states never search: each fetches its governing clauses by id (bound policy). Open retrieval serves only informational questions ("¿Cuántos días tengo para levantar una aclaración?") over the customer-facing policy clauses, filtered by the customer's language and jurisdiction, with the synthetic eligibility clauses excluded. Below a tuned threshold it abstains instead of answering. The reply quotes the retrieved clause with its id and version (for example `INF-ALL-1@1`), and the grounding verifier checks it; the language model never answers policy from its own memory ([grounding](docs/workflows/grounding.md), [ADR 0012](docs/adr/0012-bound-policies-and-informational-retrieval.md)).
 
-The index holds policy text only, never customer data, so retrieval cannot cross customers; queries are redacted before they are embedded. On 60 held-out test queries (team labels, pending human review) Qdrant hybrid search (BM25 fused with Azure `text-embedding-3-small` vectors) reaches MRR 0.89 against 0.83 for BM25, with no recall loss in es or pt and every out-of-scope query abstained. That passes a rule registered before the vectors were recorded ([retrieval](docs/evaluation/retrieval.md), [ADR 0047](docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md)). Production uses it through one setting (`RETRIEVAL_RETRIEVER`); if Qdrant or the embedding call fails, BM25 answers and the trace names the retriever that served.
+The index holds policy text only, never customer data, so retrieval cannot cross customers; queries are redacted before they are embedded. On 60 held-out test queries (team labels, pending human review) Qdrant hybrid search (BM25 fused with Azure `text-embedding-3-small` vectors) reaches MRR 0.89 against 0.83 for BM25, with no recall loss in es or pt and every out-of-scope query abstained. That passes a rule registered before the vectors were recorded ([retrieval](docs/evaluation/retrieval.md), [ADR 0047](docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md)). Production uses it through one setting (`RETRIEVAL_RETRIEVER`); if Qdrant or the embedding call fails, BM25 answers and the trace names the retriever that served. Live check (2026-10-05): the deployed demo answers "¿Cuánto tiempo tarda normalmente en resolverse una aclaración?" with the clauses `DSP-MX-1@1` and `DSP-MX-2@2` ("Quanto tempo leva para resolver uma contestação normalmente?" in pt, with `INF-ALL-1@1`), and the turn's trace names `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512`. The deadline question above routed to dispute intake on that check; the router fix that sends it to retrieval ships separately.
 
 ## Architecture
 
@@ -94,10 +104,12 @@ flowchart LR
         tools["Tools<br/>per-state allowlist,<br/>idempotent writes, read-back"]
         gateway["LLM gateway<br/>redaction, budget, retry,<br/>circuit breaker, tracing"]
         pg[("PostgreSQL 16<br/>row-level security,<br/>append-only records")]
+        qdrant[("Qdrant (rag profile)<br/>policy-clause vectors only")]
     end
     web -- "HTTP, generated types" --> api --> engine
     engine --> policy
     engine --> tools --> pg
+    engine -- "informational questions only;<br/>BM25 if unavailable" --> qdrant
     engine --> gateway --> llm["Model provider<br/>(fake, local Ollama, or Azure OpenAI)"]
     data["Data platform<br/>DuckDB + dbt + Pandera"] -- "seed from gold" --> pg
     ml["Learned models<br/>router, resolver, risk"] -- "digest-checked artifacts" --> engine
