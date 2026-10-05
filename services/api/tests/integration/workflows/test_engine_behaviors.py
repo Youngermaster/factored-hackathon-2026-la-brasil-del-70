@@ -212,3 +212,26 @@ async def test_a_new_sign_in_mid_write_asks_the_confirmation_again_and_a_step_up
     step_up = harness.session(CO, step_up=True, session_id="ses-co-second-up", lineage="lin-co-second")
     confirmed = await harness.say("sí", step_up, confirm.conversation_id)
     assert (confirmed.state, confirmed.outcome) == ("RESOLVED", Outcome.RESOLVED)
+
+
+async def test_deadline_and_definition_questions_reach_retrieval_not_intake(memory_only: Backend) -> None:
+    # Rubric audit 2026-10-05 (fix 1): these used to open a dispute intake or a card lookup in production.
+    harness = build_harness(memory_only.uow_factory, memory_only.session_store)
+    for session, text, clause in (
+        (harness.session(MX), "¿Cuántos días tengo para levantar una aclaración?", "DSP-MX-1@1"),
+        (harness.session(PT), "O que é um bloqueio preventivo de cartão?", "CRD-ALL-2@1"),
+    ):
+        reply = await harness.say(text, session)
+        record = await harness.record(session, reply.turn_id)
+        assert record.retrieval is not None
+        assert record.retrieval.decision is RetrievalDecisionCode.ANSWER
+        assert clause in {str(citation) for citation in record.retrieval.citations}
+        assert (reply.outcome, reply.response.template_id) == (Outcome.RESOLVED, "common.informational_answer")
+        assert reply.response.citations
+    # The pt deadline question reaches retrieval too; the lexical retriever of the memory backend may abstain on it
+    # (the deployed hybrid retriever is not available here), and either way no dispute intake starts.
+    session = harness.session(PT)
+    reply = await harness.say("Quantos dias tenho para abrir uma contestação?", session)
+    record = await harness.record(session, reply.turn_id)
+    assert record.retrieval is not None
+    assert reply.outcome in {Outcome.RESOLVED, Outcome.ABSTAINED}
