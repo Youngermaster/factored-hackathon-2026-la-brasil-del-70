@@ -1,0 +1,36 @@
+{
+  "cassette_id": "595c6afb39365d451bcf83e43cd07a9018e3a363b22d1c0d17ecbfc5e363c04e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 943,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:17.565665Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Me cobraroon nás de lo que marcaba el datáfono, ¿dónde pongo la queja?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

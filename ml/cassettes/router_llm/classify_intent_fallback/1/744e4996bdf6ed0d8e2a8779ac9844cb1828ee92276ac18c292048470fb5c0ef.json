@@ -1,0 +1,36 @@
+{
+  "cassette_id": "744e4996bdf6ed0d8e2a8779ac9844cb1828ee92276ac18c292048470fb5c0ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1201,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:07.530802Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me darían crédto de nómina si gano el mínimo?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "51ba9daf47fb6e0ff43dcd7d4ced930c0b7bff41abae9c171ca12b48d9799290",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2095,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.8,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:42.568144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿El bloqueo de la tarjeta es temporal o definitivo?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

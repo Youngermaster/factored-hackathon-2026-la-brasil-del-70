@@ -1,0 +1,32 @@
+{
+  "cassette_id": "984180d486bcc41aca513d480a8d6b525ed4ee0acdb7e09f8f5d5bafebac665f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 958,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "out_of_scope"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:41.467760Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "Pásamee una reeceta de chilaquiles verdes",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

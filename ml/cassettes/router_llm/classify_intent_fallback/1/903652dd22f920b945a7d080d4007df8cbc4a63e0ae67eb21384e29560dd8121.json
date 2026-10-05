@@ -1,0 +1,36 @@
+{
+  "cassette_id": "903652dd22f920b945a7d080d4007df8cbc4a63e0ae67eb21384e29560dd8121",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1401,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "unsupported"
+      },
+      {
+        "confidence": 0.1,
+        "label": "out_of_scope"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:33.303269Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "NECESITO PAGAR EL RECIBO DE LA LUZ DESDE AQUÍ",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d12ac84f1993e942a33b966c3a14fe3e4923405773fa1453010e6558d6004152",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 734,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:01.318740Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 922,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "bloqquear tarjeta urgente",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fc4266fe7a6b61bf161e3597460d3b51172d036d940a6032d3953f3de98ab7c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1111,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:58.866429Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Necesito un crédito de 500 pesos, quiero hacer la solicitud ahorita",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

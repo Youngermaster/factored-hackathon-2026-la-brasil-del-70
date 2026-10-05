@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ae9a5d7ad88d63a5686af8673f958ad6214f7434690daf6182a3b9d41ed5c052",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1057,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:08.696120Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Porfaa, inicien mi soicitud de crédito automotriz",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bba0bb2cc1e486609e27c0ee9809f64bb91c2b800d48422cd0567d6225ecf937",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1303,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:52.656961Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "HOLA, DECIME EL SALDO DE LA CUENTA",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

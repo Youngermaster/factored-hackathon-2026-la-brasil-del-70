@@ -1,0 +1,32 @@
+{
+  "cassette_id": "d8858b278151b765ce70edaf243f38f9bc142a6bc1829db6d7e8cfffca4bf638",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1065,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:00.400680Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Che, paame con una person",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

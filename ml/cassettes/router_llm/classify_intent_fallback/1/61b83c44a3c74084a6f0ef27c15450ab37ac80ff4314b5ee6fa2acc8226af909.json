@@ -1,0 +1,32 @@
+{
+  "cassette_id": "61b83c44a3c74084a6f0ef27c15450ab37ac80ff4314b5ee6fa2acc8226af909",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 952,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:55.196903Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "Qual e o meu saldo?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

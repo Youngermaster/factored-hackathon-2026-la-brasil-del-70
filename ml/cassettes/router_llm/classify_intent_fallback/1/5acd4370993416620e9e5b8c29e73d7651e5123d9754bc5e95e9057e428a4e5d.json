@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5acd4370993416620e9e5b8c29e73d7651e5123d9754bc5e95e9057e428a4e5d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1259,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:06:50.333689Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Sumerce, ¿ya estudiaron mi solicitud?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

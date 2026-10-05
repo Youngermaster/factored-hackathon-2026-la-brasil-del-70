@@ -1,0 +1,36 @@
+{
+  "cassette_id": "553cc9341cb86b4768a06d60a96451d6cdfa2569e735609d8cc9d635332e9a3f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 996,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.6,
+        "label": "dispute_new"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:38.040855Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quantos dias eu tenho pra contestar uam compra?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "eb96e76ce0c4f631dfd08aa15e1a809a6e722f6a7c238e61a37a93b5e1506d69",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1543,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:00.891831Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Por que meeu cartão foi recusado na Boutiquee Moda?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

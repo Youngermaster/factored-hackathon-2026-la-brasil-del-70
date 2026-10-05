@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d9fd844eb1cdab5d4725000eba1e0281c507c81fe2512b14af513de6ab0bb3ff",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 940,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.8,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:48.274190Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Soy pensionado, ¿me dan crédito de libranza?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "055583264894d873b09fbf866a8126db3f7f52b497673d7a9e9019a8861ffaa9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1312,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:48.783545Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pasás info sobre préstamo personal?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "96cf303778f6eb6ab6bbf7242351e48c50257543097929087d92d16f10b77c9b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 923,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:06.255046Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero solicitar un préstamo personal",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

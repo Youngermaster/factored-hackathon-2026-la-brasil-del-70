@@ -1,0 +1,36 @@
+{
+  "cassette_id": "95efc2ef2ace7f06c9ef63c2f8c6d5cbcd50dc02a49efda6a1f929fe37fbdecc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 826,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:25.550171Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Hasta cuánta plata prestan en un crédito de libranza?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a730a78c0d7d4de6f32bbaca1dbb66ef67f252df107b9214b8ba5b1846c84405",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1242,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:26.330783Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Cuál es e cuupo disponible de mi tarjeta de crédito?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

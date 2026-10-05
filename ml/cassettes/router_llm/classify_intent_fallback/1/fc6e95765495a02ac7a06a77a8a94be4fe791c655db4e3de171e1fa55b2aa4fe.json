@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fc6e95765495a02ac7a06a77a8a94be4fe791c655db4e3de171e1fa55b2aa4fe",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 848,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:35.585565Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "me colabora consultando el saldo de la tarjeta que termina en 3310",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

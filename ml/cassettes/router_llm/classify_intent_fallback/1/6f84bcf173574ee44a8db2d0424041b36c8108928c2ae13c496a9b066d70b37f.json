@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6f84bcf173574ee44a8db2d0424041b36c8108928c2ae13c496a9b066d70b37f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 975,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:51.538839Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Buenas tarde, regáleme el desbloqqueo de la tarjeta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

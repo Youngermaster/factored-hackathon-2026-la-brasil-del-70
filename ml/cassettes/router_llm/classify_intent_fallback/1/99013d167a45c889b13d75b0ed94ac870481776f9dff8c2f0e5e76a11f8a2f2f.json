@@ -1,0 +1,36 @@
+{
+  "cassette_id": "99013d167a45c889b13d75b0ed94ac870481776f9dff8c2f0e5e76a11f8a2f2f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 869,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:06:27.648363Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oigan, llevo dos semanas esperando espuesta del préstamo, ¿en wué va?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b24362cf0b09ca3358d9f273caa671c5c350d2f3ba359d5b283730ddf1d64c28",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 811,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:12.601538Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Buenas, ya me decidí: quiero radicar la solicitud de préstamo personal",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

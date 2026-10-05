@@ -1,0 +1,36 @@
+{
+  "cassette_id": "13863a4262222ac11236050c45616c91834c7b90a0f1fdd2815f597bd3b17e7d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 758,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:04.195914Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Minha contestação daqele asque que não saiu já foi resolvida?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

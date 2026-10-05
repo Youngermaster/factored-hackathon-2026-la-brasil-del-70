@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ba327d1b922515ccb187f35296ae5befb65d3c6641e98304b248dada4ce0e90f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3602,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:46.952397Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber en que quedo mi reclamo por el cajero que no me dio el dinero",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

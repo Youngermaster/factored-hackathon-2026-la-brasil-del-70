@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c859be1136f56e30a45413089986493f4c1377112782073b9dadb4e332e2d33c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1015,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:11:31.213287Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, como está minha contestação da compra na Farmacia Salud?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

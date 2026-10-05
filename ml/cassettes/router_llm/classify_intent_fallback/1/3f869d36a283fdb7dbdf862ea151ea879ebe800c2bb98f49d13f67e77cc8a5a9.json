@@ -1,0 +1,36 @@
+{
+  "cassette_id": "3f869d36a283fdb7dbdf862ea151ea879ebe800c2bb98f49d13f67e77cc8a5a9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1124,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:43.455637Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Llevo un mes esperando el desembolso del préstamo aprobado, ¿qué pasa cob eso?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

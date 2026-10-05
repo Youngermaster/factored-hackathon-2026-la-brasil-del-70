@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ce17b3d582df826ead640d426fb61b5252bf2b729418c298fb5d90b19dde769b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 804,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:59.210468Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Me bloquearon la débito por eqquivocarme con el PIN, necesiito que la habiliten",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

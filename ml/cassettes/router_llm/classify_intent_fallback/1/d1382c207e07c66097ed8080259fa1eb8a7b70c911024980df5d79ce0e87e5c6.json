@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d1382c207e07c66097ed8080259fa1eb8a7b70c911024980df5d79ce0e87e5c6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 870,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:31.340541Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiro ver en qué se me fue la plata este mes, ¿tenés el detalle de consumos?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

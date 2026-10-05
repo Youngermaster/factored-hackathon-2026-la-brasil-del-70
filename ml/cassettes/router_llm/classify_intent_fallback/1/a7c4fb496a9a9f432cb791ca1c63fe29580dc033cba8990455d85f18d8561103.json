@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a7c4fb496a9a9f432cb791ca1c63fe29580dc033cba8990455d85f18d8561103",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 2311,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:07.866317Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Não quero abrir outra, só saber se a contestação que já fiz foi aprovada",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

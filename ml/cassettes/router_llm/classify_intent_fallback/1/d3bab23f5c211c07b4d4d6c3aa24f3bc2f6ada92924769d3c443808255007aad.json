@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d3bab23f5c211c07b4d4d6c3aa24f3bc2f6ada92924769d3c443808255007aad",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1071,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:12.407942Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "QUAL A DIFERENÇA ENTRE CANCELAR E BLOQUEAR O CARTÃO?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0ba28364e75057a4e9488b2c0d3d220695423d3614016c84302296362353f23e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 858,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:14:32.768010Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Buenas tardes, hice una transferencia el sábado y no aparece en la otra cuenta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

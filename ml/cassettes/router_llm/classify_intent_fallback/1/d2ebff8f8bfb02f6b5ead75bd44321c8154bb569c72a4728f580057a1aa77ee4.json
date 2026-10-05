@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d2ebff8f8bfb02f6b5ead75bd44321c8154bb569c72a4728f580057a1aa77ee4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 895,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:58.656023Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Qual o valor máximo liberado em empréstimo pessoal?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

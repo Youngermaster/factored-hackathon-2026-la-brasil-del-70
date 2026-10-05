@@ -1,0 +1,40 @@
+{
+  "cassette_id": "d23ebd1d95e8d795cd25de658b5367a7ccc832e87e609c9536441cbed69c1686",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1173,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.5,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:29.777569Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Oi, fiz uma transferência de 50 conto e a pessoa diz que não recebeu",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "de40208def2780356e80ea05ad292b1e0538deb9a95a2deeb0c127e37aa1f82d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1252,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:57.156517Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Fijate si impactó el pago mínimo que hice, no quiero que me cobren interedes",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

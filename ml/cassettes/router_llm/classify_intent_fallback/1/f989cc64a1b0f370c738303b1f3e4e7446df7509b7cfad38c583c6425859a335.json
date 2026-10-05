@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f989cc64a1b0f370c738303b1f3e4e7446df7509b7cfad38c583c6425859a335",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1400,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:28.427363Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oigan, llevo dos semanas esperando respuesta del prestamo, ¿en que va?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

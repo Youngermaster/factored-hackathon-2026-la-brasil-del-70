@@ -1,0 +1,36 @@
+{
+  "cassette_id": "84b42df869ee00caaf7e0a58c807b01343ae6111e155f61b9bb29c2a3416a99e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1311,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:22.201918Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Che, la tarjeta está hecha pelota, ¿me mandan una nueva?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

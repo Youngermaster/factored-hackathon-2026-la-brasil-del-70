@@ -1,0 +1,40 @@
+{
+  "cassette_id": "4fcba3399241bbb8d3d6563edeb5ad21744d362e5ebe2f3787b86541eec41402",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1268,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.7,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:51.829208Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Me bloquearon la plástico por una comora que sí hice yo, necesito que la liberen",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

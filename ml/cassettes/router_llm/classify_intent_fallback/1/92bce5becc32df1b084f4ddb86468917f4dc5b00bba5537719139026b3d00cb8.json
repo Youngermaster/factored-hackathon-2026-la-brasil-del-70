@@ -1,0 +1,36 @@
+{
+  "cassette_id": "92bce5becc32df1b084f4ddb86468917f4dc5b00bba5537719139026b3d00cb8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1298,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:19.549010Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Me bloquearon la tarjeta por una compra que si hice yo, necesito que la liberen",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

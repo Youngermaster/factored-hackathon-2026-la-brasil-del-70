@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c645f87b0d9225c0919c9bee4b7729fb40aa92ba01530e5f16ece12ed81eacd8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1664,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:02.852845Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Necesito un crédito de 300 varos, quiero hacer la solicitud ahorita",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

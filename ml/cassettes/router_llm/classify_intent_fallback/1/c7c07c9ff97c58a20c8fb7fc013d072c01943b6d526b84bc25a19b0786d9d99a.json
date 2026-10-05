@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c7c07c9ff97c58a20c8fb7fc013d072c01943b6d526b84bc25a19b0786d9d99a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1718,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:05.885963Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, como está minha contestação da compra na Farmacia Salue?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "facbb6a09a3717f117750e2a90b105636db9ea89f215e73c129a85b20c92a57d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1143,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:03.681584Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Hola, ¿puedo bablar con un asesor de carne y huesk?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

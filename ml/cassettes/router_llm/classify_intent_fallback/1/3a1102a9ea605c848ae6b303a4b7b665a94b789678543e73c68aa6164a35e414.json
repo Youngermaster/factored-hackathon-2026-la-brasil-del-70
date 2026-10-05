@@ -1,0 +1,36 @@
+{
+  "cassette_id": "3a1102a9ea605c848ae6b303a4b7b665a94b789678543e73c68aa6164a35e414",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1017,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "label": "dispute_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:32.270232Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "CHE, ME APARECE UN CONSUMO DE 15 LUCAS EN SUPER AHORRO QUE NO HICE YO",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

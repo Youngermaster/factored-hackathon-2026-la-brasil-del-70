@@ -1,0 +1,40 @@
+{
+  "cassette_id": "4ef1826bd363699b9952e053ee06ca87a63000019b8387f4fee8899021c8e230",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1594,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.8,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.6,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:45.506853Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "HAY CONSUMOS QUE ME HACEN RUIDO, PREFIERO QUE LA CONGELEN HASTA REVISAR",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

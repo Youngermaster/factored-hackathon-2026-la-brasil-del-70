@@ -1,0 +1,40 @@
+{
+  "cassette_id": "746938376e7af08b05f025503c5def30aba7dd65cb304e758dab8df1d62bb990",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1236,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.03,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:48.093956Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Me envia o extrato do cartão final 4109, por favor",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

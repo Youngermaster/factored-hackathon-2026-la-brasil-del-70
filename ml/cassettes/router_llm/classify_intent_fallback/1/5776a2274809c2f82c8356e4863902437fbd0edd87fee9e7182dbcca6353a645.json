@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5776a2274809c2f82c8356e4863902437fbd0edd87fee9e7182dbcca6353a645",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1306,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:56.983712Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quanto de limite ainda tenho no cartão de crédito?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "028cae7a6d96cc9210299e81f634161ee0f0e62ab87898512c01420c3c39d678",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1123,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:33.029691Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero reactivar la tarjeta que termina en 8864",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

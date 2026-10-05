@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8a6342b3c852f23b95618a5f6812a96187e6f2ad9220a4c968dbc24dad8bccd5",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1226,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:22.250487Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 952,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "ME MANDA O FORMULÁRIO QUE EU QUERO DAR ENTRADA NO EMPRÉSTIMO",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

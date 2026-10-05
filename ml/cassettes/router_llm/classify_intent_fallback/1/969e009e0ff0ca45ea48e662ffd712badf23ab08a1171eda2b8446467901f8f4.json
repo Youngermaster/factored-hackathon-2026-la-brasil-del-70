@@ -1,0 +1,36 @@
+{
+  "cassette_id": "969e009e0ff0ca45ea48e662ffd712badf23ab08a1171eda2b8446467901f8f4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1016,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:20.920293Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Com minha renda, quanto eu conseguiria de emprestimo?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "83e5cf9b00572b38ed87fa566f973af83ef158cbe5e886c1b7c65d3972ce25e9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1334,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:04.094992Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Podría acceder a una tarjeta de frédito con mis ingresos?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

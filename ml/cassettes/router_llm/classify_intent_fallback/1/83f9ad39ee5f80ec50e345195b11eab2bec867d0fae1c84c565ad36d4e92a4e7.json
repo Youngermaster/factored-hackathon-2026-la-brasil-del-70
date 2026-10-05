@@ -1,0 +1,36 @@
+{
+  "cassette_id": "83f9ad39ee5f80ec50e345195b11eab2bec867d0fae1c84c565ad36d4e92a4e7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1154,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:58.788387Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Que plazos tienen para credito de libre inversion?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

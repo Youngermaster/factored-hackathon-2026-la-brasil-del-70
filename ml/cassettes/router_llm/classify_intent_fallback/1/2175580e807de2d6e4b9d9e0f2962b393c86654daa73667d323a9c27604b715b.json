@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2175580e807de2d6e4b9d9e0f2962b393c86654daa73667d323a9c27604b715b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1040,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:05.524327Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 922,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿Mi plástico está activa?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

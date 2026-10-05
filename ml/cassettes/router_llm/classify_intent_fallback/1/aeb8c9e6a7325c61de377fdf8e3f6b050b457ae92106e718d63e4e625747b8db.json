@@ -1,0 +1,32 @@
+{
+  "cassette_id": "aeb8c9e6a7325c61de377fdf8e3f6b050b457ae92106e718d63e4e625747b8db",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1122,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.99,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:03.089672Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "REGÁLEME EL BLOQUEO DE LA TARJETA DÉBITO, SE ME PERDIÓ",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c7e30abb4c445c6480dafbf2291c112dbfcc461f48827229965a34172fee4b2f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 883,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:20.859351Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "SE ME DAÑÓ LA BANDA MAGNÉTICA, QUIERO CAMBIAR LA TARJETA",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

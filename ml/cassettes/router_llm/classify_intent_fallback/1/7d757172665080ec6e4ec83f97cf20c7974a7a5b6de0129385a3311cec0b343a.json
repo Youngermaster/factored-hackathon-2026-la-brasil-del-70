@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7d757172665080ec6e4ec83f97cf20c7974a7a5b6de0129385a3311cec0b343a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1074,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.7,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:04.960990Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Quiero congelar mi tarjeta de credito por seguridad",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

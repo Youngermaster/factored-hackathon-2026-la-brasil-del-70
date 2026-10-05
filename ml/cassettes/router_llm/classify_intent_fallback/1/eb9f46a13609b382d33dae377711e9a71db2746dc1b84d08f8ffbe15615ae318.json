@@ -1,0 +1,36 @@
+{
+  "cassette_id": "eb9f46a13609b382d33dae377711e9a71db2746dc1b84d08f8ffbe15615ae318",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 928,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:10.543492Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 922,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿Mi tarjeta esta activa?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

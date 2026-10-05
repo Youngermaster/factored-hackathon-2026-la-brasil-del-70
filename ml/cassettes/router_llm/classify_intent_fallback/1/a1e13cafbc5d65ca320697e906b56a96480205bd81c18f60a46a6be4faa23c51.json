@@ -1,0 +1,36 @@
+{
+  "cassette_id": "a1e13cafbc5d65ca320697e906b56a96480205bd81c18f60a46a6be4faa23c51",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 783,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:13.497045Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "BUENAS, YA ME DECIDÍ: QUIERO RADICAR LA SOLICITUD DE CRÉDITO DE LIBRE INVERSIÓN",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

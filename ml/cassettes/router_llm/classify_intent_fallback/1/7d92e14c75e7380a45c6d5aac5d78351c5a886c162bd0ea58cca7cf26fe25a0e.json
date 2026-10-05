@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7d92e14c75e7380a45c6d5aac5d78351c5a886c162bd0ea58cca7cf26fe25a0e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1150,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:09.056914Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Mi tarjeta vence este mes, ¿me pueden enviar la renovación?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

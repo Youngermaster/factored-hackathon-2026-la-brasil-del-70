@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d840b6e7ffdf74322c527a6ac6961250822d2f0cde4f8df4f51f6f7215fb8fc0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1002,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:22.488454Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Me colabora consultando e lsaldo de la tarjeta que termina en 3310",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

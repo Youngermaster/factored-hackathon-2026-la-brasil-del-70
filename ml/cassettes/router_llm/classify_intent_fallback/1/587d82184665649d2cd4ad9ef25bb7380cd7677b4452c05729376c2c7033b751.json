@@ -1,0 +1,36 @@
+{
+  "cassette_id": "587d82184665649d2cd4ad9ef25bb7380cd7677b4452c05729376c2c7033b751",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 797,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:48.090790Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cumplo los requisitos para crédito hipotecario?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

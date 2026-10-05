@@ -1,0 +1,44 @@
+{
+  "cassette_id": "81835400808e7313594fd57bd43c22c94968566bcf0b0af2a44fa4a792941019",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1173,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.03,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.01,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:19.854253Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 51
+  },
+  "variables": {
+    "customer_message": "no reconozco un cargo de 500 pesos en super ahorro",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f604ef9a07889193b85669e421ce9096b7311bb155011f9e41fafd0fe2b862f7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1593,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:23.220234Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿A cuántos meses me pueden prestar en un crédito personal?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

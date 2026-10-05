@@ -1,0 +1,36 @@
+{
+  "cassette_id": "12ea04d2c3163f87d2ec7cfcba8b6619459a0af2bc9c7453ed98d4585848cec0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1571,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:45.483457Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero pedir reposición ed la tarjeta terrminada en 9912",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

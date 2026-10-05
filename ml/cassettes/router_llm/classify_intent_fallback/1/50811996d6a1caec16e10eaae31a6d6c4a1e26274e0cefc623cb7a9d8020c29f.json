@@ -1,0 +1,36 @@
+{
+  "cassette_id": "50811996d6a1caec16e10eaae31a6d6c4a1e26274e0cefc623cb7a9d8020c29f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 892,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:58.668142Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pueden decir cuándo vence mi tarjeta teemrinación 0937?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "3d9349b39b3d64312bb88356dc4b1e692b239f4c43aefcb9625b798c6076a777",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 966,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:11:34.592002Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, como tá minha contestação da compra na Mercado Central?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "feb17d3b560881fcd7e32dd92314abc6cb8b41821639c49dca1f4678cf2ce9df",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1320,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:21.595925Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "¿En que horario atienden las sucursales?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

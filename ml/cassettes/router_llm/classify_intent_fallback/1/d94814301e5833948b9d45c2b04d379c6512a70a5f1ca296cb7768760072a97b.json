@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d94814301e5833948b9d45c2b04d379c6512a70a5f1ca296cb7768760072a97b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 906,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:38.735357Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Sumercé, necesito el histórico de mi cuenta para presentarlo en la declaración de renta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

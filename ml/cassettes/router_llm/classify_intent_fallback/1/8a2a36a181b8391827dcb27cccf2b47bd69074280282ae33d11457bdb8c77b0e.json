@@ -1,0 +1,40 @@
+{
+  "cassette_id": "8a2a36a181b8391827dcb27cccf2b47bd69074280282ae33d11457bdb8c77b0e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1222,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.85,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:54.819756Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Hola, vi movimientos raros en mi plástico, ¿me la pueden congelar mientras?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

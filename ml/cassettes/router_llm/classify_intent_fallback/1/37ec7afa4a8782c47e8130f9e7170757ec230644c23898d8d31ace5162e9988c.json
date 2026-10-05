@@ -1,0 +1,40 @@
+{
+  "cassette_id": "37ec7afa4a8782c47e8130f9e7170757ec230644c23898d8d31ace5162e9988c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1043,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.4,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:39.631748Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 949,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Cancelei a assinatura e continuam cobrando na fatura, quero abrir uma contestacao",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

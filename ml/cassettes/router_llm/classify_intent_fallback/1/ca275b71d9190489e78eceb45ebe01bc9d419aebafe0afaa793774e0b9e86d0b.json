@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ca275b71d9190489e78eceb45ebe01bc9d419aebafe0afaa793774e0b9e86d0b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1458,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:54.677083Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "perdi o cartão e já bloqueei agora quero um novo",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "100325b0abf08735baa39f7fba8fb46dc3efe46328dbc024bf3d0b7d4c71144b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 783,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:26.639104Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Para mi declaración necesito los estados de cuuenta del año",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

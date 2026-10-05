@@ -1,0 +1,36 @@
+{
+  "cassette_id": "1571963d012fe7a0e5e5ca5712006900e9034c5f30db143f4206182fab61890b",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 990,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:15.055796Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quais tipos de emprestimo voces oferecem?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

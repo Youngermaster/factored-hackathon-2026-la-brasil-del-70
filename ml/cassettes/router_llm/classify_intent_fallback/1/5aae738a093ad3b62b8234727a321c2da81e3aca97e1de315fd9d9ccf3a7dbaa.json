@@ -1,0 +1,32 @@
+{
+  "cassette_id": "5aae738a093ad3b62b8234727a321c2da81e3aca97e1de315fd9d9ccf3a7dbaa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 705,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:57:47.265867Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "¿Me cobran comisión si retiro en cajeros de otro banco?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "247d5f405e703ff5539bc7ca9d58f0cf5986fe94004469e20357ec84a993fd4d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 679,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:05.048867Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Me regala información de las condiciones de préstamo personal",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

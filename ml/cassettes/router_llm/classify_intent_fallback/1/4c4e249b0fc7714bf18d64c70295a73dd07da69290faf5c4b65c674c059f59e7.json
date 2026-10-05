@@ -1,0 +1,40 @@
+{
+  "cassette_id": "4c4e249b0fc7714bf18d64c70295a73dd07da69290faf5c4b65c674c059f59e7",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1581,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.75,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:11.201117Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Che, me aparece un consumo de $ 7.800 en Estación de Servicio que no hice yo",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

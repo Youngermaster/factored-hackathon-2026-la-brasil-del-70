@@ -1,0 +1,36 @@
+{
+  "cassette_id": "96061f069c0313dd982feb6af0592a2f551f7b06ef6e00c95d06f006b22a983f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1021,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:54.813556Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "¿Me ayudan a volver a activar mi tarjeta de debito?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

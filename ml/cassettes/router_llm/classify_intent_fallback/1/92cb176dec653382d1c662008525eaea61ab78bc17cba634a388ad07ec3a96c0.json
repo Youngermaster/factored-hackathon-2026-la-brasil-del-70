@@ -1,0 +1,36 @@
+{
+  "cassette_id": "92cb176dec653382d1c662008525eaea61ab78bc17cba634a388ad07ec3a96c0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 957,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "payment_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:45.849627Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Me alcanza para gastar 500 pesos con lo que tengo en debito?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cassette_id": "0c9d7dbd5ff3c4514658656ad62bb32affd4adaa8fa1111b80013cb741828a9d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1016,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "out_of_scope"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:58.641770Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "¿A que hora juega Boca hoy?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

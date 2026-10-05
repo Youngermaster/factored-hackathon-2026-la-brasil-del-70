@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6eae04ea2754e7b603311ea903c7a22699eb7bff7d7251a3c7598310eef7a368",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1110,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:19.300109Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 949,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "COM MINHA RENDA, QUANTO EU CONSEGUIRIA DE EMPRÉSTIMO?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ad42da73bfad67e0377b34c0d3e8a81b9c613cceda4b54179e7b9c13089d98fa",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 970,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:23.380844Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber el saldo de la tarjeta terminada en 2275",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

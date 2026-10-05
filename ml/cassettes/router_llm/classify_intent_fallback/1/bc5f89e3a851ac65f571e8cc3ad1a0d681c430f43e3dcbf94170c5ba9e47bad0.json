@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bc5f89e3a851ac65f571e8cc3ad1a0d681c430f43e3dcbf94170c5ba9e47bad0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1211,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:39.970401Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Como es el proceso de un reclamo por transaccion no reconocida?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

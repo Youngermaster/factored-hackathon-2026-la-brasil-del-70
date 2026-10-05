@@ -1,0 +1,36 @@
+{
+  "cassette_id": "56210d6989f890aedf6ae1fa5c5d1da290c253bc0e4409dd976697fae49c10bb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1000,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:55.328380Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "por favor desbloqueiem o cartão final 7345",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "b84c587b29dc0ea4ccf02c47d7006a4e703671b2346b9ec503db8d51a29156fd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1046,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.1,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:16.995645Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 44
+  },
+  "variables": {
+    "customer_message": "hola me darían préstamo personal si gano el mínimo",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

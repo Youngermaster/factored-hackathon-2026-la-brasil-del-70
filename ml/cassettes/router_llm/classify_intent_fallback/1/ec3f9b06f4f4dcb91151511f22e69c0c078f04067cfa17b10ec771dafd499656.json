@@ -1,0 +1,40 @@
+{
+  "cassette_id": "ec3f9b06f4f4dcb91151511f22e69c0c078f04067cfa17b10ec771dafd499656",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1317,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:28.533360Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Oi, fiz uma transferência de R$ 150 e a pessoa diz que não recebeu",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

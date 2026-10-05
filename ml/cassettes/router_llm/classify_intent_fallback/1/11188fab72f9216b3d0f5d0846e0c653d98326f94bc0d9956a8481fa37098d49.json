@@ -1,0 +1,36 @@
+{
+  "cassette_id": "11188fab72f9216b3d0f5d0846e0c653d98326f94bc0d9956a8481fa37098d49",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 864,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:57.877003Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Quiero pga rla factura del gas",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

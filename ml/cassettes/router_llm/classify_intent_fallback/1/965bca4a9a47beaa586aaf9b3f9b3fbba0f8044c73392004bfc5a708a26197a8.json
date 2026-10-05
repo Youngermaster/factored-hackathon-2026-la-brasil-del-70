@@ -1,0 +1,36 @@
+{
+  "cassette_id": "965bca4a9a47beaa586aaf9b3f9b3fbba0f8044c73392004bfc5a708a26197a8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1141,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:05.319694Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero hablar co nuna persoa",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

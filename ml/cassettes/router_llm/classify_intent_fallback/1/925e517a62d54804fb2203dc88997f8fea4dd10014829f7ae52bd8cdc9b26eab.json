@@ -1,0 +1,40 @@
+{
+  "cassette_id": "925e517a62d54804fb2203dc88997f8fea4dd10014829f7ae52bd8cdc9b26eab",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1190,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.03,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:48.511484Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Me envia o extrato do cartão final 7345, pfv",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

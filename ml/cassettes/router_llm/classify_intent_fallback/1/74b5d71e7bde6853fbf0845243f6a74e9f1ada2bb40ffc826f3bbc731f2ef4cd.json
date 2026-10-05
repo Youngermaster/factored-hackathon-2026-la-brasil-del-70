@@ -1,0 +1,36 @@
+{
+  "cassette_id": "74b5d71e7bde6853fbf0845243f6a74e9f1ada2bb40ffc826f3bbc731f2ef4cd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1064,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:33.625421Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Cancelé mi suscripción de streaming hace un mes y me siguuen cobrando, quiero reclajarlo",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

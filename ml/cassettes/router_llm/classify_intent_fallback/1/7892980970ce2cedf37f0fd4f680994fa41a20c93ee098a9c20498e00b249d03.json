@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7892980970ce2cedf37f0fd4f680994fa41a20c93ee098a9c20498e00b249d03",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1002,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.5,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:03.988459Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Cual es el monto maximo que prestan en prestamo personal?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

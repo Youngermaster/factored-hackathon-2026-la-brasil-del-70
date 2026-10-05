@@ -1,0 +1,32 @@
+{
+  "cassette_id": "725e9d6bbe5dacbdb2d3fcecd2c34918ff80d40bce221bc327d26a17623b07dd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1102,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.99,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:21.663646Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "Me colabora consultando el saldo de la tarjeta que termina en 0419",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

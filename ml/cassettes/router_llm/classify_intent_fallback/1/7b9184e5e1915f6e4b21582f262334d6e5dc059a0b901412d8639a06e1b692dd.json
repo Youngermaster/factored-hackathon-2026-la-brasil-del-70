@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7b9184e5e1915f6e4b21582f262334d6e5dc059a0b901412d8639a06e1b692dd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 851,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:53.247999Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Necesito pagar el recibo de la luz desde aqui",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e700e711420688d5456ad7be51dd833420326136552b4e8ca7cc20ccfa47245a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1216,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:43.011397Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pueden decir cuándo vence mi plástico terminación 4821?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

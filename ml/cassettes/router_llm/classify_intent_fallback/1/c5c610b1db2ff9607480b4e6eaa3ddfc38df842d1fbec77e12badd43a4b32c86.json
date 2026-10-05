@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c5c610b1db2ff9607480b4e6eaa3ddfc38df842d1fbec77e12badd43a4b32c86",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1091,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:41.565822Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "¿Cumplo los requisitos para tarjeta de crédito?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

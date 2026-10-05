@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6b89ba081a5b25343fdda7305e955e4574911505cc0935c8ae975b7ced380e25",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 983,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:12.312149Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Buenas, ya me decidí: quiero radicar la solicitud de crédito hipotecario",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

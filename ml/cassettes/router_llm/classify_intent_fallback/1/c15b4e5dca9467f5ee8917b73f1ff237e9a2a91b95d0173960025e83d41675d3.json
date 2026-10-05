@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c15b4e5dca9467f5ee8917b73f1ff237e9a2a91b95d0173960025e83d41675d3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1066,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "greeting_or_other"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:11:50.118171Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 922,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Gracias, eso era too",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

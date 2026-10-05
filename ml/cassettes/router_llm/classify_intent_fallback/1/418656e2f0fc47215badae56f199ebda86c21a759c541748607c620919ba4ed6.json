@@ -1,0 +1,36 @@
+{
+  "cassette_id": "418656e2f0fc47215badae56f199ebda86c21a759c541748607c620919ba4ed6",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 861,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:00.194911Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Preciso das movimentações da conta desde hoje cedo",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

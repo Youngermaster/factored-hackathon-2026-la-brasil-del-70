@@ -1,0 +1,36 @@
+{
+  "cassette_id": "1f473c40e95c1acf583afed022457804ed46c178c8d186651426f30cef4a1f67",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2471,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:13.805636Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quireo solicitar un préstaom personal",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

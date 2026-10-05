@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bac4c8d3f3d5210c0b0a1653285eddf5612b7bb341e4e9ce78f000bd1dac11a9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 993,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:44.900481Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "cargo desconkcido en mi plástico treminación 4821",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

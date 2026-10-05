@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d0464ae9e1263cc4585240ca1ab38e8d1511b89f10ece53abe98a8209af6a7fb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1068,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:53.555200Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Sumerce, ¿me confirma si el abono que hice esta manana entro?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

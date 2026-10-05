@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2cdf11e5191df277750614c510360e85cc9331990a5a8664cfbdff242794e891",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1324,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:12.656836Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Che, me aparece un consumo de cinco mil pesos en Streamng Music que no hice yo",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

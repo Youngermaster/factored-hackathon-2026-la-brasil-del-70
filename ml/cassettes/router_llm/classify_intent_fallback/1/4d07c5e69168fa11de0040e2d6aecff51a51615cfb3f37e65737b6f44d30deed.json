@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4d07c5e69168fa11de0040e2d6aecff51a51615cfb3f37e65737b6f44d30deed",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 884,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:40.791572Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Meu cartão de crédito ofi aprovado?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

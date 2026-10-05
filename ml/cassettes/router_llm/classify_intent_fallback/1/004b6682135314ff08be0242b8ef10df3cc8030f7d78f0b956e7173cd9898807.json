@@ -1,0 +1,36 @@
+{
+  "cassette_id": "004b6682135314ff08be0242b8ef10df3cc8030f7d78f0b956e7173cd9898807",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 856,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.5,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:17.481203Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quantos dias eu tenho pra contestar uma compra?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

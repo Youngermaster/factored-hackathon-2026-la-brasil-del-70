@@ -1,0 +1,32 @@
+{
+  "cassette_id": "fc5423d70497a0cea5a0e8ba6009c8767fb9af76cd4859c091d11a6740fd7509",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 941,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:32.847862Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Bloqueá la tarjeta terminada en 6093 por favor",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f1e8f45f02cb7615945b7eb7f013a65193f407c4ab2ca74b047143432899f89c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 735,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:52.828768Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "quisiera saber si ya aprobaron el reclamo del cobro doble",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

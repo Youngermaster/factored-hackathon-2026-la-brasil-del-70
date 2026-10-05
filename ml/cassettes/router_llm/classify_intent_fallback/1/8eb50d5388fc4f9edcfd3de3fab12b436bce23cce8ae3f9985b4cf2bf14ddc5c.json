@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8eb50d5388fc4f9edcfd3de3fab12b436bce23cce8ae3f9985b4cf2bf14ddc5c",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1748,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:39.916144Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "O cartão tá todo gasto e a maquininha não lê mais, quero outro",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

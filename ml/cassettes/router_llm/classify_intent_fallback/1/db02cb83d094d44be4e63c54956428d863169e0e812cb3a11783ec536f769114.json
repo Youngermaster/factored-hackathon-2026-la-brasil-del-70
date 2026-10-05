@@ -1,0 +1,36 @@
+{
+  "cassette_id": "db02cb83d094d44be4e63c54956428d863169e0e812cb3a11783ec536f769114",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1373,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.99,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.01,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:10.878502Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Nao to conseguindo resolver com o robo, quero falar com uma pessoa",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

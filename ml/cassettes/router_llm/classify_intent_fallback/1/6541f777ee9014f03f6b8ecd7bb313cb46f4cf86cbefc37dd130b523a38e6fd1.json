@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6541f777ee9014f03f6b8ecd7bb313cb46f4cf86cbefc37dd130b523a38e6fd1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 732,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:55.410625Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Podria acceder a una tarjeta de credito con mis ingresos?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

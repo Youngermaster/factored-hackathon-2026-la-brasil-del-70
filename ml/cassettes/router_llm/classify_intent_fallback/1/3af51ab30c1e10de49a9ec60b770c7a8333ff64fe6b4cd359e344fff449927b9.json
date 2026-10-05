@@ -1,0 +1,32 @@
+{
+  "cassette_id": "3af51ab30c1e10de49a9ec60b770c7a8333ff64fe6b4cd359e344fff449927b9",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 795,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:32.437247Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Necesito pausar la tarjeta de credito ya, creo que me la copiaron",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

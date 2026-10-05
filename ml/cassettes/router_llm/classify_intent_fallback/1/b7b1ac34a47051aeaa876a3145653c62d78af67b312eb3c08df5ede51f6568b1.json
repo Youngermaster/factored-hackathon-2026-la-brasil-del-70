@@ -1,0 +1,40 @@
+{
+  "cassette_id": "b7b1ac34a47051aeaa876a3145653c62d78af67b312eb3c08df5ede51f6568b1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2491,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.4,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:14.304448Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "¿Qué pasa si me atraso en una cuota del crédito?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c43d3d1c9df0fd27c7202de8869f70397b6f242139a7c6d34cf1d57a19f49d8c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 716,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:06.930169Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Qué plazos tienen para crédito de libre inversión?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

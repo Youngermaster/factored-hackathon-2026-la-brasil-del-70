@@ -1,0 +1,36 @@
+{
+  "cassette_id": "cb0a19dc75871c4d60b7969039cea75ff68a3f01c90a604fdbdf649b285c6403",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1648,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:43.391909Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Tengo un folio de aclaracion abierto, ¿me pueden decir si ya avanzo?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

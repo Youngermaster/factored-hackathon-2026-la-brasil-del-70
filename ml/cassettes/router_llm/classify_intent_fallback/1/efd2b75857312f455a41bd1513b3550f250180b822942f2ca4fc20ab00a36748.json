@@ -1,0 +1,40 @@
+{
+  "cassette_id": "efd2b75857312f455a41bd1513b3550f250180b822942f2ca4fc20ab00a36748",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1349,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.7,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.4,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:43.539409Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Hay consumos que me hacen ruido, prefiero que la congele nhasta revisar",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

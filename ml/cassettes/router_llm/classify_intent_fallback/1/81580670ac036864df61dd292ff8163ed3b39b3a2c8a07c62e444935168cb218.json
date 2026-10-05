@@ -1,0 +1,36 @@
+{
+  "cassette_id": "81580670ac036864df61dd292ff8163ed3b39b3a2c8a07c62e444935168cb218",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1212,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:22.880331Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "¿Me ayudan a volver a activar mi plástico de débito?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

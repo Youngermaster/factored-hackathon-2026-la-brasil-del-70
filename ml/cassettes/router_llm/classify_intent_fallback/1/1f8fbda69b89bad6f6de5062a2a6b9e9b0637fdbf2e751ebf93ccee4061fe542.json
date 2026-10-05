@@ -1,0 +1,40 @@
+{
+  "cassette_id": "1f8fbda69b89bad6f6de5062a2a6b9e9b0637fdbf2e751ebf93ccee4061fe542",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1787,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.8,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.5,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:57.692598Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 957,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "OI, ACHO QUE CLONARAM MEU CARTÃO DE CRÉDITO, QUERO BLOQUEAR URGENTE",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

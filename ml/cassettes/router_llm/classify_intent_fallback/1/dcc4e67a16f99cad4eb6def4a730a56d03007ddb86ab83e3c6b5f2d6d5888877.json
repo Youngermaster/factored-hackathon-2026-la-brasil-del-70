@@ -1,0 +1,36 @@
+{
+  "cassette_id": "dcc4e67a16f99cad4eb6def4a730a56d03007ddb86ab83e3c6b5f2d6d5888877",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1311,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:26.359774Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, apareceu uma compra de 50 conto na Boutique Moda que eu não fiz",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

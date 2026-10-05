@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9e4a154a58217554b919c38f19849119e3473a8d23ac85cbd52f0a72a62d4951",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 769,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:08:48.111178Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Me regala informacion de las condiciones de credito de libre inversion",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

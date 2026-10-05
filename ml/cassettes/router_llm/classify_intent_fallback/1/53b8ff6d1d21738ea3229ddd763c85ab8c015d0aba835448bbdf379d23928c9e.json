@@ -1,0 +1,32 @@
+{
+  "cassette_id": "53b8ff6d1d21738ea3229ddd763c85ab8c015d0aba835448bbdf379d23928c9e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1052,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:19.337265Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "Consultar saldo de mi cuenta de ahorro",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fa5c80171d5da2d875e0c2c285d9bf161e0f360197becbb572b5a06acd4138a7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1004,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:10.819134Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "perdi meu cartão preciso bloquear agora",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

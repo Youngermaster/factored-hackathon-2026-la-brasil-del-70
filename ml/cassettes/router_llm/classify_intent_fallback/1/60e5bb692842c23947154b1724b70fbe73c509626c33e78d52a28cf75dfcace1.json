@@ -1,0 +1,36 @@
+{
+  "cassette_id": "60e5bb692842c23947154b1724b70fbe73c509626c33e78d52a28cf75dfcace1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1273,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:50.439108Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero invertir en acciones, ¿qué me recomiendan?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

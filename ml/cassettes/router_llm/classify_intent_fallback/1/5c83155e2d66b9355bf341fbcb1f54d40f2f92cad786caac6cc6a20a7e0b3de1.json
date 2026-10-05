@@ -1,0 +1,36 @@
+{
+  "cassette_id": "5c83155e2d66b9355bf341fbcb1f54d40f2f92cad786caac6cc6a20a7e0b3de1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 917,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:26.270225Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero reclamar un cobro de Óptica Visión, yo ya había cancelado esa ssucripció",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

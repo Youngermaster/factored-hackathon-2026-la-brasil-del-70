@@ -1,0 +1,36 @@
+{
+  "cassette_id": "676207ac3827a8f6f7ed82711c37b6f6db82ff3ffbc8cc4640e0511ba183fd6d",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1165,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.8,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:12:51.938340Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Buenos días, ¿hay forma de hablar con un asesor en línea?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

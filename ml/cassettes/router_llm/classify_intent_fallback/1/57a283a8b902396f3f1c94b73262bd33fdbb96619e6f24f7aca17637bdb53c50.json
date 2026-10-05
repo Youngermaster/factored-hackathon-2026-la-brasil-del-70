@@ -1,0 +1,36 @@
+{
+  "cassette_id": "57a283a8b902396f3f1c94b73262bd33fdbb96619e6f24f7aca17637bdb53c50",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1036,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:42.809469Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Decime todos los movimientos de la cuenta sueldo de junio",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

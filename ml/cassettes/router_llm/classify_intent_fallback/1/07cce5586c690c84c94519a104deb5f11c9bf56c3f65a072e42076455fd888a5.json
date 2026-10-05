@@ -1,0 +1,36 @@
+{
+  "cassette_id": "07cce5586c690c84c94519a104deb5f11c9bf56c3f65a072e42076455fd888a5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 902,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:37.026091Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Pasame una receta de chilaquiles verdes",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

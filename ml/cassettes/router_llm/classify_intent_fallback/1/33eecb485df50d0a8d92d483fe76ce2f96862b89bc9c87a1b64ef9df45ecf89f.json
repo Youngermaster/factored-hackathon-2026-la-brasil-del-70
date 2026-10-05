@@ -1,0 +1,36 @@
+{
+  "cassette_id": "33eecb485df50d0a8d92d483fe76ce2f96862b89bc9c87a1b64ef9df45ecf89f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1006,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:15.534343Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Em quantas parcelas dá pra pagar o empréstimo pessoal?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

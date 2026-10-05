@@ -1,0 +1,36 @@
+{
+  "cassette_id": "47adbd4c455ead13649c93fd3914c62e325efa44d24ecb452c5e486c8d4d8ceb",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1640,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:14:06.125152Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Voces cobram tarifa pra sacar em caixa de outro banco?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

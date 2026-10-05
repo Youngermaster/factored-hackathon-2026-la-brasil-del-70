@@ -1,0 +1,36 @@
+{
+  "cassette_id": "394d7eca646641507c05834ca30e977a30720ab11d57aa4b36a40146933a6385",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 878,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:49.929161Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "El cajero no me entregó la plata y sí me la deibtaron de la cuenta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

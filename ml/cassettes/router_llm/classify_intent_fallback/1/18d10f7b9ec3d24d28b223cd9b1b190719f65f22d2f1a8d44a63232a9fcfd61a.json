@@ -1,0 +1,40 @@
+{
+  "cassette_id": "18d10f7b9ec3d24d28b223cd9b1b190719f65f22d2f1a8d44a63232a9fcfd61a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1212,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.04,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.01,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:23.618076Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "Tô precisando de grana, uqero solicitr crédito hoje",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

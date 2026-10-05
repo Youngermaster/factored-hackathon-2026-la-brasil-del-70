@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d4462f314e0d13fabb41d23f5ddbaa8ee589503f7604ccc5f95d3996d6db1828",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1312,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:02.365134Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Boa tarde, meu cartao venceu e o novo nao chegou, podem enviar?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

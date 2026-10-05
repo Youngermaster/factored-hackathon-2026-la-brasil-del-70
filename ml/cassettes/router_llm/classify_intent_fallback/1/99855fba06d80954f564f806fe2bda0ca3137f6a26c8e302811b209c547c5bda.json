@@ -1,0 +1,40 @@
+{
+  "cassette_id": "99855fba06d80954f564f806fe2bda0ca3137f6a26c8e302811b209c547c5bda",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 958,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:25.866393Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Che, le transferí 15 lucas  un amigo y no le llegó, ¿qué onda?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

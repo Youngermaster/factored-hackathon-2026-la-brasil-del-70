@@ -1,0 +1,40 @@
+{
+  "cassette_id": "6e01e59b0a3f5ab5e96645f08d9e044de7e4d2a09d374368fd58ad128c14ac11",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1113,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.03,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:25.369779Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "QUIERO SABER EL SALDO DE LA TARJETA TERMINADA EN 2275",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "cassette_id": "5a0459a682b27cc1c062ec438e6ac83fefbded5a2d940e23c24f69428937e938",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1033,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.03,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.01,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:48.817897Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 946,
+    "output_tokens": 49
+  },
+  "variables": {
+    "customer_message": "Me envia o xetrao do cartão final 7345, por favor",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "e62f9d9cd6b2bd473320c16e50c428e8fb194faf3abdd287909f953a155d674f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1098,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.8,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.15,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:55.493420Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Me regala una certificacion bancaria",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6d5183caadb1c3bbdae270f2fcc5dca8b6af151903db4d8d698d8e9d52845126",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1009,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:56.646947Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero reactivar la tarjeta que termina en 0419",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

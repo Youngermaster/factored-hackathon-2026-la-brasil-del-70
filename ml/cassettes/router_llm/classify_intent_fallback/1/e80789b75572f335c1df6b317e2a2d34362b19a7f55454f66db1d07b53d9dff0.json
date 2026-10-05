@@ -1,0 +1,40 @@
+{
+  "cassette_id": "e80789b75572f335c1df6b317e2a2d34362b19a7f55454f66db1d07b53d9dff0",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 941,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.6,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.4,
+        "label": "payment_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:45.502134Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Por que meu cartão foi recusado na Mercado Central?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

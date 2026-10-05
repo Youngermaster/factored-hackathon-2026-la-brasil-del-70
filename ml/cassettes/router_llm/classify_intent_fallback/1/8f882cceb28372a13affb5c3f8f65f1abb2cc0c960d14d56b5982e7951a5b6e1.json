@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8f882cceb28372a13affb5c3f8f65f1abb2cc0c960d14d56b5982e7951a5b6e1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 924,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:29.401478Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "estado de cuenta plástico de crédito",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

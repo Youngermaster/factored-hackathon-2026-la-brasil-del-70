@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e9bafabd92a8483a71d0fefa0c7356f32da204593ad75da4a2a6eb3ef7608c01",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1445,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:48.776304Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Che, una consulta general: ¿qé es el CF?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

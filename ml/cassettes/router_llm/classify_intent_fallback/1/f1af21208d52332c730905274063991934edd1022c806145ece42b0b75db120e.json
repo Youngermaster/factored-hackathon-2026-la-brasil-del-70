@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f1af21208d52332c730905274063991934edd1022c806145ece42b0b75db120e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1274,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.7,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:41.757225Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero pedir reposición de la tarjeta terminada en 6093",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

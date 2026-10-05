@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2fbe28f5f54c88a16682206c0d38e8a1d4cf26efe962b0e5805bffc27b6b5f95",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 926,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:15.092821Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "bloqeuio de caetão",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}
