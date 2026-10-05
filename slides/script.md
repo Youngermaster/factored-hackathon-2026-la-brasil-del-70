@@ -54,7 +54,7 @@ Rules for editing: English, plain words, no em dashes, no number that is not in 
 
 [click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it.
 
-[click 2] Model calls pass one gateway to Azure OpenAI, so the provider is a setting.
+[click 2] Model calls pass one gateway to Azure OpenAI, so the provider is a setting. Policy answers come from retrieved clauses, not model memory.
 
 [click 3] [David Fonseca] Our learned router, resolver and risk estimator beat their baselines offline, but not end to end, so the baselines stay the default.
 
