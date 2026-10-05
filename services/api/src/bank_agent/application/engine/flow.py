@@ -1,6 +1,7 @@
 """Routing and the handler loop: pending questions, router dispatch, workflow entry and switches, and the chain
 of state handlers within one turn, each transition checked against the definition."""
 
+import re
 from dataclasses import replace
 
 from bank_agent.application.engine.context import Step, TurnContext
@@ -24,6 +25,7 @@ from bank_agent.application.engine.shared import (
     out_of_scope,
     step_up,
 )
+from bank_agent.application.engine.signals import plain_answer
 from bank_agent.application.engine.templates.labels import PENDING, TOPICS
 from bank_agent.application.understanding.answers import YesNo, parse_choice, parse_yes_no
 from bank_agent.application.understanding.scope import Scope, classify_scope
@@ -179,11 +181,15 @@ def clarify_workflow(ctx: TurnContext, options: tuple[WorkflowId, ...]) -> Step:
     return Step(ctx.state, Reply(template="common.clarify_workflow", params=params), Outcome.CLARIFIED)
 
 
-def confirm_switch(ctx: TurnContext, target: WorkflowId) -> Step:
-    intent = ctx.prediction.intent if ctx.prediction is not None else None
-    if intent is None:
-        return greeting(ctx, clarify=True)
-    ctx.engine = ctx.engine.evolve(pending_switch=PendingSwitch(target=target, intent=intent, text=ctx.text))
+def confirm_switch(ctx: TurnContext, target: WorkflowId, *, pending: PendingSwitch | None = None) -> Step:
+    """Ask whether to leave the current work for ``target``; ``pending`` asks the same question again, keeping the
+    original request (an unclear answer must not replace it)."""
+    if pending is None:
+        intent = ctx.prediction.intent if ctx.prediction is not None else None
+        if intent is None:
+            return greeting(ctx, clarify=True)
+        pending = PendingSwitch(target=target, intent=intent, text=ctx.text)
+    ctx.engine = ctx.engine.evolve(pending_switch=pending)
     params: dict[str, Param] = {
         "pending": _label(PENDING, ctx.workflow, ctx.language),
         "target": _label(TOPICS, target, ctx.language),
@@ -213,9 +219,9 @@ async def answer_pending(ctx: TurnContext, registry: WorkflowRegistry) -> Step |
     pending = ctx.engine.pending_switch
     if pending is None:
         return None
-    answer = parse_yes_no(ctx.text)
+    answer = _switch_answer(ctx, registry, pending.target)
     if answer is YesNo.UNCLEAR:
-        return confirm_switch(ctx, pending.target)
+        return confirm_switch(ctx, pending.target, pending=pending)
     ctx.engine = ctx.engine.evolve(pending_switch=None)
     if answer is YesNo.YES:
         ctx.text = UntrustedText(pending.text)
@@ -227,6 +233,32 @@ async def answer_pending(ctx: TurnContext, registry: WorkflowRegistry) -> Step |
     if step.reply is not None and step.reply.prefix is None:
         step = Step(step.next_state, _with_prefix(step.reply, "common.switch_declined", params), step.outcome)
     return step
+
+
+_CONTINUE_CURRENT = re.compile(
+    r"\b(sigamos|seguimos|sigamos con|continuemos|continuamos|continuar|continua|volvamos|volvamos a|retomemos|"
+    r"retomar|retoma|vamos continuar|vamos seguir|voltemos|voltar|prossigamos|prosseguir|prossiga)\b"
+)
+
+
+def _switch_answer(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId) -> YesNo:
+    """The answer to the engine's switch question. A message that asks to go on with the pending work ("Listo,
+    sigamos con lo del cargo") is a no unless it routes to the offered workflow; a plain yes or no is read as is; a
+    longer yes counts only when it routes to the offered workflow, and is asked again otherwise. Before QA finding
+    DSP-08, the leading "listo" alone switched workflows and dropped the dispute."""
+    answer = parse_yes_no(ctx.text)
+    routes_to_target = answer is YesNo.YES and _routes_to(ctx, registry, target)
+    if _CONTINUE_CURRENT.search(fold(ctx.text)):
+        return YesNo.YES if routes_to_target else YesNo.NO
+    if plain_answer(ctx.text):
+        return answer
+    if answer is YesNo.YES:
+        return YesNo.YES if routes_to_target else YesNo.UNCLEAR
+    return answer
+
+
+def _routes_to(ctx: TurnContext, registry: WorkflowRegistry, target: WorkflowId) -> bool:
+    return registry.owner(ctx.services.router.route(ctx.text, ctx.language).intent) is target
 
 
 def _with_prefix(reply: Reply, prefix: str, params: dict[str, Param]) -> Reply:
