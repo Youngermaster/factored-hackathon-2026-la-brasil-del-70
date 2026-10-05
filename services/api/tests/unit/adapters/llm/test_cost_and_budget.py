@@ -174,7 +174,14 @@ async def test_cost_accounting_sets_the_cost_and_emits_a_metric() -> None:
     assert structured.value.answer == "yes"
     assert text.cost_usd == Decimal("0.00600000")
     values = telemetry.histograms[COST_METRIC].values
-    assert values[0] == (0.006, {"gen_ai.response.model": "verified/model", "bank.llm.price_basis": "verified"})
+    assert values[0] == (
+        0.006,
+        {
+            "gen_ai.response.model": "verified/model",
+            "bank.llm.price_basis": "verified",
+            "bank.prompt.id": "phrase_response",
+        },
+    )
 
 
 # --- Budget guard --------------------------------------------------------------------------------------------

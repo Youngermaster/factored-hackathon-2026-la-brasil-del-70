@@ -7,7 +7,9 @@
 each instrumentation receives the providers explicitly, so tests can build as many as they need.
 
 HTTP spans and the ``http.server.request.duration`` histogram follow the stable HTTP semantic conventions
-(``OTEL_SEMCONV_STABILITY_OPT_IN=http``). Health probes are not traced.
+(``OTEL_SEMCONV_STABILITY_OPT_IN=http``). Health probes are not traced. The HTTP histogram uses the catalog's seconds
+buckets (up to 60 s) instead of the instrumentation's, which stop at 10 s: a turn that waits for a model with a 20 s
+timeout would otherwise clamp every percentile above 10 s.
 """
 
 import os
@@ -24,6 +26,7 @@ from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import MetricReader, PeriodicExportingMetricReader
+from opentelemetry.sdk.metrics.view import ExplicitBucketHistogramAggregation, View
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import SpanProcessor, TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -31,12 +34,14 @@ from opentelemetry.sdk.trace.sampling import ParentBased, TraceIdRatioBased
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from bank_agent import __version__
+from bank_agent.adapters.telemetry.catalog import SECONDS_BUCKETS
 from bank_agent.adapters.telemetry.langfuse import LangfuseGenerationExporter
 from bank_agent.adapters.telemetry.opentelemetry import OpenTelemetryAdapter
 from bank_agent.bootstrap.settings import LangfuseSettings, ObservabilitySettings
 
 EXCLUDED_URLS: Final = "/health/live,/health/ready,/health/details"
 STABILITY_OPT_IN: Final = "OTEL_SEMCONV_STABILITY_OPT_IN"
+HTTP_DURATION: Final = "http.server.request.duration"
 
 
 @dataclass
@@ -132,7 +137,11 @@ def build_observability(
         tracer_provider.add_span_processor(BatchSpanProcessor(LangfuseGenerationExporter(exporter)))
     for processor in span_processors:
         tracer_provider.add_span_processor(processor)
-    meter_provider = MeterProvider(resource=resource, metric_readers=readers)
+    http_buckets = View(
+        instrument_name=HTTP_DURATION,
+        aggregation=ExplicitBucketHistogramAggregation(boundaries=SECONDS_BUCKETS),
+    )
+    meter_provider = MeterProvider(resource=resource, metric_readers=readers, views=[http_buckets])
     return Observability(
         telemetry=OpenTelemetryAdapter(tracer_provider, meter_provider),
         tracer_provider=tracer_provider,

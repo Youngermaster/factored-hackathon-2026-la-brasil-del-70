@@ -39,7 +39,14 @@ def _i(
     return Instrument(name, kind, unit, description, frozenset(attributes), buckets)
 
 
-_GENAI = ("gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "bank.prompt.id")
+_GENAI = (
+    "gen_ai.operation.name",
+    "gen_ai.provider.name",
+    "gen_ai.request.model",
+    "gen_ai.response.model",
+    "bank.prompt.id",
+)
+"""Model call attributes; ``gen_ai.response.model`` is set on success only (the fallback model after a failover)."""
 C, H, G = Kind.COUNTER, Kind.HISTOGRAM, Kind.GAUGE
 
 INSTRUMENTS: Final[tuple[Instrument, ...]] = (

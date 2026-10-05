@@ -77,10 +77,12 @@ class TracingDecorator(LlmDecorator):
 
     async def around(self, request: LlmRequest, proceed: Proceed) -> Generation:
         attributes = self._request_attributes(request)
+        # The prompt id is a bounded set of versioned files; the serving model is known on success only.
         metric_attributes: dict[str, AttributeValue] = {
             "gen_ai.operation.name": "chat",
             "gen_ai.provider.name": self.provider_name,
             "gen_ai.request.model": self.request_model,
+            "bank.prompt.id": request.prompt.prompt_id,
         }
         with self.telemetry.span(SPAN_NAME, attributes) as span:
             if self.capture_content:
@@ -95,6 +97,8 @@ class TracingDecorator(LlmDecorator):
                 span.record_error_code(error.code)
                 self._duration.record(self._monotonic() - started, {**metric_attributes, "error.type": error.code})
                 raise
+            # With failover the model that answered differs from the requested (primary) one.
+            metric_attributes["gen_ai.response.model"] = result.model_id
             self._duration.record(self._monotonic() - started, metric_attributes)
             span.set_attribute("bank.llm.status", "success")
             span.set_attribute("gen_ai.response.model", result.model_id)
