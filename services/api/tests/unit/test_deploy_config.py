@@ -343,6 +343,7 @@ def test_grafana_serves_its_sub_path_hardened_with_its_own_csp() -> None:
         "GF_SECURITY_DISABLE_GRAVATAR": "true",
         "GF_SECURITY_COOKIE_SECURE": "true",
         "GF_SECURITY_CONTENT_SECURITY_POLICY": "true",
+        "GF_METRICS_ENABLED": "false",
     }
     assert {name: environment.get(name) for name in expected_off} == expected_off
     template = environment["GF_SECURITY_CONTENT_SECURITY_POLICY_TEMPLATE"]
