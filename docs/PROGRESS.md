@@ -2571,4 +2571,3 @@ A live verification of release e8f0d0c on production (es and pt flows, RAG, Graf
 - The consent fix after step-up is verified by in-memory workflow tests in es and pt, not yet by a live step-up on production.
 - CI on `main` was cancelled by the GitHub Actions incident and rerun; the releases were verified locally (ruff, 4,037 unit and offline integration tests, docs check) and by the smoke test. The PostgreSQL integration variants run in CI.
 - The `crd-mx-two-cards` debit card **** 3231 stays blocked after the verification run (no unblock tool); a fresh seed before recording the video resets the demo data.
-
