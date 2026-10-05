@@ -568,7 +568,7 @@ Safe automated resolution (Wilson 95%); unsafe outcomes; missed transfers; unnec
 - Cost: 0.00 USD measured (local model). Projected at the unverified `claude-sonnet-5` list price: P 0.0052 USD per attempted case and 0.0076 per safe automated resolution; B1 0.0100 and 0.0772.
 - Judge (100 transcripts, same local model): P tone 4.37, clarity 4.00; B0 3.77, 2.80; B1 4.93, 4.63. Agreement with human raters: pending (action 40). The judge's language verdicts contradict the deterministic check on plainly Portuguese replies, so it is treated as unvalidated.
 
-Full tables, slices, the categorized unsafe outcomes, transfers, cost, judge, and limitations: [results.md](evaluation/results.md#analysis-hand-written-session-14b); failure clusters and fix status: [failures.md](evaluation/failures.md#failure-analysis-hand-written-session-14b).
+Full tables, slices, the categorized unsafe outcomes, transfers, cost, judge, and limitations: [results.md](evaluation/runs/test-local/results.md#analysis-hand-written-session-14b); failure clusters and fix status: [failures.md](evaluation/runs/test-local/failures.md#failure-analysis-hand-written-session-14b).
 
 #### Decision on the learned defaults (dev only)
 
