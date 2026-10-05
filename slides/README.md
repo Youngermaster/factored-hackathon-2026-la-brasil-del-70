@@ -109,7 +109,7 @@ eval.unsafe.p: {value: 8, of: 304, display: "8 of 304", lo: 1.1, hi: 5.1, kind: 
 - `source` must be an existing path relative to the repository root once the value is filled.
 - `lo` and `hi` are the 95% interval in percent (Wilson for rates, exact for unsafe outcomes), `of` the denominator of a count. The check fails when an interval does not contain its estimate or a fraction does not match its value.
 - A pending metric renders as a dashed "pending" box, so a missing number is visible, never invented.
-- If the evaluation is rerun (BACKLOG 14c: a hosted model, the 14c fixes), refresh the `eval.*` block from `docs/evaluation/results.md` and the `evidence` section of `script.md` with it.
+- If the evaluation is rerun (BACKLOG 14c: a hosted model, the 14c fixes), refresh the `eval.*` block from `docs/evaluation/results.md` and the `evidence` section of `script.md` with it. The words tied to the published run also live in `locales/en.yml` (`evidence.onModel`, `evidence.run`, the beat-4 strings, `close.l1`, `close.l1s`, `close.n0`, `close.n1`, `appendixEvidence.onModel`, `appendixEvidence.measured`, `appendixEvidence.projection`) and in `docs/demo/video-monologue.md`. The "not ahead of B0" flag on the per-workflow rates follows the metrics: it marks any workflow where P's rate is below B0's.
 
 Today no metric is pending: `deploy.url` holds the demo URL from the README. `pnpm check:content` lists anything pending.
 

@@ -55,8 +55,8 @@ export function rates({ t, L, M, K }: SceneEnv, c1: number, c2: number, c3: numb
         K.fade(outCubic(seg(t, t0 + 0.4 + i * 0.1, t0 + 0.7 + i * 0.1)), () =>
           K.text(m.text, COLX[i], y + 10, { size: 26, weight: 500, fam: 'mono', color: SYS_TEXT[i], align: 'center' }))
       })
-      // the honest weak spot: card support is not ahead of B0
-      if (w === 'card_support') {
+      // the honest weak spot: flag any workflow where P is not ahead of B0, read from the metrics
+      if (M(`eval.sar.${w}.p`).num < M(`eval.sar.${w}.b0`).num) {
         const k = seg(t, c1 + 2.0, c1 + 2.5)
         if (k > 0) K.fillRR(MX - 34, y - 52, 8, 104 * outExpo(k), 4, C.red)
         K.fade(outCubic(k), () => K.label(L('notAhead'), MX, y + 48, { size: 22, color: C.redText }))
