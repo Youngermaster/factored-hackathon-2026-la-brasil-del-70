@@ -2336,3 +2336,22 @@ LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=azure/gpt-4.1-mini LLM_API_BASE=<evaluati
 - No recorded evaluation describes the Azure models; the committed cassettes are the local 7B model's.
 - The primary and the fallback share one account and endpoint: no protection against an account or regional outage.
 - `scripts/verify_e2e_tracing.py` (needs PostgreSQL) was not rerun against Langfuse Cloud.
+
+### Final day: hosted-model evaluation published (2026-10-05)
+
+#### What was done
+
+- Ran B0, P, and B1 on the dev split (`dev-azure-41mini`, 366 cases), the escalation-signal comparison on dev (`dev-azure-sig1-scripted` against `dev-azure-sig2-scripted`, P only, scripted driver), and the frozen test split with the 14b protocol (B0 and P as one process, B1 as another, merged with `--resume` into `test-hosted`, 1,284 cases), every model role on `azure/gpt-4.1-mini` on the evaluation-only Azure OpenAI account, code pinned at `2ddabb0` (before the final-day QA fixes).
+- Published `test-hosted` with `bank-eval publish`, wrote the hand-written analysis in [results.md](evaluation/results.md#analysis-hand-written-hosted-model-test-run), archived the 14b documents under [runs/test-local](evaluation/runs/test-local/results.md), and updated the README headline, LIMITATIONS, the slides metrics, the submission documents, and BACKLOG rows on the escalation-signal prompt, masking, the segmented case id, the grader fixes, and placeholder turns.
+
+#### Results (simulated, offline; per workflow in the results)
+
+- P 185/304 safe automated resolutions (55 to 66%), B0 141/304, B1 69/304; graded unsafe outcomes P 1/304 (a consented second write, not a bypass), B0 0/304, B1 92/304; card support P 48/76 against B0 47/76, unnecessary card transfers 5/59 (14b: 11/59).
+- Dev: escalation prompt v2 against v1, 85 against 80 of 112 and 3 against 8 of 94 unnecessary transfers with no missed transfer in either arm (directional).
+- Measured cost at the Azure list price: P 0.0013 USD per attempted case and 0.0019 USD per safe automated resolution.
+- Strict audit: no 401, 429, or budget refusal; Azure's jailbreak filter rejected calls in a few direct-injection scenarios (kept as played).
+
+#### Known limitations
+
+- The run predates the final-day fixes; the simulated customer runs on the same model; the judge was not rerun; cost is priced, not invoiced; the scenario labels await human review.
+- The Azure evaluation cassettes stay in the evaluation worktree and are not committed; the run directory (`reports/eval/test-hosted`, transcripts) is not in git.

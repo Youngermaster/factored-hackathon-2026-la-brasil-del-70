@@ -47,7 +47,7 @@ Paths are relative to the repository root. `tests/` means `services/api/tests/`;
 
 | Case | Expected handling | Implemented in | Proven by | Status |
 |---|---|---|---|---|
-| Normal | Policy-compliant automated resolution, verified account queries, authorized self-service transactions | Read states with as-of dates; writes behind confirmation, step-up, and read-back | Safe automated resolution 177/304 (58%) for P, per workflow 71%, 53%, 45%, 64%; policy compliance 298/304 | Proven, simulated |
+| Normal | Policy-compliant automated resolution, verified account queries, authorized self-service transactions | Read states with as-of dates; writes behind confirmation, step-up, and read-back | Safe automated resolution 185/304 (61%) for P on the hosted run, per workflow 58%, 63%, 59%, 63%; policy compliance 294/304 | Proven, simulated |
 | Ambiguous or unsupported | Clarifying questions, or safe abstention for missing parameters or unsupported requests | CLARIFY states; clause-backed abstentions; out-of-scope answers | Guide ambiguous scenarios; routing scenarios 24/28 correct for P ([results](../evaluation/results.md)); out-of-scope requests answered with a workflow question instead of an abstention are a known weakness (BACKLOG, 14c) | Proven, with a stated weakness |
 | Human-required | Structured handoff with verified facts and open questions, no raw transcript | `domain/handoff.py`, the handoff builder, the agent inbox | Missed transfers 7/64, handoff completeness 55/57 for P; `contracts/schemas/handoff.v1.json` has no transcript field ([ADR 0006](../adr/0006-handoff-and-execution-record-contracts.md)) | Proven, simulated |
 
@@ -84,7 +84,7 @@ Paths are relative to the repository root. `tests/` means `services/api/tests/`;
 | Separate conversation handling, predictive risk estimates, and eligibility policy | `RiskEstimator` and `EligibilityPolicy` ports; the conversation only receives the eligibility result's reasons | [credit separation](../architecture/credit-separation.md), [ADR 0021](../adr/0021-credit-risk-and-eligibility-separation.md); `workflows/test_credit_separation.py` (a recording `FakeLLM` proves no prompt carries the estimate or the profile) | Proven |
 | Approved rules or a clearly labeled synthetic policy service | The synthetic eligibility service over `ELG` rules in `policies/`; "synthetic" in every customer text, the glass box, and the catalog | [eligibility](../policy/eligibility.md); golden texts in `tests/integration/policy/golden/` | Proven; human review of thresholds pending (action 17) |
 | The model does not invent eligibility rules | Rules are pure functions with parameters in files; the model never selects or phrases the outcome | `policies/versions.lock.yaml`; `tests/unit/policy/test_eligibility_service.py`; prompt inputs never carry the credit profile or the risk estimate (the prompt registry refuses them) | Proven |
-| The model does not approve credit | No approved outcome by design; an approval-wording lexicon in es, pt, en rejects credit texts (`policy/lexicon.py`) | Credit approval claims 0/304 for P (B1: 32/304); `tests/unit/policy/test_approval_lexicon.py` | Proven, simulated |
+| The model does not approve credit | No approved outcome by design; an approval-wording lexicon in es, pt, en rejects credit texts (`policy/lexicon.py`) | Credit approval claims 0/304 for P (B1: 28/304); `tests/unit/policy/test_approval_lexicon.py` | Proven, simulated |
 | Explanations | Every eligibility answer lists its reasons with the rule and clause that back each | Guide `credit-eligibility`; [credit workflow](../workflows/credit-information.md) | Proven |
 | Uncertainty | The estimate's interval and the boundary flag become a reason ("near a boundary, so the result is uncertain") | `ELG-ALL-2`; `workflows/test_credit_edges.py` | Proven |
 | Review paths | Every result offers a person; borderline and missing data go to review; agents take and close intakes | Guide `credit-review`; `tests/integration/api/test_agent_credit_review.py` | Proven |
@@ -98,11 +98,11 @@ Paths are relative to the repository root. `tests/` means `services/api/tests/`;
 | Number and mix of cases, label quality, model and prompt versions, repeated-run variability | [results](../evaluation/results.md) header, scenario review status, repeated runs (48 scenarios, 3 runs) | Proven; labels not yet human-reviewed (action 41) |
 | Failures included | [failures](../evaluation/failures.md); the unsafe outcomes read case by case in results | Proven |
 | A model judge with a rubric validated against human or deterministic judgments | [judge rubric](../evaluation/judge-rubric.md); the judge never decides success or safety | Limitation: human agreement pending (action 40) |
-| Safe automated resolution over all in-scope cases, plus the attempted share | 177/304 with 257/304 attempted, per workflow in results | Proven, simulated |
+| Safe automated resolution over all in-scope cases, plus the attempted share | 185/304 with 270/304 attempted, per workflow in results | Proven, simulated |
 | Containment never alone | Reported next to resolution and transfers everywhere | Proven |
 | Escalation quality: missed and unnecessary transfers | 7/64 missed, 27/240 unnecessary for P, per workflow | Proven, simulated |
 | Unsafe outcomes with counts and denominators; zero is not zero risk | Counts, exact intervals, rule-of-three bounds | Proven, simulated |
-| p50 and p95 latency, cost per attempted case and per resolution, with assumptions | Per turn and per case; measured 0.00 USD on the local model; projected hosted prices labeled projected | Proven, simulated and projected |
+| p50 and p95 latency, cost per attempted case and per resolution, with assumptions | Per turn and per case; measured on Azure `gpt-4.1-mini` at list price (P 0.0013 USD per attempted case, 0.0019 per resolution); a monthly volume figure labeled projected | Proven, simulated and projected |
 | By language and authorized segment; small samples; disparities investigated | Slices by language, dialect, segment; 34 listed disparities, none established | Proven, small samples |
 | Offline, simulation, and projection labeled apart; no offline result called a production improvement | Labels in results, the README, the evaluation view, and `slides/data/metrics.yml` (`kind`) | Proven |
 
