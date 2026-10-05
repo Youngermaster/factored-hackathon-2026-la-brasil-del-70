@@ -11,7 +11,9 @@ from bank_agent_workflow_support import Backend, cases
 from bank_agent_workflows import build_harness
 
 CONVERSATIONS = {
-    MX: ("Hay un cargo en mi tarjeta de 1250 pesos en FIXTURE MARKET que yo no hice",
+    # "que yo no hice" routes straight to the dispute since the QA fixes of 2026-10-05 (DSP-05), so the first
+    # message here names the charge without saying why.
+    MX: ("Hay un cargo en mi tarjeta de 1250 pesos en FIXTURE MARKET",
          "Es sobre un cargo que no reconozco", "no", "sí"),
     PT: ("Tem uma cobrança de 88 pesos na PADARIA BOA no meu cartão que eu não fiz",
          "É sobre uma cobrança que não reconheço", "não", "sim"),

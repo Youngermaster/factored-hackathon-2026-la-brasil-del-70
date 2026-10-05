@@ -24,9 +24,12 @@ _ACCOUNT_TYPES: tuple[tuple[ProductType, str], ...] = (
     (ProductType.MORTGAGE, r"hipoteca|financiamento imobiliario|mortgage"),
 )
 _CREDIT_TYPES: tuple[tuple[CreditProductType, str], ...] = (
-    (CreditProductType.MORTGAGE, r"hipoteca|hipotecario|imobiliario|vivienda|casa propia|imovel|mortgage"),
+    (
+        CreditProductType.MORTGAGE,
+        r"hipoteca|hipotecario|imobiliario|vivienda|casa propia|imovel|apartamento|\bdepartamento\b|mortgage",
+    ),
     (CreditProductType.CREDIT_CARD, r"tarjeta|cartao|credit card|\bcard\b"),
-    (CreditProductType.PERSONAL_LOAN, r"prestamo|emprestimo|credito personal|credito pessoal|\bloan\b"),
+    (CreditProductType.PERSONAL_LOAN, r"prestamo|emprestimo|credito personal|credito pessoal|libre inversion|\bloan\b"),
 )
 _PURPOSES: tuple[tuple[str, str], ...] = (
     ("debt_consolidation", r"consolid|(pagar|juntar|unificar|quitar) (mis |otras |minhas |as )?(deudas|dividas)"),
