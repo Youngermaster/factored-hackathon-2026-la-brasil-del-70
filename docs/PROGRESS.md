@@ -2301,3 +2301,16 @@ python3 scripts/checks/check_env_keys.py
 #### Next phase
 
 Phase 01, monorepo scaffold and quality gates (`kit/prompts/01-scaffold.md`), in plan mode.
+
+### Final-day documentation: public claims, ADR 0043, rubric reference, and learnings (2026-10-05)
+
+- Public statements now match the running system, checked against `/health/details` on 2026-10-05 (level L0, `llm_primary` and `llm_fallback` ok): the README (deployment status, a colored "Who decides" diagram, freshness, limitations summary), LIMITATIONS, HOW-IT-WORKS, AGENTS, the LLM gateway page, the brief traceability matrix, the submission checklist, the email draft, the demo script, the practice cases, the video plan and monologue, the slides guide, `slides/VIDEO.md`, the deploy scene's strings, and the operations pages. The deployed demo calls Azure OpenAI (`azure/gpt-4.1-mini`, fallback `azure/gpt-4o`) only for understanding; Key Vault staging, the Azure host, the guardrail fixes on the deployed build, and the 14c masking are stated as done. The `/demo` page (en, es, pt) no longer tells visitors to run `make seed`.
+- [ADR 0043](adr/0043-langgraph-migration.md) records the staged LangGraph StateGraph roadmap as Proposed, with the team's decision not to migrate the runtime before the submission deadline; pull request 23 is closed as superseded, and the BACKLOG has the post-event row.
+- `pnpm export` writes a six-page pitch PDF (one page per main slide, its build-up frames as a grid), a 32-page build-up version, and the appendix apart; the export ran with 6, 32, and 7 pages. The evidence slide's "not ahead of B0" flag now follows the metrics instead of naming card support.
+- New: [EVALUATION_CRITERIA.md](EVALUATION_CRITERIA.md), the team's rubric reference with today's statuses, and [LEARNINGS.md](LEARNINGS.md), lessons drawn only from this repository's records.
+
+How to verify: `make docs-check`; from `slides/`, `pnpm verify`, `pnpm check:content --strict`, and `pnpm check:fit` with `pnpm dev` running; from `apps/web/`, `pnpm lint`, `pnpm typecheck`, and `pnpm test`; `curl https://la-brasil-del-70.westus2.cloudapp.azure.com/health/details`.
+
+Known limitations: the evaluation numbers, and the lines that name the published run's local model, still quote session 14b until the hosted-model rerun is published; `deploy/README.md` ("Choosing the model") and `docs/security/data-use.md` ("Providers") still describe hosted providers in general rather than the Azure OpenAI deployment; the price table has no `azure/...` entry, so the glass-box cost and the budget guard charge the deployed models as unknown; on 2026-10-05 `/grafana/` returned the web app, so the public Grafana dashboard and Langfuse tracing are described as planned.
+
+Next: refresh the evaluation numbers after the hosted-model run, export the slides, record the video, make the repository public, and send the email.
