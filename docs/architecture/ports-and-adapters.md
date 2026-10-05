@@ -95,7 +95,9 @@ Every port with its adapters as built, and the phase that added each. The defaul
 | `CreditProductCatalog` | sync | memory (fixture entries); the filesystem catalog under `policies/credit/` (06) |
 | `EligibilityPolicy` | sync | the synthetic eligibility service over `ELG` rules in `bank_agent/policy/eligibility` (06); `FakeEligibilityPolicy` (testing) |
 | `RiskEstimator` | sync | `risk_estimator:score_band@1` (09b, default); `logreg` and `lgbm` through `ModelRegistry` (10b); `FakeRiskEstimator` (testing) |
-| `Retriever` | sync | `Bm25Retriever` (07, the API default), `DenseRetriever` (optional `ml` extra), `HybridRetriever` ([grounding](../workflows/grounding.md)) |
+| `Retriever` | sync, in a worker thread | `Bm25Retriever` (07, the API default), `DenseRetriever` (optional `ml` extra), `HybridRetriever` ([grounding](../workflows/grounding.md)); `VectorRetriever` over the `VectorStore` and a hosted `Embedder`, always behind `FallbackRetriever` to BM25 ([ADR 0047](../adr/0047-qdrant-vector-index-for-knowledge-retrieval.md)) |
+| `VectorStore` | sync, in a worker thread | `QdrantVectorStore` over Qdrant's REST API with httpx (the `rag` compose profile); `InMemoryVectorStore` (exact cosine search, tests and offline evaluation) |
+| `Embedder` | sync, in a worker thread | `SentenceTransformerEmbedder` (optional `ml` extra) with `CachingEmbedder`; the hosted gateway `RedactingEmbedder(GatewayEmbedder(...))` over LiteLLM with cost accounting, circuit breaker, retry, and timeout; `RecordedEmbedder` (committed recording for offline evaluation); `HashingEmbedder` (testing) |
 | `IntentRouter` | sync | `router:keyword@1` (09a, default); `router:tfidf` and `router:embeddings` (10a); `FakeIntentRouter` (testing) |
 | `TransactionResolver` | sync | `resolver:rules@1` (09a, default); `resolver:lgbm` (10a); `FakeTransactionResolver` (testing) |
 | `LanguageDetector` | sync | `language_detector:lexical@1` (09a, default); a lingua adapter waits for a size decision (pending action 22); `FakeLanguageDetector` (testing) |
@@ -106,7 +108,7 @@ Every port with its adapters as built, and the phase that added each. The defaul
 | `RateLimitStore` | async | the in-process sliding log; a PostgreSQL sliding-window counter shared by every worker (16, production) |
 | `EvaluationSummaryReader` | async | `FilesystemEvaluationSummaries` over `evals/reports/summaries/` (13) |
 
-Async ports may perform I/O. Sync ports run in process on data loaded at startup; a remote implementation (for example a hosted classifier) would need an async variant of the port.
+Async ports may perform I/O. Sync ports run in process on data loaded at startup; a remote implementation (for example a hosted classifier) would need an async variant of the port. The exception is open retrieval: the engine calls the `Retriever` in a worker thread (`asyncio.to_thread`), so the Qdrant implementation can call the embedding provider and the store with bounded timeouts without blocking the event loop.
 
 ## Contract suites
 

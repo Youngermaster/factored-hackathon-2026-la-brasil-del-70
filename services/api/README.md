@@ -53,7 +53,7 @@ Three contracts apply:
 Because `api` and `bootstrap` cannot import each other, the wiring lives in two package-root modules outside every layer:
 
 - `bank_agent.asgi:create_app` is the uvicorn factory. It loads settings, configures logging, builds the container, and passes it to `bank_agent.api.app.create_app`.
-- `bank_agent.cli:app` is the `bank-agent` typer command: `db upgrade`, `retention purge` (the owner's retention job; `--dry-run`, `--every-hours`), `policy lock`, `policy catalog`, `index build`.
+- `bank_agent.cli:app` is the `bank-agent` typer command: `db upgrade`, `retention purge` (the owner's retention job; `--dry-run`, `--every-hours`), `policy lock`, `policy catalog`, `index build`, `index qdrant` (embeds the clauses and fills the Qdrant collection; reads the environment).
 
 Settings are validated per process: `load_settings()` checks the API's production rules (it refuses the owner password, requires the shared rate limiter, and allows demo mode only with `ALLOW_PUBLIC_DEMO_MODE=true`), and `load_settings(owner=True)` checks an owner job's (the owner password and `SESSION_SECRET` only).
 

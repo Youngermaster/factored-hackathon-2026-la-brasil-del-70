@@ -29,7 +29,9 @@ Ports are the `typing.Protocol` interfaces through which the application reaches
 | `policy.py` | `PolicyRepository` | sync | Clauses, bindings per workflow and state, action matrix, pack version |
 | `credit_catalog.py` | `CreditProductCatalog` | sync | The synthetic credit catalog (public, not customer-scoped) |
 | `eligibility.py` | `EligibilityPolicy`, `EligibilityRequest` | sync | The synthetic eligibility service: indicative outcomes from `ELG` rules, never an approval |
-| `retrieval.py` | `Retriever` | sync | Open retrieval over clauses |
+| `retrieval.py` | `Retriever` | sync | Open retrieval over clauses (called in a worker thread) |
+| `vector_store.py` | `VectorStore` | sync | A vector index of points with keyword payload filters (Qdrant, ADR 0047) |
+| `embeddings.py` | `Embedder` | sync | Text embeddings for dense retrieval, local or hosted (the hosted one redacts the query) |
 | `models.py` | `IntentRouter`, `TransactionResolver`, `LanguageDetector`, `ModelRegistry`, `RiskEstimator` | sync | Replaceable learned or rule-based components; the risk estimator is predictive only and internal |
 | `telemetry.py` | `Telemetry`, `Span`, `Counter`, `Histogram`, `Gauge` | sync | Spans, metrics, and the current trace id without importing OpenTelemetry |
 | `reliability.py` | `DegradationSource` | sync | The current degradation level (L0 to L4) for the engine and the health endpoint |

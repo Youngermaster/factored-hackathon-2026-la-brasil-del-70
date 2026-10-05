@@ -106,6 +106,8 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
+| [adr/0046](adr/0046-customer-service-history-vector-retrieval.md) | Customer-service history uses consented vector retrieval (Proposed: consent, deletion, and indexing are not built) |
+| [adr/0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md) | Qdrant vector index for customer-service knowledge retrieval, behind a flag with a BM25 fallback |
 
 ## Exploratory data analysis
 

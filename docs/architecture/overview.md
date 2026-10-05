@@ -30,6 +30,7 @@ flowchart TB
         jobs["jobs<br/>migrate, seed, retention purge (owner role)"]
         pg[("PostgreSQL 16<br/>forced row-level security,<br/>append-only records and audit")]
         obs["obs profile<br/>OpenTelemetry collector, Jaeger,<br/>Prometheus with alerts, Grafana"]
+        qdrant[("rag profile: Qdrant<br/>vector index of the policy clauses,<br/>derived and rebuildable")]
     end
     subgraph offline["Offline, on a developer machine or CI"]
         dp["data platform (bank-data)<br/>Pandera contracts, DuckDB, dbt:<br/>bronze, silver, gold, reports"]
@@ -41,7 +42,8 @@ flowchart TB
     api --> pg
     jobs --> pg
     api -- "OTLP" --> obs
-    api -- "LiteLLM" --> llm["Model provider"]
+    api -- "LiteLLM: chat and query embeddings" --> llm["Model provider"]
+    api -. "qdrant or qdrant_hybrid only;<br/>BM25 when unavailable" .-> qdrant
     dp -- "gold to seed" --> jobs
     mlp --> reg
     api -- "loads champion or baseline" --> reg
@@ -77,7 +79,7 @@ flowchart TB
         persistence["persistence: postgres, memory, duckdb"]
         llmstack["llm: LiteLLM or fake, wrapped in redaction,<br/>budget, retry, timeout, breaker, tracing"]
         models["models: keyword and learned routers,<br/>rule and LightGBM resolvers, risk estimators"]
-        misc["retrieval (BM25), identity, telemetry, prompts"]
+        misc["retrieval (BM25; Qdrant with a BM25 fallback),<br/>vector store, embeddings, identity, telemetry, prompts"]
     end
     routers --> guards --> engine
     container --> settings
