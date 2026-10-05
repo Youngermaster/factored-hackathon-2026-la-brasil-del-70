@@ -33,7 +33,13 @@ from bank_agent.application.understanding.text import fold
 from bank_agent.domain.access import AuthLevel
 from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.decision import DecisionKind
-from bank_agent.domain.errors import AuthenticationError, StepUpRequiredError, ToolError, ToolNotAllowedError
+from bank_agent.domain.errors import (
+    AuthenticationError,
+    StepUpRequiredError,
+    ToolError,
+    ToolNotAllowedError,
+    WorkflowTransitionError,
+)
 from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.intelligence import IntentPrediction, ModelComponent, ModelRef
 from bank_agent.domain.locale import Language
@@ -310,6 +316,8 @@ _STEPPED_UP = re.compile(
     r"\b(ya (me )?(confirme|verifique|valide|autentique)|ja (me )?(confirmei|verifiquei|validei|autentiquei)|"
     r"listo|pronto|hecho|feito|ya esta|ja esta|confirmad[oa]|confirmei|confirme)\b"
 )
+_WITHDRAWN = re.compile(r"\b(no|nao|cancel\w*|desist\w*|mejor no|melhor nao|olvidalo|esquece)\b")
+"""Any refusal or cancellation marker: a continuation that also carries one is not a plain continuation."""
 
 
 def continues_after_step_up(ctx: TurnContext) -> bool:
@@ -323,8 +331,36 @@ def continues_after_step_up(ctx: TurnContext) -> bool:
     ctx.engine = ctx.engine.evolve(step_up_state=None)
     if ctx.at_router or held != ctx.state or not ctx.snapshot.step_up_valid:
         return False
-    folded = fold(ctx.text)
-    return bool(_STEPPED_UP.search(folded)) or (plain_answer(ctx.text) and parse_yes_no(ctx.text) is YesNo.YES)
+    return stepped_up_continuation(ctx.text)
+
+
+def stepped_up_continuation(text: str) -> bool:
+    """The plain "step-up done, go on" message (the web client's own, or a plain yes) with no refusal in it."""
+    folded = fold(text)
+    if _WITHDRAWN.search(folded):
+        return False
+    return bool(_STEPPED_UP.search(folded)) or (plain_answer(text) and parse_yes_no(text) is YesNo.YES)
+
+
+def back_to_confirmation(ctx: TurnContext) -> None:
+    """A turn that starts in a write's working state (the write paused there for a step-up) goes back to the
+    write's confirmation state, so the incoming message is read as the answer to that confirmation. Found in
+    production QA (R2): "no, mejor no la bloquees" sent after the step-up still blocked the card, because the
+    working state ran the write without reading the message. Now a refusal cancels with the confirmation's own
+    "nothing was recorded" reply, an unclear or unrelated message asks the confirmation again, and only a yes (or
+    the plain step-up continuation handled before this) proceeds; the kernel still evaluates the write."""
+    if ctx.at_router:
+        return
+    spec = ctx.definition.spec(ctx.state)
+    if spec.kind is not StateKind.WORKING or not spec.action_policy_states or spec.resume_state is None:
+        return
+    if ctx.snapshot.step_up_valid and stepped_up_continuation(ctx.text):
+        return
+    try:
+        ctx.definition.check_transition(ctx.state, spec.resume_state)
+    except WorkflowTransitionError:
+        return
+    ctx.state = spec.resume_state
 
 
 async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
@@ -333,6 +369,7 @@ async def route_and_run(ctx: TurnContext, registry: WorkflowRegistry) -> Step:
         return pending
     if continues_after_step_up(ctx):
         return await run_handlers(ctx)
+    back_to_confirmation(ctx)
     spec = ctx.definition.spec(ctx.state)
     current = None if ctx.at_router else ctx.workflow
     if ctx.at_router or spec.kind is StateKind.ACCEPTS_REQUEST:
