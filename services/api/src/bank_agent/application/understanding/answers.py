@@ -27,7 +27,7 @@ _YES = re.compile(
 )
 _NO = re.compile(
     _FILLER + r"(?:no|nel|nop|nao|nem|para nada|cancelar|cancela|cancelalo|mejor no|todavia no|aun no|negativo|"
-    r"melhor nao|ainda nao|de jeito nenhum|nope)\b"
+    r"melhor nao|ainda nao|de jeito nenhum|desisto|desisti|olvidalo|esquece|nope)\b"
 )
 _DOUBT = re.compile(r"\b(?:no se|nao sei|tal vez|talvez|quizas|quiza|capaz)\b")
 _MAX_WORDS = 8
