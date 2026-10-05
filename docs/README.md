@@ -13,6 +13,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [submission/SUBMISSION.md](submission/SUBMISSION.md) | The submission checklist: what is done and the human steps in order |
 | [submission/email-draft.md](submission/email-draft.md) | The draft email to the organizers (never sent by a session) |
 | [../LIMITATIONS.md](../LIMITATIONS.md) | What the system cannot claim: scope, credit, data, language, evaluation, capacity, deployment, risks |
+| [LEARNINGS.md](LEARNINGS.md) | Lessons from the build, each from the repository's own records: what happened, what caught it, what changed, the lesson |
 | [workflows/README.md](workflows/README.md) | Index of the workflow pages |
 | [security/README.md](security/README.md) | Index of the security documents and the controls on one page |
 
@@ -26,6 +27,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [AGENTS.md](../AGENTS.md) | Guide for every coding agent: precedence, quick start, repository map, enforced rules, recipes for common changes, pitfalls, collaboration |
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
+| [EVALUATION_CRITERIA.md](EVALUATION_CRITERIA.md) | The team's rubric reference: the official evaluation dimensions and submission items, the evidence for each in this repository, and their status |
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes (listed below) |
 | [plans/adr-0026-live-agent.md](plans/adr-0026-live-agent.md) | Current-main and PR reference review, gaps, and implementation increments for live human service in the existing chat |
 | [plans/kickoff-notes.md](plans/kickoff-notes.md) | The team's kickoff notes: roles and the scope decision |
