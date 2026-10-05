@@ -35,12 +35,40 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
         (r"suscripcion .*cancel|assinatura .*cancel", _MEDIUM),
         (r"reclam(ar|o|acion)|aclaracion|desconocimiento|contest(ar|acao)|disputa", _WEAK),
         (r"i did not make|unrecognized charge|dispute (a|this) charge", _STRONG),
+        # QA 2026-10-05 (DSP-05): colloquial and regional phrasings ("cobro raro", "q yo no hize", "desconocer").
+        (
+            r"(cobro|cargo|compra|consumo|movimiento|cobranca)s? (raro|rara|extran[oa]|sospechos[oa]|estranh[oa])|"
+            r"\b(q|que) (yo )?no (la |lo )?hi[cz]e\b|\bno (la |lo )?hi[cz]e\b|desconoc(er|i|io)\b|desconhec(er|i)\b",
+            _STRONG,
+        ),
+        (
+            r"(disputar|reclamar|desconocer|impugnar|contestar|objetar) (la|el|una|un|esta|este|esa|ese|a|o|essa|esse) "
+            r"(compra|cargo|cobro|consumo|transaccion|cobranca|transacao|movimiento)|"
+            r"(presentar|abrir|iniciar|levantar|poner|registrar?) (una |la |mi )?(reclamacion|aclaracion|disputa)|"
+            r"(abrir|fazer|registrar) (uma )?(contestacao|reclamacao)",
+            _STRONG,
+        ),
     ),
     Intent.DISPUTE_STATUS: (
         (r"(estado|estatus|seguimiento) de (mi|la|mis|el) (reclam|aclarac|caso|disputa|desconoc)", _STRONG),
         (r"como va (mi|el|la) (reclam|caso|aclarac)|numero de caso", _STRONG),
         (r"(situacao|status|andamento) d[ao] (minha |meu )?(contestacao|caso|reclamacao)", _STRONG),
         (r"status of my (dispute|case)", _STRONG),
+        # QA 2026-10-05 (DSP-03): pt-BR and colloquial status questions ("Como está a minha contestação?").
+        (
+            r"\b(como|cade|e) (esta |anda |vai |ficou |va |sigue |vamos con )?(a |o |el |la )?(minha |meu |mi |mis )?"
+            r"(contestac|reclamac|aclarac|caso\b|disputa)|"
+            r"(tengo|tenho|hay|existe) (alguna |algun |alguma |algum |una |um |uma )?"
+            r"(reclamacion|aclaracion|contestacao|reclamacao|caso)( \w+)? "
+            r"(abiert|abert|registrad|en curso|em andamento)",
+            _STRONG,
+        ),
+        (
+            r"(?<!solicitud )(?<!solicitacao )(?<!pedido )\b(quedo|fue|ficou|foi) registrad[ao]|"
+            r"(cuando|plazo|prazo|quando)\b.{0,40}\b(respuesta|responder|responden|resposta|responderem|respondam)\b"
+            r".{0,40}(contestac|reclam|aclarac|disputa|caso\b)",
+            _MEDIUM,
+        ),
     ),
     Intent.CARD_BLOCK: (
         (r"(?<!des)bloque(?!ad[oa])(ar|a|en|ame|o)|(?<!des)bloquei[aoe]|congel(ar|a)", _STRONG),
@@ -76,13 +104,21 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
         (r"how long|how does .* work", _MEDIUM),
     ),
     Intent.UNSUPPORTED: (
-        (r"invers|invert|acciones de|cripto|investimento|investir|recomienda|recomenda", _STRONG),
+        (r"(?<!libre )invers|invert|acciones de|cripto|investimento|investir|recomienda|recomenda", _STRONG),
         (r"aument(o|ar) (de |el |mi |o |do )?(limite|cupo)", _STRONG),
         (
             r"reembolso (ya|ahora)|devuelvan (mi|el) dinero|estorno (ja|imediato)|devolvam|contracargo|chargeback",
             _STRONG,
         ),
         (r"garantiz\w* (el |que me )?(reembolso|devuelvan)|garant\w* (o )?estorno", _STRONG),
+        # QA 2026-10-05 (DSP-09): refund promises and a bare "estorno" are never promised by the assistant, and they
+        # outrank the approval verb ("aprove o estorno" is not a credit request).
+        (
+            r"(van a|vas a|vai|vao) (regresar|devolver|reembolsar|reintegrar)|"
+            r"me (regresan|devuelven|devolveran|regresaran|reembolsan)|(regresar|devolver)(me)? (mi|el) dinero|"
+            r"(dinero|plata|dinheiro) (de vuelta|de volta|volta|vuelve)|\bestorno\b",
+            _STRONG,
+        ),
         (r"(hacer|haz|quiero) una transferencia|transferir|fazer uma transferencia|pagar (mi|a|la|o|minha)", _MEDIUM),
         (
             r"(fecha|dia) (limite )?de pago|vencimiento (de mi|del|de la) (pago|factura)|data de vencimento (da|do)|"
@@ -95,6 +131,7 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
     ),
     Intent.BALANCE_INQUIRY: (
         (r"\bsaldos?\b|cuanto (dinero |plata )?tengo|quanto (dinheiro )?tenho|\bbalance\b", 0.8),
+        (r"cuant[ao]s? (plata|lana|dinero|pesos|guita) (tengo|hay|me queda)", 0.8),
         (r"credito disponible|limite disponivel|cupo disponible|available credit", 0.8),
     ),
     Intent.PAYMENT_STATUS: (
@@ -108,11 +145,28 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
             0.85,
         ),
         (r"status of my (payment|transfer)", 0.85),
+        # QA 2026-10-05 (ACC-06): "el estado de mi última transferencia", "¿Mi transferencia sí se hizo?", "Cadê
+        # minha transferência? ... não caiu". A missing transfer is a payment-status question, not a dispute.
+        (
+            r"(estado|status|situacao) d[aeo]l? (mi |minha |meu |la |a |o )?(ultim[ao] )?"
+            r"(pago|pagamento|transferencia|pix)|"
+            r"\b(mi|la|minha|a|meu|o) (ultim[ao] )?(transferencia|pago|pagamento|pix)\b.{0,25}"
+            r"\b(se hizo|se realizo|llego|se acredito|salio|caiu|chegou|entrou|foi feit[ao])|"
+            r"\bcade (a |o )?(minha |meu )?(transferencia|pix|pagamento)|"
+            r"\b(pix|transferencia|pagamento)\b.{0,30}\bnao (caiu|chegou|entrou)",
+            0.85,
+        ),
     ),
     Intent.STATEMENT_REQUEST: (
         (
             r"extracto|estado de cuenta|extrato|movimientos (del|de este|de) mes|resumen de (mi |la )?(cuenta|tarjeta)|"
             r"resumo da (minha )?(conta|fatura)|movimentacoes|statement",
+            0.8,
+        ),
+        # QA 2026-10-05 (ACC-07): the wording of ACC-ALL-2 itself ("resumen de movimientos").
+        (
+            r"resumen de (los |mis )?movimientos|movimientos de (mi|la) (cuenta|tarjeta)|"
+            r"resumo (das|de) (minhas )?movimentac",
             0.8,
         ),
     ),
@@ -127,6 +181,16 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
             r"tasa de interes|taxa de juros|condiciones del|condicoes do|credit products",
             0.75,
         ),
+        # QA 2026-10-05 (CRE-01, CRE-02, CRE-03, CRE-08): a bare "crédito", "libre inversión", "financiar", or a
+        # score question belongs to credit. Card phrases ("tarjeta de crédito") and the available credit keep their
+        # stronger rules; a score question is then abstained by the credit workflow's unsupported recognizer.
+        (
+            # "la de crédito" or "o de crédito" names a card or an account the customer already has, so any "a de" or
+            # "o de" before the word (which also covers "tarjeta de" and "cartão de") keeps it out of this rule.
+            r"(?<!tarjetas de )(?<!cartoes de )(?<!a de )(?<!o de )(?<!el de )(?<!limite de )(?<!cupo de )"
+            r"\bcreditos?\b|libre inversion|\bfinanciar\b|\bscore\b|\bpuntaje\b|\bpontuacao\b|\bburo\b",
+            0.65,
+        ),
     ),
     Intent.CREDIT_ELIGIBILITY: (
         (
@@ -135,7 +199,9 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
             r"consigo (um|uma|tirar)|am i eligible|"
             # Found on the dev split in phase 14b ("Posso pegar um empréstimo pessoal de 1.000.000 em 24 meses?").
             r"posso (pegar|tirar|conseguir|ter) (um|uma)|tenho direito a (um|uma)|tengo derecho a (un|una)|"
-            r"puedo (obtener|conseguir) (un|una)",
+            r"puedo (obtener|conseguir) (un|una)|"
+            # QA 2026-10-05 (CRE-02, CRE-03): "me prestan 10 palos", "Vocês me dão um cartão?", "Eu me qualifico?".
+            r"\bme (prestan|prestarian|emprestam|emprestariam)\b|\bme (dao|da|daria|dariam) (um|uma)\b|\bqualifico\b",
             0.85,
         ),
         (r"\baprob|\baprueb|\baprov[ae]|\bapprove", 0.85),
@@ -150,13 +216,14 @@ RULES: Mapping[Intent, tuple[Rule, ...]] = {
     ),
     Intent.CREDIT_APPLICATION_STATUS: (
         (
-            r"(estado|status|situacao) d[aeo]l? (mi |la |minha |a |sua )?(solicitud|solicitacao|pedido de credito)|"
+            r"(estado|status|situacao) d[aeo]l? (mi |la |el |minha |meu |a |o |sua |seu )?"
+            r"(solicitud|solicitacao|pedido( de (credito|emprestimo|prestamo|cartao|tarjeta))?)\b|"
             r"como va mi solicitud|como esta (a )?minha solicitacao|"
             r"\bapp-[0-9a-z]{6,}",
             0.9,
         ),
     ),
-    Intent.GREETING_OR_OTHER: ((r"^(hola|buen[oa]s|ola|oi|bom dia|boa tarde|boa noite|gracias|obrigad)", 0.55),),
+    Intent.GREETING_OR_OTHER: ((r"^(hola|buen[oa]s|ola|oi|bom dia|boa tarde|boa noite|gracias|obrigad[oa])\b", 0.55),),
 }
 _COMPILED = {
     intent: tuple((re.compile(pattern), weight) for pattern, weight in rules) for intent, rules in RULES.items()
@@ -184,6 +251,10 @@ class KeywordIntentRouter:
 
     def route(self, text: UntrustedText, language: Language) -> IntentPrediction:
         scores = score(text)
+        if len(scores) > 1:
+            # A greeting next to a request is the request (QA 2026-10-05, DSP-03: "Oi! Queria saber como está a
+            # minha contestação" got the welcome message instead of the clarifying question).
+            scores.pop(Intent.GREETING_OR_OTHER, None)
         if not scores:
             scores = {Intent.GREETING_OR_OTHER: UNMATCHED_CONFIDENCE}
         ranked = sorted(scores.items(), key=lambda item: (-item[1], list(Intent).index(item[0])))
