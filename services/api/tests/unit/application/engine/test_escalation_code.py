@@ -59,3 +59,30 @@ def test_card_reason_alone_without_card_request_falls_back_to_other() -> None:
 def test_credit_review_reason_without_credit_review_uses_the_next_decisive_rule() -> None:
     decision = _decision("ESC.credit_review_required", "ESC.clarification_exhausted")
     assert escalation_code(decision) is EscalationReasonCode.CLARIFICATION_EXHAUSTED
+
+
+def _amount_decision(reason_code: str) -> Decision:
+    result = RuleResult(
+        rule_id="DSP.amount_within_auto_limit",
+        rule_version=2,
+        passed=False,
+        effect=DecisionKind.ESCALATE,
+        reason_code=reason_code,
+    )
+    return Decision.build(
+        state="CONFIRM_DISPUTE",
+        kind=DecisionKind.ESCALATE,
+        rule_results=(result,),
+        policy_pack_version="test",
+        decisive_rule_ids=("DSP.amount_within_auto_limit",),
+    )
+
+
+def test_amount_in_a_currency_without_a_pack_rate_is_handed_off_as_needing_a_person_not_above_the_limit() -> None:
+    code = escalation_code(_amount_decision("amount_not_comparable"))
+    assert code is EscalationReasonCode.UNSUPPORTED_NEEDS_HUMAN
+
+
+def test_amount_above_the_limit_keeps_the_amount_reason() -> None:
+    code = escalation_code(_amount_decision("amount_above_auto_limit"))
+    assert code is EscalationReasonCode.AMOUNT_ABOVE_AUTO_LIMIT

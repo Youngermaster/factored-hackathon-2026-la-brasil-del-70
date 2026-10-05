@@ -7,6 +7,7 @@ import pytest
 
 from bank_agent.domain.decision import DecisionKind
 from bank_agent.domain.dispute import DisputeReason
+from bank_agent.domain.errors import PolicyPackInvalidError
 from bank_agent.domain.locale import Country
 from bank_agent.domain.money import Currency, Money
 from bank_agent.domain.transaction import TransactionStatus
@@ -107,12 +108,64 @@ def test_reason_taxonomy(reason: DisputeReason | None, expected: tuple[object, .
         (Money.of("9999.99", Currency.MXN), (True, "amount_within_auto_limit", None)),
         (Money.of("10000.00", Currency.MXN), (True, "amount_within_auto_limit", None)),
         (Money.of("10000.01", Currency.MXN), (False, "amount_above_auto_limit", DecisionKind.ESCALATE)),
-        (Money.of("100.00", Currency.USD), (False, "amount_not_comparable", DecisionKind.ESCALATE)),
+        (Money.of("100.00", Currency.COP), (False, "amount_not_comparable", DecisionKind.ESCALATE)),
     ],
 )
 def test_amount_limit_is_inclusive(amount: Money, expected: tuple[object, ...]) -> None:
     ctx = dispute(transaction=transaction_facts(amount=amount), disputed_amount=amount)
     assert run("DSP.amount_within_auto_limit", ctx)[:3] == expected
+
+
+@pytest.mark.parametrize(
+    ("usd", "compared", "expected"),
+    [
+        ("261.15", "4831.28", (True, "amount_within_auto_limit", None)),
+        ("540.54", "9999.99", (True, "amount_within_auto_limit", None)),
+        ("540.55", "10000.18", (False, "amount_above_auto_limit", DecisionKind.ESCALATE)),
+    ],
+)
+def test_usd_charge_is_compared_in_the_limit_currency_at_the_synthetic_rate(
+    usd: str, compared: str, expected: tuple[object, ...]
+) -> None:
+    amount = Money.of(usd, Currency.USD)
+    ctx = dispute(transaction=transaction_facts(amount=amount), disputed_amount=amount)
+    result = CONVERSATION_RULES["DSP.amount_within_auto_limit"].run(ctx, ())
+    assert (result.passed, result.reason_code, result.effect) == expected
+    assert result.params["compared_amount"] == Money.of(compared, Currency.MXN)
+    assert result.params["usd_exchange_rate"] == Money.of("18.50", Currency.MXN)
+    assert result.params["usd_exchange_rate_as_of"] == "2026-06-17"
+    assert result.params["usd_exchange_rate_source"] == "synthetic team-set rate"
+
+
+def test_foreign_currency_without_a_pack_rate_is_not_reported_as_above_the_limit() -> None:
+    amount = Money.of("50000.00", Currency.COP)
+    ctx = dispute(transaction=transaction_facts(amount=amount), disputed_amount=amount)
+    result = CONVERSATION_RULES["DSP.amount_within_auto_limit"].run(ctx, ())
+    assert (result.passed, result.reason_code, result.effect) == (
+        False,
+        "amount_not_comparable",
+        DecisionKind.ESCALATE,
+    )
+    assert "compared_amount" not in result.params
+
+
+@pytest.mark.parametrize(
+    "override",
+    [
+        {"usd_exchange_rate": Money.of("18.50", Currency.USD)},
+        {"usd_exchange_rate_as_of": "not-a-date"},
+        {"usd_exchange_rate": Money.of("0.00", Currency.MXN)},
+    ],
+)
+def test_a_malformed_synthetic_rate_is_a_pack_error(override: dict[str, Any]) -> None:
+    amount = Money.of("10.00", Currency.USD)
+    facts_ = facts(
+        intent=Intent.DISPUTE_NEW,
+        dispute=DisputeFacts(transaction=transaction_facts(amount=amount), disputed_amount=amount),
+    )
+    ctx = context({**DSP_PARAMS, **override}, request_=request(facts_=facts_))
+    with pytest.raises(PolicyPackInvalidError):
+        CONVERSATION_RULES["DSP.amount_within_auto_limit"].run(ctx, ())
 
 
 def test_the_transaction_amount_stands_in_for_a_missing_disputed_amount() -> None:

@@ -1,7 +1,10 @@
 """DSP and CRE rules: dispute intake, and credit product information."""
 
-from bank_agent.domain.decision import DecisionKind
-from bank_agent.domain.money import Money
+from datetime import date
+
+from bank_agent.domain.decision import DecisionKind, ParamValue
+from bank_agent.domain.errors import PolicyPackInvalidError
+from bank_agent.domain.money import Currency, ExchangeRate, Money
 from bank_agent.domain.transaction import TransactionStatus
 from bank_agent.policy.facts import DisputeFacts, TransactionFacts
 from bank_agent.policy.rules.context import CONVERSATION_RULES as RULES
@@ -116,24 +119,60 @@ def _disputed_amount(context: RuleContext) -> Money | None:
     return dispute.transaction.amount if dispute.transaction is not None else None
 
 
+def _usd_rate(context: RuleContext, limit: Money) -> ExchangeRate:
+    """The clause's synthetic USD rate into the limit's currency; a malformed rate is a pack error."""
+    per_usd = typed_param(context.params, "usd_exchange_rate", Money)
+    as_of = typed_param(context.params, "usd_exchange_rate_as_of", str)
+    if per_usd.currency is not limit.currency:
+        raise PolicyPackInvalidError("usd_exchange_rate must be in the auto intake limit's currency")
+    try:
+        return ExchangeRate(
+            source=Currency.USD, target=limit.currency, rate=per_usd.amount, as_of=date.fromisoformat(as_of)
+        )
+    except ValueError as error:
+        raise PolicyPackInvalidError("usd_exchange_rate or its as-of date is invalid") from error
+
+
 @RULES.rule(
     "DSP.amount_within_auto_limit",
-    version=1,
-    params={"auto_intake_max_amount": Money},
+    version=2,
+    params={
+        "auto_intake_max_amount": Money,
+        "usd_exchange_rate": Money,
+        "usd_exchange_rate_as_of": str,
+        "usd_exchange_rate_source": str,
+    },
     reasons=("amount_within_auto_limit", "amount_unknown", "amount_not_comparable", "amount_above_auto_limit"),
     missing_facts=("disputed_amount",),
 )
 def amount_within_auto_limit(context: RuleContext) -> Verdict:
-    """Amounts exactly at the limit pass; a different currency cannot be compared, so a human decides."""
+    """Amounts exactly at the limit pass.
+
+    A USD amount is compared after conversion with the clause's synthetic, dated USD rate, and the verdict records
+    the converted amount, the rate, its as-of date, and its source. Any other foreign currency has no rate in the
+    pack, so it cannot be compared and a human decides (``amount_not_comparable``, never "above the limit").
+    """
     limit = typed_param(context.params, "auto_intake_max_amount", Money)
     amount = _disputed_amount(context)
     if amount is None:
         return fail(DecisionKind.CLARIFY, "amount_unknown", missing=("disputed_amount",))
+    recorded: dict[str, ParamValue] = {"auto_intake_max_amount": limit}
     if amount.currency is not limit.currency:
-        return fail(DecisionKind.ESCALATE, "amount_not_comparable", auto_intake_max_amount=limit)
+        if amount.currency is not Currency.USD:
+            return fail(DecisionKind.ESCALATE, "amount_not_comparable", auto_intake_max_amount=limit)
+        rate = _usd_rate(context, limit)
+        amount = rate.convert(amount).rounded()
+        recorded |= {
+            "compared_amount": amount,
+            "usd_exchange_rate": typed_param(context.params, "usd_exchange_rate", Money),
+            "usd_exchange_rate_as_of": rate.as_of.isoformat(),
+            "usd_exchange_rate_source": typed_param(context.params, "usd_exchange_rate_source", str),
+        }
     if amount > limit:
-        return fail(DecisionKind.ESCALATE, "amount_above_auto_limit", auto_intake_max_amount=limit)
-    return ok("amount_within_auto_limit", auto_intake_max_amount=limit)
+        return Verdict(
+            passed=False, reason_code="amount_above_auto_limit", effect=DecisionKind.ESCALATE, params=recorded
+        )
+    return Verdict(passed=True, reason_code="amount_within_auto_limit", params=recorded)
 
 
 @RULES.rule(

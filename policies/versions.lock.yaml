@@ -66,8 +66,8 @@ clauses:
     digest: ff9d02ff3100c1520c81a71a2bd9c2c1534951df2482b0d27f1dfa913f1edb60
     version: 2
   DSP-AR-3:
-    digest: 9a653f82bd807cba399d3a89bed29a40d2b3a428dac207c04e81ec1287e6933b
-    version: 1
+    digest: 24f888ad7e594fa692457624f44f9b5c21ad49b71c40ea0d8ae5e232722c8006
+    version: 2
   DSP-CO-1:
     digest: 63a425d2168602b2911720d27da5e95a079e9629a3977c7d7c6ed25fb014bccc
     version: 1
@@ -75,8 +75,8 @@ clauses:
     digest: cc3c21ba1cbb187f43d8dbdff703e6d15247035cffa0bbb71d2853b442ba2eec
     version: 2
   DSP-CO-3:
-    digest: ad67b88f7581a1e634e97d6ae85251b9bf7b6a8d6efedb33c9e3dd43bbc36136
-    version: 1
+    digest: 304e1600328fa10a1fd1262df428a53571dd8be0ca0becba471f19871dd52ae2
+    version: 2
   DSP-MX-1:
     digest: 0401561c0b86ba0eff6fa1d63dbd860ace562097252d23795bacf4bbf0e92ffd
     version: 1
@@ -84,8 +84,8 @@ clauses:
     digest: 2a9d7bd112ff44d608f28c6a567318e496d1f223a915b2317624e1d202c644f7
     version: 2
   DSP-MX-3:
-    digest: abad51a5054fe53b285eac3d62c8fa450538bfa8375ec87a7e84bc2d3d5cf864
-    version: 1
+    digest: ac8c8ec7e1c7a9a210f91b928c4e2a9064d174efc54b6c32c2238946827854cb
+    version: 2
   ELG-ALL-1:
     digest: 222c4c9c48b7a1a0635539ca8ddca9e5c785d10d32b961c1ea50af3ee6e911bf
     version: 1

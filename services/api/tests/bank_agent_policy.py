@@ -236,7 +236,15 @@ FIXTURE_CLAUSES: dict[str, tuple[dict[str, Any], tuple[str, ...]]] = {
     "ACC-ALL-1": ({"max_statement_days": 92}, _family("ACC.")),
     "CRD-ALL-1": ({"block_requires_step_up": True}, _family("CRD.")),
     "DSP-MX-1": ({"dispute_window_days": 90}, ("DSP.within_window",)),
-    "DSP-MX-3": ({"auto_intake_max_amount": Money.of("10000.00", Currency.MXN)}, ("DSP.amount_within_auto_limit",)),
+    "DSP-MX-3": (
+        {
+            "auto_intake_max_amount": Money.of("10000.00", Currency.MXN),
+            "usd_exchange_rate": Money.of("18.50", Currency.MXN),
+            "usd_exchange_rate_as_of": "2026-06-17",
+            "usd_exchange_rate_source": "synthetic team-set rate",
+        },
+        ("DSP.amount_within_auto_limit",),
+    ),
     "DSP-ALL-1": (
         {
             "eligible_statuses": ["approved"],
