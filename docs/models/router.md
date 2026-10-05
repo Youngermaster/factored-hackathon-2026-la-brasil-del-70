@@ -6,7 +6,7 @@
 | Implementations | `router:tfidf` (champion `986872f0284f`), `router:embeddings` (champion `32666d7d4e3f`); baselines `router:keyword@1` (served by default) and a majority class |
 | Owner | ml |
 | Trained by | `make train` (`bank-ml router train`); evaluated by `bank-ml router evaluate`; promoted by `make promote APPROVED_BY=...` |
-| Full results | [`docs/evaluation/router.md`](../evaluation/router.md) (generated) |
+| Full results | [`docs/evaluation/router.md`](../evaluation/router.md) (generated); hosted language model reference in [`docs/evaluation/router-llm.md`](../evaluation/router-llm.md) (generated, with a hand-written decision) |
 | Decision record | [ADR 0015](../adr/0015-router-model-choice.md) |
 
 ## Intended use
@@ -56,12 +56,46 @@ Artifacts are JSON parameters, evaluated in pure Python inside `bank_agent`. The
 - **Robustness (canonical test seeds, 137 per set; embeddings, with TF-IDF in parentheses).** Clean 0.77 (0.67), dropped accents 0.78 (0.67), homophones 0.77 (0.67), fillers 0.72 (0.69), truncation to 60% of the words 0.53 (0.53), combined transcript style 0.73 (0.69).
 - **Transfer (TF-IDF, same C).** pt-BR test accuracy is 0.63 when trained with Portuguese and 0.59 when trained on Spanish only, so the gap is small because character n-grams carry over. Held-out Spanish dialects score no worse than in distribution (es-MX 0.73 against 0.63, es-CO 0.81 against 0.73, es-AR 0.76 against 0.73), all within the intervals. This synthetic corpus shows no measurable dialect gap.
 
+## Hosted language model reference (2026-10-05)
+
+ADR 0015 option 4, a language model classifier, is now measured. The full results are in [`docs/evaluation/router-llm.md`](../evaluation/router-llm.md), and the decision rule was pre-registered in [`docs/plans/router-llm.md`](../plans/router-llm.md).
+
+**Setup.**
+
+- The model runs `classify_intent_fallback@1` zero-shot, at temperature 0, through the full gateway, so the message is redacted as in production.
+- The models are `azure/gpt-4.1-mini` and `azure/gpt-4o`, and the calls are recorded as cassettes in `ml/cassettes/router_llm/`.
+- It is compared with `keyword@1`, `tfidf@986872f0284f` (retrained from the committed seeds; it reproduces the registered version exactly), and cascades. In a cascade the classical router acts first, and the model is called only below that router's threshold.
+- Thresholds were chosen on dev. Test numbers carry 95% seed-group bootstrap intervals.
+
+| Test (601 items) | Macro-F1 | Accuracy | Confident write-intent misroutes | Out-of-scope messages confidently routed into a workflow (of 32) | Cost per 1,000 messages (list price) | p95 per message |
+|---|---|---|---|---|---|---|
+| `keyword@1` (served) | 0.395 [0.308, 0.447] | 0.393 | 33 | 0 | 0 | under 1 ms |
+| `tfidf@986872f0284f` | 0.661 [0.575, 0.713] | 0.677 | 1 | 0 | 0 | under 10 ms |
+| `gpt-4.1-mini` zero-shot | 0.885 [0.819, 0.925] | 0.889 | 31 | 13 | 0.42 USD | 2.4 s |
+| `gpt-4o` zero-shot | 0.936 [0.890, 0.969] | 0.937 | 23 | 7 | 3.17 USD | 1.9 s |
+| TF-IDF then `gpt-4.1-mini` | 0.873 [0.802, 0.918] | 0.879 | 11 | 7 | 0.22 USD | 1.7 s |
+| TF-IDF then `gpt-4o` | 0.910 [0.857, 0.948] | 0.913 | 11 | 7 | 1.64 USD | 1.7 s |
+
+These are offline measurements on synthetic text. The latency is the recorded provider round trip from the development machine.
+
+**What they show.**
+
+- The hosted model understands far more requests, especially in Portuguese (pt accuracy 0.90 to 0.92, against 0.63 for TF-IDF) and on the long-tail credit and status intents.
+- It also guesses where the classical routers abstain. It confidently starts the wrong write flow far more often than TF-IDF, and it sends out-of-scope messages into workflows.
+- The cascade keeps TF-IDF where TF-IDF is reliable (0.904 accuracy on the 48% of messages it acts on) and spends the model only where TF-IDF abstains (0.465 against 0.855 to 0.923).
+
+**Decision.**
+
+- Under the pre-registered dev rule, neither cascade qualifies for an end-to-end trial. The `gpt-4.1-mini` cascade made 2 confident write-intent misroutes on dev against a limit of 1, and the `gpt-4o` cascade costs 1.89 USD per 1,000 messages against a limit of 1.00.
+- Production keeps `keyword@1`.
+- The next steps are in the [backlog](../BACKLOG.md): a prompt version with intent definitions chosen on dev, a human audit of the label audit candidates, and, only if a cascade then passes the rule, a default-off flag with an end-to-end dev run.
+
 ## Limitations
 
 - Every utterance was written or derived by the team (one author pool, which also wrote the keyword baseline), so accuracy on real customers will differ. Human validation of 200 items (`docs/evaluation/router-labeling.md`) and native review of pt-BR are pending.
 - Dev and test are small (68 and 136 seed groups), so intervals are wide and the test error at the dev threshold exceeds the dev target.
 - The out-of-scope class is weak; the in-domain unsupported recognizers (ADR 0029) and the out-of-scope answer remain the safety net.
-- No language-model paraphrase or zero-shot reference was run (no provider).
+- No language-model paraphrase was generated. The zero-shot reference ran on 2026-10-05 (section above), on the same synthetic text, so it shares every data limitation listed here.
 - The embedding router needs the `ml` extra, which the API image does not install; without it the composition root serves the keyword baseline and logs the fallback.
 
 ## Ethical considerations
