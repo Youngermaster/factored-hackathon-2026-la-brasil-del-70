@@ -59,7 +59,7 @@ Engine states are evaluated and grounded in the canonical binding states of `pol
 | RESOLVED, ABSTAINED, REFUSED | START | IntentRouter | common | SCOPE-ALL-2 | none | UNDERSTAND, switch |
 | ESCALATED | ESCALATE | HandoffBuilder | common | ESC-{c}-2 | none | terminal |
 
-`{c}` is the verified customer's country (MX, CO, AR), never text. The dispute window (`DSP-{c}-1`), the resolution SLA (`DSP-{c}-2`), and the automatic intake limit (`DSP-{c}-3`) come from clause parameters.
+`{c}` is the verified customer's country (MX, CO, AR), never text. The dispute window (`DSP-{c}-1`), the resolution SLA (`DSP-{c}-2`), and the automatic intake limit (`DSP-{c}-3`) come from clause parameters. A USD charge is compared with the limit after conversion at the clause's synthetic, dated USD rate (`usd_exchange_rate`, `usd_exchange_rate_as_of`, `usd_exchange_rate_source`); the rule result records the converted amount, the rate, its as-of date, and its source,. Any other currency that differs from the limit's has no rate in the pack, so the rule returns `amount_not_comparable` and the handoff reason is `unsupported_needs_human`, never `amount_above_auto_limit`.
 
 ## Understanding
 
