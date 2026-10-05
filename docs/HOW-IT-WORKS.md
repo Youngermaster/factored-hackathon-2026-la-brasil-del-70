@@ -546,7 +546,7 @@ flowchart LR
     api -- "https" --> provider["Hosted model provider<br/>(optional)"]
 ```
 
-The deployed demo runs this stack on one Azure VM in demo mode with the hosted model `gemini/gemini-3.1-flash-lite` ([README](../README.md), [ADR 0019](adr/0019-single-host-compose-deployment.md)). Only ports 80 and 443 are public; PostgreSQL, the API, Grafana, and Jaeger are reachable only from inside the VM (Grafana and Jaeger through an SSH tunnel).
+The deployed demo runs this stack on one Azure VM in demo mode with the hosted model `gemini/gemini-3.1-flash-lite` ([README](../README.md), [ADR 0019](adr/0019-single-host-compose-deployment.md)). Only ports 80 and 443 are public; PostgreSQL, the API, and Jaeger are reachable only from inside the VM (Jaeger through an SSH tunnel). Grafana is served read-only at `/grafana/` through Caddy when the server env file sets `GRAFANA_ROUTE=on` ([ADR 0045](adr/0045-expose-grafana-read-only-under-grafana.md)); otherwise it too is on the tunnel only.
 
 ### Security layers
 

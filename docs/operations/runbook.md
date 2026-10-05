@@ -5,7 +5,7 @@ One section per Prometheus alert in `deploy/observability/alerts.yml` (the secti
 First steps for any alert:
 
 1. `curl -s localhost:8000/health/details` (development) or `curl -s https://<host>/health/details` (the deployed stack) shows the level, the reasons, and every component's state.
-2. The Grafana dashboard "Bank agent: reliability and operations" (`localhost:3000`; on the VM through the SSH tunnel in [deploy/README.md](../../deploy/README.md), "Operate") shows the panel the alert queries.
+2. The Grafana dashboards "Bank agent: service health" and "Bank agent: reliability and operations" (`localhost:3000`; on the VM at `https://<host>/grafana/` when the route is on, or through the SSH tunnel at `http://localhost:3000/grafana/`, [deploy/README.md](../../deploy/README.md), "Operate") show the panel the alert queries.
 3. A customer report comes with the `X-Request-ID` or `X-Trace-Id` of the failing response: search the JSON logs for the request id (`deploy/prod.sh logs api` on the VM), open the trace id in the Jaeger UI (`localhost:16686`, through the tunnel on the VM), and read the turn's execution record in the evaluator trace (`GET /v1/eval/conversations/{id}/trace`), which stores the same trace id.
 
 The deployment operations (deploy, update, roll back, back up, restore, rotate secrets, the daily checks, and the take-down) are at the end of this page.

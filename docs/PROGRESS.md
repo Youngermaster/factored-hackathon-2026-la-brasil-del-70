@@ -2301,3 +2301,63 @@ python3 scripts/checks/check_env_keys.py
 #### Next phase
 
 Phase 01, monorepo scaffold and quality gates (`kit/prompts/01-scaffold.md`), in plan mode.
+
+### Observability: Grafana read-only at /grafana and the service health dashboard (2026-10-05)
+
+Branch `feat/observability-grafana`. Production observability a judge can open, exposed behind switches that default
+to off.
+
+#### What was done
+
+- Caddy serves Grafana at `/grafana/` when `GRAFANA_ROUTE=on`: prefix kept, `/grafana` redirected, every `__Host-` and
+  `__Secure-` cookie removed from requests to Grafana, `/grafana/metrics` answers 404, no Caddy CSP on the route.
+  Grafana is hardened (root URL from `PUBLIC_ORIGIN`, sub-path, secure cookies, sign-up, snapshots, public dashboards,
+  Live, Gravatar, embedding, plugin downloads, and its metrics endpoint off, its own CSP), anonymous Viewer access
+  behind `GRAFANA_ANONYMOUS_VIEWER` (default false), 512 MB, and an internal `observability` network shared only
+  with `web`. Prometheus bounds each query. `deploy/prod.sh` reads `OBS` from the server env file, so releases and
+  continuous deployment keep the `obs` profile current, and refuses switch values Caddy or Grafana would not accept.
+- The Jaeger datasource is deleted from Grafana provisioning. The collector deletes client address, port, and user
+  agent from spans and metrics, expires dead series after 5 minutes, and reads host CPU, load, memory, disk, and root
+  filesystem usage with its `host_metrics` receiver (no Docker socket or host mount).
+- Telemetry: model duration, token, and cost metrics carry the prompt id, successful calls carry the serving model,
+  the HTTP histogram reaches 60 s, and outcome and handoff counters start at 0 for every label set.
+- A third dashboard, **Bank agent: service health** (Grafana's home page), and fixes to the other two: the empty
+  executive bar charts are bar gauges, zero series are hidden in category panels, degradation levels show L0 to L4.
+- ADR 0045, its index rows, and the docs: observability, Grafana dashboards, deploy README ("Grafana at /grafana"),
+  runbook, threat model, HOW-IT-WORKS, video plan notes, BACKLOG rows.
+
+#### Decisions
+
+- [ADR 0045](adr/0045-expose-grafana-read-only-under-grafana.md): same-origin sub-path with cookie stripping for the
+  event; a separate host name is the production follow-up (BACKLOG). Amends ADR 0036's production access model.
+
+#### How to verify
+
+```bash
+uv run --frozen pytest -m unit services/api/tests/unit/test_deploy_config.py \
+  services/api/tests/unit/adapters/test_observability_config.py \
+  services/api/tests/unit/adapters/llm/test_tracing_and_redaction_decorators.py \
+  services/api/tests/unit/adapters/llm/test_cost_and_budget.py \
+  services/api/tests/unit/application/engine/test_turn_metrics.py \
+  services/api/tests/unit/bootstrap/test_observability.py
+```
+
+Checked offline without containers: the collector configuration with `otelcol validate` (0.161.0 binary); the privacy
+processor with a debug exporter (the three client attributes present without it, absent with it); every query of the
+three dashboards and the alert rules against Prometheus 3.15.0 started with the production query flags and fed by
+the collector with traffic from the real telemetry adapters (no errors, every query returned data); the Caddyfile
+adapted by Caddy 2.11.4 with the route on, off, and an invalid value (refused), and the route run locally against a
+stub upstream (redirect, 404 on `/grafana/metrics`, prefix kept, bank cookies removed, Grafana cookies kept, no CSP).
+Grafana itself, its CSP in a browser, and the anonymous Viewer were not run locally: they are verified on production
+after the merge.
+
+#### Known limitations
+
+- Same-origin residual risk accepted for the event (ADR 0045).
+- The collector and Prometheus keep their single-file configuration until restarted once after the merge.
+- Per-container resources, alert delivery, and an availability probe are not built (BACKLOG).
+
+#### Next
+
+The orchestrator sets `OBS=1`, `GRAFANA_ROUTE=on`, and `GRAFANA_ANONYMOUS_VIEWER=true` on the VM, runs
+`deploy/prod.sh up`, restarts the collector and Prometheus once, and verifies `/grafana/` on production.

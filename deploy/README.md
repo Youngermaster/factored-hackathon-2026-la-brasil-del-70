@@ -12,7 +12,7 @@ Everything needed to run the system outside the Python and web packages: the dev
 | `azure/` | Azure: `provision.sh` (resource group, Key Vault, VM with a managed identity, firewall, per-secret read access), `keyvault-secrets.sh` (generate, set, rotate, list; never prints a value), `install-vm.sh` and `bank-agent-secrets.service` (stage at every boot, before Docker); continuous deployment: `setup-github-oidc.sh` (the one-time OIDC identity), `run-on-vm.sh` and `vm-deploy.sh` (release or roll back through run-command) |
 | `.env.production.example` | Every server variable, with no values; copied to `deploy/.env.production` on the server only |
 | `smoke_test.sh`, `smoke_test.py` | The smoke test against a deployed URL (standard library Python) |
-| `caddy/Caddyfile` | TLS, the SPA headers and strict CSP, the reverse proxy |
+| `caddy/Caddyfile` | TLS, the SPA headers and strict CSP, the reverse proxy, and the optional read-only Grafana route at `/grafana/` |
 | `caddy/module/` | The Caddy build (standard distribution, pinned Go modules) compiled into the web image |
 | `postgres/init-production/10-roles.sh` | Production roles: a non-superuser owner, the application role, the evaluator role |
 | `postgres/init/10-roles.sh` | Development and test roles (the image superuser is the owner there) |
@@ -39,6 +39,7 @@ flowchart LR
         seed["seed (once)"] --> pg
         purge["purge (daily)"] --> pg
         api -. "OTEL_ENABLED" .-> obs["obs profile:<br/>collector, Jaeger, Prometheus, Grafana"]
+        web -. "/grafana/ when GRAFANA_ROUTE=on" .-> obs
         api -. "optional" .-> ollama["ollama profile"]
     end
     api -- "https" --> provider["hosted model provider (optional)"]
@@ -50,7 +51,7 @@ flowchart LR
 | api | `bank-agent-api` | user 10001, read-only root, no capabilities, no access log, proxy headers from web only | 1.5 CPU, 1.5 GB |
 | postgres | `postgres:16.15-alpine3.24` by digest | user 70, read-only root, no capabilities, internal network, never published | 1 CPU, 1 GB |
 | migrate, seed, purge | `bank-agent-job` | user 10001, read-only root, no capabilities, internal network | 1 CPU, 768 MB (purge 256 MB) |
-| obs profile | collector, Jaeger (Badger, 7 days), Prometheus (15 days), Grafana (login) by digest | read-only root, no capabilities; Grafana and the Jaeger UI on 127.0.0.1 only | 0.5 CPU each |
+| obs profile | collector, Jaeger (Badger, 7 days), Prometheus (15 days, query limits), Grafana by digest | read-only root, no capabilities; the Jaeger UI on 127.0.0.1 only; Grafana on 127.0.0.1 and, with `GRAFANA_ROUTE=on`, read-only at `/grafana/` through Caddy | 0.5 CPU each; Grafana 512 MB |
 | ollama profile | `ollama/ollama:0.35.0` by digest | no capabilities, private network plus egress for the model download | 3 CPU, 10 GB |
 
 Every service has `no-new-privileges`, rotated logs (5 files of 10 MB), and a health check or a completion condition. `services/api/tests/unit/test_deploy_config.py` fails when an edit drops any of this.
@@ -290,11 +291,41 @@ The smoke test checks the certificate (valid for the host, at least 7 days left)
 | Logs | `deploy/prod.sh logs api` (or `web`, `postgres`, `purge`, `migrate`) |
 | Health, degradation level, budget use | `curl -s https://demo.your-domain.org/health/details` |
 | Run the retention purge now | `deploy/prod.sh purge` |
-| Telemetry | set `OTEL_ENABLED=true`, then `OBS=1 deploy/prod.sh up` |
-| Grafana and the Jaeger UI | from your laptop: `ssh -L 3000:127.0.0.1:3000 -L 16686:127.0.0.1:16686 ubuntu@<static-ip>`, then `http://localhost:3000/d/bank-agent-executive` for live administrative analytics, `http://localhost:3000/d/bank-agent-overview` for operations (user `admin`, `GRAFANA_ADMIN_PASSWORD`), and `http://localhost:16686` for traces |
+| Telemetry | set `OTEL_ENABLED=true` and `OBS=1` in the env file, then `deploy/prod.sh up` (every later release keeps the `obs` profile current) |
+| Grafana, public | `https://demo.your-domain.org/grafana/` with `GRAFANA_ROUTE=on`; see "Grafana at /grafana" |
+| Grafana and the Jaeger UI through the tunnel | from your laptop: `ssh -L 3000:127.0.0.1:3000 -L 16686:127.0.0.1:16686 ubuntu@<static-ip>`, then `http://localhost:3000/grafana/` (user `admin`, `GRAFANA_ADMIN_PASSWORD`) and `http://localhost:16686` for traces |
 | Stop without losing data | `deploy/prod.sh down` |
 
 The alerts and what to do for each are in the [runbook](../docs/operations/runbook.md), which also covers the deployment operations below.
+
+### Grafana at /grafana
+
+[ADR 0045](../docs/adr/0045-expose-grafana-read-only-under-grafana.md) serves Grafana read-only on the public origin,
+controlled by three lines of the server env file:
+
+| Variable | Values | Effect |
+|---|---|---|
+| `OBS` | `1`, or empty | `1` runs the `obs` profile on every `deploy/prod.sh up` and release, continuous deployment included. `OBS` in the caller's environment overrides the file |
+| `GRAFANA_ROUTE` | `on`, `off`, or empty (off) | `on` makes Caddy proxy `/grafana/` to Grafana (needs `OBS=1`, else 502); `off` leaves `/grafana` to the SPA |
+| `GRAFANA_ANONYMOUS_VIEWER` | `true`, `false`, or empty (false) | `true` lets anyone view the dashboards without signing in, as a Viewer (no editing, no Explore); the admin login stays |
+
+`deploy/prod.sh check` refuses any other value, because Caddy would fail to import an unknown snippet. To turn it on:
+
+```bash
+# in deploy/.env.production
+OBS=1
+GRAFANA_ROUTE=on
+GRAFANA_ANONYMOUS_VIEWER=true
+```
+
+then `deploy/prod.sh up`. Caddy strips the bank's `__Host-` cookies from requests to Grafana, answers 404 for
+`/grafana/metrics`, and leaves the CSP to Grafana. The collector and Prometheus read single bind-mounted files that a
+container keeps from its start, so after a merge that changes `deploy/observability/otel-collector.yaml`,
+`prometheus.yml`, or `alerts.yml`, restart those two once from the checkout:
+`docker compose -p bank-agent-prod -f deploy/compose.prod.yml --env-file deploy/.env.production --profile obs restart otel-collector prometheus`.
+A new Grafana datasource file also needs a Grafana restart; new dashboard JSON appears within about 10 seconds.
+
+To close it: `GRAFANA_ROUTE=off` (and `GRAFANA_ANONYMOUS_VIEWER=false`), then `deploy/prod.sh up`.
 
 ## Update and roll back
 

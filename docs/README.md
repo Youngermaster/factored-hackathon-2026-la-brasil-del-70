@@ -106,6 +106,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
+| [adr/0045](adr/0045-expose-grafana-read-only-under-grafana.md) | Expose Grafana read-only under /grafana, behind switches, with the bank's cookies stripped |
 
 ## Exploratory data analysis
 
