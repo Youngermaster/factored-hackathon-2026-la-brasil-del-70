@@ -280,6 +280,11 @@ Pronto: bloqueamos o seu cartão **** 1234 e registramos sua contestação com o
 [dispute.clarify_date]
 Quando você diz 03/04, se refere a os seus cartões ou a uma contestação?
 
+[dispute.clarify_one]
+Encontrei esta transação. É a que você quer contestar? Responda sim ou não.
+1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+2) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
+
 [dispute.clarify_options]
 Encontrei várias transações parecidas. Qual você quer contestar?
 1) 15 de junho de 2026, FIXTURE MARKET, 1.250,00 MXN, cartão **** 1234
@@ -293,6 +298,12 @@ Vou bloquear o seu cartão **** 1234 e registrar uma contestação da transaçã
 
 [dispute.denied]
 Não posso registrar esta contestação aqui. Se quiser, transfiro você para uma pessoa da equipe.
+
+[dispute.existing_case]
+Esta transação já tem o caso case-000001, que está aberto. A data prevista de resposta é 2 de agosto de 2026.
+
+[dispute.no_refund_guarantee]
+Registrar a contestação não garante reembolso nem crédito provisório: a equipe de revisão decide.
 
 [dispute.offer_block]
 Como você não reconhece a compra, posso bloquear preventivamente o seu cartão **** 1234 para evitar novas cobranças. Quer que eu bloqueie? Responda sim ou não.

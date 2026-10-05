@@ -8,9 +8,10 @@ customer's words only), and every slot the model returns is validated by its out
 
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.llm import EXTRACT_DISPUTE, structured
-from bank_agent.application.understanding import amounts, dates, extraction
+from bank_agent.application.understanding import amounts, dates, extraction, periods
 from bank_agent.application.understanding.text import fold
 from bank_agent.application.workflows.dispute.data import DisputeData, load, save
+from bank_agent.domain.dispute import DisputeReason
 from bank_agent.domain.llm_outputs import DisputeSlotExtraction
 from bank_agent.domain.workflow import Intent
 
@@ -49,6 +50,12 @@ async def absorb(ctx: TurnContext, data: DisputeData, text: str, *, use_model: b
     found = dates.resolve_dates(text, ctx.today)
     if found is None and extracted is not None and _said(extracted.date_expression, text):
         found = dates.resolve_dates(extracted.date_expression or "", ctx.today)
+    if found is None:
+        # A month on its own ("un cargo de abril", "fue en junio", "a finales de abril"): the whole month, so the
+        # resolver can rank or offer that month's transactions instead of asking again (QA 2026-10-05).
+        period = periods.resolve_period(text, ctx.today)
+        if period is not None:
+            found = dates.DateMention(period.expression, (period.dates,))
     if found is not None:
         changes["date_expression"] = found.expression[:100]
         changes["date_options"] = found.interpretations
@@ -64,7 +71,10 @@ async def absorb(ctx: TurnContext, data: DisputeData, text: str, *, use_model: b
         changes["channel"] = channel
     reason = extraction.dispute_reason(text)
     if reason is None and model is not None and model.reason_candidates:
-        reason = model.reason_candidates[0]
+        specific = [r for r in model.reason_candidates if r is not DisputeReason.OTHER]
+        # The model's "other" means "no supported reason in this message"; it never replaces a reason the customer
+        # already gave (a follow-up with only the date and amount kept "no reconozco" from the first turn).
+        reason = specific[0] if specific else (DisputeReason.OTHER if data.reason is None else None)
     if reason is not None:
         changes["reason"] = reason
     if model is not None and data.intent is None:

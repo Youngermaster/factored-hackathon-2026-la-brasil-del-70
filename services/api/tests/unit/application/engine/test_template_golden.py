@@ -101,6 +101,7 @@ LIST_ITEMS = {
     "card.clarify_options": ("options", "card.option"),
     "card.declined": ("items", "card.declined_item"),
     "dispute.clarify_options": ("options", "dispute.option"),
+    "dispute.clarify_one": ("options", "dispute.option"),
     "dispute.status_many": ("items", "dispute.status_item"),
     "credit.application_statuses": ("items", "credit.application_status_item"),
 }

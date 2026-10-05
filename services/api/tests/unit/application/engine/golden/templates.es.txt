@@ -280,6 +280,11 @@ Listo: bloqueamos tu tarjeta **** 1234 y registramos tu reclamación con el núm
 [dispute.clarify_date]
 Cuando dices 03/04, ¿te refieres al tus tarjetas o al una reclamación?
 
+[dispute.clarify_one]
+Encontré esta transacción. ¿Es la que quieres reclamar? Responde sí o no.
+1) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
+2) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
+
 [dispute.clarify_options]
 Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?
 1) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
@@ -293,6 +298,12 @@ Voy a bloquear tu tarjeta **** 1234 y a registrar una reclamación por la transa
 
 [dispute.denied]
 No puedo registrar esta reclamación aquí. Si quieres, te comunico con una persona del equipo.
+
+[dispute.existing_case]
+Esta transacción ya tiene el caso case-000001, que está abierto. La fecha comprometida de respuesta es el 2 de agosto de 2026.
+
+[dispute.no_refund_guarantee]
+Registrar la reclamación no garantiza un reembolso ni un abono provisional: el equipo de revisión lo decide.
 
 [dispute.offer_block]
 Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 1234 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.

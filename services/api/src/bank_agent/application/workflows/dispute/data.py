@@ -75,6 +75,11 @@ def open_questions(data: DisputeData) -> tuple[str, ...]:
         questions.append("Which transaction does the customer dispute?")
     if data.reason is None:
         questions.append("What is the reason for the dispute?")
+    elif data.reason is DisputeReason.OTHER:
+        questions.append(
+            "The customer's reason is not one the assistant can register (DSP-ALL-3): confirm the reason and decide "
+            "whether to open a case."
+        )
     if data.date_expression is not None and len(data.date_options) > 1:
         questions.append("Which date did the customer mean?")
     return tuple(questions)

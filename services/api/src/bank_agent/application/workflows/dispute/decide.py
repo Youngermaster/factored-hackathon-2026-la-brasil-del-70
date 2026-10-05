@@ -1,6 +1,8 @@
 """CHECK_ELIGIBILITY, CLASSIFY_REASON, OFFER_PROTECTIVE_BLOCK, and CONFIRM_SUMMARY: the kernel decides over facts
 read from the session's own records; deny reasons become customer explanations through the policy renderer."""
 
+import re
+from dataclasses import replace
 from datetime import timedelta
 
 from bank_agent.application.engine.context import Step, TurnContext
@@ -10,12 +12,14 @@ from bank_agent.application.engine.idempotency import derive_key
 from bank_agent.application.engine.render import clean_record_text
 from bank_agent.application.engine.reply import Masked, Param, RecordText, Reply
 from bank_agent.application.engine.security import detect_injection
-from bank_agent.application.engine.shared import abstain, blocking_step, escalate_decision
+from bank_agent.application.engine.shared import abstain, blocking_step, clause_ref, escalate_decision
 from bank_agent.application.engine.templates.labels import REASONS
 from bank_agent.application.understanding.answers import YesNo, parse_yes_no
 from bank_agent.application.understanding.extraction import dispute_reason
+from bank_agent.application.understanding.text import fold
 from bank_agent.application.workflows.dispute.data import BlockOffer, DisputeData, load, open_questions, save
 from bank_agent.application.workflows.dispute.locate import exhausted
+from bank_agent.application.workflows.dispute.status import case_params
 from bank_agent.domain.actions import ActionKind, ActionRequest, BlockCardArguments, CreateDisputeArguments
 from bank_agent.domain.conversation import ConfirmationCard
 from bank_agent.domain.decision import Decision, DecisionKind
@@ -27,6 +31,10 @@ from bank_agent.domain.transaction import Transaction
 from bank_agent.domain.workflow import Outcome
 from bank_agent.policy.facts import CardFacts, DisputeFacts, TransactionFacts
 
+_REFUND_QUESTION = re.compile(
+    r"reembols|devuelv|devolv|regres\w* (?:mi|el) dinero|dinheiro (?:volta|de volta)|\bestorn|garant|abono|"
+    r"credito provisori|dinero de vuelta"
+)
 CLASSIFY_REASON = "CLASSIFY_REASON"
 OFFER_BLOCK = "OFFER_PROTECTIVE_BLOCK"
 CONFIRM = "CONFIRM_SUMMARY"
@@ -56,8 +64,22 @@ async def dispute_facts(ctx: TurnContext, data: DisputeData) -> tuple[DisputeFac
     return DisputeFacts(transaction=facts, reason=data.reason, disputed_amount=amount), txn
 
 
-def denied(ctx: TurnContext, decision: Decision) -> Step:
-    return abstain(ctx, "dispute.denied", explanation(decision))
+async def denied(ctx: TurnContext, decision: Decision, txn: Transaction | None = None) -> Step:
+    """The clause-backed abstention. When the transaction already has an open case (``DSP-ALL-4``), the reply first
+    names that case, its status, and its deadline, as the clause promises (QA 2026-10-05)."""
+    step = abstain(ctx, "dispute.denied", explanation(decision))
+    if txn is None or step.reply is None or "DSP.not_already_disputed" not in decision.decisive_rule_ids:
+        return step
+    cases = await ctx.tools.list_my_cases()
+    case = next((c for c in cases if c.transaction_id == txn.transaction_id and c.is_open), None)
+    if case is None:
+        return step
+    ctx.engine = ctx.engine.with_fact(
+        f"case {case.case_id} is {case.status.value} with SLA {case.sla_due_at.date()}",
+        SourceRef.of(SourceTable.DISPUTE_CASES, case.case_id),
+    )
+    reply = replace(step.reply, prefix="dispute.existing_case", params={**step.reply.params, **case_params(ctx, case)})
+    return Step(step.next_state, reply, step.outcome)
 
 
 async def check_eligibility(ctx: TurnContext) -> Step:
@@ -85,7 +107,7 @@ async def check_eligibility(ctx: TurnContext) -> Step:
     if stop is not None:
         return stop
     if decision.kind in (DecisionKind.DENY, DecisionKind.ABSTAIN):
-        return denied(ctx, decision)
+        return await denied(ctx, decision, txn)
     return Step(CLASSIFY_REASON)
 
 
@@ -113,7 +135,7 @@ async def classify_reason(ctx: TurnContext) -> Step:
     if stop is not None:
         return stop
     if decision.kind in (DecisionKind.DENY, DecisionKind.ABSTAIN):
-        return denied(ctx, decision)
+        return await denied(ctx, decision, found[1])
     wants_block = data.reason is DisputeReason.UNRECOGNIZED and data.card_active
     if wants_block and data.block_offer is BlockOffer.NONE:
         return Step(OFFER_BLOCK)
@@ -232,13 +254,24 @@ async def confirm_summary(ctx: TurnContext) -> Step:
         if answer is YesNo.NO:
             save(ctx, data.evolve(summary_shown=False))
             return Step(RESOLVED, Reply(template="common.nothing_recorded"), Outcome.RESOLVED)
+        if _REFUND_QUESTION.search(fold(ctx.text)):
+            # "¿Me garantizan que me devuelven el dinero?" at the summary: answer from INF-ALL-1, then ask again.
+            stop = exhausted(ctx, data)
+            if stop is not None:
+                return stop
+            step = await _summary(ctx, data, txn)
+            if step.reply is not None:
+                inf = clause_ref(ctx, "INF-ALL-1")
+                reply = replace(step.reply, prefix="dispute.no_refund_guarantee", explain=(inf,))
+                return Step(step.next_state, reply, step.outcome)
+            return step
         return exhausted(ctx, data) or await _summary(ctx, data, txn, unanswered=True)
     decision = evaluate(ctx, dispute=facts)
     stop = blocking_step(ctx, decision, state=CONFIRM, step_up_ok=True)
     if stop is not None:
         return stop
     if decision.kind in (DecisionKind.DENY, DecisionKind.ABSTAIN):
-        return denied(ctx, decision)
+        return await denied(ctx, decision, txn)
     return await _summary(ctx, data, txn)
 
 
