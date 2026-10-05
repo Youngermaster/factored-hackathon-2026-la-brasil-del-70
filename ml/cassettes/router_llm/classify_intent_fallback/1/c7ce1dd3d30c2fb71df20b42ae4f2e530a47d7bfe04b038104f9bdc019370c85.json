@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c7ce1dd3d30c2fb71df20b42ae4f2e530a47d7bfe04b038104f9bdc019370c85",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1158,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:38.208473Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cumplo los requisitos para crédito de libre inversión?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

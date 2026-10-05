@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f41c795ea9683a749c5cfca0ec48e735ee45e432d92ce2f5a6f405628c2598a5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1186,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.5,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:49.124018Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hace un mes puse una reclamación por un cobro de 50 mil pesos y nada que me responden",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

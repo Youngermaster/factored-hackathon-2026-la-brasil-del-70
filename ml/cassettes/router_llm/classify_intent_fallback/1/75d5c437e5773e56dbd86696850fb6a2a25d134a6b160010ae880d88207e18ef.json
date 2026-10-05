@@ -1,0 +1,36 @@
+{
+  "cassette_id": "75d5c437e5773e56dbd86696850fb6a2a25d134a6b160010ae880d88207e18ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2426,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:37.783713Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero reactivvar la tarjeta que termina en 3310",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

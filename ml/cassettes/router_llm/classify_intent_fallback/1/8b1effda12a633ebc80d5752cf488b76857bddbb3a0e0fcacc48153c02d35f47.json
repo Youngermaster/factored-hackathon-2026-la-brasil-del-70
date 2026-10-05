@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8b1effda12a633ebc80d5752cf488b76857bddbb3a0e0fcacc48153c02d35f47",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1193,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.02,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:27.975027Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No reconozco un cargo de 500 pesos en Super Ahorro",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

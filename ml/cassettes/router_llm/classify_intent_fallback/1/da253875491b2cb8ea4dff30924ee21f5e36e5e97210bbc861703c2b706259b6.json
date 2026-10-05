@@ -1,0 +1,36 @@
+{
+  "cassette_id": "da253875491b2cb8ea4dff30924ee21f5e36e5e97210bbc861703c2b706259b6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2315,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.3,
+        "label": "dispute_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:23.051152Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "cargo desconocido en mi plástico terminación 4821",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

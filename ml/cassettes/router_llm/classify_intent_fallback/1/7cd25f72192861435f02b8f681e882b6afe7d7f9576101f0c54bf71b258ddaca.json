@@ -1,0 +1,40 @@
+{
+  "cassette_id": "7cd25f72192861435f02b8f681e882b6afe7d7f9576101f0c54bf71b258ddaca",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1755,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.85,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:57.065060Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Hola, vi movimientos raros en mi plásrico, ¿me la pueden congelar mientras?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e1a62dae4255ba4db185c3686cce1468bbbbd204b2c5143409e3b0198069f9bc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1312,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "unsupported"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:38.362752Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Me reyala una certifciación bancaria",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

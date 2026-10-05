@@ -1,0 +1,40 @@
+{
+  "cassette_id": "6b3e6b8cd2f9d7a5e7e2bd0209c837a3f764b0f72cb6d686188574ae8aee7575",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1654,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.85,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:30.132318Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Se me quedo la tarjeta en el cajero, ¿la pueden bloquear?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7b0f0d627be2cdde5b205c7cb3b86eb8b8a5fe944f75363a3426424d74f607c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1285,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:36.626572Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Buenas, ya me decidí: quiero radicar la solicitud de crédito hipoteacrio",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e2aad3d5a5dff53e83da337b4f618571f486525917faebb06041232a10f2bb03",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1524,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:41.408376Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "O carrão tá todo gasto e a maquininha não lê mais, quero outro",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "62b6057b5a47004778d52a45047b859a575c0ddf33ba76b114f50f9164f3f0d1",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 674,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:56.546530Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Minha contestacao daquele saque que nao saiu ja foi resolvida?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

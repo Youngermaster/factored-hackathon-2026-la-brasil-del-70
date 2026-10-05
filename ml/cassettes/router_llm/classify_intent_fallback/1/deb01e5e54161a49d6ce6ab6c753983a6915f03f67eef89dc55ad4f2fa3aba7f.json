@@ -1,0 +1,36 @@
+{
+  "cassette_id": "deb01e5e54161a49d6ce6ab6c753983a6915f03f67eef89dc55ad4f2fa3aba7f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1274,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:40.063162Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Hopa, decime el saldo de la cuenta",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -5,11 +5,14 @@
 #                                   SECRETS_SOURCE=keyvault in the environment its secret lines stay empty, else they
 #                                   get fresh random values
 #   deploy/prod.sh stage-secrets    stage the secrets as files for compose (sudo): from Key Vault or the env file
-#   deploy/prod.sh check            validate the env file, the staged secret files (never read), and the compose file
+#   deploy/prod.sh check            validate the env file, the staged secret files (never read), and the compose file;
+#                                   refuse an empty key file for a hosted model or an enabled Langfuse export
 #   deploy/prod.sh build            build the web, api, and job images, tagged with the current git commit
 #   deploy/prod.sh pull             instead of build: pull those images from IMAGE_REGISTRY (pushed by the deploy
 #                                   workflow under the full commit SHA) and tag them as build would
-#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama)
+#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama,
+#                                   RAG=1 adds the qdrant vector index; OBS and RAG also come from the env file,
+#                                   so continuous deployment keeps both profiles current)
 #   deploy/prod.sh rotate           stage the secrets again and recreate the services, after a new Key Vault version
 #   deploy/prod.sh seed             load the demo personas and customers (run once after the first up)
 #   deploy/prod.sh update           git pull --ff-only, back up, build, migrate, start
@@ -20,6 +23,9 @@
 #   deploy/prod.sh rollback         start the previously deployed image tag again
 #   deploy/prod.sh purge            run the retention purge once now
 #   deploy/prod.sh smoke            run deploy/smoke_test.sh against PUBLIC_ORIGIN
+#   deploy/prod.sh llm-probe        stage and check, then call each configured model once in es and once in pt from a
+#                                   throwaway API container with the env file's settings (running services untouched);
+#                                   prints outcomes and latencies, never a key, prompt, or reply
 #   deploy/prod.sh status | logs [service]
 #   deploy/prod.sh down             stop the stack, keep the data
 #   deploy/prod.sh destroy --yes    take the demo down for good: containers, volumes (database, certificates), images
@@ -40,9 +46,12 @@ BACKUP_DIR="${BACKUP_DIR:-${ROOT}/deploy/backups}"
 STAGER="${ROOT}/deploy/secrets_stage.py"
 REQUIRED=(SITE_ADDRESS PUBLIC_ORIGIN)
 REQUIRED_SECRETS=(POSTGRES_SUPERUSER_PASSWORD POSTGRES_ADMIN_PASSWORD POSTGRES_APP_PASSWORD SESSION_SECRET CSRF_SECRET)
-# The secrets init-env generates, and every secret variable (the model keys come from the provider, not from here).
+# The secrets init-env generates, and every secret variable (the model and Langfuse keys come from their providers,
+# not from here).
 SECRETS=("${REQUIRED_SECRETS[@]}" GRAFANA_ADMIN_PASSWORD)
-SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK)
+SECRET_VARIABLES=("${SECRETS[@]}" LLM_API_KEY_PRIMARY LLM_API_KEY_FALLBACK LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY)
+# LiteLLM providers that need no key (bootstrap/llm.py, KEYLESS_PROVIDERS): a model served on the host's own network.
+KEYLESS_MODEL_PROVIDERS=(ollama ollama_chat)
 
 say() { printf '%s\n' "$*" >&2; }
 fail() { say "error: $*"; exit 1; }
@@ -50,6 +59,21 @@ fail() { say "error: $*"; exit 1; }
 env_value() {
   # The value of $1 in the env file (last assignment wins), without printing it.
   sed -n "s/^$1=//p" "${ENV_FILE}" | tail -n 1
+}
+
+from_env_or_file() {
+  # $2 (the caller's value of the variable $1) when non-empty, else $1 from the env file when it exists: the same
+  # precedence compose gives the shell over --env-file. build runs before any env file exists.
+  if [[ -n "$2" ]]; then printf '%s' "$2"; return; fi
+  if [[ -f "${ENV_FILE}" ]]; then env_value "$1"; fi
+}
+
+obs_enabled() {
+  [[ "$(from_env_or_file OBS "${OBS:-}")" == "1" ]]
+}
+
+rag_enabled() {
+  [[ "$(from_env_or_file RAG "${RAG:-}")" == "1" ]]
 }
 
 secrets_source() {
@@ -87,8 +111,9 @@ current_tag() {
 
 profiles() {
   local flags=()
-  [[ "${OBS:-0}" == "1" ]] && flags+=(--profile obs)
+  obs_enabled && flags+=(--profile obs)
   [[ "${OLLAMA:-0}" == "1" ]] && flags+=(--profile ollama)
+  rag_enabled && flags+=(--profile rag)
   printf '%s\n' "${flags[@]:-}"
 }
 
@@ -142,7 +167,7 @@ check_env_file() {
       ;;
     env-file)
       for name in "${REQUIRED_SECRETS[@]}"; do [[ -n "$(env_value "${name}")" ]] || missing+=("${name}"); done
-      if [[ "${OBS:-0}" == "1" ]]; then
+      if obs_enabled; then
         local grafana
         grafana="$(env_value GRAFANA_ADMIN_PASSWORD)"
         (( ${#grafana} >= 16 )) || missing+=("GRAFANA_ADMIN_PASSWORD (16+ characters)")
@@ -152,6 +177,24 @@ check_env_file() {
   esac
   (( ${#missing[@]} == 0 )) || fail "set these in ${ENV_FILE}: ${missing[*]}"
   [[ "$(env_value PUBLIC_ORIGIN)" == https://* ]] || fail "PUBLIC_ORIGIN must start with https://"
+  check_grafana_switches
+}
+
+check_grafana_switches() {
+  # Caddy imports the snippet grafana-<GRAFANA_ROUTE>: any other value would stop the edge from starting.
+  local route
+  route="$(from_env_or_file GRAFANA_ROUTE "${GRAFANA_ROUTE:-}")"
+  case "${route}" in
+    "" | on | off) ;;
+    *) fail "GRAFANA_ROUTE must be on, off, or empty" ;;
+  esac
+  case "$(from_env_or_file GRAFANA_ANONYMOUS_VIEWER "${GRAFANA_ANONYMOUS_VIEWER:-}")" in
+    "" | true | false) ;;
+    *) fail "GRAFANA_ANONYMOUS_VIEWER must be true, false, or empty" ;;
+  esac
+  if [[ "${route}" == "on" ]] && ! obs_enabled; then
+    say "warning: GRAFANA_ROUTE=on without OBS=1: /grafana/ answers 502 until the obs profile runs"
+  fi
 }
 
 cmd_stage_secrets() {
@@ -162,13 +205,45 @@ cmd_stage_secrets() {
   esac
 }
 
+is_true() {
+  # The values pydantic reads as true for a boolean setting, in any case.
+  case "$(printf '%s' "${1:-}" | tr '[:upper:]' '[:lower:]')" in true | 1 | yes | on) return 0 ;; *) return 1 ;; esac
+}
+
+check_staged_keys() {
+  # The optional key files are staged empty when a secret is not set or the VM may not read it (HTTP 403). An enabled
+  # hosted model or Langfuse export would then start an API that refuses its settings, and the automatic restore after
+  # a failed release reads the same env file: refuse here, before anything is recreated. File sizes only, never values.
+  local dir pair setting model variable empty=()
+  dir="$(secrets_dir)/app"
+  if [[ "$(env_value LLM_PROVIDER)" == "litellm" ]]; then
+    for pair in LLM_PRIMARY_MODEL:LLM_API_KEY_PRIMARY LLM_FALLBACK_MODEL:LLM_API_KEY_FALLBACK; do
+      setting="${pair%%:*}"
+      variable="${pair#*:}"
+      model="$(env_value "${setting}")"
+      [[ -n "${model}" ]] || continue
+      [[ " ${KEYLESS_MODEL_PROVIDERS[*]} " == *" ${model%%/*} "* ]] && continue
+      [[ -s "${dir}/${variable}" ]] || empty+=("${dir}/${variable} (for ${setting}=${model})")
+    done
+  fi
+  if is_true "$(env_value LANGFUSE_ENABLED)"; then
+    for variable in LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY; do
+      [[ -s "${dir}/${variable}" ]] || empty+=("${dir}/${variable} (for LANGFUSE_ENABLED)")
+    done
+  fi
+  (( ${#empty[@]} == 0 )) || fail "empty staged key file: ${empty[*]}. Store the value (Key Vault secret named like the \
+file in lower case with dashes, or the env file), grant the VM identity read access to it, and run this again; or turn \
+the setting off"
+}
+
 cmd_check() {
   check_env_file
   # Metadata only: the files are root-owned and readable by their container user alone.
   stager check --dest "$(secrets_dir)" || fail "the staged secrets are incomplete; run deploy/prod.sh stage-secrets"
-  if [[ "${OBS:-0}" == "1" && ! -s "$(secrets_dir)/grafana/GRAFANA_ADMIN_PASSWORD" ]]; then
+  if obs_enabled && [[ ! -s "$(secrets_dir)/grafana/GRAFANA_ADMIN_PASSWORD" ]]; then
     fail "the obs profile needs GRAFANA_ADMIN_PASSWORD (Key Vault secret grafana-admin-password, or the env file)"
   fi
+  check_staged_keys
   compose config --quiet
   say "env file, staged secrets, and compose file are valid"
 }
@@ -301,13 +376,24 @@ cmd_smoke() {
   "${ROOT}/deploy/smoke_test.sh" "$(env_value PUBLIC_ORIGIN)" "$@"
 }
 
+cmd_llm_probe() {
+  # The preflight for a model change: edit the env file, run this, then `up` only if every call passed. The throwaway
+  # container reads the edited env file and the freshly staged keys; the running API keeps its own until `up`.
+  cmd_stage_secrets
+  cmd_check
+  local tag
+  tag="$(current_tag)"
+  docker image inspect "bank-agent-api:${tag}" > /dev/null 2>&1 || fail "no image bank-agent-api:${tag}; run build first"
+  compose run --rm --no-deps -T api bank-agent llm-probe
+}
+
 cmd_down() {
-  compose --profile jobs --profile obs --profile ollama down
+  compose --profile jobs --profile obs --profile ollama --profile rag down
 }
 
 cmd_destroy() {
   [[ "${1:-}" == "--yes" ]] || fail "this deletes the database and the certificates for good; run: destroy --yes"
-  compose --profile jobs --profile obs --profile ollama down --volumes --rmi all
+  compose --profile jobs --profile obs --profile ollama --profile rag down --volumes --rmi all
   rm -rf "${STATE_DIR}"
   local dir
   dir="$(secrets_dir)"
@@ -335,11 +421,12 @@ main() {
     rollback) cmd_rollback ;;
     purge) cmd_purge ;;
     smoke) cmd_smoke "$@" ;;
+    llm-probe) cmd_llm_probe ;;
     status) compose ps ;;
     logs) compose logs --tail 200 "$@" ;;
     down) cmd_down ;;
     destroy) cmd_destroy "$@" ;;
-    *) sed -n '2,32p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+    *) awk 'NR == 1 { next } /^#/ { sub(/^# ?/, ""); print; next } { exit }' "${BASH_SOURCE[0]}" ;;
   esac
 }
 

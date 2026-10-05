@@ -3,7 +3,7 @@
 from bank_agent.adapters.llm.prices import PriceTable
 from bank_agent.adapters.llm.request import Generation, LlmDecorator, LlmRequest, Proceed
 from bank_agent.ports.llm import LLMClient
-from bank_agent.ports.telemetry import Telemetry
+from bank_agent.ports.telemetry import AttributeValue, Telemetry
 
 COST_METRIC = "bank.llm.cost_usd"
 
@@ -20,7 +20,10 @@ class CostAccountingDecorator(LlmDecorator):
         result = await proceed(request)
         cost = self.prices.cost(result.model_id, result.usage)
         basis = self.prices.effective(result.model_id).basis
-        self._histogram.record(
-            float(cost), {"gen_ai.response.model": result.model_id, "bank.llm.price_basis": basis.value}
-        )
+        attributes: dict[str, AttributeValue] = {
+            "gen_ai.response.model": result.model_id,
+            "bank.llm.price_basis": basis.value,
+            "bank.prompt.id": request.prompt.prompt_id,
+        }
+        self._histogram.record(float(cost), attributes)
         return result.evolve(cost_usd=cost)

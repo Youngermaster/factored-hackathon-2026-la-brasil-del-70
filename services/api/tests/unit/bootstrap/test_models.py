@@ -20,13 +20,21 @@ from bank_agent.bootstrap.models import (
     build_risk_estimator,
     build_router,
     default_embedder,
+    fallback_reason,
     split_selection,
 )
 from bank_agent.bootstrap.settings import DEFAULT_MODEL_REGISTRY_DIR, RetrievalSettings, WorkflowSettings
 from bank_agent.domain.base import UntrustedText
 from bank_agent.domain.credit import CreditProductType
 from bank_agent.domain.eligibility import CreditRiskFeatures
-from bank_agent.domain.errors import ConfigurationError, ModelArtifactIntegrityError, RiskEstimatorUnavailableError
+from bank_agent.domain.errors import (
+    ConfigurationError,
+    ModelArtifactIntegrityError,
+    ModelArtifactNotFoundError,
+    ModelUnavailableError,
+    RiskEstimatorUnavailableError,
+)
+from bank_agent.domain.intelligence import ModelComponent
 from bank_agent.domain.locale import Country, Language
 from bank_agent.testing.clock import FixedClock
 from bank_agent.testing.ids import SequentialIdGenerator
@@ -222,3 +230,41 @@ def test_without_the_baselines_flag_a_load_failure_stops_startup(tmp_path: Path)
 def test_risk_estimator_selections_are_validated(value: str) -> None:
     with pytest.raises(ValidationError):
         workflow_settings(risk_estimator=value)
+
+
+def test_the_inventory_records_what_each_component_serves(tmp_path: Path) -> None:
+    publish(tmp_path, "router:tfidf", TFIDF_ARTIFACT)
+    registry = build_model_registry(tmp_path)
+    clock, ids = FixedClock(T0), SequentialIdGenerator()
+    defaults = ModelFallbacks()
+    build_router(settings(tmp_path), registry, None, defaults)
+    build_resolver(settings(tmp_path), registry, defaults)
+    build_risk_estimator(settings(tmp_path), registry, clock, ids, defaults)
+    assert {str(item.served): item.kind for item in defaults.served.values()} == {
+        "router:keyword@1": "baseline",
+        "resolver:rules@1": "baseline",
+        "risk_estimator:score_band@1": "baseline",
+    }
+    learned = ModelFallbacks()
+    build_router(settings(tmp_path, router="tfidf@champion"), registry, None, learned)
+    build_resolver(settings(tmp_path, resolver="lgbm@champion"), registry, learned)
+    build_risk_estimator(settings(tmp_path, risk_estimator="logreg@champion"), registry, clock, ids, learned)
+    router = learned.served[ModelComponent.ROUTER]
+    resolver = learned.served[ModelComponent.RESOLVER]
+    risk = learned.served[ModelComponent.RISK_ESTIMATOR]
+    assert (router.kind, router.alias, router.fell_back) == ("learned", "champion", False)
+    assert router.served is not None
+    assert router.served.version != "champion"
+    assert (str(resolver.served), resolver.fell_back, resolver.reason) == (
+        "resolver:rules@1",
+        True,
+        "artifact_not_found",
+    )
+    assert (risk.served, risk.kind, risk.reason) == (None, "unavailable", "artifact_not_found")
+    assert "tmp" not in risk.model_dump_json()
+
+
+def test_fallback_reasons_are_codes_never_messages() -> None:
+    assert fallback_reason(ModelArtifactNotFoundError("/secret/path")) == "artifact_not_found"
+    assert fallback_reason(ModelUnavailableError("no extra")) == "model_unavailable"
+    assert fallback_reason(PermissionError("/secret/path")) == "registry_unreadable"

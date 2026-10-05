@@ -22,7 +22,7 @@ Presenter mode (`/#/presenter`) on a second screen shows the slide notes and the
 
 ## Recording the app
 
-The live segments come from the web app at 1440 px wide with the glass box open beside the chat, the agent console, the evaluator console, Jaeger, and Grafana. Which stack to record on (current `main` locally, or the deployed demo once it is redeployed), the setup commands, and the session-language and risk-tier notes are in the [video plan](../docs/demo/video-plan.md). Writes persist: record right after a fresh seed, and play the card block once per seed.
+The live segments come from the web app at 1440 px wide with the glass box open beside the chat, the agent console, the evaluator console, Jaeger, and Grafana. Which stack to record on (the deployed demo, which runs the current `main` with Azure OpenAI, or one local stack on the same commit), the setup commands, and the session-language and risk-tier notes are in the [video plan](../docs/demo/video-plan.md). Writes persist: record right after a fresh seed, and play the card block once per seed.
 
 ## Before the final recording
 
@@ -30,7 +30,7 @@ The live segments come from the web app at 1440 px wide with the glass box open 
 - [ ] `pnpm check:fit` passes and `pnpm shots` looks right (`.shots/deck/`).
 - [ ] Every live case of [practice-cases.md](../docs/demo/practice-cases.md) played once on the recording stack, and the Grafana panels the plan names show non-zero values.
 - [ ] The team reviewed the limits and the next steps on slide 6 against the final state of the repository, and the names and roles on the team frame (they match the README team table).
-- [ ] The PDF is exported with `pnpm export:final` (six main slides only).
+- [ ] The PDF is exported with `pnpm export:final`: `la-brasil-del-70-pitch.pdf` has exactly six pages, one per main slide (the 32-page build-up version and the appendix are separate files).
 
 ## Audio
 
@@ -43,7 +43,7 @@ The live segments come from the web app at 1440 px wide with the glass box open 
 
 - Timeline 1920 x 1080 at the recording frame rate (60 or 30 fps). Cut on the seams between slides, and cut the waiting time in the live segments (typing, model replies), never the words.
 - The final cut must measure 3:00 or less; aim for 2:50.
-- Label the live segments with a thin title in the deck's mono type ("live, es-MX", "live, pt-BR", "live, local stack").
+- Label the live segments with a thin title in the deck's mono type ("live, es-MX", "live, pt-BR", "live, deployed demo", or "live, local stack" when recorded locally).
 - Add captions from the monologue (a subtitle file, or burned in). Many judges watch muted.
 - Export H.264, High profile, 1920 x 1080, 12 to 16 Mbit/s, AAC 48 kHz at 192 kbit/s, MP4. Check the file plays in a browser before sending it.
-- Name it `la-brasil-del-70-pitch.mp4`, and send it with the repository link, the deployment link, and the six-slide PDF.
+- Name it `la-brasil-del-70-pitch.mp4`, and send it with the repository link, the deployment link, and the six-page pitch PDF.

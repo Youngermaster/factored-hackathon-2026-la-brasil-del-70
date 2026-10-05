@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2b5825962fe1ac89422828c2ddd5cf5c8736defa8a51487d1dfa8cbe445ca342",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1287,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:00:46.934358Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "antes de cobrar el laburo quiero ver cuánta plata tengo",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b44a8bd67d1caa69374213eba8b8a375d56b27eb5ed07458989904cc84c5e219",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1160,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.3,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:12.491079Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Quaal a diferença entfe cancelar e bloquear o cartão?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

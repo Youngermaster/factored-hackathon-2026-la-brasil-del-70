@@ -13,6 +13,7 @@ Every document in the repository, grouped by purpose. Diagrams are Mermaid code 
 | [submission/SUBMISSION.md](submission/SUBMISSION.md) | The submission checklist: what is done and the human steps in order |
 | [submission/email-draft.md](submission/email-draft.md) | The draft email to the organizers (never sent by a session) |
 | [../LIMITATIONS.md](../LIMITATIONS.md) | What the system cannot claim: scope, credit, data, language, evaluation, capacity, deployment, risks |
+| [LEARNINGS.md](LEARNINGS.md) | Lessons from the build, each from the repository's own records: what happened, what caught it, what changed, the lesson |
 | [workflows/README.md](workflows/README.md) | Index of the workflow pages |
 | [security/README.md](security/README.md) | Index of the security documents and the controls on one page |
 
@@ -26,6 +27,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [AGENTS.md](../AGENTS.md) | Guide for every coding agent: precedence, quick start, repository map, enforced rules, recipes for common changes, pitfalls, collaboration |
 | [PROGRESS.md](PROGRESS.md) | Current state and the phase log: what was done, decisions, how to verify, limitations |
 | [BACKLOG.md](BACKLOG.md) | Deferred items with the reason and the owning phase |
+| [EVALUATION_CRITERIA.md](EVALUATION_CRITERIA.md) | The team's rubric reference: the official evaluation dimensions and submission items, the evidence for each in this repository, and their status |
 | [plans/](plans/) | The approved plan for each phase, and the team's kickoff notes (listed below) |
 | [plans/adr-0026-live-agent.md](plans/adr-0026-live-agent.md) | Current-main and PR reference review, gaps, and implementation increments for live human service in the existing chat |
 | [plans/kickoff-notes.md](plans/kickoff-notes.md) | The team's kickoff notes: roles and the scope decision |
@@ -56,6 +58,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [frontend/state.md](frontend/state.md) | Where every piece of frontend state lives (no Zustand) |
 | [frontend/features.md](frontend/features.md) | The product features: composition diagrams, context boundaries, and TanStack Query data flow |
 | [frontend/admin-dashboard.md](frontend/admin-dashboard.md) | Administrative analytics: every field, formula, data source, access rule, and limitation |
+| [frontend/supervision.md](frontend/supervision.md) | Supervision view: served models, offline model cards, promotion decisions, evaluation, language model setup, live level, and their sources |
 | [../apps/web/README.md](../apps/web/README.md) | The web app: layers, public interfaces, API client, how to extend and test |
 
 ## Architecture decision records
@@ -106,6 +109,11 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0040-isolated-bank-database-vm.md](adr/0040-isolated-bank-database-vm.md) | Dedicated data VM in westus2, reusing private Blob storage |
 | [adr/0041-data-engineering-deployment-and-datagrip.md](adr/0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment through validation and DataGrip connection |
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
+| [adr/0043](adr/0043-langgraph-migration.md) | Staged post-hackathon migration of the workflow engine to LangGraph StateGraph (proposed roadmap) |
+| [adr/0044](adr/0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider: one account per environment, keys in Key Vault, the production delta, and how to change models |
+| [adr/0045](adr/0045-expose-grafana-read-only-under-grafana.md) | Expose Grafana read-only under /grafana, behind switches, with the bank's cookies stripped |
+| [adr/0046](adr/0046-customer-service-history-vector-retrieval.md) | Customer-service history uses consented vector retrieval (Proposed: consent, deletion, and indexing are not built) |
+| [adr/0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md) | Qdrant vector index for customer-service knowledge retrieval, behind a flag with a BM25 fallback |
 
 ## Exploratory data analysis
 
@@ -174,6 +182,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [models/resolver.md](models/resolver.md) | Model card of the transaction resolver (LightGBM ranker against the rule baseline) |
 | [models/risk-estimator.md](models/risk-estimator.md) | Model card of the credit risk estimator (snapshot risk estimate; logistic regression and LightGBM against the score-band baseline) |
 | [evaluation/router.md](evaluation/router.md) | Generated router evaluation: per intent, language, locale, and workflow, calibration, robustness, transfer |
+| [evaluation/router-llm.md](evaluation/router-llm.md) | Generated router benchmark against a hosted language model (zero-shot and cascade): accuracy, safety, slices, calibration, latency, and cost, with the pre-registered decision |
 | [evaluation/resolver.md](evaluation/resolver.md) | Generated resolver evaluation: per use, language, country, candidate count, clue, silver labels |
 | [evaluation/risk-estimator.md](evaluation/risk-estimator.md) | Generated risk estimator evaluation: test metrics with intervals, calibration, bands, interval coverage, slices and disparities |
 | [evaluation/router-labeling.md](evaluation/router-labeling.md) | The protocol for the 200-item router validation sample |
@@ -215,6 +224,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [operations/capacity.md](operations/capacity.md) | The local load test: p50 and p95 per workflow, throughput, the bottleneck, and how to scale each tier |
 | [plans/phase-15.md](plans/phase-15.md) | The phase 15 plan and its decided questions |
 | [../deploy/README.md](../deploy/README.md) | The single-host deployment guide: AWS Lightsail, EC2, Azure VM, DNS, firewall, the env file, deploy, update, back up, restore, roll back, take down |
+| [AZURE_INFRASTRUCTURE.md](AZURE_INFRASTRUCTURE.md) | The verified live Azure topology: resource group, VMs, network rules, Key Vault secrets, the model accounts and deployments, release path, findings |
 | [plans/phase-16.md](plans/phase-16.md) | The phase 16 plan: deployment topology, hardening checklist, and decided questions |
 
 ## Packages and apps
@@ -226,7 +236,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [data_platform](../data_platform/README.md) | Data platform: sources, commands, how to add a table or a source adapter |
 | [ml](../ml/README.md) | Learned components |
 | [evals](../evals/README.md) | Evaluation harness |
-| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes (hand-authored fixtures until a provider is chosen) |
+| [evals/cassettes](../evals/cassettes/README.md) | Language model cassettes: hand-authored fixtures plus the session 14b recordings on `ollama/qwen2.5:7b-instruct` |
 | [services/api/src/bank_agent/prompts](../services/api/src/bank_agent/prompts/README.md) | Versioned prompts: format, rules, how to add, test, and evaluate one |
 | [deploy](../deploy/README.md) | The production stack, the deployment guide, database roles, and observability configuration |
 | [slides](../slides/README.md) | The pitch deck: commands, structure, colour meaning, numbers from `data/metrics.yml`, export |

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "9d811b605cb69e29af02b4638a6a3b6a50bccf47b22ab69506c87101f1ca5205",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1596,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.04,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.01,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:00.004639Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "Necesito un crédito de 2 mil pesitos, quiero hacer la solicitud ahorita",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

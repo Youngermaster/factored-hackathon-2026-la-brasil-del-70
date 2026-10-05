@@ -1,0 +1,40 @@
+{
+  "cassette_id": "f2fcb35fc4f569589b30cda2c8f63b923e67559462fe660d3604f06bc249ea1d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1212,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.04,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:57.774065Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Por favor, desbloqueiem o cartao final 7345",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

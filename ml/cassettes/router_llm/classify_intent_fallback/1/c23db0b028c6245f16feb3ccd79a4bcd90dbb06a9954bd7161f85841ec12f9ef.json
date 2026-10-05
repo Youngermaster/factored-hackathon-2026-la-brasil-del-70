@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c23db0b028c6245f16feb3ccd79a4bcd90dbb06a9954bd7161f85841ec12f9ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 766,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:49.811848Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 924,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Quiero pagar la factura del gas",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

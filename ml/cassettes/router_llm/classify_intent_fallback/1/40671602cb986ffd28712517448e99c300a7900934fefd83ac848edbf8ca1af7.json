@@ -1,0 +1,36 @@
+{
+  "cassette_id": "40671602cb986ffd28712517448e99c300a7900934fefd83ac848edbf8ca1af7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1959,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.02,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:52.131664Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "boa noite podem me informar o saldo atual por favor",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

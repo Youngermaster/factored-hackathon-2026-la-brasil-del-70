@@ -1,0 +1,40 @@
+{
+  "cassette_id": "73e67f1a5580b6f1d8471c6d6a00d9c2ddd174fe09090e27041cf4d6ecd0858f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 829,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.7,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:25.275780Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Che, le transferí 15 lucas a un chabón y no le llegó, ¿qué onda?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

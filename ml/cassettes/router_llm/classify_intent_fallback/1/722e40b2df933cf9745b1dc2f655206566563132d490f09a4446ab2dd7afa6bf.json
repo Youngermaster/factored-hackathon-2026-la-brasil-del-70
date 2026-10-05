@@ -1,0 +1,36 @@
+{
+  "cassette_id": "722e40b2df933cf9745b1dc2f655206566563132d490f09a4446ab2dd7afa6bf",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1222,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:09:41.702810Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "cargo desconocido en mi tarjeta terminación 1156",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

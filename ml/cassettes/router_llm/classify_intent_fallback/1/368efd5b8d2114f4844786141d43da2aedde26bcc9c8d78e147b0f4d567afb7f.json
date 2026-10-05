@@ -1,0 +1,36 @@
+{
+  "cassette_id": "368efd5b8d2114f4844786141d43da2aedde26bcc9c8d78e147b0f4d567afb7f",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 836,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:02.473210Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Achei o cartão que tinha bloqueado, dá pra reativar?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

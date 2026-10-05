@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9f98afeb5bfda66974c5af7ab40406f71edd43986082e3ce0343a8ff446bf39f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1047,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:30.441680Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Ya hay respuesta de la tarjeya de crédito que solicité antteayer?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

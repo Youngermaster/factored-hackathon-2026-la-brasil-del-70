@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ee787bb9addc551aa155848e77a5ebfdd99311d577f2b86f9f9a1f92c6500320",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1321,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:26.407273Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "¿ME AYUDAN A VOLVER A ACTIVAR MI TARJETA DE DÉBITO?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

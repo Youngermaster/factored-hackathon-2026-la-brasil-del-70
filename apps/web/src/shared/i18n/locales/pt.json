@@ -120,6 +120,7 @@
   "layout": {
     "consoleNav": "Navegação do console",
     "overview": "Resumo",
+    "supervision": "Supervisão",
     "dashboard": "Dashboard",
     "inbox": "Caixa de entrada",
     "creditApplications": "Solicitações de crédito",
@@ -149,6 +150,7 @@
     "heading": "Resumo",
     "agentBody": "Você atende transferências estruturadas: fatos verificados, ações realizadas, base de política e perguntas em aberto. Nunca a transcrição completa.",
     "evaluatorBody": "Você revisa registros de execução e resultados de avaliação offline, sempre com os números por fluxo ao lado do total.",
+    "supervisionBody": "Modelos em serviço e sua evidência offline, quem decide cada passo, avaliação por fluxo e estado do serviço.",
     "dashboardBody": "Indicadores executivos, comparação de sistemas, desempenho por fluxo e cortes de qualidade.",
     "inboxBody": "Transferências com fatos verificados, ações, política e perguntas abertas. Assuma e resolva.",
     "applicationsBody": "Solicitações registradas para revisão humana, com a avaliação e a conversa de origem.",
@@ -986,6 +988,279 @@
     "upperBound": "zero eventos, limite superior 95%: {{high}}",
     "ms": "{{value}} ms"
   },
+  "supervision": {
+    "heading": "Supervisão de modelos e operação",
+    "intro": "Quais modelos servem hoje e com qual evidência, quem decide cada passo e em que estado está o serviço. Somente configuração e evidência publicada: nenhum dado de clientes.",
+    "restricted": "Acesso de avaliação",
+    "servingSince": "Configuração registrada ao iniciar o processo: {{time}}",
+    "loading": "Carregando o inventário de modelos",
+    "error": "Não conseguimos carregar o inventário de modelos",
+    "decides": {
+      "title": "Quem decide",
+      "intro": "O modelo propõe, a política determinística decide, as ferramentas verificadas agem e as pessoas atendem as transferências. Cada passo com a versão que este processo serve.",
+      "steps": {
+        "propose": {
+          "title": "O modelo propõe",
+          "body": "Classifica a solicitação, extrai dados e detecta sinais. Nunca escolhe uma ferramenta nem toma uma decisão."
+        },
+        "decide": {
+          "title": "A política decide",
+          "body": "O kernel de políticas aplica regras e cláusulas versionadas; cada decisão nomeia as regras que usou."
+        },
+        "act": {
+          "title": "As ferramentas agem",
+          "body": "Só são informadas as ações cujo resultado foi lido de volta nos registros."
+        },
+        "escalate": {
+          "title": "As pessoas atendem",
+          "body": "O que é ambíguo, sensível ou exige revisão passa a uma pessoa com uma transferência estruturada."
+        }
+      },
+      "noModel": "Sem modelo de linguagem: respondem os caminhos determinísticos",
+      "llmLine": "Modelo de linguagem {{model}}",
+      "componentLine": "{{component}}: {{model}}",
+      "packLine": "Pacote de políticas {{version}}",
+      "workflowsLine": "Fluxos: {{workflows}}",
+      "handoffLine": "Transferência com fatos verificados, ações, política e perguntas abertas"
+    },
+    "components": {
+      "router": "Roteador de intenção",
+      "resolver": "Resolução de transações",
+      "risk_estimator": "Estimador de risco de crédito",
+      "retriever": "Recuperação de políticas",
+      "language_detector": "Detector de idioma",
+      "llm": "Modelo de linguagem"
+    },
+    "models": {
+      "title": "Modelos em serviço",
+      "intro": "O que este processo serve, registrado ao iniciar. A versão servida é sempre concreta, nunca um alias.",
+      "caption": "Componentes e modelo servido",
+      "component": "Componente",
+      "selected": "Seleção configurada",
+      "served": "Modelo servido",
+      "kind": "Tipo",
+      "fallback": "Contingência",
+      "noFallback": "Nenhuma",
+      "none": "Nada em serviço",
+      "alias": "alias {{alias}}",
+      "kinds": {
+        "baseline": "Linha de base",
+        "learned": "Treinado",
+        "unavailable": "Indisponível"
+      },
+      "reasons": {
+        "artifact_not_found": "Artefato não encontrado",
+        "model_unavailable": "Modelo indisponível",
+        "registry_unreadable": "Registro ilegível"
+      },
+      "riskNote": "O estimador de risco é interno: seu resultado nunca é mostrado ao cliente nem enviado a um modelo de linguagem, e a elegibilidade é decidida pelo serviço sintético de regras."
+    },
+    "offline": {
+      "title": "Evidência offline dos modelos",
+      "intro": "Partição de teste retida sobre dados sintéticos, com intervalos de 95 % quando o relatório os publica. Não são medições de produção.",
+      "plotTitle": "{{metric}}, intervalo de 95 %",
+      "plotPoint": "{{model}}: {{value}}",
+      "plotPointInterval": "{{model}}: {{value}}, de {{low}} a {{high}}",
+      "groupUse": "{{component}}: {{use}}",
+      "caption": "{{group}}: métricas por modelo",
+      "model": "Modelo",
+      "serving": "Em serviço",
+      "sample": "Partição de {{split}}, {{count}} {{unit}}",
+      "provenance": "Relatório {{report}}, commit {{sha}}, gerado em {{generated}}. Ficha do modelo: {{source}}.",
+      "lowerBetter": "menor é melhor",
+      "interval": "{{low}} a {{high}}",
+      "empty": "Não há fichas de modelo publicadas.",
+      "kindHelp": "Provisório: rótulos da equipe aguardando revisão humana.",
+      "roles": {
+        "default": "Padrão",
+        "champion": "Campeão",
+        "candidate": "Candidato",
+        "reference": "Referência"
+      },
+      "notes": {
+        "needs_ml_extra": "Exige o extra ml, fora da imagem",
+        "promotion_refused": "Promoção recusada"
+      },
+      "uses": {
+        "dispute": "contestações",
+        "payment_lookup": "busca de pagamentos"
+      },
+      "units": {
+        "items": "mensagens",
+        "queries": "consultas",
+        "customers": "clientes"
+      },
+      "splits": {
+        "test": "teste",
+        "dev": "desenvolvimento"
+      },
+      "kinds": {
+        "offline": "Offline",
+        "provisional": "Provisório"
+      }
+    },
+    "metrics": {
+      "accuracy": "Acurácia",
+      "macro_f1": "F1 macro",
+      "workflow_accuracy": "Acurácia de fluxo",
+      "coverage": "Cobertura",
+      "error_among_covered": "Erro ao agir",
+      "ece": "Erro de calibração (ECE)",
+      "high_stakes_recall": "Recall de alto impacto",
+      "accuracy_es": "Acurácia em espanhol",
+      "accuracy_pt": "Acurácia em português",
+      "top1": "Top 1",
+      "mrr": "MRR",
+      "wrong_transaction_rate": "Transação errada",
+      "wrong_among_auto": "Erro entre seleções automáticas",
+      "roc_auc": "ROC AUC",
+      "pr_auc": "PR AUC",
+      "brier": "Brier",
+      "recall_at_1": "Recall em 1",
+      "abstention_precision": "Precisão de abstenção",
+      "abstention_recall": "Recall de abstenção",
+      "false_abstention": "Abstenção falsa",
+      "latency_p95_ms": "Latência p95 (ms)"
+    },
+    "promotion": {
+      "title": "Por que as linhas de base estão em serviço",
+      "intro": "Comparação de ponta a ponta com uma regra definida antes: um padrão só muda com um ganho em desenvolvimento cujos intervalos não se sobrepõem. É uma simulação com clientes simulados, não produção.",
+      "caption": "{{decision}}: configurações comparadas",
+      "configuration": "Configuração",
+      "status": "Estado",
+      "served": "Em serviço",
+      "notServed": "Não servida",
+      "routing": "Roteamento correto",
+      "meta": "Partição de {{split}}, modelo de linguagem {{model}}, sessão {{session}}, fonte {{source}}.",
+      "verdict": "Resultado: {{outcome}}, porque {{reason}}.",
+      "decisions": {
+        "router_and_resolver_defaults": "Roteador e resolução de transações",
+        "risk_estimator_default": "Estimador de risco de crédito"
+      },
+      "outcomes": {
+        "keep_baselines": "as linhas de base continuam",
+        "keep_baseline": "a linha de base continua"
+      },
+      "reasons": {
+        "overlapping_intervals": "os intervalos se sobrepõem",
+        "indicative_eligibility_where_review_expected": "o modelo deu resultados indicativos onde se esperava revisão humana"
+      }
+    },
+    "evaluation": {
+      "title": "Avaliação de ponta a ponta",
+      "intro": "Resolução automática segura por fluxo e sistema com seu intervalo de 95 %, e o custo por resolução ao lado. Primeiro os quatro fluxos, depois o total.",
+      "caption": "Execução {{run}}: resolução automática segura e custo por resolução",
+      "workflow": "Fluxo",
+      "aggregate": "Total",
+      "rate": "{{system}}: resolução segura",
+      "cost": "{{system}}: custo por resolução",
+      "meta": "Dados {{dataset}}, gerado em {{generated}}, commit {{sha}}.",
+      "costNote": "O custo é o que a execução registrou com o modelo que usou; com um modelo local é zero e não antecipa o custo de um modelo hospedado.",
+      "openDashboard": "Abrir o dashboard",
+      "openEvaluation": "Abrir a avaliação completa",
+      "empty": "Ainda não há uma execução publicada com o sistema proposto.",
+      "error": "Não conseguimos carregar os resultados de avaliação"
+    },
+    "llm": {
+      "title": "Modelo de linguagem",
+      "intro": "Entende e redige dentro de limites; nunca decide. Os preços por milhão de tokens são os que o controle de orçamento e as métricas de custo usam.",
+      "none": "Sem modelo configurado: respondem os caminhos determinísticos.",
+      "provider": "Provedor",
+      "caption": "Modelos configurados e base de preço",
+      "role": "Papel",
+      "model": "Modelo",
+      "basis": "Base de preço",
+      "input": "Entrada, USD por milhão",
+      "output": "Saída, USD por milhão",
+      "listedOn": "Preço lido em",
+      "notListed": "Sem preço publicado",
+      "roles": {
+        "primary": "Principal",
+        "fallback": "Contingência"
+      },
+      "bases": {
+        "verified": "Verificado",
+        "unverified": "Não verificado, com margem",
+        "unknown_model": "Sem preço, teto com margem"
+      },
+      "features": "Funções do modelo",
+      "understanding": "Compreensão: dados e sinais",
+      "phrasing": "Redação de respostas",
+      "handoff_summary": "Resumo de transferência",
+      "on": "Ativa",
+      "off": "Inativa",
+      "limits": "Limites",
+      "dailyBudget": "Orçamento diário",
+      "conversationBudget": "Orçamento por conversa",
+      "sessionTokens": "Tokens por sessão",
+      "multiplier": "Margem para preços não verificados",
+      "multiplierValue": "{{value}} vezes",
+      "promptsCaption": "Versões de prompt",
+      "prompt": "Prompt",
+      "purpose": "Uso",
+      "state": "Estado",
+      "purposes": {
+        "understanding": "Compreensão",
+        "phrasing": "Redação",
+        "handoff_summary": "Resumo de transferência",
+        "not_called_by_engine": "O motor não o chama"
+      }
+    },
+    "live": {
+      "title": "Operação ao vivo",
+      "intro": "Nível de degradação do serviço agora. As séries ao vivo de turnos, resultados, latência, transferências e custo estão no Grafana, separadas da avaliação offline.",
+      "level": "Nível",
+      "status": "Estado",
+      "perWorker": "Estado do processo que respondeu; com dois processos pode variar entre consultas.",
+      "budget": "Orçamento diário de modelo usado",
+      "reasons": "Motivos",
+      "noReasons": "Sem motivos de degradação",
+      "templateOnly": "Somente modelos de texto",
+      "yes": "Sim",
+      "no": "Não",
+      "componentsCaption": "Estado de cada dependência",
+      "grafana": "Abrir o painel do Grafana",
+      "error": "Não conseguimos ler o estado do serviço",
+      "levels": {
+        "L0": "L0: normal",
+        "L1": "L1: provedor de contingência",
+        "L2": "L2: somente modelos de texto",
+        "L3": "L3: linhas de base de modelos",
+        "L4": "L4: banco de dados indisponível"
+      },
+      "statuses": {
+        "normal": "Normal",
+        "degraded": "Degradado",
+        "unavailable": "Indisponível"
+      },
+      "components": {
+        "llm_primary": "Modelo principal",
+        "llm_fallback": "Modelo de contingência",
+        "llm_budget": "Orçamento de modelo",
+        "models": "Modelos aprendidos",
+        "credit_catalog": "Catálogo de crédito",
+        "database": "Banco de dados"
+      },
+      "states": {
+        "ok": "Disponível",
+        "degraded": "Degradado",
+        "unavailable": "Indisponível",
+        "disabled": "Desativado"
+      },
+      "reasonCodes": {
+        "llm_budget_exhausted": "Orçamento de modelo esgotado",
+        "llm_primary_unavailable": "Modelo principal indisponível",
+        "llm_unavailable": "Nenhum modelo disponível",
+        "learned_models_unavailable": "Modelos aprendidos indisponíveis",
+        "credit_catalog_unavailable": "Catálogo de crédito indisponível",
+        "database_unavailable": "Banco de dados indisponível"
+      }
+    },
+    "provenance": {
+      "title": "Procedência e limites",
+      "body": "Offline: partição de teste retida. Provisório: rótulos da equipe aguardando revisão humana. Simulado: execuções com clientes simulados e um avaliador automático. Nenhum número desta visão é uma medição de produção nem uma projeção."
+    }
+  },
   "demo": {
     "title": "Guia de demonstração",
     "intro": "Percorra os quatro fluxos com clientes sintéticos: o caminho normal, um ambíguo ou não suportado e um que passa para uma pessoa, em espanhol e em português.",
@@ -1085,7 +1360,7 @@
       "agent": "abra a caixa, filtre, assuma uma transferência e resolva; veja também as solicitações de crédito.",
       "evaluator": "cole a referência de uma conversa em Registros para ver o que o cliente nunca vê, e abra Avaliação."
     },
-    "reset": "Os dados são sintéticos. As ações ficam registradas: recarregue os dados de demonstração com make seed antes de gravar."
+    "reset": "Os dados são sintéticos e compartilhados por todas as pessoas que usam esta demonstração: uma ação que alguém já fez, como bloquear um cartão ou abrir uma contestação, continua valendo até a equipe recarregar os dados de demonstração."
   },
   "about": {
     "title": "O que este assistente faz",

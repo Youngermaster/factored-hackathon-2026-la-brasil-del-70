@@ -9,7 +9,8 @@ the policy pack, the synthetic credit catalog, and the eligibility service from 
 clause lookup, open retrieval, and the grounding verifier from ``bootstrap/retrieval.py`` (tests and the evaluation
 harness may inject an embedder so dense retrieval runs without the optional ``ml`` extra); the workflow engines (the
 proposed system and baseline B0) from ``bootstrap/workflows.py``; the HTTP use cases (conversations, the agent inbox,
-the published evaluation summaries) are wired here too.
+the published evaluation summaries, the model cards, and the model inventory recorded at startup) are wired here
+too.
 """
 
 from collections.abc import Callable, Sequence
@@ -17,6 +18,7 @@ from collections.abc import Callable, Sequence
 from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
+from bank_agent.adapters.evaluation.model_cards import FilesystemModelCards
 from bank_agent.adapters.evaluation.summaries import FilesystemEvaluationSummaries
 from bank_agent.adapters.persistence.postgres.budget import PostgresBudgetLedger
 from bank_agent.adapters.persistence.postgres.readiness import PostgresReadinessCheck
@@ -31,10 +33,13 @@ from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
+from bank_agent.application.engine.metrics import TurnMetrics
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
 from bank_agent.application.reliability.ladder import LadderFlags
 from bank_agent.application.tools.banking import BankingTools
+from bank_agent.bootstrap.embeddings import build_hosted_embedder
+from bank_agent.bootstrap.inventory import build_model_inventory
 from bank_agent.bootstrap.llm import LlmOverrides, build_llm_stack
 from bank_agent.bootstrap.models import ModelFallbacks, default_embedder
 from bank_agent.bootstrap.persistence import (
@@ -46,19 +51,21 @@ from bank_agent.bootstrap.persistence import (
     conversation_creation_quota,
 )
 from bank_agent.bootstrap.policy import PolicyServices, build_policy
-from bank_agent.bootstrap.retrieval import GroundingServices, build_grounding
-from bank_agent.bootstrap.settings import AppSettings, DatabaseSettings, LLMSettings
+from bank_agent.bootstrap.retrieval import GroundingServices, VectorRetrieval, build_grounding, build_vector_retrieval
+from bank_agent.bootstrap.settings import QDRANT_RETRIEVERS, AppSettings, DatabaseSettings, LLMSettings
 from bank_agent.bootstrap.workflows import WorkflowServices, build_workflows
 from bank_agent.domain.degradation import ComponentState
 from bank_agent.domain.errors import ConfigurationError
+from bank_agent.domain.model_inventory import ModelInventory
 from bank_agent.ports.budget import BudgetLedger
 from bank_agent.ports.determinism import Clock, IdGenerator
-from bank_agent.ports.evaluation import EvaluationSummaryReader
+from bank_agent.ports.evaluation import EvaluationSummaryReader, ModelCardReader
 from bank_agent.ports.health import ReadinessCheck
 from bank_agent.ports.llm import LLMClient
 from bank_agent.ports.prompts import PromptRegistry
 from bank_agent.ports.rate_limits import RateLimitStore
 from bank_agent.ports.telemetry import Telemetry
+from bank_agent.ports.vector_store import VectorStore
 
 
 def application_database_url(database: DatabaseSettings) -> URL:
@@ -97,11 +104,14 @@ class Container:
         llm_overrides: LlmOverrides | None = None,
         ids: IdGenerator | None = None,
         embedder: Embedder | None = None,
+        vector_store: VectorStore | None = None,
+        hosted_embedder: Embedder | None = None,
         persistence: PersistenceServices | None = None,
         on_close: Sequence[Callable[[], None]] = (),
     ) -> None:
         self.settings = settings
         self._on_close = tuple(on_close)
+        self._hosted_embedder = hosted_embedder
         self._clock: Clock = clock if clock is not None else SystemClock()
         self._telemetry: Telemetry = telemetry if telemetry is not None else NoopTelemetry()
         self._prompt_registry = FilePromptRegistry.from_package()
@@ -160,7 +170,12 @@ class Container:
             credit_catalog=ComponentState.OK if self._policy.credit_catalog_available else ComponentState.UNAVAILABLE,
             database=self._database_health if self._readiness_checks else None,
         )
-        self._grounding = build_grounding(settings.retrieval, self._policy.repository, embedder=embedder)
+        self._grounding = build_grounding(
+            settings.retrieval,
+            self._policy.repository,
+            embedder=embedder,
+            vectors=self._vector_retrieval(settings, vector_store),
+        )
         self._banking_tools = build_banking_tools(
             self._persistence,
             clock=self._clock,
@@ -191,7 +206,19 @@ class Container:
         self._inbox = AgentInbox(self._persistence.uow_factory, self._clock, self._ids)
         self._human_service = HumanService(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
+        self._model_cards = FilesystemModelCards(settings.evaluation.model_cards_file)
+        self._model_inventory = build_model_inventory(
+            settings,
+            served=self._model_fallbacks.served,
+            retriever=self._grounding.retriever,
+            llm=self._llm_stack.health,
+            prompts=self._prompt_registry.refs,
+            policy_pack_version=self._policy.pack.version,
+            credit_catalog_available=self._policy.credit_catalog_available,
+            now=self._clock.now(),
+        )
         self._degradation.current()
+        TurnMetrics(self._telemetry).start_at_zero()
 
     @property
     def credit_product_names(self) -> FilesystemCreditCatalog | UnavailableCreditCatalog:
@@ -242,6 +269,15 @@ class Container:
         """The policy pack, the synthetic catalog, the eligibility service, and the data as-of date."""
         return self._policy
 
+    def _vector_retrieval(self, settings: AppSettings, store: VectorStore | None) -> VectorRetrieval | None:
+        """The Qdrant store and the hosted embedding gateway, only when a Qdrant retriever is selected."""
+        if settings.retrieval.retriever not in QDRANT_RETRIEVERS:
+            return None
+        embedder = self._hosted_embedder or build_hosted_embedder(
+            settings.retrieval, settings.llm, clock=self._clock, telemetry=self._telemetry
+        )
+        return build_vector_retrieval(settings.retrieval, embedder=embedder, telemetry=self._telemetry, store=store)
+
     @property
     def grounding(self) -> GroundingServices:
         """The bound clause lookup, informational retrieval with abstention, and the grounding verifier."""
@@ -276,6 +312,15 @@ class Container:
     @property
     def evaluation_summaries(self) -> EvaluationSummaryReader:
         return self._evaluation_summaries
+
+    @property
+    def model_cards(self) -> ModelCardReader:
+        return self._model_cards
+
+    @property
+    def model_inventory(self) -> ModelInventory:
+        """What this process serves, recorded once at startup (no secrets, paths, or identifiers)."""
+        return self._model_inventory
 
     @property
     def rate_limit_store(self) -> RateLimitStore | None:

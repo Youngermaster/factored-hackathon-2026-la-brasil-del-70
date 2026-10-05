@@ -39,6 +39,17 @@ Every organizer row is synthetic: no real customer is represented. The team stil
 
 No model prompt receives document numbers, full names, emails, phone numbers, or addresses (CLAUDE.md rule 6).
 
+**Vector index (ADR 0047).** The optional Qdrant collection holds embeddings of the synthetic policy clauses only,
+with keyword payloads (clause id, version, language, jurisdiction, family, workflow) and no text. No organizer data
+is embedded or indexed: the free-text columns are templates (147,292 served transcripts hold 42 distinct customer
+texts; the committed sample has 20 transcripts with 11 distinct customer texts, 5 complaints with 3 distinct
+descriptions, and 16 survey comments with 8 distinct texts), so a collection of case summaries would add no
+retrievable information, and customer-scoped vectors wait for the consent and deletion controls of
+[ADR 0046](../adr/0046-customer-service-history-vector-retrieval.md) (Proposed). A customer's informational question
+is embedded at query time after redaction and is not stored in the index. The committed recording of hosted
+embeddings (`evals/data/retrieval_embeddings.text-embedding-3-small-512.v1.jsonl`) covers team-written judgment
+queries and policy clauses, keyed by hashes.
+
 ## Known issues found by profiling
 
 | Issue | Evidence | Handling |

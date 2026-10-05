@@ -7,8 +7,10 @@
 #   migrate   one-shot: migrations as the owner, before the API starts
 #   seed      one-shot (profile jobs): demo personas and customers from the committed sample
 #   purge     the retention purge, once a day, as the owner
-#   obs       profile: collector, Jaeger with Badger storage, Prometheus, Grafana with a login (127.0.0.1 only)
+#   obs       profile: collector, Jaeger with Badger storage, Prometheus, Grafana (127.0.0.1, and read-only at
+#             /grafana/ through Caddy when GRAFANA_ROUTE=on; ADR 0045)
 #   ollama    profile: a self-hosted model on the private network (needs a VM with at least 16 GB of memory)
+#   qdrant    profile rag: the vector index for knowledge retrieval (ADR 0047), on the internal network only
 #
 # Every service: no-new-privileges, every Linux capability dropped, CPU and memory limits, rotated logs, and a
 # read-only root filesystem except where a note says why not.
@@ -91,6 +93,8 @@ services:
       SITE_ADDRESS: ${SITE_ADDRESS:?set SITE_ADDRESS (the public host name) in the server env file}
       CADDY_TLS: ${CADDY_TLS:-acme}
       ACME_EMAIL: ${ACME_EMAIL:-}
+      # on serves Grafana at /grafana/ (ADR 0045; needs the obs profile); off keeps it on the SSH tunnel only.
+      GRAFANA_ROUTE: ${GRAFANA_ROUTE:-off}
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
@@ -103,6 +107,8 @@ services:
     networks:
       edge:
         ipv4_address: ${WEB_EDGE_ADDRESS:-172.28.10.10}
+      # Caddy's only path to Grafana. No depends_on: grafana belongs to a profile that may be off.
+      observability: {}
     depends_on:
       api:
         condition: service_healthy
@@ -147,23 +153,32 @@ services:
       LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-}
       LLM_FALLBACK_MODEL: ${LLM_FALLBACK_MODEL:-}
       LLM_API_BASE: ${LLM_API_BASE:-}
+      LLM_API_VERSION: ${LLM_API_VERSION:-}
       LLM_ALLOW_PRIVATE_HTTP_BASE: ${LLM_ALLOW_PRIVATE_HTTP_BASE:-false}
       LLM_DAILY_BUDGET_USD: ${LLM_DAILY_BUDGET_USD:-5}
       LLM_CONVERSATION_BUDGET_USD: ${LLM_CONVERSATION_BUDGET_USD:-0.50}
       LLM_SESSION_TOKEN_LIMIT: ${LLM_SESSION_TOKEN_LIMIT:-20000}
       LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-20}
+      LLM_MAX_RETRIES: ${LLM_MAX_RETRIES:-2}
       LLM_BUDGET_LEDGER: postgres
       WORKFLOW_LLM_UNDERSTANDING: ${WORKFLOW_LLM_UNDERSTANDING:-true}
       WORKFLOW_LLM_PHRASING: ${WORKFLOW_LLM_PHRASING:-false}
       WORKFLOW_LLM_HANDOFF_SUMMARY: ${WORKFLOW_LLM_HANDOFF_SUMMARY:-false}
       WORKFLOW_MAX_ELIGIBILITY_ASSESSMENTS: ${WORKFLOW_MAX_ELIGIBILITY_ASSESSMENTS:-5}
       WORKFLOW_ELIGIBILITY_ASSESSMENT_WINDOW_MINUTES: ${WORKFLOW_ELIGIBILITY_ASSESSMENT_WINDOW_MINUTES:-60}
+      # Open retrieval (ADR 0047): bm25 by default; qdrant or qdrant_hybrid need the rag profile and a built collection.
+      RETRIEVAL_RETRIEVER: ${RETRIEVAL_RETRIEVER:-bm25}
+      RETRIEVAL_QDRANT_URL: ${RETRIEVAL_QDRANT_URL:-}
       EVAL_SUMMARIES_PUBLIC: ${EVAL_SUMMARIES_PUBLIC:-false}
       OTEL_ENABLED: ${OTEL_ENABLED:-false}
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
       OTEL_TRACES_SAMPLER_ARG: ${OTEL_TRACES_SAMPLER_ARG:-1.0}
-    # The application role, the session and CSRF keys, and the model keys (empty files when no hosted model is used);
-    # never the owner or superuser password.
+      # Metadata-only export of model calls to Langfuse (docs/operations/observability.md); needs LLM_PROVIDER=litellm,
+      # an https base URL, and both Langfuse key files. The keys are never environment variables.
+      LANGFUSE_ENABLED: ${LANGFUSE_ENABLED:-false}
+      LANGFUSE_BASE_URL: ${LANGFUSE_BASE_URL:-}
+    # The application role, the session and CSRF keys, the model keys, and the Langfuse keys (empty files when no
+    # hosted model or no Langfuse export is used); never the owner or superuser password.
     secrets:
       - source: app_postgres_app_password
         target: POSTGRES_APP_PASSWORD
@@ -175,6 +190,10 @@ services:
         target: LLM_API_KEY_PRIMARY
       - source: app_llm_api_key_fallback
         target: LLM_API_KEY_FALLBACK
+      - source: app_langfuse_public_key
+        target: LANGFUSE_PUBLIC_KEY
+      - source: app_langfuse_secret_key
+        target: LANGFUSE_SECRET_KEY
     tmpfs:
       - /tmp:size=64m
     # host.docker.internal reaches a model served on the host itself (the local verification with Ollama).
@@ -264,13 +283,15 @@ services:
           cpus: "0.25"
           memory: 256M
 
-  # --- obs profile: traces and metrics, persisted; Grafana needs its admin login and listens on 127.0.0.1 only ----
+  # --- obs profile: traces and metrics, persisted; Grafana on 127.0.0.1 and, with GRAFANA_ROUTE=on, at /grafana/ ---
   otel-collector:
     profiles: [obs]
     image: otel/opentelemetry-collector:0.161.0@sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913
     <<: *hardening
     restart: unless-stopped
     command: ["--config=/etc/otelcol/config.yaml"]
+    # Its config and nothing else: host metrics come from the container's own /proc (ADR 0045), never from the Docker
+    # socket or a host mount.
     volumes:
       - ./observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro
     networks: [backend]
@@ -313,6 +334,10 @@ services:
       - --storage.tsdb.path=/prometheus
       - --storage.tsdb.retention.time=15d
       - --storage.tsdb.retention.size=2GB
+      # Grafana viewers can send any PromQL through the datasource (ADR 0045): bound what one query may cost.
+      - --query.timeout=30s
+      - --query.max-samples=5000000
+      - --query.max-concurrency=4
     volumes:
       - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./observability/alerts.yml:/etc/prometheus/alerts.yml:ro
@@ -333,14 +358,46 @@ services:
       # deploy/prod.sh refuses to start this profile without a staged GRAFANA_ADMIN_PASSWORD.
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/GRAFANA_ADMIN_PASSWORD
-      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      # Served by Caddy at <PUBLIC_ORIGIN>/grafana/ (ADR 0045), and through the tunnel at http://localhost:3000/grafana/.
+      GF_SERVER_ROOT_URL: ${PUBLIC_ORIGIN:?set PUBLIC_ORIGIN (https://your-host) in the server env file}/grafana/
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      # true lets anyone view the provisioned dashboards without signing in (role Viewer: no editing, no Explore);
+      # the admin login stays. Default false (ADR 0045, "anonymous viewer").
+      GF_AUTH_ANONYMOUS_ENABLED: ${GRAFANA_ANONYMOUS_VIEWER:-false}
+      GF_AUTH_ANONYMOUS_ORG_NAME: Main Org.
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_AUTH_ANONYMOUS_HIDE_VERSION: "true"
       GF_AUTH_DISABLE_LOGIN_FORM: "false"
+      GF_AUTH_BASIC_ENABLED: "false"
+      GF_AUTH_LOGIN_MAXIMUM_INACTIVE_LIFETIME_DURATION: 1h
+      GF_AUTH_LOGIN_MAXIMUM_LIFETIME_DURATION: 12h
       GF_USERS_ALLOW_SIGN_UP: "false"
-      GF_SECURITY_COOKIE_SECURE: "false"
+      GF_USERS_ALLOW_ORG_CREATE: "false"
+      GF_USERS_VIEWERS_CAN_EDIT: "false"
+      GF_SECURITY_COOKIE_SECURE: "true"
+      GF_SECURITY_COOKIE_SAMESITE: strict
+      GF_SECURITY_DISABLE_GRAVATAR: "true"
+      GF_SECURITY_ALLOW_EMBEDDING: "false"
+      GF_SECURITY_CONTENT_SECURITY_POLICY: "true"
+      # Grafana's own CSP (Caddy adds none on /grafana/): its default template without external hosts or websockets
+      # (Live is off), and no framing. $$ is compose's escape: Grafana receives $NONCE.
+      GF_SECURITY_CONTENT_SECURITY_POLICY_TEMPLATE: >-
+        script-src 'self' 'unsafe-eval' 'unsafe-inline' 'strict-dynamic' $$NONCE; object-src 'none';
+        font-src 'self'; style-src 'self' 'unsafe-inline' blob:; img-src 'self' data: blob:; base-uri 'self';
+        connect-src 'self'; manifest-src 'self'; media-src 'none'; form-action 'self'; frame-ancestors 'none'
+      GF_SNAPSHOTS_ENABLED: "false"
+      GF_SNAPSHOTS_EXTERNAL_ENABLED: "false"
+      GF_PUBLIC_DASHBOARDS_ENABLED: "false"
+      GF_LIVE_MAX_CONNECTIONS: "0"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
-      # No plugin downloads at startup: the bundled Prometheus and Jaeger datasources serve as shipped (an update
-      # would try to replace them on the read-only root filesystem and unload them).
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      # Nothing scrapes Grafana's own /metrics (unauthenticated by default); Caddy also answers 404 for it.
+      GF_METRICS_ENABLED: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/provisioning/dashboards/bank-agent-service.json
+      # No plugin downloads at startup: the bundled Prometheus datasource serves as shipped (an update would try to
+      # replace it on the read-only root filesystem and unload it).
       GF_PLUGINS_PREINSTALL_DISABLED: "true"
       GF_PATHS_DATA: /var/lib/grafana
     secrets:
@@ -352,15 +409,18 @@ services:
     tmpfs:
       - /tmp:size=32m
     ports:
-      # Reach it through an SSH tunnel (deploy/README.md); never open 3000 in the firewall.
+      # The SSH tunnel (deploy/README.md), the administrator's path when the Caddy route is off; never open 3000 in
+      # the firewall.
       - "127.0.0.1:${GRAFANA_PORT:-3000}:3000"
-    networks: [backend, egress]
-    depends_on: [prometheus, jaeger]
+    # backend reaches Prometheus, egress carries the loopback port, observability is Caddy's path in.
+    networks: [backend, egress, observability]
+    depends_on: [prometheus]
     deploy:
       resources:
         limits:
           cpus: "0.5"
-          memory: 384M
+          # 276 MB in use at 384 MB before the public route; viewers add sessions and query buffers.
+          memory: 512M
 
   # --- ollama profile: a self-hosted model on the private network (not the default; about 5 GB of model) --------
   ollama:
@@ -385,6 +445,45 @@ services:
           cpus: "3.0"
           memory: 10G
 
+  # The vector index for knowledge retrieval (ADR 0047). Derived data only: the collections hold the synthetic policy
+  # clauses and are rebuilt by `bank-agent index qdrant`, so the volume is never backed up. Internal network only (no
+  # egress, no published port); the unprivileged image runs as uid 1000 with a read-only root, and writes only its
+  # storage and snapshot volumes and two tmpfs mounts. Started only with RAG=1 deploy/prod.sh up.
+  qdrant:
+    profiles: [rag]
+    image: qdrant/qdrant:v1.19.2-unprivileged@sha256:efb96a9425a90d2d5a1a0a474156280df1892dcdf1af3e8515bd2589b1bfd88b
+    <<: *hardening
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
+      QDRANT__LOG_LEVEL: INFO
+      # The "initialized" marker must land on a writable path when the root is read-only.
+      QDRANT_INIT_FILE_PATH: /qdrant/init/.qdrant-initialized
+    volumes:
+      - qdrant-storage:/qdrant/storage
+      - qdrant-snapshots:/qdrant/snapshots
+    tmpfs:
+      - /tmp:uid=1000,gid=1000,size=64m
+      - /qdrant/init:uid=1000,gid=1000,size=1m
+    networks: [backend]
+    healthcheck:
+      # The image has bash and grep but no curl or wget: an HTTP readiness request over bash's /dev/tcp.
+      test:
+        - CMD
+        - bash
+        - -c
+        - exec 3<>/dev/tcp/127.0.0.1/6333 && printf 'GET /readyz HTTP/1.0\r\n\r\n' >&3 && grep -q 'all shards are ready' <&3
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
 networks:
   edge:
     ipam:
@@ -394,6 +493,9 @@ networks:
     internal: true
   # A non-internal network: Grafana's loopback port and the ollama model download need it.
   egress: {}
+  # Caddy to Grafana and nothing else: internal (no route out), joined by web and grafana only (ADR 0045).
+  observability:
+    internal: true
 
 # Staged by deploy/secrets_stage.py; the directory is the consumer whose container user owns the files (app: uid 10001
 # for the api and the jobs, postgres: uid 70, grafana: uid 472). The names match its SECRETS table.
@@ -410,6 +512,10 @@ secrets:
     file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LLM_API_KEY_PRIMARY
   app_llm_api_key_fallback:
     file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LLM_API_KEY_FALLBACK
+  app_langfuse_public_key:
+    file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LANGFUSE_PUBLIC_KEY
+  app_langfuse_secret_key:
+    file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/app/LANGFUSE_SECRET_KEY
   postgres_superuser_password:
     file: ${SECRETS_HOST_DIR:-/run/bank-agent/secrets}/postgres/POSTGRES_SUPERUSER_PASSWORD
   postgres_admin_password:
@@ -427,3 +533,5 @@ volumes:
   prometheus-data:
   grafana-data:
   ollama-models:
+  qdrant-storage:
+  qdrant-snapshots:

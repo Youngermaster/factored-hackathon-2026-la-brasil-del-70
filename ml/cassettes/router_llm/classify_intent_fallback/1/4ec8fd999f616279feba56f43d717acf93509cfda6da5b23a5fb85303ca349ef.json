@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4ec8fd999f616279feba56f43d717acf93509cfda6da5b23a5fb85303ca349ef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 940,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:39.703656Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 922,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "activar otra vez mi tarjeta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

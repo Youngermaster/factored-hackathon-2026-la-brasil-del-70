@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2ce56219ceaf12bd18477489d8dffd2b91ee1adbf770de8747c237f2d820f5b2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1258,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:16.021467Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Quiero ver todas las transacciones de la tarjeta que termina en 3310 en abril",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

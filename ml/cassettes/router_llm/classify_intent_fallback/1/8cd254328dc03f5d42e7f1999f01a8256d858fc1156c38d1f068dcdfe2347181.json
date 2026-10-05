@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8cd254328dc03f5d42e7f1999f01a8256d858fc1156c38d1f068dcdfe2347181",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 885,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:11:27.653322Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No te pido que abras uno nuevo, solo decime si el que tengo ya salio",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

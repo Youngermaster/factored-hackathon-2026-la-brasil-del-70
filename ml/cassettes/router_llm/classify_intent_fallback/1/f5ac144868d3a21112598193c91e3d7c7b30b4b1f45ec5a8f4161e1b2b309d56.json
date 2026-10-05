@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f5ac144868d3a21112598193c91e3d7c7b30b4b1f45ec5a8f4161e1b2b309d56",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1336,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:31.539316Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero reactivar la tarjeta que termina en 5528",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

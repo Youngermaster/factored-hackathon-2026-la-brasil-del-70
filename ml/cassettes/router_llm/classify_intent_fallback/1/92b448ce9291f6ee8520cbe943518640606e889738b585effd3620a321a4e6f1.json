@@ -1,0 +1,36 @@
+{
+  "cassette_id": "92b448ce9291f6ee8520cbe943518640606e889738b585effd3620a321a4e6f1",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1516,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:16.416648Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "quisiera saber si con mi sueldo me alcanza para un crédito de vivienda",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

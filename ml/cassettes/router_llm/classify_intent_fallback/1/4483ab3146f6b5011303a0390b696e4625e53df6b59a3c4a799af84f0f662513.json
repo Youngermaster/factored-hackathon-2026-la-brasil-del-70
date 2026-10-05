@@ -1,0 +1,32 @@
+{
+  "cassette_id": "4483ab3146f6b5011303a0390b696e4625e53df6b59a3c4a799af84f0f662513",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2395,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:41.295893Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "¿Cual es la fecha de vencimiento de mi plastico?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

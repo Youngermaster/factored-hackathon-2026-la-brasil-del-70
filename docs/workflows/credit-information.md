@@ -54,7 +54,7 @@ Common clauses on every state as in [account inquiry](account-inquiry.md#states-
 | ESTIMATE_RISK | COLLECT_APPLICATION | RiskEstimator; the engine-only profile read | none | as CLARIFY | none on the allowlist | ASSESS_ELIGIBILITY |
 | ASSESS_ELIGIBILITY | PRESENT_ELIGIBILITY | EligibilityPolicy (ELG rules inside the service) | none | CRE-ALL-1, CRE-ALL-2, ELG-ALL-1..3, ELG-{c}-1.x, ESC-ALL-4 | as above | EXPLAIN_ELIGIBILITY |
 | EXPLAIN_ELIGIBILITY | PRESENT_ELIGIBILITY | phase 06 renderer | `ESC.credit_review_required` (offered, not forced), `ESC.eligibility_contested` | as above | as above | CONFIRM_INTAKE, COLLECT_APPLICATION_FACTS, RESOLVED, ESCALATED |
-| CONFIRM_INTAKE | CONFIRM_APPLICATION | none | CRE rules, action rules, step-up | CRE-ALL-1, CRE-ALL-2, INF-ALL-3 | as above | EXECUTE, RESOLVED |
+| CONFIRM_INTAKE | CONFIRM_APPLICATION | none | CRE rules, action rules, step-up | CRE-ALL-1, CRE-ALL-2 (INF-ALL-3 only after the verified read-back) | as above | EXECUTE, RESOLVED |
 | EXECUTE | SUBMIT_APPLICATION | none | action rules with `confirmed_at`, `AUTH.step_up_valid` | as CONFIRM_INTAKE | submit_credit_application | VERIFY, EXECUTE (step-up) |
 | VERIFY | SUBMIT_APPLICATION | WriteVerifier | `ESC.verification_mismatch` | as above | none (read-back) | RESOLVED, ESCALATED |
 | APPLICATION_STATUS | ANSWER_APPLICATION_STATUS | none | common | CRE-ALL-1, INF-ALL-3 | get_credit_application_status, list_my_credit_applications, list_credit_products | RESOLVED |
@@ -175,6 +175,8 @@ sequenceDiagram
 ## Tests
 
 Scenarios 24 to 29 with variants run on both backends (`test_credit_workflow.py`, `test_credit_edges.py`); `test_credit_separation.py` drives every credit path with a recording `FakeLLM` (understanding, phrasing, and summaries on) and asserts that no prompt receives a profile or estimate value; `test_credit_properties.py` is the Hypothesis property over profile gaps and estimator outcomes; `test_credit_wording.py` scans every template for approval wording.
+
+`services/api/tests/unit/application/workflows/test_qa_credit_regressions.py` (production QA, 2026-10-05) covers approval questions and injected approval statements (`credit.no_decision` with `CRE-ALL-3` and `CRE-ALL-1`, at UNDERSTAND, and before the pending question at COLLECT_APPLICATION_FACTS and EXPLAIN_ELIGIBILITY), natural intake acceptance (a leading filler, `regístrala`), the intake confirmation without `INF-ALL-3`, the catalog list for a text naming several products, and the review button staying a short yes that the gate leaves to the credit handler.
 
 ## Limitations
 

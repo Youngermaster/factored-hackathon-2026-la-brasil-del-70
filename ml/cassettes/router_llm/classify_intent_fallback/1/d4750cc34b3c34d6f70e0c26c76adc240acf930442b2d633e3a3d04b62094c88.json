@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d4750cc34b3c34d6f70e0c26c76adc240acf930442b2d633e3a3d04b62094c88",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1219,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:21.320712Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Cuanta plata me prestarian con mi recibo de sueldo?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

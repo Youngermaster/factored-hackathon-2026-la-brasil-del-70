@@ -1,0 +1,36 @@
+{
+  "cassette_id": "66a64b9596a1a1d2bcdd42eabe3b612322a6c82c05f3542216f624649d3e1914",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1015,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:25.270131Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber si ya revisaron mi solicitud de crédito autlmotriz",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

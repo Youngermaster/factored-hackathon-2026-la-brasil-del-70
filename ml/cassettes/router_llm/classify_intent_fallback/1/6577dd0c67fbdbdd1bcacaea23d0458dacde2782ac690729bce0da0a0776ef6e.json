@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6577dd0c67fbdbdd1bcacaea23d0458dacde2782ac690729bce0da0a0776ef6e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 768,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:39.659602Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 926,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿A qué hora jueba Boca hiy?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

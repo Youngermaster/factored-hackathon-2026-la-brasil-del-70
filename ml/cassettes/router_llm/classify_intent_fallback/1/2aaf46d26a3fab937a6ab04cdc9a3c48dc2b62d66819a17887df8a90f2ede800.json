@@ -1,0 +1,32 @@
+{
+  "cassette_id": "2aaf46d26a3fab937a6ab04cdc9a3c48dc2b62d66819a17887df8a90f2ede800",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 836,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_replacement_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:46.460852Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 19
+  },
+  "variables": {
+    "customer_message": "quiero pedir reposición de la tarjeta terminada en 2275",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

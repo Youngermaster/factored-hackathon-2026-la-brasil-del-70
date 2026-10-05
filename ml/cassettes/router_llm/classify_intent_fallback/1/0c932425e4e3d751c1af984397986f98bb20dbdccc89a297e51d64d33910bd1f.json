@@ -1,0 +1,44 @@
+{
+  "cassette_id": "0c932425e4e3d751c1af984397986f98bb20dbdccc89a297e51d64d33910bd1f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1569,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.03,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.01,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:20.713959Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 52
+  },
+  "variables": {
+    "customer_message": "cargo desconocido en mi tarjeta terminación 4821",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

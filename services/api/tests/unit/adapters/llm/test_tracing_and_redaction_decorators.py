@@ -80,6 +80,40 @@ async def test_span_carries_genai_request_and_response_attributes() -> None:
     assert GENAI_SEMCONV_VERSION == "1.37.0"
 
 
+async def test_model_call_metrics_name_the_prompt_and_the_serving_model() -> None:
+    """Dashboards split latency and tokens by prompt, and see a failover in the model that answered."""
+    telemetry = RecordingTelemetry()
+    tracer = _tracer(StubClient(model_id="azure/gpt-4o"), telemetry)
+
+    await call_structured(tracer)
+
+    expected = {
+        "gen_ai.operation.name": "chat",
+        "gen_ai.provider.name": "anthropic",
+        "gen_ai.request.model": "anthropic/claude-sonnet-5",
+        "gen_ai.response.model": "azure/gpt-4o",
+        "bank.prompt.id": "phrase_response",
+    }
+    assert telemetry.histograms[DURATION_METRIC].values[0][1] == expected
+    usage = telemetry.histograms[USAGE_METRIC].values
+    assert [attributes for _, attributes in usage] == [
+        {**expected, "gen_ai.token.type": "input"},
+        {**expected, "gen_ai.token.type": "output"},
+    ]
+
+
+async def test_failed_model_calls_name_the_prompt_but_no_serving_model() -> None:
+    telemetry = RecordingTelemetry()
+
+    with pytest.raises(LlmRateLimitedError):
+        await call_structured(_tracer(StubClient(outcomes=[LlmRateLimitedError()]), telemetry))
+
+    (failed,) = telemetry.histograms[DURATION_METRIC].values
+    assert failed[1]["bank.prompt.id"] == "phrase_response"
+    assert "gen_ai.response.model" not in failed[1]
+    assert USAGE_METRIC not in telemetry.histograms or not telemetry.histograms[USAGE_METRIC].values
+
+
 async def test_content_is_not_captured_by_default() -> None:
     telemetry = RecordingTelemetry()
 

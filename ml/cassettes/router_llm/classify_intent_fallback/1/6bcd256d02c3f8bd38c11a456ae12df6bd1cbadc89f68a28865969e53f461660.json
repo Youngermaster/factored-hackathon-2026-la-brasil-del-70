@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6bcd256d02c3f8bd38c11a456ae12df6bd1cbadc89f68a28865969e53f461660",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 920,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:16.477019Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "No quiero hacer otra transferencka, solo saber si la orimera sí se fue",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

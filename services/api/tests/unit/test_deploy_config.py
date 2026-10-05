@@ -6,6 +6,7 @@ in `make security`; this suite fails first when an edit drops a control.
 
 import importlib.util
 import re
+import subprocess
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -13,6 +14,8 @@ from typing import Any
 
 import pytest
 import yaml
+
+from bank_agent.api.config import PRODUCTION_COOKIES
 
 ROOT = Path(__file__).resolve().parents[4]
 DEPLOY = ROOT / "deploy"
@@ -24,7 +27,15 @@ OWNER_SERVICES = {"postgres", "migrate", "seed", "purge"}
 LOOPBACK_PORTS = {"grafana", "jaeger"}
 OWNER_JOB_SECRETS = {"POSTGRES_ADMIN_PASSWORD", "SESSION_SECRET"}
 EXPECTED_SECRETS: dict[str, set[str]] = {
-    "api": {"POSTGRES_APP_PASSWORD", "SESSION_SECRET", "CSRF_SECRET", "LLM_API_KEY_PRIMARY", "LLM_API_KEY_FALLBACK"},
+    "api": {
+        "POSTGRES_APP_PASSWORD",
+        "SESSION_SECRET",
+        "CSRF_SECRET",
+        "LLM_API_KEY_PRIMARY",
+        "LLM_API_KEY_FALLBACK",
+        "LANGFUSE_PUBLIC_KEY",
+        "LANGFUSE_SECRET_KEY",
+    },
     "migrate": OWNER_JOB_SECRETS,
     "seed": OWNER_JOB_SECRETS,
     "purge": OWNER_JOB_SECRETS,
@@ -283,3 +294,203 @@ def test_the_smoke_test_covers_every_workflow_in_both_languages() -> None:
     languages = {flow.name.rsplit("(", 1)[1].rstrip(")") for flow in module.FLOWS}
     assert languages == {"es", "pt"}
     assert any(flow.outcomes == frozenset({"abstained"}) for flow in module.FLOWS)
+
+
+CADDYFILE = (DEPLOY / "caddy" / "Caddyfile").read_text(encoding="utf-8")
+
+
+def _snippet(name: str) -> str:
+    """The body of the Caddyfile snippet ``(name) { ... }`` (snippets close with a brace at the line start)."""
+    body = CADDYFILE.split(f"\n({name}) {{", 1)[1]
+    return body.split("\n}\n", 1)[0]
+
+
+def test_grafana_route_is_a_switch_that_proxies_the_sub_path_without_the_spa_csp() -> None:
+    """ADR 0045: off by default; on keeps the prefix, closes /metrics, and leaves the CSP to Grafana."""
+    site = CADDYFILE.split("{$SITE_ADDRESS} {", 1)[1]
+    assert "import grafana-{$GRAFANA_ROUTE:off}" in site
+    route = _snippet("grafana-on")
+    assert "redir /grafana /grafana/ 308" in route
+    assert "handle /grafana/* {" in route
+    assert "handle_path" not in route
+    assert route.index("respond /grafana/metrics* 404") < route.index("reverse_proxy grafana:3000")
+    assert "Content-Security-Policy" not in route
+    assert 'header_down Strict-Transport-Security "max-age=63072000; includeSubDomains"' in route
+    assert _snippet("grafana-off").strip() == ""
+    assert _env("web")["GRAFANA_ROUTE"] == "${GRAFANA_ROUTE:-off}"
+    assert "grafana" not in SERVICES["web"].get("depends_on", {})
+
+
+def test_the_grafana_route_strips_every_bank_cookie_and_keeps_grafanas() -> None:
+    """The bank's cookies never reach Grafana; the rule depends on every bank cookie carrying a prefix."""
+    (pattern,) = re.findall(r"header_up Cookie `([^`]+)` \"\"", _snippet("grafana-on"))
+    bank = [PRODUCTION_COOKIES.session, PRODUCTION_COOKIES.csrf]
+    assert all(name.startswith("__Host-") for name in bank)
+    header = f"{bank[0]}=s3ss10n; grafana_session=abc; {bank[1]}=t0k3n; grafana_session_expiry=1; __Secure-x=y"
+    kept = re.sub(pattern, "", header)
+    pairs = {part.strip().split("=", 1)[0] for part in kept.split(";") if part.strip()}
+    assert pairs == {"grafana_session", "grafana_session_expiry"}
+
+
+def test_grafana_serves_its_sub_path_hardened_with_its_own_csp() -> None:
+    environment = _env("grafana")
+    assert environment["GF_SERVER_ROOT_URL"].startswith("${PUBLIC_ORIGIN:?")
+    assert environment["GF_SERVER_ROOT_URL"].endswith("}/grafana/")
+    assert environment["GF_SERVER_SERVE_FROM_SUB_PATH"] == "true"
+    expected_off = {
+        "GF_USERS_ALLOW_SIGN_UP": "false",
+        "GF_USERS_ALLOW_ORG_CREATE": "false",
+        "GF_USERS_VIEWERS_CAN_EDIT": "false",
+        "GF_AUTH_BASIC_ENABLED": "false",
+        "GF_SNAPSHOTS_ENABLED": "false",
+        "GF_SNAPSHOTS_EXTERNAL_ENABLED": "false",
+        "GF_PUBLIC_DASHBOARDS_ENABLED": "false",
+        "GF_LIVE_MAX_CONNECTIONS": "0",
+        "GF_SECURITY_ALLOW_EMBEDDING": "false",
+        "GF_PLUGINS_PREINSTALL_DISABLED": "true",
+        "GF_SECURITY_DISABLE_GRAVATAR": "true",
+        "GF_SECURITY_COOKIE_SECURE": "true",
+        "GF_SECURITY_CONTENT_SECURITY_POLICY": "true",
+        "GF_METRICS_ENABLED": "false",
+    }
+    assert {name: environment.get(name) for name in expected_off} == expected_off
+    template = environment["GF_SECURITY_CONTENT_SECURITY_POLICY_TEMPLATE"]
+    for directive in ("frame-ancestors 'none'", "object-src 'none'", "connect-src 'self'", "$$NONCE"):
+        assert directive in template
+    # The login stays (the admin password file is checked with the other secrets above).
+    assert environment["GF_AUTH_DISABLE_LOGIN_FORM"] == "false"
+    assert SERVICES["grafana"]["deploy"]["resources"]["limits"]["memory"] == "512M"
+    assert "jaeger" not in SERVICES["grafana"].get("depends_on", [])
+
+
+def test_anonymous_grafana_viewing_is_read_only_and_off_by_default() -> None:
+    environment = _env("grafana")
+    assert environment["GF_AUTH_ANONYMOUS_ENABLED"] == "${GRAFANA_ANONYMOUS_VIEWER:-false}"
+    assert environment["GF_AUTH_ANONYMOUS_ORG_ROLE"] == "Viewer"
+    assert environment["GF_AUTH_ANONYMOUS_HIDE_VERSION"] == "true"
+
+
+def _network_names(service: dict[str, Any]) -> set[str]:
+    """Network names whether compose lists them or maps them to settings."""
+    return set(service.get("networks", []))
+
+
+def test_only_web_and_grafana_join_the_internal_observability_network() -> None:
+    assert COMPOSE["networks"]["observability"]["internal"] is True
+    members = {name for name, service in SERVICES.items() if "observability" in _network_names(service)}
+    assert members == {"web", "grafana"}
+
+
+def test_prometheus_bounds_the_cost_of_one_query() -> None:
+    command = SERVICES["prometheus"]["command"]
+    assert "--query.timeout=30s" in command
+    assert "--query.max-samples=5000000" in command
+    assert "--query.max-concurrency=4" in command
+    assert not [flag for flag in command if flag.startswith(("--web.enable-admin-api", "--web.enable-lifecycle"))]
+
+
+PROD_FUNCTIONS = ("env_value", "from_env_or_file", "obs_enabled", "profiles", "say", "fail", "check_grafana_switches")
+
+
+def _prod_sh(script: str, env_file: Path, **environment: str) -> subprocess.CompletedProcess[str]:
+    """Run ``script`` after the named prod.sh functions, against ``env_file``, with only ``environment`` set."""
+    text = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
+    functions = []
+    for name in PROD_FUNCTIONS:
+        match = re.search(rf"^{name}\(\) (?:\{{.*?^\}}|\{{[^\n]*\}})$", text, flags=re.MULTILINE | re.DOTALL)
+        assert match is not None, name
+        functions.append(match.group(0))
+    program = "set -euo pipefail\n" + "\n".join(functions) + "\n" + script
+    return subprocess.run(
+        ["/bin/bash", "-c", program],
+        env={"PATH": "/usr/bin:/bin", "ENV_FILE": str(env_file), **environment},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def test_prod_sh_takes_the_obs_profile_from_the_env_file_unless_the_caller_sets_it(tmp_path: Path) -> None:
+    """Continuous deployment passes no OBS, so the server env file must keep the obs profile current."""
+    env_file = tmp_path / "env"
+    env_file.write_text("OBS=0\nOBS=1\n", encoding="utf-8")
+    assert _prod_sh("profiles", env_file).stdout.split() == ["--profile", "obs"]
+    assert _prod_sh("profiles", env_file, OBS="0").stdout.split() == []
+    assert _prod_sh("profiles", tmp_path / "missing").stdout.split() == []
+    assert _prod_sh("profiles", tmp_path / "missing", OBS="1").stdout.split() == ["--profile", "obs"]
+
+
+@pytest.mark.parametrize(
+    ("lines", "ok"),
+    [
+        ("", True),
+        ("OBS=1\nGRAFANA_ROUTE=on\nGRAFANA_ANONYMOUS_VIEWER=true\n", True),
+        ("GRAFANA_ROUTE=off\nGRAFANA_ANONYMOUS_VIEWER=false\n", True),
+        ("GRAFANA_ROUTE=true\n", False),
+        ("GRAFANA_ANONYMOUS_VIEWER=yes\n", False),
+    ],
+)
+def test_prod_sh_refuses_a_grafana_switch_caddy_or_grafana_would_not_understand(
+    tmp_path: Path, lines: str, ok: bool
+) -> None:
+    """A bad GRAFANA_ROUTE would make Caddy import a snippet that does not exist and take the edge down."""
+    env_file = tmp_path / "env"
+    env_file.write_text(lines, encoding="utf-8")
+    result = _prod_sh("check_grafana_switches", env_file)
+    assert (result.returncode == 0) is ok, result.stderr
+    script = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
+    check = script.split("check_env_file() {", 1)[1].split("\n}", 1)[0]
+    assert "check_grafana_switches" in check
+
+
+def test_the_collector_reads_host_metrics_without_the_docker_socket_or_a_host_mount() -> None:
+    """Host CPU, memory, and disk come from the container's /proc; anything more would widen what it can reach."""
+    collector = SERVICES["otel-collector"]
+    assert collector["volumes"] == ["./observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro"]
+    assert collector["networks"] == ["backend"]
+    assert "pid" not in collector
+    assert "privileged" not in collector
+
+
+def test_grafana_opens_on_a_provisioned_dashboard() -> None:
+    """The home dashboard is the service health board, read from the mounted provisioning directory."""
+    home = _env("grafana")["GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH"]
+    prefix = "/etc/grafana/provisioning/"
+    assert home.startswith(prefix)
+    assert (DEPLOY / "observability" / "grafana" / "provisioning" / home.removeprefix(prefix)).is_file()
+    assert "./observability/grafana/provisioning:/etc/grafana/provisioning:ro" in SERVICES["grafana"]["volumes"]
+
+
+def test_qdrant_is_an_opt_in_internal_service_with_a_read_only_root_and_a_health_check() -> None:
+    qdrant = SERVICES["qdrant"]
+    assert qdrant["profiles"] == ["rag"]
+    assert re.fullmatch(r"qdrant/qdrant:v[0-9.]+-unprivileged@sha256:[0-9a-f]{64}", qdrant["image"])
+    assert qdrant["user"] == "1000:1000"
+    assert qdrant["read_only"] is True
+    assert qdrant["networks"] == ["backend"]
+    assert COMPOSE["networks"]["backend"].get("internal") is True
+    assert "ports" not in qdrant
+    assert "secrets" not in qdrant
+    assert qdrant["deploy"]["resources"]["limits"]["memory"] == "512M"
+    assert qdrant["environment"]["QDRANT__TELEMETRY_DISABLED"] == "true"
+    assert set(qdrant["volumes"]) == {"qdrant-storage:/qdrant/storage", "qdrant-snapshots:/qdrant/snapshots"}
+    assert {entry.split(":", 1)[0] for entry in qdrant["tmpfs"]} == {"/tmp", "/qdrant/init"}  # noqa: S108
+    assert qdrant["environment"]["QDRANT_INIT_FILE_PATH"].startswith("/qdrant/init/")
+    test = " ".join(qdrant["healthcheck"]["test"])
+    assert "/dev/tcp/127.0.0.1/6333" in test
+    assert "/readyz" in test
+
+
+def test_the_api_selects_bm25_unless_the_rag_settings_are_given() -> None:
+    environment = _env("api")
+    assert environment["RETRIEVAL_RETRIEVER"] == "${RETRIEVAL_RETRIEVER:-bm25}"
+    assert environment["RETRIEVAL_QDRANT_URL"] == "${RETRIEVAL_QDRANT_URL:-}"
+    assert "qdrant" not in SERVICES["api"].get("depends_on", {})
+
+
+def test_prod_sh_starts_and_stops_the_rag_profile() -> None:
+    script = (DEPLOY / "prod.sh").read_text(encoding="utf-8")
+    # Like OBS, RAG also comes from the server env file, so a continuous-deployment release keeps the profile.
+    assert 'from_env_or_file RAG "${RAG:-}"' in script
+    assert "rag_enabled && flags+=(--profile rag)" in script
+    assert script.count("--profile ollama --profile rag") == 2

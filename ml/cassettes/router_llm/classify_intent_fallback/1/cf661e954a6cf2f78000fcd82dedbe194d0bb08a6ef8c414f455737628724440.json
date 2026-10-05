@@ -1,0 +1,32 @@
+{
+  "cassette_id": "cf661e954a6cf2f78000fcd82dedbe194d0bb08a6ef8c414f455737628724440",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 795,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:06.917348Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "vloqueá la tarjetta terminada en 2275 por favor",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

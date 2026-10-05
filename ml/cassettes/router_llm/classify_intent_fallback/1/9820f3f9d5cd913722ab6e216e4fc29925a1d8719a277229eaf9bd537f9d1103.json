@@ -1,0 +1,36 @@
+{
+  "cassette_id": "9820f3f9d5cd913722ab6e216e4fc29925a1d8719a277229eaf9bd537f9d1103",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1622,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:45.084293Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "List,o ya puse la queja la semana pasada, ¿cuándo me contestan?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2449a9810507da14f4690a8ba0a08de97c058e533c21db46cc822322cd5847c9",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1288,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:52.057354Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Perdi o cartão e já bloqueeo, agora quero um nkvo",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

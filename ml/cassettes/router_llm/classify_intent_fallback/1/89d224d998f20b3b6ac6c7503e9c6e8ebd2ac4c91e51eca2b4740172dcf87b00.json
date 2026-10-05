@@ -1,0 +1,36 @@
+{
+  "cassette_id": "89d224d998f20b3b6ac6c7503e9c6e8ebd2ac4c91e51eca2b4740172dcf87b00",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1130,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:24.461389Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber el saldo de la tarjeta terminada en 1480",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

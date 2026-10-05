@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d5366396121945b4f57e5cce3258791088ded0107c7cef9a75e51448853759cc",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1014,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:08.921899Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Para mi declaración necesito los estados de cuenta del año",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

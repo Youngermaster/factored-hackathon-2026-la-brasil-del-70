@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4876c9cc6744d83b33c11141b0339ec126c7191dfb5b38338bdf8559696352a8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1286,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:19.478534Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Quiero ver todas las transacciones de la tarjeta que termina en 5528 en abril",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

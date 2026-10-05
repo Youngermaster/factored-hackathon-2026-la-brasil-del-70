@@ -1,0 +1,40 @@
+{
+  "cassette_id": "22167468c2732d31634d6f6e74e09ffb6dd10bf8a131df584b10423a447a3696",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1118,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:17.526990Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me darian prestamo personal si gano el minimo?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

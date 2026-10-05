@@ -1,0 +1,40 @@
+{
+  "cassette_id": "c2f09df13144250e3d510969d384d5d48346cc8e7ca428441e19634a6b948568",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 932,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.04,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:12.222698Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Buenas, ya me decidí: quiero radicar la solicitud de crédito de libre inversión",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

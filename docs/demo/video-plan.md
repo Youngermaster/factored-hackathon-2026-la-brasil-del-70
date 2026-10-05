@@ -2,19 +2,18 @@
 
 The timed shot list for the video pitch: what is on screen, the exact clicks and commands, and who speaks, second by second. This page is the single source of truth for the cut. The spoken words are in the [team monologue](video-monologue.md) (identical to [slides/script.md](../../slides/script.md), checked by `pnpm check:content`); how to record the deck, the audio, and the export settings are in [slides/VIDEO.md](../../slides/VIDEO.md); the longer demo walkthrough for judges is [script.md](script.md).
 
-**Organizer requirements (normative).** A video pitch no longer than 3:00 that demonstrates the working solution and explains the core architectural decisions. The brief also asks to see Spanish and Portuguese, a normal case, an ambiguous or unsupported case, and a case that needs a person. Submissions close 2026-10-05.
+**Organizer requirements (normative).** A video pitch no longer than 3:00 that demonstrates the working solution and explains the core architectural decisions. The brief also asks to see Spanish and Portuguese, a normal case, an ambiguous or unsupported case, and a case that needs a person. Submissions close 2026-10-05; the team's cutoff is 23:59 Colombia time (UTC-5), since the public page gives only the date.
 
 **Target 2:50, hard limit 3:00, demo footage included.** The spoken text takes 2:30 at 150 words per minute; the remaining 20 seconds are typing, model replies, and the pause after each click. Cut waiting time in the edit, never words.
 
 ## Which stack to record (decision for the team)
 
-The deployed demo (<https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Azure VM) runs the current `main` through the deploy workflow, so the guardrail fixes and the live human service are on it; it has no hosted model configured yet (deterministic paths). Record on it after a fresh seed, or on a local stack with the same commit; add a hosted key to Key Vault first if the video should show model calls in the glass box.
+The deployed demo (<https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Azure VM) runs the current `main` through the deploy workflow, so the guardrail fixes and the live human service are on it, and since 2026-10-05 it calls Azure OpenAI `azure/gpt-4.1-mini` (fallback `azure/gpt-4o`) to extract details and detect escalation signals; the glass box lists those model calls with tokens and cost.
 
-- **Recommended: record every live segment on one local stack running current `main`**, with the hosted model and the observability profile on. One stack gives the fixed guardrail replies, the Jaeger trace, and the Grafana panels for the same conversations. Commands in "Setup" below.
-- **Alternative: the team redeploys `main` first** (`deploy/prod.sh update`, then `deploy/prod.sh seed` on a fresh volume, as in [deploy/README.md](../../deploy/README.md)) and records the chat segments against the deployed URL. The backend segment still comes from a local stack or an SSH tunnel to the server's loopback Grafana and Jaeger (`OBS=1 deploy/prod.sh up`).
-- **Never** record the guardrail segment on the deployed build as it is today.
+- **Recommended: record the chat segments on the deployed URL** (the link the judges get), right after `deploy/prod.sh seed`, and the backend segment through the SSH tunnel to the VM's loopback Grafana (3000) and Jaeger (16686) ([deploy/README.md](../../deploy/README.md), "Operate"). A public read-only Grafana dashboard is planned; until it is live, use the tunnel.
+- **Alternative: one local stack on the same commit**, with the hosted model and the observability profile on (Setup below), if the VM or the tunnel misbehaves. One stack gives the guardrail replies, the Jaeger trace, and the Grafana panels for the same conversations.
 
-Whichever is chosen, the close slide names the deployed URL, and the narration never claims the live replies were evaluated: the evaluation ran on the local `qwen2.5:7b-instruct` ([results](../evaluation/results.md)).
+Whichever is chosen, the close slide names the deployed URL, and the narration never claims the live replies were evaluated: the published evaluation ran `azure/gpt-4.1-mini` at commit `2ddabb0`, before the final-day fixes ([results](../evaluation/results.md)).
 
 ## Timeline
 
@@ -44,9 +43,9 @@ If the cut runs long, trim in this order: the second guardrail message (keep the
 | (d1) Handoff | The Portuguese reply, the handoff with verified facts and open questions, and the agent claiming it in the console | Human escalation in Portuguese; AI Engineering (system integration) |
 | (d2) Backend | One trace from HTTP to SQL; Grafana panels with non-zero values | AI Engineering (observability); Data Analytics (live metrics) |
 
-## Setup for the recommended local stack
+## Setup for the alternative local stack
 
-From a clean checkout of current `main`, with `.env` created by `make env` and the hosted model's two values set in it (`LLM_PRIMARY_MODEL`, `LLM_API_KEY_PRIMARY`; [HOW-IT-WORKS](../HOW-IT-WORKS.md) section 7). Writes persist, so start from a fresh database volume: a card can be blocked once per seed.
+From a clean checkout of current `main`, with `.env` created by `make env` and the model values set in it (`LLM_PRIMARY_MODEL=azure/gpt-4.1-mini`, `LLM_API_BASE` set to the Azure OpenAI endpoint, `LLM_API_KEY_PRIMARY`; optionally `LLM_FALLBACK_MODEL=azure/gpt-4o` and `LLM_API_KEY_FALLBACK`; [HOW-IT-WORKS](../HOW-IT-WORKS.md) section 7). Writes persist, so start from a fresh database volume: a card can be blocked once per seed.
 
 ```bash
 make up PROFILES=obs              # PostgreSQL plus collector, Jaeger (16686), Prometheus (9090), Grafana (3000)
@@ -57,7 +56,7 @@ VITE_DEMO_MODE=true pnpm --dir apps/web run dev                                 
 
 Before the take:
 
-1. **Warm the dashboard.** Prometheus `increase()` counts a labelled series only from its second event, so on a fresh stack a reason seen once reads 0 (verified below). Play every live case once in rehearsal, then run `make load-test LOAD_USERS=5 LOAD_DURATION=60s` with the rate limits raised in `.env` (`RATE_LIMIT_*`; [capacity](../operations/capacity.md)). The load test's conversation opens hit the creation quota (five new chats per customer per hour by default; `CONVERSATION_CREATION_LIMIT` raises it) after a few seconds; the turns it sends before that are enough. Then reseed for the real take (`make seed` restores card statuses; a fresh volume restores everything).
+1. **Warm the dashboard.** Prometheus `increase()` counts a labelled series only from its second event, so on a fresh stack a reason seen once reads 0 (verified below; since ADR 0045 the outcome and handoff counters start at 0, which removes this for them, but not for tool, safety, or model counters). Play every live case once in rehearsal, then run `make load-test LOAD_USERS=5 LOAD_DURATION=60s` with the rate limits raised in `.env` (`RATE_LIMIT_*`; [capacity](../operations/capacity.md)). The load test's conversation opens hit the creation quota (five new chats per customer per hour by default; `CONVERSATION_CREATION_LIMIT` raises it) after a few seconds; the turns it sends before that are enough. Then reseed for the real take (`make seed` restores card statuses; a fresh volume restores everything).
 2. **Session language.** The first message of a conversation needs a session language, and the browser sends the interface language at sign-in. Choose Español on the sign-in page before the guardrail and card segments, and Português before the handoff segment. With no language set, "¿Quién es mejor CR7 o Messi?" gets the language question instead of the abstention, because it has no language markers.
 3. **Risk tier.** A third-party request raises the session's risk tier, and the next write would ask for more. So the CC request is the last message of the guardrail segment, and you sign out before the card block.
 4. **Identifiers.** Sign in only with the persona picker. The masked card digits are synthetic, but keep document numbers and phone digits off screen.
@@ -68,7 +67,7 @@ Before the take:
 The executive dashboard (`bank-agent-executive`), time range "Last 1 hour":
 
 - Show: the stat row (Turns in selected period, Resolved turn share, Escalated turn share, Turn latency p95, Safety interventions, Active sessions), Language mix, Escalations by workflow and reason, Safety interventions by code, Tool calls by status.
-- Avoid: Turn volume by workflow. In the verification run below it rendered empty in Grafana 13.2 although its query returned four series; the panel definition in `deploy/observability/` needs a look (not changed here).
+- Turn volume by workflow rendered empty in Grafana 13.2 in the verification run below; it and the other category panels are bar gauges since ADR 0045 and need a fresh check before recording. The service health dashboard (`bank-agent-service`, Grafana's home page) adds latency percentiles, model cost per turn, and the degradation timeline.
 - Say "live operations", not "resolution rate": a resolved turn is not the evaluation's safe automated resolution ([grafana-dashboard.md](../operations/grafana-dashboard.md)).
 
 ## Verification run, 2026-10-04

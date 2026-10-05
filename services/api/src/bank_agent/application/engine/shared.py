@@ -3,6 +3,8 @@
 Each builds a ``Step`` from verified state and clause references; none writes customer text by hand.
 """
 
+import asyncio
+
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import current_intent, evaluate, explanation
 from bank_agent.application.engine.definition import (
@@ -10,13 +12,14 @@ from bank_agent.application.engine.definition import (
     AUTH_REQUIRED,
     ESCALATED,
     REFUSED,
+    StateKind,
     UnsupportedRequest,
 )
 from bank_agent.application.engine.handoff import HandoffBuilder, HandoffPlan
 from bank_agent.application.engine.reply import Param, Reply
 from bank_agent.application.engine.templates.labels import CAPABILITIES, join
 from bank_agent.application.grounding.retrieval import RetrievalDecision
-from bank_agent.domain.cards import CardRequest
+from bank_agent.domain.cards import CardAction, CardRequest
 from bank_agent.domain.conversation import EscalationNotice, NoticeCode
 from bank_agent.domain.decision import ClauseRef, Decision, DecisionKind
 from bank_agent.domain.eligibility import CreditReview
@@ -149,12 +152,20 @@ def greeting(ctx: TurnContext, *, clarify: bool = False) -> Step:
     return Step(ctx.state, reply, Outcome.CLARIFIED if clarify else Outcome.IN_PROGRESS)
 
 
-def informational(ctx: TurnContext) -> Step:
-    """Open retrieval (informational intent only): the cited clauses, or a clause-backed abstention."""
+async def informational(ctx: TurnContext) -> Step:
+    """Open retrieval (informational intent only): the cited clauses, or a clause-backed abstention.
+
+    The search runs in a worker thread: a retriever may call remote services (the hosted embedding model and
+    Qdrant, ADR 0047) with bounded timeouts, and those calls must not block the event loop.
+    """
     evaluate(ctx, policy_state="START", intent=Intent.INFORMATIONAL)
     try:
-        outcome = ctx.services.informational.search(
-            intent=Intent.INFORMATIONAL, text=ctx.text, customer=ctx.customer, language=ctx.language
+        outcome = await asyncio.to_thread(
+            ctx.services.informational.search,
+            intent=Intent.INFORMATIONAL,
+            text=ctx.text,
+            customer=ctx.customer,
+            language=ctx.language,
         )
     except ConfigurationError:
         ctx.recorder.intervention("retrieval_unavailable")
@@ -185,6 +196,8 @@ def step_up(ctx: TurnContext, state: str, *, because_of_risk: bool = False) -> S
     """Ask for step-up. When only the session's raised risk tier asks for it (a read that otherwise needs a verified
     session), the reply says the conversation's requests are the reason, without naming what was detected."""
     template = "common.step_up_required_risk" if because_of_risk else "common.step_up_required"
+    if not ctx.at_router and ctx.definition.spec(state).kind is StateKind.ACCEPTS_REQUEST:
+        ctx.engine = ctx.engine.evolve(step_up_state=state)
     return Step(state, Reply(template=template, step_up_required=True), Outcome.IN_PROGRESS)
 
 
@@ -197,8 +210,28 @@ def step_up_from_risk(ctx: TurnContext, decision: Decision) -> bool:
     return failing == {"AUTH.required_level"}
 
 
-def escalation_code(decision: Decision) -> EscalationReasonCode:
-    """The handoff reason for an ``escalate`` decision, from its first decisive rule."""
+_CARD_REQUEST_ACTIONS = {
+    EscalationReasonCode.CARD_UNBLOCK_REQUESTED: CardAction.UNBLOCK_REQUEST,
+    EscalationReasonCode.CARD_REPLACEMENT_REQUESTED: CardAction.REPLACEMENT_REQUEST,
+}
+_CREDIT_REVIEW_CODES = frozenset(
+    {EscalationReasonCode.CREDIT_REVIEW_REQUIRED, EscalationReasonCode.ELIGIBILITY_CONTESTED}
+)
+
+
+def escalation_code(
+    decision: Decision,
+    *,
+    card_request: CardRequest | None = None,
+    credit_review: CreditReview | None = None,
+) -> EscalationReasonCode:
+    """The handoff reason for an ``escalate`` decision, from its first decisive rule whose handoff section is present.
+
+    A card request code needs a ``card_request`` for the same action, and a credit review code needs a
+    ``credit_review``. When the escalation comes from elsewhere (an exhausted clarification budget or a tool failure
+    while a replacement request is still open), the request rule stays decisive but its section is missing, so the
+    next decisive rule gives the reason instead of producing a handoff that cannot validate.
+    """
     codes = {
         "ESC.human_requested": EscalationReasonCode.HUMAN_REQUESTED,
         "ESC.legal_or_regulator_mention": EscalationReasonCode.LEGAL_OR_REGULATOR_MENTION,
@@ -217,8 +250,15 @@ def escalation_code(decision: Decision) -> EscalationReasonCode:
         "ESC.eligibility_contested": EscalationReasonCode.ELIGIBILITY_CONTESTED,
     }
     for rule_id in decision.decisive_rule_ids:
-        if rule_id in codes:
-            return codes[rule_id]
+        code = codes.get(rule_id)
+        if code is None:
+            continue
+        action = _CARD_REQUEST_ACTIONS.get(code)
+        if action is not None and (card_request is None or card_request.action is not action):
+            continue
+        if code in _CREDIT_REVIEW_CODES and credit_review is None:
+            continue
+        return code
     return EscalationReasonCode.OTHER
 
 
@@ -231,7 +271,7 @@ def escalate_decision(
     case_ref: CaseId | None = None,
     credit_review: CreditReview | None = None,
 ) -> Step:
-    code = escalation_code(decision)
+    code = escalation_code(decision, card_request=card_request, credit_review=credit_review)
     detail = ", ".join(decision.decisive_rule_ids) or "escalation"
     return escalate(
         ctx,

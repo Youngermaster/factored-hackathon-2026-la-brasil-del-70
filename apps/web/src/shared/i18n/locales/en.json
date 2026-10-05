@@ -120,6 +120,7 @@
   "layout": {
     "consoleNav": "Console navigation",
     "overview": "Overview",
+    "supervision": "Supervision",
     "dashboard": "Dashboard",
     "inbox": "Inbox",
     "creditApplications": "Credit applications",
@@ -149,6 +150,7 @@
     "heading": "Overview",
     "agentBody": "You handle structured handoffs: verified facts, actions taken, the policy basis, and open questions. Never the full transcript.",
     "evaluatorBody": "You review execution records and offline evaluation results, always with the per-workflow numbers next to the total.",
+    "supervisionBody": "Models in service and their offline evidence, who decides each step, evaluation per workflow, and service status.",
     "dashboardBody": "Executive indicators, system comparisons, workflow performance, and quality slices.",
     "inboxBody": "Handoffs with verified facts, actions, policy, and open questions. Claim and resolve.",
     "applicationsBody": "Applications recorded for human review, with their assessment and originating conversation.",
@@ -986,6 +988,279 @@
     "upperBound": "zero events, 95% upper bound: {{high}}",
     "ms": "{{value}} ms"
   },
+  "supervision": {
+    "heading": "Model and operations supervision",
+    "intro": "Which models serve today and on what evidence, who decides each step, and the state of the service. Configuration and published evidence only: no customer data.",
+    "restricted": "Evaluator access",
+    "servingSince": "Configuration recorded when the process started: {{time}}",
+    "loading": "Loading the model inventory",
+    "error": "We could not load the model inventory",
+    "decides": {
+      "title": "Who decides",
+      "intro": "The model proposes, deterministic policy decides, verified tools act, and people take the escalations. Each step with the version this process serves.",
+      "steps": {
+        "propose": {
+          "title": "The model proposes",
+          "body": "It classifies the request, extracts details, and detects signals. It never picks a tool or makes a decision."
+        },
+        "decide": {
+          "title": "Policy decides",
+          "body": "The policy kernel applies versioned rules and clauses; every decision names the rules it used."
+        },
+        "act": {
+          "title": "Verified tools act",
+          "body": "Only actions whose outcome was read back from the records are reported."
+        },
+        "escalate": {
+          "title": "People take over",
+          "body": "Ambiguous, sensitive, or review cases go to a person with a structured handoff."
+        }
+      },
+      "noModel": "No language model: the deterministic paths answer",
+      "llmLine": "Language model {{model}}",
+      "componentLine": "{{component}}: {{model}}",
+      "packLine": "Policy pack {{version}}",
+      "workflowsLine": "Workflows: {{workflows}}",
+      "handoffLine": "Handoff with verified facts, actions, policy basis, and open questions"
+    },
+    "components": {
+      "router": "Intent router",
+      "resolver": "Transaction resolver",
+      "risk_estimator": "Credit risk estimator",
+      "retriever": "Policy retrieval",
+      "language_detector": "Language detector",
+      "llm": "Language model"
+    },
+    "models": {
+      "title": "Models in service",
+      "intro": "What this process serves, recorded at startup. The served version is always concrete, never an alias.",
+      "caption": "Components and the model served",
+      "component": "Component",
+      "selected": "Configured selection",
+      "served": "Served model",
+      "kind": "Kind",
+      "fallback": "Fallback",
+      "noFallback": "None",
+      "none": "Nothing serves",
+      "alias": "alias {{alias}}",
+      "kinds": {
+        "baseline": "Baseline",
+        "learned": "Trained",
+        "unavailable": "Unavailable"
+      },
+      "reasons": {
+        "artifact_not_found": "Artifact not found",
+        "model_unavailable": "Model unavailable",
+        "registry_unreadable": "Registry unreadable"
+      },
+      "riskNote": "The risk estimator is internal: its output is never shown to customers or sent to a language model, and eligibility is decided by the synthetic rules service."
+    },
+    "offline": {
+      "title": "Offline model evidence",
+      "intro": "Held-out test split on synthetic data, with 95% intervals where the report publishes them. Not production measurements.",
+      "plotTitle": "{{metric}}, 95% interval",
+      "plotPoint": "{{model}}: {{value}}",
+      "plotPointInterval": "{{model}}: {{value}}, from {{low}} to {{high}}",
+      "groupUse": "{{component}}: {{use}}",
+      "caption": "{{group}}: metrics per model",
+      "model": "Model",
+      "serving": "In service",
+      "sample": "{{split}} split, {{count}} {{unit}}",
+      "provenance": "Report {{report}}, commit {{sha}}, generated {{generated}}. Model card: {{source}}.",
+      "lowerBetter": "lower is better",
+      "interval": "{{low}} to {{high}}",
+      "empty": "No model cards are published.",
+      "kindHelp": "Provisional: team-authored labels awaiting human review.",
+      "roles": {
+        "default": "Default",
+        "champion": "Champion",
+        "candidate": "Candidate",
+        "reference": "Reference"
+      },
+      "notes": {
+        "needs_ml_extra": "Needs the ml extra, not in the image",
+        "promotion_refused": "Promotion refused"
+      },
+      "uses": {
+        "dispute": "disputes",
+        "payment_lookup": "payment lookup"
+      },
+      "units": {
+        "items": "messages",
+        "queries": "queries",
+        "customers": "customers"
+      },
+      "splits": {
+        "test": "Test",
+        "dev": "Dev"
+      },
+      "kinds": {
+        "offline": "Offline",
+        "provisional": "Provisional"
+      }
+    },
+    "metrics": {
+      "accuracy": "Accuracy",
+      "macro_f1": "Macro F1",
+      "workflow_accuracy": "Workflow accuracy",
+      "coverage": "Coverage",
+      "error_among_covered": "Error when acting",
+      "ece": "Calibration error (ECE)",
+      "high_stakes_recall": "High-stakes recall",
+      "accuracy_es": "Accuracy in Spanish",
+      "accuracy_pt": "Accuracy in Portuguese",
+      "top1": "Top 1",
+      "mrr": "MRR",
+      "wrong_transaction_rate": "Wrong transaction",
+      "wrong_among_auto": "Error among automatic picks",
+      "roc_auc": "ROC AUC",
+      "pr_auc": "PR AUC",
+      "brier": "Brier",
+      "recall_at_1": "Recall at 1",
+      "abstention_precision": "Abstention precision",
+      "abstention_recall": "Abstention recall",
+      "false_abstention": "False abstention",
+      "latency_p95_ms": "Latency p95 (ms)"
+    },
+    "promotion": {
+      "title": "Why the baselines are served",
+      "intro": "An end-to-end comparison under a rule fixed in advance: a default changes only on a dev gain whose intervals do not overlap. It is a simulation with simulated customers, not production.",
+      "caption": "{{decision}}: configurations compared",
+      "configuration": "Configuration",
+      "status": "Status",
+      "served": "In service",
+      "notServed": "Not served",
+      "routing": "Routing correct",
+      "meta": "{{split}} split, language model {{model}}, session {{session}}, source {{source}}.",
+      "verdict": "Outcome: {{outcome}}, because {{reason}}.",
+      "decisions": {
+        "router_and_resolver_defaults": "Router and transaction resolver",
+        "risk_estimator_default": "Credit risk estimator"
+      },
+      "outcomes": {
+        "keep_baselines": "the baselines stay",
+        "keep_baseline": "the baseline stays"
+      },
+      "reasons": {
+        "overlapping_intervals": "the intervals overlap",
+        "indicative_eligibility_where_review_expected": "the model gave indicative results where a human review was expected"
+      }
+    },
+    "evaluation": {
+      "title": "End-to-end evaluation",
+      "intro": "Safe automated resolution per workflow and system with its 95% interval, and the cost per resolution next to it. The four workflows first, then the aggregate.",
+      "caption": "Run {{run}}: safe automated resolution and cost per resolution",
+      "workflow": "Workflow",
+      "aggregate": "Aggregate",
+      "rate": "{{system}}: safe resolution",
+      "cost": "{{system}}: cost per resolution",
+      "meta": "Dataset {{dataset}}, generated {{generated}}, commit {{sha}}.",
+      "costNote": "The cost is what the run recorded with the model it used; with a local model it is zero and does not anticipate the cost of a hosted model.",
+      "openDashboard": "Open the dashboard",
+      "openEvaluation": "Open the full evaluation",
+      "empty": "No published run includes the proposed system yet.",
+      "error": "We could not load the evaluation results"
+    },
+    "llm": {
+      "title": "Language model",
+      "intro": "It understands and phrases within limits; it never decides. The prices per million tokens are the ones the budget guard and the cost metrics use.",
+      "none": "No model configured: the deterministic paths answer.",
+      "provider": "Provider",
+      "caption": "Configured models and price basis",
+      "role": "Role",
+      "model": "Model",
+      "basis": "Price basis",
+      "input": "Input, USD per million",
+      "output": "Output, USD per million",
+      "listedOn": "Price read on",
+      "notListed": "No published price",
+      "roles": {
+        "primary": "Primary",
+        "fallback": "Fallback"
+      },
+      "bases": {
+        "verified": "Verified",
+        "unverified": "Unverified, with margin",
+        "unknown_model": "No price, ceiling with margin"
+      },
+      "features": "Model features",
+      "understanding": "Understanding: details and signals",
+      "phrasing": "Response phrasing",
+      "handoff_summary": "Handoff summary",
+      "on": "On",
+      "off": "Off",
+      "limits": "Limits",
+      "dailyBudget": "Daily budget",
+      "conversationBudget": "Budget per conversation",
+      "sessionTokens": "Tokens per session",
+      "multiplier": "Margin on unverified prices",
+      "multiplierValue": "{{value}} times",
+      "promptsCaption": "Prompt versions",
+      "prompt": "Prompt",
+      "purpose": "Use",
+      "state": "State",
+      "purposes": {
+        "understanding": "Understanding",
+        "phrasing": "Phrasing",
+        "handoff_summary": "Handoff summary",
+        "not_called_by_engine": "Not called by the engine"
+      }
+    },
+    "live": {
+      "title": "Live operations",
+      "intro": "The service's degradation level now. Live series of turns, outcomes, latency, handoffs, and cost are in Grafana, kept apart from the offline evaluation.",
+      "level": "Level",
+      "status": "Status",
+      "perWorker": "Status of the worker that answered; with two workers it can vary between requests.",
+      "budget": "Daily model budget used",
+      "reasons": "Reasons",
+      "noReasons": "No degradation reasons",
+      "templateOnly": "Templates only",
+      "yes": "Yes",
+      "no": "No",
+      "componentsCaption": "State of each dependency",
+      "grafana": "Open the Grafana dashboard",
+      "error": "We could not read the service status",
+      "levels": {
+        "L0": "L0: normal",
+        "L1": "L1: fallback provider",
+        "L2": "L2: templates only",
+        "L3": "L3: model baselines",
+        "L4": "L4: database unavailable"
+      },
+      "statuses": {
+        "normal": "Normal",
+        "degraded": "Degraded",
+        "unavailable": "Unavailable"
+      },
+      "components": {
+        "llm_primary": "Primary model",
+        "llm_fallback": "Fallback model",
+        "llm_budget": "Model budget",
+        "models": "Learned models",
+        "credit_catalog": "Credit catalog",
+        "database": "Database"
+      },
+      "states": {
+        "ok": "Available",
+        "degraded": "Degraded",
+        "unavailable": "Unavailable",
+        "disabled": "Disabled"
+      },
+      "reasonCodes": {
+        "llm_budget_exhausted": "Model budget exhausted",
+        "llm_primary_unavailable": "Primary model unavailable",
+        "llm_unavailable": "No model available",
+        "learned_models_unavailable": "Learned models unavailable",
+        "credit_catalog_unavailable": "Credit catalog unavailable",
+        "database_unavailable": "Database unavailable"
+      }
+    },
+    "provenance": {
+      "title": "Provenance and limits",
+      "body": "Offline: held-out test split. Provisional: team-authored labels awaiting human review. Simulated: runs with simulated customers and an automatic grader. No figure in this view is a production measurement or a projection."
+    }
+  },
   "demo": {
     "title": "Demo guide",
     "intro": "Walk through the four workflows with synthetic customers: the normal path, an ambiguous or unsupported one, and one that goes to a person, in Spanish and Portuguese.",
@@ -1085,7 +1360,7 @@
       "agent": "open the inbox, filter, claim a handoff, and resolve it; also review the credit applications.",
       "evaluator": "paste a conversation reference into Records to see what the customer never sees, and open Evaluation."
     },
-    "reset": "The data is synthetic. Actions are recorded: reload the demo data with make seed before recording."
+    "reset": "The data is synthetic and shared by everyone using this demo: an action someone already took, such as a blocked card or an opened dispute, stays until the team reloads the demo data."
   },
   "about": {
     "title": "What this assistant does",

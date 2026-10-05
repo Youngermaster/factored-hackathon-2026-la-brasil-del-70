@@ -175,3 +175,65 @@ def index_build(
         f"wrote {directory} ({manifest.document_count} documents, tokenizer {manifest.tokenizer}, "
         f"dense {manifest.embedding_model or 'no'})"
     )
+
+
+@app.command("llm-probe")
+def llm_probe() -> None:
+    """Call each configured model once in Spanish and once in Portuguese with a fixed synthetic message.
+
+    Prints the model, the language, ``ok`` or the error code, and the latency per call; never a key, prompt, or reply.
+    Exit 0 when every call returned a valid structured reply, 1 when one did not, 2 without a live model configured.
+    """
+    from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
+    from bank_agent.bootstrap.llm_probe import litellm_builder, probe, report
+
+    settings = load_settings().llm
+    try:
+        results = asyncio.run(probe(settings, litellm_builder(settings, FilePromptRegistry.from_package())))
+    except ConfigurationError as error:
+        typer.echo(f"llm-probe: {error}", err=True)
+        raise typer.Exit(2) from error
+    for line in report(results):
+        typer.echo(line)
+    if not all(result.ok for result in results):
+        raise typer.Exit(1)
+
+
+@index_app.command("qdrant")
+def index_qdrant(
+    url: str = typer.Option("", help="Qdrant's REST base; default RETRIEVAL_QDRANT_URL."),
+    recreate: bool = typer.Option(False, help="Drop the collection first (after a change of the indexing code)."),
+) -> None:
+    """Embed the pack's clauses with the hosted model and upsert them into Qdrant (idempotent; ADR 0047).
+
+    Unlike `index build`, this reads the environment: POLICY_DIR, RETRIEVAL_HOSTED_EMBEDDING_MODEL and its
+    dimensions, RETRIEVAL_QDRANT_URL, and the embedding key and base (LLM_API_KEY_PRIMARY, LLM_API_BASE or
+    RETRIEVAL_EMBEDDING_API_BASE). In production it runs inside the api container, which has the key and egress.
+    """
+    from bank_agent.adapters.policy.filesystem import FilesystemPolicyRepository
+    from bank_agent.adapters.retrieval.corpus import build_corpus
+    from bank_agent.adapters.retrieval.vector_index import VectorClauseIndex
+    from bank_agent.adapters.telemetry.noop import NoopTelemetry
+    from bank_agent.adapters.vector.qdrant import QdrantVectorStore
+    from bank_agent.bootstrap.embeddings import build_hosted_embedder
+    from bank_agent.bootstrap.settings import SettingsError
+    from bank_agent.domain.errors import RetrievalBackendError
+
+    try:
+        settings = load_settings()
+        repository = FilesystemPolicyRepository.from_directory(settings.policy.dir)
+        embedder = build_hosted_embedder(
+            settings.retrieval, settings.llm, clock=SystemClock(), telemetry=NoopTelemetry()
+        )
+        store = QdrantVectorStore(url or settings.retrieval.qdrant_url, timeout_seconds=30.0)
+        clauses = VectorClauseIndex(store, embedder, pack_version=repository.pack_version())
+        if recreate and store.delete_collection(clauses.name):
+            typer.echo(f"dropped {clauses.name}")
+        report = clauses.build(build_corpus(repository))
+    except (ConfigurationError, SettingsError, RetrievalBackendError) as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(2) from error
+    typer.echo(
+        f"{'created' if report.created else 'updated'} {report.collection}: {report.points} points, "
+        f"model {report.model_id}"
+    )

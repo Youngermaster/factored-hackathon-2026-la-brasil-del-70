@@ -18,22 +18,26 @@ class YesNo(StrEnum):
     UNCLEAR = "unclear"
 
 
+_FILLER = r"^(?:(?:bueno|pues|entonces|bom|entao|ah|eh|mira|olha)\s+)*"
+"""Leading fillers before the answer ("Bueno, sí, regístrala"; QA 2026-10-05, CRE-10)."""
 _YES = re.compile(
-    r"^(?:si|sim|claro|dale|de una|ok|okay|vale|va|sale|listo|confirmo|confirmado|correcto|correto|adelante|"
+    _FILLER + r"(?:si|sim|claro|dale|de una|ok|okay|vale|va|sale|listo|confirmo|confirmado|correcto|correto|adelante|"
     r"hazlo|hacelo|por supuesto|afirmativo|exacto|isso|certo|pode|beleza|com certeza|fechado|positivo|manda ver|"
     r"yes|yep|sure)\b"
 )
 _NO = re.compile(
-    r"^(?:no|nel|nop|nao|nem|para nada|cancelar|cancela|cancelalo|mejor no|todavia no|aun no|negativo|"
+    _FILLER + r"(?:no|nel|nop|nao|nem|para nada|cancelar|cancela|cancelalo|mejor no|todavia no|aun no|negativo|"
     r"melhor nao|ainda nao|de jeito nenhum|nope)\b"
 )
 _DOUBT = re.compile(r"\b(?:no se|nao sei|tal vez|talvez|quizas|quiza|capaz)\b")
 _MAX_WORDS = 8
 _ORDINALS = {
-    0: r"\b(?:1|uno|una|primer[oa]?|primeir[oa]|opcion 1|opcao 1)\b",
-    1: r"\b(?:2|dos|segund[oa]|opcion 2|opcao 2)\b",
-    2: r"\b(?:3|tres|tercer[oa]?|terceir[oa]|opcion 3|opcao 3)\b",
+    0: r"\b(?:1|primer[oa]?|primeir[oa]|opcion 1|opcao 1)\b|^(?:el |la |o |a |opcion |opcao )?(?:uno|una|um|uma)$",
+    1: r"\b(?:2|segund[oa]|opcion 2|opcao 2)\b|^(?:el |la |o |a |opcion |opcao )?(?:dos|dois|duas)$",
+    2: r"\b(?:3|tercer[oa]?|terceir[oa]|opcion 3|opcao 3)\b|^(?:el |la |o |a |opcion |opcao )?(?:tres)$",
 }
+"""Digits and ordinal words count anywhere; a bare number word only as the whole answer, because "uno personal" or
+"quiero una hipoteca" uses it as an article (production QA 2026-10-05, CRE-01: "uno personal" picked option 1)."""
 
 
 def parse_yes_no(text: str) -> YesNo:

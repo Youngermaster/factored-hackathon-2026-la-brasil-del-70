@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8f0a93c4abfab3febf4f0774038ea3ca1ccb3881b356b7d9325d25ebedbcb201",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1052,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.8,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:10.074944Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "NECESITO PAUSAR LA TARJETA DE CRÉDITO YA, CREO QUE ME LA COPIARON",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

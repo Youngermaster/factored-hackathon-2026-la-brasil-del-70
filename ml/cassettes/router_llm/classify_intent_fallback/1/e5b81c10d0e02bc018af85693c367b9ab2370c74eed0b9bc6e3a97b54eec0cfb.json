@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e5b81c10d0e02bc018af85693c367b9ab2370c74eed0b9bc6e3a97b54eec0cfb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1301,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.4,
+        "label": "payment_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:51.269503Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber cuanto me queda en la cuenta antes del pago de la quincena",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

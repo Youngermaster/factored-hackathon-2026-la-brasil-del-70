@@ -1,0 +1,40 @@
+{
+  "cassette_id": "ebc70aa7473c5088b8a8e131e8e634d0dc4e17c3c04df37e7f7f3ca7634f0f05",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1363,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.75,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.5,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:31.691918Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 947,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "QUERO FAZER A PROPOSTA DO CARTÃO DE CRÉDITO",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

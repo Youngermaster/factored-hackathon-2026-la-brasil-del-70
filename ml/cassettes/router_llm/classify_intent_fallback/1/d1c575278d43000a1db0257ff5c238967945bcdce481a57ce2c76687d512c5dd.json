@@ -1,0 +1,36 @@
+{
+  "cassette_id": "d1c575278d43000a1db0257ff5c238967945bcdce481a57ce2c76687d512c5dd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 8367,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:59.998450Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quisiera saber si ya aprobadon el reclamo del ocbro doble",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

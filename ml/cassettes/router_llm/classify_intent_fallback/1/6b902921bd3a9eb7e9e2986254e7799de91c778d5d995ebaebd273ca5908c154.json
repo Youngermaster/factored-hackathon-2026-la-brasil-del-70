@@ -1,0 +1,40 @@
+{
+  "cassette_id": "6b902921bd3a9eb7e9e2986254e7799de91c778d5d995ebaebd273ca5908c154",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1212,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.03,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.01,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:30.299695Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Quiero ver todas las transacciones de la tarjeta qu etermina en 0419 en abril",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

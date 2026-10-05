@@ -9,8 +9,18 @@ from types import ModuleType
 from typing import Any
 
 import pytest
+from pydantic import SecretStr
 
-from bank_agent.bootstrap.settings import LLMSettings
+from bank_agent.adapters.telemetry.noop import NoopTelemetry
+from bank_agent.bootstrap.settings import (
+    AppSettings,
+    DatabaseSettings,
+    LangfuseSettings,
+    LLMSettings,
+    ObservabilitySettings,
+    RuntimeSettings,
+    SecuritySettings,
+)
 from bank_agent.domain.errors import LlmTimeoutError
 from bank_agent.domain.llm_outputs import DisputeSlotExtraction
 
@@ -99,3 +109,50 @@ def test_main_exits_2_when_no_live_provider_is_configured(
     monkeypatch.delenv("LLM_PRIMARY_MODEL", raising=False)
     assert smoke.main(["--no-env-file"]) == 2
     assert "LLM_PROVIDER=litellm" in capsys.readouterr().err
+
+
+def _app_settings(langfuse: LangfuseSettings) -> AppSettings:
+    return AppSettings(
+        runtime=RuntimeSettings(_env_file=None),
+        database=DatabaseSettings(_env_file=None),
+        security=SecuritySettings(_env_file=None),
+        llm=LLMSettings(
+            _env_file=None, provider="litellm", primary_model="azure/gpt-4.1-mini", api_key_primary=SecretStr("fixture")
+        ),
+        observability=ObservabilitySettings(_env_file=None, enabled=False),
+        langfuse=langfuse,
+    )
+
+
+def test_without_langfuse_the_smoke_run_exports_nothing() -> None:
+    telemetry, flush = smoke.build_telemetry(_app_settings(LangfuseSettings(_env_file=None, enabled=False)))
+    assert isinstance(telemetry, NoopTelemetry)
+    flush()
+
+
+def test_with_langfuse_enabled_the_smoke_run_uses_the_api_exporter_and_flushes_it(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    settings = _app_settings(
+        LangfuseSettings(
+            _env_file=None,
+            enabled=True,
+            base_url="https://langfuse.example.test",
+            public_key=SecretStr("pk-fixture"),
+            secret_key=SecretStr("sk-fixture"),
+        )
+    )
+    built: list[Any] = []
+    real_build = smoke.build_observability
+
+    def recording_build(*args: Any, **kwargs: Any) -> Any:
+        observability = real_build(*args, **kwargs)
+        built.append((kwargs["langfuse"], observability))
+        return observability
+
+    monkeypatch.setattr(smoke, "build_observability", recording_build)
+    telemetry, flush = smoke.build_telemetry(settings)
+    ((langfuse, observability),) = built
+    assert langfuse is settings.langfuse
+    assert telemetry is observability.telemetry
+    flush()

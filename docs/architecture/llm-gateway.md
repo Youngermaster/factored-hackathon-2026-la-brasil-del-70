@@ -2,7 +2,7 @@
 
 The language model understands; deterministic code decides. Every model call goes through one port, `LLMClient` (`services/api/src/bank_agent/ports/llm.py`), with structured outputs derived from Pydantic models, versioned prompts, and cross-cutting behavior added as decorators that implement the same port ([ADR 0013](../adr/0013-litellm-behind-a-port-with-composable-decorators.md)). Callers handle every LLM error by falling back to deterministic behavior (clarify, abstain, or hand off).
 
-**Provider status.** The human has not chosen a provider. The LiteLLM adapter exists but nothing calls a live provider: tests use `FakeLLM` or cassettes, the default setting (`LLM_PROVIDER=fake` with no injected client) refuses every call, and the committed cassettes are hand-authored fixtures. Model choice is decided by evaluation in phase 14.
+**Provider status.** The default is still no model (`LLM_PROVIDER=fake` with no injected client refuses every call), and tests use `FakeLLM` or cassettes and never call a provider. The deployed Azure demo calls Azure OpenAI since 2026-10-05 ([ADR 0044](../adr/0044-azure-openai-as-the-hosted-model-provider.md)): primary `azure/gpt-4.1-mini` (GlobalStandard) and fallback `azure/gpt-4o` (regional Standard) in one account in Sweden Central, for the understanding prompts only (`WORKFLOW_LLM_UNDERSTANDING=true`; phrasing and handoff summaries stay off). The committed evaluation cassettes were recorded with the local `ollama/qwen2.5:7b-instruct`, so no recorded evaluation describes the Azure models.
 
 ## Decorator stack
 
@@ -48,9 +48,9 @@ Why this order:
 |---|---|---|
 | `fake` (default) | The client injected through `LlmOverrides` (tests, evaluation harness), otherwise `UnconfiguredLLMClient` | The unconfigured client raises `LlmProviderRejectedError` (never retried), so workflows run deterministically |
 | `cassette` | `CassetteLLM` in replay mode, keyed by `LLM_PRIMARY_MODEL` | Record mode (`LLM_CASSETTE_MODE=record`) wraps `LiteLLMClient` and is refused in production |
-| `litellm` | `LiteLLMClient` | Needs the optional `litellm` extra, `LLM_PRIMARY_MODEL`, and a key for every hosted model; local Ollama models (`ollama/...`, `ollama_chat/...`) need no key. `LLM_API_BASE` sets the provider base URL (https only in production) |
+| `litellm` | `LiteLLMClient` | Needs the optional `litellm` extra, `LLM_PRIMARY_MODEL`, and a key for every hosted model; local Ollama models (`ollama/...`, `ollama_chat/...`) need no key. `LLM_API_BASE` sets the provider base URL (https only in production; for Azure OpenAI the resource endpoint, shared by the primary and the fallback). `LLM_API_VERSION` (optional) pins the Azure OpenAI data-plane API version; empty sends none, so LiteLLM uses its default (`2025-02-01-preview` in 1.102.1) |
 
-`LiteLLMClient` is `PromptedLLMClient` (provider-neutral: rendering, the language directive, structured output, repair) over `LiteLLMCompletion` (one `litellm.acompletion` call with explicit model, key, timeout, and `num_retries=0`).
+`LiteLLMClient` is `PromptedLLMClient` (provider-neutral: rendering, the language directive, structured output, repair) over `LiteLLMCompletion` (one `litellm.acompletion` call with explicit model, key, timeout, and `num_retries=0`, plus the base URL and the API version when they are configured).
 
 ## Structured outputs
 
@@ -79,7 +79,7 @@ Why this order:
 
 - Caps: `LLM_SESSION_TOKEN_LIMIT` per session lineage, `LLM_CONVERSATION_BUDGET_USD` per conversation, `LLM_DAILY_BUDGET_USD` per UTC day. A call without a lineage or conversation id is subject only to the daily cap.
 - Before a call the guard reserves `max_output_tokens` at the highest effective output price among the configured models.
-- Prices live only in `services/api/config/llm_prices.yaml`: model id, input and output price per million tokens, date, source URL, and `verified`. Unverified entries are charged at `unverified_price_multiplier` (1.5 today); unknown models at the highest known prices times the multiplier. Every current entry is an unverified candidate (Anthropic `claude-sonnet-5` and `claude-haiku-4-5-20251001`, OpenAI `gpt-5-mini`) that a person must confirm against its source.
+- Prices live only in `services/api/config/llm_prices.yaml`: model id, input and output price per million tokens, date, source URL, and `verified`. Unverified entries are charged at `unverified_price_multiplier` (1.5 today); unknown models at the highest known prices times the multiplier. Every hosted entry is unverified until a person confirms it against its source: the Azure OpenAI models the demo runs (`azure/gpt-4.1-mini` 0.40/1.60 on the GlobalStandard meters, `azure/gpt-4o` 3.025/12.10 on the Sweden Central regional Standard meters, `azure/text-embedding-3-small` 0.02 for input; read from the Azure Retail Prices API on 2026-10-05, each note names its meter) and the candidates (Anthropic `claude-sonnet-5` and `claude-haiku-4-5-20251001`, OpenAI `gpt-5-mini`, Gemini `gemini-3.1-flash-lite`). The most expensive entry (`azure/gpt-4o`) sets the price charged for an unknown model: 4.5375 input and 18.15 output USD per million tokens.
 - Costs round up to eight decimal places.
 - **The ledger is shared** (phase 15): with a database configured (`LLM_BUDGET_LEDGER=auto`, the default), the counters live in `app.llm_budget` (migration `0011`) and a reservation locks the session, conversation, and day rows in a fixed order in one transaction, so several API workers enforce the same caps. Without a database, or with `LLM_BUDGET_LEDGER=memory`, the ledger is per process (tests, the evaluation harness). A ledger that cannot be read refuses the call; a settle that fails keeps the worst case reserved.
 - **80 and 100 percent**: the guard remembers the day's spend it last saw; at 80 percent of the daily cap it logs `llm_budget_alert` once a day (and the `LlmBudgetAt80Percent` alert fires on `bank.llm.budget.daily_used_ratio`); when the daily cap refuses a call, the degradation ladder switches to template-only mode (L2) until the next UTC day ([degradation](../operations/degradation.md)).
@@ -87,6 +87,10 @@ Why this order:
 ## Tracing
 
 One `gen_ai.chat` span per logical call (the `Telemetry` port requires dot-separated names, so the convention's `chat {model}` name becomes attributes). Attributes: `gen_ai.operation.name`, `gen_ai.provider.name`, `gen_ai.request.model`, `gen_ai.request.max_tokens`, `gen_ai.request.temperature`, `gen_ai.output.type`, `gen_ai.response.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `error.type`, plus `bank.prompt.id`, `bank.prompt.version`, `bank.language`, `bank.llm.latency_ms`, `bank.llm.cost_usd`, `bank.llm.repaired`. Metrics: `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` histograms, and `bank.llm.cost_usd`. Phase 15 exports them through the OpenTelemetry adapter, whose tracer and meter carry the schema URL `https://opentelemetry.io/schemas/1.37.0` (the pinned `GENAI_SEMCONV_VERSION`); the circuit states, budget refusals, and the daily ratio are gauges and counters of the degradation monitor ([observability](../operations/observability.md)). Content capture (`LLM_TRACE_CONTENT`) is off by default and refused in production; when on, spans carry the already redacted variables and the output.
+
+## Switching or probing a hosted model
+
+`bank-agent llm-probe` (`bootstrap/llm_probe.py`) calls each configured model (`LLM_PRIMARY_MODEL`, then `LLM_FALLBACK_MODEL`) once in Spanish and once in Portuguese with a fixed synthetic message, the real `detect_escalation_signals@2` prompt, and its output model, straight through the provider client: no fallback, retry, circuit breaker, or budget, so neither a fallback nor a retry can hide a failing model. It prints the model, the language, `ok` or the error code, and the latency, never a key, prompt, or reply; exit 0 means every structured reply validated. On the server `deploy/prod.sh llm-probe` runs it in a throwaway API container with the edited env file and the freshly staged keys before `up` recreates the API. The procedure (edit, probe, up, smoke, rollback) is in `deploy/README.md` ("Choosing the model") and the [runbook](../operations/runbook.md).
 
 ## Opt-in local model (development only)
 
@@ -108,7 +112,8 @@ make api-local-llm                    # the API on 127.0.0.1:8000 with the same 
 
 ## Limitations
 
-- No hosted provider has been exercised: request shapes are tested against LiteLLM's documented interface with an injected completion function. The only live runs are the opt-in local Ollama smoke runs, which check schema validity, not quality.
+- Hosted calls are exercised by opt-in runs only, never by tests: request shapes are tested against LiteLLM's documented interface with an injected completion function. On 2026-10-05 `make llm-smoke` against `azure/gpt-4.1-mini` on the evaluation account passed 32 of 32 fixture cases (p50 1,169 ms, p95 2,137 ms, first call 36,109 ms; a local development measurement of schema-valid replies, not an evaluation of answer quality), and `bank-agent llm-probe` passed in es and pt with the default API version, `2024-10-21`, and `2025-04-01-preview`.
+- LiteLLM is imported on the first model call of each process, inside that call's timeout; the first call can therefore time out and succeed on the retry (backlog).
 - Without a database the budget ledger is per process; with one it is shared in PostgreSQL (phase 15).
 - The Portuguese check over cassettes is lexical; it catches Spanish leakage, not awkward phrasing.
 - Name redaction masks the session's known names and names introduced by phrases such as "me llamo"; a name mentioned without such a phrase passes through. Workflow code must never put names in variables (CLAUDE.md rule 6); the redaction is a second line of defense.

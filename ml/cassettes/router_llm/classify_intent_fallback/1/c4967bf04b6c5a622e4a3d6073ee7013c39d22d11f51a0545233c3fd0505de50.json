@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c4967bf04b6c5a622e4a3d6073ee7013c39d22d11f51a0545233c3fd0505de50",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1254,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:33.297967Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quero fazer a proposta do cartao de credito",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

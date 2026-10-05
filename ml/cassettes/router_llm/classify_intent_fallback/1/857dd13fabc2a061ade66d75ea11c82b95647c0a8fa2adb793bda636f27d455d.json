@@ -1,0 +1,36 @@
+{
+  "cassette_id": "857dd13fabc2a061ade66d75ea11c82b95647c0a8fa2adb793bda636f27d455d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1977,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:06.450614Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Preciso da movimentações da conta desde onttem",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "a86db216a96744b8b0d99aad90d57a3ab9315e510dbd1ccbd7f36086aa4a2f26",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 942,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.7,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:24.002778Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Che, le transferí 2000 mangos a un amigo y no le llegó, ¿qué onda?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -85,6 +85,7 @@ DEFAULT_EMBEDDING_CACHE_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "retriev
 DEFAULT_MODEL_CACHE_DIR = _REPOSITORY_ROOT / "data" / "models" / "huggingface"
 DEFAULT_MODEL_REGISTRY_DIR = _REPOSITORY_ROOT / "data" / "artifacts" / "models"
 DEFAULT_EVAL_SUMMARIES_DIR = _REPOSITORY_ROOT / "evals" / "reports" / "summaries"
+DEFAULT_MODEL_CARDS_FILE = _SERVICE_ROOT / "config" / "model_cards.yaml"
 _SELECTION = r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}"
 ROUTER_SELECTION = rf"^(keyword@1|(tfidf|embeddings)@{_SELECTION})$"
 RESOLVER_SELECTION = rf"^(rules@1|lgbm@{_SELECTION})$"
@@ -93,6 +94,10 @@ DEFAULT_THRESHOLD_BM25 = 3.6292
 """Tuned on the dev split of retrieval_judgments.v1 (docs/evaluation/retrieval.md); rerun `make eval-retrieval`."""
 DEFAULT_THRESHOLD_DENSE = 0.8275
 """Cosine similarity with intfloat/multilingual-e5-small, tuned on the same dev split."""
+DEFAULT_THRESHOLD_QDRANT = 0.4618
+"""Cosine similarity with azure/text-embedding-3-small at 512 dimensions in Qdrant, tuned on the same dev split."""
+DEFAULT_HOSTED_EMBEDDING_MODEL = "azure/text-embedding-3-small"
+DEFAULT_HOSTED_EMBEDDING_DIMENSIONS = 512
 
 
 def _config(prefix: str = "") -> SettingsConfigDict:
@@ -192,7 +197,12 @@ class LLMSettings(BaseSettings):
     api_key_primary: SecretStr | None = None
     api_key_fallback: SecretStr | None = None
     api_base: str = ""
-    """Optional provider base URL passed to LiteLLM, for example ``http://localhost:11434`` for a local Ollama."""
+    """Optional provider base URL passed to LiteLLM, for example ``http://localhost:11434`` for a local Ollama, or the
+    Azure OpenAI resource endpoint ``https://<resource>.openai.azure.com/``."""
+    api_version: str = Field(default="", pattern=r"^(\d{4}-\d{2}-\d{2}(-preview)?|v1|latest|preview)?$")
+    """Optional Azure OpenAI data-plane API version passed to LiteLLM (``2024-10-21``, ``2025-04-01-preview``, or
+    ``v1`` for the versionless API). Empty passes nothing, so LiteLLM uses its own default (``2025-02-01-preview`` in
+    1.102.1)."""
     allow_private_http_base: bool = False
     """Production accepts a plain http ``api_base`` only with this set and a private host (a self-hosted model on the
     host's private network, such as the ``ollama`` compose profile); hosted providers always need https and a key."""
@@ -240,7 +250,8 @@ class PolicySettings(BaseSettings):
         return value
 
 
-RetrieverName = Literal["bm25", "dense", "hybrid"]
+RetrieverName = Literal["bm25", "dense", "hybrid", "qdrant", "qdrant_hybrid"]
+QDRANT_RETRIEVERS: frozenset[str] = frozenset({"qdrant", "qdrant_hybrid"})
 IndexSource = Literal["build", "stored"]
 
 
@@ -249,9 +260,12 @@ class RetrievalSettings(BaseSettings):
 
     ``index_source=build`` builds the BM25 index from the loaded pack at startup, so it matches by construction;
     ``stored`` loads ``<index_dir>/<pack version>/`` and refuses a mismatch; production requires ``stored``.
-    ``dense`` and ``hybrid`` need the optional ``ml`` extra, which the API image never installs. The thresholds
-    were tuned on the development split of the relevance judgments; the hybrid retriever uses them as the
-    floors of its components.
+    ``dense`` and ``hybrid`` need the optional ``ml`` extra, which the API image never installs. ``qdrant`` searches
+    the clause collection in Qdrant (``qdrant_url``) with hosted query embeddings (``hosted_embedding_model`` through
+    LiteLLM with ``LLM_API_BASE`` and ``LLM_API_KEY_PRIMARY``, or ``embedding_api_base`` when set), and
+    ``qdrant_hybrid`` fuses it with BM25; both answer with BM25 when either service fails (ADR 0047). The
+    thresholds were tuned on the development split of the relevance judgments; the hybrid retrievers use them as
+    the floors of their components.
     """
 
     model_config = _config("RETRIEVAL_")
@@ -266,6 +280,18 @@ class RetrievalSettings(BaseSettings):
     threshold_bm25: float = Field(default=DEFAULT_THRESHOLD_BM25, ge=0)
     threshold_dense: float = Field(default=DEFAULT_THRESHOLD_DENSE, ge=-1, le=1)
     answer_k: int = Field(default=3, ge=1, le=20)
+    qdrant_url: str = ""
+    """Qdrant's REST base, ``http://qdrant:6333`` with the ``rag`` compose profile; empty means not configured."""
+    qdrant_timeout_seconds: float = Field(default=2.0, gt=0, le=30)
+    threshold_qdrant: float = Field(default=DEFAULT_THRESHOLD_QDRANT, ge=-1, le=1)
+    hosted_embedding_model: str = DEFAULT_HOSTED_EMBEDDING_MODEL
+    hosted_embedding_dimensions: int = Field(default=DEFAULT_HOSTED_EMBEDDING_DIMENSIONS, ge=64, le=3072)
+    embedding_api_base: str = ""
+    """Empty means ``LLM_API_BASE``: the same Azure OpenAI account serves the chat and embedding deployments."""
+    embedding_timeout_seconds: float = Field(default=3.0, gt=0, le=60)
+    embedding_max_retries: int = Field(default=1, ge=0, le=2)
+    embedding_circuit_failure_threshold: int = Field(default=5, ge=1, le=100)
+    embedding_circuit_reset_seconds: float = Field(default=30.0, gt=0, le=3600)
 
     @field_validator(
         "index_dir",
@@ -274,6 +300,14 @@ class RetrievalSettings(BaseSettings):
         "embedding_model",
         "threshold_bm25",
         "threshold_dense",
+        "threshold_qdrant",
+        "hosted_embedding_model",
+        "hosted_embedding_dimensions",
+        "qdrant_timeout_seconds",
+        "embedding_timeout_seconds",
+        "embedding_max_retries",
+        "embedding_circuit_failure_threshold",
+        "embedding_circuit_reset_seconds",
         mode="before",
     )
     @classmethod
@@ -331,22 +365,25 @@ class WorkflowSettings(BaseSettings):
 
 
 class EvaluationSettings(BaseSettings):
-    """Published evaluation summaries served by ``/v1/eval/summaries``.
+    """Published evaluation summaries served by ``/v1/eval/summaries`` and model cards served by ``/v1/eval/models``.
 
     ``summaries_dir`` holds the summary files the evaluation harness publishes (phase 14); a missing directory
-    means nothing is published yet. ``summaries_public=true`` serves them without a session.
+    means nothing is published yet. ``summaries_public=true`` serves them without a session. ``model_cards_file`` is
+    the curated copy of the published model reports (``services/api/config/model_cards.yaml``); a missing file serves
+    an empty set.
     """
 
     model_config = _config("EVAL_")
 
     summaries_dir: Path = DEFAULT_EVAL_SUMMARIES_DIR
     summaries_public: bool = False
+    model_cards_file: Path = DEFAULT_MODEL_CARDS_FILE
 
-    @field_validator("summaries_dir", mode="before")
+    @field_validator("summaries_dir", "model_cards_file", mode="before")
     @classmethod
-    def _empty_means_default(cls, value: object) -> object:
+    def _empty_means_default(cls, value: object, info: ValidationInfo) -> object:
         if isinstance(value, str) and not value.strip():
-            return DEFAULT_EVAL_SUMMARIES_DIR
+            return DEFAULT_EVAL_SUMMARIES_DIR if info.field_name == "summaries_dir" else DEFAULT_MODEL_CARDS_FILE
         return value
 
 
@@ -578,6 +615,25 @@ def _llm_problems(llm: LLMSettings) -> tuple[list[str], list[tuple[str, SecretSt
     return problems, secrets
 
 
+def _retrieval_problems(settings: AppSettings) -> list[str]:
+    """Qdrant retrieval: a reachable private or https store, and a hosted embedding model with a key over https."""
+    retrieval = settings.retrieval
+    if retrieval.retriever not in QDRANT_RETRIEVERS:
+        return []
+    problems: list[str] = []
+    variable = f"RETRIEVAL_RETRIEVER={retrieval.retriever}"
+    if not retrieval.qdrant_url:
+        problems.append(f"{variable} needs RETRIEVAL_QDRANT_URL")
+    elif not retrieval.qdrant_url.startswith("https://") and not _private_http_base(retrieval.qdrant_url):
+        problems.append("RETRIEVAL_QDRANT_URL must use https or plain http to a private-network host")
+    if settings.llm.provider != "litellm":
+        problems.append(f"{variable} needs LLM_PROVIDER=litellm, whose key the embedding gateway uses")
+    base = retrieval.embedding_api_base or settings.llm.api_base
+    if base and not base.startswith("https://"):
+        problems.append("the embedding API base (RETRIEVAL_EMBEDDING_API_BASE or LLM_API_BASE) must use https")
+    return problems
+
+
 def production_problems(settings: AppSettings, *, owner: bool = False) -> list[str]:
     """Return every production rule the settings violate; empty outside production.
 
@@ -606,6 +662,7 @@ def production_problems(settings: AppSettings, *, owner: bool = False) -> list[s
         llm_problems, llm_secrets = _llm_problems(settings.llm)
         problems.extend(llm_problems)
         secrets.extend(llm_secrets)
+        problems.extend(_retrieval_problems(settings))
         if settings.retrieval.index_source != "stored":
             problems.append(
                 "RETRIEVAL_INDEX_SOURCE must be stored in production (build it with bank-agent index build)"
@@ -631,9 +688,10 @@ def langfuse_problems(settings: AppSettings) -> list[str]:
         problems.append("LANGFUSE_ENABLED requires LLM_PROVIDER=litellm")
     if settings.llm.trace_content:
         problems.append("LLM_TRACE_CONTENT must be false when LANGFUSE_ENABLED=true")
-    if settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(
-        settings.langfuse.base_url.rstrip("/")
-    ):
+    base_url = settings.langfuse.base_url.strip().rstrip("/")
+    if not base_url:
+        problems.append("LANGFUSE_BASE_URL must be set when LANGFUSE_ENABLED=true")
+    elif settings.observability.enabled and settings.observability.exporter_otlp_endpoint.startswith(base_url):
         problems.append("OTEL_EXPORTER_OTLP_ENDPOINT must not point to Langfuse when LANGFUSE_ENABLED=true")
     if not _is_set(settings.langfuse.public_key):
         problems.append("LANGFUSE_PUBLIC_KEY must be set when LANGFUSE_ENABLED=true")
@@ -651,7 +709,7 @@ def langfuse_problems(settings: AppSettings) -> list[str]:
         )
     except ValueError:
         valid_target = False
-    if not valid_target:
+    if base_url and not valid_target:
         problems.append("LANGFUSE_BASE_URL must be an HTTP URL without credentials, query, or fragment")
     return problems
 
@@ -668,8 +726,8 @@ SECRET_VARIABLES: tuple[str, ...] = (
 )
 """Every variable that holds a secret; with ``SECRETS_DIR`` each one is a file of that name.
 
-The production stack stages the first six (``deploy/secrets_stage.py``); it does not enable Langfuse, so its keys have
-no staged file, but a file of that name is read and the environment is refused for them all the same.
+The production stack stages all of them (``deploy/secrets_stage.py``); the model and Langfuse keys are optional and
+staged empty until they exist in Key Vault, and the environment is refused for every one of them.
 """
 
 

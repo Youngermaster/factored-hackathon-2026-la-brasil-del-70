@@ -1,0 +1,36 @@
+{
+  "cassette_id": "7a1ce5a757ff986154a216551f52c2df7a7a833fc5c624817696432072c9ada2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1179,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:46.804374Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Sumerce, quiero tramitar un credito de libranza",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0aa20d501e8b2e2fb43d428ab2e15896b3d0df39608306427aa7835ca5045541",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 968,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:06:53.459715Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hola, pedí crédito hipotecario anteayer, ¿ya está aprobado?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

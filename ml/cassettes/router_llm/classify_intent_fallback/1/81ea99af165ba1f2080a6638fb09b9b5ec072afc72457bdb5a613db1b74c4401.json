@@ -1,0 +1,40 @@
+{
+  "cassette_id": "81ea99af165ba1f2080a6638fb09b9b5ec072afc72457bdb5a613db1b74c4401",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1661,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.04,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.01,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:27.468966Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "quiero reclamar un cobro de mercado central, yo ya había cancelado esa suscripción",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

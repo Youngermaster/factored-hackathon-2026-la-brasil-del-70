@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e1ad2a6c8f55326065cf3b8b7c78fe6e603843860713b8eee3d99e8de58e220b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 914,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:40.129501Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Sumerce, necesito el historico de mi cuenta para presentarlo en la declaracion de renta",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "3bd14e46275546861a1aeb381043d40ce973e68da8de533b05b46947eb088819",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1097,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:03.198709Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "SOLICITAR CRÉDITO DE LIBRE INVERSIÓN",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6c67aee85fa0203ea7a52e6950b87a32d58fd075b17aca04aab7c855e5c3a577",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1796,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:24.536379Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "El chip ya no jala, porfa tramitenme un plastico nuevo",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

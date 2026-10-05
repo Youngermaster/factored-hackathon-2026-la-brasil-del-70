@@ -41,7 +41,7 @@ choices in ADR 0041 remain valid; its proposed Azure replacement is cancelled.
 
 - No VM replacement, quota increase, resource retirement, password change, or new endpoint is required.
 - Repository organization and cloud identifiers are different by design and explicitly documented.
-- Existing application and Nequi resources remain outside the engineering deployment scope.
+- Existing application resources and unrelated workloads remain outside the engineering deployment scope.
 - Preparatory resources in `rg-data-engineering-test` remain unused. Their storage, disk, snapshot,
   and public-IP charges may continue; this decision does not authorize deleting them. They are not
   dependencies of the current pipeline or DataGrip connection.

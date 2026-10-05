@@ -1,0 +1,36 @@
+{
+  "cassette_id": "79a297368ae7978d15a794c67ebe9b9583c84555f267d89450c472c71d25a5fa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 869,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:59:04.354562Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Preciso de uma declaração da conta pra apresentar no trabaloh",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

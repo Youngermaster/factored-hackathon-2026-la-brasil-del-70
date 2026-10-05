@@ -1,0 +1,40 @@
+{
+  "cassette_id": "217bdf0af82318527d236e73005f393cc50bec2a3a367139a28c46b0782dedbc",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1030,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.6,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.3,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:46.053405Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 39
+  },
+  "variables": {
+    "customer_message": "Por que meu cartão foi recusado na Boutique Moda?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "87e8a2c667ca39eca21529087a1bdb3ff8b155461a49c7519a088a6498526807",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1627,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:06.130530Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Perdí mi plástico, bloquéenla porfis",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

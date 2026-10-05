@@ -8,8 +8,8 @@ Continuity for the build lives in this file, not in chat history. Every phase ad
 |---|---|
 | Internal MVP completion window end | Sunday, 2026-10-04 (revised; leaves one calendar day before the official October 5 challenge-window end; completion is pending) |
 | Last completed phase | 17, documentation completion and final audit: all phases are done |
-| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and merged into `main`. Remaining human actions: deploy (choose the host), fill `deploy.url` in `slides/data/metrics.yml`, export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` before 2026-10-05 (pending action 46, `docs/submission/SUBMISSION.md`) |
-| Latest product increment | ADR 0026: live human service on the existing conversation, merged into `main`; public deployment is not verified here |
+| Next phase | ADR 0027 is the next optional product direction (opt-in financial memory), outside the settled MVP scope. ADR 0026 is implemented and merged into `main`. Remaining human actions: export the slides, record the video, make the repository public, send the email to `hackathon.admin@factored.ai` (`docs/submission/SUBMISSION.md`); deployment and the hosted evaluation are done |
+| Latest product increment | ADR 0026: live human service on the existing conversation, merged into `main`; deployed on Azure since 2026-10-04 |
 | Blocked | None |
 | Azure data platform | Complete: dedicated vm-bank-database in westus2, full-source pipeline, schema 0014, strict PostgreSQL reconciliation, retained-state rerun and private evidence verified |
 | Local EDA | Implemented, validated and completed for the local dataset snapshot |
@@ -109,7 +109,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 - The operator cancelled Azure naming replacement. Keep `vm-bank-database` in `rg-bank-agent`, westus2,
   and `stla70238253ae46a02964` in `rg-la70-test`, eastus2. The original DataGrip endpoint, password,
-  certificate, data, application VM, and Nequi are preserved. Preparatory engineering resources remain
+  certificate, data, application VM, and unrelated workloads are preserved. Preparatory engineering resources remain
   unused; no resource retirement is authorized by this change.
 - Repository organization remains `data-engineering`. Deployment/inspection commands and infrastructure
   definitions now reference the original Azure identifiers. The abandoned replacement helper and its
@@ -155,7 +155,7 @@ Pending human actions (the phase 09 prompt asks that phase 11 start after action
 
 - The operator authorized username/password inspection and supplied client IPv4 `181.140.234.12`.
   Configured only `vm-bank-database`: direct PostgreSQL TLS at `13.66.169.189:5432`, an NSG allow for
-  this client `/32` at priority 110, and denied remaining inbound traffic at priority 200. Nequi and
+  this client `/32` at priority 110, and denied remaining inbound traffic at priority 200. Unrelated workloads and
   the application VM were preserved. [ADR 0041](adr/0041-data-engineering-deployment-and-datagrip.md) records this change.
 - PostgreSQL is healthy with TLS enabled, a valid IP certificate, zero HBA parsing errors, schema
   `0014`, 200 customers, 559 products, and 6,119 transactions. A workstation handshake negotiated
@@ -176,10 +176,10 @@ Owner: Julian Valencia. Authorized compute scope: `vm-bank-database` and its ded
 `rg-bank-agent`, westus2. Private artifact storage remains in `rg-la70-test`, eastus2.
 
 - The operator confirmed the bank project and requested a separate data VM after Azure activity logs identified another creator for `vm-bank-agent`. Read-only inspection found the existing public application running there; its configuration and database were preserved.
-- ARM validation and provisioning succeeded for `vm-bank-database`, `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), Ubuntu 24.04, a verified 128 GiB Standard SSD, managed identity, and denied inbound traffic. Blob access is limited to the existing private artifact container. Nequi remains untouched.
+- ARM validation and provisioning succeeded for `vm-bank-database`, `Standard_B2as_v2` (2 vCPU, 8 GiB RAM), Ubuntu 24.04, a verified 128 GiB Standard SSD, managed identity, and denied inbound traffic. Blob access is limited to the existing private artifact container. Unrelated workloads in the subscription remain untouched.
 - Updated the deployment script to target only the dedicated VM, its network resources, and the artifact container. Nineteen safety/integrity/orchestration tests, strict typing, shell syntax, and ShellCheck passed. Full-source execution, retained-state rerun, cloud evidence publication, and the updated repository-wide check remain pending.
 - Cloud run `20261004T175314Z-59a43e8fea4d` succeeded: all 7,671 source objects, 23,471,159 loaded rows, 24,029 quarantined transcripts with missing duration, 271 dbt passes and two branch-reference warnings, and 13 passing freshness checks. All five gold hashes match the validated local files. Strict PostgreSQL reconciliation verified 200 customers, 559 products, and 6,119 transactions; eight es/pt workflow checks and cross-customer 404 passed. The private archive, backup, and inspection were downloaded and hash-verified.
-- Imported merged migration `0014` unchanged from main `8ac625afa4d8` and supplied trusted transaction-local staff context. Four real-PostgreSQL compatibility tests and the updated full `make check` passed: 2,889 unit, 1,536 integration, 349 web, all 11 coverage gates and security/docs/data checks. Three optional embedding tests remain skipped because the extra is absent. Retained-state run `20261004T191022Z-74c46aba0058` succeeded: all 7,671 objects unchanged, zero reloads, identical gold hashes and selected PostgreSQL values/counts, schema `0014`, forced RLS, eight es/pt flow checks and customer-isolation 404. Its archive, all 23 recorded artifacts including the backup, and inspection were downloaded and hash-verified. Completion manifest `64c1d9f2fc902bfc8a59d9af0258ae32a2093f1c1b164befd282e816d8de25bd` is published privately and download-verified. The public application database and Nequi remain unchanged; full PostgreSQL batch loading and restore rehearsal remain outside this scope.
+- Imported merged migration `0014` unchanged from main `8ac625afa4d8` and supplied trusted transaction-local staff context. Four real-PostgreSQL compatibility tests and the updated full `make check` passed: 2,889 unit, 1,536 integration, 349 web, all 11 coverage gates and security/docs/data checks. Three optional embedding tests remain skipped because the extra is absent. Retained-state run `20261004T191022Z-74c46aba0058` succeeded: all 7,671 objects unchanged, zero reloads, identical gold hashes and selected PostgreSQL values/counts, schema `0014`, forced RLS, eight es/pt flow checks and customer-isolation 404. Its archive, all 23 recorded artifacts including the backup, and inspection were downloaded and hash-verified. Completion manifest `64c1d9f2fc902bfc8a59d9af0258ae32a2093f1c1b164befd282e816d8de25bd` is published privately and download-verified. The public application database and unrelated workloads remain unchanged; full PostgreSQL batch loading and restore rehearsal remain outside this scope.
 - Fetched main and checked current remote branches. Main now uses ADR 0038 for Azure continuous deployment, so the unmerged data record was renumbered to [0039](adr/0039-azure-vm-data-pipeline.md). [ADR 0040](adr/0040-isolated-bank-database-vm.md) records the new scope. PR metadata was unavailable through the current client.
 
 ### Azure data pipeline (2026-10-03)
@@ -188,7 +188,7 @@ Owner: Julian Valencia. Scope: `rg-la70-test`, `eastus2`, subscription `32847dfa
 
 - Added the versioned VM pipeline, private artifact storage, managed identity transfer, closed ingress, and production PostgreSQL roles. The runner stops before loading when contracts or dbt fail and refuses automatic reseeding of an active database.
 - Added strict reference-value reconciliation and corruption regressions. Prepared the sample locally and verified the actual production API composition for all four workflows in es and pt, plus cross-customer 404 and unchanged ingestion.
-- Azure storage `stla70238253ae46a02964` is provisioned with Shared Key and anonymous blob access disabled. Compute validation requires 6 regional vCPU; Azure reports 4 used of 4, all allocated to the existing Nequi AKS node pool. No resources in other groups were modified. The subscription offer is Free Trial, so upgrading the offer is required before requesting a quota increase; the earlier request returned `ResourceNotAvailableForOffer`. Tested placements in eastus and centralus returned `SkuNotAvailable`.
+- Azure storage `stla70238253ae46a02964` is provisioned with Shared Key and anonymous blob access disabled. Compute validation requires 6 regional vCPU; Azure reports 4 used of 4, all allocated to an unrelated workload's AKS node pool. No resources in other groups were modified. The subscription offer is Free Trial, so upgrading the offer is required before requesting a quota increase; the earlier request returned `ResourceNotAvailableForOffer`. Tested placements in eastus and centralus returned `SkuNotAvailable`.
 - Published the five full gold Parquet tables to private Azure Blob: 5,192,103 rows and 241,693,714 bytes. Each file matched its local DuckDB gold table and its downloaded Azure SHA-256. Uploaded quality, lineage, dbt/freshness results, unchanged-source evidence, and a final manifest. Validation ran locally: 271 dbt passes with two branch-reference warnings, and 11 freshness passes with two warnings. Cloud PostgreSQL loading and cloud pipeline execution remain pending.
 - Ten reconciliation tests and six orchestration/integrity tests passed. Local workflow verification passed after preparing the stored policy index, using independent clients, and using unambiguous language markers. The final `make check` passed in the current working tree: 2,876 unit tests, 1,532 integration tests, 349 web tests, all 11 coverage gates, documentation and data checks, and the history secret scan. Three optional real-embedding tests were skipped because the ml extra is absent. Code release `0ccfa6d` was uploaded privately and its downloaded SHA-256 verified.
 - Added private contracted-source packaging and managed-identity restoration for `start local`, replacing manual CSV copying. Published the 7,671 contracted inputs (5,349,322,481 bytes) as a private archive and verified its downloaded SHA-256. Complete local restoration checked every file before installation. Seventeen integrity/orchestration tests, typing, Ruff, Bandit, shell syntax, and ShellCheck passed. The updated `make check` passed: 2,887 unit, 1,532 integration, 349 web, all 11 coverage gates and remaining checks; the same three optional embedding tests were skipped. Cloud compute execution remains pending.
@@ -2301,3 +2301,246 @@ python3 scripts/checks/check_env_keys.py
 #### Next phase
 
 Phase 01, monorepo scaffold and quality gates (`kit/prompts/01-scaffold.md`), in plan mode.
+
+### Final day: Azure OpenAI as the hosted provider, Langfuse deployability (2026-10-05)
+
+Branch `feat/azure-openai-provider`. Production has called Azure OpenAI since about 15:30 UTC through env file edits; this change makes that setup first-class in the repository and makes the Langfuse export deployable.
+
+#### What was done
+
+- Price entries for `azure/gpt-4.1-mini` (0.40 and 1.60 USD per million tokens, GlobalStandard), `azure/gpt-4o` (3.025 and 12.10, regional Standard in Sweden Central), and `azure/text-embedding-3-small` (0.02 input), each naming its Azure Retail Prices API meter, read on 2026-10-05; `verified: false` as the repository requires for every hosted entry (pending action 7). The Gemini note no longer claims the demo uses it.
+- Optional `LLM_API_VERSION` (empty: LiteLLM's default), passed to LiteLLM only when set, through compose and both env templates; `LLM_MAX_RETRIES` passes through compose.
+- Langfuse keys as optional production secrets end to end: the stager, compose (API only), `prod.sh`, `keyvault-secrets.sh`, `provision.sh`, and the deploy config tests; `LANGFUSE_ENABLED` (default false) and `LANGFUSE_BASE_URL` through compose; an empty `LANGFUSE_BASE_URL` is refused when the export is on.
+- `deploy/prod.sh check` (run by `up`, `llm-probe`, and every release) refuses an empty staged key file for a hosted model or an enabled Langfuse export, naming the file and never a value.
+- `bank-agent llm-probe` and `deploy/prod.sh llm-probe`: one structured call per configured model in es and pt, straight to each provider client, outcomes and latencies only; the preflight for a model change before `up`. `prod.sh help` prints its whole header again.
+- `make llm-smoke` with `LANGFUSE_ENABLED=true` exports its calls through the API's own Langfuse exporter, which verified the export without a database.
+- Docs: [ADR 0044](adr/0044-azure-openai-as-the-hosted-model-provider.md), [AZURE_INFRASTRUCTURE.md](AZURE_INFRASTRUCTURE.md) (committed, corrected to today), `deploy/README.md` (Azure OpenAI recipe, Langfuse steps), `docs/security/data-use.md` (Azure OpenAI and Langfuse providers), `docs/architecture/llm-gateway.md`, `docs/operations/runbook.md` (switch or roll back the model), `docs/operations/observability.md` (the Langfuse Cloud verification), `docs/operations/degradation.md`, ADR 0037's update note.
+
+#### Measured (local development measurements, not an evaluation)
+
+- `make llm-smoke` against `azure/gpt-4.1-mini` on the evaluation account: 32 of 32 fixture cases valid, p50 1,169 ms, p95 2,137 ms, first call 36,109 ms; 40,292 input and 1,236 output tokens.
+- Langfuse Cloud (US) read back through `/api/public/v2/observations`: 32 generations in 32 traces, model `azure/gpt-4.1-mini`, input, output, and user id empty on all, metadata limited to the allowlist (`docs/operations/observability.md`).
+- `bank-agent llm-probe`: valid replies in es and pt with the default API version, `2024-10-21`, and `2025-04-01-preview`; an unsupported version was rejected by Azure.
+
+#### How to verify
+
+```bash
+uv run --frozen pytest -m unit services/api/tests/unit/bootstrap/test_llm_probe.py services/api/tests/unit/test_deploy_prod_check.py services/api/tests/unit/test_deploy_config.py services/api/tests/unit/adapters/llm scripts/tests/unit/test_llm_smoke.py
+LLM_PROVIDER=litellm LLM_PRIMARY_MODEL=azure/gpt-4.1-mini LLM_API_BASE=<evaluation endpoint> LLM_API_KEY_PRIMARY=<from the shell> \
+  uv run --frozen --package bank-agent --extra litellm bank-agent llm-probe
+```
+
+#### Known limitations
+
+- The Azure prices are unverified (charged at 1.5 times) until a person confirms them.
+- No recorded evaluation describes the Azure models; the committed cassettes are the local 7B model's.
+- The primary and the fallback share one account and endpoint: no protection against an account or regional outage.
+- `scripts/verify_e2e_tracing.py` (needs PostgreSQL) was not rerun against Langfuse Cloud.
+
+### Final-day documentation: public claims, ADR 0043, rubric reference, and learnings (2026-10-05)
+
+- Public statements now match the running system, checked against `/health/details` on 2026-10-05 (level L0, `llm_primary` and `llm_fallback` ok): the README (deployment status, a colored "Who decides" diagram, freshness, limitations summary), LIMITATIONS, HOW-IT-WORKS, AGENTS, the LLM gateway page, the brief traceability matrix, the submission checklist, the email draft, the demo script, the practice cases, the video plan and monologue, the slides guide, `slides/VIDEO.md`, the deploy scene's strings, and the operations pages. The deployed demo calls Azure OpenAI (`azure/gpt-4.1-mini`, fallback `azure/gpt-4o`) only for understanding; Key Vault staging, the Azure host, the guardrail fixes on the deployed build, and the 14c masking are stated as done. The `/demo` page (en, es, pt) no longer tells visitors to run `make seed`.
+- [ADR 0043](adr/0043-langgraph-migration.md) records the staged LangGraph StateGraph roadmap as Proposed, with the team's decision not to migrate the runtime before the submission deadline; pull request 23 is closed as superseded, and the BACKLOG has the post-event row.
+- `pnpm export` writes a six-page pitch PDF (one page per main slide, its build-up frames as a grid), a 32-page build-up version, and the appendix apart; the export ran with 6, 32, and 7 pages. The evidence slide's "not ahead of B0" flag now follows the metrics instead of naming card support.
+- New: [EVALUATION_CRITERIA.md](EVALUATION_CRITERIA.md), the team's rubric reference with today's statuses, and [LEARNINGS.md](LEARNINGS.md), lessons drawn only from this repository's records.
+
+How to verify: `make docs-check`; from `slides/`, `pnpm verify`, `pnpm check:content --strict`, and `pnpm check:fit` with `pnpm dev` running; from `apps/web/`, `pnpm lint`, `pnpm typecheck`, and `pnpm test`; `curl https://la-brasil-del-70.westus2.cloudapp.azure.com/health/details`.
+
+Known limitations: the evaluation numbers, and the lines that name the published run's local model, still quote session 14b until the hosted-model rerun is published; `deploy/README.md` ("Choosing the model") and `docs/security/data-use.md` ("Providers") still describe hosted providers in general rather than the Azure OpenAI deployment; the price table has no `azure/...` entry, so the glass-box cost and the budget guard charge the deployed models as unknown; on 2026-10-05 `/grafana/` returned the web app, so the public Grafana dashboard and Langfuse tracing are described as planned.
+
+Next: refresh the evaluation numbers after the hosted-model run, export the slides, record the video, make the repository public, and send the email.
+
+### Observability: Grafana read-only at /grafana and the service health dashboard (2026-10-05)
+
+Branch `feat/observability-grafana`. Production observability a judge can open, exposed behind switches that default
+to off.
+
+#### What was done
+
+- Caddy serves Grafana at `/grafana/` when `GRAFANA_ROUTE=on`: prefix kept, `/grafana` redirected, every `__Host-` and
+  `__Secure-` cookie removed from requests to Grafana, `/grafana/metrics` answers 404, no Caddy CSP on the route.
+  Grafana is hardened (root URL from `PUBLIC_ORIGIN`, sub-path, secure cookies, sign-up, snapshots, public dashboards,
+  Live, Gravatar, embedding, plugin downloads, and its metrics endpoint off, its own CSP), anonymous Viewer access
+  behind `GRAFANA_ANONYMOUS_VIEWER` (default false), 512 MB, and an internal `observability` network shared only
+  with `web`. Prometheus bounds each query. `deploy/prod.sh` reads `OBS` from the server env file, so releases and
+  continuous deployment keep the `obs` profile current, and refuses switch values Caddy or Grafana would not accept.
+- The Jaeger datasource is deleted from Grafana provisioning. The collector deletes client address, port, and user
+  agent from spans and metrics, expires dead series after 5 minutes, and reads host CPU, load, memory, disk, and root
+  filesystem usage with its `host_metrics` receiver (no Docker socket or host mount).
+- Telemetry: model duration, token, and cost metrics carry the prompt id, successful calls carry the serving model,
+  the HTTP histogram reaches 60 s, and outcome and handoff counters start at 0 for every label set.
+- A third dashboard, **Bank agent: service health** (Grafana's home page), and fixes to the other two: the empty
+  executive bar charts are bar gauges, zero series are hidden in category panels, degradation levels show L0 to L4.
+- ADR 0045, its index rows, and the docs: observability, Grafana dashboards, deploy README ("Grafana at /grafana"),
+  runbook, threat model, HOW-IT-WORKS, video plan notes, BACKLOG rows.
+
+#### Decisions
+
+- [ADR 0045](adr/0045-expose-grafana-read-only-under-grafana.md): same-origin sub-path with cookie stripping for the
+  event; a separate host name is the production follow-up (BACKLOG). Amends ADR 0036's production access model.
+
+#### How to verify
+
+```bash
+uv run --frozen pytest -m unit services/api/tests/unit/test_deploy_config.py \
+  services/api/tests/unit/adapters/test_observability_config.py \
+  services/api/tests/unit/adapters/llm/test_tracing_and_redaction_decorators.py \
+  services/api/tests/unit/adapters/llm/test_cost_and_budget.py \
+  services/api/tests/unit/application/engine/test_turn_metrics.py \
+  services/api/tests/unit/bootstrap/test_observability.py
+```
+
+Checked offline without containers: the collector configuration with `otelcol validate` (0.161.0 binary); the privacy
+processor with a debug exporter (the three client attributes present without it, absent with it); every query of the
+three dashboards and the alert rules against Prometheus 3.15.0 started with the production query flags and fed by
+the collector with traffic from the real telemetry adapters (no errors, every query returned data); the Caddyfile
+adapted by Caddy 2.11.4 with the route on, off, and an invalid value (refused), and the route run locally against a
+stub upstream (redirect, 404 on `/grafana/metrics`, prefix kept, bank cookies removed, Grafana cookies kept, no CSP).
+Grafana itself, its CSP in a browser, and the anonymous Viewer were not run locally: they are verified on production
+after the merge.
+
+#### Known limitations
+
+- Same-origin residual risk accepted for the event (ADR 0045).
+- The collector and Prometheus keep their single-file configuration until restarted once after the merge.
+- Per-container resources, alert delivery, and an availability probe are not built (BACKLOG).
+
+#### Next
+
+The orchestrator sets `OBS=1`, `GRAFANA_ROUTE=on`, and `GRAFANA_ANONYMOUS_VIEWER=true` on the VM, runs
+`deploy/prod.sh up`, restarts the collector and Prometheus once, and verifies `/grafana/` on production.
+
+### Supervision view for evaluators (2026-10-05)
+
+- Added `GET /v1/eval/models` (evaluator only, no database, operation `eval_model_inventory`): the models this
+  process serves, recorded by the composition root at startup (router, resolver, risk estimator, retriever,
+  language detector; concrete versions, the alias a selection used, fallback reason codes), the language model
+  setup (provider, model ids with the price basis and USD per million tokens the cost metrics charge, the
+  `WORKFLOW_LLM_*` flags, budget limits), every prompt version with whether the flags let it run, the policy pack
+  version, and the enabled workflows; plus the curated model cards in `services/api/config/model_cards.yaml`
+  (offline test metrics with 95% intervals for the router, resolver, risk estimator, and retrieval, each citing its
+  report, commit, and generation time, and the simulated session 14b promotion decisions of fixed against learned
+  defaults). The response carries no customer data, identifiers, endpoints, keys, or file system paths.
+- Added the Supervision view at `/console/supervision` (evaluator sidebar and console start): who decides each
+  step with the versions served, models in service, offline evidence (dot-and-whisker plot plus metric tables, the
+  served model marked), why the baselines are served, B0, B1, and P per workflow with intervals and cost per
+  resolution, the language model setup and prompts, and the live degradation level from `/health/details` (its
+  503 body at L4 is read as data) with a link to `/grafana/`. Copy in es, pt, and en. Field catalog:
+  [frontend/supervision.md](frontend/supervision.md).
+- Decisions: the evaluator role plays the supervisor (no new role); no live database aggregates, as ADR 0036
+  requires (an operations snapshot is a backlog row that needs an ADR amending it); the cards are a reviewed copy
+  of the generated reports, pinned by unit tests to the numbers those reports print.
+- How to verify: `uv run --frozen pytest -m unit services/api/tests/unit/domain/test_model_inventory.py
+  services/api/tests/unit/adapters/test_model_cards.py services/api/tests/unit/bootstrap
+  services/api/tests/unit/application/supervision services/api/tests/unit/api`; `pnpm --dir apps/web exec vitest
+  run src/features/supervision src/app/a11y-surfaces.test.tsx`; integration (CI):
+  `services/api/tests/integration/api/test_supervision.py`. On the deployment, sign in as `evaluator-demo-01` and
+  open Supervisión.
+- Known limitations: the inventory and the degradation level are per worker; the router cards quote the report at
+  `2c19633`, before three `keyword@1` fixes (backlog); end-to-end costs are what each run recorded, zero for the
+  local model; the curated cards can drift until they are generated (backlog).
+
+### Qdrant knowledge retrieval behind a flag (2026-10-05, branch feat/qdrant-retrieval)
+
+#### What was done
+
+- A `VectorStore` port with a Qdrant REST adapter on httpx and an in-memory store; one contract suite runs against the in-memory store (unit) and the pinned, hardened Qdrant image (integration, CI only). A `MockTransport` suite replays Qdrant's REST replies offline.
+- A hosted `Embedder` gateway for `azure/text-embedding-3-small` (512 dimensions) through LiteLLM: query redaction, cost accounting into `bank.llm.cost_usd`, circuit breaker, bounded retry, and a timeout. The `Embedder` protocol moved to `ports/embeddings.py`.
+- `RETRIEVAL_RETRIEVER=qdrant` and `qdrant_hybrid` (reciprocal rank fusion with BM25), both behind `FallbackRetriever` to BM25 and counted in `bank.retrieval.fallbacks`; `bm25` stays the default. Open retrieval now runs in a worker thread. `bank-agent index qdrant` builds the collection idempotently (UUID v5 point ids from the clause key, keyword-only payload, one collection per pack version and model).
+- The `rag` compose profile (Qdrant unprivileged image by digest, read-only root, internal network, 512 MB) and `RAG=1` in `deploy/prod.sh`.
+- `bank-eval retrieval` adds `qdrant`, `qdrant_hybrid`, and a cross-language slice, replays a committed recording of hosted embeddings (`make eval-retrieval-embeddings` re-records on the evaluation account), states the outcome of a pre-registered switching rule, and keeps a hand-written section across regenerations.
+- No second collection: the organizer free text is templated (42 distinct customer texts in 147,292 transcripts), documented in ADR 0047 and the data card.
+
+#### Decisions
+
+- [ADR 0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md): Qdrant vector index, accepted, with a production delta.
+- [ADR 0046](adr/0046-customer-service-history-vector-retrieval.md): the teammate's history-memory draft, renumbered from 0029 and set to Proposed.
+- The switching rule passes on the provisional judgments (`qdrant_hybrid` test MRR 0.89 against 0.83, no recall loss in es or pt); see [retrieval.md](evaluation/retrieval.md).
+- No new runtime dependency: httpx and LiteLLM were already in the API image.
+
+#### How to verify
+
+```bash
+uv run --frozen pytest -m unit services/api/tests/contracts/test_vector_store_contract.py services/api/tests/unit/adapters/vector services/api/tests/unit/adapters/embeddings services/api/tests/unit/adapters/retrieval services/api/tests/unit/bootstrap/test_vector_retrieval.py evals/tests/unit/retrieval
+uv run --frozen bank-eval retrieval --no-dense --no-mlflow --output /tmp/retrieval.md   # offline, from the recording
+```
+
+#### Known limitations
+
+- The judgments are pending human review, so the switch is provisional; production latency of the embedding call is not measured offline.
+- Qdrant has no API key; it holds public synthetic policy text only.
+- The Qdrant contract test against a real server runs only where Docker is available (CI).
+
+### Router benchmark against a hosted language model (2026-10-05)
+
+Appended at the end of the log so parallel final-day tracks do not collide. Newer entries otherwise sit at the top.
+
+- **What was done.**
+  - Closed ADR 0015 option 4 and the BACKLOG row "zero-shot router reference".
+  - The decision rule, systems, and metrics were pre-registered in [`docs/plans/router-llm.md`](plans/router-llm.md), committed before any model call. That commit, like the rest of the original branch, was lost to local disk corruption before it was pushed; the files were restored from the intact working tree and recommitted on `feat/router-llm-benchmark-v2`.
+  - `bank-ml router zero-shot` (`ml/src/bank_ml/router/zero_shot.py`, `zero_shot_report.py`) calls `classify_intent_fallback@1` zero-shot through the full gateway. It runs with bounded concurrency, a request-rate cap, and backoff on 429, and it records redacted cassettes. It scores `keyword@1`, the TF-IDF champion, the model alone, and cascades with the existing seed-group bootstrap and dev-only thresholds.
+  - `router:tfidf` was retrained from the committed seeds and reproduced `986872f0284f` exactly. The artifact stays in the gitignored `data/artifacts`.
+  - The calls were recorded once: 887 dev and test messages per model, `azure/gpt-4.1-mini` on the evaluation account and `azure/gpt-4o` on the production account (2 in flight, 35 per minute), with no failures. The cassettes are committed in `ml/cassettes/router_llm/` (1,774 files, about 1 KB each), and the report was generated from them as [`docs/evaluation/router-llm.md`](evaluation/router-llm.md).
+  - The Azure retail list prices of both models (read from the Azure Retail Prices API) were added to `services/api/config/llm_prices.yaml`, marked `verified: false` until a person confirms them, as the table's policy and its test require.
+- **Headline (test, offline, synthetic; 95% seed-group intervals).**
+  - Macro-F1: `keyword@1` 0.395 [0.308, 0.447], TF-IDF 0.661 [0.575, 0.713], `gpt-4.1-mini` zero-shot 0.885 [0.819, 0.925], `gpt-4o` zero-shot 0.936 [0.890, 0.969], TF-IDF then `gpt-4.1-mini` 0.873 [0.802, 0.918], TF-IDF then `gpt-4o` 0.910 [0.857, 0.948].
+  - Confident write-intent misroutes (of 601): 33, 1, 31, 23, 11, and 11, in the same order.
+  - Cost per 1,000 messages at list price: 0, 0, 0.42, 3.17, 0.22, and 1.64 USD. The p95 per message is about 2 s with a model call, against under 10 ms for the classical routers.
+- **Decision.**
+  - Under the pre-registered dev rule, no cascade qualifies for an end-to-end trial. The `gpt-4.1-mini` cascade made 2 confident write-intent misroutes against a limit of 1, and the `gpt-4o` cascade costs 1.89 USD per 1,000 against a limit of 1.00.
+  - Production keeps `keyword@1`, and no routing default changed.
+  - The one production-visible effect after deployment is the price table. The cost decorator and budget guard price `azure/gpt-4.1-mini` and `azure/gpt-4o` at their list prices times the unverified multiplier (1.5), instead of the unknown-model fallback (the highest listed price times 1.5).
+  - The model card ([router.md](models/router.md)) and the ADR notes ([adr/README.md](adr/README.md)) record the evidence. Three follow-up rows were added to the BACKLOG: a prompt with intent definitions chosen on dev, a human audit of the label audit candidates, and a conditional default-off fallback with an end-to-end dev run.
+- **How to verify.**
+  - `uv run --frozen bank-ml router train --no-embeddings` (expect `router:tfidf@986872f0284f`), then `uv run --frozen bank-ml router zero-shot`. This replays the cassettes without a key; only the in-process latency of the classical routers and the timestamp change.
+  - `uv run --frozen pytest ml/tests/unit/router/test_zero_shot.py ml/tests/unit/router/test_command.py ml/tests/integration/test_router_zero_shot.py`.
+- **Known limitations.**
+  - The text is synthetic and team-authored.
+  - The prompt has label names without definitions.
+  - The stated confidence is coarse.
+  - Dev has 68 seed groups.
+  - The latency is from the development machine under recording concurrency, not a production service level.
+  - The cost covers the routing call only.
+  - `docs/evaluation/router.md` was not regenerated. Its keyword rows are stale (0.385 published against 0.395 now), but a rebuild with the `ml` extra gave a different embeddings artifact (`b1fbdb7b1aa2`, not `32666d7d4e3f`), so regenerating it would replace the documented champion. This is a BACKLOG row, and the current keyword numbers are in `router-llm.md`.
+
+### Final day: hosted-model evaluation published (2026-10-05)
+
+#### What was done
+
+- Ran B0, P, and B1 on the dev split (`dev-azure-41mini`, 366 cases), the escalation-signal comparison on dev (`dev-azure-sig1-scripted` against `dev-azure-sig2-scripted`, P only, scripted driver), and the frozen test split with the 14b protocol (B0 and P as one process, B1 as another, merged with `--resume` into `test-hosted`, 1,284 cases), every model role on `azure/gpt-4.1-mini` on the evaluation-only Azure OpenAI account, code pinned at `2ddabb0` (before the final-day QA fixes).
+- Published `test-hosted` with `bank-eval publish`, wrote the hand-written analysis in [results.md](evaluation/results.md#analysis-hand-written-hosted-model-test-run), archived the 14b documents under [runs/test-local](evaluation/runs/test-local/results.md), and updated the README headline, LIMITATIONS, the slides metrics, the submission documents, and BACKLOG rows on the escalation-signal prompt, masking, the segmented case id, the grader fixes, and placeholder turns.
+
+#### Results (simulated, offline; per workflow in the results)
+
+- P 185/304 safe automated resolutions (55 to 66%), B0 141/304, B1 69/304; graded unsafe outcomes P 1/304 (a consented second write, not a bypass), B0 0/304, B1 92/304; card support P 48/76 against B0 47/76, unnecessary card transfers 5/59 (14b: 11/59).
+- Dev: escalation prompt v2 against v1, 85 against 80 of 112 and 3 against 8 of 94 unnecessary transfers with no missed transfer in either arm (directional).
+- Measured cost at the Azure list price: P 0.0013 USD per attempted case and 0.0019 USD per safe automated resolution.
+- Strict audit: no 401, 429, or budget refusal; Azure's jailbreak filter rejected calls in a few direct-injection scenarios (kept as played).
+
+#### Known limitations
+
+- The run predates the final-day fixes; the simulated customer runs on the same model; the judge was not rerun; cost is priced, not invoiced; the scenario labels await human review.
+- The Azure evaluation cassettes stay in the evaluation worktree and are not committed; the run directory (`reports/eval/test-hosted`, transcripts) is not in git.
+
+### Final day: release PR 37 and production switches (2026-10-05)
+
+#### What was done
+
+- Released the final-day integration (PR 37) to `main`: the Azure OpenAI provider (`gpt-4.1-mini`, fallback `gpt-4o`), the read-only Grafana route ([ADR 0045](adr/0045-expose-grafana-read-only-under-grafana.md)), the Supervision view for evaluators ([guide](frontend/supervision.md)), Qdrant hybrid retrieval ([ADR 0047](adr/0047-qdrant-vector-index-for-knowledge-retrieval.md), [retrieval](evaluation/retrieval.md)), the hosted-LLM router benchmark ([router-llm](evaluation/router-llm.md)), the hosted evaluation run `test-hosted`, and the final-day QA fixes to routing, the engine, and the handlers.
+- Production switches with the release: metadata-only Langfuse tracing enabled (`LANGFUSE_ENABLED=true`), Grafana served read-only at `/grafana/` with anonymous Viewer access (`GRAFANA_ROUTE=on`, `obs` profile), and open retrieval on `qdrant_hybrid` (`RETRIEVAL_RETRIEVER=qdrant_hybrid`, `rag` profile, `bank-agent index qdrant`), with BM25 as the automatic fallback.
+- Documentation brought in line with the release from the rubric audit: the README links the rubric map, the RAG evidence, the router study, and the Supervision view and has a RAG section; the narration, demo script, video plan, rubric map, LIMITATIONS, and slides README quote the hosted run.
+
+#### How to verify
+
+- `make docs-check`; `pnpm check:content --strict` from `slides/`.
+- In production, send "Quanto tempo leva para resolver uma contestação normalmente?" as `acc-mx-accounts`: the trace names `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512` and cites `INF-ALL-1@1`. `GET /grafana/api/health` returns JSON.
+
+#### Known limitations
+
+- The final-day QA fixes are not re-measured; the published numbers are from `test-hosted` at `2ddabb0`.
+- `qdrant_hybrid` latency and fallback rate on the VM are not measured yet (BACKLOG).
+- An informational card-block question can be misrouted to `card_support` (BACKLOG).
+
+#### Next phase
+
+- The human actions in the current state: export the slides, record the video, make the repository public, and send the submission email.

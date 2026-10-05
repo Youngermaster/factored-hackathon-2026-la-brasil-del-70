@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b9eb99cd2d4570fbec91d4b2b35244c383b9edef35dde6370e183316ac4f5ceb",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 836,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "dispute_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:12.167094Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "HACE DIEZ DÍAS MANDÉ LA SOLICITUD Y NO TENGO NOVEDADES",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

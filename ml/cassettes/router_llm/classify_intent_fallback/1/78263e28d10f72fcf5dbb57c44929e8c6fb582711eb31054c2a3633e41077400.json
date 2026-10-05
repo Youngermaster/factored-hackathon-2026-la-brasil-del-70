@@ -1,0 +1,40 @@
+{
+  "cassette_id": "78263e28d10f72fcf5dbb57c44929e8c6fb582711eb31054c2a3633e41077400",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1244,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.7,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.3,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:14:50.299066Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 38
+  },
+  "variables": {
+    "customer_message": "Che, le transferí cinco mil pesos a un amigo y no le llegó, ¿qué onda?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

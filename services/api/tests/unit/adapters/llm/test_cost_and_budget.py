@@ -106,13 +106,37 @@ def test_the_repository_price_table_loads_and_every_hosted_entry_awaits_human_ve
     ids = {entry.model_id for entry in table.entries}
     assert {"anthropic/claude-sonnet-5", "anthropic/claude-haiku-4-5-20251001"} <= ids
     assert any(entry.model_id.startswith("openai/") for entry in table.entries)
-    assert "gemini/gemini-3.1-flash-lite" in ids  # the Azure demo's primary model, still unverified
+    assert "gemini/gemini-3.1-flash-lite" in ids  # a candidate no deployment uses, still unverified
+    assert {"azure/gpt-4.1-mini", "azure/gpt-4o", "azure/text-embedding-3-small"} <= ids  # the deployed demo's models
     for entry in table.entries:
         assert entry.source_url.startswith("https://")
         if entry.model_id.startswith("ollama/"):
             continue
         assert not entry.verified
         assert table.effective(entry.model_id).basis is PriceBasis.UNVERIFIED
+
+
+@pytest.mark.parametrize(
+    ("model_id", "listed", "meters"),
+    [
+        ("azure/gpt-4.1-mini", ("0.40", "1.60"), ("gpt 4.1 mini Inp glbl Tokens", "gpt 4.1 mini Outp glbl Tokens")),
+        ("azure/gpt-4o", ("3.025", "12.10"), ("gpt 4o 1120 Inp regnl Tokens", "gpt 4o 1120 Outp regnl Tokens")),
+        ("azure/text-embedding-3-small", ("0.02", "0"), ("text-embedding-3-small-glbl Tokens",)),
+    ],
+)
+def test_the_azure_openai_entries_name_the_retail_meter_and_are_charged_as_unverified(
+    model_id: str, listed: tuple[str, str], meters: tuple[str, ...]
+) -> None:
+    table = PriceTable.from_yaml(REPOSITORY_PRICES)
+
+    (entry,) = [entry for entry in table.entries if entry.model_id == model_id]
+    assert (entry.input_usd_per_million, entry.output_usd_per_million) == tuple(Decimal(price) for price in listed)
+    assert entry.source_url == "https://prices.azure.com/api/retail/prices"
+    assert entry.effective_date == date(2026, 10, 5)
+    assert all(f"'{meter}'" in entry.notes for meter in meters)
+    effective = table.effective(model_id)
+    assert effective.basis is PriceBasis.UNVERIFIED
+    assert effective.input_usd_per_million == Decimal(listed[0]) * Decimal("1.5")
 
 
 def test_the_local_ollama_model_is_verified_at_zero_cost_and_labeled_local() -> None:
@@ -174,7 +198,14 @@ async def test_cost_accounting_sets_the_cost_and_emits_a_metric() -> None:
     assert structured.value.answer == "yes"
     assert text.cost_usd == Decimal("0.00600000")
     values = telemetry.histograms[COST_METRIC].values
-    assert values[0] == (0.006, {"gen_ai.response.model": "verified/model", "bank.llm.price_basis": "verified"})
+    assert values[0] == (
+        0.006,
+        {
+            "gen_ai.response.model": "verified/model",
+            "bank.llm.price_basis": "verified",
+            "bank.prompt.id": "phrase_response",
+        },
+    )
 
 
 # --- Budget guard --------------------------------------------------------------------------------------------

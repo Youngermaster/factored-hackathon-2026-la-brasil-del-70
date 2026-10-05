@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0b7d01fc8bfe6c1029ca8f7b289980d2002bcf3fa024995b3403f237dbbe89e8",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 867,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.4,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:07.542904Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Qué plazos tienen para tarjeta de crédito?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

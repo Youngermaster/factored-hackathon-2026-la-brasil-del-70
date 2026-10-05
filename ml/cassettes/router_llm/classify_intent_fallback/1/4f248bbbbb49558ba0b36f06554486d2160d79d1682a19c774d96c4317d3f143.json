@@ -1,0 +1,36 @@
+{
+  "cassette_id": "4f248bbbbb49558ba0b36f06554486d2160d79d1682a19c774d96c4317d3f143",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1603,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:26.656354Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿La tarjeta que termina en 8864 está bloqueada?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

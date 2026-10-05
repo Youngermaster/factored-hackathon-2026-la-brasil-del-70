@@ -31,7 +31,7 @@ stateDiagram-v2
     ESCALATED --> [*]
 ```
 
-Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. CARD_STATUS accepts new requests and keeps the chosen card for a follow-up such as "block it". A block request that explicitly names a card goes through SELECT_CARD again before confirmation. A request for another workflow is confirmed before switching (scenario 17).
+Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. CARD_STATUS accepts new requests and keeps the chosen card for a follow-up such as "block it". A block request that explicitly names a card goes through SELECT_CARD again before confirmation. A request for another workflow is confirmed before switching (scenario 17). When the router cannot place a message in CARD_STATUS that names a card by type or ending ("e o de débito?", "¿y la terminada en 1357?"), the `follow_up` recognizer continues with a status request for that card (QA finding CRD-03). "The other one" and a bare four-digit number are not recognized yet.
 
 ## States, rules, clauses, tools, and exits
 
@@ -136,6 +136,8 @@ sequenceDiagram
 ## Tests
 
 Scenarios 13 to 17 and follow-ups run on both backends (`services/api/tests/integration/workflows/test_card_and_routing.py`, `test_denials_and_follow_ups.py`). Selection regressions in `test_card_selection_evidence.py` cover invented model hints and explicit customer choices in es and pt on both backends. `test_card_block_follow_ups.py` covers selecting another card after a status answer, cancellation followed by a new request, and contradictory type and ending hints.
+
+`services/api/tests/unit/application/workflows/test_qa_card_regressions.py` (production QA, 2026-10-05) covers a status follow-up that names no card (answered again for the same card), a block request after it, and a block request typed while choosing a card, which keeps the request and reason and chooses through the normal selection.
 
 ## Limitations
 

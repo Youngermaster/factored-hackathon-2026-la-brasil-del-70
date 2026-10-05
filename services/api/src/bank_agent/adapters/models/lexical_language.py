@@ -4,7 +4,10 @@ It counts marker words that belong to one language only (``nao``, ``voce``, ``ca
 ``quiero``, ``usted`` for Spanish; ``the``, ``my``, ``please`` for English) and orthographic markers (``ã``, ``õ``,
 ``ç``, ``lh``, ``nh`` for Portuguese; ``ñ``, ``¿``, ``¡`` for Spanish) before folding. The language with most
 markers wins when it has at least ``MIN_MARKERS`` and leads the runner-up by ``MARGIN`` of all markers; otherwise
-the result is uncertain (``language is None``) and the engine asks the customer. Input with two languages each
+the result is uncertain (``language is None``) and the engine asks the customer. Words that a language shares
+with another after accent folding (``por``, ``favor``, ``mas``/``más``) are not markers: a production QA pass
+(2026-10-05) saw "Por que precisa de análise?" switch a Portuguese conversation to Spanish and "la más reciente"
+switch a Spanish one to Portuguese. Input with two languages each
 holding ``MIXED_SHARE`` of the markers is marked mixed and answered in the dominant one.
 
 The prompt names a lingua-language-detector adapter; its 2.2.0 wheels are about 170 MB, above the 50 MB rule,
@@ -26,15 +29,17 @@ MIXED_SHARE = 0.25
 _SPANISH = """
         el los las del una unos yo usted ustedes vos mi mis tu tus quiero quisiera tengo tarjeta tarjetas cargo
         cargos compra cuenta ayer anteayer antier hoy semana pasado pasada mes reconozco desconozco cobraron hola
-        gracias por favor necesito puedo tambien pero hace dias cuando donde esta estoy fue esa ese eso esto aqui
+        gracias necesito puedo tambien pero hace dias cuando donde esta estoy fue esa ese eso esto aqui
         si bloquear bloquea bloqueala perdi robaron reclamo reclamacion monto dinero lucas luca palos varos nueva
         che sos tenes queres podes decime mande ahorita voy ahora muy hay
+        un en lo recibi compre prestamo prestamos califico solicitud plazo
         """
 _PORTUGUESE = """
         nao voce voces eu meu minha meus minhas cartao cartoes conta compra ontem anteontem hoje semana passada
-        passado mes reconheco desconheco cobraram ola oi obrigado obrigada preciso posso tambem mas faz dias
+        passado mes reconheco desconheco cobraram ola oi obrigado obrigada preciso posso tambem faz dias
         quando onde esta estou foi essa esse isso isto aqui sim bloquear bloqueia perdi roubaram contestacao valor
         dinheiro novo nova um uma com pelo pela ao dos das estao tenho quero queria gostaria cobranca reais
+        qual quais precisa pendente vai sao em agora os do
         """
 _ENGLISH = """
         the my your you i and is are was not do did does please card charge account yesterday today week last

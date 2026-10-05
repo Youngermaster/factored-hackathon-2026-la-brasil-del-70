@@ -1,0 +1,36 @@
+{
+  "cassette_id": "f82bf5caceceff354d497bf16bf06a103b6bedd1b045969ff8c2e709925c830c",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 949,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:36.171430Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "¿La tarjeta que termina en 0419 está bloqueada?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

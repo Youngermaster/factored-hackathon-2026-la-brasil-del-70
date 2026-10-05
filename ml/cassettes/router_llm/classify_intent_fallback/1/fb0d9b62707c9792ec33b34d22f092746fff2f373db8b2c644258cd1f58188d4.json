@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fb0d9b62707c9792ec33b34d22f092746fff2f373db8b2c644258cd1f58188d4",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1296,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:10.917663Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 956,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "OI, FIZ UMA TRANSFERÊNCIA DE R$ 150 E A PESSOA DIZ QUE NÃO RECEBEU",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "3f967fc7ee4861b2d96120a3f50e42f039bc25ed69975f7eaba563bf0f2f9c52",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 711,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:53.350981Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hice un reclamo el finde, ¿ya lo resolvieron?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

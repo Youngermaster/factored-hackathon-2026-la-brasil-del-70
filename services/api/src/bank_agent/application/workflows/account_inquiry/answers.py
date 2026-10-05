@@ -30,7 +30,10 @@ UNDERSTAND = "UNDERSTAND"
 _CONTESTED = re.compile(
     r"\b(esta|estan) (mal|equivocad[oa]s?|errad[oa]s?)\b|\bno (es|esta|son) correct[oa]s?\b|\bincorrect[oa]s?\b|"
     r"\bno cuadra\b|\bno coincide\b|\bnao (esta|bate|confere|e) (certo|correto)?|\best(a|ao) errad[oa]s?\b|"
-    r"\bsaldo errado\b|\bwrong balance\b|\bis wrong\b"
+    r"\bsaldo errado\b|\bwrong balance\b|\bis wrong\b|"
+    # Colloquial (QA 2026-10-05, ACC-08): "o saldo da poupança tá errado, era pra ter mais", "no me cierra".
+    r"\b(ta|to|tah|tao)\s+errad[oa]s?\b|\bsaldo\b.{0,30}\berrad[oa]s?\b|"
+    r"\b(era pra|era para|deveria) ter mais\b|\bdeberia (tener|haber) mas\b|\bno me cierra\b"
 )
 
 
@@ -76,7 +79,9 @@ async def balances(ctx: TurnContext) -> Step:
     if not views:
         return Step("RESOLVED", Reply(template="account.no_balances"), Outcome.RESOLVED)
     as_of_instant = max(view.as_of for view in views)
-    as_of = as_of_instant.astimezone(ctx.zone).date()
+    # The balance cut is stamped at the end of the business day in UTC-6; east of it the local date is the next day.
+    # The shown date never passes the data as-of date, so balances and payments agree (QA 2026-10-05, ACC-12).
+    as_of = min(as_of_instant.astimezone(ctx.zone).date(), ctx.services.policy.data_as_of)
     currencies = {view.current_balance.currency for view in views}
     ctx.currency = next(iter(currencies)) if len(currencies) == 1 else None
     decision = evaluate(ctx, account=AccountFacts(product_owned_by_session_customer=True, answer_as_of=as_of_instant))
@@ -84,7 +89,7 @@ async def balances(ctx: TurnContext) -> Step:
     if stop is not None:
         return stop
     for view in views:
-        _balance_fact(ctx, view, view.as_of.astimezone(ctx.zone).date())
+        _balance_fact(ctx, view, min(view.as_of.astimezone(ctx.zone).date(), ctx.services.policy.data_as_of))
     if contested(ctx.text):
         return escalate(ctx, EscalationReasonCode.UNSUPPORTED_NEEDS_HUMAN, "balance_contested", decision=decision,
                         open_questions=("Which balance does the customer consider wrong, and why?",))  # fmt: skip
@@ -92,7 +97,7 @@ async def balances(ctx: TurnContext) -> Step:
     lines = tuple(
         ("account.balance_item_credit" if "available" in row else "account.balance_item", row) for row, _ in rows
     )
-    facts = (_fact(FactKind.AS_OF, at=as_of_instant.astimezone(ctx.zone)), *(f for _, fs in rows for f in fs))
+    facts = (_fact(FactKind.AS_OF, day=as_of), *(f for _, fs in rows for f in fs))
     save(ctx, data.evolve(answered=True))
     reply = Reply(
         template="account.balances",
@@ -103,6 +108,12 @@ async def balances(ctx: TurnContext) -> Step:
         balances=tuple(views),
     )
     return Step(BALANCES, reply, Outcome.RESOLVED)
+
+
+def reference_day(ctx: TurnContext) -> date:
+    """The day relative expressions ("el mes pasado", "últimos 90 dias") count from: today, or the data as-of
+    date when the data stops earlier, so a relative period never falls after the data (QA 2026-10-05, ACC-03)."""
+    return min(ctx.today, ctx.services.policy.data_as_of)
 
 
 def data_as_of(ctx: TurnContext) -> tuple[date, datetime]:
@@ -147,13 +158,14 @@ async def payment_status(ctx: TurnContext) -> Step:
         "kind": pick(PAYMENT_KINDS[view.transaction_type], ctx.language),
         "amount": view.amount,
         "date": view.occurred_on,
-        "payee": RecordText(view.payee_display or "-"),
         "status": pick(PAYMENT_STATUSES[view.status], ctx.language),
         "as_of": as_of,
     }
+    if view.payee_display:
+        params["payee"] = RecordText(view.payee_display)
     save(ctx, data.evolve(answered=True))
     reply = Reply(
-        template="account.payment_status",
+        template="account.payment_status" if view.payee_display else "account.payment_status_no_payee",
         params=params,
         explain=(clause_ref(ctx, "ACC-ALL-1"),),
         facts=(_fact(FactKind.AS_OF, day=as_of),),

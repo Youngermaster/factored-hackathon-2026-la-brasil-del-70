@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c7bc582e24ee92ee1a17efcbc0169a38fb1fc069e1a0fed9d458d1007e32883d",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1080,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "out_of_scope"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:41.355790Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Me ajuda a fazer a lição de casa de história",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

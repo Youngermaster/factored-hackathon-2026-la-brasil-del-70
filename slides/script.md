@@ -2,7 +2,7 @@
 
 The spoken script of the video pitch, in the order it is spoken: slide sections are keyed by the slide's `routeAlias` in `slides.md`, and the four live segments (`demo-*`) sit between them. It is the same text as the team monologue in [docs/demo/video-monologue.md](../docs/demo/video-monologue.md), which splits it across the four speakers; `pnpm check:content` fails when the two differ by one word. The timed shot list, with the exact clicks and commands, is [docs/demo/video-plan.md](../docs/demo/video-plan.md).
 
-Words in square brackets are not spoken. `[click 2]` means press the right arrow and let the scene play to its next rest before the line after it; `[Juan Young]` names who speaks from there on. Slides without spoken lines (the thesis, the workflows, the appendix) are in the PDF, not in the video.
+Words in square brackets are not spoken. `[click 2]` means press the right arrow and let the scene play to its next rest before the line after it; `[Juan Young]` names who speaks from there on. Slides without spoken lines (the thesis and the workflows) are in the six-page pitch PDF, not in the video; the appendix is a separate PDF.
 
 `pnpm check:content` counts the spoken words at 150 words per minute and fails when the total leaves the target range below (in seconds) or passes 3:00, the organizers' hard limit for the whole video, demo footage included. The spoken target leaves about 20 seconds of the 2:50 cut for typing and loading in the live segments.
 
@@ -54,21 +54,21 @@ Rules for editing: English, plain words, no em dashes, no number that is not in 
 
 [click 1] It runs on one VM: Docker Compose behind Caddy, with the observability stack beside it.
 
-[click 2] Every model call passes one LiteLLM gateway, so the provider is a setting.
+[click 2] Model calls pass one gateway to Azure OpenAI, so the provider is a setting. Policy answers come from retrieved clauses, not model memory.
 
 [click 3] [David Fonseca] Our learned router, resolver and risk estimator beat their baselines offline, but not end to end, so the baselines stay the default.
 
 ## evidence
 
-<!-- video 2:12 to 2:36, slide 5: arrive, clicks 1 to 3. Numbers from data/metrics.yml: the phase 14b test run, simulated on qwen2.5:7b-instruct -->
+<!-- video 2:12 to 2:36, slide 5: arrive, clicks 1 to 3. Numbers from data/metrics.yml: the hosted test run, simulated on azure/gpt-4.1-mini -->
 
-[arrive] [Julián Valencia] Three hundred and four held-out cases, three systems, simulated on a small local model.
+[arrive] [Julián Valencia] Three hundred and four held-out cases, three systems, simulated on a hosted model.
 
-[click 1] Per workflow first: card support is not ahead of the menu and rules bot yet.
+[click 1] Per workflow first: card support ties the menu and rules bot.
 
-[click 2] In aggregate, fifty-eight percent safe automated resolution, against forty-two and thirteen.
+[click 2] In aggregate, sixty-one percent safe automated resolution, against forty-six and twenty-three.
 
-[click 3] Eight unsafe outcomes, against ninety for the naive LLM agent.
+[click 3] One graded unsafe outcome, a confirmed second write, against ninety-two for the naive LLM agent.
 
 ## close
 
@@ -76,7 +76,7 @@ Rules for editing: English, plain words, no em dashes, no number that is not in 
 
 [arrive] [Miguel Correa] When something fails, it steps down, and writes never fail open.
 
-[click 2] We cannot claim real data or a hosted-model evaluation yet.
+[click 2] We cannot claim real data or human-reviewed labels yet.
 
 [click 4] The model understands. Code decides. Evidence proves it.
 

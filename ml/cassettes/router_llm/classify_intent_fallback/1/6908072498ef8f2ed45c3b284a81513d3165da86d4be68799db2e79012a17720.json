@@ -1,0 +1,36 @@
+{
+  "cassette_id": "6908072498ef8f2ed45c3b284a81513d3165da86d4be68799db2e79012a17720",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1236,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.99,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.01,
+        "label": "greeting_or_other"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:04.953663Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero hablar con una persona",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

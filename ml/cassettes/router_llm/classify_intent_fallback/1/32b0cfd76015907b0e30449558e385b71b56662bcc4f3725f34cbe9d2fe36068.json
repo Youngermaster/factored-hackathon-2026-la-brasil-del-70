@@ -1,0 +1,40 @@
+{
+  "cassette_id": "32b0cfd76015907b0e30449558e385b71b56662bcc4f3725f34cbe9d2fe36068",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1182,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.7,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:28.536988Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 945,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Perdi o cartao e ja bloqueei, agora quero um novo",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

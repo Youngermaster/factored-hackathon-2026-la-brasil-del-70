@@ -1,0 +1,36 @@
+{
+  "cassette_id": "2fb1e4ca6e898f25b7434c502058604fc4a4c9a02f70ac47607f086648e0de63",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 936,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.6,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:56.853091Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 935,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "si denuncio la tarjeta por robo, ¿los débitos automáticos se siguen cobrando?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

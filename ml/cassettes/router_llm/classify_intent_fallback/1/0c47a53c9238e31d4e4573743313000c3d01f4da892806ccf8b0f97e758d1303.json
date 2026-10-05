@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0c47a53c9238e31d4e4573743313000c3d01f4da892806ccf8b0f97e758d1303",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1368,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.8,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:38.952040Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿cuáles son los requisitos para sacar una tarjeta de crédito con ustedes?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

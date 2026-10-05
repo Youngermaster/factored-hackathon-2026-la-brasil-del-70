@@ -157,6 +157,8 @@ sequenceDiagram
 
 Scenarios 1 to 12 and 19 run on the in-memory adapters and on PostgreSQL through testcontainers (`services/api/tests/integration/workflows/test_dispute_normal.py`, `test_dispute_edges.py`), with scripted models or the refusing client; a Hypothesis property drives every tool outcome through EXECUTE and VERIFY (`test_success_needs_verification.py`).
 
+Production QA regressions (2026-10-05) run on the in-memory adapters in `services/api/tests/unit/application/workflows/test_qa_dispute_regressions.py`: a reason from the first turn survives a details-only follow-up (the model's `other` never overwrites a known reason), a duplicate dispute names the open case, its status, and its date (`DSP-ALL-4`), a charge before the window gets the window abstention (`DSP-{c}-1`) instead of a details question, one candidate is asked as yes or no (`dispute.clarify_one`), a month-only description offers that month's transactions, a refund-guarantee question at the summary is answered from `INF-ALL-1`, an unsupported-reason handoff carries the `DSP-ALL-3` open question, a summary without a merchant leaves it out, and the status reply cites `INF-ALL-1` without appending it.
+
 ## Limitations
 
 - The resolver is a rule baseline until phase 10; merchant matching is word overlap, so a merchant the customer names differently than the record ranks lower.

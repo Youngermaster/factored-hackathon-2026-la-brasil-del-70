@@ -1,0 +1,40 @@
+{
+  "cassette_id": "fa028c899e3a617bb1867f052b50f112b531e4d73c45e2b42bd5e76454269946",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1198,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.04,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.01,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:27.984849Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 38
+  },
+  "variables": {
+    "customer_message": "Para mi declaracion necesito los estados de cuenta del ano",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

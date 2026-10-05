@@ -1,0 +1,36 @@
+{
+  "cassette_id": "75ae75ec258b230c38b117d9a507b0c2dbdd977d6e335c6dd21ce91ad361d988",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 820,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.3,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:21.137618Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 937,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Sumercé, ¿me confirrma si el abono aue hice esta mañana entró?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

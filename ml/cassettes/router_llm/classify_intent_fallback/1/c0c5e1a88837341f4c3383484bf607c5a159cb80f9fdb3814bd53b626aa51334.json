@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c0c5e1a88837341f4c3383484bf607c5a159cb80f9fdb3814bd53b626aa51334",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1564,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:42.896534Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pueden decir cuándo vence mi tarjeta terminación 0937?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

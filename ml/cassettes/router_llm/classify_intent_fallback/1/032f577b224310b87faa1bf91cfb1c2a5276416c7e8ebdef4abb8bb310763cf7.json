@@ -1,0 +1,36 @@
+{
+  "cassette_id": "032f577b224310b87faa1bf91cfb1c2a5276416c7e8ebdef4abb8bb310763cf7",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 740,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:25.211043Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 944,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "cadê o pix que mandei pra minha mãe até agora nada",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

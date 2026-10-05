@@ -1,0 +1,1846 @@
+{
+  "schema_version": "1.1.0",
+  "run_id": "test-hosted",
+  "system": "b0",
+  "generated_at": "2026-10-05T18:51:03Z",
+  "git_sha": "2ddabb0f",
+  "dataset_version": "eval-world-1:test:292c7c0b17c3",
+  "measurement": "simulated",
+  "workflows": [
+    {
+      "cases": 76,
+      "safe_automated_resolution": {
+        "count": 45,
+        "denominator": 76
+      },
+      "containment": {
+        "count": 59,
+        "denominator": 76
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 14
+      },
+      "escalation_unnecessary": {
+        "count": 3,
+        "denominator": 62
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 76
+      },
+      "latency_p50_ms": 51,
+      "latency_p95_ms": 138,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 63,
+        "denominator": 76
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 76,
+      "safe_automated_resolution": {
+        "count": 47,
+        "denominator": 76
+      },
+      "containment": {
+        "count": 62,
+        "denominator": 76
+      },
+      "escalation_missed": {
+        "count": 3,
+        "denominator": 17
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 59
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 76
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 50,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 68,
+        "denominator": 76
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 76,
+      "safe_automated_resolution": {
+        "count": 29,
+        "denominator": 76
+      },
+      "containment": {
+        "count": 57,
+        "denominator": 76
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 14
+      },
+      "escalation_unnecessary": {
+        "count": 7,
+        "denominator": 62
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 76
+      },
+      "latency_p50_ms": 23,
+      "latency_p95_ms": 49,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 65,
+        "denominator": 76
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 76,
+      "safe_automated_resolution": {
+        "count": 20,
+        "denominator": 76
+      },
+      "containment": {
+        "count": 31,
+        "denominator": 76
+      },
+      "escalation_missed": {
+        "count": 4,
+        "denominator": 19
+      },
+      "escalation_unnecessary": {
+        "count": 30,
+        "denominator": 57
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 76
+      },
+      "latency_p50_ms": 9,
+      "latency_p95_ms": 29,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 31,
+        "denominator": 76
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "workflow": "credit"
+    }
+  ],
+  "aggregate": {
+    "cases": 304,
+    "safe_automated_resolution": {
+      "count": 141,
+      "denominator": 304
+    },
+    "containment": {
+      "count": 209,
+      "denominator": 304
+    },
+    "escalation_missed": {
+      "count": 9,
+      "denominator": 64
+    },
+    "escalation_unnecessary": {
+      "count": 40,
+      "denominator": 240
+    },
+    "unsafe_outcomes": {
+      "count": 0,
+      "denominator": 304
+    },
+    "latency_p50_ms": 17,
+    "latency_p95_ms": 74,
+    "cost_per_attempted_case_usd": "0.000000",
+    "automation_attempted": {
+      "count": 227,
+      "denominator": 304
+    },
+    "cost_per_resolution_usd": "0.000000"
+  },
+  "breakdowns": [
+    {
+      "cases": 188,
+      "safe_automated_resolution": {
+        "count": 91,
+        "denominator": 188
+      },
+      "containment": {
+        "count": 128,
+        "denominator": 188
+      },
+      "escalation_missed": {
+        "count": 4,
+        "denominator": 39
+      },
+      "escalation_unnecessary": {
+        "count": 25,
+        "denominator": 149
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 188
+      },
+      "latency_p50_ms": 17,
+      "latency_p95_ms": 72,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 139,
+        "denominator": 188
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "es",
+      "workflow": null
+    },
+    {
+      "cases": 116,
+      "safe_automated_resolution": {
+        "count": 50,
+        "denominator": 116
+      },
+      "containment": {
+        "count": 81,
+        "denominator": 116
+      },
+      "escalation_missed": {
+        "count": 5,
+        "denominator": 25
+      },
+      "escalation_unnecessary": {
+        "count": 15,
+        "denominator": 91
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 116
+      },
+      "latency_p50_ms": 18,
+      "latency_p95_ms": 80,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 88,
+        "denominator": 116
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "pt",
+      "workflow": null
+    },
+    {
+      "cases": 47,
+      "safe_automated_resolution": {
+        "count": 30,
+        "denominator": 47
+      },
+      "containment": {
+        "count": 36,
+        "denominator": 47
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 9
+      },
+      "escalation_unnecessary": {
+        "count": 2,
+        "denominator": 38
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 47
+      },
+      "latency_p50_ms": 57,
+      "latency_p95_ms": 135,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 39,
+        "denominator": 47
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "es",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 15,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 23,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 1,
+        "denominator": 24
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 48,
+      "latency_p95_ms": 138,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 24,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "pt",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 47,
+      "safe_automated_resolution": {
+        "count": 29,
+        "denominator": 47
+      },
+      "containment": {
+        "count": 38,
+        "denominator": 47
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 10
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 37
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 47
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 32,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 41,
+        "denominator": 47
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "es",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 18,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 24,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 7
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 22
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 75,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 27,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "pt",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 47,
+      "safe_automated_resolution": {
+        "count": 19,
+        "denominator": 47
+      },
+      "containment": {
+        "count": 35,
+        "denominator": 47
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 9
+      },
+      "escalation_unnecessary": {
+        "count": 4,
+        "denominator": 38
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 47
+      },
+      "latency_p50_ms": 22,
+      "latency_p95_ms": 42,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 40,
+        "denominator": 47
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "es",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 10,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 22,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 3,
+        "denominator": 24
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 25,
+      "latency_p95_ms": 52,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 25,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "pt",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 47,
+      "safe_automated_resolution": {
+        "count": 13,
+        "denominator": 47
+      },
+      "containment": {
+        "count": 19,
+        "denominator": 47
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 11
+      },
+      "escalation_unnecessary": {
+        "count": 19,
+        "denominator": 36
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 47
+      },
+      "latency_p50_ms": 10,
+      "latency_p95_ms": 39,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 19,
+        "denominator": 47
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "es",
+      "workflow": "credit"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 7,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 12,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 8
+      },
+      "escalation_unnecessary": {
+        "count": 11,
+        "denominator": 21
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 9,
+      "latency_p95_ms": 28,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 12,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "language",
+      "value": "pt",
+      "workflow": "credit"
+    },
+    {
+      "cases": 48,
+      "safe_automated_resolution": {
+        "count": 21,
+        "denominator": 48
+      },
+      "containment": {
+        "count": 30,
+        "denominator": 48
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 12
+      },
+      "escalation_unnecessary": {
+        "count": 7,
+        "denominator": 36
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 48
+      },
+      "latency_p50_ms": 15,
+      "latency_p95_ms": 60,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 34,
+        "denominator": 48
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-ar",
+      "workflow": null
+    },
+    {
+      "cases": 60,
+      "safe_automated_resolution": {
+        "count": 29,
+        "denominator": 60
+      },
+      "containment": {
+        "count": 43,
+        "denominator": 60
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 11
+      },
+      "escalation_unnecessary": {
+        "count": 8,
+        "denominator": 49
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 60
+      },
+      "latency_p50_ms": 22,
+      "latency_p95_ms": 77,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 47,
+        "denominator": 60
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-co",
+      "workflow": null
+    },
+    {
+      "cases": 80,
+      "safe_automated_resolution": {
+        "count": 41,
+        "denominator": 80
+      },
+      "containment": {
+        "count": 55,
+        "denominator": 80
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 16
+      },
+      "escalation_unnecessary": {
+        "count": 10,
+        "denominator": 64
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 80
+      },
+      "latency_p50_ms": 17,
+      "latency_p95_ms": 75,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 58,
+        "denominator": 80
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-mx",
+      "workflow": null
+    },
+    {
+      "cases": 116,
+      "safe_automated_resolution": {
+        "count": 50,
+        "denominator": 116
+      },
+      "containment": {
+        "count": 81,
+        "denominator": 116
+      },
+      "escalation_missed": {
+        "count": 5,
+        "denominator": 25
+      },
+      "escalation_unnecessary": {
+        "count": 15,
+        "denominator": 91
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 116
+      },
+      "latency_p50_ms": 18,
+      "latency_p95_ms": 80,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 88,
+        "denominator": 116
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "pt-br",
+      "workflow": null
+    },
+    {
+      "cases": 12,
+      "safe_automated_resolution": {
+        "count": 6,
+        "denominator": 12
+      },
+      "containment": {
+        "count": 7,
+        "denominator": 12
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 2,
+        "denominator": 9
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 12
+      },
+      "latency_p50_ms": 57,
+      "latency_p95_ms": 135,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 9,
+        "denominator": 12
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-ar",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 15,
+      "safe_automated_resolution": {
+        "count": 9,
+        "denominator": 15
+      },
+      "containment": {
+        "count": 12,
+        "denominator": 15
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 12
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 15
+      },
+      "latency_p50_ms": 52,
+      "latency_p95_ms": 120,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 13,
+        "denominator": 15
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-co",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 20,
+      "safe_automated_resolution": {
+        "count": 15,
+        "denominator": 20
+      },
+      "containment": {
+        "count": 17,
+        "denominator": 20
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 17
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 20
+      },
+      "latency_p50_ms": 57,
+      "latency_p95_ms": 198,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 17,
+        "denominator": 20
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-mx",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 15,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 23,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 1,
+        "denominator": 24
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 48,
+      "latency_p95_ms": 138,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 24,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "pt-br",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 12,
+      "safe_automated_resolution": {
+        "count": 6,
+        "denominator": 12
+      },
+      "containment": {
+        "count": 8,
+        "denominator": 12
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 8
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 12
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 48,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 9,
+        "denominator": 12
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-ar",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 15,
+      "safe_automated_resolution": {
+        "count": 10,
+        "denominator": 15
+      },
+      "containment": {
+        "count": 14,
+        "denominator": 15
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 2
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 13
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 15
+      },
+      "latency_p50_ms": 11,
+      "latency_p95_ms": 28,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 15,
+        "denominator": 15
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-co",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 20,
+      "safe_automated_resolution": {
+        "count": 13,
+        "denominator": 20
+      },
+      "containment": {
+        "count": 16,
+        "denominator": 20
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 16
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 20
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 63,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 17,
+        "denominator": 20
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-mx",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 18,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 24,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 7
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 22
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 75,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 27,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "pt-br",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 12,
+      "safe_automated_resolution": {
+        "count": 4,
+        "denominator": 12
+      },
+      "containment": {
+        "count": 10,
+        "denominator": 12
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 2
+      },
+      "escalation_unnecessary": {
+        "count": 1,
+        "denominator": 10
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 12
+      },
+      "latency_p50_ms": 18,
+      "latency_p95_ms": 38,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 11,
+        "denominator": 12
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-ar",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 15,
+      "safe_automated_resolution": {
+        "count": 6,
+        "denominator": 15
+      },
+      "containment": {
+        "count": 10,
+        "denominator": 15
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 2,
+        "denominator": 12
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 15
+      },
+      "latency_p50_ms": 26,
+      "latency_p95_ms": 42,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 12,
+        "denominator": 15
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-co",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 20,
+      "safe_automated_resolution": {
+        "count": 9,
+        "denominator": 20
+      },
+      "containment": {
+        "count": 15,
+        "denominator": 20
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 1,
+        "denominator": 16
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 20
+      },
+      "latency_p50_ms": 17,
+      "latency_p95_ms": 43,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 17,
+        "denominator": 20
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-mx",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 10,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 22,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 3,
+        "denominator": 24
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 25,
+      "latency_p95_ms": 52,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 25,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "pt-br",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 12,
+      "safe_automated_resolution": {
+        "count": 5,
+        "denominator": 12
+      },
+      "containment": {
+        "count": 5,
+        "denominator": 12
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 4,
+        "denominator": 9
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 12
+      },
+      "latency_p50_ms": 10,
+      "latency_p95_ms": 39,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 5,
+        "denominator": 12
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-ar",
+      "workflow": "credit"
+    },
+    {
+      "cases": 15,
+      "safe_automated_resolution": {
+        "count": 4,
+        "denominator": 15
+      },
+      "containment": {
+        "count": 7,
+        "denominator": 15
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 6,
+        "denominator": 12
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 15
+      },
+      "latency_p50_ms": 9,
+      "latency_p95_ms": 47,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 7,
+        "denominator": 15
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-co",
+      "workflow": "credit"
+    },
+    {
+      "cases": 20,
+      "safe_automated_resolution": {
+        "count": 4,
+        "denominator": 20
+      },
+      "containment": {
+        "count": 7,
+        "denominator": 20
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 9,
+        "denominator": 15
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 20
+      },
+      "latency_p50_ms": 11,
+      "latency_p95_ms": 29,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 7,
+        "denominator": 20
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "es-mx",
+      "workflow": "credit"
+    },
+    {
+      "cases": 29,
+      "safe_automated_resolution": {
+        "count": 7,
+        "denominator": 29
+      },
+      "containment": {
+        "count": 12,
+        "denominator": 29
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 8
+      },
+      "escalation_unnecessary": {
+        "count": 11,
+        "denominator": 21
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 29
+      },
+      "latency_p50_ms": 9,
+      "latency_p95_ms": 28,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 12,
+        "denominator": 29
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "dialect",
+      "value": "pt-br",
+      "workflow": "credit"
+    },
+    {
+      "cases": 84,
+      "safe_automated_resolution": {
+        "count": 38,
+        "denominator": 84
+      },
+      "containment": {
+        "count": 56,
+        "denominator": 84
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 18
+      },
+      "escalation_unnecessary": {
+        "count": 12,
+        "denominator": 66
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 84
+      },
+      "latency_p50_ms": 29,
+      "latency_p95_ms": 99,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 59,
+        "denominator": 84
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "basic",
+      "workflow": null
+    },
+    {
+      "cases": 93,
+      "safe_automated_resolution": {
+        "count": 48,
+        "denominator": 93
+      },
+      "containment": {
+        "count": 67,
+        "denominator": 93
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 16
+      },
+      "escalation_unnecessary": {
+        "count": 11,
+        "denominator": 77
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 93
+      },
+      "latency_p50_ms": 18,
+      "latency_p95_ms": 99,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 73,
+        "denominator": 93
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "plus",
+      "workflow": null
+    },
+    {
+      "cases": 50,
+      "safe_automated_resolution": {
+        "count": 21,
+        "denominator": 50
+      },
+      "containment": {
+        "count": 33,
+        "denominator": 50
+      },
+      "escalation_missed": {
+        "count": 3,
+        "denominator": 17
+      },
+      "escalation_unnecessary": {
+        "count": 3,
+        "denominator": 33
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 50
+      },
+      "latency_p50_ms": 14,
+      "latency_p95_ms": 70,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 38,
+        "denominator": 50
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "premium",
+      "workflow": null
+    },
+    {
+      "cases": 77,
+      "safe_automated_resolution": {
+        "count": 34,
+        "denominator": 77
+      },
+      "containment": {
+        "count": 53,
+        "denominator": 77
+      },
+      "escalation_missed": {
+        "count": 3,
+        "denominator": 13
+      },
+      "escalation_unnecessary": {
+        "count": 14,
+        "denominator": 64
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 77
+      },
+      "latency_p50_ms": 14,
+      "latency_p95_ms": 49,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 57,
+        "denominator": 77
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "student",
+      "workflow": null
+    },
+    {
+      "cases": 31,
+      "safe_automated_resolution": {
+        "count": 20,
+        "denominator": 31
+      },
+      "containment": {
+        "count": 25,
+        "denominator": 31
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 1,
+        "denominator": 26
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 31
+      },
+      "latency_p50_ms": 50,
+      "latency_p95_ms": 138,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 25,
+        "denominator": 31
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "basic",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 26,
+      "safe_automated_resolution": {
+        "count": 17,
+        "denominator": 26
+      },
+      "containment": {
+        "count": 21,
+        "denominator": 26
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 21
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 26
+      },
+      "latency_p50_ms": 51,
+      "latency_p95_ms": 177,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 23,
+        "denominator": 26
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "plus",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 19,
+      "safe_automated_resolution": {
+        "count": 8,
+        "denominator": 19
+      },
+      "containment": {
+        "count": 13,
+        "denominator": 19
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 2,
+        "denominator": 15
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 19
+      },
+      "latency_p50_ms": 49,
+      "latency_p95_ms": 135,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 15,
+        "denominator": 19
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "premium",
+      "workflow": "account_inquiry"
+    },
+    {
+      "cases": 3,
+      "safe_automated_resolution": {
+        "count": 1,
+        "denominator": 3
+      },
+      "containment": {
+        "count": 1,
+        "denominator": 3
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 2
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 1
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 3
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 24,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 1,
+        "denominator": 3
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "basic",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 26,
+      "safe_automated_resolution": {
+        "count": 17,
+        "denominator": 26
+      },
+      "containment": {
+        "count": 22,
+        "denominator": 26
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 22
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 26
+      },
+      "latency_p50_ms": 11,
+      "latency_p95_ms": 109,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 24,
+        "denominator": 26
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "plus",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 24,
+      "safe_automated_resolution": {
+        "count": 13,
+        "denominator": 24
+      },
+      "containment": {
+        "count": 18,
+        "denominator": 24
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 7
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 17
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 24
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 28,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 21,
+        "denominator": 24
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "premium",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 23,
+      "safe_automated_resolution": {
+        "count": 16,
+        "denominator": 23
+      },
+      "containment": {
+        "count": 21,
+        "denominator": 23
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 19
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 23
+      },
+      "latency_p50_ms": 12,
+      "latency_p95_ms": 37,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 22,
+        "denominator": 23
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "student",
+      "workflow": "card_support"
+    },
+    {
+      "cases": 25,
+      "safe_automated_resolution": {
+        "count": 10,
+        "denominator": 25
+      },
+      "containment": {
+        "count": 17,
+        "denominator": 25
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 5
+      },
+      "escalation_unnecessary": {
+        "count": 3,
+        "denominator": 20
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 25
+      },
+      "latency_p50_ms": 27,
+      "latency_p95_ms": 42,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 20,
+        "denominator": 25
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "basic",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 21,
+      "safe_automated_resolution": {
+        "count": 7,
+        "denominator": 21
+      },
+      "containment": {
+        "count": 17,
+        "denominator": 21
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 3
+      },
+      "escalation_unnecessary": {
+        "count": 2,
+        "denominator": 18
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 21
+      },
+      "latency_p50_ms": 20,
+      "latency_p95_ms": 41,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 19,
+        "denominator": 21
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "plus",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 4,
+      "safe_automated_resolution": {
+        "count": 0,
+        "denominator": 4
+      },
+      "containment": {
+        "count": 1,
+        "denominator": 4
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 0,
+        "denominator": 0
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 4
+      },
+      "latency_p50_ms": 20,
+      "latency_p95_ms": 36,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 1,
+        "denominator": 4
+      },
+      "cost_per_resolution_usd": null,
+      "dimension": "segment",
+      "value": "premium",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 26,
+      "safe_automated_resolution": {
+        "count": 12,
+        "denominator": 26
+      },
+      "containment": {
+        "count": 22,
+        "denominator": 26
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 2
+      },
+      "escalation_unnecessary": {
+        "count": 2,
+        "denominator": 24
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 26
+      },
+      "latency_p50_ms": 17,
+      "latency_p95_ms": 51,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 25,
+        "denominator": 26
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "student",
+      "workflow": "dispute"
+    },
+    {
+      "cases": 25,
+      "safe_automated_resolution": {
+        "count": 7,
+        "denominator": 25
+      },
+      "containment": {
+        "count": 13,
+        "denominator": 25
+      },
+      "escalation_missed": {
+        "count": 2,
+        "denominator": 6
+      },
+      "escalation_unnecessary": {
+        "count": 8,
+        "denominator": 19
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 25
+      },
+      "latency_p50_ms": 9,
+      "latency_p95_ms": 38,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 13,
+        "denominator": 25
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "basic",
+      "workflow": "credit"
+    },
+    {
+      "cases": 20,
+      "safe_automated_resolution": {
+        "count": 7,
+        "denominator": 20
+      },
+      "containment": {
+        "count": 7,
+        "denominator": 20
+      },
+      "escalation_missed": {
+        "count": 0,
+        "denominator": 4
+      },
+      "escalation_unnecessary": {
+        "count": 9,
+        "denominator": 16
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 20
+      },
+      "latency_p50_ms": 10,
+      "latency_p95_ms": 28,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 7,
+        "denominator": 20
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "plus",
+      "workflow": "credit"
+    },
+    {
+      "cases": 3,
+      "safe_automated_resolution": {
+        "count": 0,
+        "denominator": 3
+      },
+      "containment": {
+        "count": 1,
+        "denominator": 3
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 2
+      },
+      "escalation_unnecessary": {
+        "count": 1,
+        "denominator": 1
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 3
+      },
+      "latency_p50_ms": 7,
+      "latency_p95_ms": 9,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 1,
+        "denominator": 3
+      },
+      "cost_per_resolution_usd": null,
+      "dimension": "segment",
+      "value": "premium",
+      "workflow": "credit"
+    },
+    {
+      "cases": 28,
+      "safe_automated_resolution": {
+        "count": 6,
+        "denominator": 28
+      },
+      "containment": {
+        "count": 10,
+        "denominator": 28
+      },
+      "escalation_missed": {
+        "count": 1,
+        "denominator": 7
+      },
+      "escalation_unnecessary": {
+        "count": 12,
+        "denominator": 21
+      },
+      "unsafe_outcomes": {
+        "count": 0,
+        "denominator": 28
+      },
+      "latency_p50_ms": 9,
+      "latency_p95_ms": 29,
+      "cost_per_attempted_case_usd": "0.000000",
+      "automation_attempted": {
+        "count": 10,
+        "denominator": 28
+      },
+      "cost_per_resolution_usd": "0.000000",
+      "dimension": "segment",
+      "value": "student",
+      "workflow": "credit"
+    }
+  ],
+  "failure_table": "docs/evaluation/failures.md",
+  "notes": [
+    "Model and provider: none.",
+    "test split, 332 scenarios, scenario set SHA-256 292c7c0b17c3f04d; 3 run(s); language model mode record.",
+    "Cassette misses: 0; harness errors: 0.",
+    "The aggregate sums the four workflows; the routing scenarios are reported in the results document.",
+    "Latency is per turn, in process; cost uses the dated price table."
+  ]
+}

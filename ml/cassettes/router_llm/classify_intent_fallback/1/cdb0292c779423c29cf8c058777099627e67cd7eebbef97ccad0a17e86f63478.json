@@ -1,0 +1,36 @@
+{
+  "cassette_id": "cdb0292c779423c29cf8c058777099627e67cd7eebbef97ccad0a17e86f63478",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 879,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:08.021486Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Qué plazos tienen para crédito hipotecario?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

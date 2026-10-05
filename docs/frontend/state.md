@@ -15,6 +15,8 @@ Where every piece of state in `apps/web` lives, under the rules in CLAUDE.md sec
 | `['api', 'handoffs', id]` | `GET /v1/agent/handoffs/{id}` | 30 s default | `features/agent-inbox` (`useHandoff`) | Replaced by the claim and resolve responses |
 | `['api', 'credit-applications', ...]` | `GET /v1/agent/credit-applications[/{id}]` | 30 s default | `features/agent-inbox` | Read only |
 | `['api', 'evaluation', 'summaries']`, `['api', 'evaluation', 'trace', id]` | `GET /v1/eval/summaries`, `GET /v1/eval/conversations/{id}/trace` | 30 s default | `features/eval-report`, `features/glass-box` (`useStaffTrace`, no retry) | Read only |
+| `['api', 'supervision', 'models']` | `GET /v1/eval/models` | 5 minutes | `features/supervision` (`useModelInventory`) | Read only; configuration recorded at process start plus the curated model cards |
+| `['api', 'health', 'details']` | `GET /health/details` | 30 s default, polled every 30 s while open | `features/supervision` (`useHealthDetails`) | The `503` body at L4 is returned as data, not thrown |
 
 Defaults (`createQueryClient`): `staleTime` 30 s, refetch on window focus, retries only for network errors and 5xx (at most two), never for a 4xx; mutations never retry automatically.
 

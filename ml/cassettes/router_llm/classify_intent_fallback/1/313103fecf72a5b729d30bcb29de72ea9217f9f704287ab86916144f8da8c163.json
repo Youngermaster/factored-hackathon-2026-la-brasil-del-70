@@ -1,0 +1,36 @@
+{
+  "cassette_id": "313103fecf72a5b729d30bcb29de72ea9217f9f704287ab86916144f8da8c163",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1051,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:07:36.385233Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "¿Tengo algun credito preaprobado?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

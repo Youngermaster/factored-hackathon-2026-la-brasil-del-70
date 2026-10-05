@@ -1,0 +1,36 @@
+{
+  "cassette_id": "76f06096c51d8b0daef68ad1595e7d5fc7f8f1067f63239dd1b5d8bef4fe44ad",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 744,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:03.267435Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 940,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿CUÁL ES EL MONTO MÁXIMO QUE PRESTAN EN PRÉSTAMO PERSONAL?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

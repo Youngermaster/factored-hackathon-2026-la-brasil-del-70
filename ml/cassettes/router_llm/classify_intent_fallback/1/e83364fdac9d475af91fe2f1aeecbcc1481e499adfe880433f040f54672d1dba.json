@@ -1,0 +1,36 @@
+{
+  "cassette_id": "e83364fdac9d475af91fe2f1aeecbcc1481e499adfe880433f040f54672d1dba",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 886,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:02.080359Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 941,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Qual o valor máximo liberado em cartão de crédito?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

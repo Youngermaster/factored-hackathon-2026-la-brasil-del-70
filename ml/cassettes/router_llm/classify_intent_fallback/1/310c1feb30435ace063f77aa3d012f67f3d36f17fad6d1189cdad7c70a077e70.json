@@ -1,0 +1,36 @@
+{
+  "cassette_id": "310c1feb30435ace063f77aa3d012f67f3d36f17fad6d1189cdad7c70a077e70",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2499,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:06:20.694469Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero saber si ya revisaron mi solicitud de crédito automotriz",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

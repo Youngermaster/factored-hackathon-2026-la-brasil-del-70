@@ -1,0 +1,36 @@
+{
+  "cassette_id": "06361d310a06dd546a584335e4463d590b54bbc2f63d50e40bc2e5ee92faa935",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 752,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:44.391274Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Solo quiero consultar si la tarjeta está habilitada, no necesito hacer nada más",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

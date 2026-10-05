@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0703fdd1adecc2b6c80295aff922519dba1893e5f0b17cff15564e7d1625c2cd",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1597,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:31.793904Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 925,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "esatdo dde cuenta plástico de crédito",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

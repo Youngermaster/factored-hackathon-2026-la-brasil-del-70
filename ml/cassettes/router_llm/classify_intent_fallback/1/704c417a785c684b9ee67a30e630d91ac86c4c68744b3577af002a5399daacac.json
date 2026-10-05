@@ -1,0 +1,36 @@
+{
+  "cassette_id": "704c417a785c684b9ee67a30e630d91ac86c4c68744b3577af002a5399daacac",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 6087,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.02,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:51:22.846113Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 919,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "saldo tarjeta",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

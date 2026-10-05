@@ -3,14 +3,17 @@
 import io
 import json
 
+import httpx
 import structlog
+from fastapi import FastAPI
 from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+from opentelemetry.sdk.metrics.export import HistogramDataPoint, InMemoryMetricReader, PeriodicExportingMetricReader
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 from pydantic import SecretStr
 
+from bank_agent.adapters.telemetry.catalog import COST_BUCKETS, SECONDS_BUCKETS
 from bank_agent.adapters.telemetry.langfuse import LangfuseGenerationExporter
 from bank_agent.bootstrap.logging import configure_logging
 from bank_agent.bootstrap.observability import build_observability
@@ -129,3 +132,36 @@ def test_a_forged_trace_field_is_still_redacted() -> None:
     (record,) = [json.loads(line) for line in stream.getvalue().splitlines()]
     assert record["trace_id"] == "[REDACTED:email]"
     assert record["span_id"] == "[REDACTED:number]"
+
+
+async def test_http_latency_buckets_reach_sixty_seconds_and_other_histograms_keep_theirs() -> None:
+    """A model-bound turn can take 20 s; the instrumentation's default buckets stop at 10 s."""
+    reader = InMemoryMetricReader()
+    observability = build_observability(ObservabilitySettings(), metric_readers=[reader])
+    app = FastAPI()
+
+    @app.get("/v1/ping")
+    async def ping() -> dict[str, str]:
+        return {"status": "ok"}
+
+    try:
+        observability.instrument_app(app)
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://api.test") as client:
+            assert (await client.get("/v1/ping")).status_code == 200
+        observability.telemetry.histogram("bank.llm.cost_usd").record(0.001, {})
+        data = reader.get_metrics_data()
+        assert data is not None
+        bounds = {
+            metric.name: tuple(point.explicit_bounds)
+            for resource in data.resource_metrics
+            for scope in resource.scope_metrics
+            for metric in scope.metrics
+            for point in metric.data.data_points
+            if isinstance(point, HistogramDataPoint)
+        }
+        assert bounds["http.server.request.duration"] == SECONDS_BUCKETS
+        assert bounds["http.server.request.duration"][-1] == 60.0
+        assert bounds["bank.llm.cost_usd"] == COST_BUCKETS
+    finally:
+        observability.shutdown()

@@ -62,6 +62,42 @@ Calling `InformationalRetrieval.search` with any other intent raises `RetrievalN
 - **Abstention.** `RetrievalPolicy` keeps hits at or above the retriever's threshold (tuned on the dev split of the judgments: BM25 3.6292, dense cosine 0.8275) and abstains otherwise; it also drops any ELG hit. The hybrid retriever abstains when no component hit clears its floor. Results are in [the retrieval evaluation](../evaluation/retrieval.md).
 - **Index.** `bank-agent index build` (`make index`, `DENSE=1` for embeddings) writes `data/artifacts/retrieval/indexes/<pack version>/`. With `RETRIEVAL_INDEX_SOURCE=stored` (required in production) the API loads the index of the current pack version and refuses a mismatch; with `build` (development) it builds the BM25 index from the loaded pack at startup.
 
+### Qdrant retrieval (ADR 0047)
+
+`RETRIEVAL_RETRIEVER=qdrant` searches a Qdrant collection of the same corpus, embedded with Azure OpenAI
+`text-embedding-3-small` at 512 dimensions; `qdrant_hybrid` fuses it with BM25 (reciprocal rank fusion after each
+component's floor: BM25's tuned threshold and the Qdrant cosine threshold 0.4618). BM25 stays the default. The
+collection is named after the pack version and the embedding model, each point id is a UUID v5 of the clause key,
+and the payload holds keyword fields only (no clause text), so citations still resolve from the pack. Filters on
+language and jurisdiction come from the verified session; no model output selects a filter or a collection. The
+evaluation and the pre-registered switching rule are in [the retrieval evaluation](../evaluation/retrieval.md).
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant E as Engine (worker thread)
+    participant F as FallbackRetriever
+    participant H as Hybrid (RRF)
+    participant B as BM25 (in process)
+    participant R as Redaction
+    participant M as Embedding gateway
+    participant Q as Qdrant
+    E->>F: search(text, language, jurisdiction, k)
+    F->>H: search
+    H->>B: top 20 above the BM25 floor
+    H->>R: query text
+    R->>M: redacted text (emails, document, card, and phone numbers masked)
+    M-->>H: unit vector (timeout 3 s, one retry, circuit breaker, cost recorded)
+    H->>Q: vector, filter language and jurisdiction or ALL, limit 20
+    Q-->>H: matches with clause id and version
+    H-->>F: fused ranking
+    alt embedding or store failure, open circuit, or missing collection
+        F->>B: the same query
+        B-->>F: BM25 hits (retriever:bm25@1), fallback counted
+    end
+    F-->>E: hits, then RetrievalPolicy applies the threshold of the retriever that served
+```
+
 ## The grounding verifier
 
 `GroundingVerifier(repository).verify(draft, context)` returns typed violations and never rewrites the draft.
@@ -85,4 +121,5 @@ A sentence that repeats a whole sentence of a cited or bound clause is quoted po
 
 - The verifier is lexical and closed: numbers written as words ("sesenta días") and paraphrased claims outside its lexicons are not detected. The template fallback and the evaluation harness (phase 14) cover what it misses.
 - The judgments are team-written and pending review; per-workflow test cells hold 12 in-scope queries, so the retriever choice and the thresholds are provisional.
+- The Qdrant retrievers send the redacted query to the model provider and depend on two services; both fail to BM25, but a slow provider still adds up to the embedding timeout to an informational answer before the circuit opens.
 - Only the informational intent retrieves; a question that mixes an informational part with a workflow request is split by the router (phase 10) or clarified.

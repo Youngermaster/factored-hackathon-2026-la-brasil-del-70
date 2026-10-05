@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e3a6f6f19e308f2f3d905fb5d5691c356895526fa22ab08449f85dedf07e6c71",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1583,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "out_of_scope"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:16:24.915086Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 18
+  },
+  "variables": {
+    "customer_message": "Quiero invertiir en acciones, ¿qué e recomiendan?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

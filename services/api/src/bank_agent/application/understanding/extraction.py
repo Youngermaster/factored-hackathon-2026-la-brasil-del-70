@@ -31,8 +31,8 @@ _REASONS: tuple[tuple[DisputeReason, str], ...] = (
     ),
     (
         DisputeReason.UNRECOGNIZED,
-        r"no (la |lo )?reconozco|desconozco|no fui yo|no (la |lo )?hice|nao (a |o )?reconheco|nao fui eu|"
-        r"desconheco|nao fiz|fraude|no autorice|nao autorizei",
+        r"no (la |lo )?reconozco|desconozco|desconoc|no fui yo|no (la |lo )?hi[cz]e|nao (a |o )?reconheco|nao fui eu|"
+        r"desconhec|nao fiz|fraude|no autorice|nao autorizei",
     ),
 )
 _BLOCK_REASONS: tuple[tuple[CardBlockReason, str], ...] = (

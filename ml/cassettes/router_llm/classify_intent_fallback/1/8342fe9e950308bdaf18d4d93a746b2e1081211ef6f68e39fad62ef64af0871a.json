@@ -1,0 +1,36 @@
+{
+  "cassette_id": "8342fe9e950308bdaf18d4d93a746b2e1081211ef6f68e39fad62ef64af0871a",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1088,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:41.917009Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "Meu cartao de credito foi aprovado?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

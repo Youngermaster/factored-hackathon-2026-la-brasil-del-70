@@ -3,6 +3,7 @@
 from collections.abc import Iterable
 from datetime import datetime
 
+from bank_evals.retrieval.decision import decide
 from bank_evals.retrieval.evaluation import RetrievalEvaluation
 from bank_evals.retrieval.runner import RetrieverReport, SliceMetrics
 
@@ -10,7 +11,50 @@ _COLUMNS = (
     "| Retriever | Slice | In scope | Out of scope | R@1 | R@3 | R@5 | MRR | nDCG@5 | Abst. P | Abst. R | False abst. |"
 )
 _RULE = "|---|---|---|---|---|---|---|---|---|---|---|---|"
-DIMENSIONS = (("workflow", "By workflow"), ("language", "By language"), ("jurisdiction", "By jurisdiction"))
+DIMENSIONS = (
+    ("workflow", "By workflow"),
+    ("language", "By language"),
+    ("jurisdiction", "By jurisdiction"),
+    ("cross_language", "Cross-language"),
+)
+CROSS_LANGUAGE_NOTE = (
+    "Each in-scope test query searched against the other language's documents (the same clause ids exist in both "
+    "languages, so the labels carry over): what a customer gets when the language detector picks the wrong language. "
+    "Production filters by the detected language, so this measures robustness, not the normal path."
+)
+HAND_WRITTEN_START = "<!-- hand-written:start -->"
+HAND_WRITTEN_END = "<!-- hand-written:end -->"
+DEFAULT_HAND_WRITTEN = "No hand-written decision yet."
+
+
+def extract_hand_written(previous: str) -> str | None:
+    """The text between the hand-written markers of an earlier report, kept across regenerations."""
+    start, end = previous.find(HAND_WRITTEN_START), previous.find(HAND_WRITTEN_END)
+    if start < 0 or end < start:
+        return None
+    return previous[start + len(HAND_WRITTEN_START) : end].strip("\n")
+
+
+def _decision_lines(evaluation: RetrievalEvaluation) -> list[str]:
+    decision = decide(evaluation)
+    lines = [
+        "## Production decision (pre-registered rule)",
+        "",
+        "Registered on 2026-10-05, before the hosted embeddings were recorded "
+        "(`evals/src/bank_evals/retrieval/decision.py`): production switches from `bm25` to `qdrant_hybrid` only if,",
+        "on the test split, it has a higher MRR, its recall at 1, 3, and 5 is not lower in Spanish or in Portuguese,",
+        "and (a safety guard added at registration) its out-of-scope abstention recall is not lower.",
+        "",
+    ]
+    if decision is None:
+        return [*lines, "Not evaluated: the Qdrant retrievers did not run (no recorded embeddings).", ""]
+    lines += ["| Check | qdrant_hybrid | bm25 | Passed |", "|---|---|---|---|"]
+    for check in decision.checks:
+        lines.append(
+            f"| {check.name} | {_f(check.candidate)} | {_f(check.baseline)} | {'yes' if check.passed else 'no'} |"
+        )
+    verdict = "passes: switch to `qdrant_hybrid`" if decision.switch else "fails: keep `bm25`"
+    return [*lines, "", f"**Outcome: the rule {verdict}.** The labels are pending human review (see above).", ""]
 
 
 def _f(value: float | None) -> str:
@@ -39,8 +83,27 @@ def _table(rows: Iterable[str]) -> list[str]:
     return [_COLUMNS, _RULE, *rows, ""]
 
 
+def _vector_row(evaluation: RetrievalEvaluation, embeddings_file: str | None, recorded_at: str | None) -> str:
+    if evaluation.vector_model is None:
+        return f"not run: {evaluation.vector_note or 'no recorded embeddings'}"
+    model, _, dimension = evaluation.vector_model.partition("|")
+    recorded = f", recorded {recorded_at}" if recorded_at else ""
+    return (
+        f"`{model}` at {dimension or 'native'} dimensions, from `{embeddings_file}`{recorded} (queries redacted as in "
+        f"production); store `{evaluation.vector_store}`"
+    )
+
+
 def render_report(
-    evaluation: RetrievalEvaluation, *, generated_at: datetime, git_sha: str, judgments_file: str, digest: str
+    evaluation: RetrievalEvaluation,
+    *,
+    generated_at: datetime,
+    git_sha: str,
+    judgments_file: str,
+    digest: str,
+    embeddings_file: str | None = None,
+    embeddings_recorded_at: str | None = None,
+    hand_written: str | None = None,
 ) -> str:
     counts = evaluation.judgment_counts
     review = ", ".join(f"{status}: {n}" for status, n in sorted(evaluation.review_status.items()))
@@ -66,14 +129,17 @@ def render_report(
         f"| Policy pack | `{evaluation.pack_version}`, {evaluation.document_count} documents (ELG clauses excluded) |",
         f"| Tokenizer | `{evaluation.tokenizer}` |",
         f"| Embedding model | {model} |",
+        f"| Hosted embeddings (Qdrant) | {_vector_row(evaluation, embeddings_file, embeddings_recorded_at)} |",
         f"| Fusion | reciprocal rank fusion, k = {evaluation.rrf_k}, component floors = tuned thresholds |",
         "",
         "**Read these numbers with their sample sizes.** Every label is team-written and still pending human review,",
         "so the results are provisional. Each workflow has 12 in-scope test queries, so one query moves a",
         "per-workflow recall by about 0.08; per-language and per-jurisdiction cells are just as small. Ranking",
         "metrics use in-scope queries before the threshold; abstention metrics use the threshold tuned on the dev",
-        "split (the hybrid retriever abstains when no component hit clears its floor). Latency is measured in",
-        "process on one machine, per query, including the query embedding for dense and hybrid.",
+        "split (the hybrid retrievers abstain when no component hit clears its floor). Latency is measured in",
+        "process on one machine, per query, including the query embedding for dense and hybrid; for `qdrant` and",
+        "`qdrant_hybrid` the vectors are replayed from the recording and the store is in process, so their latency",
+        "excludes the embedding call and the network (offline measurement, not a production latency).",
         "",
         "## Summary",
         "",
@@ -93,6 +159,8 @@ def render_report(
     lines.append("")
     for dimension, title in DIMENSIONS:
         lines += [f"## {title} (test split)", ""]
+        if dimension == "cross_language":
+            lines += [CROSS_LANGUAGE_NOTE, ""]
         rows = (
             _row(report, metrics)
             for report in evaluation.reports
@@ -106,6 +174,17 @@ def render_report(
         "| Split and workflow | Queries |",
         "|---|---|",
         *(f"| {key} | {value} |" for key, value in counts.items() if "." in key),
+        "",
+    ]
+    lines += _decision_lines(evaluation)
+    lines += [
+        "## Decision and discussion (hand-written)",
+        "",
+        "The text between the markers below is kept when the report is regenerated.",
+        "",
+        HAND_WRITTEN_START,
+        hand_written if hand_written is not None else DEFAULT_HAND_WRITTEN,
+        HAND_WRITTEN_END,
         "",
     ]
     return "\n".join(lines)

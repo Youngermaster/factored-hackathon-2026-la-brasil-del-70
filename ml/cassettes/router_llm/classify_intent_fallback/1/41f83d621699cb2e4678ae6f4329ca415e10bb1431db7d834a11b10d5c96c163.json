@@ -1,0 +1,36 @@
+{
+  "cassette_id": "41f83d621699cb2e4678ae6f4329ca415e10bb1431db7d834a11b10d5c96c163",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1018,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:10:19.207704Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "me debitaron la cuota del gimnasio aunque la di de baja hace dos meses",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

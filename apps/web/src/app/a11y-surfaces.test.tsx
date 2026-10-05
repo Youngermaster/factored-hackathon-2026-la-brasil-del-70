@@ -14,6 +14,7 @@ import {
   turnView,
 } from '@/test/msw/conversation';
 import { server } from '@/test/msw/server';
+import { startSupervisionServer } from '@/test/msw/supervision';
 import { assessmentRecord, customerTraceRecord, staffTraceRecord } from '@/test/msw/trace';
 
 // Whole pages: landmarks and headings are checked too.
@@ -140,6 +141,15 @@ describe.each(['light', 'dark'] as const)('product surfaces in the %s theme', (t
     await expectAccessible();
     await router.navigate('/console/traces/conv-a');
     await screen.findByRole('region', { name: 'Solo evaluación' });
+    await expectAccessible();
+  });
+
+  it('the supervision view', async () => {
+    startAuthServer({ session: sessionView({ role: 'evaluator' }) });
+    startSupervisionServer();
+    renderApp({ path: '/console/supervision', theme });
+    await screen.findByRole('table', { name: 'Componentes y modelo servido' });
+    await screen.findByText('L0: normal');
     await expectAccessible();
   });
 

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "70206c8db76432544a6831dfe0df77548cf1040b5c6c59c08c370a33f3571511",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1205,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:48.538130Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Sumercé, ¿me confirma si el abono que hice esta mañana entró?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

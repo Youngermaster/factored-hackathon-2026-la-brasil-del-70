@@ -1,0 +1,40 @@
+{
+  "cassette_id": "c40bab23a8c4c5afcfe11976a93b653cf435b27c0c200988be88dc4da8eb8067",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1220,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.6,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.3,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:33.535464Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 948,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Boa tarde, dá pra me passar um resuml das transações da poupança?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

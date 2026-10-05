@@ -1,0 +1,40 @@
+{
+  "cassette_id": "ada177857955dda7c8008ce4e2760ac37cb646f63f83063c55cd3750be905de2",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3348,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "payment_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.1,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:26.873677Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 938,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Che, le transferí $ 7.800 a un amigo y no le llegó, ¿qué onda?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

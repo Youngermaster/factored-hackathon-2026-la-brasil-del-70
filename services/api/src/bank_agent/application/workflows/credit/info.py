@@ -77,7 +77,7 @@ async def _listing(ctx: TurnContext, data: CreditData) -> Step:
 def detail_reply(ctx: TurnContext, product: CreditProduct, *, closing: str) -> Reply:
     card = product.product_type is CreditProductType.CREDIT_CARD
     params: dict[str, Param] = {
-        "name": name(ctx, product.product_type),
+        "name": name(ctx, product.product_type).capitalize(),
         "min": product.min_amount,
         "max": product.max_amount,
         "min_rate": rate(product.min_annual_rate, ctx.locale),

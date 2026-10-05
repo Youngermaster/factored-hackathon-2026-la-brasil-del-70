@@ -1,0 +1,32 @@
+{
+  "cassette_id": "e27b7f39124a3e0fb11bcf6d3ea680311e3494ffcff6566f30da87382e63f966",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1050,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:05.952285Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 939,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "HOLA, ¿PUEDO HABLAR CON UN ASESOR DE CARNE Y HUESO?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

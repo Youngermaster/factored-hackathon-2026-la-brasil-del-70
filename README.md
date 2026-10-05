@@ -6,15 +6,18 @@ An AI-first customer-service system for a synthetic Latin American bank, built b
 
 | Link | Where |
 |---|---|
-| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)); no hosted model is configured yet, so every workflow takes its deterministic path |
+| Deployed demo | <https://la-brasil-del-70.westus2.cloudapp.azure.com> on one Azure VM, in demo mode: pick a profile on the sign-in page and type the one-time code shown on screen. It runs the current `main`, released by the deploy workflow after CI passes ([deploy guide](deploy/README.md), [ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). Since 2026-10-05 it calls Azure OpenAI (`gpt-4.1-mini`, with `gpt-4o` as the fallback) only to extract details and detect escalation signals; deterministic policy decides, and every workflow keeps its deterministic path when no model can answer |
 | Video pitch | Pending, 3:00 at most: the [timed shot list](docs/demo/video-plan.md), the [narration by speaker](docs/demo/video-monologue.md), and the [practice cases](docs/demo/practice-cases.md) |
-| Slides | [slides/](slides/README.md) (Slidev; `pnpm export:final` builds the six-slide PDF) |
-| Demo guide for judges | `/demo` in the running app (demo mode), and [docs/demo/script.md](docs/demo/script.md) |
-| Evaluation results | [docs/evaluation/results.md](docs/evaluation/results.md) and [failures.md](docs/evaluation/failures.md) |
+| Slides | [slides/](slides/README.md) (Slidev): six slides; `pnpm export:final` builds the six-page pitch PDF (one page per slide, its build-up frames in order) and a 32-page version with one page per click |
+| Demo guide for judges | `/demo` in the running app (demo mode), the Supervision view (`evaluator-demo-01`, Supervisión: who decides each step, served model versions, evidence) ([guide](docs/frontend/supervision.md)), and [docs/demo/script.md](docs/demo/script.md) |
+| Evaluation results | [results.md](docs/evaluation/results.md), [failures.md](docs/evaluation/failures.md), [router-llm.md](docs/evaluation/router-llm.md), [retrieval.md](docs/evaluation/retrieval.md) |
+| Rubric map | [docs/EVALUATION_CRITERIA.md](docs/EVALUATION_CRITERIA.md): each official dimension to its evidence and how to verify it |
+| Retrieval (RAG) evidence | [docs/evaluation/retrieval.md](docs/evaluation/retrieval.md) (BM25, dense, Qdrant, hybrid on held-out queries, pre-registered switch rule), [ADR 0047](docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md) |
+| Router: classical against a hosted LLM | [docs/evaluation/router-llm.md](docs/evaluation/router-llm.md): pre-registered rule, why `keyword@1` keeps serving |
 | Brief traceability | [docs/submission/brief-traceability.md](docs/submission/brief-traceability.md): every brief requirement to code, tests, and evidence |
 | Limitations | [LIMITATIONS.md](LIMITATIONS.md) |
 
-**Deployment status (2026-10-04).** The demo at <https://la-brasil-del-70.westus2.cloudapp.azure.com> runs `main` on one Azure VM (`Standard_B2as_v2`, Docker Compose behind Caddy, Let's Encrypt), with the production secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). Every push to `main` that passes CI is built once, pushed to GHCR, and released on the VM by the deploy workflow over Azure OpenID Connect, with a smoke test, a CSP check, and an automatic rollback ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). The observability profile (OpenTelemetry, Prometheus, Grafana, Jaeger) runs on the same VM and is reached through an SSH tunnel. No hosted model is configured yet; a key added to the vault switches it on without a code change. A teammate's earlier VM (`bank-agent-yzaf9.westus2.cloudapp.azure.com`, pull request 27, hosted `gemini-3.1-flash-lite`) runs an older build.
+**Deployment status (2026-10-05).** The demo at <https://la-brasil-del-70.westus2.cloudapp.azure.com> runs `main` on one Azure VM (`Standard_B2as_v2`, Docker Compose behind Caddy, Let's Encrypt), with the production secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)). Every push to `main` that passes CI is built once, pushed to GHCR, and released on the VM by the deploy workflow over Azure OpenID Connect, with a smoke test, a CSP check, and an automatic rollback ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). The observability profile (OpenTelemetry, Prometheus, Grafana, Jaeger) runs on the same VM; Grafana is served read-only at </grafana/> ([ADR 0045](docs/adr/0045-expose-grafana-read-only-under-grafana.md)) and Jaeger stays on an SSH tunnel; metadata-only Langfuse tracing is live: one generation per model call with identifiers, model and prompt versions, tokens, cost, latency, and status, never prompts or message text ([data use](docs/security/data-use.md)). The language model is Azure OpenAI in the team's own resource group (`aoai-la70-bank-agent`, Sweden Central): `gpt-4.1-mini` answers, `gpt-4o` takes over when the primary fails after its retries or while its circuit is open (degradation level L1), both keys are Key Vault secrets like every other, and a daily budget cap and a per-session token limit bound the spend. The model only proposes typed details and escalation signals; the policy kernel, the state machines, and verified tools decide and act.
 
 Escalated customers can continue on the same conversation with an authenticated human service agent. The chat shows truthful waiting and joined states, persists both sides' messages across refreshes, and stays readable after the assigned agent closes it. The [live human-service guide](docs/workflows/human-service.md) includes a two-browser walkthrough; existing databases need `make db-upgrade`.
 
@@ -44,6 +47,39 @@ The contact reasons are coarse (six values), so three of the four mappings to wo
 
 Across all four: identity comes from a trusted test session (one-time codes; a document number alone never proves identity), customer isolation is enforced in the tool layer and again by PostgreSQL row-level security, no money moves, and hidden model reasoning is never stored or shown. Credit keeps conversation handling, the risk estimate (`RiskEstimator`), and eligibility policy (`EligibilityPolicy`) behind separate ports ([credit separation](docs/architecture/credit-separation.md)).
 
+## Who decides
+
+The language model understands and proposes; deterministic policy decides; verified tools act; people handle escalations. Blue is the language model, amber is deterministic code, green is a verified tool, and red is a person.
+
+```mermaid
+flowchart LR
+    msg["Customer message<br/>(es, pt)"] --> understand
+    understand["Language model understands and proposes:<br/>typed details and escalation signals,<br/>validated against a schema"]
+    msg -. "no model available:<br/>rule-based extraction" .-> decide
+    understand -- "a proposal, never a decision" --> decide
+    decide["Deterministic policy decides:<br/>versioned rules and clauses,<br/>state machine, per-state tool allowlist"]
+    decide -- "allowed write, after<br/>confirmation and step-up" --> act["Verified tools act:<br/>idempotent write,<br/>then a read-back"]
+    decide -- "clarify or abstain,<br/>with the clause" --> reply["Reply from es and pt templates,<br/>checked by the grounding verifier"]
+    act -- "only verified outcomes" --> reply
+    decide -- "an escalation rule fires" --> people["People handle escalations:<br/>structured handoff,<br/>live human service"]
+    classDef model fill:#dbeafe,stroke:#1d4ed8,color:#0f172a
+    classDef code fill:#fef3c7,stroke:#b45309,color:#0f172a
+    classDef tool fill:#dcfce7,stroke:#15803d,color:#0f172a
+    classDef person fill:#fee2e2,stroke:#b91c1c,color:#0f172a
+    class understand model
+    class decide,reply code
+    class act tool
+    class people person
+```
+
+The model never sees the customer's credit profile or risk estimate, never chooses a tool, a state, or a customer, and never receives document numbers, names, emails, phones, or addresses. Every turn leaves an execution record with the rule ids, clause versions, tool calls and their verification, and the model and prompt versions ([architecture overview](docs/architecture/overview.md), [prompt injection](docs/security/prompt-injection.md)).
+
+## Retrieval-augmented answers (RAG)
+
+Workflow states never search: each fetches its governing clauses by id (bound policy). Open retrieval serves only informational questions ("¿Cuántos días tengo para levantar una aclaración?") over the customer-facing policy clauses, filtered by the customer's language and jurisdiction, with the synthetic eligibility clauses excluded. Below a tuned threshold it abstains instead of answering. The reply quotes the retrieved clause with its id and version (for example `INF-ALL-1@1`), and the grounding verifier checks it; the language model never answers policy from its own memory ([grounding](docs/workflows/grounding.md), [ADR 0012](docs/adr/0012-bound-policies-and-informational-retrieval.md)).
+
+The index holds policy text only, never customer data, so retrieval cannot cross customers; queries are redacted before they are embedded. On 60 held-out test queries (team labels, pending human review) Qdrant hybrid search (BM25 fused with Azure `text-embedding-3-small` vectors) reaches MRR 0.89 against 0.83 for BM25, with no recall loss in es or pt and every out-of-scope query abstained. That passes a rule registered before the vectors were recorded ([retrieval](docs/evaluation/retrieval.md), [ADR 0047](docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md)). Production uses it through one setting (`RETRIEVAL_RETRIEVER`); if Qdrant or the embedding call fails, BM25 answers and the trace names the retriever that served.
+
 ## Architecture
 
 ```mermaid
@@ -62,7 +98,7 @@ flowchart LR
     web -- "HTTP, generated types" --> api --> engine
     engine --> policy
     engine --> tools --> pg
-    engine --> gateway --> llm["Model provider<br/>(fake, local Ollama, or hosted)"]
+    engine --> gateway --> llm["Model provider<br/>(fake, local Ollama, or Azure OpenAI)"]
     data["Data platform<br/>DuckDB + dbt + Pandera"] -- "seed from gold" --> pg
     ml["Learned models<br/>router, resolver, risk"] -- "digest-checked artifacts" --> engine
     evals["Evaluation harness<br/>B0, B1, P on held-out scenarios"] -- "composition root" --> engine
@@ -72,39 +108,33 @@ The backend is hexagonal (`domain` <- `ports` <- `policy` <- `application` <- `a
 
 ## Evaluation headline
 
-**Label: simulated, offline.** The baseline B0 (a menu and rules bot, no model), a naive language-model agent B1, and the proposed system P ran the same 332 held-out test scenarios (304 in the four workflows, 28 routing) with scripted and model-played customers on a synthetic evaluation world. P, B1, the simulated customer, and the judge all ran on the local model `ollama/qwen2.5:7b-instruct`; this is not a production measurement and not a prediction of a hosted model. Run `test-local` at commit `6bc2e9d` ([results](docs/evaluation/results.md), [failures](docs/evaluation/failures.md), [method](docs/evaluation/methodology.md)). Brackets are Wilson 95% intervals; unsafe outcomes carry exact 95% intervals.
+**Label: simulated, offline.** The baseline B0 (a menu and rules bot, no model), a naive language-model agent B1, and the proposed system P ran the same 332 held-out test scenarios (304 in the four workflows, 28 routing) with scripted and model-played customers on a synthetic evaluation world. P's understanding, B1, and the simulated customer all ran on the hosted `azure/gpt-4.1-mini` (the model the deployed demo calls) on an evaluation-only Azure OpenAI account; routing, policy, and every action stay deterministic. Run `test-hosted` at commit `2ddabb0`, measured **before the final-day QA fixes** ([results](docs/evaluation/results.md), [failures](docs/evaluation/failures.md), [method](docs/evaluation/methodology.md)). Brackets are Wilson 95% intervals; unsafe outcomes carry exact 95% intervals. The previous run on a local 7B model is archived in [docs/evaluation/runs/test-local](docs/evaluation/runs/test-local/results.md).
 
 Per workflow first, then the aggregate, for P:
 
 | Workflow | Safe automated resolution | Automation attempted | Containment | Missed transfers | Unnecessary transfers | Unsafe outcomes | Latency per turn p50 / p95 |
 |---|---|---|---|---|---|---|---|
-| `account_inquiry` | 54/76 (71%) [60 to 80] | 65/76 (86%) | 62/76 (82%) | 0/14 | 0/62 | 2/76 (2.6%) [0.3 to 9.2] | 2.9 s / 9.5 s |
-| `card_support` | 40/76 (53%) [42 to 63] | 55/76 (72%) | 51/76 (67%) | 3/17 | 11/59 | 0/76 (upper bound 3.9%) | 1.9 s / 7.0 s |
-| `dispute` | 34/76 (45%) [34 to 56] | 63/76 (83%) | 50/76 (66%) | 2/14 | 14/62 | 4/76 (5.3%) [1.5 to 12.9] | 1.9 s / 13.9 s |
-| `credit` | 49/76 (64%) [53 to 74] | 74/76 (97%) | 57/76 (75%) | 2/19 | 2/57 | 2/76 (2.6%) [0.3 to 9.2] | 4.6 s / 8.9 s |
-| **Aggregate** | **177/304 (58%) [53 to 64]** | 257/304 (85%) | 220/304 (72%) | 7/64 (11%) | 27/240 (11%) | **8/304 (2.6%) [1.1 to 5.1]** | 2.3 s / 10.4 s |
+| `account_inquiry` | 44/76 (58%) [47 to 68] | 62/76 (82%) | 60/76 (79%) | 2/14 | 4/62 | 0/76 (upper bound 4.7%, two-sided exact) | 1.6 s / 11.6 s |
+| `card_support` | 48/76 (63%) [52 to 73] | 67/76 (88%) | 57/76 (75%) | 3/17 | 5/59 | 0/76 (upper bound 4.7%, two-sided exact) | 1.5 s / 3.7 s |
+| `dispute` | 45/76 (59%) [48 to 70] | 68/76 (89%) | 59/76 (78%) | 0/14 | 3/62 | 1/76 (1.3%) [0.0 to 7.1] | 1.4 s / 7.0 s |
+| `credit` | 48/76 (63%) [52 to 73] | 73/76 (96%) | 58/76 (76%) | 2/19 | 1/57 | 0/76 (upper bound 4.7%, two-sided exact) | 1.9 s / 15.8 s |
+| **Aggregate** | **185/304 (61%) [55 to 66]** | 270/304 (89%) | 234/304 (77%) | 7/64 (11%) | 13/240 (5%) | **1/304 (0.3%) [0.0 to 1.8]** | 1.6 s / 8.5 s |
 
 Against the baselines on the same cases (safe automated resolution, then unsafe outcomes):
 
 | Workflow | P | B0 (menu and rules bot) | B1 (naive LLM agent) |
 |---|---|---|---|
-| `account_inquiry` | 54/76; 2/76 unsafe | 42/76; 0/76 unsafe | 18/76; 17/76 unsafe |
-| `card_support` | 40/76; 0/76 unsafe | 43/76; 0/76 unsafe | 12/76; 5/76 unsafe |
-| `dispute` | 34/76; 4/76 unsafe | 27/76; 3/76 unsafe | 2/76; 14/76 unsafe |
-| `credit` | 49/76; 2/76 unsafe | 16/76; 1/76 unsafe | 7/76; 54/76 unsafe |
-| Aggregate | 177/304; 8/304 unsafe | 128/304; 4/304 unsafe | 39/304; 90/304 unsafe |
+| `account_inquiry` | 44/76; 0/76 unsafe | 45/76; 0/76 unsafe | 32/76; 16/76 unsafe |
+| `card_support` | 48/76; 0/76 unsafe | 47/76; 0/76 unsafe | 26/76; 7/76 unsafe |
+| `dispute` | 45/76; 1/76 unsafe | 29/76; 0/76 unsafe | 3/76; 13/76 unsafe |
+| `credit` | 48/76; 0/76 unsafe | 20/76; 0/76 unsafe | 8/76; 56/76 unsafe |
+| Aggregate | 185/304; 1/304 unsafe | 141/304; 0/304 unsafe | 69/304; 92/304 unsafe |
 
-What the intervals support: P above B1 in every workflow; P above B0 in aggregate and in credit only. In account inquiry and dispute the intervals overlap, and in card support B0 is ahead on the point estimate (43 against 40 of 76), mostly because the model flags stolen-card requests as distress and P transfers 11 of 59 card cases that did not need a person. Of P's 8 graded unsafe outcomes, 3 are a real weakness (an injected merchant descriptor echoed in a dispute summary), 2 are simulator deviations, and 3 are grader false positives on review; the counts stay as graded. No P case read or changed another customer's data, claimed a credit approval, or claimed an action that did not happen. Language slices (P, all workflows): es 114/188 (61%), pt 63/116 (54%), overlapping.
+What the intervals support: P above B1 in aggregate, card support, dispute, and credit (account inquiry overlaps), with far fewer unsafe outcomes (1 against 92 of 304) and missed transfers (7 against 49 of 64); P above B0 in aggregate and in credit only. Account inquiry and card support are ties with B0 (44 against 45, 48 against 47), and dispute favors P with touching intervals. P's single graded unsafe outcome is a second write (the optional protective card block) that the customer explicitly confirmed and completed step-up for; the scenario expected one write. No P case read or changed another customer's data, claimed a credit approval, or claimed an action that did not happen. Against the local 14b run, card support's unnecessary transfers fell from 11 to 5 of 59 with escalation prompt v2, which a dev comparison had predicted (8 to 3 of 94 unnecessary transfers, no new misses; directional). Language slices (P, all workflows): es 115/188 (61%), pt 70/116 (60%), overlapping. Azure's jailbreak filter rejected a few calls in direct prompt-injection scenarios; no 401, 429, or budget refusal occurred (strict audit in the results).
 
-**Cost.** Measured: 0.00 USD per attempted case and per safe automated resolution, because the local model has a zero price (hardware and energy not counted). **Projected, not measured:** P's recorded tokens priced at the unverified `claude-sonnet-5` list price give 0.0052 USD per attempted case and 0.0076 USD per safe automated resolution in aggregate; per workflow (attempted / resolution) account inquiry 0.0044 / 0.0053, card support 0.0047 / 0.0065, dispute 0.0064 / 0.0118, credit 0.0053 / 0.0081 USD.
+**Cost.** Measured: provider-reported tokens priced at the Azure list price of `gpt-4.1-mini` (0.40 / 1.60 USD per million input / output tokens; the price entry awaits a person's confirmation and no invoice was reconciled). P costs 0.0013 USD per attempted case and 0.0019 USD per safe automated resolution in aggregate; per workflow (attempted / resolution) account inquiry 0.0011 / 0.0016, card support 0.0011 / 0.0016, dispute 0.0017 / 0.0026, credit 0.0013 / 0.0020 USD. B1 costs 0.0023 per attempted case and 0.0100 USD per safe resolution. **Projected, not measured:** 100,000 automated conversations at P's measured rate would cost about 130 USD in model calls, on the synthetic test set's case mix.
 
-**Freshness.** Since `6bc2e9d` the policy pack and the price table are unchanged. Three other parts changed, and the run was not repeated:
-
-- **Prompts.** `detect_escalation_signals@2` is now the selected version. It separates stolen or cloned products and block requests from actual distress, the main cause of card support's unnecessary transfers. It has not been measured on dev or test yet.
-- **Engine.** Telemetry, the degradation ladder, and one clarification line (phase 15); the per-session eligibility assessment limit and the agent credit moves (phase 16); masking of instruction-like merchant text and record identifiers in replies and confirmations, and segmented case-id parsing (phase 14c follow-up); the live human service ([ADR 0026](docs/adr/0026-live-agent-joins-escalated-conversation.md)).
-- **Harness.** The account-data and income graders no longer raise the false positives described above, and the simulated customer's synthetic instructions are no longer redacted. The published counts stay as graded.
-
-`make eval-smoke` passes on the current code in CI. The deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured. A rerun on the current code, with the local or a hosted model, is future work ([BACKLOG](docs/BACKLOG.md)).
+**Freshness.** The run is at `2ddabb0`. The final-day QA fixes (engine, routing, and handlers) came after it and are not measured; the masking gaps, transfer-request handling, and eligibility phrasings the run found are listed in the [analysis](docs/evaluation/results.md#unsafe-outcomes-categorized). `make eval-smoke` passes on the current code in CI.
 
 ## Quickstart
 
@@ -134,7 +164,7 @@ make eval-smoke           # the 12-scenario evaluation smoke suite, no model
 make submission-check     # the pre-submission gates plus the remaining human steps
 ```
 
-Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), a hosted model such as OpenAI (`make api-hosted-llm`, [HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
+Optional paths: a local model through Ollama (`make api-local-llm`, and `make llm-smoke` with the three settings in the [LLM gateway](docs/architecture/llm-gateway.md) page), a hosted model such as OpenAI or Azure OpenAI (`make api-hosted-llm`, [HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md#7-how-to-use-an-openai-key) section 7; Azure also needs `LLM_API_BASE` set to the resource endpoint and `azure/<deployment>` as the model id), the full organizer delivery (`make data-download` with the organizer S3 values, then `make pipeline DATA_SOURCE=s3`), the production stack with TLS on one VM or locally ([deploy/README.md](deploy/README.md)). `make help` lists every target. Every step above, verified on one machine with timings, expected output, and troubleshooting, is in [docs/submission/LOCAL-RUN.md](docs/submission/LOCAL-RUN.md).
 
 ## Repository map
 
@@ -162,8 +192,8 @@ Stated in full in [LIMITATIONS.md](LIMITATIONS.md). In short:
 
 - **Four workflows against a depth-over-breadth brief.** Each meets the same depth bar and is evaluated separately, but the per-workflow samples are small (76 cases each, 47 es and 29 pt), and in card support the system does not beat the menu baseline yet.
 - **Synthetic everything.** The organizer data is synthetic; the policy pack, the eligibility rules, and the credit catalog are the team's synthetic documents; the risk estimate is trained on one synthetic snapshot and is not a lending model.
-- **Evidence from a local 7B model.** Every model role in the evaluation ran on `qwen2.5:7b-instruct`; the deployed demo calls the hosted `gemini-3.1-flash-lite`, which no evaluation has measured; the scenarios and their labels are team-written and not yet reviewed by humans; the judge's agreement with human raters is pending; the Portuguese text has had no native review.
-- **Deployment work remaining.** One Azure VM with Docker Compose for the event ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md)); staging the secrets from Azure Key Vault is in review ([pull request 27](https://github.com/Youngermaster/factored-hackathon-2026-la-brasil-del-70/pull/27)). High availability, a real identity provider and one-time-code channel, key management, and a compliance review are future work.
+- **Evidence from a simulation.** Every model role in the published evaluation ran on the hosted `azure/gpt-4.1-mini`, the simulated customer included, at a commit before the final-day fixes; the scenarios and their labels are team-written and not yet reviewed by humans; the judge's agreement with human raters is pending; the Portuguese text has had no native review.
+- **Deployment work remaining.** One Azure VM with Docker Compose for the event ([ADR 0019](docs/adr/0019-single-host-compose-deployment.md)), secrets in Azure Key Vault read by the VM's managed identity ([ADR 0037](docs/adr/0037-cloud-secret-management-with-azure-key-vault.md)), and continuous deployment from `main` ([ADR 0038](docs/adr/0038-continuous-deployment-to-azure-with-github-actions.md)). High availability, a real identity provider and one-time-code channel, a provider-side spending limit, and a compliance review are future work.
 
 ## Data statement
 

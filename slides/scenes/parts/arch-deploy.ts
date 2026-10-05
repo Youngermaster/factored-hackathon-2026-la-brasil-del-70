@@ -4,9 +4,10 @@
  * One Azure VM, one Docker Compose project: Caddy terminates TLS and serves
  * the SPA, the API runs two workers, PostgreSQL sits on the internal network,
  * and one-shot jobs migrate, seed and purge. The obs profile switches on
- * beside them (collector, Prometheus, Grafana, Jaeger). The model is hosted,
- * reached through LiteLLM over https. Below, the documented path to managed
- * services (ADR 0019); Key Vault secrets are in review (PR 27).
+ * beside them (collector, Prometheus, Grafana, Jaeger). The model is Azure
+ * OpenAI (gpt-4.1-mini, gpt-4o as the fallback), reached through LiteLLM over
+ * https, with its keys in Key Vault like every other secret (ADR 0037). Below,
+ * the documented path to managed services (ADR 0019).
  */
 import type { SceneEnv } from '../../lib/scene/types'
 import { C, MX } from '../../lib/scene/kit'

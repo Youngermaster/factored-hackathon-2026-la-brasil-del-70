@@ -1,0 +1,36 @@
+{
+  "cassette_id": "cc36a1a2871ce380c68d311ae31c8c3d4e0728be11f00eac122da0ccb4c0296a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 799,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_unblock_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:43.052342Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "¿Mi tarjeta esta habilitada?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

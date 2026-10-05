@@ -69,4 +69,12 @@ export const queryKeys = {
     summaries: () => ['api', 'evaluation', 'summaries'] as const,
     trace: (conversationId: string) => ['api', 'evaluation', 'trace', conversationId] as const,
   },
+  supervision: {
+    all: ['api', 'supervision'] as const,
+    models: () => ['api', 'supervision', 'models'] as const,
+  },
+  health: {
+    all: ['api', 'health'] as const,
+    details: () => ['api', 'health', 'details'] as const,
+  },
 } as const;

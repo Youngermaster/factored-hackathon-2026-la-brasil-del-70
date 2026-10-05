@@ -88,8 +88,8 @@ clicks: 4
 <!--
 EVIDENCE. Narration: script.md, section "evidence". Arrive: 304 cases into
 P, B0, B1. Click 1 per workflow with intervals (card support flagged),
-2 aggregate and trade-offs, 3 unsafe outcomes and B1's 90 by kind,
-4 where P is weak. Simulation on a local open model (qwen2.5:7b-instruct).
+2 aggregate and trade-offs, 3 unsafe outcomes and B1's 92 by kind,
+4 where P is weak. Simulation on a hosted model (azure/gpt-4.1-mini).
 -->
 
 ---

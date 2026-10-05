@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c55bc72c45f80aaee836efcf2887effa21ebc061415800a93f274631cb8d99a4",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1005,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:03:14.058117Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Porfa, ¿me confirman si la plástico que me llegó ya quedó activada?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

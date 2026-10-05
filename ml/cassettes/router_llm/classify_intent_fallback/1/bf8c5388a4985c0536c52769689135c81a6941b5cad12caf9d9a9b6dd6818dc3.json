@@ -1,0 +1,36 @@
+{
+  "cassette_id": "bf8c5388a4985c0536c52769689135c81a6941b5cad12caf9d9a9b6dd6818dc3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1411,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:28.179260Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "dónde meto la solicitud del préstamo ya tengo mis papeles listos",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

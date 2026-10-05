@@ -8,16 +8,17 @@
 - the transaction resolver (`resolver:lgbm`), session 10a;
 - the credit risk estimator (`risk_estimator:logreg`, `risk_estimator:lgbm`), session 10b: a snapshot risk estimate on synthetic data, never a lending decision.
 
-The API never imports this package. It loads registered JSON artifacts by name and version, or by an alias (`champion`, `candidate`), so a model can be replaced without any workflow change. Model cards: [`docs/models/router.md`](../docs/models/router.md), [`docs/models/resolver.md`](../docs/models/resolver.md), [`docs/models/risk-estimator.md`](../docs/models/risk-estimator.md). Generated evaluations: [`docs/evaluation/router.md`](../docs/evaluation/router.md), [`docs/evaluation/resolver.md`](../docs/evaluation/resolver.md), [`docs/evaluation/risk-estimator.md`](../docs/evaluation/risk-estimator.md).
+The API never imports this package. It loads registered JSON artifacts by name and version, or by an alias (`champion`, `candidate`), so a model can be replaced without any workflow change. Model cards: [`docs/models/router.md`](../docs/models/router.md), [`docs/models/resolver.md`](../docs/models/resolver.md), [`docs/models/risk-estimator.md`](../docs/models/risk-estimator.md). Generated evaluations: [`docs/evaluation/router.md`](../docs/evaluation/router.md), [`docs/evaluation/router-llm.md`](../docs/evaluation/router-llm.md) (the classical routers against a hosted language model, zero-shot and as a cascade), [`docs/evaluation/resolver.md`](../docs/evaluation/resolver.md), [`docs/evaluation/risk-estimator.md`](../docs/evaluation/risk-estimator.md).
 
 ## Layout
 
 | Path | Content |
 |---|---|
 | `src/bank_ml/common/` | Seeds, salted hashing, group, temporal, and stratified splits, MinHash near-duplicate removal, dataset cards, the post-outcome leakage guard with the risk label and protected-attribute denylists, metrics with cluster bootstrap intervals, temperature scaling, dev-only threshold selection, MLflow tracking, registry promotion, paths |
-| `src/bank_ml/router/` | Seed corpus loader, augmentation and perturbations, dataset and guard, models, evaluation, robustness and transfer, transcript analysis, paraphrase generation through the gateway, validation sheet, report, CLI |
+| `src/bank_ml/router/` | Seed corpus loader, augmentation and perturbations, dataset and guard, models, evaluation, robustness and transfer, transcript analysis, paraphrase generation through the gateway, the hosted language model reference (`zero_shot.py`, `zero_shot_report.py`), validation sheet, report, CLI |
 | `src/bank_ml/resolver/` | Gold reader, description templates, dataset (labels by construction), LightGBM ranker, evaluation, silver labels, report, CLI |
 | `src/bank_ml/risk/` | Label (cross-sectional, with a forward-looking mode), gold reader with separate feature, label, and slice queries, dataset, logistic regression and monotone LightGBM, calibration, bootstrap and Venn-Abers intervals, numpy scoring checked against the adapter, test evaluation, slices and disparities, test-based promotion, report, CLI |
+| `cassettes/router_llm/` | Recorded, redacted `classify_intent_fallback@1` calls of the router benchmark (one JSON file per call), so its report regenerates without a key |
 | `corpus/router/` | Team-authored seeds (`seeds/<intent>.yaml`), the augmentation lexicon, generated paraphrases (`paraphrases/`, when a provider exists), and the human validation sheet |
 | `tests/unit/`, `tests/integration/` | Unit tests; end-to-end tests on a small fixture corpus and a synthetic gold warehouse |
 
@@ -28,7 +29,7 @@ Shared with the API (in `bank_agent`, so training and serving cannot skew): `ada
 ```bash
 make train                                  # router, resolver, and risk train + evaluate (resolver and risk need the s3 gold)
 make promote APPROVED_BY="Name Surname"     # champion <- candidate when it wins (risk: on test); the approver is recorded
-uv run bank-ml router train|evaluate|promote|paraphrase|export-validation
+uv run bank-ml router train|evaluate|promote|paraphrase|export-validation|zero-shot
 uv run bank-ml resolver train|evaluate|promote
 uv run bank-ml risk train|evaluate|promote
 ```
@@ -51,6 +52,7 @@ uv run bank-ml risk train|evaluate|promote
 - **Retrain.** Run `make train`. Seeds are fixed, LightGBM is deterministic with one thread, and identical inputs give identical artifact versions (a reproducibility test checks it). A corpus or gold change gives a new dataset hash, and `evaluate` refuses an artifact trained on another hash.
 - **Risk features.** A new risk feature must be an allowlisted `CreditRiskFeatures` field served at inference, added to `risk_features.FEATURE_NAMES` (a new `risk_features@N` id), and pass `assert_risk_features_clean`; days past due, statuses, protected and proxy attributes, and identifiers are refused.
 - **Compare two versions.** Use `bank-ml router evaluate --alias <version>` (or `--alias champion`). Each version's manifest (`data/artifacts/models/<component>/<name>/versions/<version>/manifest.json`) holds its dev metrics, and `promotions.jsonl` holds every alias move and refusal. MLflow holds the runs (`mlflow ui --backend-store-uri sqlite:///mlruns.db`, with the full MLflow package).
+- **Hosted language model reference.** `uv run --frozen bank-ml router zero-shot` replays the committed cassettes in `ml/cassettes/router_llm/` and rewrites [`docs/evaluation/router-llm.md`](../docs/evaluation/router-llm.md). It compares `keyword@1`, the TF-IDF champion (`--tfidf`, default `986872f0284f`; run `bank-ml router train` first), `classify_intent_fallback@1` zero-shot on each model, and the cascades (classical router first, the model only below its threshold). The decision rule was pre-registered in [`docs/plans/router-llm.md`](../docs/plans/router-llm.md). The hand-written decision between the report's markers is kept. To record calls for a new model or prompt, install the `litellm` extra, set `LLM_API_BASE` and `LLM_API_KEY_PRIMARY` (and `AZURE_API_VERSION` for Azure), and run `bank-ml router zero-shot --model <id> --record --no-report`. Only items without a cassette reach the provider. `--concurrency` bounds the calls in flight, `--per-minute` caps the request rate (use it on a shared account), and rate limits are retried with exponential backoff. A call that still fails becomes an abstention and is counted.
 - **Paraphrases.** Once a provider exists, `bank-ml router paraphrase --purpose train`, then `--purpose eval` (with `LLM_PROVIDER` set, or `cassette` to replay). Then retrain. Generated rows are marked `llm_paraphrased:<seed_id>` with `review_status: pending`.
 
 ## Dependencies
@@ -64,4 +66,4 @@ uv run pytest ml/tests -q                   # unit and integration (synthetic fi
 make test-unit && make test-integration
 ```
 
-`ml/src` is gated at 80% line coverage by `make check`. The corpus guard (`tests/unit/router/test_corpus_guard.py`) runs on the committed seeds and fails on any leakage across splits.
+`ml/src` is gated at 80% line coverage by `make check`. The hosted model reference is tested with a scripted `FakeLLM` (`tests/unit/router/test_zero_shot.py`) and a deterministic fake replay on the fixture corpus (`tests/integration/test_router_zero_shot.py`); no test calls a live model. The corpus guard (`tests/unit/router/test_corpus_guard.py`) runs on the committed seeds and fails on any leakage across splits.

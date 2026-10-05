@@ -12,6 +12,7 @@ from datetime import UTC, datetime, time, timedelta
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.render import clean_record_text
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
+from bank_agent.application.engine.templates.labels import NO_PAYEE, pick
 from bank_agent.application.understanding.answers import parse_choice
 from bank_agent.application.workflows.account_inquiry.data import AccountData, Choosing, exhausted, load, save
 from bank_agent.application.workflows.account_inquiry.understand import absorb
@@ -58,16 +59,23 @@ def _described(data: AccountData) -> bool:
     return data.amount is not None or bool(data.payee) or bool(data.date_options)
 
 
+def _payee(ctx: TurnContext, txn: Transaction) -> Param:
+    name = clean_record_text(txn.merchant_name or "")
+    return RecordText(name) if name else pick(NO_PAYEE, ctx.language)
+
+
 async def _ask_options(ctx: TurnContext, data: AccountData, ranked: list[Transaction]) -> Step:
     last4 = await _last4(ctx)
     items: tuple[dict[str, Param], ...] = tuple(
         {"date": txn.occurred_at.astimezone(ctx.zone).date(),
-         "payee": RecordText(clean_record_text(txn.merchant_name or "") or "-"),
+         "payee": _payee(ctx, txn),
          "amount": txn.amount, "card": Masked(last4.get(txn.product_id, "----"))}
         for txn in ranked[:MAX_OPTIONS]
     )  # fmt: skip
     save(ctx, data.evolve(choosing=Choosing.PAYMENT, option_ids=tuple(t.transaction_id for t in ranked[:MAX_OPTIONS])))
-    reply = Reply(template="account.clarify_payment", params={"options": Choices("account.payment_option", items)})
+    # Nothing described: these are the latest records, not "similar" ones (QA 2026-10-05, ACC-10).
+    template = "account.clarify_payment" if _described(data) else "account.choose_payment"
+    reply = Reply(template=template, params={"options": Choices("account.payment_option", items)})
     return Step(CLARIFY, reply, Outcome.CLARIFIED)
 
 

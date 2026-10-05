@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c2c1975f7f6cf66c167c4e5b780217ce58994c8e1900d2d45478f318e163b031",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1002,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.98,
+        "label": "card_replacement_request"
+      },
+      {
+        "confidence": 0.02,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:02:39.762167Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Quiero pedir reposición de la tarjeta terminada en 9912",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

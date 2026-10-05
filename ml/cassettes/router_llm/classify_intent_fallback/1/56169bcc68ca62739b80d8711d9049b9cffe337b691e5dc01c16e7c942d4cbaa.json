@@ -1,0 +1,36 @@
+{
+  "cassette_id": "56169bcc68ca62739b80d8711d9049b9cffe337b691e5dc01c16e7c942d4cbaa",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1126,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "balance_inquiry"
+      },
+      {
+        "confidence": 0.3,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:57.094561Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 942,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quanto de limiet ainad tenho no cartão de crédito?",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

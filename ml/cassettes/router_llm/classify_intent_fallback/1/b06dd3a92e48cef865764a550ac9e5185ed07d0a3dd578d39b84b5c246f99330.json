@@ -1,0 +1,36 @@
+{
+  "cassette_id": "b06dd3a92e48cef865764a550ac9e5185ed07d0a3dd578d39b84b5c246f99330",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1139,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.8,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:39.902561Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "Bloquea la tarjeta terminada en 2275 por favor",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

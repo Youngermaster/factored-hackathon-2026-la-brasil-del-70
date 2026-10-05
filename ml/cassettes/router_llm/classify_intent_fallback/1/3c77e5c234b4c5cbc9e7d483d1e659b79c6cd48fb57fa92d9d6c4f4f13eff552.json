@@ -1,0 +1,36 @@
+{
+  "cassette_id": "3c77e5c234b4c5cbc9e7d483d1e659b79c6cd48fb57fa92d9d6c4f4f13eff552",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1151,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:26.343757Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 927,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "hola, quiero desconocer un consumo de la tarjeta",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

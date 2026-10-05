@@ -4,7 +4,15 @@ import { NavLink, Outlet } from 'react-router';
 import { LogoutButton, RequireSession, useSession } from '@/features/auth';
 import type { Schema } from '@/shared/api';
 import { cx } from '@/shared/lib/cx';
-import { ChartIcon, InboxIcon, OverviewIcon, ReceiptIcon, TraceIcon, type Icon } from '@/shared/ui';
+import {
+  ChartIcon,
+  GaugeIcon,
+  InboxIcon,
+  OverviewIcon,
+  ReceiptIcon,
+  TraceIcon,
+  type Icon,
+} from '@/shared/ui';
 
 import { Preferences } from './Preferences';
 import { SkipLink } from './SkipLink';
@@ -15,6 +23,7 @@ interface NavItem {
   readonly to: string;
   readonly label:
     | 'layout.overview'
+    | 'layout.supervision'
     | 'layout.dashboard'
     | 'layout.inbox'
     | 'layout.creditApplications'
@@ -32,7 +41,10 @@ const OVERVIEW: NavItem = {
   end: true,
 };
 
-/** Console destinations per role: agents work handoffs and credit review items; evaluators read results and records. */
+/**
+ * Console destinations per role: agents work handoffs and credit review items; evaluators (who also play the
+ * supervisor) read the model supervision view, results, and records.
+ */
 const NAV: Record<Exclude<Schema<'Role'>, 'customer'>, readonly NavItem[]> = {
   agent: [
     OVERVIEW,
@@ -41,6 +53,7 @@ const NAV: Record<Exclude<Schema<'Role'>, 'customer'>, readonly NavItem[]> = {
   ],
   evaluator: [
     OVERVIEW,
+    { to: '/console/supervision', label: 'layout.supervision', icon: GaugeIcon },
     { to: '/console/dashboard', label: 'layout.dashboard', icon: ChartIcon },
     { to: '/console/evaluation', label: 'layout.evaluation', icon: ChartIcon },
     { to: '/console/traces', label: 'layout.traces', icon: TraceIcon },

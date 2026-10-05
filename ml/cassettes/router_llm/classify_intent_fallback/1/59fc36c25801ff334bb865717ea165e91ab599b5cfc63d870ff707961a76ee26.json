@@ -1,0 +1,32 @@
+{
+  "cassette_id": "59fc36c25801ff334bb865717ea165e91ab599b5cfc63d870ff707961a76ee26",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1090,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 1.0,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:01:17.579121Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 17
+  },
+  "variables": {
+    "customer_message": "Regáleme el bloqueo de la tarjeta débito, se me perdió",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

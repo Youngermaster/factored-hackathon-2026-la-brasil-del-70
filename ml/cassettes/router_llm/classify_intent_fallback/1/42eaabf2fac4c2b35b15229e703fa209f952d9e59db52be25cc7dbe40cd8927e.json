@@ -1,0 +1,36 @@
+{
+  "cassette_id": "42eaabf2fac4c2b35b15229e703fa209f952d9e59db52be25cc7dbe40cd8927e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1101,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:15:24.435052Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 931,
+    "output_tokens": 28
+  },
+  "variables": {
+    "customer_message": "hola me pueden mandar mis movimientos de la tarjeta de los últimos tres meses",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

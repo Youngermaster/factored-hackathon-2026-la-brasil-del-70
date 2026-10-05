@@ -13,6 +13,11 @@ case with its latency; results are a local development measurement, not an evalu
 
 Exit status: 0 when every case passes, 1 when some fail, 2 when the provider is not configured or not reachable.
 For a local Ollama model the script checks the server and the pulled model before the first call.
+
+With ``LANGFUSE_ENABLED=true`` (and the settings the API requires for it: ``LLM_PROVIDER=litellm``, the base URL, and
+both keys) the gateway's telemetry is the API's own, so every call also goes to Langfuse through the same allowlisting
+exporter as the API (one metadata-only generation per call, never prompts or replies), flushed before the script exits.
+This checks the export without a database or a running API (docs/operations/observability.md).
 """
 
 from __future__ import annotations
@@ -37,12 +42,14 @@ from bank_agent.adapters.prompts.file_registry import FilePromptRegistry
 from bank_agent.adapters.system.clock import SystemClock
 from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.bootstrap.llm import KEYLESS_PROVIDERS, build_llm_client, provider_name
-from bank_agent.bootstrap.settings import LLMSettings, load_settings
+from bank_agent.bootstrap.observability import build_observability
+from bank_agent.bootstrap.settings import AppSettings, LLMSettings, SettingsError, load_settings
 from bank_agent.domain import llm_outputs
 from bank_agent.domain.errors import ConfigurationError, LlmError
 from bank_agent.domain.identifiers import ConversationId, LineageId
 from bank_agent.domain.intelligence import LlmCallContext, PromptValue
 from bank_agent.ports.llm import LLMClient
+from bank_agent.ports.telemetry import Telemetry
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 CASSETTE_DIR = REPOSITORY_ROOT / "evals" / "cassettes"
@@ -158,10 +165,19 @@ def summarize(results: Sequence[CaseResult]) -> str:
     return "\n".join(lines)
 
 
-async def run(settings: LLMSettings, cases: Sequence[Cassette]) -> list[CaseResult]:
-    client = build_llm_client(
-        settings, registry=FilePromptRegistry.from_package(), clock=SystemClock(), telemetry=NoopTelemetry()
+def build_telemetry(settings: AppSettings) -> tuple[Telemetry, Callable[[], None]]:
+    """The API's telemetry with its Langfuse exporter when ``LANGFUSE_ENABLED=true``, else none; and its flush."""
+    if not settings.langfuse.enabled:
+        return NoopTelemetry(), lambda: None
+    observability = build_observability(
+        settings.observability, langfuse=settings.langfuse, environment=settings.runtime.app_env
     )
+    return observability.telemetry, observability.shutdown
+
+
+async def run(settings: LLMSettings, cases: Sequence[Cassette], telemetry: Telemetry | None = None) -> list[CaseResult]:
+    registry = FilePromptRegistry.from_package()
+    client = build_llm_client(settings, registry=registry, clock=SystemClock(), telemetry=telemetry or NoopTelemetry())
     return [await run_case(client, cassette, index) for index, cassette in enumerate(cases, 1)]
 
 
@@ -170,14 +186,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--no-env-file", action="store_true", help="read the process environment only")
     arguments = parser.parse_args(argv)
     try:
-        settings = load_settings(env_file=None if arguments.no_env_file else Path(".env")).llm
+        app_settings = load_settings(env_file=None if arguments.no_env_file else Path(".env"))
+        settings = app_settings.llm
         target = check_provider(settings)
         cases = load_cases()
         print(f"llm-smoke: {len(cases)} fixture cases against {target}")
-        results = asyncio.run(run(settings, cases))
-    except (SmokeSetupError, ConfigurationError) as error:
+        telemetry, flush = build_telemetry(app_settings)
+        try:
+            results = asyncio.run(run(settings, cases, telemetry))
+        finally:
+            flush()
+    except (SmokeSetupError, ConfigurationError, SettingsError) as error:
         print(f"llm-smoke: {error}", file=sys.stderr)
         return 2
+    if app_settings.langfuse.enabled:
+        base = app_settings.langfuse.base_url.rstrip("/")
+        print(f"llm-smoke: exported one metadata-only generation per call to {base} (Langfuse)")
     print(summarize(results))
     if results and not any(r.passed for r in results) and all(r.detail.startswith("llm_provider") for r in results):
         print("llm-smoke: every call failed at the provider; check that it is running and reachable", file=sys.stderr)

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "c7714101f8564481e3027b13a7e75e91258146fbd4562334248f41115280acef",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 3176,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.1,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:37.583182Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Hola, pedí préstamo prendario hoy a la mañana, ¿ya está aaprbado?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

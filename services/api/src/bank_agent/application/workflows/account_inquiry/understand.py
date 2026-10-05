@@ -11,6 +11,7 @@ from bank_agent.application.engine.llm import EXTRACT_ACCOUNT, structured
 from bank_agent.application.engine.shared import abstain_unsupported
 from bank_agent.application.understanding import amounts, dates, extraction, slots
 from bank_agent.application.understanding.periods import resolve_period
+from bank_agent.application.workflows.account_inquiry.answers import reference_day
 from bank_agent.application.workflows.account_inquiry.data import AccountData, save
 from bank_agent.application.workflows.account_inquiry.unsupported import recognize
 from bank_agent.domain.llm_outputs import AccountInquirySlotExtraction
@@ -25,7 +26,7 @@ NEXT_STATE = {
 
 
 def _period(data: AccountData, text: str, ctx: TurnContext) -> AccountData:
-    period = resolve_period(text, ctx.today)
+    period = resolve_period(text, reference_day(ctx))
     if period is None:
         return data
     return data.evolve(
@@ -39,7 +40,7 @@ async def absorb(ctx: TurnContext, data: AccountData, text: str, *, use_model: b
     if use_model:
         variables = {
             "customer_message": ctx.text,
-            "reference_date": ctx.today.isoformat(),
+            "reference_date": reference_day(ctx).isoformat(),
             "dialect_hint": ctx.locale.value,
         }
         model = await structured(ctx, EXTRACT_ACCOUNT, variables, AccountInquirySlotExtraction)
@@ -58,9 +59,9 @@ async def absorb(ctx: TurnContext, data: AccountData, text: str, *, use_model: b
         changes["currency"] = amounts.resolve_currency(mention, frozenset({ctx.currency} if ctx.currency else ()))
     elif payment is not None and payment.amount is not None:
         changes["amount"], changes["currency"] = payment.amount, payment.currency_hint
-    found = dates.resolve_dates(text, ctx.today)
+    found = dates.resolve_dates(text, reference_day(ctx))
     if found is None and payment is not None and payment.date_expression:
-        found = dates.resolve_dates(payment.date_expression, ctx.today)
+        found = dates.resolve_dates(payment.date_expression, reference_day(ctx))
     if found is not None:
         changes["date_expression"] = found.expression[:100]
         changes["date_options"] = found.interpretations

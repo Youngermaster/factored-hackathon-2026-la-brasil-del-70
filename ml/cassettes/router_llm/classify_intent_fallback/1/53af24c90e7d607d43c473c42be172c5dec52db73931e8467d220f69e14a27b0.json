@@ -1,0 +1,36 @@
+{
+  "cassette_id": "53af24c90e7d607d43c473c42be172c5dec52db73931e8467d220f69e14a27b0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1062,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:50.106222Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Quiero sacar n préstamo personal",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

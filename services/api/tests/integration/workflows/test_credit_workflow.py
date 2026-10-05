@@ -21,7 +21,7 @@ async def test_24_es_co_product_information_with_the_disclaimer_and_no_eligibili
     reply = await harness.say("¿Qué condiciones tiene el préstamo personal?", session)
     assert (reply.state, reply.outcome) == ("PRODUCT_INFO", Outcome.RESOLVED)
     text = reply.response.text
-    assert "préstamo personal: montos de 2.000.000,00 COP a 80.000.000,00 COP" in text
+    assert "Préstamo personal: montos de 2.000.000,00 COP a 80.000.000,00 COP" in text
     assert "plazos de 6 a 72 meses; tasa anual de 15 % a 27 %" in text
     cited = [str(c.clause) for c in reply.response.citations]
     assert {"CRE-ALL-1@1", "CRE-ALL-2@1", "CRE-CO-1@1"} <= set(cited)

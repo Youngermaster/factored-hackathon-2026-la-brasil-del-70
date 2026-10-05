@@ -1,6 +1,6 @@
 # Capacity
 
-**Local measurement, not a production estimate.** The numbers below come from one run on one developer laptop, against the development stack, with no language model (`LLM_PROVIDER=fake`: every model call is refused at once and the deterministic path answers). They show the cost of the service's own work (routing, policy, tools, grounding, persistence, telemetry) and where it saturates first. They are not a capacity plan for a hosted deployment. Phase 16 repeated the run on the production stack itself (two workers, TLS through Caddy, the shared PostgreSQL rate limiter) on the same laptop, below; the hosting target is undecided, so the run on the chosen VM is a step of the deployment guide.
+**Local measurement, not a production estimate.** The numbers below come from one run on one developer laptop, against the development stack, with no language model (`LLM_PROVIDER=fake`: every model call is refused at once and the deterministic path answers). They show the cost of the service's own work (routing, policy, tools, grounding, persistence, telemetry) and where it saturates first. They are not a capacity plan for a hosted deployment. Phase 16 repeated the run on the production stack itself (two workers, TLS through Caddy, the shared PostgreSQL rate limiter) on the same laptop, below. The host is now one Azure VM (`Standard_B2as_v2`, westus2); the load test has not been repeated there, and that run stays a step of the deployment guide.
 
 ## Configuration
 

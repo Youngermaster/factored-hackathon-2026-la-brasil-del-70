@@ -15,6 +15,7 @@ from bank_agent.application.engine.reply import CreditEvidence, Reply
 from bank_agent.application.engine.shared import blocking_step, escalate, spend_clarification
 from bank_agent.application.understanding.answers import YesNo, parse_yes_no
 from bank_agent.application.understanding.text import fold
+from bank_agent.application.workflows.credit.approval import answer_then_ask_again, asks_approval
 from bank_agent.application.workflows.credit.assessment import turn_estimate, turn_profile
 from bank_agent.application.workflows.credit.data import CreditData, Offer, load, open_questions, save
 from bank_agent.application.workflows.credit.info import facts, product_of
@@ -40,7 +41,13 @@ _CONTEST = re.compile(
     r"\bno estoy de acuerdo\b|\bno es justo\b|\bno me parece\b|\bapelar\b|\bimpugn|\bnao concordo\b|\bdiscordo\b|"
     r"\bnao e justo\b|\bcontest(o|ar) (el|o) resultado\b|\bresultado (esta |)(mal|errado|equivocado)\b|\bdisagree\b"
 )
-_RECORD = re.compile(r"\bregistr(a|ar|e|en)\b.{0,20}\b(solicitud|solicitacao)\b")
+_RECORD = re.compile(
+    r"\bregistr(?:a|ar|e|en|ame|e-me)\b.{0,20}\b(?:solicitud|solicitacao|pedido)\b|"
+    r"\bregistr(?:ala|amela|ela|enla|arla|ame|e-a|a-la|ar-la)\b"
+)
+"""A request to record the intake ("regístrame la solicitud", "regístrala"; QA 2026-10-05, CRE-10)."""
+_NEGATED = re.compile(r"^(?:no|nao)\b|\bno (?:la |lo |me )?registr|\bnao registr")
+RECORDABLE = frozenset({EligibilityOutcome.INDICATIVELY_ELIGIBLE, EligibilityOutcome.REVIEW_REQUIRED})
 
 
 def contests(text: str) -> bool:
@@ -151,12 +158,16 @@ async def _answer(ctx: TurnContext, data: CreditData, product: CreditProduct | N
         ctx.escalation = ctx.escalation.evolve(eligibility_contested=True)
         return escalate(ctx, EscalationReasonCode.ELIGIBILITY_CONTESTED, "eligibility_contested", decision=decision,
                         credit_review=review)  # fmt: skip
+    if asks_approval(ctx.text):
+        # "¿Me garantizan que lo aprueban?" after the view: no decision is made here; the offer is asked again.
+        _, template = question(assessment)
+        return answer_then_ask_again(ctx, Step(EXPLAIN, Reply(template=template), Outcome.CLARIFIED))
     updated = await absorb(ctx, data, ctx.text)
     keys = ("amount", "term_months", "declared_income", "product_type")
     if any(getattr(updated, key) != getattr(data, key) for key in keys):
         save(ctx, updated.evolve(assessment=None, explained=False, offer=Offer.NONE, product_code=None))
         return Step("COLLECT_APPLICATION_FACTS")
-    if assessment.outcome is EligibilityOutcome.REVIEW_REQUIRED and _RECORD.search(fold(ctx.text)):
+    if assessment.outcome in RECORDABLE and _RECORD.search(fold(ctx.text)) and not _NEGATED.search(fold(ctx.text)):
         save(ctx, data.evolve(intake_shown=False))
         return Step("CONFIRM_INTAKE")
     answer = parse_yes_no(ctx.text)

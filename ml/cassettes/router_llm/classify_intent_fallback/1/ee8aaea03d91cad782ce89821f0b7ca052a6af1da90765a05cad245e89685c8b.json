@@ -1,0 +1,36 @@
+{
+  "cassette_id": "ee8aaea03d91cad782ce89821f0b7ca052a6af1da90765a05cad245e89685c8b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 813,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:29.228915Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Ya hay respuesta de la tarjeta de crédito que solicité hace tres días?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

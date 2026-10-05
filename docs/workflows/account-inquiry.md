@@ -32,7 +32,7 @@ stateDiagram-v2
     ESCALATED --> [*]
 ```
 
-Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. BALANCES, PAYMENT_STATUS, and STATEMENT_SUMMARY accept new requests but hold the answer just given, so a request for another workflow there (for example "no reconozco esa transferencia") is confirmed before switching.
+Shared exits (ESCALATED, ABSTAINED, REFUSED, AUTH_REQUIRED) apply to every non-terminal state. BALANCES, PAYMENT_STATUS, and STATEMENT_SUMMARY accept new requests but hold the answer just given, so a request for another workflow there (for example "no reconozco esa transferencia") is confirmed before switching. A message the router cannot place that only names a product, an ending, or a period ("¿y nomás en la de ahorro?", "y ahora el de abril") is a follow-up: the workflow's `follow_up` recognizer continues the same inquiry, recorded as `router:context_follow_up@1` (QA findings ACC-01 and ACC-02). A period follow-up after a statement asks for the product again, because UNDERSTAND does not yet carry the previous product over.
 
 ## States, rules, clauses, tools, and exits
 
@@ -128,6 +128,8 @@ sequenceDiagram
 ## Tests
 
 Scenarios 19 to 23 with language variants run on both backends (`services/api/tests/integration/workflows/test_account_inquiry.py`); the period table and slots are unit tests (`tests/unit/application/understanding/`).
+
+Production QA regressions (2026-10-05) are in `services/api/tests/unit/application/workflows/test_qa_account_regressions.py`: relative periods count from the earlier of today and the data as-of date (`reference_day`), so a clock past the data cut still summarizes the right month; colloquial contested balances escalate; a record without a payee shows a localized label instead of `-`; pt statements agree in gender (`PRODUCT_OF_YOUR`); and the balance as-of date never passes the data as-of date.
 
 ## Limitations
 

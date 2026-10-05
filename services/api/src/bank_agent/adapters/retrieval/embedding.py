@@ -1,5 +1,5 @@
-"""Sentence embeddings for dense retrieval: the ``Embedder`` protocol, the sentence-transformers adapter, and a
-disk cache keyed by content hash.
+"""Sentence embeddings for dense retrieval: the sentence-transformers adapter of the ``Embedder`` port (re-exported
+here with ``Vector``), and a disk cache keyed by content hash.
 
 sentence-transformers (with torch) is the optional ``ml`` extra of ``bank-agent`` and is never installed in the
 API runtime image. It is imported only when a ``SentenceTransformerEmbedder`` is built, so every other module
@@ -11,27 +11,17 @@ import json
 import math
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Literal, Protocol
+from typing import Any, Literal
 
 from bank_agent.domain.errors import EmbeddingBackendUnavailableError
+from bank_agent.domain.vectors import Vector as Vector
+from bank_agent.ports.embeddings import Embedder as Embedder
 
 DEFAULT_EMBEDDING_MODEL = "intfloat/multilingual-e5-small"
 """MIT licensed, 118M parameters, 384 dimensions, trained for retrieval in about 100 languages (es and pt too)."""
 E5_QUERY_PREFIX = "query: "
 E5_PASSAGE_PREFIX = "passage: "
-Vector = tuple[float, ...]
 TextKind = Literal["query", "passage"]
-
-
-class Embedder(Protocol):
-    """Turns texts into unit-length vectors. ``model_id`` names the model and its prefixes for cache keys."""
-
-    @property
-    def model_id(self) -> str: ...
-
-    def embed_passages(self, texts: Sequence[str]) -> list[Vector]: ...
-
-    def embed_query(self, text: str) -> Vector: ...
 
 
 def normalize(vector: Sequence[float]) -> Vector:

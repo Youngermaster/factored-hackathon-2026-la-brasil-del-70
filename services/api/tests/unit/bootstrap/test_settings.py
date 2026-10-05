@@ -656,3 +656,81 @@ def test_conversation_creation_settings_refuse_values_outside_their_bounds(
     monkeypatch.setenv(variable, value)
     with pytest.raises(ValueError, match=variable.removeprefix("CONVERSATION_").lower()):
         load_settings(env_file=None)
+
+
+@pytest.mark.parametrize("value", ["", "2024-10-21", "2025-04-01-preview", "v1"])
+def test_the_azure_api_version_is_optional_and_read_as_written(monkeypatch: pytest.MonkeyPatch, value: str) -> None:
+    monkeypatch.setenv("LLM_API_VERSION", value)
+
+    assert load_settings(env_file=None).llm.api_version == value
+
+
+@pytest.mark.parametrize("value", ["2024/10/21", "v1; rm", "2024-10-21-beta", "latest version"])
+def test_the_azure_api_version_refuses_anything_but_a_dated_or_named_version(
+    monkeypatch: pytest.MonkeyPatch, value: str
+) -> None:
+    monkeypatch.setenv("LLM_API_VERSION", value)
+
+    with pytest.raises(ValueError, match="api_version"):
+        load_settings(env_file=None)
+
+
+def test_an_enabled_langfuse_export_without_a_base_url_names_the_missing_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The production compose file passes LANGFUSE_BASE_URL through empty by default."""
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("OTEL_ENABLED", "true")
+    monkeypatch.setenv("LANGFUSE_ENABLED", "true")
+    monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", "fixture-public-key")
+    monkeypatch.setenv("LANGFUSE_SECRET_KEY", _strong_secret())
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "")
+
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+
+    assert raised.value.problems == ["LANGFUSE_BASE_URL must be set when LANGFUSE_ENABLED=true"]
+
+
+def test_a_disabled_langfuse_export_accepts_the_empty_compose_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("LANGFUSE_ENABLED", "false")
+    monkeypatch.setenv("LANGFUSE_BASE_URL", "")
+
+    assert not load_settings(env_file=None).langfuse.enabled
+
+
+@pytest.mark.parametrize(
+    ("environment", "problem"),
+    [
+        ({}, "RETRIEVAL_RETRIEVER=qdrant needs RETRIEVAL_QDRANT_URL"),
+        ({"RETRIEVAL_QDRANT_URL": "http://qdrant.example.com:6333"}, "RETRIEVAL_QDRANT_URL must use https"),
+        ({"RETRIEVAL_QDRANT_URL": "http://qdrant:6333", "LLM_PROVIDER": "fake"}, "needs LLM_PROVIDER=litellm"),
+        (
+            {"RETRIEVAL_QDRANT_URL": "http://qdrant:6333", "RETRIEVAL_EMBEDDING_API_BASE": "http://aoai.example.com"},
+            "the embedding API base",
+        ),
+    ],
+)
+def test_production_refuses_an_unsafe_qdrant_configuration(
+    production_environment: dict[str, str],
+    monkeypatch: pytest.MonkeyPatch,
+    environment: dict[str, str],
+    problem: str,
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("RETRIEVAL_RETRIEVER", "qdrant")
+    for name, value in environment.items():
+        monkeypatch.setenv(name, value)
+    with pytest.raises(SettingsError) as raised:
+        load_settings(env_file=None)
+    assert any(problem in item for item in raised.value.problems)
+
+
+def test_production_accepts_qdrant_on_the_internal_network(
+    production_environment: dict[str, str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "litellm")
+    monkeypatch.setenv("LLM_API_KEY_PRIMARY", _strong_secret())
+    monkeypatch.setenv("LLM_API_BASE", "https://aoai.example.com/")
+    monkeypatch.setenv("RETRIEVAL_RETRIEVER", "qdrant_hybrid")
+    monkeypatch.setenv("RETRIEVAL_QDRANT_URL", "http://qdrant:6333")
+    assert load_settings(env_file=None).retrieval.retriever == "qdrant_hybrid"

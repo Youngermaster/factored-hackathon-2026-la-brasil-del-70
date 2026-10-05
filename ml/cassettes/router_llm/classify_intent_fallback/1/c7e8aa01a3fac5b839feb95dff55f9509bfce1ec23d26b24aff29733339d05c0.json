@@ -1,0 +1,36 @@
+{
+  "cassette_id": "c7e8aa01a3fac5b839feb95dff55f9509bfce1ec23d26b24aff29733339d05c0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1264,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:36.594987Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "¿Cómo es el proceso de nu reclamo por transacicón no reconocida?",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fca892f4d5fce1e8e6c0a29f0c0cfd489e491ae6c9006ca13a713f7b2a61487a",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 929,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.1,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:06:00.269606Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me cargás a solicitud de préstamo prendario?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

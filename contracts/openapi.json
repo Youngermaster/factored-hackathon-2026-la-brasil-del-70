@@ -478,6 +478,61 @@
         "title": "CardBlockReason",
         "type": "string"
       },
+      "CardMetric": {
+        "additionalProperties": false,
+        "description": "One published metric with its 95% interval when the report gives one.",
+        "properties": {
+          "high": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "High"
+          },
+          "low": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Low"
+          },
+          "name": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Name",
+            "type": "string"
+          },
+          "unit": {
+            "default": "ratio",
+            "enum": [
+              "ratio",
+              "ms"
+            ],
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "value",
+          "low",
+          "high",
+          "unit"
+        ],
+        "title": "CardMetric",
+        "type": "object"
+      },
       "CardRequest": {
         "additionalProperties": false,
         "description": "The card request a handoff carries: what the customer asked for, and for which card.",
@@ -3059,6 +3114,139 @@
         "title": "LlmCallStatus",
         "type": "string"
       },
+      "LlmConfiguration": {
+        "additionalProperties": false,
+        "description": "The language model gateway as configured: provider, models, feature flags, and budget limits.\n\n``configured`` is false when no provider is set up (``LLM_PROVIDER=fake`` without an injected client): every\nmodel call is refused and the workflows answer on their deterministic paths.",
+        "properties": {
+          "configured": {
+            "title": "Configured",
+            "type": "boolean"
+          },
+          "conversation_budget_usd": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Conversation Budget Usd",
+            "type": "string"
+          },
+          "daily_budget_usd": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Daily Budget Usd",
+            "type": "string"
+          },
+          "fallback_enabled": {
+            "title": "Fallback Enabled",
+            "type": "boolean"
+          },
+          "handoff_summary": {
+            "title": "Handoff Summary",
+            "type": "boolean"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/LlmModelSetup"
+            },
+            "title": "Models",
+            "type": "array"
+          },
+          "phrasing": {
+            "title": "Phrasing",
+            "type": "boolean"
+          },
+          "provider": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Provider",
+            "type": "string"
+          },
+          "session_token_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Session Token Limit",
+            "type": "integer"
+          },
+          "understanding": {
+            "title": "Understanding",
+            "type": "boolean"
+          },
+          "unverified_price_multiplier": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Unverified Price Multiplier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "provider",
+          "configured",
+          "models",
+          "fallback_enabled",
+          "understanding",
+          "phrasing",
+          "handoff_summary",
+          "daily_budget_usd",
+          "conversation_budget_usd",
+          "session_token_limit",
+          "unverified_price_multiplier"
+        ],
+        "title": "LlmConfiguration",
+        "type": "object"
+      },
+      "LlmModelSetup": {
+        "additionalProperties": false,
+        "description": "A configured language model and the price the budget guard and the cost metrics charge for it.\n\nThe prices are the effective ones (``adapters/llm/prices.py``): as listed when ``verified``, times the\nunverified multiplier when ``unverified``, and the table's highest prices times the multiplier for an\n``unknown_model``. ``listed_on`` is the date the listed price was read (``None`` for an unknown model).",
+        "properties": {
+          "input_usd_per_million": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Input Usd Per Million",
+            "type": "string"
+          },
+          "listed_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Listed On"
+          },
+          "model_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "title": "Model Id",
+            "type": "string"
+          },
+          "output_usd_per_million": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Output Usd Per Million",
+            "type": "string"
+          },
+          "price_basis": {
+            "enum": [
+              "verified",
+              "unverified",
+              "unknown_model"
+            ],
+            "title": "Price Basis",
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "primary",
+              "fallback"
+            ],
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "model_id",
+          "price_basis",
+          "input_usd_per_million",
+          "output_usd_per_million",
+          "listed_on"
+        ],
+        "title": "LlmModelSetup",
+        "type": "object"
+      },
       "MaskedNumber": {
         "additionalProperties": false,
         "description": "The last four alphanumeric characters of a product number, rendered as ``**** 1234``.",
@@ -3097,6 +3285,177 @@
         "title": "MetricCount",
         "type": "object"
       },
+      "ModelCard": {
+        "additionalProperties": false,
+        "description": "The offline test (or dev) metrics of one model, copied from a generated report.\n\n``kind`` is ``offline`` for labels made by construction or from the data, ``provisional`` while team-authored\nlabels await human review. ``note`` qualifies the role, for example ``promotion_refused`` or\n``needs_ml_extra`` (the model cannot run in the API image). ``use`` names the task slice (``dispute``).",
+        "properties": {
+          "component": {
+            "$ref": "#/components/schemas/ModelComponent"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "git_sha": {
+            "pattern": "^[0-9a-f]{7,40}$",
+            "title": "Git Sha",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "offline",
+              "provisional"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/CardMetric"
+            },
+            "minItems": 1,
+            "title": "Metrics",
+            "type": "array"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelRef"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "report": {
+            "pattern": "^[A-Za-z0-9_./-]{1,200}$",
+            "title": "Report",
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "default",
+              "champion",
+              "candidate",
+              "reference"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "sample_size": {
+            "exclusiveMinimum": 0.0,
+            "title": "Sample Size",
+            "type": "integer"
+          },
+          "sample_unit": {
+            "enum": [
+              "items",
+              "queries",
+              "customers"
+            ],
+            "title": "Sample Unit",
+            "type": "string"
+          },
+          "source": {
+            "pattern": "^[A-Za-z0-9_./-]{1,200}$",
+            "title": "Source",
+            "type": "string"
+          },
+          "split": {
+            "enum": [
+              "test",
+              "dev"
+            ],
+            "title": "Split",
+            "type": "string"
+          },
+          "use": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Use"
+          }
+        },
+        "required": [
+          "component",
+          "model",
+          "role",
+          "note",
+          "use",
+          "split",
+          "sample_size",
+          "sample_unit",
+          "kind",
+          "metrics",
+          "source",
+          "report",
+          "generated_at",
+          "git_sha"
+        ],
+        "title": "ModelCard",
+        "type": "object"
+      },
+      "ModelCardSet": {
+        "additionalProperties": false,
+        "description": "The curated model cards and promotion decisions; empty when no file is published.",
+        "properties": {
+          "cards": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ModelCard"
+            },
+            "title": "Cards",
+            "type": "array"
+          },
+          "data": {
+            "const": "synthetic",
+            "default": "synthetic",
+            "title": "Data",
+            "type": "string"
+          },
+          "measurement": {
+            "const": "offline",
+            "default": "offline",
+            "title": "Measurement",
+            "type": "string"
+          },
+          "promotions": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/PromotionDecision"
+            },
+            "title": "Promotions",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "1.0.0",
+            "default": "1.0.0",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "measurement",
+          "data",
+          "cards",
+          "promotions"
+        ],
+        "title": "ModelCardSet",
+        "type": "object"
+      },
       "ModelComponent": {
         "enum": [
           "router",
@@ -3108,6 +3467,74 @@
         ],
         "title": "ModelComponent",
         "type": "string"
+      },
+      "ModelInventory": {
+        "additionalProperties": false,
+        "description": "The process's served models and configuration, recorded once at startup (``generated_at``).",
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/ServedModel"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "generated_at": {
+            "format": "date-time",
+            "title": "Generated At",
+            "type": "string"
+          },
+          "llm": {
+            "$ref": "#/components/schemas/LlmConfiguration"
+          },
+          "policy_pack_version": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Policy Pack Version",
+            "type": "string"
+          },
+          "prompts": {
+            "items": {
+              "$ref": "#/components/schemas/PromptUse"
+            },
+            "title": "Prompts",
+            "type": "array"
+          },
+          "workflows_enabled": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowId"
+            },
+            "title": "Workflows Enabled",
+            "type": "array"
+          }
+        },
+        "required": [
+          "generated_at",
+          "components",
+          "llm",
+          "prompts",
+          "policy_pack_version",
+          "workflows_enabled"
+        ],
+        "title": "ModelInventory",
+        "type": "object"
+      },
+      "ModelInventoryResponse": {
+        "description": "What the process serves, recorded at startup, and the published offline evidence for each model.\n\n``inventory`` is configuration (no customer data, identifiers, endpoints, or keys); ``cards`` are offline\nmetrics on synthetic data and simulated end-to-end promotion decisions, never production measurements.",
+        "properties": {
+          "cards": {
+            "$ref": "#/components/schemas/ModelCardSet"
+          },
+          "inventory": {
+            "$ref": "#/components/schemas/ModelInventory"
+          }
+        },
+        "required": [
+          "inventory",
+          "cards"
+        ],
+        "title": "ModelInventoryResponse",
+        "type": "object"
       },
       "ModelRef": {
         "pattern": "^(router|resolver|retriever|language_detector|llm|risk_estimator):[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
@@ -3421,10 +3848,217 @@
         "title": "ProductType",
         "type": "string"
       },
+      "PromotionDecision": {
+        "additionalProperties": false,
+        "description": "A pre-registered default decision: the configurations compared end to end, which one serves, and why.\n\nThe comparison is a simulation (simulated customers and a grader), on the dev split, with the language model\nnamed by ``language_model``; it is never a production measurement.",
+        "properties": {
+          "decision": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Decision",
+            "type": "string"
+          },
+          "language_model": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$",
+            "title": "Language Model",
+            "type": "string"
+          },
+          "measurement": {
+            "const": "simulated",
+            "title": "Measurement",
+            "type": "string"
+          },
+          "outcome": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Outcome",
+            "type": "string"
+          },
+          "reason": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Reason",
+            "type": "string"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/PromotionRow"
+            },
+            "minItems": 2,
+            "title": "Rows",
+            "type": "array"
+          },
+          "session": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}$",
+            "title": "Session",
+            "type": "string"
+          },
+          "source": {
+            "pattern": "^[A-Za-z0-9_./-]{1,200}$",
+            "title": "Source",
+            "type": "string"
+          },
+          "split": {
+            "enum": [
+              "dev",
+              "test"
+            ],
+            "title": "Split",
+            "type": "string"
+          },
+          "workflows": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowId"
+            },
+            "minItems": 1,
+            "title": "Workflows",
+            "type": "array"
+          }
+        },
+        "required": [
+          "decision",
+          "outcome",
+          "reason",
+          "workflows",
+          "split",
+          "measurement",
+          "language_model",
+          "session",
+          "rows",
+          "source"
+        ],
+        "title": "PromotionDecision",
+        "type": "object"
+      },
+      "PromotionRow": {
+        "additionalProperties": false,
+        "description": "One configuration of an end-to-end comparison, with the counts its intervals are computed from.",
+        "properties": {
+          "cases": {
+            "exclusiveMinimum": 0.0,
+            "title": "Cases",
+            "type": "integer"
+          },
+          "escalation_missed": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricCount"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "escalation_unnecessary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricCount"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "git_sha": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{7,40}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Git Sha"
+          },
+          "models": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{0,63}:[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Models",
+            "type": "array"
+          },
+          "routing_correct": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricCount"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id"
+          },
+          "safe_automated_resolution": {
+            "$ref": "#/components/schemas/MetricCount"
+          },
+          "served": {
+            "title": "Served",
+            "type": "boolean"
+          },
+          "unsafe_outcomes": {
+            "$ref": "#/components/schemas/MetricCount"
+          }
+        },
+        "required": [
+          "run_id",
+          "git_sha",
+          "models",
+          "served",
+          "cases",
+          "safe_automated_resolution",
+          "unsafe_outcomes",
+          "escalation_unnecessary",
+          "escalation_missed",
+          "routing_correct"
+        ],
+        "title": "PromotionRow",
+        "type": "object"
+      },
       "PromptRef": {
         "pattern": "^[a-z][a-z0-9_]{0,63}@[1-9][0-9]*$",
         "title": "PromptRef",
         "type": "string"
+      },
+      "PromptUse": {
+        "additionalProperties": false,
+        "description": "A registered prompt version, what the engine calls it for, and whether the current flags let it run.",
+        "properties": {
+          "active": {
+            "title": "Active",
+            "type": "boolean"
+          },
+          "prompt": {
+            "$ref": "#/components/schemas/PromptRef"
+          },
+          "purpose": {
+            "enum": [
+              "understanding",
+              "phrasing",
+              "handoff_summary",
+              "not_called_by_engine"
+            ],
+            "title": "Purpose",
+            "type": "string"
+          }
+        },
+        "required": [
+          "prompt",
+          "purpose",
+          "active"
+        ],
+        "title": "PromptUse",
+        "type": "object"
       },
       "ReadinessResponse": {
         "properties": {
@@ -3848,6 +4482,83 @@
         ],
         "title": "Sentiment",
         "type": "string"
+      },
+      "ServedModel": {
+        "additionalProperties": false,
+        "description": "One component as the process serves it.\n\n``selected`` is the configured selection; ``served`` the concrete model (``None`` when nothing serves, as for a\nrisk estimator that could not load without the band fallback). ``alias`` is the alias the selection named when it\ndiffers from the served version. A component that ``fell_back`` names the reason code.",
+        "properties": {
+          "alias": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alias"
+          },
+          "component": {
+            "$ref": "#/components/schemas/ModelComponent"
+          },
+          "fell_back": {
+            "default": false,
+            "title": "Fell Back",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "baseline",
+              "learned",
+              "unavailable"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "artifact_not_found",
+                  "model_unavailable",
+                  "registry_unreadable"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "selected": {
+            "pattern": "^[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+            "title": "Selected",
+            "type": "string"
+          },
+          "served": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "component",
+          "selected",
+          "served",
+          "kind",
+          "alias",
+          "fell_back",
+          "reason"
+        ],
+        "title": "ServedModel",
+        "type": "object"
       },
       "ServiceRef": {
         "pattern": "^eligibility:[a-z][a-z0-9_]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
@@ -7162,6 +7873,48 @@
           }
         ],
         "summary": "Conversation Trace",
+        "tags": [
+          "evaluation"
+        ],
+        "x-csrf": false,
+        "x-rate-limit": "read",
+        "x-roles": [
+          "evaluator"
+        ]
+      }
+    },
+    "/v1/eval/models": {
+      "get": {
+        "description": "The models, language model setup, prompts, and policy pack this process serves, and their offline evidence.",
+        "operationId": "eval_model_inventory",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelInventoryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "default": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Problem details (RFC 9457)"
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "summary": "Model Inventory",
         "tags": [
           "evaluation"
         ],

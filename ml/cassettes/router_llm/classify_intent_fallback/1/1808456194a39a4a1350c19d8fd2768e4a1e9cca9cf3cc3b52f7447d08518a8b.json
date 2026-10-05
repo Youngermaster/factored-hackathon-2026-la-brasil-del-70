@@ -1,0 +1,40 @@
+{
+  "cassette_id": "1808456194a39a4a1350c19d8fd2768e4a1e9cca9cf3cc3b52f7447d08518a8b",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1463,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "statement_request"
+      },
+      {
+        "confidence": 0.03,
+        "label": "card_status"
+      },
+      {
+        "confidence": 0.02,
+        "label": "balance_inquiry"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:58:35.600800Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 923,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "estado de cuenta tarjeta de crédito",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

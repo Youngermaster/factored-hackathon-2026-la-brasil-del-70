@@ -65,6 +65,9 @@ def test_the_command_writes_the_report_without_dense_or_mlflow(tmp_path: Path) -
     result = CliRunner().invoke(app, ["retrieval", "--no-dense", "--no-mlflow", "--output", str(output)])
     assert result.exit_code == 0, result.output
     assert "bm25: threshold" in result.output
+    # The committed recording of hosted embeddings makes the Qdrant rows run offline by default.
+    assert "qdrant_hybrid: threshold" in result.output
+    assert "## Production decision (pre-registered rule)" in output.read_text(encoding="utf-8")
     assert "not run: the optional ml extra is not installed or --no-dense was given" in output.read_text(
         encoding="utf-8"
     )

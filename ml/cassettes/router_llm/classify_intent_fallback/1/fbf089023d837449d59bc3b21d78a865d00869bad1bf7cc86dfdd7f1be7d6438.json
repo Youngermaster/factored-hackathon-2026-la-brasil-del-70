@@ -1,0 +1,36 @@
+{
+  "cassette_id": "fbf089023d837449d59bc3b21d78a865d00869bad1bf7cc86dfdd7f1be7d6438",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 4688,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.5,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:04.442378Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 31
+  },
+  "variables": {
+    "customer_message": "a cuántos meses me pueden prestar en un crédito personal",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

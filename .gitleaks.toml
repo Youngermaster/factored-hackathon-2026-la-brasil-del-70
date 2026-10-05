@@ -1,0 +1,18 @@
+# gitleaks configuration: the default rules, plus one narrow exception.
+#
+# evals/data/retrieval_embeddings.*.jsonl is the committed recording of hosted embedding vectors (ADR 0047). Each
+# line carries a "key" field that is the SHA-256 hex digest of the embedded text, not a credential; the
+# generic-api-key rule flags it because the field is named "key". The exception applies only to that rule, only in
+# those files, and only to secrets that are exactly 64 lowercase hex characters, so any other secret in those files
+# (or a non-hex value) is still reported.
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "SHA-256 content digests in the committed embedding recordings (ADR 0047)"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^evals/data/retrieval_embeddings\.[A-Za-z0-9._-]+\.jsonl$''']
+regexTarget = "secret"
+regexes = ['''^[0-9a-f]{64}$''']

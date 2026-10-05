@@ -1,0 +1,40 @@
+{
+  "cassette_id": "231f8d3312984ff8edf3c960d27d1a7c7d49373fc2359d3bba8b86b918708928",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1225,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.9,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.8,
+        "label": "informational"
+      },
+      {
+        "confidence": 0.6,
+        "label": "card_block"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:13:26.282981Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 932,
+    "output_tokens": 41
+  },
+  "variables": {
+    "customer_message": "Hola, si bloqueo mi tarjeta, ¿despues la puedo desbloquear?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

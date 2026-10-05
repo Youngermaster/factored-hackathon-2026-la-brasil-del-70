@@ -1,0 +1,36 @@
+{
+  "cassette_id": "67662b87a17ecbc16c52bdf76a6251996d78011142c81ad9320fee6a63c9201e",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1275,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "card_status"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:04:38.346001Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "QUIERO REACTIVAR LA TARJETA QUE TERMINA EN 3310",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0826706c473cb428d6b9f317a7854a370bad3ea5934761c89f7076ac2e5de0c5",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1595,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.05,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:52.496298Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 928,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Hola, ¿me pasás info sobre préstamo prendario?",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

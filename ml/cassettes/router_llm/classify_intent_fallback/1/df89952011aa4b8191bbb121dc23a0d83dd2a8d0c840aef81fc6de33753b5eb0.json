@@ -1,0 +1,36 @@
+{
+  "cassette_id": "df89952011aa4b8191bbb121dc23a0d83dd2a8d0c840aef81fc6de33753b5eb0",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1066,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T16:05:20.977574Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "porfa, inicien mi solicitud de crédito automotriz",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

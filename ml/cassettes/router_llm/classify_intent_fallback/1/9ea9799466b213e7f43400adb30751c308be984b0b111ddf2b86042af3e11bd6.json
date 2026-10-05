@@ -1,0 +1,40 @@
+{
+  "cassette_id": "9ea9799466b213e7f43400adb30751c308be984b0b111ddf2b86042af3e11bd6",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1035,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_product_info"
+      },
+      {
+        "confidence": 0.7,
+        "label": "credit_eligibility"
+      },
+      {
+        "confidence": 0.5,
+        "label": "credit_application"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:24.369038Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 933,
+    "output_tokens": 42
+  },
+  "variables": {
+    "customer_message": "¿Cuáles son los requisitos para sacar una tarjeta de crérito con ustddes?",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}

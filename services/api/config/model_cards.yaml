@@ -1,0 +1,370 @@
+# Model cards served by GET /v1/eval/models (evaluator only) and shown in the console's Supervision view.
+#
+# Every number below is copied by hand from a generated report or a model card in the repository; none is computed
+# or rounded here. Each card names its source (the model card), its report (the generated evaluation), the commit
+# and time the report was generated, the split, and the sample size. All of it is offline evidence on synthetic data
+# (team-authored router seeds and retrieval judgments, organizer-provided synthetic records): it is not a production
+# measurement. kind: provisional marks labels that still await human review; kind: offline marks labels made by
+# construction or from the data. Intervals are 95% bootstraps as each report describes (seed groups for the router,
+# customers for the resolver and the risk estimator); the retrieval report publishes no intervals.
+#
+# The promotions are the end-to-end comparisons of fixed against learned defaults from session 14b
+# (docs/evaluation/results.md, "Decision: the learned router, resolver, and risk estimator defaults"): simulated
+# customers and a grader on the dev split with the local model, so they are labeled simulated. Aliases
+# (tfidf@champion) appear exactly as that section names them.
+#
+# Regenerate by hand whenever `make train`, `make eval-retrieval`, or a new defaults decision rewrites those
+# reports; services/api/tests/unit/adapters/test_model_cards.py checks that this file validates, that
+# every path exists, and that each default card names the baseline the settings serve by default.
+
+schema_version: "1.0.0"
+measurement: offline
+data: synthetic
+cards:
+  # Intent router: docs/evaluation/router.md, "Test split (held out)" and "By language and locale (test)".
+  - component: router
+    model: "router:keyword@1"
+    role: default
+    split: test
+    sample_size: 601
+    sample_unit: items
+    kind: provisional
+    metrics:
+      - {name: accuracy, value: 0.381, low: 0.299, high: 0.455}
+      - {name: macro_f1, value: 0.385, low: 0.299, high: 0.439}
+      - {name: workflow_accuracy, value: 0.574, low: 0.503, high: 0.656}
+      - {name: coverage, value: 0.491, low: 0.409, high: 0.575}
+      - {name: error_among_covered, value: 0.363, low: 0.255, high: 0.484}
+      - {name: ece, value: 0.185}
+      - {name: high_stakes_recall, value: 0.471}
+      - {name: accuracy_es, value: 0.37, low: 0.28, high: 0.46}
+      - {name: accuracy_pt, value: 0.41, low: 0.25, high: 0.57}
+    source: docs/models/router.md
+    report: docs/evaluation/router.md
+    generated_at: "2026-09-27T20:09:44Z"
+    git_sha: "2c19633"
+  - component: router
+    model: "router:tfidf@986872f0284f"
+    role: champion
+    split: test
+    sample_size: 601
+    sample_unit: items
+    kind: provisional
+    metrics:
+      - {name: accuracy, value: 0.677, low: 0.596, high: 0.749}
+      - {name: macro_f1, value: 0.661, low: 0.575, high: 0.718}
+      - {name: workflow_accuracy, value: 0.827, low: 0.761, high: 0.885}
+      - {name: coverage, value: 0.484, low: 0.406, high: 0.568}
+      - {name: error_among_covered, value: 0.096, low: 0.034, high: 0.175}
+      - {name: ece, value: 0.125}
+      - {name: high_stakes_recall, value: 0.741}
+      - {name: accuracy_es, value: 0.70, low: 0.61, high: 0.78}
+      - {name: accuracy_pt, value: 0.63, low: 0.47, high: 0.77}
+    source: docs/models/router.md
+    report: docs/evaluation/router.md
+    generated_at: "2026-09-27T20:09:44Z"
+    git_sha: "2c19633"
+  - component: router
+    model: "router:embeddings@32666d7d4e3f"
+    role: champion
+    note: needs_ml_extra
+    split: test
+    sample_size: 601
+    sample_unit: items
+    kind: provisional
+    metrics:
+      - {name: accuracy, value: 0.749, low: 0.679, high: 0.805}
+      - {name: macro_f1, value: 0.742, low: 0.665, high: 0.796}
+      - {name: workflow_accuracy, value: 0.834, low: 0.784, high: 0.884}
+      - {name: coverage, value: 0.619, low: 0.556, high: 0.682}
+      - {name: error_among_covered, value: 0.102, low: 0.047, high: 0.161}
+      - {name: ece, value: 0.072}
+      - {name: high_stakes_recall, value: 0.805}
+      - {name: accuracy_es, value: 0.75, low: 0.67, high: 0.81}
+      - {name: accuracy_pt, value: 0.75, low: 0.62, high: 0.88}
+    source: docs/models/router.md
+    report: docs/evaluation/router.md
+    generated_at: "2026-09-27T20:09:44Z"
+    git_sha: "2c19633"
+
+  # Transaction resolver: docs/evaluation/resolver.md, the "two or more candidates" rows of the dispute and payment
+  # lookup test tables (652 and 676 queries).
+  - component: resolver
+    model: "resolver:rules@1"
+    role: default
+    use: dispute
+    split: test
+    sample_size: 652
+    sample_unit: queries
+    kind: offline
+    metrics:
+      - {name: top1, value: 0.989, low: 0.979, high: 0.995}
+      - {name: mrr, value: 0.990, low: 0.982, high: 0.997}
+      - {name: coverage, value: 0.793, low: 0.761, high: 0.824}
+      - {name: wrong_transaction_rate, value: 0.003, low: 0.000, high: 0.008}
+      - {name: wrong_among_auto, value: 0.004, low: 0.000, high: 0.010}
+    source: docs/models/resolver.md
+    report: docs/evaluation/resolver.md
+    generated_at: "2026-09-27T20:10:04Z"
+    git_sha: "2c19633"
+  - component: resolver
+    model: "resolver:lgbm@411b1d77d17b"
+    role: champion
+    use: dispute
+    split: test
+    sample_size: 652
+    sample_unit: queries
+    kind: offline
+    metrics:
+      - {name: top1, value: 1.000, low: 1.000, high: 1.000}
+      - {name: mrr, value: 1.000, low: 1.000, high: 1.000}
+      - {name: coverage, value: 0.913, low: 0.891, high: 0.934}
+      - {name: wrong_transaction_rate, value: 0.000, low: 0.000, high: 0.000}
+      - {name: wrong_among_auto, value: 0.000, low: 0.000, high: 0.000}
+    source: docs/models/resolver.md
+    report: docs/evaluation/resolver.md
+    generated_at: "2026-09-27T20:10:04Z"
+    git_sha: "2c19633"
+  - component: resolver
+    model: "resolver:rules@1"
+    role: default
+    use: payment_lookup
+    split: test
+    sample_size: 676
+    sample_unit: queries
+    kind: offline
+    metrics:
+      - {name: top1, value: 0.989, low: 0.981, high: 0.997}
+      - {name: mrr, value: 0.989, low: 0.981, high: 0.995}
+      - {name: coverage, value: 0.769, low: 0.738, high: 0.798}
+      - {name: wrong_transaction_rate, value: 0.000, low: 0.000, high: 0.000}
+      - {name: wrong_among_auto, value: 0.000, low: 0.000, high: 0.000}
+    source: docs/models/resolver.md
+    report: docs/evaluation/resolver.md
+    generated_at: "2026-09-27T20:10:04Z"
+    git_sha: "2c19633"
+  - component: resolver
+    model: "resolver:lgbm@411b1d77d17b"
+    role: champion
+    use: payment_lookup
+    split: test
+    sample_size: 676
+    sample_unit: queries
+    kind: offline
+    metrics:
+      - {name: top1, value: 1.000, low: 1.000, high: 1.000}
+      - {name: mrr, value: 1.000, low: 1.000, high: 1.000}
+      - {name: coverage, value: 0.936, low: 0.917, high: 0.954}
+      - {name: wrong_transaction_rate, value: 0.001, low: 0.000, high: 0.006}
+      - {name: wrong_among_auto, value: 0.002, low: 0.000, high: 0.005}
+    source: docs/models/resolver.md
+    report: docs/evaluation/resolver.md
+    generated_at: "2026-09-27T20:10:04Z"
+    git_sha: "2c19633"
+
+  # Credit risk estimator: docs/evaluation/risk-estimator.md, "Headline (test split)". Label
+  # snapshot_dpd30_any_credit_product (cross-sectional); a predictive estimate, never a lending decision. Brier and
+  # ECE are better when lower.
+  - component: risk_estimator
+    model: "risk_estimator:score_band@1"
+    role: default
+    split: test
+    sample_size: 15322
+    sample_unit: customers
+    kind: offline
+    metrics:
+      - {name: roc_auc, value: 0.504, low: 0.492, high: 0.514}
+      - {name: pr_auc, value: 0.174, low: 0.167, high: 0.182}
+      - {name: brier, value: 0.1935, low: 0.1908, high: 0.1963}
+      - {name: ece, value: 0.1938, low: 0.1874, high: 0.2005}
+    source: docs/models/risk-estimator.md
+    report: docs/evaluation/risk-estimator.md
+    generated_at: "2026-09-27T22:41:00Z"
+    git_sha: "f45154c"
+  - component: risk_estimator
+    model: "risk_estimator:logreg@2afb401aa70e"
+    role: champion
+    split: test
+    sample_size: 15322
+    sample_unit: customers
+    kind: offline
+    metrics:
+      - {name: roc_auc, value: 0.611, low: 0.599, high: 0.623}
+      - {name: pr_auc, value: 0.258, low: 0.246, high: 0.273}
+      - {name: brier, value: 0.1383, low: 0.1344, high: 0.1423}
+      - {name: ece, value: 0.0078, low: 0.0057, high: 0.0149}
+    source: docs/models/risk-estimator.md
+    report: docs/evaluation/risk-estimator.md
+    generated_at: "2026-09-27T22:41:00Z"
+    git_sha: "f45154c"
+  - component: risk_estimator
+    model: "risk_estimator:lgbm@1c54c935b495"
+    role: candidate
+    note: promotion_refused
+    split: test
+    sample_size: 15322
+    sample_unit: customers
+    kind: offline
+    metrics:
+      - {name: roc_auc, value: 0.612, low: 0.599, high: 0.624}
+      - {name: pr_auc, value: 0.257, low: 0.243, high: 0.272}
+      - {name: brier, value: 0.1380, low: 0.1346, high: 0.1418}
+      - {name: ece, value: 0.0039, low: 0.0019, high: 0.0105}
+    source: docs/models/risk-estimator.md
+    report: docs/evaluation/risk-estimator.md
+    generated_at: "2026-09-27T22:41:00Z"
+    git_sha: "f45154c"
+
+  # Policy retrieval: docs/evaluation/retrieval.md, "Summary", test split (48 in-scope and 12 out-of-scope queries).
+  # The judgments await review; the report gives point estimates only. Latency is per query on the evaluation host.
+  - component: retriever
+    model: "retriever:bm25@1"
+    role: default
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.68}
+      - {name: mrr, value: 0.83}
+      - {name: abstention_precision, value: 0.80}
+      - {name: abstention_recall, value: 1.00}
+      - {name: false_abstention, value: 0.06}
+      - {name: latency_p95_ms, value: 0.16, unit: ms}
+    source: docs/workflows/grounding.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+  - component: retriever
+    model: "retriever:dense@intfloat.multilingual-e5-small"
+    role: candidate
+    note: needs_ml_extra
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.69}
+      - {name: mrr, value: 0.86}
+      - {name: abstention_precision, value: 0.92}
+      - {name: abstention_recall, value: 0.92}
+      - {name: false_abstention, value: 0.02}
+      - {name: latency_p95_ms, value: 20.42, unit: ms}
+    source: docs/workflows/grounding.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+  - component: retriever
+    model: "retriever:hybrid@1"
+    role: candidate
+    note: needs_ml_extra
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.72}
+      - {name: mrr, value: 0.85}
+      - {name: abstention_precision, value: 0.92}
+      - {name: abstention_recall, value: 0.92}
+      - {name: false_abstention, value: 0.02}
+      - {name: latency_p95_ms, value: 24.31, unit: ms}
+    source: docs/workflows/grounding.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+  - component: retriever
+    model: "retriever:qdrant@azure.text-embedding-3-small.512"
+    role: candidate
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.67}
+      - {name: mrr, value: 0.83}
+      - {name: abstention_precision, value: 1.00}
+      - {name: abstention_recall, value: 1.00}
+      - {name: false_abstention, value: 0.00}
+      - {name: latency_p95_ms, value: 1.40, unit: ms}
+    source: docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+  - component: retriever
+    model: "retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512"
+    role: candidate
+    split: test
+    sample_size: 60
+    sample_unit: queries
+    kind: provisional
+    metrics:
+      - {name: recall_at_1, value: 0.76}
+      - {name: mrr, value: 0.89}
+      - {name: abstention_precision, value: 1.00}
+      - {name: abstention_recall, value: 1.00}
+      - {name: false_abstention, value: 0.00}
+      - {name: latency_p95_ms, value: 1.64, unit: ms}
+    source: docs/adr/0047-qdrant-vector-index-for-knowledge-retrieval.md
+    report: docs/evaluation/retrieval.md
+    generated_at: "2026-10-05T17:34:09Z"
+    git_sha: "0b7fd86"
+
+promotions:
+  # docs/evaluation/results.md, "Decision: the learned router, resolver, and risk estimator defaults (dev evidence
+  # only)". The rule changes a default only on a dev gain whose intervals do not overlap.
+  - decision: router_and_resolver_defaults
+    outcome: keep_baselines
+    reason: overlapping_intervals
+    workflows: [account_inquiry, card_support, dispute, credit]
+    split: dev
+    measurement: simulated
+    language_model: "ollama/qwen2.5:7b-instruct"
+    session: session_14b
+    source: docs/evaluation/results.md
+    rows:
+      - run_id: dev-local-fixed
+        git_sha: "813a6dc"
+        models: ["router:keyword@1", "resolver:rules@1"]
+        served: true
+        cases: 112
+        safe_automated_resolution: {count: 74, denominator: 112}
+        unsafe_outcomes: {count: 0, denominator: 112}
+        routing_correct: {count: 104, denominator: 112}
+        escalation_unnecessary: {count: 10, denominator: 94}
+        escalation_missed: {count: 0, denominator: 18}
+      - run_id: dev-local-learned
+        git_sha: "1e8e314"
+        models: ["router:tfidf@champion", "resolver:lgbm@champion"]
+        served: false
+        cases: 112
+        safe_automated_resolution: {count: 75, denominator: 112}
+        unsafe_outcomes: {count: 2, denominator: 112}
+        routing_correct: {count: 103, denominator: 112}
+        escalation_unnecessary: {count: 8, denominator: 94}
+        escalation_missed: {count: 0, denominator: 18}
+  - decision: risk_estimator_default
+    outcome: keep_baseline
+    reason: indicative_eligibility_where_review_expected
+    workflows: [credit]
+    split: dev
+    measurement: simulated
+    language_model: "ollama/qwen2.5:7b-instruct"
+    session: session_14b
+    source: docs/evaluation/results.md
+    rows:
+      - models: ["risk_estimator:score_band@1"]
+        served: true
+        cases: 28
+        safe_automated_resolution: {count: 20, denominator: 28}
+        unsafe_outcomes: {count: 0, denominator: 28}
+        escalation_unnecessary: {count: 1, denominator: 22}
+        escalation_missed: {count: 0, denominator: 6}
+      - run_id: dev-local-logreg
+        models: ["risk_estimator:logreg@champion"]
+        served: false
+        cases: 28
+        safe_automated_resolution: {count: 20, denominator: 28}
+        unsafe_outcomes: {count: 3, denominator: 28}
+        escalation_unnecessary: {count: 1, denominator: 22}
+        escalation_missed: {count: 2, denominator: 6}

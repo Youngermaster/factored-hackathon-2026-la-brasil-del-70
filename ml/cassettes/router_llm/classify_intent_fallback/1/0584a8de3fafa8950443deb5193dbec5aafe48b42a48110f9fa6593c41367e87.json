@@ -1,0 +1,36 @@
+{
+  "cassette_id": "0584a8de3fafa8950443deb5193dbec5aafe48b42a48110f9fa6593c41367e87",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1260,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.05,
+        "label": "credit_eligibility"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:54:23.015968Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 934,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "Dale, quiero pedir el préstam opreaprobado quee me aparece",
+    "dialect_hint": "es-AR",
+    "router_candidates": []
+  }
+}

@@ -11,6 +11,7 @@ from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import evaluate
 from bank_agent.application.engine.reply import Reply
 from bank_agent.application.engine.shared import blocking_step
+from bank_agent.application.workflows.credit.approval import answer_then_ask_again, asks_approval
 from bank_agent.application.workflows.credit.data import DEFAULT_PURPOSE, CreditData, exhausted, load, save
 from bank_agent.application.workflows.credit.info import ask_product, detail, facts, product_of
 from bank_agent.application.workflows.credit.understand import absorb
@@ -34,8 +35,16 @@ def _missing_template(data: CreditData, product_type: CreditProductType) -> str 
 
 async def collect(ctx: TurnContext) -> Step:
     data = load(ctx)
+    if data.asked_facts and not ctx.reprompt and asks_approval(ctx.text):
+        # "¿Entonces sí me lo aprobaron?" while a fact is pending: answer it, then ask for the fact again.
+        step = await _collect(ctx, data, absorb_text=False)
+        return answer_then_ask_again(ctx, step) if step.next_state == COLLECT else step
+    return await _collect(ctx, data, absorb_text=True)
+
+
+async def _collect(ctx: TurnContext, data: CreditData, *, absorb_text: bool) -> Step:
     answered = False
-    if data.asked_facts and not ctx.reprompt:
+    if absorb_text and data.asked_facts and not ctx.reprompt:
         before = (data.amount, data.term_months, data.product_type)
         data = await absorb(ctx, data, ctx.text)
         answered = (data.amount, data.term_months, data.product_type) != before
@@ -52,7 +61,7 @@ async def collect(ctx: TurnContext) -> Step:
         data = data.evolve(amount=None, currency=None)
     missing = _missing_template(data, product.product_type)
     if missing is not None:
-        if ctx.reprompt:
+        if ctx.reprompt or not absorb_text:
             return _ask(ctx, data, missing, unanswered=False)
         stop = exhausted(ctx, data)
         return stop or _ask(ctx, data, missing, unanswered=data.asked_facts and not answered)

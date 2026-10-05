@@ -58,6 +58,21 @@ async def absorb(ctx: TurnContext, data: CardData) -> CardData:
 ACTION_INTENTS = {action: intent for intent, action in INTENT_ACTIONS.items()}
 
 
+def absorb_words(ctx: TurnContext, data: CardData) -> CardData:
+    """The deterministic part of ``absorb`` (no model call): a request, a reason, or a card named in an answer."""
+    action = extraction.card_action(ctx.text)
+    reason = extraction.block_reason(ctx.text)
+    hint_type = extraction.card_type(ctx.text)
+    hint_last4 = extraction.card_last4(ctx.text)
+    explicit_card = hint_type is not None or hint_last4 is not None
+    return data.evolve(
+        action=action or data.action,
+        block_reason=reason or data.block_reason,
+        hint_type=hint_type if explicit_card else data.hint_type,
+        hint_last4=hint_last4 if explicit_card else data.hint_last4,
+    )
+
+
 async def understand(ctx: TurnContext) -> Step:
     data = await absorb(ctx, CardData())
     intent = ACTION_INTENTS.get(data.action) if data.action is not None else Intent.CARD_STATUS
@@ -157,6 +172,16 @@ async def clarify(ctx: TurnContext) -> Step:
 
     index = parse_choice(ctx.text, options, matches)
     if index is None:
+        # "ok bloquéala porfa, creo que la perdí" while choosing: the request and the reason are kept, and a card
+        # they identify among the options is chosen (QA 2026-10-05, CRD-02); otherwise the options are asked again.
+        updated = absorb_words(ctx, data)
+        if updated != data:
+            save(ctx, updated)
+            if updated.action is not None and updated.action is not data.action:
+                ctx.engine = ctx.engine.evolve(intent=ACTION_INTENTS.get(updated.action, Intent.CARD_STATUS))
+            narrowed = _plausible(updated, options)
+            if len(narrowed) == 1:
+                return await _chosen(ctx, updated, narrowed[0])
         stop = spend_clarification(ctx, open_questions=WHICH_CARD)
         return stop or _options_reply(ctx, options, unanswered=True)
     return await _chosen(ctx, data, options[index])

@@ -41,13 +41,18 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 | [0033](0033-sanitized-eda-laboratory.md) | Sanitized EDA laboratory in the local viewer | Accepted | 2026-09-27 |
 | [0034](0034-bounded-local-gold-seed-for-mvp.md) | Bounded local gold seed into PostgreSQL for the MVP | Accepted | 2026-09-27 |
 | [0035](0035-telemetry-export-and-degradation-ladder.md) | OpenTelemetry over OTLP HTTP, metrics from execution records, and a pure degradation ladder | Accepted | 2026-09-29 |
-| [0036](0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation | Accepted | 2026-10-03 |
+| [0036](0036-grafana-live-analytics-separate-from-offline-evaluation.md) | Provisioned Grafana for live analytics, separate from offline evaluation | Accepted; production access amended by 0045 | 2026-10-03 |
 | [0037](0037-cloud-secret-management-with-azure-key-vault.md) | Production secrets in Azure Key Vault with workload identity | Accepted | 2026-09-30 |
 | [0038](0038-continuous-deployment-to-azure-with-github-actions.md) | Continuous deployment to the Azure VM with GitHub Actions, GHCR, OIDC, and run-command | Proposed | 2026-10-04 |
 | [0039](0039-azure-vm-data-pipeline.md) | Execute the existing data pipeline on an Azure VM | Accepted | 2026-10-03 |
 | [0040](0040-isolated-bank-database-vm.md) | Isolate the data pipeline on vm-bank-database in westus2 | Accepted | 2026-10-04 |
 | [0041](0041-data-engineering-deployment-and-datagrip.md) | Data engineering deployment, validation, and DataGrip access | Accepted; Azure naming replacement superseded | 2026-10-04 |
 | [0042](0042-preserve-azure-resource-names.md) | Keep Azure resource names and organize data engineering | Accepted | 2026-10-04 |
+| [0043](0043-langgraph-migration.md) | A staged migration of the workflow engine to LangGraph StateGraph after the hackathon (roadmap; ADR 0014 stays in force) | Proposed | 2026-10-05 |
+| [0044](0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider | Accepted | 2026-10-05 |
+| [0045](0045-expose-grafana-read-only-under-grafana.md) | Expose Grafana read-only under /grafana (amends 0036's access model) | Accepted | 2026-10-05 |
+| [0046](0046-customer-service-history-vector-retrieval.md) | Customer-service history uses consented vector retrieval (renumbered teammate draft) | Proposed | 2026-10-05 |
+| [0047](0047-qdrant-vector-index-for-knowledge-retrieval.md) | Qdrant vector index for customer-service knowledge retrieval | Accepted | 2026-10-05 |
 
 ## Notes on status
 
@@ -55,7 +60,9 @@ The table lists records by number, not by date: 0015 to 0019 were reserved early
 - **0025** is superseded: the human decided on 2026-09-27 that the build does not follow its narrower release scope, and all four workflows stay automated. Its mock human agent was not built. The assistant profile and privacy-safe, metadata-only Langfuse export later landed independently in PRs 18 and 20; Langfuse remains opt-in and disabled by default. Neither capability reinstates the superseded release plan.
 - **0026** is implemented and verified in the `feat/adr-0026-live-agent` increment: customer and assigned-agent messages on the original conversation, truthful lifecycle states, closure, and the customer creation quota. See [the channel guide](../workflows/human-service.md) and [PROGRESS](../PROGRESS.md) for verification. **0027 and 0028** remain optional future directions (opt-in financial memory, mock multi-bank and digital-asset surfaces); neither is built or part of the settled MVP scope.
 - **0015, 0016, and 0030** keep their defaults "until phase 14 measures the learned models end to end". Session 14b did, on the dev split with the local model, and kept the rule baselines (`keyword@1`, `rules@1`, `score_band@1`); the evidence is in [results.md](../evaluation/results.md#decision-the-learned-router-resolver-and-risk-estimator-defaults-dev-evidence-only).
+- **0015** option 4, the language model classifier, said it "cannot be measured without a provider". It was measured on 2026-10-05, offline, on the frozen router splits, as a reference and not as a serving option. `classify_intent_fallback@1` ran zero-shot on `azure/gpt-4.1-mini` and `azure/gpt-4o`, alone and in a cascade behind TF-IDF. The decision rule was pre-registered in [the plan](../plans/router-llm.md) and the results are in [router-llm.md](../evaluation/router-llm.md). On test, zero-shot macro-F1 is 0.885 and 0.936 against 0.661 for TF-IDF, but the model makes more confident write-intent misroutes (31 and 23 of 601, against 1). Under the dev rule neither cascade qualifies for an end-to-end trial, so the record's decision and the `keyword@1` default stand. The record itself is unchanged.
 - **0022** asks for the organizer data-use terms to be checked before the repository becomes public; phase 17 recorded the check in [data-use.md](../data/data-use.md).
+- **0043** is the post-hackathon roadmap for moving the workflow engine to LangGraph StateGraph. It is Proposed: on 2026-10-05 the team decided not to migrate the runtime before the submission deadline, so nothing at runtime, in settings, or in dependencies changes with it, and [ADR 0014](0014-explicit-state-machine-over-an-agent-framework.md) stays Accepted until 0043's phase 4 gate, when both status lines and both rows change in one commit. It supersedes the unmerged pull request 23, whose dispute-only record used the number 0037 that `main` assigns to Key Vault.
 
 ## Adding a record
 

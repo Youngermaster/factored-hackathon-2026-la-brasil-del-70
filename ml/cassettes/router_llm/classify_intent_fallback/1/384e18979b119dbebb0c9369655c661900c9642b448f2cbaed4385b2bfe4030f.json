@@ -1,0 +1,36 @@
+{
+  "cassette_id": "384e18979b119dbebb0c9369655c661900c9642b448f2cbaed4385b2bfe4030f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 2125,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_block"
+      },
+      {
+        "confidence": 0.05,
+        "label": "unsupported"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:52:02.579717Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 930,
+    "output_tokens": 27
+  },
+  "variables": {
+    "customer_message": "Quiwro congelar mi tarjeta de crédkto por seguridad",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -4,6 +4,8 @@
 #   SITE_ADDRESS  the public host name (for example demo.example.org), or localhost for the local TLS mode
 #   CADDY_TLS     acme (automatic certificates from a public CA, the default) or internal (Caddy's own local CA)
 #   ACME_EMAIL    the contact address for the certificate authority (acme mode)
+#   GRAFANA_ROUTE on serves Grafana read-only at /grafana/ (ADR 0045; needs the obs profile), off (the default) keeps
+#                 Grafana on the SSH tunnel only and /grafana falls through to the SPA
 #
 # Caddy is the edge: it trusts no proxy in front of it, so client-sent X-Forwarded-* headers are ignored and it sets
 # X-Forwarded-For to the real client address. The API trusts that header only from this container's fixed address
@@ -30,6 +32,32 @@
 	tls internal
 }
 
+# Grafana at /grafana/ (ADR 0045), same origin as the bank. Grafana serves the sub-path itself
+# (GF_SERVER_SERVE_FROM_SUB_PATH), so the prefix is kept, and it sends its own CSP (GF_SECURITY_CONTENT_SECURITY_POLICY):
+# the SPA headers never apply here, because two CSP headers would both be enforced. Every cookie with the __Host- or
+# __Secure- prefix (the bank's session and CSRF cookies; Grafana's own cookies have neither) is removed before the
+# request reaches Grafana, and Grafana's unauthenticated /metrics endpoint is closed. Without the obs profile running,
+# /grafana/ answers 502.
+(grafana-on) {
+	redir /grafana /grafana/ 308
+	handle /grafana/* {
+		respond /grafana/metrics* 404
+		reverse_proxy grafana:3000 {
+			header_up Cookie `__(?:Host|Secure)-[^=;]*=[^;]*;?\s*` ""
+			header_down -Server
+			header_down Strict-Transport-Security "max-age=63072000; includeSubDomains"
+			header_down Referrer-Policy "same-origin"
+			header_down Permissions-Policy "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), usb=()"
+			header_down Cross-Origin-Opener-Policy "same-origin"
+			header_down X-Robots-Tag "noindex, nofollow"
+		}
+	}
+}
+
+# The route is closed: /grafana is an unknown SPA path.
+(grafana-off) {
+}
+
 # Health endpoint for the container healthcheck, reachable only inside the container.
 http://127.0.0.1:8081 {
 	bind 127.0.0.1
@@ -39,6 +67,7 @@ http://127.0.0.1:8081 {
 {$SITE_ADDRESS} {
 	import tls-{$CADDY_TLS:acme}
 	encode zstd gzip
+	import grafana-{$GRAFANA_ROUTE:off}
 
 	@api path /v1/* /health/*
 	handle @api {

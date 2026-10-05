@@ -17,7 +17,7 @@ from bank_agent.policy.facts import DisputeFacts
 MAX_LISTED = 5
 
 
-def _params(ctx: TurnContext, case: DisputeCase) -> dict[str, Param]:
+def case_params(ctx: TurnContext, case: DisputeCase) -> dict[str, Param]:
     language = Language.ES if ctx.language is Language.EN else ctx.language
     return {
         "case": case.case_id,
@@ -46,14 +46,19 @@ async def status_inquiry(ctx: TurnContext) -> Step:
     stop = blocking_step(ctx, decision, state="STATUS_INQUIRY")
     if stop is not None:
         return stop
-    explain = (clause_ref(ctx, f"DSP-{ctx.customer.country.value}-2"), clause_ref(ctx, "INF-ALL-1"))
+    explain = (clause_ref(ctx, f"DSP-{ctx.customer.country.value}-2"),)
+    # INF-ALL-1 is cited but its paragraph is not appended: the status reply read long and repeated itself (DSP-13).
+    cite = (clause_ref(ctx, "INF-ALL-1"),)
     if not cases:
         return Step(RESOLVED, Reply(template="dispute.status_none"), Outcome.RESOLVED)
     if len(cases) == 1:
-        reply = Reply(template="dispute.status_one", params=_params(ctx, cases[0]), explain=explain)
+        reply = Reply(template="dispute.status_one", params=case_params(ctx, cases[0]), explain=explain, cite=cite)
         return Step(RESOLVED, reply, Outcome.RESOLVED)
-    items = tuple(_params(ctx, case) for case in cases[:MAX_LISTED])
+    items = tuple(case_params(ctx, case) for case in cases[:MAX_LISTED])
     reply = Reply(
-        template="dispute.status_many", params={"items": Choices("dispute.status_item", items)}, explain=explain
+        template="dispute.status_many",
+        params={"items": Choices("dispute.status_item", items)},
+        explain=explain,
+        cite=cite,
     )
     return Step(RESOLVED, reply, Outcome.RESOLVED)

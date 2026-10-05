@@ -1,0 +1,36 @@
+{
+  "cassette_id": "81764e09ba245ccb8315e7ce3b7bb6faa73744e97ce26364bb395c6028ed9e23",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 1104,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_new"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:34.671122Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 950,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "Oi, apareceu uma compra de R$ 45,90 na Boutique Moda que eu não fiz",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

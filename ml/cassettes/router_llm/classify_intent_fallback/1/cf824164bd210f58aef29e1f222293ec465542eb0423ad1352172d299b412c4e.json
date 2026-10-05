@@ -1,0 +1,36 @@
+{
+  "cassette_id": "cf824164bd210f58aef29e1f222293ec465542eb0423ad1352172d299b412c4e",
+  "kind": "structured",
+  "labels": {},
+  "language": "pt",
+  "latency_ms": 885,
+  "model_id": "azure/gpt-4o",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "card_unblock_request"
+      },
+      {
+        "confidence": 0.05,
+        "label": "human_request"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:53:51.787344Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 943,
+    "output_tokens": 30
+  },
+  "variables": {
+    "customer_message": "pfv, desbloqueiem o cartão final 7345",
+    "dialect_hint": "pt-BR",
+    "router_candidates": []
+  }
+}

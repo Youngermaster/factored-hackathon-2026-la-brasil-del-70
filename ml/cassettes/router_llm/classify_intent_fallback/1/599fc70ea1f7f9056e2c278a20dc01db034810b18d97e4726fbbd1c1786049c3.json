@@ -1,0 +1,36 @@
+{
+  "cassette_id": "599fc70ea1f7f9056e2c278a20dc01db034810b18d97e4726fbbd1c1786049c3",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1381,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "credit_application"
+      },
+      {
+        "confidence": 0.4,
+        "label": "credit_product_info"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:55:15.482176Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 29
+  },
+  "variables": {
+    "customer_message": "dumercé, quiero tramitar un crédito de libranza",
+    "dialect_hint": "es-CO",
+    "router_candidates": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cassette_id": "5f77d52e8eb2c5552e974872697a4721c333f91da5175fa2d5b446ac9c6b202f",
+  "kind": "structured",
+  "labels": {},
+  "language": "es",
+  "latency_ms": 1269,
+  "model_id": "azure/gpt-4.1-mini",
+  "note": "",
+  "output": {
+    "candidates": [
+      {
+        "confidence": 0.95,
+        "label": "dispute_status"
+      },
+      {
+        "confidence": 0.4,
+        "label": "human_request"
+      },
+      {
+        "confidence": 0.2,
+        "label": "informational"
+      }
+    ]
+  },
+  "output_model": "IntentClassification",
+  "prompt": "classify_intent_fallback@1",
+  "provenance": "recorded",
+  "recorded_at": "2026-10-05T15:56:43.235257Z",
+  "repaired": false,
+  "schema_version": 1,
+  "usage": {
+    "input_tokens": 936,
+    "output_tokens": 40
+  },
+  "variables": {
+    "customer_message": "Quiero saber en qué quedó mi reclamo por el cajero que no me dio el lana",
+    "dialect_hint": "es-MX",
+    "router_candidates": []
+  }
+}
