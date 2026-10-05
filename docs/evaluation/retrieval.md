@@ -1,6 +1,6 @@
 # Retrieval evaluation
 
-Generated 2026-10-05T17:27:32+00:00 from commit `3a036d7-dirty` by `make eval-retrieval`
+Generated 2026-10-05T17:34:09+00:00 from commit `0b7fd86` by `make eval-retrieval`
 (`bank-eval retrieval`). Do not edit by hand. The labeling protocol is in
 [retrieval-labeling.md](retrieval-labeling.md); the retrieval design is in
 [grounding](../workflows/grounding.md).
@@ -28,16 +28,16 @@ excludes the embedding call and the network (offline measurement, not a producti
 
 | Retriever | Model | Threshold | Split | R@1 | R@3 | R@5 | MRR | nDCG@5 | Abst. P | Abst. R | False abst. | p50 ms | p95 ms |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| bm25 | `retriever:bm25@1` | 3.5738 (tuned on dev) | test | 0.68 | 0.85 | 0.92 | 0.83 | 0.83 | 0.80 | 1.00 | 0.06 | 0.29 | 0.43 |
-| bm25 | `retriever:bm25@1` | 3.5738 (tuned on dev) | dev | 0.66 | 0.92 | 0.92 | 0.80 | 0.83 | 0.57 | 1.00 | 0.19 | 0.29 | 0.43 |
-| dense | `retriever:dense@intfloat.multilingual-e5-small` | 0.8275 (tuned on dev) | test | 0.69 | 0.93 | 0.95 | 0.86 | 0.86 | 0.92 | 0.92 | 0.02 | 289.21 | 11157.40 |
-| dense | `retriever:dense@intfloat.multilingual-e5-small` | 0.8275 (tuned on dev) | dev | 0.73 | 0.98 | 1.00 | 0.89 | 0.91 | 1.00 | 1.00 | 0.00 | 289.21 | 11157.40 |
-| hybrid | `retriever:hybrid@1` | 0.0000 (floors) | test | 0.72 | 0.86 | 0.92 | 0.85 | 0.84 | 0.92 | 0.92 | 0.02 | 16.70 | 21.81 |
-| hybrid | `retriever:hybrid@1` | 0.0000 (floors) | dev | 0.81 | 0.97 | 1.00 | 0.92 | 0.94 | 1.00 | 1.00 | 0.00 | 16.70 | 21.81 |
-| qdrant | `retriever:qdrant@azure.text-embedding-3-small.512` | 0.4618 (tuned on dev) | test | 0.67 | 0.86 | 0.95 | 0.83 | 0.84 | 1.00 | 1.00 | 0.00 | 1.07 | 1.19 |
-| qdrant | `retriever:qdrant@azure.text-embedding-3-small.512` | 0.4618 (tuned on dev) | dev | 0.69 | 0.91 | 0.94 | 0.85 | 0.86 | 1.00 | 1.00 | 0.00 | 1.07 | 1.19 |
-| qdrant_hybrid | `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512` | 0.0000 (floors) | test | 0.76 | 0.90 | 0.95 | 0.89 | 0.88 | 1.00 | 1.00 | 0.00 | 1.29 | 1.49 |
-| qdrant_hybrid | `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512` | 0.0000 (floors) | dev | 0.75 | 0.97 | 0.97 | 0.88 | 0.90 | 1.00 | 1.00 | 0.00 | 1.29 | 1.49 |
+| bm25 | `retriever:bm25@1` | 3.5738 (tuned on dev) | test | 0.68 | 0.85 | 0.92 | 0.83 | 0.83 | 0.80 | 1.00 | 0.06 | 0.12 | 0.16 |
+| bm25 | `retriever:bm25@1` | 3.5738 (tuned on dev) | dev | 0.66 | 0.92 | 0.92 | 0.80 | 0.83 | 0.57 | 1.00 | 0.19 | 0.12 | 0.16 |
+| dense | `retriever:dense@intfloat.multilingual-e5-small` | 0.8275 (tuned on dev) | test | 0.69 | 0.93 | 0.95 | 0.86 | 0.86 | 0.92 | 0.92 | 0.02 | 15.58 | 20.42 |
+| dense | `retriever:dense@intfloat.multilingual-e5-small` | 0.8275 (tuned on dev) | dev | 0.73 | 0.98 | 1.00 | 0.89 | 0.91 | 1.00 | 1.00 | 0.00 | 15.58 | 20.42 |
+| hybrid | `retriever:hybrid@1` | 0.0000 (floors) | test | 0.72 | 0.86 | 0.92 | 0.85 | 0.84 | 0.92 | 0.92 | 0.02 | 16.07 | 24.31 |
+| hybrid | `retriever:hybrid@1` | 0.0000 (floors) | dev | 0.81 | 0.97 | 1.00 | 0.92 | 0.94 | 1.00 | 1.00 | 0.00 | 16.07 | 24.31 |
+| qdrant | `retriever:qdrant@azure.text-embedding-3-small.512` | 0.4618 (tuned on dev) | test | 0.67 | 0.86 | 0.95 | 0.83 | 0.84 | 1.00 | 1.00 | 0.00 | 1.03 | 1.40 |
+| qdrant | `retriever:qdrant@azure.text-embedding-3-small.512` | 0.4618 (tuned on dev) | dev | 0.69 | 0.91 | 0.94 | 0.85 | 0.86 | 1.00 | 1.00 | 0.00 | 1.03 | 1.40 |
+| qdrant_hybrid | `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512` | 0.0000 (floors) | test | 0.76 | 0.90 | 0.95 | 0.89 | 0.88 | 1.00 | 1.00 | 0.00 | 1.28 | 1.64 |
+| qdrant_hybrid | `retriever:hybrid@bm25-qdrant.azure.text-embedding-3-small.512` | 0.0000 (floors) | dev | 0.75 | 0.97 | 0.97 | 0.88 | 0.90 | 1.00 | 1.00 | 0.00 | 1.28 | 1.64 |
 
 ## By workflow (test split)
 

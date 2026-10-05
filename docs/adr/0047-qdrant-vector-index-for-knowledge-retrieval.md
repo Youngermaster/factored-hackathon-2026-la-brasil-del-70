@@ -57,12 +57,16 @@ Option 6, behind a setting that defaults to today's behavior.
 - **Embeddings.** `azure/text-embedding-3-small` at 512 dimensions through LiteLLM's embedding API, behind a new
   `Embedder` gateway with the language model gateway's protections: the query is redacted before it leaves the
   process, then cost accounting (into the shared model-spend metric), a circuit breaker, bounded retry with jitter,
-  and a 3 second timeout. The 512 dimensions are a shortened embedding the model supports natively: a third of the
+  and a 3 second timeout. There is no budget guard on this path: a query costs about 20 input tokens (about 0.44 USD
+  per million questions, projected), the API's rate limits bound the call rate, and the spend is visible in the cost
+  metric. The 512 dimensions are a shortened embedding the model supports natively: a third of the
   storage and of the committed recording (634 KB) for a small expected loss that was not measured here.
 - **Index.** One collection per pack version and embedding model (`policy-clauses-<pack>-<model>`); one point per
   clause, version, and language with a UUID v5 id of the clause key, so `bank-agent index qdrant` is idempotent;
   a payload of keyword fields only (clause id, version, language, jurisdiction, family, workflow), never the clause
-  text, so the pack stays the source of truth. ELG clauses are never indexed, as in ADR 0012.
+  text, so the pack stays the source of truth. ELG clauses are never indexed, as in ADR 0012. Language,
+  jurisdiction, and workflow have keyword indexes; informational retrieval filters by language and jurisdiction
+  only, because an informational question may concern any workflow.
 - **Retrieval.** `RETRIEVAL_RETRIEVER` is `bm25` (default), `qdrant`, or `qdrant_hybrid` (reciprocal rank fusion of
   BM25 and Qdrant, each component kept above its own tuned floor). Filters on language and jurisdiction come from the
   verified session. Any embedding or store failure, an open circuit, or a missing collection answers that query with
