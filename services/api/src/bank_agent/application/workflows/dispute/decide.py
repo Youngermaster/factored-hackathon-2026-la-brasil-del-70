@@ -215,7 +215,6 @@ async def _summary(ctx: TurnContext, data: DisputeData, txn: Transaction, *, una
     merchant = clean_record_text(txn.merchant_name or "")
     params: dict[str, Param] = {
         "date": txn.occurred_at.astimezone(ctx.zone).date(),
-        "merchant": RecordText(merchant or "-"),
         "amount": data.disputed_amount or txn.amount,
         "card": Masked(data.product_last4 or "----"),
         "reason": REASONS[reason][language],
@@ -235,6 +234,11 @@ async def _summary(ctx: TurnContext, data: DisputeData, txn: Transaction, *, una
         ctx.recorder.intervention("record_text_injection_flagged")
     save(ctx, data.evolve(summary_shown=True))
     template = "dispute.confirm_with_block" if blocking else "dispute.confirm"
+    if merchant:
+        params["merchant"] = RecordText(merchant)
+    else:
+        # No merchant on record (a withdrawal): the summary leaves the merchant out instead of printing "-" (DSP-10).
+        template = f"{template}_no_merchant"
     reply = Reply(
         template=template, params=params, confirmation=card, prefix="common.confirm_again" if unanswered else None
     )

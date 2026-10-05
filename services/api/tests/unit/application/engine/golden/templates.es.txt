@@ -16,6 +16,11 @@ No encontré ese pago o transferencia. ¿Me das el monto, la fecha aproximada o 
 [account.balances]
 Estos son tus saldos, con datos al 17 de junio de 2026.
 
+[account.choose_payment]
+Estos son tus pagos o transferencias más recientes. ¿Cuál es?
+1) 15 de junio de 2026, JOAO PEREIRA, 1,250.00 MXN, **** 1234
+2) 15 de junio de 2026, JOAO PEREIRA, 1,250.00 MXN, **** 1234
+
 [account.clarify_payment]
 Encontré varios pagos o transferencias parecidos. ¿Cuál es?
 1) 15 de junio de 2026, JOAO PEREIRA, 1,250.00 MXN, **** 1234
@@ -34,6 +39,9 @@ No encontré productos con saldo a tu nombre.
 
 [account.payment_status]
 Estado de tu transferencia de 1,250.00 MXN del 15 de junio de 2026 a JOAO PEREIRA: abierto. Datos al 17 de junio de 2026.
+
+[account.payment_status_no_payee]
+Estado de tu transferencia de 1,250.00 MXN del 15 de junio de 2026: abierto. Datos al 17 de junio de 2026.
 
 [account.period_too_long]
 Ese periodo es más largo de lo que puedo resumir. ¿Me indicas uno más corto?
@@ -291,10 +299,16 @@ Encontré varias transacciones parecidas. ¿Cuál quieres reclamar?
 2) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234
 
 [dispute.confirm]
-Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en FIXTURE MARKET por 1,250.00 MXN (tarjeta **** 1234), motivo: no reconoces la compra. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
+Voy a registrar una reclamación por la transacción del 15 de junio de 2026 en FIXTURE MARKET por 1,250.00 MXN (tarjeta **** 1234), motivo: no reconoces la transacción. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
+
+[dispute.confirm_no_merchant]
+Voy a registrar una reclamación por la transacción del 15 de junio de 2026 por 1,250.00 MXN (tarjeta **** 1234), motivo: no reconoces la transacción. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
 
 [dispute.confirm_with_block]
-Voy a bloquear tu tarjeta **** 1234 y a registrar una reclamación por la transacción del 15 de junio de 2026 en FIXTURE MARKET por 1,250.00 MXN, motivo: no reconoces la compra. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
+Voy a bloquear tu tarjeta **** 1234 y a registrar una reclamación por la transacción del 15 de junio de 2026 en FIXTURE MARKET por 1,250.00 MXN, motivo: no reconoces la transacción. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
+
+[dispute.confirm_with_block_no_merchant]
+Voy a bloquear tu tarjeta **** 1234 y a registrar una reclamación por la transacción del 15 de junio de 2026 por 1,250.00 MXN, motivo: no reconoces la transacción. Recibirás respuesta a más tardar el 2 de agosto de 2026. ¿Confirmas? Responde sí o no.
 
 [dispute.denied]
 No puedo registrar esta reclamación aquí. Si quieres, te comunico con una persona del equipo.
@@ -306,7 +320,7 @@ Esta transacción ya tiene el caso case-000001, que está abierto. La fecha comp
 Registrar la reclamación no garantiza un reembolso ni un abono provisional: el equipo de revisión lo decide.
 
 [dispute.offer_block]
-Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta **** 1234 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.
+Como no reconoces este cargo, puedo bloquear preventivamente tu tarjeta **** 1234 para evitar más cargos. ¿Quieres que la bloquee? Responde sí o no.
 
 [dispute.option]
 1) 15 de junio de 2026, FIXTURE MARKET, 1,250.00 MXN, tarjeta **** 1234

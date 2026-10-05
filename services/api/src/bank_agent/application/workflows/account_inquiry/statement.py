@@ -11,10 +11,10 @@ from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import evaluate, failed
 from bank_agent.application.engine.reply import Masked, Param, Reply
 from bank_agent.application.engine.shared import blocking_step, clause_ref
-from bank_agent.application.engine.templates.labels import PRODUCT_TYPES, pick
+from bank_agent.application.engine.templates.labels import PRODUCT_OF_YOUR, pick
 from bank_agent.application.grounding.draft import FactKind, RecordFact
 from bank_agent.application.understanding.periods import resolve_period
-from bank_agent.application.workflows.account_inquiry.answers import data_as_of
+from bank_agent.application.workflows.account_inquiry.answers import data_as_of, reference_day
 from bank_agent.application.workflows.account_inquiry.data import AccountData, Choosing, exhausted, load, save
 from bank_agent.application.workflows.account_inquiry.products import my_products
 from bank_agent.domain.accounts import StatementSummary
@@ -48,7 +48,7 @@ async def statement_period(ctx: TurnContext) -> Step:
         return _ask(ctx, data, unanswered=False)
     answered_now = False
     if data.asked_period:
-        period = resolve_period(ctx.text, ctx.today)
+        period = resolve_period(ctx.text, reference_day(ctx))
         if period is not None:
             answered_now = True
             data = data.evolve(
@@ -103,7 +103,7 @@ async def statement_summary(ctx: TurnContext) -> Step:
         f"statement {period.start} to {period.end}: {summary.transaction_count} operations", product.ref
     )
     params: dict[str, Param] = {
-        "type": pick(PRODUCT_TYPES[product.product_type], ctx.language),
+        "of_type": pick(PRODUCT_OF_YOUR[product.product_type], ctx.language),
         "card": Masked(product.last4),
         "start": period.start,
         "end": period.end,

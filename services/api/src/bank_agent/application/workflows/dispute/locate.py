@@ -12,6 +12,7 @@ from bank_agent.application.engine.render import clean_record_text
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
 from bank_agent.application.engine.security import detect_injection
 from bank_agent.application.engine.shared import abstain, clause_ref, spend_clarification
+from bank_agent.application.engine.templates.labels import NO_MERCHANT, pick
 from bank_agent.application.understanding.answers import YesNo, parse_choice, parse_yes_no
 from bank_agent.application.understanding.dates import MONTHS, narrow
 from bank_agent.application.understanding.text import words
@@ -106,7 +107,8 @@ async def _ask_options(ctx: TurnContext, data: DisputeData, ranked: list[Transac
                 card_last4=card,
             )
         )
-        items.append({"date": occurred_on, "merchant": RecordText(merchant or "-"), "amount": txn.amount,
+        shown: Param = RecordText(merchant) if merchant else pick(NO_MERCHANT, ctx.language)
+        items.append({"date": occurred_on, "merchant": shown, "amount": txn.amount,
                       "card": Masked(card or "----")})  # fmt: skip
     save(ctx, data.evolve(option_ids=tuple(txn.transaction_id for txn in ranked[:MAX_OPTIONS]), asked_details=False))
     reply = Reply(

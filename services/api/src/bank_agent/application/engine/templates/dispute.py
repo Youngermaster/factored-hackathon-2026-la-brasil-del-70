@@ -39,9 +39,9 @@ DISPUTE: dict[str, dict[Language, str]] = {
         "amount, something not received, an ATM withdrawal without cash, or a cancelled subscription.",
     },
     "dispute.offer_block": {
-        ES: "Como no reconoces la compra, puedo bloquear preventivamente tu tarjeta {card} para evitar más "
+        ES: "Como no reconoces este cargo, puedo bloquear preventivamente tu tarjeta {card} para evitar más "
         "cargos. ¿Quieres que la bloquee? Responde sí o no.",
-        PT: "Como você não reconhece a compra, posso bloquear preventivamente o seu cartão {card} para evitar "
+        PT: "Como você não reconhece esta transação, posso bloquear preventivamente o seu cartão {card} para evitar "
         "novas cobranças. Quer que eu bloqueie? Responda sim ou não.",
         EN: "Since you do not recognize the purchase, I can block your card {card} as a precaution. Do you want "
         "me to block it? Answer yes or no.",
@@ -63,6 +63,22 @@ DISPUTE: dict[str, dict[Language, str]] = {
         "ou não.",
         EN: "I will block your card {card} and record a dispute for the transaction of {date} at {merchant} for "
         "{amount}, reason: {reason}. You will get an answer by {due}. Do you confirm? Answer yes or no.",
+    },
+    "dispute.confirm_no_merchant": {
+        ES: "Voy a registrar una reclamación por la transacción del {date} por {amount} (tarjeta {card}), motivo: "
+        "{reason}. Recibirás respuesta a más tardar el {due}. ¿Confirmas? Responde sí o no.",
+        PT: "Vou registrar uma contestação da transação de {date} no valor de {amount} (cartão {card}), motivo: "
+        "{reason}. Você receberá uma resposta até {due}. Confirma? Responda sim ou não.",
+        EN: "I will record a dispute for the transaction of {date} for {amount} (card {card}), reason: {reason}. "
+        "You will get an answer by {due}. Do you confirm? Answer yes or no.",
+    },
+    "dispute.confirm_with_block_no_merchant": {
+        ES: "Voy a bloquear tu tarjeta {card} y a registrar una reclamación por la transacción del {date} por "
+        "{amount}, motivo: {reason}. Recibirás respuesta a más tardar el {due}. ¿Confirmas? Responde sí o no.",
+        PT: "Vou bloquear o seu cartão {card} e registrar uma contestação da transação de {date} no valor de "
+        "{amount}, motivo: {reason}. Você receberá uma resposta até {due}. Confirma? Responda sim ou não.",
+        EN: "I will block your card {card} and record a dispute for the transaction of {date} for {amount}, "
+        "reason: {reason}. You will get an answer by {due}. Do you confirm? Answer yes or no.",
     },
     "dispute.case_created": {
         ES: "Listo: registramos tu reclamación con el número de caso {case}. Te responderemos a más tardar el {due}.",
