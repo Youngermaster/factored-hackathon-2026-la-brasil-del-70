@@ -1155,7 +1155,7 @@
       "rate": "{{system}}: safe resolution",
       "cost": "{{system}}: cost per resolution",
       "meta": "Dataset {{dataset}}, generated {{generated}}, commit {{sha}}.",
-      "costNote": "The cost is what the run recorded with the model it used; with a local model it is zero and does not anticipate the cost of a hosted model.",
+      "costNote": "The cost is what the published run recorded with the hosted model, at Azure list prices (not an invoice): 0.0013 USD per attempted case and 0.0019 USD per safe automated resolution.",
       "openDashboard": "Open the dashboard",
       "openEvaluation": "Open the full evaluation",
       "empty": "No published run includes the proposed system yet.",
@@ -1163,7 +1163,7 @@
     },
     "llm": {
       "title": "Language model",
-      "intro": "It understands and phrases within limits; it never decides. The prices per million tokens are the ones the budget guard and the cost metrics use.",
+      "intro": "It never decides. It extracts the details of a message and detects escalation signals; by default, replies come from approved templates. An embedding model embeds informational questions for retrieval. The prices per million tokens are the ones the budget guard and the cost metrics use.",
       "none": "No model configured: the deterministic paths answer.",
       "provider": "Provider",
       "caption": "Configured models and price basis",

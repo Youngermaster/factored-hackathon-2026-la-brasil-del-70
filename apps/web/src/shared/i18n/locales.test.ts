@@ -55,6 +55,19 @@ describe('locale files', () => {
     }
   });
 
+  it.each(['es', 'pt', 'en'] as const)(
+    '%s states the hosted-model cost and that the model does not phrase replies',
+    (language) => {
+      const cost = flat[language].get('supervision.evaluation.costNote') ?? '';
+      expect(cost).toContain('0.0013 USD');
+      expect(cost).toContain('0.0019 USD');
+      expect(cost).toMatch(/Azure/);
+      const intro = flat[language].get('supervision.llm.intro') ?? '';
+      expect(intro).not.toMatch(/phrases|redacta|redige/);
+      expect(intro).toMatch(/embedding/);
+    },
+  );
+
   it('pluralizes per language', () => {
     const i18n = createI18n('pt-BR');
     expect(i18n.t('auth.attemptsRemaining', { count: 1 })).toBe('Resta 1 tentativa.');
