@@ -2,12 +2,15 @@
 interpreting ``response_code`` (the data has no code table). The state keeps the chosen card, so a follow-up
 ("block it") continues here and a request for another workflow is confirmed before switching."""
 
+import re
+
 from bank_agent.application.engine.context import Step, TurnContext
 from bank_agent.application.engine.decide import evaluate
 from bank_agent.application.engine.reply import Choices, Masked, Param, RecordText, Reply
 from bank_agent.application.engine.shared import blocking_step, clause_ref
 from bank_agent.application.engine.templates.labels import CARD_STATUSES, CARD_TYPES
 from bank_agent.application.understanding import extraction
+from bank_agent.application.understanding.text import fold
 from bank_agent.application.workflows.card_support.data import INTENT_ACTIONS, load, save
 from bank_agent.application.workflows.card_support.select import CONFIRM_BLOCK, absorb
 from bank_agent.domain.cards import CardAction, CardStatusView
@@ -19,6 +22,7 @@ from bank_agent.ports.repositories.transactions import TransactionQuery
 
 CARD_STATUS = "CARD_STATUS"
 MAX_DECLINED = 5
+_OTHER_CARD = re.compile(r"\b(?:otr[oa]s?|outr[oa]s?|other|another|demas|mais cartoes)\b")
 
 
 async def card_status(ctx: TurnContext) -> Step:
@@ -34,8 +38,14 @@ async def card_status(ctx: TurnContext) -> Step:
                 return Step("SELECT_CARD")
             save(ctx, data.evolve(action=CardAction.BLOCK, confirm_shown=False))
             return Step(CONFIRM_BLOCK)
+        named = extraction.card_type(ctx.text) is not None or extraction.card_last4(ctx.text) is not None
+        if intent is Intent.CARD_STATUS and not named and not _OTHER_CARD.search(fold(ctx.text)):
+            # "¿cuándo vence?" about the card just discussed: answer again for the same card (QA 2026-10-05, CRD-02).
+            save(ctx, data.evolve(answered=False))
+            return Step(CARD_STATUS)
         if intent in INTENT_ACTIONS or intent is Intent.CARD_STATUS:
-            save(ctx, data.evolve(product_id=None, answered=False))
+            hints = {"hint_type": extraction.card_type(ctx.text), "hint_last4": extraction.card_last4(ctx.text)}
+            save(ctx, data.evolve(product_id=None, answered=False, **(hints if named else {})))
             return Step("SELECT_CARD")
         save(ctx, data)
         return Step(CARD_STATUS, Reply(template="card.anything_else"), Outcome.IN_PROGRESS)
