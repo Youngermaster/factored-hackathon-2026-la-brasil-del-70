@@ -57,7 +57,7 @@ VIDEO.md                how to record and export the video (the shot list is doc
 | 2 thesis | `thesis` | Technical Judgment, AI Engineering | 6: understand, decide, act and verify, injection, escalate, thesis line |
 | 3 architecture | `arch` | AI Engineering, Machine Learning, Technical Judgment | 3: arrive on the stack around the hexagonal core; the deployment on one Azure VM behind Caddy with the obs profile and the managed path; one turn model by model with the risk estimate bouncing off the wall; learned components against their baselines and the decision to keep the baselines |
 | 4 workflows | `workflows` | AI Engineering, Technical Judgment | 5: account inquiry, card support, dispute, credit separation, depth grid |
-| 5 evidence | `evidence` | Machine Learning, Data Analytics | 4: arrive with 304 cases into P, B0 and B1; per workflow with intervals, the aggregate and the trade-offs, unsafe grids with B1's 90 by kind, P's weak spots |
+| 5 evidence | `evidence` | Machine Learning, Data Analytics | 4: arrive with 304 cases into P, B0 and B1; per workflow with intervals, the aggregate and the trade-offs, unsafe grids with B1's 92 by kind, P's weak spots |
 | 6 close | `close` | Technical Judgment, AI Engineering | 4: arrive on the degradation ladder; defense in depth on the deployed host, limits and next steps, team on yellow, thesis bands and links |
 | appendix A | `appendixEvidence` | none | 1: pass^3 and the language slices, then efficiency and retrieval |
 | appendix B | `appendixOps` | none | 1: one turn as a trace, then the budget guard and the load test |
@@ -105,11 +105,11 @@ eval.sar.all.p: {value: 60.9, display: "185/304", lo: 55, hi: 66, kind: simulati
 eval.unsafe.p: {value: 1, of: 304, display: "1 of 304", lo: 0.0, hi: 1.8, kind: simulation, source: docs/evaluation/results.md}
 ```
 
-- `kind` is one of `offline`, `provisional`, `projection`, `simulation`, `synthetic`. Scenes print it next to the source, because the brief requires offline measurements, simulations and projections to be labeled apart. The evidence slides print "simulation on a local open model (qwen2.5:7b-instruct)".
+- `kind` is one of `offline`, `provisional`, `projection`, `simulation`, `synthetic`. Scenes print it next to the source, because the brief requires offline measurements, simulations and projections to be labeled apart. The evidence slides print "simulation on a hosted model (azure/gpt-4.1-mini)".
 - `source` must be an existing path relative to the repository root once the value is filled.
 - `lo` and `hi` are the 95% interval in percent (Wilson for rates, exact for unsafe outcomes), `of` the denominator of a count. The check fails when an interval does not contain its estimate or a fraction does not match its value.
 - A pending metric renders as a dashed "pending" box, so a missing number is visible, never invented.
-- If the evaluation is rerun (BACKLOG 14c: a hosted model, the 14c fixes), refresh the `eval.*` block from `docs/evaluation/results.md` and the `evidence` section of `script.md` with it. The words tied to the published run also live in `locales/en.yml` (`evidence.onModel`, `evidence.run`, the beat-4 strings, `close.l1`, `close.l1s`, `close.n0`, `close.n1`, `appendixEvidence.onModel`, `appendixEvidence.measured`, `appendixEvidence.projection`) and in `docs/demo/video-monologue.md`. The "not ahead of B0" flag on the per-workflow rates follows the metrics: it marks any workflow where P's rate is below B0's.
+- If the evaluation is rerun (for example after the final-day fixes), refresh the `eval.*` block from `docs/evaluation/results.md` and the `evidence` section of `script.md` with it. The words tied to the published run also live in `locales/en.yml` (`evidence.onModel`, `evidence.run`, the beat-4 strings, `close.l1`, `close.l1s`, `close.n0`, `close.n1`, `appendixEvidence.onModel`, `appendixEvidence.measured`, `appendixEvidence.projection`) and in `docs/demo/video-monologue.md`. The "not ahead of B0" flag on the per-workflow rates follows the metrics: it marks any workflow where P's rate is below B0's.
 
 Today no metric is pending: `deploy.url` holds the demo URL from the README. `pnpm check:content` lists anything pending.
 

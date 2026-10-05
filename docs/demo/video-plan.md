@@ -13,7 +13,7 @@ The deployed demo (<https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Az
 - **Recommended: record the chat segments on the deployed URL** (the link the judges get), right after `deploy/prod.sh seed`, and the backend segment through the SSH tunnel to the VM's loopback Grafana (3000) and Jaeger (16686) ([deploy/README.md](../../deploy/README.md), "Operate"). A public read-only Grafana dashboard is planned; until it is live, use the tunnel.
 - **Alternative: one local stack on the same commit**, with the hosted model and the observability profile on (Setup below), if the VM or the tunnel misbehaves. One stack gives the guardrail replies, the Jaeger trace, and the Grafana panels for the same conversations.
 
-Whichever is chosen, the close slide names the deployed URL, and the narration never claims the live replies were evaluated: the published evaluation ran on the local `qwen2.5:7b-instruct` ([results](../evaluation/results.md)), and the rerun on the deployed model is reported only once it is published.
+Whichever is chosen, the close slide names the deployed URL, and the narration never claims the live replies were evaluated: the published evaluation ran `azure/gpt-4.1-mini` at commit `2ddabb0`, before the final-day fixes ([results](../evaluation/results.md)).
 
 ## Timeline
 

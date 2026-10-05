@@ -52,12 +52,12 @@ policy.handoff_sla_ar: {value: 48, display: "48 h", kind: synthetic, source: pol
 
 # -- retrieval, the learned component measured so far (phase 07) -------------
 retrieval.test_queries: {value: 60, kind: provisional, source: docs/evaluation/retrieval.md, note: "48 in scope, 12 out of scope; labels pending review"}
-retrieval.r1.bm25: {value: 0.72, display: "0.72", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.r1.bm25: {value: 0.68, display: "0.68", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.r1.dense: {value: 0.69, display: "0.69", kind: provisional, source: docs/evaluation/retrieval.md}
-retrieval.r1.hybrid: {value: 0.74, display: "0.74", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.r1.hybrid: {value: 0.72, display: "0.72", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.abst_p.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
 retrieval.abst_r.hybrid: {value: 0.92, display: "0.92", kind: provisional, source: docs/evaluation/retrieval.md}
-retrieval.p95.hybrid: {value: 6.88, display: "6.9 ms", kind: provisional, source: docs/evaluation/retrieval.md}
+retrieval.p95.hybrid: {value: 24.31, display: "24.3 ms", kind: provisional, source: docs/evaluation/retrieval.md}
 
 # -- held-out evaluation (hosted run): P, B0 and B1 on the frozen test split ---
 # Simulated, offline: scripted and model-played customers on the synthetic
