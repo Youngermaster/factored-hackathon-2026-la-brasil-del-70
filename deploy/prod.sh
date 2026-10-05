@@ -10,7 +10,8 @@
 #   deploy/prod.sh build            build the web, api, and job images, tagged with the current git commit
 #   deploy/prod.sh pull             instead of build: pull those images from IMAGE_REGISTRY (pushed by the deploy
 #                                   workflow under the full commit SHA) and tag them as build would
-#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama)
+#   deploy/prod.sh up               stage the secrets, migrate, then start (OBS=1 adds obs, OLLAMA=1 adds ollama;
+#                                   OBS also comes from the env file, so continuous deployment keeps obs current)
 #   deploy/prod.sh rotate           stage the secrets again and recreate the services, after a new Key Vault version
 #   deploy/prod.sh seed             load the demo personas and customers (run once after the first up)
 #   deploy/prod.sh update           git pull --ff-only, back up, build, migrate, start
@@ -59,6 +60,17 @@ env_value() {
   sed -n "s/^$1=//p" "${ENV_FILE}" | tail -n 1
 }
 
+from_env_or_file() {
+  # $2 (the caller's value of the variable $1) when non-empty, else $1 from the env file when it exists: the same
+  # precedence compose gives the shell over --env-file. build runs before any env file exists.
+  if [[ -n "$2" ]]; then printf '%s' "$2"; return; fi
+  if [[ -f "${ENV_FILE}" ]]; then env_value "$1"; fi
+}
+
+obs_enabled() {
+  [[ "$(from_env_or_file OBS "${OBS:-}")" == "1" ]]
+}
+
 secrets_source() {
   local source
   source="$(env_value SECRETS_SOURCE)"
@@ -94,7 +106,7 @@ current_tag() {
 
 profiles() {
   local flags=()
-  [[ "${OBS:-0}" == "1" ]] && flags+=(--profile obs)
+  obs_enabled && flags+=(--profile obs)
   [[ "${OLLAMA:-0}" == "1" ]] && flags+=(--profile ollama)
   printf '%s\n' "${flags[@]:-}"
 }
@@ -149,7 +161,7 @@ check_env_file() {
       ;;
     env-file)
       for name in "${REQUIRED_SECRETS[@]}"; do [[ -n "$(env_value "${name}")" ]] || missing+=("${name}"); done
-      if [[ "${OBS:-0}" == "1" ]]; then
+      if obs_enabled; then
         local grafana
         grafana="$(env_value GRAFANA_ADMIN_PASSWORD)"
         (( ${#grafana} >= 16 )) || missing+=("GRAFANA_ADMIN_PASSWORD (16+ characters)")
@@ -159,6 +171,24 @@ check_env_file() {
   esac
   (( ${#missing[@]} == 0 )) || fail "set these in ${ENV_FILE}: ${missing[*]}"
   [[ "$(env_value PUBLIC_ORIGIN)" == https://* ]] || fail "PUBLIC_ORIGIN must start with https://"
+  check_grafana_switches
+}
+
+check_grafana_switches() {
+  # Caddy imports the snippet grafana-<GRAFANA_ROUTE>: any other value would stop the edge from starting.
+  local route
+  route="$(from_env_or_file GRAFANA_ROUTE "${GRAFANA_ROUTE:-}")"
+  case "${route}" in
+    "" | on | off) ;;
+    *) fail "GRAFANA_ROUTE must be on, off, or empty" ;;
+  esac
+  case "$(from_env_or_file GRAFANA_ANONYMOUS_VIEWER "${GRAFANA_ANONYMOUS_VIEWER:-}")" in
+    "" | true | false) ;;
+    *) fail "GRAFANA_ANONYMOUS_VIEWER must be true, false, or empty" ;;
+  esac
+  if [[ "${route}" == "on" ]] && ! obs_enabled; then
+    say "warning: GRAFANA_ROUTE=on without OBS=1: /grafana/ answers 502 until the obs profile runs"
+  fi
 }
 
 cmd_stage_secrets() {
@@ -204,7 +234,7 @@ cmd_check() {
   check_env_file
   # Metadata only: the files are root-owned and readable by their container user alone.
   stager check --dest "$(secrets_dir)" || fail "the staged secrets are incomplete; run deploy/prod.sh stage-secrets"
-  if [[ "${OBS:-0}" == "1" && ! -s "$(secrets_dir)/grafana/GRAFANA_ADMIN_PASSWORD" ]]; then
+  if obs_enabled && [[ ! -s "$(secrets_dir)/grafana/GRAFANA_ADMIN_PASSWORD" ]]; then
     fail "the obs profile needs GRAFANA_ADMIN_PASSWORD (Key Vault secret grafana-admin-password, or the env file)"
   fi
   check_staged_keys

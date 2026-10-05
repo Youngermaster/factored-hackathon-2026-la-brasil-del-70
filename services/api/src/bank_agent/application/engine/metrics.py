@@ -11,7 +11,11 @@ are workflow ids, codes, and tool names only, never text.
 
 from typing import Final
 
+from bank_agent.application.engine.records import ROUTER_REF
+from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.execution_record import ExecutionRecord, LlmCallStatus, ToolCallStatus
+from bank_agent.domain.locale import Language
+from bank_agent.domain.workflow import Outcome, WorkflowId
 from bank_agent.ports.telemetry import AttributeValue, Telemetry
 
 UNSAFE_DETECTORS: Final[dict[str, str]] = {
@@ -23,6 +27,9 @@ UNSAFE_DETECTORS: Final[dict[str, str]] = {
 """Grounding violation kind to runtime detector name (``bank.safety.unsafe_blocked``)."""
 FAILED_TOOL_STATUSES: Final = frozenset({ToolCallStatus.FAILED, ToolCallStatus.UNKNOWN})
 RISK_UNAVAILABLE: Final = "risk_estimate_unavailable"
+UNKNOWN_LANGUAGE: Final = "unknown"
+METRIC_WORKFLOWS: Final = (ROUTER_REF.id, *(workflow.value for workflow in WorkflowId))
+"""Every ``bank.workflow`` a turn metric can carry: the four workflows and the router (out of scope, not yet routed)."""
 
 
 class TurnMetrics:
@@ -43,12 +50,33 @@ class TurnMetrics:
         self._unsafe = telemetry.counter("bank.safety.unsafe_blocked")
         self._interventions = telemetry.counter("bank.safety.interventions")
 
+    def start_at_zero(self) -> None:
+        """Publish every turn-outcome and handoff series at 0 once, when the process starts.
+
+        Prometheus ``increase()`` needs a sample before the first event of a series, and every worker start begins
+        new series (the resource carries a fresh ``service.instance.id``): without this, the first turn or handoff
+        of each label set after a deploy is never counted, which matters at demo volumes. Every label is a closed
+        enumeration, so this adds a bounded set: 5 workflows x 6 outcomes x 4 languages, and 5 x 16 reason codes.
+        """
+        languages = (*(language.value for language in Language), UNKNOWN_LANGUAGE)
+        for workflow in METRIC_WORKFLOWS:
+            for outcome in Outcome:
+                for language in languages:
+                    attributes: dict[str, AttributeValue] = {
+                        "bank.workflow": workflow,
+                        "bank.outcome": outcome.value,
+                        "bank.language": language,
+                    }
+                    self._outcomes.add(0, attributes)
+            for reason in EscalationReasonCode:
+                self._escalations.add(0, {"bank.workflow": workflow, "bank.escalation.reason": reason.value})
+
     def observe(self, record: ExecutionRecord, *, escalation_reason: str | None = None) -> None:
         """Measure ``record``; ``escalation_reason`` is the reason code of a handoff created in this turn."""
         workflow = record.workflow.id
         per_turn: dict[str, AttributeValue] = {"bank.workflow": workflow, "bank.outcome": record.outcome.value}
         self._duration.record(record.latency.total_ms / 1000, per_turn)
-        language = record.language.value if record.language is not None else "unknown"
+        language = record.language.value if record.language is not None else UNKNOWN_LANGUAGE
         self._outcomes.add(1, {**per_turn, "bank.language": language})
         if escalation_reason is not None:
             self._escalations.add(1, {"bank.workflow": workflow, "bank.escalation.reason": escalation_reason})

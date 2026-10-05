@@ -110,6 +110,7 @@ The [brief traceability matrix](submission/brief-traceability.md) is the shared 
 | [adr/0042-preserve-azure-resource-names.md](adr/0042-preserve-azure-resource-names.md) | Preserve existing Azure names and document engineering resource references |
 | [adr/0043](adr/0043-langgraph-migration.md) | Staged post-hackathon migration of the workflow engine to LangGraph StateGraph (proposed roadmap) |
 | [adr/0044](adr/0044-azure-openai-as-the-hosted-model-provider.md) | Azure OpenAI as the hosted model provider: one account per environment, keys in Key Vault, the production delta, and how to change models |
+| [adr/0045](adr/0045-expose-grafana-read-only-under-grafana.md) | Expose Grafana read-only under /grafana, behind switches, with the bank's cookies stripped |
 
 ## Exploratory data analysis
 

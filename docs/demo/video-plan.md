@@ -56,7 +56,7 @@ VITE_DEMO_MODE=true pnpm --dir apps/web run dev                                 
 
 Before the take:
 
-1. **Warm the dashboard.** Prometheus `increase()` counts a labelled series only from its second event, so on a fresh stack a reason seen once reads 0 (verified below). Play every live case once in rehearsal, then run `make load-test LOAD_USERS=5 LOAD_DURATION=60s` with the rate limits raised in `.env` (`RATE_LIMIT_*`; [capacity](../operations/capacity.md)). The load test's conversation opens hit the creation quota (five new chats per customer per hour by default; `CONVERSATION_CREATION_LIMIT` raises it) after a few seconds; the turns it sends before that are enough. Then reseed for the real take (`make seed` restores card statuses; a fresh volume restores everything).
+1. **Warm the dashboard.** Prometheus `increase()` counts a labelled series only from its second event, so on a fresh stack a reason seen once reads 0 (verified below; since ADR 0045 the outcome and handoff counters start at 0, which removes this for them, but not for tool, safety, or model counters). Play every live case once in rehearsal, then run `make load-test LOAD_USERS=5 LOAD_DURATION=60s` with the rate limits raised in `.env` (`RATE_LIMIT_*`; [capacity](../operations/capacity.md)). The load test's conversation opens hit the creation quota (five new chats per customer per hour by default; `CONVERSATION_CREATION_LIMIT` raises it) after a few seconds; the turns it sends before that are enough. Then reseed for the real take (`make seed` restores card statuses; a fresh volume restores everything).
 2. **Session language.** The first message of a conversation needs a session language, and the browser sends the interface language at sign-in. Choose Español on the sign-in page before the guardrail and card segments, and Português before the handoff segment. With no language set, "¿Quién es mejor CR7 o Messi?" gets the language question instead of the abstention, because it has no language markers.
 3. **Risk tier.** A third-party request raises the session's risk tier, and the next write would ask for more. So the CC request is the last message of the guardrail segment, and you sign out before the card block.
 4. **Identifiers.** Sign in only with the persona picker. The masked card digits are synthetic, but keep document numbers and phone digits off screen.
@@ -67,7 +67,7 @@ Before the take:
 The executive dashboard (`bank-agent-executive`), time range "Last 1 hour":
 
 - Show: the stat row (Turns in selected period, Resolved turn share, Escalated turn share, Turn latency p95, Safety interventions, Active sessions), Language mix, Escalations by workflow and reason, Safety interventions by code, Tool calls by status.
-- Avoid: Turn volume by workflow. In the verification run below it rendered empty in Grafana 13.2 although its query returned four series; the panel definition in `deploy/observability/` needs a look (not changed here).
+- Turn volume by workflow rendered empty in Grafana 13.2 in the verification run below; it and the other category panels are bar gauges since ADR 0045 and need a fresh check before recording. The service health dashboard (`bank-agent-service`, Grafana's home page) adds latency percentiles, model cost per turn, and the degradation timeline.
 - Say "live operations", not "resolution rate": a resolved turn is not the evaluation's safe automated resolution ([grafana-dashboard.md](../operations/grafana-dashboard.md)).
 
 ## Verification run, 2026-10-04

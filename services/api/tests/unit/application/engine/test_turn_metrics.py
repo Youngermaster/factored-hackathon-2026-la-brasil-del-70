@@ -6,6 +6,7 @@ from bank_agent.adapters.telemetry.catalog import CATALOG
 from bank_agent.application.engine.metrics import TurnMetrics
 from bank_agent.domain.actions import ToolName
 from bank_agent.domain.eligibility import EligibilityAssessmentRecord
+from bank_agent.domain.escalation import EscalationReasonCode
 from bank_agent.domain.execution_record import (
     GroundingReport,
     LlmCallRecord,
@@ -107,3 +108,25 @@ def test_every_metric_and_attribute_is_in_the_catalog() -> None:
     for histogram in telemetry.histograms.values():
         for _, attributes in histogram.values:
             assert set(attributes) <= CATALOG[histogram.name].attributes, histogram.name
+
+
+def test_outcome_and_handoff_counters_start_at_zero_for_every_known_label_set() -> None:
+    """A new series needs a 0 sample before its first event, or Prometheus increase() never counts that event."""
+    telemetry = RecordingTelemetry()
+
+    TurnMetrics(telemetry).start_at_zero()
+
+    outcomes = telemetry.counters["bank.turn.outcomes"].points
+    escalations = telemetry.counters["bank.escalations"].points
+    assert {value for value, _ in outcomes + escalations} == {0}
+    workflows = {"router", "account_inquiry", "card_support", "dispute", "credit"}
+    assert {attributes["bank.workflow"] for _, attributes in outcomes} == workflows
+    assert {attributes["bank.language"] for _, attributes in outcomes} == {"es", "pt", "en", "unknown"}
+    assert {attributes["bank.outcome"] for _, attributes in outcomes} == {outcome.value for outcome in Outcome}
+    assert len(outcomes) == 5 * 6 * 4
+    reasons = {attributes["bank.escalation.reason"] for _, attributes in escalations}
+    assert reasons == {reason.value for reason in EscalationReasonCode}
+    assert len(escalations) == 5 * len(EscalationReasonCode)
+    for counter in ("bank.turn.outcomes", "bank.escalations"):
+        allowed = CATALOG[counter].attributes
+        assert all(set(attributes) <= allowed for _, attributes in telemetry.counters[counter].points)

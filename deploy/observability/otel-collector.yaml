@@ -1,4 +1,4 @@
-# OpenTelemetry Collector for the development `obs` profile (docs/operations/observability.md).
+# OpenTelemetry Collector for the `obs` profile, development and production (docs/operations/observability.md).
 # The API exports OTLP over HTTP (4318) when OTEL_ENABLED=true; gRPC (4317) stays open for other clients.
 # Traces go to Jaeger; metrics are exposed on 8889 for Prometheus, with the resource attributes (service.name,
 # deployment.environment.name) copied onto every series so dashboards can filter by service.
@@ -9,6 +9,28 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+  # Host CPU, memory, load, disk I/O, and root filesystem usage, read from the collector's own /proc: these files are
+  # not namespaced, so they describe the whole VM without a host mount or the Docker socket (ADR 0045). Network
+  # counters are left out because /proc/net/dev would show this container's interface, not the host's.
+  host_metrics:
+    collection_interval: 30s
+    scrapers:
+      cpu: {}
+      load: {}
+      memory:
+        metrics:
+          system.memory.utilization:
+            enabled: true
+      disk: {}
+      filesystem:
+        # The container's root is the overlay on the VM's OS disk; the bind-mounted files would repeat it.
+        include_virtual_filesystems: true
+        include_mount_points:
+          match_type: strict
+          mount_points: ["/"]
+        metrics:
+          system.filesystem.utilization:
+            enabled: true
 
 processors:
   memory_limiter:
@@ -16,6 +38,29 @@ processors:
     limit_mib: 256
     spike_limit_mib: 64
   batch: {}
+  # Privacy: the ASGI instrumentation records the client's address, port, and user agent on every server span (the
+  # API trusts X-Forwarded-For from Caddy, so the address is the real client's). None of them may be stored.
+  attributes/privacy:
+    actions:
+      - key: client.address
+        action: delete
+      - key: client.port
+        action: delete
+      - key: user_agent.original
+        action: delete
+      - key: user_agent.synthetic.type
+        action: delete
+      # The pre-stable HTTP names, in case an instrumentation still emits them.
+      - key: http.client_ip
+        action: delete
+      - key: http.user_agent
+        action: delete
+      - key: net.peer.ip
+        action: delete
+      - key: net.sock.peer.addr
+        action: delete
+      - key: net.sock.peer.port
+        action: delete
 
 exporters:
   otlp/jaeger:
@@ -26,15 +71,16 @@ exporters:
     endpoint: 0.0.0.0:8889
     resource_to_telemetry_conversion:
       enabled: true
-    metric_expiration: 30m
+    # A worker re-exports every 15 s, so a series silent for 5 minutes belongs to a process that has stopped.
+    metric_expiration: 5m
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [memory_limiter, attributes/privacy, batch]
       exporters: [otlp/jaeger]
     metrics:
-      receivers: [otlp]
-      processors: [memory_limiter, batch]
+      receivers: [otlp, host_metrics]
+      processors: [memory_limiter, attributes/privacy, batch]
       exporters: [prometheus]

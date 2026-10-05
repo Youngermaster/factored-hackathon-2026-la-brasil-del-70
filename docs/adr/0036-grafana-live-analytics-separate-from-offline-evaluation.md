@@ -1,7 +1,8 @@
 # 0036: Provisioned Grafana for live analytics, separate from offline evaluation
 
-- Status: accepted
+- Status: accepted; production access amended by 0045
 - Date: 2026-10-03
+- Amended by: [ADR 0045](0045-expose-grafana-read-only-under-grafana.md), the production access model only (loopback and SSH tunnel become a read-only route at `/grafana/` behind switches)
 
 ## Context
 

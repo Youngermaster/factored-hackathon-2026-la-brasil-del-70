@@ -31,6 +31,7 @@ from bank_agent.adapters.telemetry.noop import NoopTelemetry
 from bank_agent.application.agent.inbox import AgentInbox
 from bank_agent.application.conversations.human_service import HumanService
 from bank_agent.application.conversations.service import ConversationService
+from bank_agent.application.engine.metrics import TurnMetrics
 from bank_agent.application.identity.sessions import SessionService
 from bank_agent.application.preferences.service import AssistantPreferencesService
 from bank_agent.application.reliability.ladder import LadderFlags
@@ -192,6 +193,7 @@ class Container:
         self._human_service = HumanService(self._persistence.uow_factory, self._clock, self._ids)
         self._evaluation_summaries = FilesystemEvaluationSummaries(settings.evaluation.summaries_dir)
         self._degradation.current()
+        TurnMetrics(self._telemetry).start_at_zero()
 
     @property
     def credit_product_names(self) -> FilesystemCreditCatalog | UnavailableCreditCatalog:

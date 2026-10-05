@@ -2,40 +2,71 @@
   "uid": "bank-agent-executive",
   "title": "Bank agent: executive analytics",
   "description": "Live operational and product analytics from privacy-safe OpenTelemetry metrics. This dashboard does not contain offline evaluation results or customer data.",
-  "tags": ["bank-agent", "executive", "live-telemetry"],
+  "tags": [
+    "bank-agent",
+    "executive",
+    "live-telemetry"
+  ],
   "timezone": "utc",
   "schemaVersion": 39,
   "version": 1,
   "editable": false,
   "refresh": "30s",
-  "time": {"from": "now-24h", "to": "now"},
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
   "templating": {
     "list": [
       {
         "name": "workflow",
         "label": "Workflow",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "prometheus"},
-        "query": {"query": "label_values(bank_turn_outcomes_total, bank_workflow)", "refId": "workflow-variable"},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": {
+          "query": "label_values(bank_turn_outcomes_total, bank_workflow)",
+          "refId": "workflow-variable"
+        },
         "definition": "label_values(bank_turn_outcomes_total, bank_workflow)",
         "includeAll": true,
         "allValue": ".*",
         "multi": true,
         "refresh": 1,
-        "current": {"selected": true, "text": "All", "value": ["$__all"]}
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        }
       },
       {
         "name": "language",
         "label": "Language",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "prometheus"},
-        "query": {"query": "label_values(bank_turn_outcomes_total, bank_language)", "refId": "language-variable"},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": {
+          "query": "label_values(bank_turn_outcomes_total, bank_language)",
+          "refId": "language-variable"
+        },
         "definition": "label_values(bank_turn_outcomes_total, bank_language)",
         "includeAll": true,
         "allValue": ".*",
         "multi": true,
         "refresh": 1,
-        "current": {"selected": true, "text": "All", "value": ["$__all"]}
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        }
       }
     ]
   },
@@ -45,7 +76,12 @@
       "type": "row",
       "title": "Executive summary",
       "collapsed": false,
-      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
       "panels": []
     },
     {
@@ -53,207 +89,716 @@
       "type": "stat",
       "title": "Turns in selected period",
       "description": "Stored turns matching the workflow and language filters.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 5, "w": 4, "x": 0, "y": 1},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 3,
       "type": "stat",
       "title": "Resolved turn share",
       "description": "Turns with outcome resolved divided by all turns. This is an operational outcome, not the offline safe automated resolution metric.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 5, "w": 4, "x": 4, "y": 1},
-      "fieldConfig": {"defaults": {"unit": "percent", "decimals": 1, "min": 0, "max": 100}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "100 * sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\",bank_outcome=\"resolved\"}[$__range])) / clamp_min(sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])), 1)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "100 * sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\",bank_outcome=\"resolved\"}[$__range])) / clamp_min(sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])), 1)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 4,
       "type": "stat",
       "title": "Escalated turn share",
       "description": "Turns with outcome escalated divided by all turns for the same filters.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 5, "w": 4, "x": 8, "y": 1},
-      "fieldConfig": {"defaults": {"unit": "percent", "decimals": 1, "min": 0, "max": 100}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "100 * sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\",bank_outcome=\"escalated\"}[$__range])) / clamp_min(sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])), 1)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "100 * sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\",bank_outcome=\"escalated\"}[$__range])) / clamp_min(sum(increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])), 1)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 5,
       "type": "stat",
       "title": "Turn latency p95",
       "description": "95th percentile of stored-turn latency over the selected period and workflow filter.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 5, "w": 4, "x": 12, "y": 1},
-      "fieldConfig": {"defaults": {"unit": "s", "decimals": 2}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum by (le) (increase(bank_turn_duration_seconds_bucket{bank_workflow=~\"$workflow\"}[$__range])))", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (le) (increase(bank_turn_duration_seconds_bucket{bank_workflow=~\"$workflow\"}[$__range])))",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 6,
       "type": "stat",
       "title": "Safety interventions",
       "description": "Recorded safety interventions in the selected period and workflow filter.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 5, "w": 4, "x": 16, "y": 1},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "sum(increase(bank_safety_interventions_total{bank_workflow=~\"$workflow\"}[$__range])) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(bank_safety_interventions_total{bank_workflow=~\"$workflow\"}[$__range])) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 7,
       "type": "stat",
       "title": "Active sessions",
       "description": "Maximum deployment-wide active session gauge across API workers.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 5, "w": 4, "x": 20, "y": 1},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "max(bank_sessions_active) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max(bank_sessions_active) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 8,
       "type": "row",
       "title": "Demand and outcomes",
       "collapsed": false,
-      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 6},
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
       "panels": []
     },
     {
       "id": 9,
-      "type": "barchart",
+      "type": "bargauge",
       "title": "Turn volume by workflow",
       "description": "Number of stored turns during the selected period, split by workflow and filtered by language.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 7},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"orientation": "horizontal", "showValue": "always", "legend": {"displayMode": "hidden"}},
-      "targets": [{"refId": "A", "expr": "sum by (bank_workflow) (increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range]))", "legendFormat": "{{bank_workflow}}", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (bank_workflow) (increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])) > 0",
+          "legendFormat": "{{bank_workflow}}",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 10,
       "type": "timeseries",
       "title": "Outcome rate over time",
       "description": "Per-second turn rate by workflow and outcome. The time axis reveals changes hidden by period totals.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 10, "x": 8, "y": 7},
-      "fieldConfig": {"defaults": {"unit": "ops", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "fillOpacity": 20, "stacking": {"mode": "normal", "group": "outcomes"}}}, "overrides": []},
-      "options": {"legend": {"displayMode": "table", "placement": "bottom", "calcs": ["mean", "max"]}},
-      "targets": [{"refId": "A", "expr": "sum by (bank_workflow, bank_outcome) (rate(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__rate_interval]))", "legendFormat": "{{bank_workflow}} / {{bank_outcome}}"}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 8,
+        "y": 7
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "fillOpacity": 20,
+            "stacking": {
+              "mode": "normal",
+              "group": "outcomes"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (bank_workflow, bank_outcome) (rate(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__rate_interval])) > 0",
+          "legendFormat": "{{bank_workflow}} / {{bank_outcome}}"
+        }
+      ]
     },
     {
       "id": 11,
       "type": "piechart",
       "title": "Language mix",
       "description": "Turn volume by detected language for the selected workflow filter.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 7},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"pieType": "donut", "displayLabels": ["name", "percent"], "legend": {"displayMode": "list", "placement": "bottom"}, "reduceOptions": {"calcs": ["lastNotNull"], "values": true}},
-      "targets": [{"refId": "A", "expr": "sum by (bank_language) (increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range]))", "legendFormat": "{{bank_language}}", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 7
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "pieType": "donut",
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": true
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (bank_language) (increase(bank_turn_outcomes_total{bank_workflow=~\"$workflow\",bank_language=~\"$language\"}[$__range])) > 0",
+          "legendFormat": "{{bank_language}}",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 12,
       "type": "row",
       "title": "Safety and human escalation",
       "collapsed": false,
-      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 15},
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
       "panels": []
     },
     {
       "id": 13,
-      "type": "barchart",
+      "type": "bargauge",
       "title": "Escalations by workflow and reason",
       "description": "Created handoffs by reason code. Counts may differ from escalated turns when a turn does not create a handoff.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"orientation": "horizontal", "showValue": "always", "legend": {"displayMode": "table", "placement": "bottom"}},
-      "targets": [{"refId": "A", "expr": "sum by (bank_workflow, bank_escalation_reason) (increase(bank_escalations_total{bank_workflow=~\"$workflow\"}[$__range]))", "legendFormat": "{{bank_workflow}} / {{bank_escalation_reason}}", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (bank_workflow, bank_escalation_reason) (increase(bank_escalations_total{bank_workflow=~\"$workflow\"}[$__range])) > 0",
+          "legendFormat": "{{bank_workflow}} / {{bank_escalation_reason}}",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 14,
-      "type": "barchart",
+      "type": "bargauge",
       "title": "Safety interventions by code",
       "description": "Deterministic safeguards applied by the engine, grouped by workflow and intervention code.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 8, "x": 12, "y": 16},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"orientation": "horizontal", "showValue": "always", "legend": {"displayMode": "table", "placement": "bottom"}},
-      "targets": [{"refId": "A", "expr": "sum by (bank_workflow, bank_intervention) (increase(bank_safety_interventions_total{bank_workflow=~\"$workflow\"}[$__range]))", "legendFormat": "{{bank_workflow}} / {{bank_intervention}}", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 12,
+        "y": 16
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (bank_workflow, bank_intervention) (increase(bank_safety_interventions_total{bank_workflow=~\"$workflow\"}[$__range])) > 0",
+          "legendFormat": "{{bank_workflow}} / {{bank_intervention}}",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 15,
       "type": "stat",
       "title": "Unsafe responses blocked",
       "description": "Customer-facing messages blocked by a runtime grounding detector before delivery.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 4, "x": 20, "y": 16},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "sum(increase(bank_safety_unsafe_blocked_total{bank_workflow=~\"$workflow\"}[$__range])) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 16
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(bank_safety_unsafe_blocked_total{bank_workflow=~\"$workflow\"}[$__range])) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 16,
       "type": "row",
       "title": "Tools and model gateway",
       "collapsed": false,
-      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 24},
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
       "panels": []
     },
     {
       "id": 17,
-      "type": "barchart",
+      "type": "bargauge",
       "title": "Tool calls by status",
       "description": "Tool activity grouped by tool and final recorded status.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 10, "x": 0, "y": 25},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"orientation": "horizontal", "showValue": "always", "legend": {"displayMode": "table", "placement": "bottom"}},
-      "targets": [{"refId": "A", "expr": "sum by (bank_tool, bank_tool_status) (increase(bank_tool_calls_total[$__range]))", "legendFormat": "{{bank_tool}} / {{bank_tool_status}}", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 25
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false,
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (bank_tool, bank_tool_status) (increase(bank_tool_calls_total[$__range])) > 0",
+          "legendFormat": "{{bank_tool}} / {{bank_tool_status}}",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 18,
       "type": "timeseries",
       "title": "Tool latency p95",
       "description": "95th percentile of tool latency, including retries, by tool.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 7, "x": 10, "y": 25},
-      "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
-      "options": {"legend": {"displayMode": "table", "placement": "bottom", "calcs": ["lastNotNull", "max"]}},
-      "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum by (le, bank_tool) (rate(bank_tool_duration_seconds_bucket[$__rate_interval])))", "legendFormat": "{{bank_tool}}"}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 10,
+        "y": 25
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (le, bank_tool) (rate(bank_tool_duration_seconds_bucket[$__rate_interval])))",
+          "legendFormat": "{{bank_tool}}"
+        }
+      ]
     },
     {
       "id": 19,
       "type": "stat",
       "title": "Model fallback calls",
       "description": "Model calls replaced by a deterministic path in the selected period and workflow filter.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 3, "x": 17, "y": 25},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "sum(increase(bank_llm_fallbacks_total{bank_workflow=~\"$workflow\"}[$__range])) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 17,
+        "y": 25
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(bank_llm_fallbacks_total{bank_workflow=~\"$workflow\"}[$__range])) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 20,
       "type": "stat",
       "title": "Known model cost",
       "description": "Sum of known successful model-call cost in USD. Unpriced calls are excluded by the gateway.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 4, "x": 20, "y": 25},
-      "fieldConfig": {"defaults": {"unit": "currencyUSD", "decimals": 4}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "sum(increase(bank_llm_cost_usd_sum[$__range])) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 25
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "decimals": 4
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(bank_llm_cost_usd_sum[$__range])) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 21,
       "type": "row",
       "title": "Service health",
       "collapsed": false,
-      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 33},
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
       "panels": []
     },
     {
@@ -261,44 +806,217 @@
       "type": "timeseries",
       "title": "HTTP request rate by status",
       "description": "Request rate grouped by HTTP response status code.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 9, "x": 0, "y": 34},
-      "fieldConfig": {"defaults": {"unit": "reqps", "custom": {"drawStyle": "line", "fillOpacity": 15}}, "overrides": []},
-      "options": {"legend": {"displayMode": "table", "placement": "bottom", "calcs": ["mean", "max"]}},
-      "targets": [{"refId": "A", "expr": "sum by (http_response_status_code) (rate(http_server_request_duration_seconds_count[$__rate_interval]))", "legendFormat": "HTTP {{http_response_status_code}}"}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 34
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 15
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (http_response_status_code) (rate(http_server_request_duration_seconds_count[$__rate_interval]))",
+          "legendFormat": "HTTP {{http_response_status_code}}"
+        }
+      ]
     },
     {
       "id": 23,
       "type": "timeseries",
       "title": "HTTP latency p95 by route",
       "description": "95th percentile of server request latency by normalized API route.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 9, "x": 9, "y": 34},
-      "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
-      "options": {"legend": {"displayMode": "table", "placement": "bottom", "calcs": ["lastNotNull", "max"]}},
-      "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum by (le, http_route) (rate(http_server_request_duration_seconds_bucket[$__rate_interval])))", "legendFormat": "{{http_route}}"}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 9,
+        "y": 34
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (le, http_route) (rate(http_server_request_duration_seconds_bucket[$__rate_interval])))",
+          "legendFormat": "{{http_route}}"
+        }
+      ]
     },
     {
       "id": 24,
       "type": "stat",
       "title": "Rate-limit rejections",
       "description": "Requests rejected by shared rate limits in the selected period.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 3, "x": 18, "y": 34},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "sum(increase(bank_http_rate_limited_total[$__range])) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 18,
+        "y": 34
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(bank_http_rate_limited_total[$__range])) or vector(0)",
+          "instant": true
+        }
+      ]
     },
     {
       "id": 25,
       "type": "stat",
       "title": "Degradation level",
       "description": "Maximum worker degradation level: 0 normal, 1 fallback provider, 2 template only, 3 baselines, 4 database unavailable.",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "gridPos": {"h": 8, "w": 3, "x": 21, "y": 34},
-      "fieldConfig": {"defaults": {"unit": "short", "decimals": 0, "min": 0, "max": 4}, "overrides": []},
-      "options": {"reduceOptions": {"calcs": ["lastNotNull"], "values": false}},
-      "targets": [{"refId": "A", "expr": "max(bank_degradation_level) or vector(0)", "instant": true}]
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 21,
+        "y": 34
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": 4,
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "L0 normal",
+                  "color": "green",
+                  "index": 0
+                },
+                "1": {
+                  "text": "L1 fallback model",
+                  "color": "yellow",
+                  "index": 1
+                },
+                "2": {
+                  "text": "L2 template only",
+                  "color": "orange",
+                  "index": 2
+                },
+                "3": {
+                  "text": "L3 baselines",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "L4 database unavailable",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max(bank_degradation_level) or vector(0)",
+          "instant": true
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "type": "dashboards",
+      "tags": [
+        "bank-agent"
+      ],
+      "asDropdown": false,
+      "includeVars": false,
+      "keepTime": true,
+      "title": "Bank agent dashboards"
     }
   ]
 }
