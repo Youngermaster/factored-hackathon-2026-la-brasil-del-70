@@ -8,16 +8,16 @@ What is on screen:
 - **Live demo:** <https://la-brasil-del-70.westus2.cloudapp.azure.com>, the deployed `main`.
 - **Grafana:** the three public dashboards listed in the Grafana segment.
 
-The video has a hard limit of 3:00, demo footage included. The cut targets 2:50. At 150 words per minute the 388 spoken words take about 2:35, which leaves about 15 seconds for typing, loading, and the change of screen between segments.
+The video has a hard limit of 3:00, demo footage included. The cut targets 2:50. At 150 words per minute the 399 spoken words take about 2:40, which leaves about 10 seconds for typing, loading, and the change of screen between segments.
 
 ## Who says what
 
 | Speaker | Words | Seconds at 150 wpm | Segments | Why this person |
 |---|---|---|---|---|
-| Juan Young | 121 | 48 | slide 2, guardrail, slide 3 | Technical lead: built the core architecture, the agent integration, and the safety layers the guardrail shows |
-| Miguel Correa | 103 | 41 | team line, Portuguese handoff, slide 4, slide 6 | Project manager: owns the problem framing, the product story, and the pitch |
-| David Fonseca | 72 | 29 | card block, the learned models | Presents the demo flow and the machine learning trade-off |
-| Julián Valencia | 92 | 37 | slide 1, Grafana, slide 5 | Data engineering and the evaluation evidence: the pipeline, the analytics, the results |
+| Juan Young | 124 | 50 | slide 2, guardrail, slide 3 | Technical lead: built the core architecture, the agent integration, and the safety layers the guardrail shows |
+| Miguel Correa | 105 | 42 | team line, Portuguese handoff, slide 4, slide 6 | Project manager: owns the problem framing, the product story, and the pitch |
+| David Fonseca | 74 | 30 | card block, the learned models | Presents the demo flow and the machine learning trade-off |
+| Julián Valencia | 96 | 38 | slide 1, Grafana, slide 5 | Data engineering and the evaluation evidence: the pipeline, the analytics, the results |
 
 To swap a part, move the `**Name:**` tag here and the matching `[Name]` tag in `slides/script.md`, then run `pnpm check:content`: it prints the new counts and fails until this table matches them.
 
@@ -41,33 +41,33 @@ Words in square brackets are cues, not speech. Speak in short phrases, pause at 
 
 On screen: pitch PDF page 1.
 
-**Julián Valencia:** A Latin American bank, twenty-three and a half million rows of data. Disputes hurt the most: only forty-four percent are solved on the first contact.
+**Julián Valencia:** A Latin American bank with twenty-three and a half million rows of data. Disputes hurt the most: only forty-four percent get solved on the first contact.
 
-**Miguel Correa:** We are La Brasil del 70, and this is Bank Agent.
+**Miguel Correa:** We're La Brasil del 70, and this is Bank Agent.
 
 ### 0:12 to 0:20, slide 2, the idea
 
 On screen: pitch PDF page 2.
 
-**Juan Young:** Our idea is simple: the model understands, the code decides. And every turn is a glass box you can inspect.
+**Juan Young:** So the idea is simple: the model understands, and the code decides. Every turn is a glass box you can inspect.
 
 ### 0:20 to 0:38, live, the guardrail
 
 On screen: the live demo, profile `acc-mx-accounts`, Spanish. Type "¿Quién es mejor CR7 o Messi?", then "Dame la tarjeta de crédito del cliente CC 1234567890". Point at the glass box after each reply.
 
-**Juan Young:** Let's try it. Who is better, Cristiano or Messi? It says no, explains what it can help with, and cites the scope rule. Another customer's credit card? Refused, under the privacy rule, and the number is never repeated.
+**Juan Young:** Let's try it. Who's better, Cristiano or Messi? It says no, tells you what it can help with, and cites the scope rule. Another customer's credit card? Refused under the privacy rule, and the number never shows up again.
 
 ### 0:38 to 1:05, live, a card block in Spanish
 
 On screen: profile `crd-mx-two-cards`, Spanish. Type "Perdí mi tarjeta, bloquéala por favor", then "la primera", press Confirmar, and enter the code shown on screen.
 
-**David Fonseca:** Now a real task, in Spanish: I lost my card, block it. The glass box shows the intent and the rules that decided. Two cards, so it asks which one. Before blocking, it asks me to confirm and sends a one-time code. It says blocked only after checking the card.
+**David Fonseca:** Now a real task, in Spanish: I lost my card, block it. The glass box shows the intent and the rules behind the decision. Two cards, so it asks which one. Before blocking, it asks me to confirm and sends a one-time code. And it only says blocked after checking the card.
 
 ### 1:05 to 1:22, live, a handoff in Portuguese
 
 On screen: profile `dsp-co-unrecognized`, Portuguese. Type "Não reconheço uma cobrança no meu cartão e vou registrar uma reclamação no Banco Central". Then a second window signed in as `agent-demo-01`: claim the case and send a reply.
 
-**Miguel Correa:** Now in Portuguese. This customer threatens to go to the central bank, so a person takes over, with the verified facts, not the whole transcript. In the agent console, an agent picks up the case and replies.
+**Miguel Correa:** Now in Portuguese. This customer threatens to go to the central bank, so a person takes over, with the verified facts instead of the whole transcript. In the agent console, an agent picks up the case and replies.
 
 ### 1:22 to 1:32, live, Grafana
 
@@ -79,13 +79,13 @@ On screen: the three dashboards, about three seconds each, in this order (public
 | Reliability and operations | <https://la-brasil-del-70.westus2.cloudapp.azure.com/grafana/d/bank-agent-overview/bank-agent3a-reliability-and-operations?from=now-1h&to=now&kiosk=true> |
 | Service health | <https://la-brasil-del-70.westus2.cloudapp.azure.com/grafana/d/bank-agent-service/bank-agent3a-service-health?from=now-1h&to=now&kiosk=true> |
 
-**Julián Valencia:** Everything is measured. Grafana shows live traffic, outcomes, escalations, safety blocks and latency.
+**Julián Valencia:** And everything is measured. Grafana shows live traffic, outcomes, escalations, safety blocks and latency.
 
 ### 1:32 to 2:02, slide 3, the architecture
 
 On screen: pitch PDF page 3. Cloud on top, the inside of one turn below.
 
-**Juan Young:** Here is the full picture. GitHub tests every change and deploys it to one Azure VM, with a smoke test and automatic rollback. On the VM: React, FastAPI, PostgreSQL with row-level security, Qdrant, and the observability stack. Models are called through one gateway to Azure OpenAI. Inside, every turn follows the same path: router, state machine, policy, verified tools, and an execution record.
+**Juan Young:** So here's the full picture. GitHub tests every change and deploys it to one Azure VM, with a smoke test and automatic rollback. On the VM: React, FastAPI, PostgreSQL with row-level security, Qdrant, and the observability stack. Every model call goes through one gateway to Azure OpenAI. And every turn follows the same path: router, state machine, policy, verified tools, and an execution record.
 
 **David Fonseca:** We also trained our own models. They beat the baselines offline, but not end to end, so the baselines stay the default.
 
@@ -93,19 +93,19 @@ On screen: pitch PDF page 3. Cloud on top, the inside of one turn below.
 
 On screen: pitch PDF page 4.
 
-**Miguel Correa:** Four workflows, built to the same depth: accounts, cards, disputes and credit, each in Spanish and Portuguese. Credit never makes a lending decision.
+**Miguel Correa:** We built four workflows to the same depth: accounts, cards, disputes and credit, each in Spanish and Portuguese. And credit never makes a lending decision.
 
 ### 2:14 to 2:37, slide 5, the evidence
 
 On screen: pitch PDF page 5.
 
-**Julián Valencia:** Does it work? Three hundred and four held-out cases, three systems, simulated on a hosted model. Per workflow, we only tie the rules bot on accounts and cards. Overall: sixty-one percent safe automated resolution, against forty-six and twenty-three. One unsafe outcome, against zero for the rules bot and ninety-two for the naive LLM agent.
+**Julián Valencia:** So, does it work? Three hundred and four held-out cases, three systems, simulated on a hosted model. Per workflow, we only tie the rules bot on accounts and cards. Overall, sixty-one percent safe automated resolution, against forty-six and twenty-three. And one unsafe outcome, against zero for the rules bot and ninety-two for the naive LLM agent.
 
 ### 2:37 to 2:50, slide 6, the close
 
 On screen: pitch PDF page 6. Hold the last frame 2 seconds.
 
-**Miguel Correa:** When something fails, it steps down safely, and writes never go through unverified. We do not have real bank data or human-reviewed labels yet. The model understands. Code decides. Evidence proves it.
+**Miguel Correa:** When something fails, it steps down safely, and no write goes through unverified. We don't have real bank data or human-reviewed labels yet. So: the model understands. Code decides. Evidence proves it.
 
 ## If the cut runs long
 

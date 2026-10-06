@@ -4,7 +4,7 @@ The timed shot list for the video pitch: what is on screen, the exact clicks and
 
 **Organizer requirements (normative).** A video pitch no longer than 3:00 that demonstrates the working solution and explains the core architectural decisions. The brief also asks to see Spanish and Portuguese, a normal case, an ambiguous or unsupported case, and a case that needs a person. Submissions close 2026-10-05; the team's cutoff is 23:59 Colombia time (UTC-5), since the public page gives only the date.
 
-**Target 2:50, hard limit 3:00, demo footage included.** The spoken text takes 2:34 (384 words) at 150 words per minute; the remaining 16 seconds are typing, model replies, and the pause after each click. Cut waiting time in the edit, never words.
+**Target 2:50, hard limit 3:00, demo footage included.** The spoken text takes 2:40 (399 words) at 150 words per minute; the remaining 10 seconds are typing, model replies, and the pause after each click. Cut waiting time in the edit, never words.
 
 ## Which stack to record (decision for the team)
 
