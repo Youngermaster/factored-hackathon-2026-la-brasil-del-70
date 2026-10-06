@@ -11,8 +11,10 @@
   },
   "scripts": {
     "dev": "slidev --port 3131",
+    "dev:pitch": "slidev pitch.md --port 3132",
     "build": "slidev build --router-mode hash",
-    "export": "slidev export --format pdf --with-clicks --timeout 120000 --output export/deck-all.pdf && node scripts/split-pdf.mjs export/deck-all.pdf",
+    "export": "pnpm export:pitch && slidev export --format pdf --with-clicks --timeout 120000 --output export/deck-all.pdf && node scripts/split-pdf.mjs export/deck-all.pdf export/la-brasil-del-70-pitch.pdf",
+    "export:pitch": "slidev export pitch.md --format pdf --timeout 120000 --output export/la-brasil-del-70-pitch.pdf",
     "export:final": "pnpm check:content --strict && pnpm export",
     "check:content": "tsx scripts/check-content.ts",
     "check:types": "node scripts/check-types.mjs",

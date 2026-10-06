@@ -1,6 +1,6 @@
 # Pitch deck
 
-The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides (the submission PDF, exactly six pages) plus three appendix slides (a separate PDF), built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point, nothing moves at rest, and the PDF export shows the finished frame of every click. English only.
+The presentation and the animated backbone of the video pitch for Bank Agent, La Brasil del 70's entry to the Factored AI & Data Hackathon 2026. Six main slides (the submission PDF, exactly six pages) plus three appendix slides (a separate PDF), built with [Slidev](https://sli.dev). Every slide is a canvas scene drawn in code: a click plays the scene to its next rest point and nothing moves at rest. The video deck (`slides.md`) replaces its content between clicks, so the submission PDF comes from a separate static entry, `pitch.md`: six still slides (`scenes/pitch*.ts`) that compose each scene's final states into one full frame, reusing the same kit, strings and metrics. English only.
 
 The scene kit, the `<Scene>` component, the seams and the check scripts are adapted from the team lead's earlier deck, VLA-introduction-slides (Apache-2.0, same author); the robot drawing helpers and the bilingual machinery were dropped.
 
@@ -19,13 +19,15 @@ pnpm dev                 # http://localhost:3131, presenter view at /#/presenter
 |---|---|
 | `pnpm dev` | Dev server on port 3131 with hot reload |
 | `pnpm verify` | Types plus `check:content`; run before every commit |
-| `pnpm check:content` | Strings, metrics, intervals, token parity, contrast, narration timing (fails past the 3:00 video limit), parity with the team monologue, the six-slide export range, em dashes, naming; lists pending metrics |
+| `pnpm check:content` | Strings, metrics, intervals, token parity, contrast, narration timing (fails past the 3:00 video limit), parity with the team monologue, the static pitch (one single-cue scene per main slide, exported one page each), em dashes, naming; lists pending metrics |
 | `pnpm check:content --strict` | Same, and fails while any metric is still pending or any placeholder remains |
 | `pnpm check:fit` | Renders every scene at every cue and flags text outside the safe area or touching other text (dev server running) |
 | `pnpm shots` | Screenshots of every slide at every click into `.shots/deck/` (dev server running) |
 | `node scripts/sheet.mjs <scene>` | Contact sheet of one scene at every cue and midpoint, into `.shots/scenes/` |
 | `pnpm build` | Static site into `dist/` |
-| `pnpm export` | Three PDFs: `export/la-brasil-del-70-pitch.pdf` (the submission: six pages, one per main slide, each page showing that slide's build-up frames in order), `export/la-brasil-del-70-pitch-steps.pdf` (the same six slides, one full page per click, 32 pages), and the appendix in `export/la-brasil-del-70-appendix.pdf` |
+| `pnpm export` | Three PDFs: `export/la-brasil-del-70-pitch.pdf` (the submission: `pitch.md`, six full 16:9 slides, one per page), `export/la-brasil-del-70-pitch-steps.pdf` (the video deck's six slides, one full page per click, 32 pages), and the appendix in `export/la-brasil-del-70-appendix.pdf` |
+| `pnpm export:pitch` | Only the submission PDF, from `pitch.md` |
+| `pnpm dev:pitch` | The static pitch in the browser, on port 3132 |
 | `pnpm export:final` | `check:content --strict`, then `pnpm export`: the submission build |
 
 The workbench is at `http://localhost:3131/#/lab`: pick a scene, scrub its playhead, jump between cues. Add `?scene_t=3.2` to a deck URL to freeze every scene at that time, or `?scene_snap` to show each click's finished frame.
@@ -130,7 +132,7 @@ pnpm export:final        # check:content --strict, then pnpm export; fails while
 pnpm export              # the same PDFs as a draft, pending boxes included
 ```
 
-`pnpm export` renders the whole deck once, one page per click, then `scripts/split-pdf.mjs` cuts it by `routeAlias`. The scenes replace their content between clicks, so no single frame carries a whole slide; the submission PDF `la-brasil-del-70-pitch.pdf` therefore has exactly one page per main slide (six pages), and each page draws that slide's frames (the arrival, then every click) as a grid, left to right and top to bottom. The frames are embedded as they were rendered, so a reader can zoom into any of them, and the script fails unless the PDF has one page per main slide. `la-brasil-del-70-pitch-steps.pdf` keeps one full page per click (32 pages for the six slides), which reads better on a screen, and the slides whose alias starts with `appendix` go to `la-brasil-del-70-appendix.pdf` (7 pages). The split is needed because Slidev 52 ignores `--range` in hash router mode, and it fails when the page count does not match the `clicks:` budgets in `slides.md`. Do not add `--per-slide`: every scene would export at its arrival frame only.
+`pnpm export` first runs `pnpm export:pitch`, which exports `pitch.md` (six slides, no clicks, one still scene each) straight to the submission PDF `la-brasil-del-70-pitch.pdf`: one full 16:9 slide per page, each a complete view with its title, content, numbers and evidence label. It then renders the video deck once, one page per click, and `scripts/split-pdf.mjs` cuts that by `routeAlias`: `la-brasil-del-70-pitch-steps.pdf` keeps one full page per click of the six main slides (32 pages), and the slides whose alias starts with `appendix` go to `la-brasil-del-70-appendix.pdf` (7 pages). The script fails unless the pitch PDF has exactly one page per `pitch.md` slide and `pitch.md` has as many slides as the video deck has main slides. The split is needed because Slidev 52 ignores `--range` in hash router mode, and it fails when the page count does not match the `clicks:` budgets in `slides.md`. Do not add `--per-slide` to the video deck export: every scene would export at its arrival frame only. A change to a video scene that the pitch should show goes into the matching `scenes/pitch*.ts` too; both read the same `locales/en.yml` and `data/metrics.yml`, so wording and numbers cannot drift.
 
 Slidev does not reliably hot-reload frontmatter: after changing `clicks:` or `transition:` in `slides.md`, restart `pnpm dev`.
 

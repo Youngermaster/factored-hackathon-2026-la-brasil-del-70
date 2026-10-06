@@ -450,3 +450,108 @@ appendixData:
   dispute: dispute
   credit: credit
   costNote: Handle minutes times an assumed loaded cost per minute. No figure here is a measured saving.
+
+# ── The static pitch (pitch.md): six slides, one still frame each ──────────
+# These scenes compose the video deck's final states into one layout; they
+# also reuse the blocks above through labeler(), so shared wording stays shared.
+
+pitchArch:
+  dims: AI Engineering  |  Machine Learning  |  Technical Judgment
+  title: Architecture, cloud to core
+  # the cloud (deploy/README.md, deploy/compose.prod.yml, ADR 0037, 0038)
+  gh: GitHub Actions
+  ghS: ci on PRs and main
+  ghcr: GHCR
+  ghcrS: images by digest
+  deploy: deploy workflow
+  deployS: OpenID Connect
+  smoke: smoke test
+  smokeS: fails, rolls back
+  vm: Azure VM Standard_B2as_v2  |  Docker Compose
+  browser: browser, https 443
+  web: Caddy, web app
+  webS: TLS (ACME), React SPA
+  api: api
+  apiS: FastAPI, 2 workers
+  pg: PostgreSQL 16
+  pgS: row-level security
+  qdrant: Qdrant
+  qdrantS: retrieval
+  jobs: migrate, seed, purge
+  obs: obs profile
+  obsS: telemetry
+  col: collector
+  colS: OpenTelemetry
+  prom: Prometheus
+  promS: metrics
+  graf: Grafana
+  grafS: at /grafana
+  jae: Jaeger
+  jaeS: traces
+  aoai: Azure OpenAI
+  aoaiS1: via LiteLLM, https
+  aoaiS2: azure/gpt-4.1-mini
+  aoaiS3: fallback azure/gpt-4o
+  kv: Azure Key Vault
+  kvS: secrets
+  kvNote: read by the VM's managed
+  kvNote2: identity, no stored key
+  # inside the api (docs/architecture/overview.md, docs/models)
+  inside: inside the api, one turn
+  layers: "hexagonal core: api > adapters > application > policy > ports > domain"
+  tRouter: intent router
+  tRouterS: LLM fields, schema
+  tState: state machine
+  tStateS: one per workflow
+  tPolicy: policy kernel
+  tPolicyS: rules, clauses
+  tTools: allowlisted tools
+  tToolsS: verified read-back
+  tGround: grounding
+  tGroundS: numbers checked
+  tRecord: execution record
+  tRecordS: append-only
+  learned: "learned models behind ports beat their baselines offline, not end to end: the baselines stay the default"
+  cRouter: router, macro-F1
+  cRouterB: keyword@1
+  cRouterL: e5
+  cRes: resolver, coverage
+  cResB: rules@1
+  cResL: LightGBM
+  cRisk: risk, ROC AUC
+  cRiskB: score_band@1
+  cRiskL: logreg
+  cE2e: P end to end, dev
+  cE2eB: baselines
+  cE2eL: learned
+  data: Data platform
+  dataS: DuckDB, dbt, Pandera
+  dataS2: bronze, silver, gold
+  seed: seed PostgreSQL
+  evalH: evaluation
+  cite: "router: provisional  |  resolver, risk: offline  |  end to end: simulation  |  deploy/README.md  |  deploy/compose.prod.yml  |  docs/architecture  |  docs/models"
+
+pitchHook:
+  eyebrow: La Brasil del 70  |  Factored AI & Data Hackathon 2026
+  tagline: "AI-first banking customer service: account inquiry, card support, dispute, credit, in Spanish and Portuguese"
+  fcrSub: "by workflow; under each column, its share of all contacts"
+  team: the team
+  cite: offline measurement  |  docs/data/quality-report.md  |  docs/analysis/workflow-evidence.md  |  organizer-provided synthetic data
+
+pitchTurn:
+  title: One turn, as a glass box
+
+pitchWorkflows:
+  k_n: Catalog facts, an indicative result, a review intake.
+  k_q: Missing data gives insufficient_data, and it asks.
+  k_e: "Borderline: review_required, a person decides."
+  creditH: "credit: the risk estimate feeds the synthetic eligibility policy, never the model"
+
+pitchEvidence:
+  perSub: safe automated resolution, Wilson interval
+
+pitchClose:
+  lanes: what breaks it  |  writes
+  defense: "defense in depth, on one host:"
+  repoLbl: repository
+  cite: docs/operations/degradation.md  |  LIMITATIONS.md  |  docs/security/threat-model.md  |  deploy/README.md
