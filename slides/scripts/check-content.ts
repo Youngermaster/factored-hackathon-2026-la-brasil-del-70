@@ -10,7 +10,8 @@
  *      150 words per minute sits inside the declared target and under the
  *      3:00 video limit; script.md and docs/demo/video-monologue.md say the
  *      same words by the same speakers (scripts/narration.ts)
- *  5b. the submission PDF: 4 to 6 main slides, and `pnpm export` splits the appendix off
+ *  5b. the submission PDF: pitch.md holds one still slide per main slide (4 to 6),
+ *      exported one page each; `pnpm export` splits the appendix off the video deck
  *   6. writing: no em dashes in anything shown or spoken
  *   7. naming: no known variant spelling of the product, team, systems,
  *      workflows, metrics or levels; team names identical on the close slide,
@@ -194,21 +195,42 @@ function checkMonologue(text: string) {
   }
 }
 
-// ── 5b. the six main slides, and the PDF that holds only them ─────────────
+// ── 5b. the submission PDF: pitch.md, one still slide per page ──────────
 console.log('\nsubmission PDF')
 const mainSlides = aliases.filter((a) => !a.startsWith('appendix'))
 const firstAppendix = aliases.findIndex((a) => a.startsWith('appendix'))
 if (mainSlides.length < 4 || mainSlides.length > 6) fail(`${mainSlides.length} main slides; the organizers allow 4 to 6`)
 if (firstAppendix !== -1 && firstAppendix !== mainSlides.length) fail('appendix slides must come after every main slide')
-// Slidev ignores --range in hash router mode, so `pnpm export` renders the deck once and
-// scripts/split-pdf.mjs cuts it by routeAlias into the pitch PDF and the appendix PDF
+// The video deck replaces its content between clicks, so the submission is a
+// separate static entry: pitch.md, one still scene per slide, as many slides as
+// the video deck has main slides, exported straight to the pitch PDF.
+// scripts/split-pdf.mjs then cuts the video deck into the steps and appendix
+// PDFs and fails unless the pitch PDF has exactly one page per pitch.md slide.
+const PITCH_PDF = 'export/la-brasil-del-70-pitch.pdf'
+const pitchMd = existsSync(join(ROOT, 'pitch.md')) ? read('pitch.md') : ''
+if (!pitchMd) fail('pitch.md is missing: the static entry the submission PDF is exported from')
+const pitchScenes = [...pitchMd.matchAll(/<Scene\s+name="(\w+)"/g)].map((m) => m[1])
+const e5 = errors
+if (pitchScenes.length !== mainSlides.length) fail(`pitch.md has ${pitchScenes.length} slides; the video deck has ${mainSlides.length} main slides`)
+if (/^clicks:/m.test(pitchMd)) fail('pitch.md must not spend clicks: every pitch slide is one still frame')
+for (const name of pitchScenes) {
+  const n = cueCount.get(name)
+  if (n === undefined) fail(`pitch.md uses scene "${name}", which does not exist`)
+  else if (n !== 1) fail(`pitch.md scene "${name}" has ${n} cues; a static pitch slide has exactly one`)
+}
+for (const d of new Set(pitchScenes.filter((a, i) => pitchScenes.indexOf(a) !== i))) fail(`pitch.md uses scene "${d}" twice`)
 const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> }
-if (!/node scripts\/split-pdf\.mjs/.test(pkg.scripts.export ?? '')) fail('package.json "export" must end with node scripts/split-pdf.mjs, which keeps the appendix out of the submission PDF')
-else ok(`${mainSlides.length} main slides in the submission PDF, ${aliases.length - mainSlides.length} appendix slides in their own PDF (scripts/split-pdf.mjs)`)
+if (!(pkg.scripts['export:pitch'] ?? '').includes(`slidev export pitch.md`) || !(pkg.scripts['export:pitch'] ?? '').includes(`--output ${PITCH_PDF}`)) fail(`package.json "export:pitch" must export pitch.md to ${PITCH_PDF}`)
+if (/--with-clicks/.test(pkg.scripts['export:pitch'] ?? '')) fail('package.json "export:pitch" must not use --with-clicks: one page per slide')
+if (!/pnpm export:pitch/.test(pkg.scripts.export ?? '')) fail('package.json "export" must run pnpm export:pitch')
+// Slidev ignores --range in hash router mode, so `pnpm export` renders the video deck once and
+// scripts/split-pdf.mjs cuts it by routeAlias into the steps PDF and the appendix PDF
+if (!new RegExp(`node scripts/split-pdf\\.mjs \\S+ ${PITCH_PDF.replace(/[.]/g, '\\.')}`).test(pkg.scripts.export ?? '')) fail(`package.json "export" must end with node scripts/split-pdf.mjs <deck.pdf> ${PITCH_PDF}, which checks the page count and keeps the appendix out`)
+if (errors === e5) ok(`${pitchScenes.length} static slides in pitch.md, one page each in ${PITCH_PDF}; ${mainSlides.length} main slides in the video deck, ${aliases.length - mainSlides.length} appendix slides in their own PDF`)
 
 // ── 6. writing ─────────────────────────────────────────────────────────────
 console.log('\nwriting')
-const prose = ['slides.md', 'locales/en.yml', 'data/metrics.yml', 'script.md', 'VIDEO.md', 'README.md', 'lib/metric-kinds.ts', ...DEMO_DOCS]
+const prose = ['slides.md', 'pitch.md', 'locales/en.yml', 'data/metrics.yml', 'script.md', 'VIDEO.md', 'README.md', 'lib/metric-kinds.ts', ...DEMO_DOCS]
 let dashes = 0
 for (const f of prose.filter((p) => existsSync(join(ROOT, p)))) {
   read(f).split('\n').forEach((line, i) => {
@@ -235,7 +257,7 @@ const BANNED: [RegExp, string][] = [
   [/\baccounts and payments\b/i, 'account inquiry (the workflow name in docs/evaluation)'],
   [/\blevel [0-4]\b/i, 'L0 to L4 (docs/operations/degradation.md)'],
 ]
-const named = ['slides.md', 'locales/en.yml', 'script.md', 'VIDEO.md', 'README.md', ...DEMO_DOCS]
+const named = ['slides.md', 'pitch.md', 'locales/en.yml', 'script.md', 'VIDEO.md', 'README.md', ...DEMO_DOCS]
 for (const f of named.filter((p) => existsSync(join(ROOT, p)))) {
   read(f).split('\n').forEach((line, i) => {
     for (const [re, want] of BANNED) if (re.test(line)) fail(`${f}:${i + 1} "${line.match(re)?.[0]}": write ${want}`)
