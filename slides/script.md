@@ -14,45 +14,45 @@ Rules for editing: English, short spoken sentences, no em dashes, no number that
 
 <!-- video 0:00 to 0:12, pitch PDF page 1 -->
 
-[slide 1] [Julián Valencia] A Latin American bank, twenty-three and a half million rows of data. Disputes hurt the most: only forty-four percent are solved on the first contact.
+[slide 1] [Julián Valencia] A Latin American bank with twenty-three and a half million rows of data. Disputes hurt the most: only forty-four percent get solved on the first contact.
 
-[Miguel Correa] We are La Brasil del 70, and this is Bank Agent.
+[Miguel Correa] We're La Brasil del 70, and this is Bank Agent.
 
 ## thesis
 
 <!-- video 0:12 to 0:20, pitch PDF page 2 -->
 
-[slide 2] [Juan Young] Our idea is simple: the model understands, the code decides. And every turn is a glass box you can inspect.
+[slide 2] [Juan Young] So the idea is simple: the model understands, and the code decides. Every turn is a glass box you can inspect.
 
 ## demo-guardrail
 
 <!-- video 0:20 to 0:38, live: out of scope, then a third-party request -->
 
-[live] Let's try it. Who is better, Cristiano or Messi? It says no, explains what it can help with, and cites the scope rule. Another customer's credit card? Refused, under the privacy rule, and the number is never repeated.
+[live] Let's try it. Who's better, Cristiano or Messi? It says no, tells you what it can help with, and cites the scope rule. Another customer's credit card? Refused under the privacy rule, and the number never shows up again.
 
 ## demo-card
 
 <!-- video 0:38 to 1:05, live, es-MX: a protective card block -->
 
-[David Fonseca] Now a real task, in Spanish: I lost my card, block it. The glass box shows the intent and the rules that decided. Two cards, so it asks which one. Before blocking, it asks me to confirm and sends a one-time code. It says blocked only after checking the card.
+[David Fonseca] Now a real task, in Spanish: I lost my card, block it. The glass box shows the intent and the rules behind the decision. Two cards, so it asks which one. Before blocking, it asks me to confirm and sends a one-time code. And it only says blocked after checking the card.
 
 ## demo-handoff
 
 <!-- video 1:05 to 1:22, live, pt-BR: an escalation, then the agent console -->
 
-[Miguel Correa] Now in Portuguese. This customer threatens to go to the central bank, so a person takes over, with the verified facts, not the whole transcript. In the agent console, an agent picks up the case and replies.
+[Miguel Correa] Now in Portuguese. This customer threatens to go to the central bank, so a person takes over, with the verified facts instead of the whole transcript. In the agent console, an agent picks up the case and replies.
 
 ## demo-grafana
 
 <!-- video 1:22 to 1:32, live: the three Grafana dashboards, about three seconds each -->
 
-[Julián Valencia] Everything is measured. Grafana shows live traffic, outcomes, escalations, safety blocks and latency.
+[Julián Valencia] And everything is measured. Grafana shows live traffic, outcomes, escalations, safety blocks and latency.
 
 ## architecture
 
 <!-- video 1:32 to 2:02, pitch PDF page 3 -->
 
-[slide 3] [Juan Young] Here is the full picture. GitHub tests every change and deploys it to one Azure VM, with a smoke test and automatic rollback. On the VM: React, FastAPI, PostgreSQL with row-level security, Qdrant, and the observability stack. Models are called through one gateway to Azure OpenAI. Inside, every turn follows the same path: router, state machine, policy, verified tools, and an execution record.
+[slide 3] [Juan Young] So here's the full picture. GitHub tests every change and deploys it to one Azure VM, with a smoke test and automatic rollback. On the VM: React, FastAPI, PostgreSQL with row-level security, Qdrant, and the observability stack. Every model call goes through one gateway to Azure OpenAI. And every turn follows the same path: router, state machine, policy, verified tools, and an execution record.
 
 [David Fonseca] We also trained our own models. They beat the baselines offline, but not end to end, so the baselines stay the default.
 
@@ -60,19 +60,19 @@ Rules for editing: English, short spoken sentences, no em dashes, no number that
 
 <!-- video 2:02 to 2:14, pitch PDF page 4 -->
 
-[slide 4] [Miguel Correa] Four workflows, built to the same depth: accounts, cards, disputes and credit, each in Spanish and Portuguese. Credit never makes a lending decision.
+[slide 4] [Miguel Correa] We built four workflows to the same depth: accounts, cards, disputes and credit, each in Spanish and Portuguese. And credit never makes a lending decision.
 
 ## evidence
 
 <!-- video 2:14 to 2:37, pitch PDF page 5 -->
 
-[slide 5] [Julián Valencia] Does it work? Three hundred and four held-out cases, three systems, simulated on a hosted model. Per workflow, we only tie the rules bot on accounts and cards. Overall: sixty-one percent safe automated resolution, against forty-six and twenty-three. One unsafe outcome, against zero for the rules bot and ninety-two for the naive LLM agent.
+[slide 5] [Julián Valencia] So, does it work? Three hundred and four held-out cases, three systems, simulated on a hosted model. Per workflow, we only tie the rules bot on accounts and cards. Overall, sixty-one percent safe automated resolution, against forty-six and twenty-three. And one unsafe outcome, against zero for the rules bot and ninety-two for the naive LLM agent.
 
 ## close
 
 <!-- video 2:37 to 2:50, pitch PDF page 6; hold the last frame 2 s -->
 
-[slide 6] [Miguel Correa] When something fails, it steps down safely, and writes never go through unverified. We do not have real bank data or human-reviewed labels yet. The model understands. Code decides. Evidence proves it.
+[slide 6] [Miguel Correa] When something fails, it steps down safely, and no write goes through unverified. We don't have real bank data or human-reviewed labels yet. So: the model understands. Code decides. Evidence proves it.
 
 ## appendix-evidence
 

@@ -44,7 +44,7 @@ On the deployed demo the model takes part in understanding, so the glass box lis
 | Working deployed solution link | **Live:** <https://la-brasil-del-70.westus2.cloudapp.azure.com>, one Azure VM, continuous deployment from `main`; Azure OpenAI (`gpt-4.1-mini`, fallback `gpt-4o`) since 2026-10-05 |
 | Evaluation evidence | Published: run `test-hosted` (2026-10-05, `azure/gpt-4.1-mini`, the deployed model), before the final-day QA fixes; README, deck, and narration quote it |
 | Presentation of 4 to 6 slides | Six main slides in [`slides/`](../slides/README.md); `pnpm export:final` writes a six-page pitch PDF (one page per slide) plus a 32-page build-up version and the appendix apart. Metrics refreshed to the hosted run; the PDF is not exported yet |
-| Video pitch, no longer than 3 minutes | Planned to a 2:50 cut ([video plan](demo/video-plan.md)); the narration is 384 words, 2:34 spoken at 150 words per minute ([video monologue](demo/video-monologue.md)). Not recorded yet |
+| Video pitch, no longer than 3 minutes | Planned to a 2:50 cut ([video plan](demo/video-plan.md)); the narration is 399 words, 2:40 spoken at 150 words per minute ([video monologue](demo/video-monologue.md)). Not recorded yet |
 | Send everything to `hackathon.admin@factored.ai` | Not sent; the [draft](submission/email-draft.md) is ready |
 
 ## Deliberate trade-offs
