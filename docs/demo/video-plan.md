@@ -72,6 +72,14 @@ The executive dashboard (`bank-agent-executive`), time range "Last 1 hour":
 - Turn volume by workflow rendered empty in Grafana 13.2 in the verification run below; it and the other category panels are bar gauges since ADR 0045 and need a fresh check before recording. The service health dashboard (`bank-agent-service`, Grafana's home page) adds latency percentiles, model cost per turn, and the degradation timeline.
 - Say "live operations", not "resolution rate": a resolved turn is not the evaluation's safe automated resolution ([grafana-dashboard.md](../operations/grafana-dashboard.md)).
 
+## Published video
+
+The final cut (2:53) is on YouTube, unlisted: <https://youtu.be/q5RYvK35vLk>. It was cut from the team's meeting recording: the opening chatter removed, the shared screen cropped to 1920 x 1080, silent waits fast-forwarded, and the whole cut sped up 1.2x with the pitch kept.
+
+The thumbnail, in the deck's colors and fonts, is [youtube-thumbnail.png](youtube-thumbnail.png) (1280 x 720).
+
+![Bank Agent thumbnail: the title, the thesis line, and 61 percent safe automated resolution against 46 and 23](youtube-thumbnail.png)
+
 ## Verification run, 2026-10-04
 
 The observability path was checked on an isolated stack so that nothing touched the developers' servers on ports 8000 and 5173 or the main checkout's compose PostgreSQL: compose project `bank-agent-videoobs`, every published port moved by an override file, the API on 8100 with the fake model, code at `45fae54` (before the guardrail fixes, so the guardrail replies were not checked here).
