@@ -75,9 +75,16 @@ const WINDOW_MS: Record<DueWindow, number> = {
   '24h': 24 * 3_600_000,
 };
 
+/**
+ * The most handoffs the inbox asks for: the API's own maximum. The list is sorted soonest SLA first, so with the API's
+ * default page (50) a new handoff, whose SLA is the latest, fell off the end once the inbox held 50 open cases.
+ */
+export const INBOX_PAGE_SIZE = 200;
+
 /** The API query for a filter set: single values become one-element lists; the due window becomes an instant. */
 export function toQuery(filters: HandoffFilters, now: Date) {
   return {
+    limit: INBOX_PAGE_SIZE,
     ...(filters.workflow === undefined ? {} : { workflow: [filters.workflow] }),
     ...(filters.priority === undefined ? {} : { priority: [filters.priority] }),
     ...(filters.reason === undefined ? {} : { reason: [filters.reason] }),
